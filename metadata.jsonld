@@ -68,10 +68,19 @@
       "@id": "http://publications.europa.eu/resource/authority/language/ENG"
     }
   ],
-  "dcterms:license": {
-    "@id": "https://opensource.org/licenses/MIT"
+  "dcterms:rights": "DRAFT layered rights model — pending legal sign-off. This dataset is NOT licensed as a whole under MIT. It is a compilation of (a) predominantly third-party legal texts that retain their own source rights (Riigi Teataja statutes/regulations; EU material © European Union, reused under Commission Decision 2011/833/EU, incl. EuroVoc; RIK/Riigikohus and EU Court decisions) and (b) an original compilation layer (selection/arrangement, cross-reference links, minted estleg: IRIs, ontology/TBox structure, controlled vocabularies, derived classifications) which the project offers under CC BY 4.0 (CC0 1.0 an acceptable alternative). Per-distribution dcterms:rights statements below give the source-specific terms. The MIT LICENSE in this repository applies ONLY to the repository software (scripts/, mcp_server/, tests/). Some distributions contain personal data — see estleg:containsPersonalData and docs/DATA_PROTECTION.md. See the top-level NOTICE and docs/DATA_RIGHTS.md. Verify upstream source terms before redistribution.",
+  "dcterms:hasPart": {
+    "@id": "https://data.riik.ee/dataset/estonian-legal-ontology#compilation",
+    "@type": ["dcat:Dataset", "dcterms:BibliographicResource"],
+    "dcterms:title": "Original compilation layer (estleg)",
+    "dcterms:description": "DRAFT pending legal sign-off. The project's own copyrightable / sui-generis-database-right contribution ONLY: the selection & arrangement of the corpus, cross-reference links, minted estleg: IRIs, ontology/TBox structure, controlled vocabularies, and derived classifications — explicitly NOT the third-party legal texts, which retain their source rights (see the per-distribution dcterms:rights, the top-level NOTICE, and docs/DATA_RIGHTS.md). This layer alone is offered under CC BY 4.0 (CC0 1.0 an acceptable alternative). The MIT LICENSE in this repository covers the repository software (scripts/, mcp_server/, tests/) only.",
+    "dcterms:license": {
+      "@id": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "schema:license": {
+      "@id": "https://creativecommons.org/licenses/by/4.0/"
+    }
   },
-  "dcterms:rights": "MIT License. Copyright (c) 2026 Henrik Aavik.",
   "dcterms:subject": [
     {
       "@id": "http://eurovoc.europa.eu/100163",
@@ -278,8 +287,8 @@
   },
   "schema:version": "0.11.0",
   "schema:inLanguage": ["et", "en"],
-  "schema:license": {
-    "@id": "https://opensource.org/licenses/MIT"
+  "schema:hasPart": {
+    "@id": "https://data.riik.ee/dataset/estonian-legal-ontology#compilation"
   },
   "schema:isAccessibleForFree": true,
   "schema:encodingFormat": "application/ld+json",
@@ -336,6 +345,7 @@
         "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
       },
       "dcterms:description": "All JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, cross-border harmonisation links, practitioner annotations, controlled vocabularies, reports, and indexes. File count is the validated estleg:fileCount below.",
+      "dcterms:rights": "DRAFT mixed/layered rights — spans all sources; see the dataset-level dcterms:rights, the top-level NOTICE, and docs/DATA_RIGHTS.md. Third-party texts retain source terms; the compilation layer is offered under CC BY 4.0. Contains personal data in the court subcorpora (see docs/DATA_PROTECTION.md). Verify upstream terms before redistribution.",
       "estleg:fileCount": 23116
     },
     {
@@ -349,6 +359,7 @@
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/combined_ontology.jsonld"
       },
       "dcterms:description": "Enacted-law index records across the top-level law JSON-LD files (validated counts: estleg:lawIndexRecordCount and estleg:lawFileCount below); combined ontology artifact remains available for consumers that need a single file. Court-decision enum individuals (the estleg:caseType / estleg:decisionType targets estleg:CaseType_* and estleg:DecisionType_*) are defined in krr_outputs/riigikohus/riigikohus_schema.json, which is not merged into combined_ontology.jsonld; consumers that need to resolve those targets must load riigikohus_schema.json alongside the court-decision peeps.",
+      "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Statutory text is excluded from copyright under §5 Autoriõiguse seadus (not an object of copyright). VERIFY: the consolidated machine-readable product and a sui generis database right may still carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer (links, IRIs, structure) offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
       "estleg:lawIndexRecordCount": 1122,
       "estleg:lawFileCount": 1190
     },
@@ -360,6 +371,7 @@
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/main/krr_outputs/regulations/riik"
       },
       "dcterms:description": "State-level Estonian regulations (määrused) issued by Vabariigi Valitsus, ministers, and Eesti Pank — one JSON-LD file each, plus REGULATIONS_RIIK_INDEX.json. File count is the validated estleg:fileCount below.",
+      "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
       "estleg:fileCount": 3812
     },
     {
@@ -373,6 +385,7 @@
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/eelnoud/eelnoud_combined.jsonld"
       },
       "dcterms:description": "All draft legislation items in a single JSON-LD file. Item count is the validated estleg:draftLegislationCount below.",
+      "dcterms:rights": "DRAFT — Source: EIS / eelnoud.valitsus.ee. Legislative drafts are not objects of copyright under §5 Autoriõiguse seadus. VERIFY EIS reuse terms for accompanying explanatory memoranda or third-party annexes before bulk redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
       "estleg:draftLegislationCount": 22832
     },
     {
@@ -386,6 +399,7 @@
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/eurlex/eurlex_combined.jsonld"
       },
       "dcterms:description": "All EU legal acts in a single JSON-LD file. Act count is the validated estleg:euLegislationCount below.",
+      "dcterms:rights": "© European Union, 1998–2026 (https://eur-lex.europa.eu), reused under Commission Decision 2011/833/EU — source must be acknowledged and meaning not distorted; third-party-rights-reserved EU documents are excepted. EuroVoc references © European Union / Publications Office. Compilation layer offered under CC BY 4.0. DRAFT — VERIFY exact EuroVoc licence/attribution wording and that no rights-reserved EU documents were ingested verbatim. See NOTICE / docs/DATA_RIGHTS.md.",
       "estleg:euLegislationCount": 33242
     },
     {
@@ -399,6 +413,8 @@
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/curia/curia_combined.jsonld"
       },
       "dcterms:description": "All EU court decisions in a single JSON-LD file. Decision count is the validated estleg:euCourtDecisionCount below.",
+      "dcterms:rights": "© European Union, 1998–2026 (EU Court of Justice / CURIA), reused under Commission Decision 2011/833/EU. CONTAINS PERSONAL DATA: party names appear in rdfs:label. Republishers become independent GDPR controllers — see docs/DATA_PROTECTION.md before redistribution. DRAFT — pending legal/DPO sign-off.",
+      "estleg:containsPersonalData": true,
       "estleg:euCourtDecisionCount": 22290
     },
     {
@@ -415,6 +431,8 @@
         "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
       },
       "dcterms:description": "Estonian Supreme Court (Riigikohus) decisions as JSON-LD, partitioned by case type under krr_outputs/riigikohus/, with the shared schema in riigikohus_schema.json. Decision count is the validated estleg:courtDecisionCount in the estleg:statistics block.",
+      "dcterms:rights": "DRAFT — Source: RIK (https://rikos.rik.ee) / Riigikohus. Judgments are not objects of copyright under §5 Autoriõiguse seadus. CONTAINS PERSONAL DATA: full personal names appear in estleg:summary, and KarS (Penal Code) charges are attached to identifiable persons (Art. 10 GDPR criminal-conviction data). Republication is governed by GDPR + the Kohtute seadus publication regime + AKI court-anonymisation rules; republishers become independent GDPR controllers. VERIFY whether stored names match RIK's anonymised feed or exceed it (redaction needed if exceeded). See docs/DATA_PROTECTION.md — pending legal/DPO sign-off.",
+      "estleg:containsPersonalData": true,
       "estleg:courtDecisionCount": 12137
     },
     {
@@ -431,6 +449,7 @@
         "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
       },
       "dcterms:description": "Local-government (kohaliku omavalitsuse, KOV) municipal regulations as JSON-LD — one file each under krr_outputs/regulations/kov/, plus REGULATIONS_KOV_INDEX.json. Regulation count is the validated estleg:municipalRegulationCount in the estleg:statistics block.",
+      "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Municipal regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
       "estleg:municipalRegulationCount": 11059
     }
   ],
@@ -751,6 +770,15 @@
       "rdfs:comment": "Sanction enforcement level: 'state' or 'municipality'. Derived in Layer 2c from the parent act's type.",
       "rdfs:range": {
         "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:containsPersonalData",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "containsPersonalData",
+      "rdfs:comment": "Boolean flag on a dcat:Distribution (or other resource) asserting that it contains personal data about identifiable natural persons within the meaning of the GDPR (e.g. names and case details of parties in court decisions). When true, republication is governed by data-protection law, not merely copyright — see docs/DATA_PROTECTION.md. Introduced for tickets #545/#546.",
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     }
   ]

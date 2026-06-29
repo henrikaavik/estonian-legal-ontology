@@ -43,9 +43,14 @@ Scope / safety:
     corrigendum node itself. A corrigendum is detected by the canonical CELEX
     marker — a trailing ``R(<n>)`` on ``estleg:celexNumber`` (equivalent to the
     issue's "``@id`` ending ``R0``+digit" but also catching the few ``R(10)+``).
-  * The generated ``eurlex_combined.jsonld`` is NOT rewritten here (it is a
-    build artifact rebuilt by the canonical builder); only the ``*_peep.json``
-    sources named by #582 are repaired.
+  * The generated ``eurlex_combined.jsonld`` is corrected here too, with the
+    identical per-node logic. The canonical builder is the network CELLAR
+    pipeline, which re-emits the *uncorrected* dates — so this offline #582
+    repair must touch the combined artifact as well, or it stays stale
+    relative to the repaired ``*_peep.json``. That staleness surfaces as
+    ``sh:maxCount 1`` ``documentDate`` conflicts in the merged Seadusloome
+    graph (combined + peeps carry two different dates) and fails the
+    zero-warning gate.
   * Idempotent: the year guard (a) and the swap-only-from-the-opposite-body
     guard (b) both make a second run a no-op (0 changes).
   * Atomic writes via :func:`estleg_common.save_json` (tempfile + os.replace);
@@ -68,6 +73,7 @@ from estleg_common import ESTONIAN_MONTHS_GENITIVE, REPO_ROOT, save_json
 
 EURLEX_DIR = REPO_ROOT / "krr_outputs" / "eurlex"
 PEEP_GLOB = "eurlex_*_peep.json"
+COMBINED_FILE = "eurlex_combined.jsonld"
 
 LFS_POINTER_PREFIX = "version https://git-lfs"
 
@@ -362,7 +368,14 @@ def main(argv: list[str] | None = None) -> int:
 
     stats = FixStats()
     verb = "would fix" if dry_run else "fixed"
-    for path in sorted(eurlex_dir.glob(PEEP_GLOB)):
+    # The *_peep.json sources plus the generated eurlex_combined.jsonld — the
+    # combined must be repaired in lock-step or it drifts from the peeps and
+    # trips the Seadusloome zero-warning gate (see module docstring).
+    targets = sorted(eurlex_dir.glob(PEEP_GLOB))
+    combined = eurlex_dir / COMBINED_FILE
+    if combined.is_file():
+        targets.append(combined)
+    for path in targets:
         stats.files_scanned += 1
         if _is_lfs_pointer(path):
             print(f"  (skip, git-LFS pointer — run `git lfs pull`) {path.name}")
