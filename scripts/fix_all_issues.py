@@ -1215,6 +1215,111 @@ def _emit_closure_stubs(
     return len(stubs)
 
 
+# --- #519: build-time rdf:type rollup over the subclass hierarchy -----------
+#
+# The shipped graph asserts only leaf-level types (per-file
+# ``estleg:LegalProvision_<slug>`` / ``estleg:Regulation_<id>`` classes,
+# ``estleg:Subsection``, the four concrete ``*Regulation`` act classes, ...) and
+# ships with no reasoner, so the single most natural query —
+# ``?x a estleg:LegalProvision`` / ``?x a estleg:Act`` — silently returned only
+# 71 of ~162k provisions. We forward-chain rdf:type once at build time so every
+# instance also carries its entailed parent types. Each rollup edge below is
+# backed by an ``rdfs:subClassOf`` axiom, so the materialized types are exactly
+# what an RDFS reasoner would entail:
+#   * the bare classes (Subsection, KovProvision, Law, the *Regulation
+#     hierarchy) -> ``krr_outputs/controlled_vocabulary.jsonld`` (a combined
+#     input; axioms added in #519).
+#   * the ``LegalProvision_<slug>`` leaf family -> the per-law ``*_peep.json``
+#     ``owl:Class`` declarations (``... rdfs:subClassOf estleg:LegalProvision``),
+#     fully merged into combined (~812 such class nodes).
+#   * the ``Regulation_<id>`` leaf family -> the per-regulation ``owl:Class``
+#     declaration emitted by ``generate_regulations.py`` into each
+#     ``regulations/{riik,kov}/*`` source file; combined emits those provision
+#     nodes as closure stubs, so that declaration lives in the source corpus,
+#     not in combined (retiring the per-file classes themselves is #434's scope).
+# Structural CONTAINERS (Chapter/Division/Section/Part/Subdivision) are
+# deliberately NOT rolled up to estleg:LegalProvision: the TBox declares no such
+# subclass intent and estleg:Part is in fact used at act-root level (e.g. the
+# multi-part AOS osa files), so asserting LegalProvision on them would over-type
+# the graph. Err toward not over-asserting.
+
+#: Exact-match rollup edges: an instance carrying the key class also gets the
+#: value class asserted. Resolved transitively (Government/Ministerial ->
+#: National -> Act), so only the *direct* superclass is listed per key.
+_TYPE_ROLLUP_EDGES: dict[str, str] = {
+    "estleg:Subsection": "estleg:LegalProvision",
+    "estleg:KovProvision": "estleg:LegalProvision",
+    "estleg:Law": "estleg:Act",
+    "estleg:NationalRegulation": "estleg:Act",
+    "estleg:MunicipalRegulation": "estleg:Act",
+    "estleg:GovernmentRegulation": "estleg:NationalRegulation",
+    "estleg:MinisterialRegulation": "estleg:NationalRegulation",
+}
+
+#: Prefix-match rollup edges for the per-file leaf-class families. Any ``@type``
+#: entry starting with the prefix entails the paired superclass.
+_TYPE_ROLLUP_PREFIXES: tuple[tuple[str, str], ...] = (
+    ("estleg:LegalProvision_", "estleg:LegalProvision"),
+    ("estleg:Regulation_", "estleg:LegalProvision"),
+)
+
+
+def _materialize_supertypes(types: list[str]) -> list[str]:
+    """Forward-chain rdf:type over the subclass hierarchy for one ``@type`` (#519).
+
+    Returns the original ``types`` (order and any quirks preserved exactly) with
+    every transitively-entailed parent class appended in breadth-first discovery
+    order, de-duplicated against types already present. The ordering uses no
+    ``set`` — only the input order, the fixed ``_TYPE_ROLLUP_EDGES`` lookup and
+    the fixed ``_TYPE_ROLLUP_PREFIXES`` tuple — so the output is byte-identical
+    across interpreter runs regardless of ``PYTHONHASHSEED`` (AGENTS.md
+    determinism rule). Pure function; never mutates ``types``.
+    """
+    present: dict[str, None] = dict.fromkeys(types)  # membership set, ordered
+    additions: list[str] = []
+    queue: list[str] = list(types)  # BFS work queue, originals first
+    idx = 0
+    while idx < len(queue):
+        current = queue[idx]
+        idx += 1
+        candidates: list[str] = []
+        parent = _TYPE_ROLLUP_EDGES.get(current)
+        if parent is not None:
+            candidates.append(parent)
+        for prefix, prefix_parent in _TYPE_ROLLUP_PREFIXES:
+            if current.startswith(prefix):
+                candidates.append(prefix_parent)
+        for candidate in candidates:
+            if candidate not in present:
+                present[candidate] = None
+                additions.append(candidate)
+                queue.append(candidate)  # expand transitively
+    if not additions:
+        return list(types)
+    return list(types) + additions
+
+
+def _apply_type_rollup(all_nodes: list[dict]) -> int:
+    """Assert entailed parent rdf:types on every node, in place (#519).
+
+    Mutates each node whose ``@type`` is a list, replacing it with the
+    supertype-closed list. Returns the number of nodes that gained at least one
+    type. Idempotent: nodes already carrying their full parent chain (e.g.
+    regulation roots already typed ``estleg:Act``) are left byte-for-byte
+    untouched, so re-running the build is a no-op for them.
+    """
+    enriched = 0
+    for node in all_nodes:
+        types = node.get("@type")
+        if not isinstance(types, list):
+            continue
+        rolled = _materialize_supertypes(types)
+        if len(rolled) != len(types):
+            node["@type"] = rolled
+            enriched += 1
+    return enriched
+
+
 def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     """Generate combined JSON-LD file (Issue #26, DQ-1).
 
@@ -1335,6 +1440,16 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     # cross-corpus reference so combined loads standalone with zero dangling
     # estleg: object IRIs.
     stub_count = _emit_closure_stubs(node_by_id, all_nodes, krr_dir)
+
+    # #519: forward-chain rdf:type over the subclass hierarchy so the shipped
+    # graph answers `?x a estleg:LegalProvision` / `?x a estleg:Act` without a
+    # reasoner. Runs AFTER stub emission (closure stubs are real graph nodes that
+    # carry leaf provision types too, so they must be rolled up) and BEFORE the
+    # header insert (the owl:Ontology header carries no rollup-eligible @type).
+    # Every materialized parent is backed by an rdfs:subClassOf axiom — see
+    # _TYPE_ROLLUP_EDGES / _TYPE_ROLLUP_PREFIXES.
+    rolled_count = _apply_type_rollup(all_nodes)
+    print(f"  Materialized entailed parent types on {rolled_count} nodes (#519)")
 
     # #616: stamp a dataset-level owl:Ontology header (owl:versionInfo +
     # owl:versionIRI) at @graph[0] so the shipped graph is self-describing and a

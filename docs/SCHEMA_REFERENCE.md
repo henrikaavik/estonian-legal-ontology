@@ -389,7 +389,7 @@ every consumer for no semantic gain. The overload is therefore a
       ],
       "rdfs:label": {"@value": "Volitatud asutuste määramine (määrus)", "@language": "et"},
       "estleg:documentType": "määrus",
-      "estleg:issuer": {"@value": "Vabariigi Valitsus", "@language": "et"},
+      "estleg:issuer": "Vabariigi Valitsus",
       "estleg:actNumber": "199",
       "estleg:globalId": "610920",
       "estleg:terviktekstId": "160748",
@@ -429,7 +429,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?reg ?title ?actNumber ?date WHERE {
   ?reg a estleg:GovernmentRegulation ;
        rdfs:label ?title ;
-       estleg:issuer "Vabariigi Valitsus"@et ;
+       estleg:issuer "Vabariigi Valitsus" ;
        estleg:actNumber ?actNumber ;
        estleg:entryIntoForce ?date .
 } ORDER BY DESC(?date)
@@ -821,15 +821,16 @@ node through `estleg:versionOf`.
 
 ##### SPARQL — "what did § X say as of date D?"
 
-Load the law peeps and `krr_outputs/provision_versions/*.jsonld`, then query
-from version nodes back to the stable provision IRI:
+Load the law peep and its `krr_outputs/provision_versions/<law>.jsonld` sidecar,
+then query from version nodes back to the stable provision IRI. The worked
+example below uses the Kohaliku omavalitsuse volikogu valimise seadus (KOVVS):
 
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?versionText WHERE {
-  ?provision estleg:paragrahv "TsÜS § 40" .
+  ?provision estleg:paragrahv "§ 1." .
   ?v estleg:versionOf        ?provision ;
      estleg:versionText      ?versionText ;
      estleg:versionValidFrom ?from .
@@ -903,14 +904,18 @@ SHACL: `estleg:AnnotationShape` (`sh:targetClass estleg:Annotation`) requires
 }
 ```
 
-##### SPARQL — annotations about a provision
+##### SPARQL — annotations about a legal entity
+
+The current Õiguskantsler ingestion attaches annotations at the **act** level
+(`estleg:annotates` targets the act root). Load
+`krr_outputs/annotations/*.jsonld` and anchor on the act IRI — here the Kohaliku
+omavalitsuse korralduse seadus (KOKS) act node:
 
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 
 SELECT ?text ?type ?source WHERE {
-  ?provision estleg:paragrahv "TsÜS § 40" .
-  ?ann estleg:annotates       ?provision ;
+  ?ann estleg:annotates       estleg:KOKS_Map_2026 ;
        estleg:annotationText  ?text ;
        estleg:annotationType  ?type .
   OPTIONAL { ?ann estleg:annotationSource ?source . }
@@ -1043,11 +1048,15 @@ SHACL: `LegalProvisionShape` constrains `enforcedAtLevel` with
 ## Integration SPARQL Examples
 
 ### Find all provisions that reference a specific paragraph
+
+Karistusseadustik is abbreviated `KARIST_2` in the corpus (its special part is
+`KARIST_2_Osa2`), so its § 279 is `estleg:KARIST_2_Osa2_Par_279`:
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?provision ?label WHERE {
-  ?provision estleg:references estleg:KarS_Par_121 ;
+  ?provision estleg:references estleg:KARIST_2_Osa2_Par_279 ;
              rdfs:label ?label .
 }
 ```
@@ -1056,17 +1065,17 @@ SELECT ?provision ?label WHERE {
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 SELECT ?decision ?date WHERE {
-  ?decision estleg:interpretsLaw estleg:VOS_Par_208 ;
+  ?decision estleg:interpretsLaw estleg:KARIST_2_Osa1_Par_12 ;
             estleg:decisionDate ?date .
 } ORDER BY DESC(?date)
 ```
 
-### Find Estonian laws transposing a specific EU directive (Whistleblower Directive)
+### Find Estonian laws transposing a specific EU directive (Renewable Energy Directive)
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?law ?title WHERE {
-  ?law estleg:transposesDirective estleg:EU_32019L1937 ;
+  ?law estleg:transposesDirective estleg:EU_32009L0028 ;
        rdfs:label ?title .
 }
 ```
@@ -1094,12 +1103,18 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 SELECT ?act ?label WHERE {
   ?act a estleg:Act ;
-       dcterms:subject <http://eurovoc.europa.eu/2826> ;
+       dcterms:subject <http://eurovoc.europa.eu/4050> ;
        rdfs:label ?label .
 }
 ```
 
 ### Find sanctions for a specific type of conduct
+
+Co-load the enacted-law peep (which carries `estleg:hasSanction` and the
+provision's `rdfs:label`) with its `krr_outputs/sanctions/sanctions_<law>.json`
+file (which defines the `estleg:Sanction` nodes and their
+`sanctionType`/`maxPenalty`):
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1212,9 +1227,13 @@ Layer 3 added a `Similarity` shape.
 
 ### Example queries
 
-Find all Tallinn-issued regulations:
+Find all Tallinn-issued regulations (these queries need the opt-in
+`regulations/kov/` corpus loaded):
 
 ```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT ?reg ?title WHERE {
   ?reg a estleg:MunicipalRegulation ;
        estleg:enactedByMunicipality estleg:Municipality_EHAK_0784 ;
@@ -1225,6 +1244,8 @@ SELECT ?reg ?title WHERE {
 Compare a normalized title across municipalities:
 
 ```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+
 SELECT ?mun ?reg WHERE {
   ?reg a estleg:MunicipalRegulation ;
        estleg:titleNormalized "jaatmehoolduseeskiri" ;
