@@ -13,7 +13,8 @@
 ## Why the code licence is not the data licence
 
 The repository's `LICENSE` is the MIT License. MIT is a **software** licence and
-covers only the code and scripts (`scripts/`, `tests/`, tooling). It was never
+covers only the repository software (`scripts/`, `mcp_server/`, `tests/`, and
+build/tooling configuration). It was never
 capable of granting rights over the **data** corpus under `krr_outputs/`,
 because roughly **99% of the corpus is verbatim third-party legal material** that
 the project did not author and does not own:
@@ -98,7 +99,7 @@ anonymisation regime govern reuse. See [`DATA_PROTECTION.md`](DATA_PROTECTION.md
 
 ## What this means for a reuser (checklist)
 
-1. **Code** (`scripts/`): MIT — straightforward.
+1. **Code** (`scripts/`, `mcp_server/`, `tests/`): MIT — straightforward.
 2. **Compilation layer** (links, IRIs, structure): CC BY 4.0 — attribute the
    project (draft).
 3. **EU texts**: acknowledge "© European Union, [year]" + Decision 2011/833/EU;
