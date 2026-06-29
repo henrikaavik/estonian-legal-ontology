@@ -45,7 +45,7 @@ file counter (`estleg_common.is_operational_state_file`, same status as
 ```bash
 python3 scripts/generate_retrieval_projection.py            # full corpus
 python3 scripts/generate_retrieval_projection.py --limit 25 # quick subset
-python3 scripts/generate_retrieval_projection.py --chunks-only  # chunks.jsonl + manifest only
+python3 scripts/generate_retrieval_projection.py --chunks-only --out-dir /tmp/estleg-chunks  # scratch: chunks.jsonl + manifest only (never the committed dir)
 python3 scripts/generate_retrieval_projection.py --help     # all options
 ```
 

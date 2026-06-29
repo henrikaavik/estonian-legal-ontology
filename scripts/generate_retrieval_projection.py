@@ -775,8 +775,7 @@ def _artifact_size(path: Path) -> int:
 def render_readme(stats: dict) -> str:
     """Render the committed README for ``krr_outputs/retrieval/``.
 
-    Generated (not hand-maintained) so it is regenerated on every full run and
-    can be cleaned by ``--chunks-only`` alongside the other derived artifacts;
+    Generated (not hand-maintained) so it is regenerated on every full run;
     deterministic because it stamps only pinned counts from ``stats``.
     """
     chunks_mb = stats["chunks_bytes"] / 1_000_000
@@ -827,7 +826,7 @@ file counter (`estleg_common.is_operational_state_file`, same status as
 ```bash
 python3 scripts/generate_retrieval_projection.py            # full corpus
 python3 scripts/generate_retrieval_projection.py --limit 25 # quick subset
-python3 scripts/generate_retrieval_projection.py --chunks-only  # chunks.jsonl + manifest only
+python3 scripts/generate_retrieval_projection.py --chunks-only --out-dir /tmp/estleg-chunks  # scratch: chunks.jsonl + manifest only (never the committed dir)
 python3 scripts/generate_retrieval_projection.py --help     # all options
 ```
 
@@ -874,6 +873,18 @@ def generate(
     sample_law: str = SAMPLE_LAW_DEFAULT,
 ) -> dict:
     """Generate the retrieval projection; return a stats/manifest dict."""
+    # --chunks-only cleans the directory down to {chunks.jsonl, manifest.json}.
+    # Refuse to do that to the COMMITTED projection: it would delete the tracked,
+    # reviewable README.md / llms.txt / sample_*.json and re-zero their manifest
+    # counts. chunks-only is a scratch/CI mode — require an explicit --out-dir.
+    if chunks_only and out_dir.resolve() == (KRR_DIR / DEFAULT_OUT_DIRNAME).resolve():
+        raise ValueError(
+            "--chunks-only would clean the committed projection at "
+            f"{KRR_DIR / DEFAULT_OUT_DIRNAME} (deleting the tracked "
+            "README.md / llms.txt / samples and re-zeroing their manifest "
+            "counts). Pass --out-dir <scratch-dir> for a chunks-only "
+            "projection; rebuild the committed projection with a full run."
+        )
     out_dir.mkdir(parents=True, exist_ok=True)
     outlines_dir = out_dir / "outlines"
     context_dir = out_dir / "context_packs"
@@ -1069,16 +1080,19 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     out_dir = args.out_dir or (args.krr_dir / DEFAULT_OUT_DIRNAME)
-    stats = generate(
-        krr_dir=args.krr_dir,
-        out_dir=out_dir,
-        eval_date=args.evaluation_date,
-        limit=args.limit,
-        with_cases=not args.no_cases,
-        chunks_only=args.chunks_only,
-        sample_chunks=args.sample_chunks,
-        sample_law=args.sample_law,
-    )
+    try:
+        stats = generate(
+            krr_dir=args.krr_dir,
+            out_dir=out_dir,
+            eval_date=args.evaluation_date,
+            limit=args.limit,
+            with_cases=not args.no_cases,
+            chunks_only=args.chunks_only,
+            sample_chunks=args.sample_chunks,
+            sample_law=args.sample_law,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
     print(
         "retrieval projection: "
         f"{stats['laws']} laws, {stats['total_chunks']} chunks "

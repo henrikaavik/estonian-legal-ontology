@@ -626,7 +626,8 @@ def test_owl_module_entry_is_skipped(tmp_path):
 
 
 def test_chunks_only_removes_stale_artifacts(tmp_path):
-    """A --chunks-only run must clean a prior full run's non-chunk artifacts."""
+    """In a SCRATCH dir, --chunks-only cleans a prior full run's non-chunk
+    artifacts (the committed-dir guard below does not apply to a tmp path)."""
     krr = tmp_path / "krr_outputs"
     _build_corpus(krr)
     out = krr / "retrieval"
@@ -654,3 +655,18 @@ def test_chunks_only_removes_stale_artifacts(tmp_path):
         "chunks.sample.jsonl",
     ):
         assert not (out / gone).exists(), f"{gone} should have been removed"
+
+
+def test_chunks_only_refuses_to_clean_committed_dir():
+    """--chunks-only must refuse to run against the committed projection dir,
+    so it can never delete the tracked README/llms.txt/samples there."""
+    committed = grp.KRR_DIR / grp.DEFAULT_OUT_DIRNAME
+    with pytest.raises(ValueError, match="committed projection"):
+        # Raises at the guard before any filesystem work, so the real
+        # committed directory is never touched.
+        grp.generate(
+            krr_dir=grp.KRR_DIR,
+            out_dir=committed,
+            eval_date=EVAL_DATE,
+            chunks_only=True,
+        )
