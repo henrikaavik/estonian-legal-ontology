@@ -321,6 +321,15 @@ def _records_by_slug() -> dict[str, LawRecord]:
         if not isinstance(name, str):
             continue
         files = [f for f in _as_list(entry.get("files")) if isinstance(f, str)]
+        # Skip reproducible OWL/TBox module artifacts (e.g.
+        # ``karistusseadustik_eriosa_owl`` / ``tsus_osa7_138_169_owl``, whose
+        # files are ``*_owl.jsonld``). Those carry an owl:Class / estleg:Section
+        # TBox shape rather than the per-law ``*_peep.json`` instance graph this
+        # layer reads: they expose zero ``estleg:LegalProvision_*`` provisions
+        # and must never surface to a lawmaker as a queryable "law" (they would
+        # otherwise pollute search_laws/resolve_law for KarS / TsÜS).
+        if files and not any(f.endswith("_peep.json") for f in files):
+            continue
         meta = abbr.get(name) if isinstance(abbr.get(name), dict) else {}
         title = meta.get("title") if isinstance(meta.get("title"), str) else ""
         abbrev = meta.get("abbrev") if isinstance(meta.get("abbrev"), str) else None
