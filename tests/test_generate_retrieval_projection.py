@@ -263,6 +263,106 @@ def _read_chunks(out_dir: Path) -> list[dict]:
     return [json.loads(line) for line in text.splitlines() if line]
 
 
+def _act_root(map_id: str, title: str, rt_id: str) -> dict:
+    return {
+        "@id": f"estleg:{map_id}",
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "dcterms:title": {"@value": title, "@language": "et"},
+        "dcterms:source": {"@id": f"{RT_BASE}{rt_id}.xml"},
+        "estleg:kehtiv": {"@value": "2026-05-24", "@type": "xsd:date"},
+        "estleg:temporalStatus": "inForce",
+    }
+
+
+def _provision(iri: str, par: str) -> dict:
+    return {
+        "@id": f"estleg:{iri}",
+        "@type": ["owl:NamedIndividual", "estleg:LegalProvision_multilaw"],
+        "estleg:paragrahv": par,
+        "rdfs:label": f"{par} pealkiri",
+        "estleg:legalText": f"{iri} tekst.",
+    }
+
+
+def _build_multipart_corpus(krr: Path) -> None:
+    """Stage an osa-split code whose overlays are keyed by FILE STEM.
+
+    ``multilaw`` has two peep files; its sanctions live in
+    ``sanctions_multilaw_osa1.json`` (1) + ``sanctions_multilaw_osa2.json`` (2)
+    and amendments in the matching per-stem files — there is deliberately NO
+    ``sanctions_multilaw.json``, so a law-name-only lookup returns 0 and a
+    first-resolving lookup returns only osa1.
+    """
+    _write_json(
+        krr / "INDEX.json",
+        {
+            "laws": [
+                {
+                    "name": "multilaw",
+                    "files": ["multilaw_osa1_peep.json", "multilaw_osa2_peep.json"],
+                }
+            ]
+        },
+    )
+    _write_json(
+        krr / "multilaw_osa1_peep.json",
+        {
+            "@context": {"estleg": grp.NS},
+            "@graph": [
+                _act_root("ML_Map_2026", "Multiseadus", "111"),
+                _provision("ML_Par_1", "§ 1."),
+            ],
+        },
+    )
+    _write_json(
+        krr / "multilaw_osa2_peep.json",
+        {
+            "@context": {"estleg": grp.NS},
+            "@graph": [
+                _act_root("ML_Map_2026", "Multiseadus", "111"),
+                _provision("ML_Par_2", "§ 2."),
+            ],
+        },
+    )
+    for osa, ids in (("osa1", ["S1"]), ("osa2", ["S2", "S3"])):
+        _write_json(
+            krr / "sanctions" / f"sanctions_multilaw_{osa}.json",
+            {
+                "@graph": [
+                    {
+                        "@id": f"estleg:Sanctions_multilaw_{osa}_Map",
+                        "@type": ["owl:Ontology"],
+                    },
+                    *[
+                        {
+                            "@id": f"estleg:Sanction_multilaw_{sid}",
+                            "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                            "rdfs:label": f"Sanktsioon {sid}",
+                        }
+                        for sid in ids
+                    ],
+                ]
+            },
+        )
+    for osa, aid in (("osa1", "A1"), ("osa2", "A2")):
+        _write_json(
+            krr / "amendments" / f"amendments_multilaw_{osa}.json",
+            {
+                "@graph": [
+                    {
+                        "@id": f"estleg:AmendmentChain_ML_{osa}",
+                        "@type": ["owl:Ontology"],
+                    },
+                    {
+                        "@id": f"estleg:Amendment_multilaw_{aid}",
+                        "@type": ["owl:NamedIndividual", "estleg:ProposedAmendment"],
+                        "rdfs:label": f"Muudatus {aid}",
+                    },
+                ]
+            },
+        )
+
+
 # ---------------------------------------------------------------------------
 # End-to-end synthetic tests
 # ---------------------------------------------------------------------------
@@ -365,6 +465,7 @@ def test_projection_is_byte_identical_across_runs(tmp_path):
     for rel in (
         "chunks.jsonl",
         "llms.txt",
+        "README.md",
         "manifest.json",
         "chunks.sample.jsonl",
         "sample_outline.json",
@@ -468,3 +569,88 @@ def test_real_corpus_smoke(tmp_path):
         if chunk["rt_url"] is not None:
             assert chunk["rt_url"].startswith("https://www.riigiteataja.ee/")
     assert any(c["in_force"] for c in chunks), "expected some in-force chunk"
+
+
+# ---------------------------------------------------------------------------
+# Review-round-2 regressions (#523)
+# ---------------------------------------------------------------------------
+def test_context_pack_unions_multipart_overlays(tmp_path):
+    """A multi-part code's overlays (keyed by file stem) must be UNIONed."""
+    krr = tmp_path / "krr_outputs"
+    _build_multipart_corpus(krr)
+    out = krr / "retrieval"
+    grp.generate(krr_dir=krr, out_dir=out, eval_date=EVAL_DATE)
+
+    pack = json.loads((out / "context_packs" / "multilaw.json").read_text("utf-8"))
+    # osa1 (1) + osa2 (2) sanctions are aggregated, not just the first file.
+    assert pack["counts"]["sanctions"] == 3
+    sanction_ids = {n["@id"] for n in pack["sanctions"]}
+    assert sanction_ids == {
+        "estleg:Sanction_multilaw_S1",
+        "estleg:Sanction_multilaw_S2",
+        "estleg:Sanction_multilaw_S3",
+    }
+    # amendments from both stems too.
+    assert pack["counts"]["amendments"] == 2
+    assert {n["@id"] for n in pack["amendments"]} == {
+        "estleg:Amendment_multilaw_A1",
+        "estleg:Amendment_multilaw_A2",
+    }
+
+
+def test_owl_module_entry_is_skipped(tmp_path):
+    """An INDEX entry whose only file is a *_owl.jsonld TBox module is skipped."""
+    krr = tmp_path / "krr_outputs"
+    _build_corpus(krr)
+    # Append a non-enacted OWL/TBox entry (no peep file) to the manifest.
+    index = json.loads((krr / "INDEX.json").read_text("utf-8"))
+    index["laws"].append(
+        {"name": "testlaw_eriosa_owl", "files": ["testlaw_eriosa_owl.jsonld"]}
+    )
+    (krr / "INDEX.json").write_text(
+        json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    _write_json(
+        krr / "testlaw_eriosa_owl.jsonld",
+        {"@graph": [{"@id": "estleg:TL_TBox", "@type": ["owl:Ontology"]}]},
+    )
+
+    out = krr / "retrieval"
+    stats = grp.generate(krr_dir=krr, out_dir=out, eval_date=EVAL_DATE)
+    # Only the real enacted law is counted; the OWL entry is skipped.
+    assert stats["laws"] == 1
+    assert stats["laws_skipped_non_peep"] == 1
+    assert not (out / "outlines" / "testlaw_eriosa_owl.json").exists()
+    assert not (out / "context_packs" / "testlaw_eriosa_owl.json").exists()
+    assert (out / "outlines" / "testlaw.json").exists()
+
+
+def test_chunks_only_removes_stale_artifacts(tmp_path):
+    """A --chunks-only run must clean a prior full run's non-chunk artifacts."""
+    krr = tmp_path / "krr_outputs"
+    _build_corpus(krr)
+    out = krr / "retrieval"
+
+    grp.generate(krr_dir=krr, out_dir=out, eval_date=EVAL_DATE)
+    # Full run produced the heavy trees + the committed entry points.
+    assert (out / "outlines").is_dir()
+    assert (out / "context_packs").is_dir()
+    assert (out / "llms.txt").exists()
+
+    stats = grp.generate(
+        krr_dir=krr, out_dir=out, eval_date=EVAL_DATE, chunks_only=True
+    )
+    assert stats["outlines"] == 0
+    assert stats["context_packs"] == 0
+    # Exactly {chunks.jsonl, manifest.json} remain — no stale artifacts.
+    assert {p.name for p in out.iterdir()} == {"chunks.jsonl", "manifest.json"}
+    for gone in (
+        "outlines",
+        "context_packs",
+        "llms.txt",
+        "README.md",
+        "sample_outline.json",
+        "sample_context_pack.json",
+        "chunks.sample.jsonl",
+    ):
+        assert not (out / gone).exists(), f"{gone} should have been removed"
