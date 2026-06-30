@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -75,6 +76,10 @@ def _atomic_write_text(path: Path, content: str) -> None:
             fh.write(content)
             fh.flush()
             os.fsync(fh.fileno())  # durably flush before replace (flaky volumes)
+        if path.exists():
+            # mkstemp creates the tempfile 0600; carry over the destination's
+            # perms (notably the executable bit on shebanged scripts, #516).
+            shutil.copymode(path, tmp_name)
         os.replace(tmp_name, path)
     except Exception:
         try:
