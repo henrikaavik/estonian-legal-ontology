@@ -173,7 +173,8 @@ jobs:
       # #516: the IRI namespace was migrated to https://w3id.org/estleg/. The
       # retired data.riik.ee host must not resurface anywhere (LFS artifacts are
       # materialised above, so the combined graph's content is greppable here).
-      # Historical records + this migration's own doc/state are excluded.
+      # Historical records + this migration's own doc/state are excluded, as is
+      # the w3id/ redirect config whose job is to point the retired host here.
       - name: No legacy data.riik.ee namespace
         run: |
           hits=$(git grep -F -l 'data.riik.ee' -- \
@@ -183,6 +184,7 @@ jobs:
             ':(exclude)data/namespace_migration_state.json' \
             ':(exclude)scripts/migrate_namespace.py' \
             ':(exclude)tests/test_no_legacy_namespace.py' \
+            ':(exclude)w3id' \
             ':(exclude).github/workflows/validate.yml' || true)
           if [ -n "$hits" ]; then
             echo "::error::Legacy data.riik.ee namespace still present (#516):"

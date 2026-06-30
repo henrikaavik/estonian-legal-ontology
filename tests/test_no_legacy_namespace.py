@@ -25,6 +25,8 @@ EXCLUDE = (
     # The migration machinery itself legitimately references the legacy host.
     ":(exclude)scripts/migrate_namespace.py",
     ":(exclude)tests/test_no_legacy_namespace.py",
+    # The w3id/ redirect config exists to point the retired host at the new IRI.
+    ":(exclude)w3id",
     ":(exclude).github/workflows/validate.yml",
 )
 
