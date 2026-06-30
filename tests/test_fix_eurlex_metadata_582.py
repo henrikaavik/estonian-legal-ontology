@@ -326,7 +326,7 @@ def test_fix_node_skips_node_without_documentdate():
 # --------------------------------------------------------------------------- #
 def _doc(nodes: list[dict]) -> dict:
     return {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {"@id": "estleg:EurlexOntology", "@type": ["owl:Ontology"]},
             *nodes,

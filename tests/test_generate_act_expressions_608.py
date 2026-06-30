@@ -55,7 +55,13 @@ def test_act_local_fragment_compact():
 
 
 def test_act_local_fragment_expanded():
-    iri = "https://data.riik.ee/ontology/estleg#VKVS_Map_2026"
+    iri = "https://w3id.org/estleg/VKVS_Map_2026"
+    assert G.act_local_fragment(iri) == "VKVS_Map_2026"
+
+
+def test_act_local_fragment_expanded_slash():
+    # The w3id slash namespace has no '#'; the local name is the final segment.
+    iri = "https://w3id.org/estleg/VKVS_Map_2026"
     assert G.act_local_fragment(iri) == "VKVS_Map_2026"
 
 
@@ -73,7 +79,7 @@ def test_expression_iri_canonical_example():
 
 
 def test_expression_iri_from_expanded_act_iri():
-    iri = "https://data.riik.ee/ontology/estleg#VKVS_Map_2026"
+    iri = "https://w3id.org/estleg/VKVS_Map_2026"
     assert G.expression_iri(iri, "2005-03-09") == "estleg:VKVS_Map_2026_Expr_20050309"
 
 

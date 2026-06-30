@@ -58,7 +58,7 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 SANCTION_DIR = KRR_DIR / "sanctions"
 SANCTION_DIR.mkdir(parents=True, exist_ok=True)
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # ---------- Estonian number word parsing ----------
 

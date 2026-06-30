@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import flag_unverified_sanctions_586 as flag
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 
 def _sanction(target: str, *, label: str = "Fine, max 200 fine units (Reg § 8.)") -> dict:

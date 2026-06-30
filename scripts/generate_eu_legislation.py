@@ -37,7 +37,7 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 EURLEX_DIR = KRR_DIR / "eurlex"
 EURLEX_DIR.mkdir(parents=True, exist_ok=True)
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 PAGE_SIZE = 5000
 RATE_DELAY = 1.0  # seconds between SPARQL requests

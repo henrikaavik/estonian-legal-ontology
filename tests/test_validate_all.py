@@ -217,7 +217,7 @@ def test_validate_bare_namespace_act_ids_rejects_act_node(tmp_path):
     doc = {
         "@graph": [
             {
-                "@id": "https://data.riik.ee/ontology/estleg#",
+                "@id": "https://w3id.org/estleg/",
                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             }
         ]
@@ -232,7 +232,7 @@ def test_validate_bare_namespace_act_ids_allows_vocabulary_node(tmp_path):
     doc = {
         "@graph": [
             {
-                "@id": "https://data.riik.ee/ontology/estleg#",
+                "@id": "https://w3id.org/estleg/",
                 "@type": ["owl:Ontology"],
             }
         ]
@@ -2306,7 +2306,7 @@ def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, P
         krr / "alkoholi_seadus_peep.json",
         {
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "dcterms": "http://purl.org/dc/terms/",
             },
@@ -2844,7 +2844,7 @@ def test_validate_combined_graph_closure_detects_expanded_iri_target(tmp_path):
                 "@id": "estleg:A_1",
                 "@type": ["estleg:LegalProvision"],
                 "estleg:interpretedBy": {
-                    "@id": "https://data.riik.ee/ontology/estleg#RK_missing"
+                    "@id": "https://w3id.org/estleg/RK_missing"
                 },
             }
         ],
@@ -2865,7 +2865,7 @@ def test_validate_combined_graph_closure_resolves_expanded_iri_node(tmp_path):
                 "estleg:interpretedBy": {"@id": "estleg:RK_1"},
             },
             {
-                "@id": "https://data.riik.ee/ontology/estleg#RK_1",
+                "@id": "https://w3id.org/estleg/RK_1",
                 "@type": ["estleg:CourtDecision"],
                 "rdfs:label": "x",
                 "estleg:isStubNode": True,
@@ -2887,7 +2887,7 @@ def test_iter_node_estleg_refs_canonicalizes_and_attributes_nested_predicate():
     """Finding 1 unit: expanded IRIs canonicalised; nested ref keeps its inner predicate."""
     expanded = {
         "@id": "estleg:A",
-        "estleg:interpretedBy": {"@id": "https://data.riik.ee/ontology/estleg#RK_x"},
+        "estleg:interpretedBy": {"@id": "https://w3id.org/estleg/RK_x"},
     }
     assert list(estleg_common.iter_node_estleg_refs(expanded)) == [
         ("estleg:interpretedBy", "estleg:RK_x")

@@ -252,7 +252,7 @@ The most powerful way to query this dataset is loading files into a semantic gra
 
 ### Find All Provisions for a Specific Topic Cluster
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 # Topic clusters are per-law concept nodes (estleg:Cluster_<ABBREV>_<n>); a
 # provision links to one via estleg:requestedCluster. The bare type assertion
@@ -266,7 +266,7 @@ SELECT ?provision ?text WHERE {
 
 ### Trace Cross-References Between Laws
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?source ?target WHERE {
   ?source a estleg:LegalProvision ;
@@ -277,7 +277,7 @@ SELECT ?source ?target WHERE {
 
 ### Court Decision to Provision Links
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?decision ?provision WHERE {
   ?decision a estleg:CourtDecision ;
@@ -287,7 +287,7 @@ SELECT ?decision ?provision WHERE {
 
 ### Government Regulations Currently in Force
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?regulation ?label ?actNumber ?entry WHERE {
@@ -307,7 +307,7 @@ IRI edge, so match on it. Load `eelnoud/*_peep.json` plus
 `controlled_vocabulary.jsonld` (for the phase label):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?draft ?phase ?name WHERE {
@@ -326,7 +326,7 @@ Load the enacted-law peeps (which carry `estleg:transposesDirective`) together
 with `eurlex/*_peep.json` (which type each directive `estleg:EULegislation`):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?directive ?estonianLaw WHERE {
   ?estonianLaw estleg:transposesDirective ?directive .
@@ -342,7 +342,7 @@ the provision via `estleg:applicableProvision` (the inverse of the
 example resolves from the `sanctions/` subcorpus alone:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?provision ?sanctionType ?maxPenalty WHERE {
   ?sanction a estleg:Sanction ;
@@ -358,7 +358,7 @@ SELECT ?provision ?sanctionType ?maxPenalty WHERE {
 while the `estleg:Institution` nodes live in `institutions/*.json`. Load both:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?institution ?provision WHERE {
   ?provision estleg:competentAuthority ?institution .
@@ -368,7 +368,7 @@ SELECT ?institution ?provision WHERE {
 
 ### Deontic Classification
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?provision ?label WHERE {
@@ -384,7 +384,7 @@ directly through `estleg:amends` (the populated direction; the `estleg:amendedBy
 back-link on act roots is not materialised across the corpus):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?amendment ?amended ?date WHERE {
   ?amendment a estleg:AmendmentEvent ;
@@ -402,7 +402,7 @@ descriptor (here `4050` = "social security"; see
 `data/eurovoc_domain_mapping.json` for the full verified id table):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -418,7 +418,7 @@ Match the act by its clean title in `dcterms:title` (a plain string); `rdfs:labe
 on an act root is the longer "… teemakaardistus" map label, not the bare title:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT ?subject WHERE {

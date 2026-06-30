@@ -102,7 +102,7 @@ class TestCanonicalLookups:
         krr.mkdir()
         # Stage two law peeps: one straight prefix, one underscore-containing prefix
         (krr / "alkoholiseadus_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:AS_Map_2026",
@@ -116,7 +116,7 @@ class TestCanonicalLookups:
             ],
         }), encoding="utf-8")
         (krr / "karistusseadustik_osa1_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:KARIST_2_Osa1_1_87",
@@ -159,7 +159,7 @@ class TestCanonicalLookups:
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
         (krr / "pohikooli_gymnaasiumi_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#",
                          "dcterms": "http://purl.org/dc/terms/"},
             "@graph": [
@@ -173,7 +173,7 @@ class TestCanonicalLookups:
             ],
         }), encoding="utf-8")
         (krr / "pohikooli_gumnaasiumiseadus_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:POHIKO_Map_2026",
@@ -232,7 +232,7 @@ class TestCanonicalLookups:
         riik = tmp_path / "krr_outputs" / "regulations" / "riik"
         riik.mkdir(parents=True)
         (riik / "vv_112_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_VV112_Map_2019",
@@ -273,7 +273,7 @@ class TestCanonicalLookups:
         kov = krr / "regulations" / "kov" / "noo_vallavolikogu"
         kov.mkdir(parents=True)
         (kov / "act_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_NOO_5_Map_2020",
@@ -287,7 +287,7 @@ class TestCanonicalLookups:
         }), encoding="utf-8")
         # Issuers registry — uses rdfs:label that the lookup should respect
         (krr / "issuers_kov_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Issuer_noo_vallavolikogu",
@@ -331,7 +331,7 @@ class TestCanonicalLookups:
         kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
         kov.mkdir(parents=True)
         (kov / "act_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_15_Map_2020",
@@ -359,7 +359,7 @@ class TestCanonicalLookups:
         kov.mkdir(parents=True)
         # Two acts, same issuer + same act number, different years
         (kov / "old_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_15_Map_2010",
@@ -369,7 +369,7 @@ class TestCanonicalLookups:
             ],
         }), encoding="utf-8")
         (kov / "new_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_15_Map_2020",
@@ -399,7 +399,7 @@ class TestCanonicalLookups:
         kov = krr / "regulations" / "kov" / "polva_vallavalitsus"
         kov.mkdir(parents=True)
         (kov / "act_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_POLVA_5_Map_2020",
@@ -743,7 +743,7 @@ class TestKovBodyTextSavesFile:
         # act by issuer + number, with no in-law citations.
         peep = tmp_path / "kov_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_Test_Map_2024",
@@ -815,7 +815,7 @@ class TestPreamblePassIdempotency:
         # the parser cannot extract any citation from.
         peep = tmp_path / "stale_preamble_peep.json"
         doc = {
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {
@@ -891,7 +891,7 @@ class TestPreamblePassIdempotency:
 
         peep = tmp_path / "empty_preamble_peep.json"
         doc = {
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {
@@ -1199,7 +1199,7 @@ class TestSelfReferencePrefix:
         # from 'KARIST_2_Par_1'; the registry path returns 'KARIST_2'.
         peep = tmp_path / "karist_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:KARIST_2_Map_2026",
@@ -1249,7 +1249,7 @@ class TestLayer2bMarkerDoesNotLeak:
 
         peep = tmp_path / "kov_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_Test_Map_2024",
@@ -1391,7 +1391,7 @@ class TestValueObjectTextReads:
 
         issuers = tmp_path / "issuers_kov_peep.json"
         issuers.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:Issuer_tallinna_linnavolikogu",
                  "@type": ["estleg:Issuer"],
@@ -1701,7 +1701,7 @@ class TestMultiOsaPrefixAccumulation:
 
     def _stage_osa(self, krr, fname, act_iri, prov_iri, source_act):
         (krr / fname).write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": act_iri, "@type": ["owl:Ontology"],
@@ -1807,7 +1807,7 @@ class TestPerProvisionPrefixKeying:
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
         (krr / "erigi_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:ERIIGI_DI_Map_2026",
@@ -2205,7 +2205,7 @@ class TestIssuedUnderSelfReferenceGuard:
 
         peep = tmp_path / "self_peep.json"
         doc = {
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:SELF_Map_2026",
@@ -2242,7 +2242,7 @@ class TestIssuedUnderSelfReferenceGuard:
 
         peep = tmp_path / "cross_peep.json"
         doc = {
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:REG_Map_2026",

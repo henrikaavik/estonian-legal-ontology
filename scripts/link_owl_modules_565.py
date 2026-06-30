@@ -44,7 +44,7 @@ from pathlib import Path
 
 from estleg_common import KRR_DIR, save_json
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # The two orphaned hand-built OWL modules to bridge.
 MODULE_FILES: tuple[str, ...] = (
@@ -67,7 +67,7 @@ def local_fragment(iri: object) -> str | None:
     """Return the local fragment of an estleg IRI, compact or full, else ``None``.
 
     Handles both the compact ``estleg:Foo`` form and the expanded
-    ``https://data.riik.ee/ontology/estleg#Foo`` form. Any other value
+    ``https://w3id.org/estleg/Foo`` form. Any other value
     (external IRI, blank-node, non-string) yields ``None``.
     """
     if not isinstance(iri, str):

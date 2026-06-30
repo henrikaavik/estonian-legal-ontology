@@ -48,7 +48,7 @@ class TestActLevelIndex:
         kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
         kov.mkdir(parents=True)
         (kov / "src_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_Src_Map_2024",
@@ -63,7 +63,7 @@ class TestActLevelIndex:
 
         # Target KOV act
         (kov / "tgt_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_TLN_Tgt_Map_2020",
@@ -105,7 +105,7 @@ class TestImplementedByBodyTextExclusion:
         kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
         kov.mkdir(parents=True)
         (kov / "source_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_A_Map",
@@ -122,7 +122,7 @@ class TestImplementedByBodyTextExclusion:
 
         # Target X (a law)
         (krr / "x_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:X_Map_2026",
@@ -135,7 +135,7 @@ class TestImplementedByBodyTextExclusion:
 
         # Target Y (a law)
         (krr / "y_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Y_Map_2026",
@@ -189,7 +189,7 @@ class TestImplementedByIdempotency:
         # Target peep with PRE-EXISTING (stale) implementedBy/Count
         # that no other act in this test references via issuedUnder.
         (krr / "stale_target_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Stale_Map_2026",
@@ -206,7 +206,7 @@ class TestImplementedByIdempotency:
         kov = krr / "regulations" / "kov" / "tallinn"
         kov.mkdir(parents=True)
         (kov / "live_source_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_Live_Map_2026",
@@ -316,7 +316,7 @@ class TestAliasAmbiguousRefused:
 
         # Source act references an alias-prefixed IRI.
         (krr / "source_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_X_Map_2026",
@@ -331,7 +331,7 @@ class TestAliasAmbiguousRefused:
 
         # Two canonical targets: VOS_Par_14 AND VOS3_Par_14 (ambiguous).
         (krr / "vos_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:VOS_Map", "@type": ["owl:Ontology", "estleg:Law"]},
@@ -339,7 +339,7 @@ class TestAliasAmbiguousRefused:
             ],
         }), encoding="utf-8")
         (krr / "vos3_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:VOS3_Map", "@type": ["owl:Ontology", "estleg:Law"]},
@@ -402,7 +402,7 @@ class TestVerifySymmetryCategorisation:
 
         # Source ref to an alias prefix
         (krr / "src_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Src_Map", "@type": ["owl:Ontology", "estleg:Law"]},
@@ -415,7 +415,7 @@ class TestVerifySymmetryCategorisation:
         }), encoding="utf-8")
         # No canonical carries Par_999
         (krr / "vos_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:VOS_Map", "@type": ["owl:Ontology", "estleg:Law"]},
@@ -451,7 +451,7 @@ class TestVerifySymmetryCategorisation:
         # Source has a forward reference but the target is missing
         # the back-link.
         (krr / "src_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Src_Map", "@type": ["owl:Ontology", "estleg:Law"]},
@@ -465,7 +465,7 @@ class TestVerifySymmetryCategorisation:
         # Target node exists but does NOT carry estleg:referencedBy
         # for Src_Par_1. This simulates an out-of-sync state.
         (krr / "tgt_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Tgt_Map", "@type": ["owl:Ontology", "estleg:Law"]},
@@ -540,7 +540,7 @@ def _write_versions_corpus(krr):
     # Canonical LegalProvision nodes live in the peep corpus.
     prov_peep = krr / "demo_law_peep.json"
     prov_peep.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
             {"@id": "estleg:DEMO_Map_2026",
@@ -557,7 +557,7 @@ def _write_versions_corpus(krr):
     # ProvisionVersion sidecar (the estleg:versionOf source).
     sidecar = versions_dir / "demo_law.jsonld"
     sidecar.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
             {"@id": "estleg:ProvisionVersions_demo_law_Map",
@@ -613,7 +613,7 @@ class TestCollectVersionInverse:
         vd = krr / "provision_versions"
         vd.mkdir(parents=True)
         (vd / "dupe.jsonld").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:D_Par_1_v1",
                  "estleg:versionOf": {"@id": "estleg:D_Par_1"}},
@@ -791,7 +791,7 @@ class TestHasVersionRoundTrip:
         (krr / "provision_versions").mkdir(parents=True)
         prov_peep = krr / "stale_peep.json"
         prov_peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:STALE_Map_2026",

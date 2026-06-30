@@ -106,7 +106,7 @@ SIMILARITY_STATUS = "candidate"
 # reproducible across runs (same corpus -> same sampled tuples).
 SAMPLE_SEED = 20260511
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 CONTEXT = {
     "estleg": NS,

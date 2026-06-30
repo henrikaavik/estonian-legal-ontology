@@ -30,7 +30,7 @@ HISTORICAL_OUT = EHAK_DIR / "historical_municipalities.jsonld"
 CONTROLLED_VOCAB = REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld"
 
 CONTEXT = {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -68,7 +68,7 @@ def _hist_record(
 class TestBuildHistoricalMunicipalityDoc:
     def test_builds_jsonld_doc_with_ontology_header(self):
         doc = build_historical_municipality_doc({"0105": _hist_record()})
-        assert doc["@context"]["estleg"] == "https://data.riik.ee/ontology/estleg#"
+        assert doc["@context"]["estleg"] == "https://w3id.org/estleg/"
         graph = doc["@graph"]
         # First node is the owl:Ontology header.
         assert graph[0]["@id"] == "estleg:HistoricalMunicipalities_Map_2026"
@@ -334,4 +334,4 @@ class TestGeneratedFileIntegrity:
             assert succ != f"estleg:Municipality_EHAK_{n['estleg:formerEhakCode']}"
 
     def test_uses_canonical_estleg_namespace(self, committed_doc):
-        assert committed_doc["@context"]["estleg"] == "https://data.riik.ee/ontology/estleg#"
+        assert committed_doc["@context"]["estleg"] == "https://w3id.org/estleg/"

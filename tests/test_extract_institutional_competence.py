@@ -405,7 +405,7 @@ class TestExtractCompetenceWithIssuerBinding:
         path = krr / "issuers_kov_peep.json"
         path.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
             },
@@ -441,7 +441,7 @@ class TestExtractCompetenceWithIssuerBinding:
         peep = kov / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -492,7 +492,7 @@ class TestExtractCompetenceWithIssuerBinding:
         peep = krr / "kov_seadus_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -545,7 +545,7 @@ class TestExtractCompetenceWithIssuerBinding:
         peep = kov / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -594,7 +594,7 @@ class TestAuthorityRefDeduplication:
         path = krr / "issuers_kov_peep.json"
         path.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
             },
@@ -625,7 +625,7 @@ class TestAuthorityRefDeduplication:
         peep = kov / "hankekord_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -682,7 +682,7 @@ class TestAuthorityRefDeduplication:
         peep = krr / "state_law_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -751,7 +751,7 @@ class TestCompetenceIdempotency:
         path = krr / "issuers_kov_peep.json"
         path.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
             },
@@ -778,7 +778,7 @@ class TestCompetenceIdempotency:
         peep = krr / "stale_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -824,7 +824,7 @@ class TestCompetenceIdempotency:
         peep = kov / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -874,7 +874,7 @@ class TestCompetenceIdempotency:
         peep = krr / "boring_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -911,7 +911,7 @@ class TestStaleInstitutionFileDeletion:
         path = krr / "issuers_kov_peep.json"
         path.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
             },
@@ -937,14 +937,14 @@ class TestStaleInstitutionFileDeletion:
 
         stale = institutions_dir / "institution_xyz.json"
         stale.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [{"@id": "estleg:Institution_xyz",
                         "@type": ["estleg:Institution"]}],
         }), encoding="utf-8")
         peep = krr / "boring_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -982,7 +982,7 @@ class TestStaleInstitutionFileDeletion:
 
         living = institutions_dir / "institution_riigikohus.json"
         living.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [{"@id": "estleg:Institution_riigikohus",
                         "@type": ["estleg:Institution"],
                         "rdfs:label": "old label"}],
@@ -990,7 +990,7 @@ class TestStaleInstitutionFileDeletion:
         peep = krr / "active_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1032,7 +1032,7 @@ class TestStaleInstitutionFileDeletion:
         peep = krr / "ok_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1066,7 +1066,7 @@ class TestCompetenceCoverageReport:
         path = krr / "issuers_kov_peep.json"
         path.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
             },
@@ -1096,7 +1096,7 @@ class TestCompetenceCoverageReport:
         kov.mkdir(parents=True)
         (kov / "act_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1114,7 +1114,7 @@ class TestCompetenceCoverageReport:
         }), encoding="utf-8")
         (krr / "state_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1165,7 +1165,7 @@ class TestCompetenceCoverageReport:
 
         canned_doc = {
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1216,7 +1216,7 @@ class TestCompetenceCoverageReport:
 
         (krr / "kov_seadus_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1258,7 +1258,7 @@ class TestCompetenceCoverageReport:
 
         (krr / "issuers_kov_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
             },
@@ -1276,7 +1276,7 @@ class TestCompetenceCoverageReport:
         kov.mkdir(parents=True)
         (kov / "act_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1835,14 +1835,14 @@ class TestIssue170TruncationAware:
             })
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": graph,
         }), encoding="utf-8")
         # Empty issuers registry — Riigikohus is named, so this works.
         (krr / "issuers_kov_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [],
         }), encoding="utf-8")
 
@@ -1977,7 +1977,7 @@ class TestIssue170CanonicalValidation:
 
         # Empty issuers registry.
         (krr / "issuers_kov_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [],
         }), encoding="utf-8")
 
@@ -1987,7 +1987,7 @@ class TestIssue170CanonicalValidation:
         peep = krr / "weird_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -2034,14 +2034,14 @@ class TestIssue170CanonicalValidation:
         reports_dir.mkdir(parents=True)
 
         (krr / "issuers_kov_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [],
         }), encoding="utf-8")
 
         peep = krr / "fresh_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [

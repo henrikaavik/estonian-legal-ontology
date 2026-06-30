@@ -99,7 +99,7 @@ class TestBackfillNode:
 class TestProcessFile:
     def _write(self, path: Path, graph: list) -> None:
         path.write_text(
-            json.dumps({"@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            json.dumps({"@context": {"estleg": "https://w3id.org/estleg/"},
                         "@graph": graph}, ensure_ascii=False),
             encoding="utf-8",
         )
@@ -155,7 +155,7 @@ class TestCollectAndMain:
         for sub, name in (("abja_vallavolikogu", "a_peep.json"),
                           ("aegviidu_vallavolikogu", "b_peep.json")):
             (kov / sub / name).write_text(
-                json.dumps({"@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                json.dumps({"@context": {"estleg": "https://w3id.org/estleg/"},
                             "@graph": [_root(["estleg:NationalRegulation"])]},
                            ensure_ascii=False),
                 encoding="utf-8",

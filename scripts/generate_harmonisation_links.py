@@ -61,7 +61,7 @@ CACHE_TTL_DAYS = 30
 # ``--allow-stale-mapping`` when you knowingly run against a snapshot.
 MAPPING_FRESHNESS_DAYS = 30
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 RATE_DELAY = 1.5  # seconds between SPARQL requests
 

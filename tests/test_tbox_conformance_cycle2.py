@@ -41,7 +41,7 @@ VOCAB = REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld"
 METADATA = REPO_ROOT / "metadata.jsonld"
 
 CONTEXT = {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -194,7 +194,7 @@ def test_enum_shapes_bind_and_conform_on_vocabulary_only():
     ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference="rdfs")
     assert ok, f"controlled_vocabulary.jsonld no longer conforms to the shapes:\n{msg}"
 
-    est = Namespace("https://data.riik.ee/ontology/estleg#")
+    est = Namespace("https://w3id.org/estleg/")
     for cls in ("LegislativePhase", "DraftType", "DecisionType", "EUDocumentType", "EUCourt"):
         targets = set(g.subjects(RDF.type, est[cls]))
         assert targets, f"enum shape for estleg:{cls} still has zero targets (#563)"

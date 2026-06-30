@@ -29,7 +29,7 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 EELNOUD_DIR = KRR_DIR / "eelnoud"
 EELNOUD_DIR.mkdir(parents=True, exist_ok=True)
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # EIS RSS feed URLs
 RSS_FEEDS = {

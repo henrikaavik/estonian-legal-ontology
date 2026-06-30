@@ -77,14 +77,14 @@ def act_local_fragment(act_iri: str) -> str:
     """Return the local fragment of an act IRI (the part identifying the node).
 
     Handles both the compact form (``estleg:VKVS_Map_2026`` -> ``VKVS_Map_2026``)
-    and the expanded form (``https://data.riik.ee/ontology/estleg#VKVS_Map_2026``
-    -> ``VKVS_Map_2026`` — everything after the final ``#``).
+    and the expanded form -- the final segment after the namespace, whether the
+    namespace is slash-separated (``https://w3id.org/estleg/VKVS_Map_2026``) or
+    the legacy hash form (``…/estleg#VKVS_Map_2026``) -> ``VKVS_Map_2026``.
     """
-    if "#" in act_iri:
-        return act_iri.rsplit("#", 1)[1]
     if act_iri.startswith("estleg:"):
         return act_iri[len("estleg:"):]
-    return act_iri
+    # Separator-agnostic: the local name is the final path/fragment segment.
+    return act_iri.replace("#", "/").rsplit("/", 1)[-1]
 
 
 def date_digits(date_value: str) -> str:

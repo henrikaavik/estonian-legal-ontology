@@ -29,7 +29,7 @@ def _validate(graph_json: dict) -> tuple[bool, str]:
 
 
 CONTEXT = {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",

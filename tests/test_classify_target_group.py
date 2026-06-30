@@ -160,7 +160,7 @@ def test_classify_files_writes_target_groups_and_report(tmp_path):
         json.dumps(
             {
                 "@context": {
-                    "estleg": "https://data.riik.ee/ontology/estleg#",
+                    "estleg": "https://w3id.org/estleg/",
                     "owl": "http://www.w3.org/2002/07/owl#",
                 },
                 "@graph": [

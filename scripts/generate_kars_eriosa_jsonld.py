@@ -24,7 +24,7 @@ LAW_TITLE = "Karistusseadustik"
 # ``estleg`` namespace IRI (the ontology base). Module-level so the
 # JSON-LD ``@context`` can be built and unit-tested without the
 # network-fetching ``main()`` shell.
-ESTLEG_BASE = "https://data.riik.ee/ontology/estleg#"
+ESTLEG_BASE = "https://w3id.org/estleg/"
 
 
 def build_context() -> dict[str, str]:

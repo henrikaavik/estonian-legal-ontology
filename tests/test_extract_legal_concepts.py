@@ -62,7 +62,7 @@ def _run_extractor(tmp_path, monkeypatch, peeps: dict[str, str], xmls: dict[str,
 def _peep_text(slug: str, source: str, par_nr: str = "2") -> str:
     return json.dumps({
         "@context": {
-            "estleg": "https://data.riik.ee/ontology/estleg#",
+            "estleg": "https://w3id.org/estleg/",
             "owl": "http://www.w3.org/2002/07/owl#",
         },
         "@graph": [
@@ -393,7 +393,7 @@ class TestIssue171ConceptIdDisambiguation:
             peep = krr / f"{slug}_peep.json"
             peep.write_text(json.dumps({
                 "@context": {
-                    "estleg": "https://data.riik.ee/ontology/estleg#",
+                    "estleg": "https://w3id.org/estleg/",
                     "owl": "http://www.w3.org/2002/07/owl#",
                 },
                 "@graph": [
@@ -643,7 +643,7 @@ class TestIssue171TripleCounting:
         peep = krr / "law_x_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1240,7 +1240,7 @@ class TestIssue134ConceptShapeSHACL:
         data = rdflib.Graph()
         data.parse(data=json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
                 "skos": "http://www.w3.org/2004/02/skos/core#",
                 "xsd": "http://www.w3.org/2001/XMLSchema#",
@@ -1294,7 +1294,7 @@ class TestIssue134ConceptShapeSHACL:
         so query the shapes graph directly)."""
         rdflib = pytest.importorskip("rdflib")
         SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
-        ESTLEG = rdflib.Namespace("https://data.riik.ee/ontology/estleg#")
+        ESTLEG = rdflib.Namespace("https://w3id.org/estleg/")
         shapes = rdflib.Graph()
         shapes.parse(str(SHAPES_TTL), format="turtle")
         paths = set()

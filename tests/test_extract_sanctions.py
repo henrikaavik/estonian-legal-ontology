@@ -92,7 +92,7 @@ class TestSanctionExtractionWithEnforcementStamp:
         peep = kov / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -118,7 +118,7 @@ class TestSanctionExtractionWithEnforcementStamp:
         peep = krr / "alkoholiseadus_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -205,7 +205,7 @@ class TestSanctionExtractionWithEnforcementStamp:
         peep = krr / "ametiuhingute_seadus_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -249,7 +249,7 @@ class TestSanctionExtractionWithEnforcementStamp:
         peep = krr / "karistusseadustik_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -312,7 +312,7 @@ class TestSanctionsIdempotency:
         # Stage with PRIOR triples already present.
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -365,7 +365,7 @@ class TestSanctionsIdempotency:
         # must produce 'municipality'.
         peep_file.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -414,7 +414,7 @@ class TestSanctionsIdempotency:
         peep = krr / "boring_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -458,7 +458,7 @@ class TestSanctionsIdempotency:
         peep = krr / "lostsanc_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -483,7 +483,7 @@ class TestSanctionsIdempotency:
         stale_path = sanctions_dir / stale_filename
         stale_path.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -537,7 +537,7 @@ class TestSanctionsCoverageReport:
         kov.mkdir(parents=True)
         (kov / "kov_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -556,7 +556,7 @@ class TestSanctionsCoverageReport:
         # State law with sanction
         (krr / "alko_peep.json").write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -628,7 +628,7 @@ class TestSanctionsCoverageReport:
         # doc is read.
         canned_doc = {
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -883,7 +883,7 @@ class TestSanctionIRICounterDeterministic:
         peep = krr / "deterministic_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -941,7 +941,7 @@ class TestPecuniaryStatutoryDefaultFlag:
         peep = krr / "pecu_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1336,7 +1336,7 @@ class TestStructuredPenaltyEndToEnd:
         peep = krr / "struct_fine_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1396,7 +1396,7 @@ class TestStructuredPenaltyEndToEnd:
         peep = krr / "life_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1449,7 +1449,7 @@ class TestStructuredPenaltyEndToEnd:
         peep = krr / "range_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1506,7 +1506,7 @@ class TestStructuredPenaltyEndToEnd:
         peep = krr / "pecu_struct_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1574,7 +1574,7 @@ class TestStructuredPenaltySHACL:
         return conforms, msg
 
     _CTX = {
-        "estleg": "https://data.riik.ee/ontology/estleg#",
+        "estleg": "https://w3id.org/estleg/",
         "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
         "xsd": "http://www.w3.org/2001/XMLSchema#",
         "owl": "http://www.w3.org/2002/07/owl#",
@@ -1668,7 +1668,7 @@ class TestStructuredPenaltySHACL:
         the shape change)."""
         rdflib = pytest.importorskip("rdflib")
         SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
-        ESTLEG = rdflib.Namespace("https://data.riik.ee/ontology/estleg#")
+        ESTLEG = rdflib.Namespace("https://w3id.org/estleg/")
         g = self._shapes_graph()
         shape = ESTLEG.SanctionShape
         paths = {
@@ -2192,7 +2192,7 @@ class TestSeverityIndexMonetaryExposure:
         peep = krr / "bigfine_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -2243,7 +2243,7 @@ class TestSeverityIndexMonetaryExposure:
         peep = krr / "imponly_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [

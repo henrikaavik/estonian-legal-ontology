@@ -513,7 +513,7 @@ class TestRegulationIndex:
         out_dir.mkdir()
         for idx in range(2):
             doc = {
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": f"estleg:Reg_{idx}_Map_2026",
@@ -614,7 +614,7 @@ class TestRegulationIndex:
         out_dir.mkdir()
         # Full regulation: has a paragraph node, no contentStatus marker.
         (out_dir / "full_reg_t100_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:Reg_100_Map_2026",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
@@ -626,7 +626,7 @@ class TestRegulationIndex:
         }), encoding="utf-8")
         # No-body regulation: contentStatus = noStructuredBody.
         (out_dir / "stub_reg_t200_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:Reg_200_Map_2026",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],

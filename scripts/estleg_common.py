@@ -385,12 +385,19 @@ COMBINED_STRIPPED_PREDICATES: frozenset[str] = frozenset(
 
 # #589 (the enforcement half of #561): with version forward-edges stripped
 # (above) and the amendment layer now merged into combined
-# (COMBINED_OVERLAY_SUBDIRS), every estleg: object ref remaining in combined
-# resolves to a present node or a graph-closure stub. The combined-alone closure
-# gate therefore carries NO exemptions — a residual dangling estleg: ref is a
-# real defect, not silently "Closed". Kept as an (empty) frozenset so importers
-# and the closure loop keep working and the intent stays explicit.
-COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset()
+# (COMBINED_OVERLAY_SUBDIRS), every estleg: INSTANCE-DATA object ref remaining in
+# combined resolves to a present node or a graph-closure stub. The combined-alone
+# closure gate therefore carries no exemptions for instance refs — a residual
+# dangling estleg: ref is a real defect, not silently "Closed".
+#
+# The sole exemption is ``owl:versionIRI`` (#516): it is OWL ontology-header
+# METADATA on the owl:Ontology node, pointing at the ontology's own version IRI
+# (``https://w3id.org/estleg/<version>``), a project identifier that is
+# deliberately NOT a corpus instance node. Under the legacy hash namespace the
+# version IRI did not compact to ``estleg:`` so it was never closure-checked;
+# the w3id SLASH namespace makes it compact to ``estleg:<version>``, which the
+# closure loop would otherwise mis-flag as a dangling instance ref.
+COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset({"owl:versionIRI"})
 
 # #488: a graph-closure stub keeps its real (often SHACL-shaped) `@type`, so the
 # *standalone* combined artifact must publish a SHACL-conforming node for that
@@ -509,7 +516,7 @@ def canonical_estleg_ref(ref: str) -> str | None:
     """Return the compact ``estleg:`` form of an internal IRI, else ``None``.
 
     Recognises BOTH the compact ``estleg:Foo`` form and the expanded
-    ``https://data.riik.ee/ontology/estleg#Foo`` form, so a closure check can
+    ``https://w3id.org/estleg/Foo`` form, so a closure check can
     never be fooled by a serialisation that uses full IRIs. Mirrors the
     Seadusloome sync gate's ``_canonical_estleg_id``.
     """
@@ -527,7 +534,7 @@ def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
     walker — a ref nested inside a structured value is attributed to its
     innermost key, not the top-level one), and ``target`` is canonicalised to
     the compact ``estleg:`` form so a ref expressed as a full
-    ``https://data.riik.ee/ontology/estleg#…`` IRI is still recognised.
+    ``https://w3id.org/estleg/…`` IRI is still recognised.
     ``@id``/``@type``/``@context`` are skipped: ``@type`` class IRIs are not
     object references for closure purposes (matching how the corpus treats
     per-law ``estleg:LegalProvision_*`` classes).
@@ -544,7 +551,7 @@ def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
 # ---------------------------------------------------------------------------
 # JSON-LD shared context
 # ---------------------------------------------------------------------------
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # ---------------------------------------------------------------------------
 # Ontology version (#616)
@@ -556,9 +563,10 @@ NS = "https://data.riik.ee/ontology/estleg#"
 # pyproject, and cut a CHANGELOG section + git tag) on every release so consumers
 # can pin/cite a version.
 ONTOLOGY_VERSION = "0.11.0"
-# The ontology IRI (the namespace ``NS`` without its fragment); ``versionIRI`` is
-# this plus the version, so each release is independently dereferenceable.
-ONTOLOGY_IRI = NS.rstrip("#")
+# The ontology IRI (the namespace ``NS`` without its trailing separator, ``#``
+# for the legacy hash form or ``/`` for the slash form); ``versionIRI`` is this
+# plus the version, so each release is independently dereferenceable.
+ONTOLOGY_IRI = NS.rstrip("#/")
 ONTOLOGY_VERSION_IRI = f"{ONTOLOGY_IRI}/{ONTOLOGY_VERSION}"
 
 

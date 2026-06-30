@@ -211,7 +211,7 @@ def test_main_zero_file_guard_matches_seadusloome_sync_contract():
 # ---------------------------------------------------------------------------
 
 SHAPES_TTL = Path(__file__).resolve().parent.parent / "shacl" / "estonian_legal_shapes.ttl"
-_NS = "https://data.riik.ee/ontology/estleg#"
+_NS = "https://w3id.org/estleg/"
 _SH = "http://www.w3.org/ns/shacl#"
 
 

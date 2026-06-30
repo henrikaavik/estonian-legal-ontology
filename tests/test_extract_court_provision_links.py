@@ -473,7 +473,7 @@ def test_deprecated_legacy_peep_excluded_from_provision_index(
     # the provision must be cleared by the run even though the file no longer
     # receives links (clear walk 2 covers deprecated peeps).
     legacy = {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {
                 "@id": "estleg:Aaa_Map_2026",
@@ -562,7 +562,7 @@ def test_shacl_widened_range_validates() -> None:
     # caseType (IRI, minCount 1). Provide both so we're exercising the
     # widening, not falling over on unrelated mandatory fields.
     data_jsonld = {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "rdfs":   "http://www.w3.org/2000/01/rdf-schema#"},
         "@graph": [
             {
@@ -600,7 +600,7 @@ def test_shacl_widened_range_validates() -> None:
             },
             {
                 # IRI must match IssuerShape sh:pattern
-                # ^https://data.riik.ee/ontology/estleg#Issuer_[a-z0-9_]+$
+                # ^https://w3id.org/estleg/Issuer_[a-z0-9_]+$
                 "@id": "estleg:Issuer_viimsi_vv_test",
                 "@type": ["estleg:Issuer"],
                 "rdfs:label": "Viimsi Vallavolikogu (test)",
@@ -610,7 +610,7 @@ def test_shacl_widened_range_validates() -> None:
             },
             {
                 # IRI must match MunicipalityShape sh:pattern
-                # ^https://data.riik.ee/ontology/estleg#Municipality_EHAK_[0-9]{4}$
+                # ^https://w3id.org/estleg/Municipality_EHAK_[0-9]{4}$
                 "@id": "estleg:Municipality_EHAK_8905",
                 "@type": ["estleg:Municipality"],
                 "rdfs:label": "Viimsi vald (test)",
@@ -639,7 +639,7 @@ def test_shacl_municipal_regulation_shape_has_interpreted_by_property() -> None:
     """
     rdflib = pytest.importorskip("rdflib")
     SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
-    ESTLEG = rdflib.Namespace("https://data.riik.ee/ontology/estleg#")
+    ESTLEG = rdflib.Namespace("https://w3id.org/estleg/")
 
     repo_root = Path(__file__).resolve().parents[1]
     shapes = rdflib.Graph()
@@ -683,7 +683,7 @@ class TestIssue172BuildKovActIndexContinue:
         peep = tmp_path / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -732,7 +732,7 @@ class TestIssue172BuildKovActIndexContinue:
         peep = tmp_path / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -776,7 +776,7 @@ class TestIssue172BuildKovActIndexContinue:
         peep = tmp_path / "act_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -971,7 +971,7 @@ class TestIssue172PatKovActLeftAnchor:
 
 def _write_provision_peep(path: Path, source_act_value) -> None:
     path.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
             {"@id": "estleg:Karistusseadustik_Map_2026",
@@ -1026,7 +1026,7 @@ def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch)
         rk_dir = tmp_path / f"rk_{'vo' if isinstance(summary_value, dict) else 'plain'}"
         rk_dir.mkdir()
         (rk_dir / "riigikohus_2009_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:RK_FIXT_2009_1",
@@ -1078,7 +1078,7 @@ def test_process_court_files_handles_value_object_legal_text(tmp_path, monkeypat
         rk_dir.mkdir()
         (rk_dir / "riigikohus_2026_peep.json").write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:RK_LEGAL_TEXT_1",
@@ -1137,7 +1137,7 @@ def test_process_court_files_prefers_legal_text_over_summary(
     rk_dir.mkdir()
     (rk_dir / "riigikohus_2026_peep.json").write_text(
         json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {
                     "@id": "estleg:RK_FULL_TEXT_1",
@@ -1192,7 +1192,7 @@ def test_process_court_files_splits_mixed_full_text_and_summary_only(
     rk_dir.mkdir()
     (rk_dir / "riigikohus_2026_peep.json").write_text(
         json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {
                     "@id": "estleg:RK_FULL_TEXT_1",
@@ -1275,7 +1275,7 @@ def _write_part_peep(
             "estleg:sourceAct": source_act,
         })
     path.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": graph,
     }), encoding="utf-8")
@@ -1387,7 +1387,7 @@ class TestIssue256MultiPartLaws:
         rk_dir = tmp_path / "rk"
         rk_dir.mkdir()
         (rk_dir / "riigikohus_2026_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:RK_FIXT_KARS_GENERAL",

@@ -72,7 +72,7 @@ Drafts link to existing laws via `estleg:affectedLawName`, enabling queries like
 
 ## Schema
 
-The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`):
+The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`):
 
 ### Core Classes
 - `estleg:LegalProvision` — Enacted legal provisions (paragraphs, sections)

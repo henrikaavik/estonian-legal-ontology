@@ -32,7 +32,7 @@ class TestReadActMetadataFromPeep:
         # A file with no act-typed node should return None, not crash.
         bad = tmp_path / "no_act.json"
         bad.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:LooseProvision",
@@ -48,7 +48,7 @@ class TestReadActMetadataFromPeep:
         # owl:Ontology would let EuroVoc tag it as an act.
         registry = tmp_path / "municipalities_peep.json"
         registry.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Municipalities_Map_2026",
@@ -155,7 +155,7 @@ def test_read_act_metadata_unwraps_value_object_label(tmp_path):
 
     peep = tmp_path / "act_peep.json"
     peep.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
             {"@id": "estleg:Act_1_Map_2026",
@@ -309,7 +309,7 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
     krr.mkdir()
     act_peep = krr / "sample_act_peep.json"
     act_peep.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#",
                      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
                      "dcterms": "http://purl.org/dc/terms/"},

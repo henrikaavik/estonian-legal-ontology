@@ -43,14 +43,21 @@ def test_metadata_header_carries_current_version():
 
 def test_combined_ontology_header_is_wellformed_and_inert():
     """The build-time combined header carries the version and is inert for the
-    graph-closure gate (no ``estleg:`` object references to dangle)."""
+    graph-closure gate (no NON-exempt ``estleg:`` object references to dangle)."""
     header = estleg_common.combined_ontology_header()
     assert header["@id"] == estleg_common.ONTOLOGY_IRI
     assert header["@type"] == ["owl:Ontology"]
     assert header["owl:versionInfo"] == estleg_common.ONTOLOGY_VERSION
     assert header["owl:versionIRI"]["@id"].endswith(estleg_common.ONTOLOGY_VERSION)
-    # Inert for closure: iter_node_estleg_refs yields nothing.
-    assert list(estleg_common.iter_node_estleg_refs(header)) == []
+    # #516: under the w3id SLASH namespace the version IRI compacts to
+    # ``estleg:<version>``, so the header now carries a single estleg: ref —
+    # ``owl:versionIRI`` — which is deliberately closure-EXEMPT
+    # (COMBINED_CLOSURE_EXEMPT_PREDICATES). It contributes no NON-exempt ref to
+    # the graph-closure gate, which is what "inert" means here.
+    refs = list(estleg_common.iter_node_estleg_refs(header))
+    assert all(
+        pred in estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES for pred, _ in refs
+    ), refs
 
 
 def test_combined_ontology_header_tracks_version_argument():

@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import validate_combined_standalone as gate  # noqa: E402
 
 CONTEXT = {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -109,7 +109,7 @@ def test_gate_fails_on_incomplete_shaped_stub(tmp_path):
     for row in summary["groups"]:
         assert "estleg:MunicipalRegulation" in row["focus_type"], row
         assert row["is_stub"] is True, row
-        assert row["examples"] == ["https://data.riik.ee/ontology/estleg#Reg_1001517_Map_2026"]
+        assert row["examples"] == ["https://w3id.org/estleg/Reg_1001517_Map_2026"]
 
 
 def test_gate_passes_on_complete_shaped_stub(tmp_path):
