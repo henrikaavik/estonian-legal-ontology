@@ -46,7 +46,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # #602: named plausibility band for a parsed year (was a magic ``1900``/
 # ``2100`` literal repeated in both date-parse paths). Years outside this

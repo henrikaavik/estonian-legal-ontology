@@ -36,6 +36,7 @@ from pathlib import Path
 from typing import Iterable
 
 from estleg_common import (
+    COMBINED_CLOSURE_EXEMPT_PREDICATES,
     NS,
     PUBLIC_LOAD_SUBDIRS,
     iter_public_load_files,
@@ -223,7 +224,14 @@ def validate_graph_closure(
 
     by_predicate: Counter[str] = Counter()
     samples: dict[str, list[dict[str, str]]] = defaultdict(list)
-    exempt_predicates = graph_closure_exempt_predicates(shapes_dir)
+    # SHACL-derived enum exemptions, plus the shared closure exemptions
+    # (#516: owl:versionIRI — the ontology version IRI compacts to
+    # estleg:<version> under the w3id slash namespace but is OWL metadata, not
+    # a corpus node; single source of truth in estleg_common).
+    exempt_predicates = (
+        graph_closure_exempt_predicates(shapes_dir)
+        | COMBINED_CLOSURE_EXEMPT_PREDICATES
+    )
 
     for path, doc in docs:
         for node in _iter_graph_nodes(doc):

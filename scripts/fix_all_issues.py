@@ -21,9 +21,9 @@ conflated:
     JSON-LD shapes directly. They are no longer required for ordinary
     regeneration and should be considered for removal once a regression
     window confirms generator output stays validator-clean:
-      - ``migrate_namespace_in_value`` — example.org → data.riik.ee
-        namespace migration (#2/#17). Generators emit the
-        ``data.riik.ee`` namespace directly (see ``estleg_common.NS`` /
+      - ``migrate_namespace_in_value`` — legacy example.org → canonical
+        namespace migration (#2/#17). Generators emit the canonical
+        ``w3id.org/estleg`` namespace directly (see ``estleg_common.NS`` /
         ``estleg_common.CONTEXT``).
       - ``normalize_type`` — coerce ``@type`` to an array (#4).
         Generators emit ``@type`` arrays directly (see the act-node
@@ -91,7 +91,7 @@ import estleg_common  # noqa: E402
 import deprecate_legacy_statutes as _legacy_deprecation  # noqa: E402
 
 OLD_NS = "https://example.org/estonian-legal#"
-NEW_NS = "https://data.riik.ee/ontology/estleg#"
+NEW_NS = "https://w3id.org/estleg/"
 
 # Root-level non-`*_peep.json` JSON-LD files that are canonical inputs to
 # `combined_ontology.jsonld`. Anything outside this list (including

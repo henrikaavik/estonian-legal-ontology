@@ -48,7 +48,7 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 CONTEXT = {
     "estleg": NS,

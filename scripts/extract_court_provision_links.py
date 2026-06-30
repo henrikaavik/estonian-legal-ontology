@@ -50,7 +50,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 RK_DIR = KRR_DIR / "riigikohus"
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # #602: named 2-digit-year century pivot (was a magic ``y > 50``). A 2-digit
 # year ``YY`` <= this maps to ``2000+YY``; above it maps to ``1900+YY``.

@@ -510,7 +510,7 @@ def test_summary_does_not_leak_amendment_marker() -> None:
 
 def _sample_doc() -> dict:
     return {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {"@id": "estleg:VOS_Osa6", "rdfs:label": "Õigus — ä ü test"},
         ],

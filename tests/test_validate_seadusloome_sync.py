@@ -19,7 +19,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SHAPES_DIR = REPO_ROOT / "shacl"
 
 CONTEXT = {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -334,7 +334,7 @@ def test_graph_closure_exempt_predicates_ignore_malformed_markers(tmp_path):
     shapes.mkdir()
     (shapes / "shapes.ttl").write_text(
         """
-@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix estleg: <https://w3id.org/estleg/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 
@@ -374,7 +374,7 @@ def test_graph_closure_uses_supplied_shapes_dir_for_exemptions(tmp_path):
     shapes.mkdir()
     (shapes / "custom.ttl").write_text(
         """
-@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix estleg: <https://w3id.org/estleg/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
 estleg:CustomShape
@@ -427,7 +427,7 @@ def test_main_uses_cli_shapes_dir_for_graph_closure_exemptions(tmp_path, capsys)
     shapes.mkdir()
     (shapes / "custom.ttl").write_text(
         """
-@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix estleg: <https://w3id.org/estleg/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 
 estleg:CustomShape
@@ -525,8 +525,8 @@ def test_grouped_summary_includes_focus_nodes(tmp_path, capsys):
     code, output = _run_validator(krr, capsys)
 
     assert code != 0, output
-    iri_a_full = "https://data.riik.ee/ontology/estleg#Prov_FailA"
-    iri_b_full = "https://data.riik.ee/ontology/estleg#Prov_FailB"
+    iri_a_full = "https://w3id.org/estleg/Prov_FailA"
+    iri_b_full = "https://w3id.org/estleg/Prov_FailB"
     assert iri_a_full in output or iri_b_full in output, output
     # Group should aggregate both failures under one row.
     assert "2x LegalProvisionShape" in output or "2x  LegalProvisionShape" in output

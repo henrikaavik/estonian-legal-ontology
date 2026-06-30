@@ -61,9 +61,9 @@ LAW_TITLE = "Tsiviilseadustiku üldosa seadus"
 TARGET_OSA = "7"
 
 # The estleg ontology base IRI. The committed module addresses every node by its
-# FULL IRI (``https://data.riik.ee/ontology/estleg#…``) except the ontology root,
+# FULL IRI (``https://w3id.org/estleg/…``) except the ontology root,
 # which uses the compact ``estleg:`` form; we reproduce that split exactly.
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 OUT_DEFAULT = (
     Path(__file__).resolve().parents[1] / "krr_outputs" / "tsus_osa7_138_169_owl.jsonld"

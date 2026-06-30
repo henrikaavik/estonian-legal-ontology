@@ -42,7 +42,7 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 CURIA_DIR = KRR_DIR / "curia"
 CURIA_DIR.mkdir(parents=True, exist_ok=True)
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 PAGE_SIZE = 5000
 RATE_DELAY = 1.0

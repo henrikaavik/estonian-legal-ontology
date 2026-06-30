@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import deprecate_legacy_statutes as dls
 
-ESTLEG = "https://data.riik.ee/ontology/estleg#"
+ESTLEG = "https://w3id.org/estleg/"
 
 
 # ---------------------------------------------------------------------------

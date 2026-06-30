@@ -155,7 +155,7 @@ class TestPairPeepWithXml:
 
         peep = tmp_path / "act.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:Reg_9999_Map_2026",
                  "estleg:globalId": "999",
@@ -177,7 +177,7 @@ class TestPairPeepWithXml:
         from extract_temporal_data import pair_peep_with_xml
         peep = tmp_path / "act.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:Reg_X",
                  "estleg:globalId": "missing-id",
@@ -202,7 +202,7 @@ class TestPairPeepWithXml:
 
         peep = krr / "alkoholiseadus_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:AlkS_Map_2026",
@@ -237,7 +237,7 @@ class TestPairPeepWithXml:
 
         peep = krr / "asjaoigusseadus_osa3_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:AOS_Osa3_Map_2026",
@@ -280,7 +280,7 @@ class TestMainUsesGlobalIdLookup:
         # (filename doesn't share a slug with the XML)
         peep = kov / "test_act_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_X_Map_2026",
@@ -578,7 +578,7 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
         peep = krr / "ghost_law_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -634,7 +634,7 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
         peep = krr / "old_law_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -730,7 +730,7 @@ class TestActLevelPlacement:
         peep = krr / "concept_only_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -790,7 +790,7 @@ class TestActLevelPlacement:
         peep = krr / "demo_law_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -921,7 +921,7 @@ def _run_main_over_single_peep(tmp_path, monkeypatch, temporal_kehtivus,
     peep = krr / "guard_law_peep.json"
     peep.write_text(json.dumps({
         "@context": {
-            "estleg": "https://data.riik.ee/ontology/estleg#",
+            "estleg": "https://w3id.org/estleg/",
             "owl": "http://www.w3.org/2002/07/owl#",
         },
         "@graph": [
@@ -1092,7 +1092,7 @@ class TestReportDeterminism:
         peep = krr / "stable_law_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
@@ -1155,7 +1155,7 @@ class TestSinglePassClearAndEnrich:
         peep = krr / "single_pass_peep.json"
         peep.write_text(json.dumps({
             "@context": {
-                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "estleg": "https://w3id.org/estleg/",
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [

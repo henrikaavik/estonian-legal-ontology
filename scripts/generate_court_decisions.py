@@ -65,7 +65,7 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 RK_DIR = KRR_DIR / "riigikohus"
 RK_DIR.mkdir(parents=True, exist_ok=True)
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 SEARCH_URL = "https://rikos.rik.ee/"
 PAGE_SIZE = 100

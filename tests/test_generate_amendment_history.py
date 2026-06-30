@@ -55,7 +55,7 @@ class TestAmendmentHistoryDiscovery:
         peep.write_text(
             json.dumps({
                 "@context": {
-                    "estleg": "https://data.riik.ee/ontology/estleg#",
+                    "estleg": "https://w3id.org/estleg/",
                     "owl": "http://www.w3.org/2002/07/owl#",
                 },
                 "@graph": [
@@ -112,7 +112,7 @@ class TestAmendmentHistoryDiscovery:
 
         peep = kov / "test_act_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_X_Map_2026",
@@ -412,7 +412,7 @@ class TestMultipartLawAggregation:
     def _write_part(self, krr: Path, slug: str, gid: str, title: str) -> Path:
         p = krr / f"{slug}_peep.json"
         p.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {
@@ -573,7 +573,7 @@ class TestCoverageTriplesSplit:
         # One law with one amendment.
         peep = krr / "alfa_seadus_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Alfa_Map",
@@ -1010,7 +1010,7 @@ class TestGeneratorEmitsCompactAmendmentIris:
     def _write_part(self, krr: Path, slug: str, gid: str, title: str) -> Path:
         p = krr / f"{slug}_peep.json"
         p.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": f"estleg:{slug.upper()}_Map",
@@ -1510,7 +1510,7 @@ class TestTotalAmendmentsCountsUniques:
         krr, rt, mod = self._setup(tmp_path, monkeypatch)
         peep = krr / "beeta_seadus_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Beeta_Map",
@@ -1599,7 +1599,7 @@ class TestGeneratorEmitsAmendingActAndSkipsCorruptCurrent:
         krr, rt, mod = self._setup(tmp_path, monkeypatch)
         peep = krr / "gamma_seadus_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Gamma_Map",
@@ -1714,7 +1714,7 @@ class TestAmendedByRequiresActNode:
         # fallback would have written it onto this non-Act node).
         peep = krr / "gamma_seadus_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Gamma_Catalogue",
@@ -1788,7 +1788,7 @@ class TestReportIsByteStable:
 
         peep = krr / "delta_seadus_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Delta_Map",
@@ -1869,7 +1869,7 @@ def _setup_main_env(tmp_path: Path, monkeypatch):
 def _write_part(krr: Path, slug: str, gid: str, title: str) -> Path:
     p = krr / f"{slug}_peep.json"
     p.write_text(json.dumps({
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+        "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
             {"@id": f"estleg:{slug.upper()}_Map",
@@ -1926,7 +1926,7 @@ def _write_combined_drafts(krr: Path, drafts: list[dict]):
         })
     (krr / "eelnoud" / "eelnoud_combined.jsonld").write_text(
         json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": graph,
         }),
@@ -2167,7 +2167,7 @@ class TestDraftLabelUnwrap:
         eelnoud = tmp_path / "eelnoud"
         eelnoud.mkdir()
         (eelnoud / "eelnoud_combined.jsonld").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [{
                 "@id": "estleg:Draft_1",
@@ -2260,7 +2260,7 @@ class TestDraftEventsSorted:
         # One dated, one undated draft. Undated (no publicationDate) must land
         # last via the 9999 sentinel.
         (krr / "eelnoud" / "eelnoud_combined.jsonld").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Draft_Undated",
@@ -2602,7 +2602,7 @@ class TestProposedAmendmentSeparation:
         krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
         peep = krr / "withaffected_peep.json"
         peep.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [{
                 "@id": "estleg:WITHAFFECTED_Map",

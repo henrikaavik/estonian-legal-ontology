@@ -58,7 +58,7 @@ _FENCE = re.compile(r"```(\w*)\n(.*?)```", re.DOTALL)
 # re-declaring a prefix to the same IRI is a harmless no-op in rdflib, so this is
 # safe for blocks that already declare their own.
 _PREFIXES = """
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

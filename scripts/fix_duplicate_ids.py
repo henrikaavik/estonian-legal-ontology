@@ -171,12 +171,12 @@ def build_remap_table(
     shared_classes = {
         "estleg:LegalPart", "estleg:Provision", "estleg:Section",
         "estleg:LegalConcept",
-        "https://data.riik.ee/ontology/estleg#",
-        "https://data.riik.ee/ontology/estleg#LegalPart",
-        "https://data.riik.ee/ontology/estleg#Chapter",
-        "https://data.riik.ee/ontology/estleg#Division",
-        "https://data.riik.ee/ontology/estleg#Section",
-        "https://data.riik.ee/ontology/estleg#LegalConcept",
+        "https://w3id.org/estleg/",
+        "https://w3id.org/estleg/LegalPart",
+        "https://w3id.org/estleg/Chapter",
+        "https://w3id.org/estleg/Division",
+        "https://w3id.org/estleg/Section",
+        "https://w3id.org/estleg/LegalConcept",
     }
 
     for file_group, dupe_ids in file_group_dupes.items():
@@ -532,12 +532,12 @@ def main(argv: list[str] | None = None) -> int:
     shared_classes = {
         "estleg:LegalPart", "estleg:Provision", "estleg:Section",
         "estleg:LegalConcept",
-        "https://data.riik.ee/ontology/estleg#",
-        "https://data.riik.ee/ontology/estleg#LegalPart",
-        "https://data.riik.ee/ontology/estleg#Chapter",
-        "https://data.riik.ee/ontology/estleg#Division",
-        "https://data.riik.ee/ontology/estleg#Section",
-        "https://data.riik.ee/ontology/estleg#LegalConcept",
+        "https://w3id.org/estleg/",
+        "https://w3id.org/estleg/LegalPart",
+        "https://w3id.org/estleg/Chapter",
+        "https://w3id.org/estleg/Division",
+        "https://w3id.org/estleg/Section",
+        "https://w3id.org/estleg/LegalConcept",
     }
     real_dupes = {k: v for k, v in dupes.items() if k not in shared_classes}
     print(f"  Shared ontology classes (no fix needed): {len(dupes) - len(real_dupes)}")

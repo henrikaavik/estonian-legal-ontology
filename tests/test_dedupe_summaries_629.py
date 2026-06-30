@@ -151,7 +151,7 @@ def test_dedouble_short_string_returns_none():
 
 def _peep(summary: str) -> dict:
     return {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {"@id": "estleg:Reg_Map", "@type": ["owl:Ontology"]},
             {"@id": "estleg:Reg_Par_1", "estleg:summary": summary},

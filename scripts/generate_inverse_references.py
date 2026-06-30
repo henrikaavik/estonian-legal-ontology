@@ -54,7 +54,7 @@ VERSIONS_DIR = KRR_DIR / "provision_versions"
 # regen: regenerate the sidecars under the #345 IRI scheme, then re-run.
 HASVERSION_MIN_RESOLVED_FRACTION = 0.5
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 CONTEXT = {
     "estleg": NS,

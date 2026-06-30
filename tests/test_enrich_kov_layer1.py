@@ -27,7 +27,7 @@ class TestBuildMunicipalityDoc:
         doc = build_municipality_doc(muns)
 
         assert "@context" in doc
-        assert doc["@context"]["estleg"] == "https://data.riik.ee/ontology/estleg#"
+        assert doc["@context"]["estleg"] == "https://w3id.org/estleg/"
 
         graph = doc["@graph"]
         ids = {n["@id"] for n in graph}
@@ -153,7 +153,7 @@ class TestEnrichKovActFile:
         from enrich_kov_layer1 import enrich_kov_act_file
         bad = tmp_path / "broken.json"
         bad.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:NotAnAct_Map_2026",
@@ -171,7 +171,7 @@ class TestEnrichKovActFile:
         from enrich_kov_layer1 import enrich_kov_act_file
         bad = tmp_path / "two_acts.json"
         bad.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1_Map_2026",
@@ -238,7 +238,7 @@ class TestStampActType:
         from enrich_kov_layer1 import stamp_act_type
         f = tmp_path / "reg.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1009410_Map_2026",
@@ -256,7 +256,7 @@ class TestStampActType:
         from enrich_kov_layer1 import stamp_act_type
         f = tmp_path / "reg.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1_Map_2026",
@@ -312,7 +312,7 @@ class TestOrchestratorEndToEnd:
         riik = krr / "regulations" / "riik"
         riik.mkdir(parents=True)
         (riik / "valitsuse_maarus_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1009410_Map_2026",
@@ -368,7 +368,7 @@ class TestStampLawTypeApplicability:
         from enrich_kov_layer1 import stamp_law_type
         f = tmp_path / "law.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:AlkS_Map_2026",
@@ -385,7 +385,7 @@ class TestStampLawTypeApplicability:
         # owl:Ontology marker.
         f = tmp_path / "law_osa6.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Provision_1",
@@ -402,7 +402,7 @@ class TestStampLawTypeApplicability:
         from enrich_kov_layer1 import stamp_law_type
         f = tmp_path / "regulation.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1_Map_2026",
@@ -443,7 +443,7 @@ class TestStampLawTypeIdempotentNoMtimeChurn:
         from enrich_kov_layer1 import stamp_law_type
         f = tmp_path / "law.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:AlkS_Map_2026",
@@ -515,7 +515,7 @@ class TestStampActTypeRaisesOnKovInput:
         from enrich_kov_layer1 import stamp_act_type
         f = tmp_path / "kov.json"
         f.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1_Map_2026",
@@ -691,7 +691,7 @@ class TestVerifyLayer1:
         kov = tmp_path / "krr_outputs" / "regulations" / "kov" / "x_vallavolikogu"
         kov.mkdir(parents=True)
         (kov / "broken_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 # Provision without an act anchor.
@@ -715,7 +715,7 @@ class TestVerifyLayer1:
         kov = tmp_path / "krr_outputs" / "regulations" / "kov" / "x_vallavolikogu"
         kov.mkdir(parents=True)
         (kov / "two_acts_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_1_Map_2026",
@@ -739,7 +739,7 @@ class TestVerifyLayer1:
         kov = tmp_path / "krr_outputs" / "regulations" / "kov" / "x_vallavolikogu"
         kov.mkdir(parents=True)
         (kov / "no_id_peep.json").write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 # MunicipalRegulation node WITHOUT @id
@@ -772,7 +772,7 @@ class TestVerifyLayer1:
         )
         kov.mkdir(parents=True, exist_ok=True)
         (kov / name).write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+            "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": "estleg:Reg_x_Map_2026",

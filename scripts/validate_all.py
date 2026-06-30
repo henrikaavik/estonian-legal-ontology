@@ -43,7 +43,7 @@ from fix_all_issues import _materialize_supertypes  # noqa: E402
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 LEGACY_STATUTE_DECISIONS_PATH = REPO_ROOT / "data" / "legacy_statute_decisions.json"
-EXPECTED_NS = "https://data.riik.ee/ontology/estleg#"
+EXPECTED_NS = "https://w3id.org/estleg/"
 
 # Root-level JSON-LD files that are canonical inputs to
 # `combined_ontology.jsonld` alongside every `*_peep.json`. Kept in sync
@@ -2779,12 +2779,12 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
         # now declared canonically in controlled_vocabulary.jsonld alongside the
         # existing inline declaration — a shared TBox class id, not a collision.
         "estleg:GeneralPartConcept", "estleg:ProcedureStage",
-        "https://data.riik.ee/ontology/estleg#",
-        "https://data.riik.ee/ontology/estleg#LegalPart",
-        "https://data.riik.ee/ontology/estleg#Chapter",
-        "https://data.riik.ee/ontology/estleg#Division",
-        "https://data.riik.ee/ontology/estleg#Section",
-        "https://data.riik.ee/ontology/estleg#LegalConcept",
+        "https://w3id.org/estleg/",
+        "https://w3id.org/estleg/LegalPart",
+        "https://w3id.org/estleg/Chapter",
+        "https://w3id.org/estleg/Division",
+        "https://w3id.org/estleg/Section",
+        "https://w3id.org/estleg/LegalConcept",
     }
     dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k not in shared_class_ids}
     shared_dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k in shared_class_ids}

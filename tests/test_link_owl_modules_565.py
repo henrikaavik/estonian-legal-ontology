@@ -21,7 +21,7 @@ def _module_doc(section_ids: list[str]) -> dict:
         {"@id": sid, "@type": ["estleg:Section", "owl:NamedIndividual"]}
         for sid in section_ids
     ]
-    graph.append({"@id": "https://data.riik.ee/ontology/estleg#Section", "@type": ["owl:Class"]})
+    graph.append({"@id": "https://w3id.org/estleg/Section", "@type": ["owl:Class"]})
     return {"@context": {"estleg": L.NS}, "@graph": graph}
 
 

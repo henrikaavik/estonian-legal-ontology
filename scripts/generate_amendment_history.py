@@ -81,7 +81,7 @@ LAW_ABBREVIATIONS_PATH = REPO_ROOT / "data" / "law_abbreviations.json"
 # clock" unmistakable; genuine run time lives in ``wall_time_seconds``.
 PINNED_RUN_TIMESTAMP = "1970-01-01T00:00:00+00:00"
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 # Structural tails stripped from an ``estleg:amends`` target to recover the
 # compact stem the amendment IRIs should adopt for laws/regulations absent from

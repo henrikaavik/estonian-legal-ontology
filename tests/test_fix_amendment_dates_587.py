@@ -40,7 +40,7 @@ def _event(
 
 def _chain_doc(events: list[dict]) -> dict:
     return {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {"@id": "estleg:AmendmentChain_X", "@type": ["owl:Ontology"]},
             *events,
@@ -241,7 +241,7 @@ def test_proposed_amendment_nodes_are_untouched(tmp_path):
     # must not be considered for the current-flag computation.
     f = tmp_path / "amendments_proposed.json"
     doc = {
-        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {"@id": "estleg:AmendmentChain_X", "@type": ["owl:Ontology"]},
             _event("estleg:Amendment_X_a", date_val="2023-01-01", eif="2023-02-01"),

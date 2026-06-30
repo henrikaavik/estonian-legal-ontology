@@ -33,7 +33,7 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 DEFAULT_KEHTIV = "2026-05-01"
 
 # Issue #601: ONE shared minimum-size threshold for the on-disk XML cache,

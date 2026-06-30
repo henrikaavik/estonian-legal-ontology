@@ -260,7 +260,7 @@ class TestEelnoudClearingExplicitGlobs:
         # Staged jsonld file with stale draft-impact links.
         jsonld_file = eelnoud / "stale_drafts.jsonld"
         jsonld_file.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
                 {"@id": "estleg:Draft_X",
                  "@type": ["estleg:DraftLegislation"],
@@ -272,7 +272,7 @@ class TestEelnoudClearingExplicitGlobs:
         # Primary combined file (required by main()).
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [],
         }), encoding="utf-8")
 
@@ -312,7 +312,7 @@ class TestEelnoudClearingExplicitGlobs:
         # Required for main() to run.
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [],
         }), encoding="utf-8")
         (krr / "INDEX.json").write_text(json.dumps({"laws": []}), encoding="utf-8")
@@ -345,7 +345,7 @@ class TestGeneratedDraftValueObjects:
         law_file = krr / "riigi_teataja_seadus_peep.json"
         law_file.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:RTS_Map_2026",
@@ -372,7 +372,7 @@ class TestGeneratedDraftValueObjects:
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:Draft_TEST",
@@ -483,7 +483,7 @@ class TestInverseLinkSkipsNonActGraph0:
         law_file = krr / "concept_only_peep.json"
         law_file.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": law_graph,
             }),
             encoding="utf-8",
@@ -500,7 +500,7 @@ class TestInverseLinkSkipsNonActGraph0:
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:Draft_X",
@@ -581,7 +581,7 @@ class TestAmendsLawDedup:
         law_file = krr / "riigi_teataja_seadus_peep.json"
         law_file.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:RTS_Map_2026",
@@ -605,7 +605,7 @@ class TestAmendsLawDedup:
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:Draft_DUP",
@@ -672,7 +672,7 @@ class TestReportIsByteStable:
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [],
             }),
             encoding="utf-8",
@@ -758,7 +758,7 @@ class TestUnresolvedCountMatchesList:
         combined = eelnoud / "eelnoud_combined.jsonld"
         combined.write_text(
             json.dumps({
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
                         "@id": "estleg:Draft_A",

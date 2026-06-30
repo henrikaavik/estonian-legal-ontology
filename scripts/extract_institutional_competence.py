@@ -72,7 +72,7 @@ def _id_ref(value: object) -> str | None:
     return None
 
 
-NS = "https://data.riik.ee/ontology/estleg#"
+NS = "https://w3id.org/estleg/"
 
 CONTEXT = {
     "estleg": NS,

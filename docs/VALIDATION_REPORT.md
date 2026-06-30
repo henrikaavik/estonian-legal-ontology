@@ -65,7 +65,7 @@ and CI wiring. The public subdirectories are defined once in
 ## Checks Performed
 
 1. JSON syntax validity
-2. `@context` namespace consistency (`estleg:` -> `https://data.riik.ee/ontology/estleg#`)
+2. `@context` namespace consistency (`estleg:` -> `https://w3id.org/estleg/`)
 3. `@type` is always an array
 4. Multi-valued properties are arrays
 5. `sectionNumber` is always a string

@@ -1186,7 +1186,7 @@ def test_generated_draft_document_is_validator_clean_without_repair():
 
 
 def test_namespace_is_already_correct_in_generator_output():
-    """Generator output uses the canonical `data.riik.ee` namespace, so
+    """Generator output uses the canonical `w3id.org/estleg` namespace, so
     `migrate_namespace_in_value` has nothing to migrate (the repair pass is
     a no-op on fresh output)."""
     for doc in (_law_act_doc(), _regulation_doc(), _draft_doc()):
@@ -1262,7 +1262,7 @@ def _deprecation_fixture(tmp_path, monkeypatch):
         json.dumps(
             {
                 "@context": {
-                    "estleg": "https://data.riik.ee/ontology/estleg#",
+                    "estleg": "https://w3id.org/estleg/",
                     "owl": "http://www.w3.org/2002/07/owl#",
                     "dcterms": "http://purl.org/dc/terms/",
                 },
@@ -1474,7 +1474,7 @@ def test_combined_builder_stub_strips_expanded_internal_ref(tmp_path):
                     "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
                     "rdfs:label": "RK 9-9-9/9",
                     # internal ref in EXPANDED form — must be stripped so the stub is a leaf
-                    "dcterms:source": {"@id": "https://data.riik.ee/ontology/estleg#A_1"},
+                    "dcterms:source": {"@id": "https://w3id.org/estleg/A_1"},
                     "estleg:decisionLink": {"@value": "https://x", "@type": "xsd:anyURI"},
                 }
             ]

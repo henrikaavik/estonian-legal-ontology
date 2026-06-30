@@ -66,7 +66,7 @@ print(f"Draft triples: {len(g)}")
 from pathlib import Path
 from rdflib import Graph, Namespace, RDF
 
-ESTLEG = Namespace("https://data.riik.ee/ontology/estleg#")
+ESTLEG = Namespace("https://w3id.org/estleg/")
 
 g = Graph()
 for path in sorted(Path("krr_outputs/regulations/riik").glob("*_peep.json")):
@@ -112,7 +112,7 @@ print(f"EU court decision triples: {len(g)}")
 ```python
 from rdflib import Graph, Namespace
 
-ESTLEG = Namespace("https://data.riik.ee/ontology/estleg#")
+ESTLEG = Namespace("https://w3id.org/estleg/")
 g = Graph()
 g.parse("krr_outputs/karistusseadustik_peep.json", format="json-ld")
 
@@ -126,7 +126,7 @@ for s, p, o in g.triples((None, ESTLEG.references, None)):
 ```python
 from rdflib import Graph, Namespace
 
-ESTLEG = Namespace("https://data.riik.ee/ontology/estleg#")
+ESTLEG = Namespace("https://w3id.org/estleg/")
 g = Graph()
 g.parse("krr_outputs/riigikohus/riigikohus_2025_peep.json", format="json-ld")
 
@@ -139,7 +139,7 @@ for s, p, o in g.triples((None, ESTLEG.interpretsLaw, None)):
 
 ```sparql
 # Find all Supreme Court decisions referencing KarS
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?decision ?label ?date WHERE {
@@ -153,7 +153,7 @@ SELECT ?decision ?label ?date WHERE {
 
 ```sparql
 # Find drafts amending karistusseadustik
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?draft ?title ?phase WHERE {
@@ -168,7 +168,7 @@ SELECT ?draft ?title ?phase WHERE {
 
 ```sparql
 # Find EU directives currently in force
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
@@ -183,7 +183,7 @@ SELECT ?act ?title ?date WHERE {
 
 ```sparql
 # Find EU Court of Justice judgments
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?decision ?title ?ecli ?date WHERE {
@@ -535,7 +535,7 @@ python3 scripts/generate_similarity_index.py
 
 ## Schema
 
-The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) with 28 core classes:
+The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`) with 28 core classes:
 
 **Enacted Law:**
 - **`estleg:LegalProvision`** -- Individual legal provisions (paragraphs, sections)

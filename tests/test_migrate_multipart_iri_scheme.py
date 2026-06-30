@@ -43,7 +43,7 @@ def _write_peep(
     path.write_text(
         json.dumps(
             {
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": graph,
             },
             indent=2,
@@ -69,7 +69,7 @@ def _write_cross_ref(
     path.write_text(
         json.dumps(
             {
-                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": nodes,
             },
             indent=2,
@@ -228,7 +228,7 @@ class TestPlanConstruction:
             json.dumps(
                 {
                     "@context": {
-                        "estleg": "https://data.riik.ee/ontology/estleg#"
+                        "estleg": "https://w3id.org/estleg/"
                     },
                     "@graph": [
                         {
@@ -444,7 +444,7 @@ class TestDryRunAndApply:
             json.dumps(
                 {
                     "@context": {
-                        "estleg": "https://data.riik.ee/ontology/estleg#"
+                        "estleg": "https://w3id.org/estleg/"
                     },
                     "@graph": [
                         {

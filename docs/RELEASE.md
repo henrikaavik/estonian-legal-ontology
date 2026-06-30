@@ -37,7 +37,7 @@ self-describing and a consumer can pin/cite it:
   time `fix_all_issues.generate_combined_jsonld()` runs (so it survives every
   rebuild).
 
-The `versionIRI` is `https://data.riik.ee/ontology/estleg/<version>` — each
+The `versionIRI` is `https://w3id.org/estleg/<version>` — each
 release is an independently dereferenceable IRI.
 
 **When to bump:**

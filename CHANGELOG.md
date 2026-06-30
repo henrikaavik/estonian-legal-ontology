@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Namespace migration (#516)
+
+- **Canonical IRI namespace changed to `https://w3id.org/estleg/`** (w3id.org
+  PURL, slash form). EstLeg is an independent project and is **not affiliated
+  with, endorsed by, or published by the Estonian government.** Earlier
+  pre-release builds used `https://data.riik.ee/ontology/estleg#` — an
+  official-looking namespace under a government-controlled host that was **never
+  assigned to or controlled by this project.** That is an identifier-authority /
+  provenance error (the IRIs implied official status, did not dereference, and
+  could not be maintained), corrected here before v1.0.0. All generated JSON-LD,
+  source constants, SHACL, tests, metadata, docs, examples, and
+  `combined_ontology.jsonld` now use the new namespace (dataset/ontology IRIs
+  too, e.g. `https://w3id.org/estleg/dataset/estonian-legal-ontology`). A CI
+  guard blocks any `data.riik.ee` reference outside historical records. Old IRIs
+  are **not** kept alive via `owl:sameAs` — the old host is uncontrolled and
+  implies wrong provenance; a migration note is cleaner. Registering the
+  `w3id.org/estleg/` redirect (`w3id/estleg/`) is a separate maintainer step;
+  until it lands the namespace is a *planned* stable identifier. See
+  `docs/NAMESPACE_MIGRATION.md`.
+
 ## [0.11.0] - 2026-06-22
 
 ### Versioning & governance (#616)

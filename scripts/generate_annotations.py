@@ -182,7 +182,7 @@ _ACT_LEVEL_TYPES = frozenset({"owl:Ontology", "estleg:Act", "estleg:Map"})
 # An ``owl:Ontology`` @id we will accept as a link target: an ``estleg:`` CURIE that is more
 # than the bare prefix (some legacy multipart peeps carry ``estleg:`` or the bare namespace
 # IRI on the ontology node — those are not addressable, so we reject them).
-_BARE_NS = {"estleg:", "https://data.riik.ee/ontology/estleg#"}
+_BARE_NS = {"estleg:", "https://w3id.org/estleg/"}
 _MAP_IRI_RE = re.compile(r"^estleg:[^\s]+_Map(?:_\d{4})?$")
 # A per-osa act node carries its provision range in the IRI tail: ``…_OsaN_<start>_<end>``
 # (e.g. ``estleg:volaoigusseadus_Osa10_1005_1067`` -> start 1005). Used to pick the §§1-range

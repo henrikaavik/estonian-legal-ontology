@@ -98,7 +98,7 @@ kept sole/succession legacy roots) lives in
 ```json
 {
   "@context": {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
   },
@@ -141,7 +141,7 @@ fatal so operators do not accidentally continue with an old state file.
 ```json
 {
   "@context": {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#"
@@ -166,7 +166,7 @@ fatal so operators do not accidentally continue with an old state file.
 ### SPARQL: Find all drafts amending a specific law
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?draft ?title ?phase ?initiator WHERE {
@@ -183,7 +183,7 @@ SELECT ?draft ?title ?phase ?initiator WHERE {
 ### SPARQL: Find all drafts in public consultation
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?draft ?title ?initiator WHERE {
@@ -265,7 +265,7 @@ the shape instead of a hardcoded list.
 ### SPARQL: Find court decisions by case type and year
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
@@ -373,7 +373,7 @@ every consumer for no semantic gain. The overload is therefore a
 ```json
 {
   "@context": {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
@@ -423,7 +423,7 @@ every consumer for no semantic gain. The overload is therefore a
 ### SPARQL: Find all regulations issued by Vabariigi Valitsus
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?reg ?title ?actNumber ?date WHERE {
@@ -438,7 +438,7 @@ SELECT ?reg ?title ?actNumber ?date WHERE {
 ### SPARQL: Find regulations whose preamble cites a specific law
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?reg ?title ?preamble WHERE {
@@ -508,7 +508,7 @@ The four rows above are the most common institutions; `estleg:EUInst_*` is an **
 ### SPARQL: Find EU directives in force
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
@@ -524,7 +524,7 @@ SELECT ?act ?title ?date WHERE {
 ### SPARQL: Find EU regulations by institution
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?act ?title ?date WHERE {
@@ -589,7 +589,7 @@ Represents a CJEU decision available in Estonian. Source: [EUR-Lex](https://eur-
 ### SPARQL: Find EU court judgments by date
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?decision ?title ?ecli ?date WHERE {
@@ -826,7 +826,7 @@ then query from version nodes back to the stable provision IRI. The worked
 example below uses the Kohaliku omavalitsuse volikogu valimise seadus (KOVVS):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?versionText WHERE {
@@ -912,7 +912,7 @@ The current Õiguskantsler ingestion attaches annotations at the **act** level
 omavalitsuse korralduse seadus (KOKS) act node:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?text ?type ?source WHERE {
   ?ann estleg:annotates       estleg:KOKS_Map_2026 ;
@@ -1053,7 +1053,7 @@ Karistusseadustik is abbreviated `KARIST_2` in the corpus (its special part is
 `KARIST_2_Osa2`), so its § 279 is `estleg:KARIST_2_Osa2_Par_279`:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?provision ?label WHERE {
   ?provision estleg:references estleg:KARIST_2_Osa2_Par_279 ;
@@ -1063,7 +1063,7 @@ SELECT ?provision ?label WHERE {
 
 ### Find court decisions interpreting a specific provision
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 SELECT ?decision ?date WHERE {
   ?decision estleg:interpretsLaw estleg:KARIST_2_Osa1_Par_12 ;
             estleg:decisionDate ?date .
@@ -1072,7 +1072,7 @@ SELECT ?decision ?date WHERE {
 
 ### Find Estonian laws transposing a specific EU directive (Renewable Energy Directive)
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?law ?title WHERE {
   ?law estleg:transposesDirective estleg:EU_32009L0028 ;
@@ -1082,7 +1082,7 @@ SELECT ?law ?title WHERE {
 
 ### Find all obligations in a specific law
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?provision ?label WHERE {
   ?provision estleg:normativeType estleg:NormType_Obligation ;
@@ -1098,7 +1098,7 @@ Classification table above), not on individual provisions, so the query
 binds `?act a estleg:Act`:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 SELECT ?act ?label WHERE {
@@ -1116,7 +1116,7 @@ file (which defines the `estleg:Sanction` nodes and their
 `sanctionType`/`maxPenalty`):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?provision ?label ?type ?maxPenalty WHERE {
   ?provision estleg:hasSanction ?sanction ;
@@ -1231,7 +1231,7 @@ Find all Tallinn-issued regulations (these queries need the opt-in
 `regulations/kov/` corpus loaded):
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?reg ?title WHERE {
@@ -1244,7 +1244,7 @@ SELECT ?reg ?title WHERE {
 Compare a normalized title across municipalities:
 
 ```sparql
-PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?mun ?reg WHERE {
   ?reg a estleg:MunicipalRegulation ;

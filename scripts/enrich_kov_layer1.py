@@ -55,7 +55,7 @@ HISTORICAL_MUNICIPALITIES_OUT = EHAK_DIR / "historical_municipalities.jsonld"
 MISSING_LAW_FILES_FAIL_THRESHOLD = 5
 
 CONTEXT = {
-    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -158,7 +158,7 @@ def build_historical_municipality_doc(
                 "Derived from the issuer registry's mappingEvidence "
                 "citations; see issue #130."
             ),
-            "dcterms:source": {"@id": "https://data.riik.ee/ontology/estleg#Issuers_Kov_Map_2026"},
+            "dcterms:source": {"@id": "https://w3id.org/estleg/Issuers_Kov_Map_2026"},
         }
     ]
     for code in sorted(historical):
