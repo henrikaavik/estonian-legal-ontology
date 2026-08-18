@@ -71,6 +71,7 @@ import requests
 from estleg.estleg_common import (
     CONTEXT,
     KRR_DIR,
+    is_domain_individual,
     iter_peep_files,
     jsonld_text,
     parse_xml,
@@ -228,7 +229,7 @@ def _load_provision_map(
             iri = node.get("@id")
             if not isinstance(iri, str):
                 continue
-            if "owl:Ontology" in types and title is None:
+            if is_domain_individual(node) and title is None:
                 act_iri = iri
                 src = node.get("dc:source")
                 if isinstance(src, str):
@@ -414,7 +415,7 @@ def _sidecar_act_title(doc: dict) -> str:
     for node in doc.get("@graph") or []:
         if not isinstance(node, dict):
             continue
-        if "owl:Ontology" not in _node_type_list(node):
+        if not is_domain_individual(node) and "owl:Ontology" not in _node_type_list(node):
             continue
         src = _citation_text(node.get("dc:source"))
         if src:

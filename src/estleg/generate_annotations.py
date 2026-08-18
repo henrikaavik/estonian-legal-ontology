@@ -79,6 +79,8 @@ from estleg.estleg_common import (
     KNOWN_ABBREVIATIONS,
     KRR_DIR,
     PINNED_RUN_TIMESTAMP,
+    act_root_node,
+    is_domain_individual,
     iter_peep_files,
     sanitize_id,
     slugify,
@@ -168,7 +170,7 @@ def _strip_letter_header(text: str) -> str:
 # Act-level @type values that legitimately represent the act node an annotation should
 # point at; provision-level nodes intentionally do NOT appear here so the fallback never
 # silently picks a section node. (Mirrors generate_harmonisation_links._ACT_LEVEL_TYPES.)
-_ACT_LEVEL_TYPES = frozenset({"owl:Ontology", "estleg:Act", "estleg:Map"})
+_ACT_LEVEL_TYPES = frozenset({"estleg:Act", "estleg:Map"})
 
 # An ``owl:Ontology`` @id we will accept as a link target: an ``estleg:`` CURIE that is more
 # than the bare prefix (some legacy multipart peeps carry ``estleg:`` or the bare namespace
@@ -438,23 +440,16 @@ _ESTONIAN_ORDINAL_PREFIX_TOKENS = _ESTONIAN_ABBREVIATION_TOKENS | frozenset({"os
 def _ontology_node_iri(graph: list, *, prefer_map: bool = True) -> str | None:
     """Return the addressable act-node IRI from a peep ``@graph``.
 
-    Preferred path: the ``owl:Ontology`` metadata node's ``@id`` (when ``prefer_map`` and
-    several peeps share a title, a ``…_Map`` / ``…_Map_YYYY`` IRI is chosen over a part IRI
-    by the caller's first-wins ordering — see :func:`build_law_index`). Restricted fallback:
-    ``graph[0]`` only if it is itself an act-level node — never an arbitrary provision node
-    (mirrors ``generate_harmonisation_links.get_law_harmonisation_target_iri``).
+    Preferred path: the act-root node's ``@id`` (`estleg:Act` / regulation
+    class, #435). Restricted fallback: ``graph[0]`` only if it is itself
+    an act-level node — never an arbitrary provision node.
     """
-    for node in graph:
-        if not isinstance(node, dict):
-            continue
-        types = node.get("@type", [])
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types:
-            nid = node.get("@id")
-            if isinstance(nid, str) and nid not in _BARE_NS and nid.startswith("estleg:"):
-                return nid
-            return None
+    root = act_root_node({"@graph": graph})
+    if root is not None:
+        nid = root.get("@id")
+        if isinstance(nid, str) and nid not in _BARE_NS and nid.startswith("estleg:"):
+            return nid
+        return None
     if graph and isinstance(graph[0], dict):
         node = graph[0]
         types = node.get("@type", [])
@@ -519,7 +514,7 @@ def build_law_index(krr_dir: Path = KRR_DIR) -> _LawIndex:
         # dc:source title
         src = None
         for node in graph:
-            if isinstance(node, dict) and "owl:Ontology" in (node.get("@type", []) or []):
+            if isinstance(node, dict) and is_domain_individual(node):
                 src = _clean_dc_source(node.get("dc:source"))
                 break
         if not src:

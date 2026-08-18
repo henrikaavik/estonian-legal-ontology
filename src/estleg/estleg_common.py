@@ -894,10 +894,7 @@ def act_deprecation(doc: object) -> tuple[bool, str | None]:
     for node in graph:
         if not isinstance(node, dict):
             continue
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" not in types:
+        if not is_domain_individual(node) and "owl:Ontology" not in node_type_list(node):
             continue
         dep = node.get("owl:deprecated")
         if isinstance(dep, dict):
@@ -1220,6 +1217,12 @@ def node_type_list(node: dict) -> list[str]:
 def is_domain_individual(node: dict) -> bool:
     """True when the node is a law/regulation individual, not a graph header."""
     return bool(DOMAIN_INDIVIDUAL_TYPES.intersection(node_type_list(node)))
+
+
+def is_graph_header(node: dict) -> bool:
+    """True for a bare ``owl:Ontology`` header with no act/regulation class."""
+    types = node_type_list(node)
+    return "owl:Ontology" in types and not DOMAIN_INDIVIDUAL_TYPES.intersection(types)
 
 
 def act_root_node(doc: dict) -> dict | None:

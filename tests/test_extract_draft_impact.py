@@ -434,7 +434,7 @@ class TestGeneratedDraftValueObjects:
 
 
 class TestFindActNode:
-    def test_prefers_ontology_act_then_any_act_then_none(self):
+    def test_prefers_first_domain_individual_then_none(self):
         from estleg.extract_draft_impact import find_act_node
         concept = {"@id": "estleg:C1", "@type": ["estleg:LegalConcept"]}
         plain_act = {"@id": "estleg:A1", "@type": ["estleg:Act"]}
@@ -442,9 +442,9 @@ class TestFindActNode:
             "@id": "estleg:M1",
             "@type": ["owl:Ontology", "estleg:Act"],
         }
-        # owl:Ontology+Act wins even when it is not first.
-        assert find_act_node([concept, plain_act, onto_act]) is onto_act
-        # Falls back to any estleg:Act node.
+        # First Act/regulation individual wins (#435).
+        assert find_act_node([concept, plain_act, onto_act]) is plain_act
+        assert find_act_node([concept, onto_act, plain_act]) is onto_act
         assert find_act_node([concept, plain_act]) is plain_act
         # No act node → None (caller must skip, not stamp graph[0]).
         assert find_act_node([concept]) is None

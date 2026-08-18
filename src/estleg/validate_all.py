@@ -29,6 +29,7 @@ from estleg import estleg_common
 from estleg.deprecate_legacy_statutes import verify_decisions_applied
 from estleg.estleg_common import (
     act_deprecation,
+    act_root_node,
     is_non_data_file,
     iter_krr_jsonld_files,
 )
@@ -953,16 +954,8 @@ def validate_regulation_indexes(krr_dir: Path = KRR_DIR):
 
 
 def _peep_ontology_node(doc: dict) -> dict | None:
-    """Return the first ``owl:Ontology`` node in a peep doc's ``@graph``."""
-    for node in doc.get("@graph", []):
-        if not isinstance(node, dict):
-            continue
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types:
-            return node
-    return None
+    """Return the act-root node in a peep doc's ``@graph``."""
+    return act_root_node(doc)
 
 
 def _is_no_structured_body_doc(doc: dict) -> bool:

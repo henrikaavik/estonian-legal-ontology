@@ -735,15 +735,14 @@ class TestActLevelPlacement:
         assert not is_act_level_node({"@type": ["estleg:LegalProvision_Foo"]})
         assert not is_act_level_node({})
 
-    def test_find_act_node_prefers_ontology_then_act(self):
+    def test_find_act_node_prefers_first_domain_individual(self):
         from estleg.extract_temporal_data import find_act_node
         graph = [
             {"@id": "estleg:P1", "@type": ["estleg:LegalProvision"]},
             {"@id": "estleg:A1", "@type": ["estleg:Act"]},
             {"@id": "estleg:M1", "@type": ["owl:Ontology", "estleg:Act"]},
         ]
-        assert find_act_node(graph)["@id"] == "estleg:M1"
-        # No owl:Ontology -> first estleg:Act node.
+        assert find_act_node(graph)["@id"] == "estleg:A1"
         assert find_act_node(graph[:2])["@id"] == "estleg:A1"
         assert find_act_node([{"@id": "estleg:Catalog", "@type": ["owl:Ontology"]}]) is None
         # Neither -> None (no graph[0] fallback).

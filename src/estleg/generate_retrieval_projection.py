@@ -75,6 +75,7 @@ from estleg.estleg_common import (
     ONTOLOGY_VERSION,
     REPO_ROOT,
     act_deprecation,
+    act_root_node,
     jsonld_text,
     save_json,
 )
@@ -170,11 +171,8 @@ def _strip_xml(url: str | None) -> str | None:
 # Act-root resolution (title / rt_url / kehtiv / abbreviation / status)
 # ---------------------------------------------------------------------------
 def find_act_root(graph: list[dict]) -> dict | None:
-    """Return the act/ontology root node (first ``owl:Ontology``)."""
-    for node in graph:
-        if "owl:Ontology" in _types(node):
-            return node
-    return None
+    """Return the act-root individual, else a bare ontology header."""
+    return act_root_node({"@graph": graph})
 
 
 def act_title(root: dict | None) -> str:

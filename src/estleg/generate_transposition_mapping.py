@@ -26,6 +26,7 @@ from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
     act_deprecation,
+    act_root_node,
     iter_peep_files,
     jsonld_text,
 )
@@ -777,13 +778,10 @@ def generate_schema() -> dict:
 
 def find_law_transposition_target(data: dict) -> dict | None:
     """Find the act-level node that receives transposition links."""
+    root = act_root_node(data)
+    if root is not None:
+        return root
     graph = data.get("@graph", [])
-    for node in graph:
-        types = node.get("@type", [])
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types:
-            return node
     return graph[0] if graph else None
 
 

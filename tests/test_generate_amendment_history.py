@@ -1672,13 +1672,14 @@ class TestAmendedByRequiresActNode:
     ``graph[0]`` is a non-Act node (e.g. ``estleg:LegalConcept``) must be
     SKIPPED, not stamped via the old ``graph[0]`` fallback (issue #289)."""
 
-    def test_find_act_node_prefers_ontology_act_then_any_act(self):
+    def test_find_act_node_prefers_first_domain_individual(self):
         from estleg.generate_amendment_history import find_act_node
 
         concept = {"@id": "estleg:C", "@type": ["estleg:LegalConcept"]}
         plain_act = {"@id": "estleg:A2", "@type": ["estleg:Act"]}
         onto_act = {"@id": "estleg:A1", "@type": ["owl:Ontology", "estleg:Act"]}
-        assert find_act_node([concept, plain_act, onto_act]) is onto_act
+        assert find_act_node([concept, plain_act, onto_act]) is plain_act
+        assert find_act_node([concept, onto_act, plain_act]) is onto_act
         assert find_act_node([concept, plain_act]) is plain_act
         assert find_act_node([concept]) is None
         assert find_act_node([]) is None

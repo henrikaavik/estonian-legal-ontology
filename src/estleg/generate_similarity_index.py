@@ -89,6 +89,8 @@ from pathlib import Path
 
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
+    is_domain_individual,
+    is_graph_header,
     iter_peep_files,
     jsonld_text,
     save_json,
@@ -529,7 +531,7 @@ def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None, i
             continue
 
         types = node_types(node)
-        if "owl:Ontology" in types or "owl:Class" in types:
+        if is_graph_header(node) or is_domain_individual(node) or "owl:Class" in types:
             continue
         if "estleg:TopicCluster" in str(types):
             continue
@@ -1312,7 +1314,7 @@ def _build_corpus_act_index(
             if not isinstance(node_id, str) or not node_id.startswith("estleg:"):
                 continue
             types = set(node_types(node))
-            if "owl:Ontology" in types and types & {
+            if is_domain_individual(node) and types & {
                 "estleg:Act",
                 "estleg:Law",
                 "estleg:MunicipalRegulation",

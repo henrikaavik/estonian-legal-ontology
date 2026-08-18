@@ -238,7 +238,8 @@ def check_laws():
     ]
 
     def _root_node_types(path: Path) -> list[str] | None:
-        node = _act_node(_load(path), "owl:Ontology")
+        doc = _load(path)
+        node = _act_node(doc, "estleg:Act") or _act_node(doc, "owl:Ontology")
         if node is None:
             return None
         types = node.get("@type") or []
@@ -272,7 +273,7 @@ def check_state_regulations():
             types = n.get("@type") or []
             if isinstance(types, str):
                 types = [types]
-            if "owl:Ontology" not in types:
+            if "estleg:Act" not in types and "owl:Ontology" not in types:
                 continue
             if any(t.endswith("Regulation") and t.startswith("estleg:")
                    for t in types):

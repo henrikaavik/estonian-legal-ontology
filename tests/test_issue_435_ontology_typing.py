@@ -17,6 +17,22 @@ REPO = Path(__file__).resolve().parent.parent
 ABIPOL = REPO / "krr_outputs" / "abipolitseiniku_seadus_peep.json"
 
 
+def test_act_root_helpers_prefer_domain_individual() -> None:
+    from estleg.estleg_common import act_root_node, is_graph_header
+
+    doc = {
+        "@graph": [
+            {"@id": "estleg:Header", "@type": ["owl:Ontology"]},
+            {"@id": "estleg:X_Map_2026", "@type": ["estleg:Act", "estleg:Law"]},
+        ]
+    }
+    root = act_root_node(doc)
+    assert root is not None
+    assert root["@id"] == "estleg:X_Map_2026"
+    assert is_graph_header(doc["@graph"][0])
+    assert not is_graph_header(root)
+
+
 def test_strip_removes_ontology_only_from_domain_individuals() -> None:
     act = {"@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]}
     assert is_domain_individual(act)

@@ -35,6 +35,8 @@ from estleg.estleg_common import (
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
     act_deprecation,
+    act_root_node,
+    is_domain_individual,
     iter_peep_files,
     jsonld_text,
     save_json,
@@ -229,7 +231,7 @@ def build_provision_index() -> tuple[
             types = node.get("@type") or []
             if isinstance(types, str):
                 types = [types]
-            if "owl:Ontology" not in types:
+            if not is_domain_individual(node) and "owl:Ontology" not in types:
                 continue
             act_iri = node.get("@id")
             if not act_iri:
@@ -1850,7 +1852,7 @@ def _derive_self_prefix(
         types = node.get("@type") or []
         if isinstance(types, str):
             types = [types]
-        if "owl:Ontology" not in types:
+        if not is_domain_individual(node) and "owl:Ontology" not in types:
             continue
         act_iri = node.get("@id")
         if not isinstance(act_iri, str):
@@ -2234,16 +2236,8 @@ def _process_preamble_for_act(
     if not graph:
         return None
 
-    # Find the act node (owl:Ontology-typed). Skip the file if absent.
-    act_node = None
-    for n in graph:
-        types = n.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types and n.get("@id"):
-            act_node = n
-            break
-    if act_node is None:
+    act_node = act_root_node({"@graph": graph})
+    if act_node is None or not act_node.get("@id"):
         return None
     source_act_iri = act_node["@id"]
 

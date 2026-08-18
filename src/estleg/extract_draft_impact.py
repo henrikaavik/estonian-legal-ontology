@@ -21,6 +21,8 @@ from functools import partial
 from pathlib import Path
 
 from estleg.estleg_common import (
+    act_root_node,
+    is_domain_individual,
     iter_peep_files,
     jsonld_text,
     jsonld_texts,
@@ -68,18 +70,13 @@ def find_act_node(graph: list[dict]) -> dict | None:
     """Return the act node a peep file's ``estleg:affectedBy`` triple
     belongs on, mirroring ``extract_temporal_data.find_act_node``.
 
-    Preference order: the ``owl:Ontology`` act-metadata node when it is
-    also typed as ``estleg:Act`` (the historical write site), then any
-    ``estleg:Act``-typed node. Returns ``None`` when neither exists — the
-    caller must then skip enrichment for that file rather than stamping
-    the link onto ``graph[0]`` (which could be a ``LegalConcept``; this is
-    the corruption #128 fixed in the temporal sibling).
+    Preference order: the act-root individual (`estleg:Act`, #435), then
+    any node carrying ``ACT_TYPE_MARKERS``. Returns ``None`` when neither
+    exists — the caller must then skip enrichment rather than stamping
+    the link onto ``graph[0]``.
     """
     for node in graph:
-        if not isinstance(node, dict):
-            continue
-        types = _node_types(node)
-        if "owl:Ontology" in types and types & ACT_TYPE_MARKERS:
+        if isinstance(node, dict) and is_domain_individual(node):
             return node
     for node in graph:
         if isinstance(node, dict) and _node_types(node) & ACT_TYPE_MARKERS:
@@ -245,18 +242,15 @@ def slug_from_name(name: str) -> str:
 
 
 def _read_ontology_iri(filepath: Path) -> str | None:
-    """Read the owl:Ontology node @id from a JSON-LD file."""
+    """Read the act-root node @id from a JSON-LD file."""
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             doc = json.load(f)
-        for node in doc.get("@graph", []):
-            types = node.get("@type", [])
-            if isinstance(types, str):
-                types = [types]
-            if "owl:Ontology" in types:
-                iri = node.get("@id", "")
-                if iri:
-                    return iri
+        root = act_root_node(doc)
+        if root:
+            iri = root.get("@id", "")
+            if iri:
+                return iri
     except Exception:
         pass
     return None

@@ -52,7 +52,9 @@ from pathlib import Path
 from estleg.estleg_common import (
     CONTEXT,
     PINNED_RUN_TIMESTAMP,
+    act_root_node,
     build_globalid_xml_lookup,
+    is_domain_individual,
     iter_peep_files,
     jsonld_text,
     pair_peep_with_xml,
@@ -325,11 +327,10 @@ def _remove_obsolete_amendment_chain_files(
 
 
 def extract_title(doc: dict) -> str:
-    """Extract the law title from the ontology node's dc:source."""
-    for node in doc.get("@graph", []):
-        types = node.get("@type", [])
-        if "owl:Ontology" in types:
-            return node.get("dc:source", node.get("rdfs:label", ""))
+    """Extract the law title from the act-root node's dc:source."""
+    node = act_root_node(doc)
+    if node:
+        return node.get("dc:source", node.get("rdfs:label", ""))
     return ""
 
 
@@ -1019,18 +1020,12 @@ def find_act_node(graph: list[dict]) -> dict | None:
     """Return the act node ``estleg:amendedBy`` belongs on, or None.
 
     Preference order (mirrors ``extract_temporal_data.find_act_node``):
-    the ``owl:Ontology`` act-metadata node when it is also typed
-    ``estleg:Act`` (the historical write site), then any ``estleg:Act``-typed
-    node. Returns ``None`` when neither exists — the caller must then SKIP
-    enrichment for that file rather than falling back to ``graph[0]`` (some
-    peeps, e.g. ``tsiviilseadustik_osa6/osa7``, have ``graph[0]`` =
-    ``estleg:LegalConcept``).
+    the act-root individual (#435), then any ``estleg:Act``-typed node.
+    Returns ``None`` when neither exists — the caller must then SKIP
+    enrichment rather than falling back to ``graph[0]``.
     """
     for node in graph:
-        if not isinstance(node, dict):
-            continue
-        types = set(node.get("@type") or [])
-        if "owl:Ontology" in types and types & _ACT_TYPE_MARKERS:
+        if isinstance(node, dict) and is_domain_individual(node):
             return node
     for node in graph:
         if not isinstance(node, dict):
@@ -1311,20 +1306,20 @@ def main() -> int:
         # carries no repeats when two parts share an ontology node.
         member_ontology_ids: list[str] = []
         for _slug, _info in members:
-            for node in _info["doc"].get("@graph", []):
-                if "owl:Ontology" in (node.get("@type") or []):
-                    onto_id = node.get("@id", "")
-                    if onto_id and onto_id not in member_ontology_ids:
-                        member_ontology_ids.append(onto_id)
-                    if not canonical_ontology_id:
-                        canonical_ontology_id = onto_id
-                        if canonical_title is None or not canonical_title:
-                            canonical_title = (
-                                node.get("dc:source")
-                                or node.get("rdfs:label")
-                                or ""
-                            )
-                    break
+            node = act_root_node(_info["doc"])
+            if node is None:
+                continue
+            onto_id = node.get("@id", "")
+            if onto_id and onto_id not in member_ontology_ids:
+                member_ontology_ids.append(onto_id)
+            if not canonical_ontology_id:
+                canonical_ontology_id = onto_id
+                if canonical_title is None or not canonical_title:
+                    canonical_title = (
+                        node.get("dc:source")
+                        or node.get("rdfs:label")
+                        or ""
+                    )
 
         # ``estleg:amends`` payload: a single ``{"@id": ...}`` for a
         # single-part law, or a LIST of ``{"@id": ...}`` (one per part) for a

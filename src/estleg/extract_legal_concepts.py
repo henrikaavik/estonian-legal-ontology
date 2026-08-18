@@ -24,6 +24,7 @@ from pathlib import Path
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
+    act_root_node,
     iter_peep_files,
     jsonld_text,
     jsonld_texts,
@@ -519,11 +520,9 @@ def load_law_files() -> list[dict]:
             continue
 
         title = ""
-        for node in doc.get("@graph", []):
-            types = node.get("@type", [])
-            if "owl:Ontology" in types:
-                title = jsonld_text(node.get("dc:source", node.get("rdfs:label", "")))
-                break
+        root = act_root_node(doc)
+        if root:
+            title = jsonld_text(root.get("dc:source", root.get("rdfs:label", "")))
 
         laws.append({
             "slug": slug,

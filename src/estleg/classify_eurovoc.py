@@ -27,6 +27,7 @@ from estleg.estleg_common import (
     AGGREGATE_REGISTRY_PREFIXES,
     BUILD_EVALUATION_DATE,
     CONTEXT,
+    act_root_node,
     iter_peep_files,
     jsonld_text,
 )
@@ -590,14 +591,7 @@ def update_law_file_eurovoc(
 
     graph = data.get("@graph", [])
 
-    # Find the ontology metadata node
-    target_node = None
-    for node in graph:
-        types = node.get("@type", [])
-        if "owl:Ontology" in types:
-            target_node = node
-            break
-
+    target_node = act_root_node({"@graph": graph})
     if target_node is None and graph:
         target_node = graph[0]
 

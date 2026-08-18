@@ -80,14 +80,14 @@ def _node_types(node: dict) -> list[str]:
 def is_kov_root(node: dict) -> bool:
     """True iff this node is a KOV regulation act root.
 
-    The root is the ``owl:Ontology`` metadata node that also carries
-    ``estleg:MunicipalRegulation`` (the per-file act node). KOV provisions
-    and annexes lack ``owl:Ontology``; state regulations lack
-    ``estleg:MunicipalRegulation``; so this predicate isolates exactly the
-    KOV act roots.
+    The root is the act node typed ``estleg:MunicipalRegulation``
+    (plus ``estleg:Act`` after #435). KOV provisions and annexes lack
+    that class; state regulations lack ``estleg:MunicipalRegulation``.
     """
     types = set(_node_types(node))
-    return "owl:Ontology" in types and "estleg:MunicipalRegulation" in types
+    return "estleg:MunicipalRegulation" in types and (
+        "estleg:Act" in types or "owl:Ontology" in types
+    )
 
 
 def backfill_node(node: dict) -> bool:

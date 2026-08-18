@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Law and regulation individuals are typed `estleg:Act` / `estleg:Law` /
   regulation classes only. `owl:Ontology` stays on dataset/graph headers.
-  Consumers find act roots via `estleg:Act`, not the dual type.
+  Act-root finders use `act_root_node` / `is_domain_individual`.
 
 ### Version-layer freshness is interval coverage (#532)
 

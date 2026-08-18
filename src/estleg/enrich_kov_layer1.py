@@ -307,7 +307,7 @@ def is_stampable_law_node(types: list[str]) -> bool:
     definition of "applicable" — without it, the two could drift and
     silently mask coverage gaps (Finding #1 in issue #182).
     """
-    if "owl:Ontology" not in types:
+    if "estleg:Act" not in types and "owl:Ontology" not in types:
         return False
     return not _REGULATION_TYPES.intersection(types)
 
@@ -382,7 +382,7 @@ def stamp_act_type(path: Path) -> None:
         types = node.get("@type", [])
         if isinstance(types, str):
             types = [types]
-        if "owl:Ontology" not in types:
+        if "estleg:Act" not in types and "owl:Ontology" not in types:
             continue
         if "estleg:MunicipalRegulation" in types:
             raise ValueError(

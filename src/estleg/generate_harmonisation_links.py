@@ -38,6 +38,7 @@ from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
     act_deprecation,
+    act_root_node,
     iter_peep_files,
     save_json,
 )
@@ -517,14 +518,7 @@ def update_law_file_harmonisation(filepath: Path, harmonisation_ids: list[str]) 
 
     graph = data.get("@graph", [])
 
-    # Find the ontology metadata node
-    target_node = None
-    for node in graph:
-        types = node.get("@type", [])
-        if "owl:Ontology" in types:
-            target_node = node
-            break
-
+    target_node = act_root_node({"@graph": graph})
     if target_node is None and graph:
         target_node = graph[0]
 
@@ -557,7 +551,6 @@ def update_law_file_harmonisation(filepath: Path, harmonisation_ids: list[str]) 
 # below never silently picks a section/sub-paragraph node.
 _ACT_LEVEL_TYPES = frozenset(
     {
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Map",
     }
@@ -605,7 +598,7 @@ def get_law_harmonisation_target_iri(law_file: str) -> str | None:
     """Return the real act-level node IRI for a mapped law file.
 
     The previous implementation fell through to ``graph[0]`` whenever no
-    ``owl:Ontology`` node was found — which silently anchored the
+    act-root node was found — which silently anchored the
     harmonisation link on whatever sat first in the file (often a
     provision, not the act). We now require the fallback node to carry
     an act-level ``@type`` (see ``_ACT_LEVEL_TYPES``); otherwise return
@@ -633,14 +626,10 @@ def get_law_harmonisation_target_iri(law_file: str) -> str | None:
         node_id = node.get("@id")
         return node_id if isinstance(node_id, str) and node_id else None
 
-    # Preferred path: explicit ``owl:Ontology`` metadata node.
-    for node in graph:
-        types = node.get("@type", [])
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types:
-            node_id = node.get("@id")
-            return node_id if isinstance(node_id, str) and node_id else None
+    root = act_root_node({"@graph": graph})
+    if root is not None:
+        node_id = root.get("@id")
+        return node_id if isinstance(node_id, str) and node_id else None
 
     # Restricted fallback: only accept ``graph[0]`` if it is itself an
     # act-level node — never an arbitrary provision node.

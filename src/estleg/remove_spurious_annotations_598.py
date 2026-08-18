@@ -70,7 +70,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from estleg import generate_annotations as ga
-from estleg.estleg_common import KRR_DIR, save_json
+from estleg.estleg_common import KRR_DIR, act_root_node, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = REPO_ROOT / "scripts"
@@ -155,12 +155,11 @@ def build_iri_title_map(krr_dir: Path = KRR_DIR) -> dict[str, str]:
         iri = ga._ontology_node_iri(graph)
         if not iri:
             continue
-        for node in graph:
-            if isinstance(node, dict) and "owl:Ontology" in (node.get("@type", []) or []):
-                title = ga._clean_dc_source(node.get("dc:source"))
-                if title:
-                    iri_title.setdefault(iri, ga._norm_name(title))
-                break
+        root = act_root_node({"@graph": graph})
+        if root:
+            title = ga._clean_dc_source(root.get("dc:source"))
+            if title:
+                iri_title.setdefault(iri, ga._norm_name(title))
     return iri_title
 
 
