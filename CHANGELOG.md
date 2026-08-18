@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### AmendmentEvents join the version layer (#429)
+
+- Distinct `versionValidFrom` dates mint or enrich `AmendmentEvent`s with
+  `resultedInVersion`. Act `lastAmendmentDate` is the max version date.
+  `validate_last_amendment_matches_versions` enforces the join.
+
 ### Citations target lõige when named (#512)
 
 - `references` and `interpretsLaw` resolve to `_Par_N_Lg_M` when the

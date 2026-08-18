@@ -234,6 +234,115 @@ def make_xsd_date(iso_date: str) -> dict:
     return {"@value": iso_date, "@type": "xsd:date"}
 
 
+def _date_literal(value: object) -> str | None:
+    if isinstance(value, str) and value:
+        return value[:10]
+    if isinstance(value, dict):
+        raw = value.get("@value")
+        if isinstance(raw, str) and raw:
+            return raw[:10]
+    return None
+
+
+def collect_versions_by_date(version_doc: dict) -> dict[str, list[str]]:
+    """Group ProvisionVersion IRIs by ``versionValidFrom`` (#429)."""
+    by_date: dict[str, list[str]] = {}
+    for node in version_doc.get("@graph") or []:
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:ProvisionVersion" not in types:
+            continue
+        nid = node.get("@id")
+        date = _date_literal(node.get("estleg:versionValidFrom"))
+        if not isinstance(nid, str) or not date:
+            continue
+        by_date.setdefault(date, []).append(nid)
+    for date in by_date:
+        by_date[date] = list(dict.fromkeys(by_date[date]))
+    return by_date
+
+
+def link_amendments_to_versions(amendment_doc: dict, versions_by_date: dict[str, list[str]]) -> int:
+    """Stamp ``resultedInVersion`` and mint events for missing version dates (#429)."""
+    graph = amendment_doc.setdefault("@graph", [])
+    events_by_date: dict[str, dict] = {}
+    amends: list = []
+    prefix = "Act"
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        nid = node.get("@id") or ""
+        if nid.startswith("estleg:AmendmentChain_"):
+            prefix = nid.removeprefix("estleg:AmendmentChain_")
+        if "estleg:AmendmentEvent" not in types:
+            continue
+        if not amends and node.get("estleg:amends"):
+            raw = node["estleg:amends"]
+            amends = raw if isinstance(raw, list) else [raw]
+        date = _date_literal(node.get("estleg:entryIntoForce")) or _date_literal(
+            node.get("estleg:amendmentDate")
+        )
+        if date:
+            events_by_date.setdefault(date, node)
+
+    added = 0
+    linked = 0
+    for date, version_iris in sorted(versions_by_date.items()):
+        event = events_by_date.get(date)
+        if event is None:
+            event = {
+                "@id": f"estleg:Amendment_{prefix}_vf_{date.replace('-', '')}",
+                "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+                "estleg:entryIntoForce": make_xsd_date(date),
+                "rdfs:label": f"Muudatus (versioonikiht) {date}",
+            }
+            if amends:
+                event["estleg:amends"] = amends
+            graph.append(event)
+            events_by_date[date] = event
+            added += 1
+        refs = [{"@id": iri} for iri in version_iris]
+        if event.get("estleg:resultedInVersion") != refs:
+            event["estleg:resultedInVersion"] = refs
+            linked += 1
+    header = next(
+        (
+            node
+            for node in graph
+            if isinstance(node, dict)
+            and str(node.get("@id", "")).startswith("estleg:AmendmentChain_")
+        ),
+        None,
+    )
+    if header is not None:
+        header["estleg:totalAmendments"] = {
+            "@value": str(len(versions_by_date)),
+            "@type": "xsd:integer",
+        }
+    return added + linked
+
+
+def stamp_last_amendment_from_versions(peep_doc: dict, versions_by_date: dict[str, list[str]]) -> bool:
+    """Set act-root ``lastAmendmentDate`` to max ``versionValidFrom`` (#429)."""
+    if not versions_by_date:
+        return False
+    latest = max(versions_by_date)
+    root = act_root_node(peep_doc)
+    if root is None:
+        return False
+    new = make_xsd_date(latest)
+    if root.get("estleg:lastAmendmentDate") == new:
+        return False
+    root["estleg:lastAmendmentDate"] = new
+    return True
+
+
 # A Riigi Teataja globalId is an all-digit token (e.g. ``178370`` or the longer
 # ``13244294`` / ``106122014001`` forms). Used to recognise an ``akt_viide`` as
 # a citable RT identifier so ``estleg:amendingAct`` can carry a stable

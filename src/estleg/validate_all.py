@@ -36,6 +36,7 @@ from estleg.estleg_common import (
     iter_krr_jsonld_files,
     jsonld_id_values,
 )
+from estleg.generate_amendment_history import collect_versions_by_date
 
 # #519: the combined builder forward-chains rdf:type over the subclass
 # hierarchy, so a provision's combined @type is its source @type plus the
@@ -2612,6 +2613,41 @@ def _kehtiv_for_slug(
     return None
 
 
+def validate_last_amendment_matches_versions(krr_dir: Path = KRR_DIR):
+    """#429: act lastAmendmentDate must equal max versionValidFrom when both exist."""
+    vers_dir = krr_dir / "provision_versions"
+    if not vers_dir.is_dir():
+        return
+    for path in sorted(vers_dir.glob("*.jsonld")):
+        try:
+            version_doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        by_date = collect_versions_by_date(version_doc)
+        if not by_date:
+            continue
+        latest = max(by_date)
+        slug = path.stem
+        peeps = [krr_dir / f"{slug}_peep.json", *sorted(krr_dir.glob(f"{slug}_osa*_peep.json"))]
+        for peep in peeps:
+            if not peep.is_file():
+                continue
+            try:
+                doc = json.loads(peep.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+                continue
+            root = act_root_node(doc)
+            if root is None or "estleg:lastAmendmentDate" not in root:
+                continue
+            raw = root.get("estleg:lastAmendmentDate")
+            got = raw.get("@value") if isinstance(raw, dict) else raw
+            if got != latest:
+                error(
+                    f"{peep.name}: lastAmendmentDate {got} != version-layer "
+                    f"max versionValidFrom {latest} (#429)"
+                )
+
+
 def validate_version_layer_freshness(krr_dir: Path = KRR_DIR):
     """#532: every sidecar must have a version interval that contains peep kehtiv.
 
@@ -3417,6 +3453,7 @@ def main(argv: list[str] | None = None):
     validate_provision_version_monotonicity(krr_dir)
     validate_provision_version_encoding(krr_dir)
     validate_version_layer_freshness(krr_dir)
+    validate_last_amendment_matches_versions(krr_dir)
     validate_provision_text_quality(krr_dir)
     validate_harmonisation_symmetry(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
