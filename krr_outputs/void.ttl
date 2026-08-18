@@ -12,6 +12,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
 @prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 @prefix estleg:  <https://w3id.org/estleg/> .
@@ -30,6 +31,8 @@
     dcterms:issued "2026-02-23"^^xsd:date ;
     dcterms:modified "2026-06-22"^^xsd:date ;
     owl:versionInfo "0.11.0" ;
+    # #456: dataset-level PROV-O only — law peeps are not rewritten.
+    prov:wasGeneratedBy estleg:Activity_CorpusBuild_0_11_0 ;
     # #522: checker stamp (scripts/check_tbox_consistency.py), not an owlrl run.
     estleg:consistencyChecked true ;
     void:uriSpace "https://w3id.org/estleg/" ;
@@ -47,6 +50,12 @@
 <https://github.com/henrikaavik>
     a foaf:Agent ;
     foaf:name "Henrik Aavik" .
+
+estleg:Activity_CorpusBuild_0_11_0
+    a prov:Activity ;
+    rdfs:label "Estonian Legal Ontology 0.11.0 corpus build"@en ;
+    prov:startedAtTime "2026-06-01T00:00:00+00:00"^^xsd:dateTime ;
+    prov:used <https://www.riigiteataja.ee/> , <https://eelnoud.valitsus.ee/> .
 
 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-eurovoc>
     a void:Linkset ;

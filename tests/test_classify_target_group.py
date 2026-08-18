@@ -190,7 +190,10 @@ def test_classify_files_writes_target_groups_and_report(tmp_path):
     doc = json.loads(peep.read_text(encoding="utf-8"))
     by_id = {node["@id"]: node for node in doc["@graph"]}
 
-    assert by_id["estleg:TEST_Par_1"]["estleg:targetGroup"] == ["citizen", "business"]
+    assert by_id["estleg:TEST_Par_1"]["estleg:targetGroup"] == [
+        {"@id": "estleg:TargetGroup_Citizen"},
+        {"@id": "estleg:TargetGroup_Business"},
+    ]
     assert "estleg:targetGroup" not in by_id["estleg:TEST_Par_2"]
     assert report["summary"]["provisions_with_dutyHolder"] == 2
     assert report["summary"]["dutyHolder_classified"] == 1
@@ -244,3 +247,19 @@ def test_body_union_capped_when_no_duty_holder():
     groups2, used_duty2 = classify_node(node2)
     assert used_duty2 is True
     assert len(groups2) >= 3  # citizen + business + ngo all retained
+
+
+def test_alcohol_handler_is_not_citizen_only():
+    """#460: alkoholikäitleja / ettevõtja duties must not be citizen-only."""
+    from classify_target_group import classify_node
+
+    node = {
+        "estleg:summary": (
+            "Alkoholikäitleja on isik, kes tegeleb alkoholi käitlemisega. "
+            "Alkoholikäitleja ja ettevõtja peavad täitma arvestuskohustust."
+        ),
+    }
+    groups, _ = classify_node(node)
+    assert "business" in groups
+    assert groups != ["citizen"]
+    assert "citizen" not in groups

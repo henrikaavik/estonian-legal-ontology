@@ -8,7 +8,8 @@
 | **sidecar** | Versions, annotations, expressions, retrieval | `generate_provision_versions.py`, `generate_annotations.py`, `generate_act_expressions_608.py`, `generate_retrieval_projection.py` |
 | **validator** | Release gates | `validate_all.py`, `shacl_validate_all.py`, `validate_seadusloome_sync.py`, `validate_combined_standalone.py` |
 | **shared** | Commons | `estleg_common.py`, `riigiteataja_common.py`, `eurlex_common.py`, `kov_registry.py` |
-| **spent-migration / one-shot** | Run once, keep for regen | `migrate_uris.py`, `migrate_namespace.py`, `backfill_*`, `fix_*_NNN.py` |
+| **spent-migration / one-shot** | Run once, keep for regen | `migrate_uris.py` (stays in `scripts/`), `migrate_namespace.py`, `backfill_*`, `fix_*_NNN.py` |
+| **archived** | Spent one-shots; do not run on the live corpus | `scripts/archive/migrate_multipart_iri_scheme.py`, `scripts/archive/fix_duplicate_ids.py` |
 | **manual-ops** | Fitness / live coverage infra | `eval_harness.py`, `kov_pipeline_coverage.py`, `verify_layer1.py` |
 
 New corpus truth belongs in a generator or DAG step, not a new `fix_*_<issue>.py`.

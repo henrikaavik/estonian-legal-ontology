@@ -85,18 +85,39 @@ class Stats:
     unknown_values: Counter = field(default_factory=Counter)
 
 
-def _target_group_strings(value: object) -> list[str]:
-    """Coerce an ``estleg:targetGroup`` value to its list of enum strings.
+_CONCEPT_IRIS = frozenset(TARGET_GROUP_CONCEPT_IRI.values())
+_FULL_IRI_PREFIX = "https://w3id.org/estleg/"
 
-    The field is either a single string or a list of strings (#609). Non-string
-    members of a list are ignored defensively so a malformed value can never
-    crash the pass.
+
+def _target_group_strings(value: object) -> list[str]:
+    """Coerce an ``estleg:targetGroup`` value to tokens or compact IRIs.
+
+    Accepts a legacy enum string, a compact/full ``TargetGroup_*`` IRI, a
+    JSON-LD ``{"@id": …}`` object, or a list of any of those (#460 / #609).
     """
     if isinstance(value, str):
         return [value]
+    if isinstance(value, dict):
+        iri = value.get("@id")
+        return [iri] if isinstance(iri, str) else []
     if isinstance(value, list):
-        return [item for item in value if isinstance(item, str)]
+        out: list[str] = []
+        for item in value:
+            out.extend(_target_group_strings(item))
+        return out
     return []
+
+
+def _concept_iri_for(value: str) -> str | None:
+    """Map a legacy token or already-IRI value to ``estleg:TargetGroup_*``."""
+    if value in TARGET_GROUP_CONCEPT_IRI:
+        return TARGET_GROUP_CONCEPT_IRI[value]
+    raw = value
+    if raw.startswith(_FULL_IRI_PREFIX):
+        raw = "estleg:" + raw[len(_FULL_IRI_PREFIX) :]
+    if raw in _CONCEPT_IRIS:
+        return raw
+    return None
 
 
 def materialize_node(node: dict) -> NodeChange:
@@ -122,7 +143,7 @@ def materialize_node(node: dict) -> NodeChange:
         iris: list[str] = []
         seen: set[str] = set()
         for value in _target_group_strings(raw):
-            iri = TARGET_GROUP_CONCEPT_IRI.get(value)
+            iri = _concept_iri_for(value)
             if iri is None:
                 result.unknown_values.append(value)
                 continue

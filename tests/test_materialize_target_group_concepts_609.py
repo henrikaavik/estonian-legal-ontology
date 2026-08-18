@@ -129,6 +129,22 @@ def test_stale_concept_recomputed_from_current_target_group():
     assert change.changed is True
 
 
+def test_compact_iri_strings_map_to_concepts():
+    node = {"estleg:targetGroup": ["estleg:TargetGroup_Business"]}
+    change = M.materialize_node(node)
+    assert node["estleg:targetGroupConcept"] == [BUSINESS]
+    assert change.links_emitted == 1
+    assert change.unknown_values == []
+
+
+def test_iri_object_values_map_to_concepts():
+    node = {"estleg:targetGroup": [{"@id": "estleg:TargetGroup_Citizen"}]}
+    change = M.materialize_node(node)
+    assert node["estleg:targetGroupConcept"] == [CITIZEN]
+    assert change.links_emitted == 1
+    assert node["estleg:targetGroup"] == [{"@id": "estleg:TargetGroup_Citizen"}]
+
+
 # ---------------------------------------------------------------------------
 # File-walking orchestration
 # ---------------------------------------------------------------------------

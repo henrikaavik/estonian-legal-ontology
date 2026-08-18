@@ -13,8 +13,9 @@ N-Quads wrap every triple in a named graph. Default graph IRI is
 otherwise ``https://w3id.org/estleg/graph/<stem>`` derived from the input
 filename (``_peep`` suffix stripped). Override with ``--graph IRI``.
 
-Combined dumps are generate-on-demand — do not LFS-commit combined.{ttl,nt,nq}.
-A small proof export lives at ``krr_outputs/exports/abipolitseiniku_seadus.nt``.
+Combined ``.nt`` / ``.nq`` (and ``.ttl`` when generated) are LFS-tracked
+next to ``combined_ontology.jsonld``. A small proof export also lives at
+``krr_outputs/exports/abipolitseiniku_seadus.nt``.
 """
 
 from __future__ import annotations

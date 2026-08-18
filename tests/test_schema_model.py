@@ -334,17 +334,23 @@ def test_legal_provision_without_version_links_still_conforms():
 
 @pytest.mark.parametrize(
     "target_group",
-    ["citizen", "business", "public_body", "official", "ngo"],
+    [
+        "estleg:TargetGroup_Citizen",
+        "estleg:TargetGroup_Business",
+        "estleg:TargetGroup_PublicBody",
+        "estleg:TargetGroup_Official",
+        "estleg:TargetGroup_NGO",
+    ],
 )
 def test_legal_provision_accepts_target_group_enum_values(target_group):
     ok, msg = _validate({
         "@context": CONTEXT,
-        "@id": f"estleg:LegalProvision_TARGET_{target_group}",
+        "@id": f"estleg:LegalProvision_TARGET_{target_group.rsplit('_', 1)[-1]}",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 10",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Provision with a classified target group.",
-        "estleg:targetGroup": target_group,
+        "estleg:targetGroup": {"@id": target_group},
     })
     assert ok, msg
 
@@ -357,7 +363,11 @@ def test_legal_provision_accepts_multiple_target_groups():
         "estleg:paragrahv": "§ 11",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Provision affecting several target groups.",
-        "estleg:targetGroup": ["citizen", "business", "public_body"],
+        "estleg:targetGroup": [
+            {"@id": "estleg:TargetGroup_Citizen"},
+            {"@id": "estleg:TargetGroup_Business"},
+            {"@id": "estleg:TargetGroup_PublicBody"},
+        ],
     })
     assert ok, msg
 

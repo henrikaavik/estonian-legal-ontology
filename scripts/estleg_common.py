@@ -432,7 +432,12 @@ COMBINED_STRIPPED_PREDICATES: frozenset[str] = frozenset(
 # version IRI did not compact to ``estleg:`` so it was never closure-checked;
 # the w3id SLASH namespace makes it compact to ``estleg:<version>``, which the
 # closure loop would otherwise mis-flag as a dangling instance ref.
-COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset({"owl:versionIRI"})
+# ``prov:wasGeneratedBy`` (#456) points at the dataset-level
+# ``estleg:Activity_CorpusBuild_*`` individual, which lives in void.ttl and is
+# not a corpus instance node.
+COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
+    {"owl:versionIRI", "prov:wasGeneratedBy"}
+)
 
 # #488: a graph-closure stub keeps its real (often SHACL-shaped) `@type`, so the
 # *standalone* combined artifact must publish a SHACL-conforming node for that
@@ -624,7 +629,10 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
     date — keeping the build deterministic (the version string is the
     pinnable identity). ``estleg:consistencyChecked`` is the #522 T-Box
     checker stamp (not an owlrl run over this 265 MB graph).
+    ``prov:wasGeneratedBy`` is the #456 dataset-level activity (future
+    combined builds only — the committed 265 MB graph is not rewritten).
     """
+    activity_id = f"estleg:Activity_CorpusBuild_{version.replace('.', '_')}"
     return {
         "@id": ONTOLOGY_IRI,
         "@type": ["owl:Ontology", "void:Dataset", "dcat:Dataset"],
@@ -638,6 +646,7 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
         "owl:versionInfo": version,
         "owl:versionIRI": {"@id": f"{ONTOLOGY_IRI}/{version}"},
         "void:uriSpace": NS,
+        "prov:wasGeneratedBy": {"@id": activity_id},
         "estleg:consistencyChecked": {"@value": True, "@type": "xsd:boolean"},
     }
 
@@ -680,7 +689,12 @@ CONTEXT: dict[str, str] = {
 
 # Prefixes a combined JSON-LD @context must publish so in-band Dataset terms
 # compact. dcterms is included because the head uses dcterms:title/publisher/license.
-COMBINED_DATASET_CONTEXT_PREFIXES: tuple[str, ...] = ("void", "dcat", "dcterms")
+COMBINED_DATASET_CONTEXT_PREFIXES: tuple[str, ...] = (
+    "void",
+    "dcat",
+    "dcterms",
+    "prov",
+)
 
 # Combined JSON-LD distributions that carry an in-band Dataset head (#517).
 # ``relpath`` is relative to ``krr_outputs/``. Flagship uses

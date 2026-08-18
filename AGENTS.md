@@ -7,7 +7,8 @@ correctness, validation gates, and project documentation.
 ## Repo Layout
 
 - `scripts/` - corpus generators, enrichment scripts, validation commands, and
-  integration orchestration.
+  integration orchestration. Spent one-shots live in `scripts/archive/` and
+  must not be run on the live corpus; `migrate_uris.py` stays in `scripts/`.
 - `tests/` - unit and regression tests for generator behavior and validators.
 - `shacl/` - SHACL shapes used by local validation and downstream sync gates.
 - `krr_outputs/` - generated JSON-LD corpus and aggregate artifacts.

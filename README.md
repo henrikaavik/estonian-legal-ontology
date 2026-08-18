@@ -77,8 +77,8 @@ N-Quads.
 The combined file is a single top-level `@graph` array (not
 line-streamable), so JSON-LD load is all-or-nothing.
 
-Prefer `.nt` / N-Quads for bulk load. Generate with
-`scripts/serialize_corpus.py`:
+Prefer `.nt` / N-Quads for bulk load. The committed N-Triples dump is
+2,584,923 triples. Generate with `scripts/serialize_corpus.py`:
 
 ```bash
 python3 scripts/serialize_corpus.py \
@@ -88,15 +88,18 @@ python3 scripts/serialize_corpus.py \
 ```
 
 A small committed proof dump is
-`krr_outputs/exports/abipolitseiniku_seadus.nt`. `combined.{ttl,nt,nq}`
-are **generate-on-demand** — do not LFS-commit them (265 MB JSON-LD
-expands further; parse RSS is ~3 GB):
+`krr_outputs/exports/abipolitseiniku_seadus.nt`. Combined dumps are
+LFS-tracked next to the JSON-LD source:
+
+- `krr_outputs/combined_ontology.nt` — N-Triples (bulk load)
+- `krr_outputs/combined_ontology.nq` — named-graph N-Quads
+- `krr_outputs/combined_ontology.ttl` — Turtle (regenerate if absent)
 
 ```bash
 python3 scripts/serialize_corpus.py \
   --input krr_outputs/combined_ontology.jsonld \
   --format nq \
-  --output krr_outputs/exports/combined_ontology.nq
+  --output krr_outputs/combined_ontology.nq
 ```
 
 N-Quads wrap triples in a named graph

@@ -6,6 +6,18 @@
 
 > **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the intended canonical home for the reusable `estleg:` classes and properties (including the `owl:inverseOf` axioms for the inverse pairs `references`/`referencedBy`, `amendedBy`/`amends`, `interpretsLaw`/`interpretedBy`, `hasVersion`/`versionOf`, and `hasSubsection`/`parentProvision`). Subcorpus schema files (e.g. `riigikohus/riigikohus_schema.json`, `eurlex/eurlex_schema.json`, `eelnoud/eelnoud_schema.json`, `curia/curia_schema.json`) still carry some corpus-specific terms and enum individuals (notably the court-decision `estleg:CaseType_*` / `estleg:DecisionType_*` individuals, which live in `riigikohus_schema.json` and must be loaded alongside the court-decision peeps to resolve `estleg:caseType` / `estleg:decisionType` targets). Consolidating every reusable term into the canonical file is an ongoing effort (issue #291); new reusable terms SHOULD be defined in `controlled_vocabulary.jsonld`.
 
+### Language-tag policy
+
+Corpus default language is Estonian. This is a **vocabulary-only** policy (issue #437): new T-Box `rdfs:label` values in `controlled_vocabulary.jsonld` SHOULD be language-tagged `@et`, plus `@en` when an English gloss exists. The first tagged set is the high-value classes `Act`, `LegalProvision`, `DraftLegislation`, `CourtDecision`, `Chapter`, and `TopicCluster` (six class nodes, all bilingual `@et`/`@en`). Remaining CV labels may stay plain strings until a later pass.
+
+Law-peep instance literals (`rdfs:label`, `estleg:summary`, `estleg:legalText`, …) may remain plain `xsd:string` until a dedicated remint. Do not treat peep literals as language-tagged — `FILTER(lang(?x) = "et")` will not match them. A default `"@language": "et"` is **not** set on `estleg_common.CONTEXT`, because that would turn SHACL `xsd:string` literals into `rdf:langString`.
+
+Subcorpus `*_schema.json` files already tag `@et`/`@en` on their schema labels.
+
+### Provenance (dataset-level)
+
+Issue #456 is implemented as a **dataset-level** PROV-O layer, not a per-assertion rewrite of law peeps. `krr_outputs/void.ttl` links the published dataset to `estleg:Activity_CorpusBuild_0_11_0` via `prov:wasGeneratedBy`. `estleg_common.combined_ontology_header()` emits the same edge on future combined builds. Classifier outputs (EuroVoc, deontic, `targetGroup`) SHOULD carry `estleg:assertionConfidence` (`xsd:decimal` in `[0, 1]`); scraped `estleg:legalText` does not. Instance nodes are not yet stamped — sidecar reports remain the run-level audit trail until a later overlay pass.
+
 ### Classes
 
 #### Enacted Law Classes
@@ -951,7 +963,7 @@ SELECT ?text ?type ?source WHERE {
 |----------|--------|-------|-------------|
 | `estleg:normativeType` | LegalProvision | NormativeType (IRI) | Obligation, right, permission, prohibition, definition |
 | `estleg:dutyHolder` | LegalProvision | `xsd:string` | Who must comply (e.g., "tööandja") |
-| `estleg:targetGroup` | LegalProvision | `xsd:string` enum, multi-valued | Affected group(s): `citizen`, `business`, `public_body`, `official`, `ngo` |
+| `estleg:targetGroup` | LegalProvision | TargetGroup (IRI), multi-valued | Affected group(s): `estleg:TargetGroup_Citizen`, `_Business`, `_PublicBody`, `_Official`, `_NGO` |
 
 ### Institutional Competence
 | Property | Domain | Range | Description |

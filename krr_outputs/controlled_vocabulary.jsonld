@@ -9,6 +9,7 @@
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "eli": "http://data.europa.eu/eli/ontology#",
     "eli-dl": "http://data.europa.eu/eli/eli-draft-legislation-ontology#",
+    "prov": "http://www.w3.org/ns/prov#",
     "schema": "https://schema.org/"
   },
   "@graph": [
@@ -25,7 +26,16 @@
           "@id": "schema:Legislation"
         }
       ],
-      "rdfs:label": "Act",
+      "rdfs:label": [
+        {
+          "@value": "Akt",
+          "@language": "et"
+        },
+        {
+          "@value": "Act",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": "An Estonian or EU legislative act. In FRBR/ELI terms the act node is the Work (eli:LegalResource); its addressable point-in-time consolidations are estleg:ActExpression nodes (eli:LegalExpression) reachable via estleg:hasExpression (#608). Also rdfs:subClassOf schema:Legislation so generic schema.org clients see acts as Legislation without a 1190-peep rewrite (#543)."
     },
     {
@@ -143,7 +153,16 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Chapter",
+      "rdfs:label": [
+        {
+          "@value": "Peatükk",
+          "@language": "et"
+        },
+        {
+          "@value": "Chapter",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": "Reusable class materialized for vocabulary coverage validation."
     },
     {
@@ -194,7 +213,16 @@
       "rdfs:subClassOf": {
         "@id": "eli:LegalResourceSubdivision"
       },
-      "rdfs:label": "Legal Provision",
+      "rdfs:label": [
+        {
+          "@value": "Õigusnorm",
+          "@language": "et"
+        },
+        {
+          "@value": "Legal Provision",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": "Reusable base class for law and regulation provision nodes. In FRBR/ELI terms a provision is a LegalResourceSubdivision of the act Work (eli:LegalResourceSubdivision) (#440)."
     },
     {
@@ -245,7 +273,16 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Topic Cluster",
+      "rdfs:label": [
+        {
+          "@value": "Teemaklaster",
+          "@language": "et"
+        },
+        {
+          "@value": "Topic Cluster",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": "Topic grouping for provisions within a law or regulation."
     },
     {
@@ -1527,6 +1564,26 @@
         "@id": "xsd:integer"
       },
       "rdfs:comment": "Full number of provisions a Competence node applies to, recorded alongside the (capped) estleg:appliesToProvision list on per-institution files — so consumers see the true total even when the IRI list is truncated for size (see scripts/extract_institutional_competence.py)."
+    },
+    {
+      "@id": "estleg:assertionConfidence",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "väite kindlus",
+          "@language": "et"
+        },
+        {
+          "@value": "assertion confidence",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Classifier outputs (EuroVoc, deontic, targetGroup) SHOULD carry this; scraped legalText does not. Range is xsd:decimal in [0, 1].",
+      "rdfs:range": {
+        "@id": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:belongsToCluster",
@@ -3213,10 +3270,16 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": {
-        "@value": "Kohtulahend (Court Decision)",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Kohtulahend",
+          "@language": "et"
+        },
+        {
+          "@value": "Court Decision",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": {
         "@value": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.",
         "@language": "et"
@@ -3306,7 +3369,16 @@
       "rdfs:subClassOf": {
         "@id": "eli-dl:DraftLegislationWork"
       },
-      "rdfs:label": "Eelnõu (Draft Legislation)",
+      "rdfs:label": [
+        {
+          "@value": "Eelnõu",
+          "@language": "et"
+        },
+        {
+          "@value": "Draft Legislation",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses.",
       "dc:description": "A legislative draft that has not yet been enacted into law but is in the legislative process."
     },

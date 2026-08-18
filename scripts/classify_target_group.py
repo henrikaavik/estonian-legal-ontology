@@ -20,6 +20,7 @@ from estleg_common import (
     KRR_DIR,
     iter_peep_files,
     jsonld_text,
+    save_json,
 )
 
 TARGET_GROUP_ORDER: tuple[str, ...] = (
@@ -30,6 +31,19 @@ TARGET_GROUP_ORDER: tuple[str, ...] = (
     "ngo",
 )
 
+# Closed enum → compact IRI. CV individuals already exist (#609);
+# #460 stores these IRIs on estleg:targetGroup itself.
+TARGET_GROUP_IRI: dict[str, str] = {
+    "citizen": "estleg:TargetGroup_Citizen",
+    "business": "estleg:TargetGroup_Business",
+    "public_body": "estleg:TargetGroup_PublicBody",
+    "official": "estleg:TargetGroup_Official",
+    "ngo": "estleg:TargetGroup_NGO",
+}
+_IRI_TO_TOKEN: dict[str, str] = {iri: token for token, iri in TARGET_GROUP_IRI.items()}
+_FULL_IRI_PREFIX = "https://w3id.org/estleg/"
+_LFS_POINTER_PREFIX = "version https://git-lfs.github.com/spec/v1"
+
 TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "business": tuple(
         re.compile(p, re.IGNORECASE | re.UNICODE)
@@ -37,6 +51,7 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\btööandja\w*\b",
             r"\bettevõtja\w*\b",
             r"\bettevõt(?:e|ja)\w*\b",
+            r"\b\w+ettevõtja\w*\b",
             r"\bäriühing\w*\b",
             r"\bosaühing\w*\b",
             r"\baktsiaselts\w*\b",
@@ -56,7 +71,9 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\bkindlustusandja\w*\b",
             r"\b(?:vastutav|volitatud)?\s*töötleja\w*\b",
             r"\bkäitaja\w*\b",
-            r"\bkäitleja\w*\b",
+            # Compound handlers (alkoholikäitleja, toidukäitleja, …) must
+            # count as business; a bare ``\bkäitleja`` misses them (#460).
+            r"\b\w*käitleja\w*\b",
             # Tax-obligated entities. In administrative-burden terms a
             # generic taxpayer/tax-liable subject is treated as a business
             # (consistent with raamatupidamiskohustuslane below); the
@@ -206,6 +223,64 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     ),
 }
 
+# Weak generic citizen cues. These fire on almost any provision that
+# mentions a person, including handler/business duties ("X on isik, kes…").
+# #460: if citizen evidence is only these AND a business/public_body cue
+# also matched, drop citizen. Do not assign citizen by absence-of-others.
+_CITIZEN_WEAK_SOURCES: tuple[str, ...] = (
+    r"(?<!juriidiline\s)(?<!juriidilise\s)"
+    r"\bisik(?:u|ul|ule|uga|ust|uks|ut|uid|ud|ute)?\b",
+    r"\bkasutaja\w*\b",
+    r"\bvaldaja\w*\b",
+    r"\b(?:kinnistu|korteri|eluruumi|hauaplatsi)?\s*omanik\w*\b",
+)
+_CITIZEN_WEAK_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+    re.compile(p, re.IGNORECASE | re.UNICODE) for p in _CITIZEN_WEAK_SOURCES
+)
+_CITIZEN_WEAK_PATTERN_TEXTS = {p.pattern for p in _CITIZEN_WEAK_PATTERNS}
+_CITIZEN_STRONG_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+    p
+    for p in TARGET_GROUP_PATTERNS["citizen"]
+    if p.pattern not in _CITIZEN_WEAK_PATTERN_TEXTS
+)
+
+
+def target_group_iri(token: str) -> str:
+    """Map a legacy enum token (or already-compact IRI) to ``estleg:TargetGroup_*``."""
+    raw = (token or "").strip()
+    if raw.startswith(_FULL_IRI_PREFIX):
+        raw = "estleg:" + raw[len(_FULL_IRI_PREFIX) :]
+    if raw in TARGET_GROUP_IRI:
+        return TARGET_GROUP_IRI[raw]
+    if raw in _IRI_TO_TOKEN:
+        return raw
+    raise ValueError(f"unknown target-group token: {token!r}")
+
+
+def normalize_target_group_value(value: object) -> list[str]:
+    """Upgrade legacy string tokens to compact IRIs; idempotent if already IRIs.
+
+    Accepts a single string, a JSON-LD ``{"@id": …}`` object, or a list of
+    either. Unknown values are skipped. Result order follows
+    ``TARGET_GROUP_ORDER``.
+    """
+    seen: set[str] = set()
+    for item in _as_group_list(value):
+        try:
+            seen.add(target_group_iri(item))
+        except ValueError:
+            continue
+    return [
+        TARGET_GROUP_IRI[token]
+        for token in TARGET_GROUP_ORDER
+        if TARGET_GROUP_IRI[token] in seen
+    ]
+
+
+def emit_target_group(groups: list[str]) -> list[dict[str, str]]:
+    """JSON-LD object-ref list written onto ``estleg:targetGroup``."""
+    return [{"@id": iri} for iri in normalize_target_group_value(groups)]
+
 
 def _load_json(path: Path) -> dict | None:
     try:
@@ -215,17 +290,13 @@ def _load_json(path: Path) -> dict | None:
         return None
 
 
-def _save_json(path: Path, doc: dict) -> None:
-    path.write_text(
-        json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-
 def _as_group_list(value: object) -> list[str]:
     if isinstance(value, str):
         return [value]
     if isinstance(value, dict):
+        iri = value.get("@id")
+        if isinstance(iri, str) and iri:
+            return [iri]
         text = jsonld_text(value)
         return [text] if text else []
     if isinstance(value, list):
@@ -236,8 +307,12 @@ def _as_group_list(value: object) -> list[str]:
     return []
 
 
+def _has_strong_citizen_cue(text: str) -> bool:
+    return any(pattern.search(text) for pattern in _CITIZEN_STRONG_PATTERNS)
+
+
 def classify_text(text: str) -> list[str]:
-    """Return target-group enum values detected in text, in stable order."""
+    """Return target-group enum tokens detected in text, in stable order."""
     if not text:
         return []
     found = {
@@ -245,6 +320,15 @@ def classify_text(text: str) -> list[str]:
         for group, patterns in TARGET_GROUP_PATTERNS.items()
         if any(pattern.search(text) for pattern in patterns)
     }
+    # #460: do not keep citizen when the only citizen hit is a weak generic
+    # (bare isik / kasutaja / valdaja / omanik) and a business or public_body
+    # cue is also present. Absence of other groups is not itself a citizen hit.
+    if (
+        "citizen" in found
+        and ("business" in found or "public_body" in found)
+        and not _has_strong_citizen_cue(text)
+    ):
+        found.discard("citizen")
     return [group for group in TARGET_GROUP_ORDER if group in found]
 
 
@@ -307,8 +391,9 @@ def classify_files(
             if not isinstance(node, dict) or "estleg:paragrahv" not in node:
                 continue
             counts["provisions_scanned"] += 1
-            old_groups = _as_group_list(node.get("estleg:targetGroup"))
+            old_iris = normalize_target_group_value(node.get("estleg:targetGroup"))
             groups, had_duty_holder = classify_node(node)
+            new_iris = [target_group_iri(group) for group in groups]
 
             if had_duty_holder:
                 counts["provisions_with_dutyHolder"] += 1
@@ -324,8 +409,8 @@ def classify_files(
                 if len(groups) > 1:
                     counts["multi_valued_provisions"] += 1
                 group_counts.update(groups)
-                if old_groups != groups:
-                    node["estleg:targetGroup"] = groups
+                if old_iris != new_iris:
+                    node["estleg:targetGroup"] = emit_target_group(groups)
                     changed = True
             elif "estleg:targetGroup" in node:
                 node.pop("estleg:targetGroup", None)
@@ -334,7 +419,7 @@ def classify_files(
         if changed:
             changed_files += 1
             if write:
-                _save_json(path, doc)
+                save_json(path, doc)
 
     duty_total = counts["provisions_with_dutyHolder"]
     report = {
@@ -355,8 +440,139 @@ def classify_files(
         ],
     }
     if write:
-        _save_json(report_path, report)
+        save_json(report_path, report)
     return report
+
+
+def _is_lfs_pointer(path: Path) -> bool:
+    try:
+        with path.open("r", encoding="utf-8") as fh:
+            return fh.read(len(_LFS_POINTER_PREFIX)).startswith(_LFS_POINTER_PREFIX)
+    except OSError:
+        return False
+
+
+def upgrade_node_target_group_iris(node: dict) -> bool:
+    """Replace legacy string tokens on one node with IRI object refs.
+
+    Does not reclassify. Returns True iff the node was mutated.
+    """
+    if "estleg:targetGroup" not in node:
+        return False
+    raw = node["estleg:targetGroup"]
+    iris = normalize_target_group_value(raw)
+    if not iris:
+        return False
+    emitted = [{"@id": iri} for iri in iris]
+    if raw == emitted:
+        return False
+    node["estleg:targetGroup"] = emitted
+    return True
+
+
+_LEGACY_JSON_TOKENS: tuple[str, ...] = (
+    '"citizen"',
+    '"business"',
+    '"public_body"',
+    '"official"',
+    '"ngo"',
+)
+_TARGET_GROUP_TOKEN_LINE_RE = re.compile(
+    r'^(\s*)"(citizen|business|public_body|official|ngo)"(,?)\s*$'
+)
+
+
+def upgrade_target_group_iris_files(
+    files: list[Path],
+    *,
+    write: bool = True,
+) -> dict[str, int]:
+    """Mechanical string→IRI remint of ``estleg:targetGroup`` on peeps (#460)."""
+    stats = {
+        "files_scanned": 0,
+        "files_skipped": 0,
+        "files_changed": 0,
+        "nodes_changed": 0,
+    }
+    for path in files:
+        if _is_lfs_pointer(path):
+            stats["files_skipped"] += 1
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError:
+            stats["files_skipped"] += 1
+            continue
+        if not any(tok in text for tok in _LEGACY_JSON_TOKENS):
+            stats["files_skipped"] += 1
+            continue
+        try:
+            doc = json.loads(text)
+        except ValueError:
+            stats["files_skipped"] += 1
+            continue
+        if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+            stats["files_skipped"] += 1
+            continue
+        stats["files_scanned"] += 1
+        file_changed = False
+        for node in doc["@graph"]:
+            if not isinstance(node, dict):
+                continue
+            if upgrade_node_target_group_iris(node):
+                stats["nodes_changed"] += 1
+                file_changed = True
+        if file_changed:
+            stats["files_changed"] += 1
+            if write:
+                save_json(path, doc)
+    return stats
+
+
+def upgrade_jsonld_target_group_stream(
+    src: Path,
+    dest: Path | None = None,
+) -> dict[str, int]:
+    """Line-stream remint of pretty-printed ``estleg:targetGroup`` arrays.
+
+    Avoids ``json.loads`` on the 265 MB combined graph. Idempotent when the
+    array already holds ``{"@id": "estleg:TargetGroup_*"}`` objects.
+    """
+    dest = dest or src
+    tmp = dest.with_name(dest.name + ".tg-iri.tmp")
+    stats = {"blocks": 0, "tokens_replaced": 0, "lines": 0}
+    in_target_group = False
+    try:
+        with src.open(encoding="utf-8") as handle, tmp.open(
+            "w", encoding="utf-8", newline="\n"
+        ) as out:
+            for line in handle:
+                stats["lines"] += 1
+                stripped = line.lstrip()
+                if not in_target_group:
+                    if stripped.startswith('"estleg:targetGroup"'):
+                        in_target_group = True
+                        stats["blocks"] += 1
+                    out.write(line)
+                    continue
+                match = _TARGET_GROUP_TOKEN_LINE_RE.match(line)
+                if match:
+                    indent, token, comma = match.groups()
+                    iri = TARGET_GROUP_IRI[token]
+                    out.write(f"{indent}{{\n")
+                    out.write(f'{indent}  "@id": "{iri}"\n')
+                    out.write(f"{indent}}}{comma}\n")
+                    stats["tokens_replaced"] += 1
+                    continue
+                if stripped.startswith("]"):
+                    in_target_group = False
+                out.write(line)
+        tmp.replace(dest)
+    except Exception:
+        if tmp.exists():
+            tmp.unlink()
+        raise
+    return stats
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -371,9 +587,21 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="skip KOV regulation peeps",
     )
+    parser.add_argument(
+        "--upgrade-iris",
+        action="store_true",
+        help="replace legacy string tokens with TargetGroup IRIs without reclassifying",
+    )
     args = parser.parse_args(argv)
 
     files = iter_peep_files(include_kov=not args.exclude_kov)
+    if args.upgrade_iris:
+        stats = upgrade_target_group_iris_files(files, write=not args.dry_run)
+        print("Estonian Legal Ontology - Target Group IRI remint (#460)")
+        print(f"  Files scanned: {stats['files_scanned']}")
+        print(f"  Files changed: {stats['files_changed']}")
+        print(f"  Nodes changed: {stats['nodes_changed']}")
+        return 0
     report = classify_files(
         files,
         report_path=KRR_DIR / "target_group_report.json",

@@ -86,6 +86,93 @@ def test_committed_nt_proof_is_real_and_parses() -> None:
     assert "estleg:ABIPOL" in text or "Abipolitseinik" in text
 
 
+COMBINED_NT = REPO / "krr_outputs" / "combined_ontology.nt"
+COMBINED_NQ = REPO / "krr_outputs" / "combined_ontology.nq"
+COMBINED_TTL = REPO / "krr_outputs" / "combined_ontology.ttl"
+GITATTRIBUTES = REPO / ".gitattributes"
+# Last serialize_corpus.py run over combined_ontology.jsonld (do not
+# rdflib-parse the 400+ MB dumps in pytest).
+COMBINED_TRIPLE_COUNT = 2_584_923
+
+
+def _count_nonempty_lines(path: Path) -> int:
+    count = 0
+    with path.open("rb") as handle:
+        for line in handle:
+            if line.strip():
+                count += 1
+    return count
+
+
+def _skip_if_missing_or_lfs(path: Path) -> None:
+    if not path.is_file():
+        import pytest
+
+        pytest.skip(f"missing serialization {path.name}")
+    if sc.is_lfs_pointer(path):
+        import pytest
+
+        pytest.skip(f"{path.name} is an LFS pointer; git lfs pull required")
+
+
+def test_gitattributes_lfs_tracks_combined_serializations() -> None:
+    text = GITATTRIBUTES.read_text(encoding="utf-8")
+    for ext in (".nt", ".nq", ".ttl"):
+        assert f"krr_outputs/combined_ontology{ext} filter=lfs" in text
+
+
+def test_combined_nt_streams_expected_triple_count() -> None:
+    _skip_if_missing_or_lfs(COMBINED_NT)
+    assert _count_nonempty_lines(COMBINED_NT) == COMBINED_TRIPLE_COUNT
+    with COMBINED_NT.open(encoding="utf-8", errors="replace") as handle:
+        first = handle.readline()
+    assert first.startswith("<")
+    assert first.rstrip().endswith(".")
+
+
+def test_combined_nq_uses_default_named_graph() -> None:
+    _skip_if_missing_or_lfs(COMBINED_NQ)
+    assert _count_nonempty_lines(COMBINED_NQ) == COMBINED_TRIPLE_COUNT
+    with COMBINED_NQ.open(encoding="utf-8", errors="replace") as handle:
+        sample = handle.readline()
+    assert sc.DEFAULT_GRAPH_IRI in sample
+    assert sample.rstrip().endswith(".")
+
+
+def test_combined_nt_target_group_objects_are_iris() -> None:
+    _skip_if_missing_or_lfs(COMBINED_NT)
+    leftover = 0
+    iris = 0
+    predicate = "<https://w3id.org/estleg/targetGroup>"
+    with COMBINED_NT.open(encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            if predicate not in line:
+                continue
+            if "TargetGroup_" in line:
+                iris += 1
+            elif any(
+                token in line
+                for token in (
+                    '"citizen"',
+                    '"business"',
+                    '"public_body"',
+                    '"official"',
+                    '"ngo"',
+                )
+            ):
+                leftover += 1
+    assert leftover == 0
+    assert iris > 0
+
+
+def test_combined_ttl_is_prefixed_turtle() -> None:
+    _skip_if_missing_or_lfs(COMBINED_TTL)
+    with COMBINED_TTL.open(encoding="utf-8", errors="replace") as handle:
+        first = handle.readline()
+    assert not first.startswith(LFS_POINTER_PREFIX)
+    assert first.startswith("@prefix") or first.startswith("@base")
+
+
 def test_readme_documents_rdf_serializations_and_load_budget() -> None:
     text = README.read_text(encoding="utf-8")
     assert "### 5-minute start" in text

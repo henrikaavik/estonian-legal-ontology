@@ -4,7 +4,10 @@ from types import ModuleType
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+_SCRIPTS = Path(__file__).resolve().parent.parent / "scripts"
+sys.path.insert(0, str(_SCRIPTS))
+# After scripts/ so live modules still win (#468).
+sys.path.insert(1, str(_SCRIPTS / "archive"))
 
 
 def pytest_configure(config: pytest.Config) -> None:

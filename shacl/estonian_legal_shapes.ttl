@@ -327,13 +327,19 @@ estleg:LegalProvisionShape
     ] ;
     sh:property [
         sh:path estleg:targetGroup ;
-        sh:datatype xsd:string ;
-        sh:in ( "citizen" "business" "public_body" "official" "ngo" ) ;
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            estleg:TargetGroup_Citizen
+            estleg:TargetGroup_Business
+            estleg:TargetGroup_PublicBody
+            estleg:TargetGroup_Official
+            estleg:TargetGroup_NGO
+        ) ;
         sh:name "targetGroup" ;
-        sh:description "The bearer(s) of the deontic norm: which group(s) of actors carry the obligation, hold the right, or otherwise receive the norm's effect. Multi-valued because one provision may target several groups." ;
+        sh:description "The bearer(s) of the deontic norm: which group(s) of actors carry the obligation, hold the right, or otherwise receive the norm's effect. Multi-valued because one provision may target several groups. Values are estleg:TargetGroup individuals (#460), not string tokens." ;
     ] ;
     # Issue #609: the reified SKOS counterpart of estleg:targetGroup — IRI(s) into
-    # estleg:TargetGroupScheme, materialized alongside the retained string value.
+    # estleg:TargetGroupScheme, materialized alongside the TargetGroup individual.
     sh:property [
         sh:path estleg:targetGroupConcept ;
         sh:nodeKind sh:IRI ;
