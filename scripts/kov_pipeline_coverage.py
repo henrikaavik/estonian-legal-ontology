@@ -112,6 +112,7 @@ class CoverageReport:
     files_with_output: int = 0    # files that produced ≥1 output triple
     files_with_output_kov: int = 0  # KOV subset of files_with_output
     files_skipped: int = 0
+    files_with_no_output: int = 0  # processed but unclassified; subset of processed (#394)
     skip_reasons: dict[str, int] = field(default_factory=dict)
     triples_emitted: int = 0
     triples_emitted_kov: int = 0  # subset of triples_emitted attributed

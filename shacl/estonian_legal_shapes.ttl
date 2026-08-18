@@ -785,6 +785,16 @@ estleg:CourtDecisionShape
         sh:description "Link to the full decision on riigikohus.ee" ;
     ] ;
     sh:property [
+        sh:path estleg:ecliIdentifier ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        # Same ECLI syntax as EUCourtDecisionShape (#392 / #612). No minCount:
+        # ECLI was only assigned from H2 2016, so older decisions stay bare.
+        sh:pattern "^ECLI:[A-Z]{2}:[A-Za-z0-9]{1,7}:[0-9]{4}:[A-Za-z0-9.]{1,25}$" ;
+        sh:name "ecliIdentifier" ;
+        sh:description "ECLI identifier (e.g., ECLI:EE:RK:2016:1.16.2798.84)" ;
+    ] ;
+    sh:property [
         sh:path estleg:interpretsLaw ;
         sh:nodeKind sh:IRI ;
         sh:name "interpretsLaw" ;

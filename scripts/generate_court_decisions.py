@@ -678,6 +678,20 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:range": {"@id": "xsd:anyURI"},
         },
         {
+            "@id": "estleg:ecliIdentifier",
+            "@type": ["owl:DatatypeProperty"],
+            "rdfs:label": "ECLI",
+            "rdfs:domain": {"@id": "estleg:CourtDecision"},
+            "rdfs:range": {"@id": "xsd:string"},
+            "rdfs:comment": {
+                "@value": (
+                    "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). "
+                    "Assigned from H2 2016; derived from case number + decision year."
+                ),
+                "@language": "en",
+            },
+        },
+        {
             "@id": "estleg:referencedLaw",
             "@type": ["owl:DatatypeProperty"],
             "rdfs:label": {"@value": "viidatud seadus", "@language": "et"},
@@ -688,6 +702,43 @@ def generate_schema_nodes() -> list[dict]:
     ])
 
     return nodes
+
+
+# ECLI assigned to published Estonian Supreme Court case law from H2 2016
+# (e-justice.europa.eu EE page): ECLI:EE:RK:YYYY:<case with - and / as dots>.
+_ECLI_ASSIGNED_FROM = datetime(2016, 7, 1)
+
+
+def mint_riigikohus_ecli(
+    case_nr: str, decision_date: str | datetime | None
+) -> str | None:
+    """Mint ``ECLI:EE:RK:YYYY:<ordinal>`` when the decision is in scope.
+
+    Returns None when the case number is empty or the decision predates
+    the H2-2016 ECLI assignment. ``decision_date`` may be ``YYYY-MM-DD``
+    or ``DD.MM.YYYY``.
+    """
+    case_nr = (case_nr or "").strip()
+    if not case_nr:
+        return None
+    parsed: datetime | None = None
+    if isinstance(decision_date, datetime):
+        parsed = decision_date
+    elif isinstance(decision_date, str) and decision_date.strip():
+        raw = decision_date.strip()
+        for fmt in ("%Y-%m-%d", "%d.%m.%Y"):
+            try:
+                parsed = datetime.strptime(raw, fmt)
+                break
+            except ValueError:
+                continue
+    if parsed is None or parsed < _ECLI_ASSIGNED_FROM:
+        return None
+    ordinal = re.sub(r"[-/]", ".", case_nr)
+    ordinal = re.sub(r"[^A-Za-z0-9.]", "", ordinal)
+    if not ordinal:
+        return None
+    return f"ECLI:EE:RK:{parsed.year}:{ordinal}"
 
 
 def _build_node_id(dec: dict) -> str | None:
@@ -798,15 +849,20 @@ def decision_to_node(
             node["estleg:decisionType"] = {"@id": f"estleg:DecisionType_{dt_info[0]}"}
 
     # Date
+    parsed_date: datetime | None = None
     if dec.get("date"):
         try:
-            parsed = datetime.strptime(dec["date"], "%d.%m.%Y")
+            parsed_date = datetime.strptime(dec["date"], "%d.%m.%Y")
             node["estleg:decisionDate"] = {
-                "@value": parsed.strftime("%Y-%m-%d"),
+                "@value": parsed_date.strftime("%Y-%m-%d"),
                 "@type": "xsd:date",
             }
         except ValueError:
-            pass
+            parsed_date = None
+
+    ecli = mint_riigikohus_ecli(dec["case_nr"], parsed_date)
+    if ecli:
+        node["estleg:ecliIdentifier"] = ecli
 
     # Summary
     if dec.get("summary"):
@@ -836,6 +892,30 @@ def decision_to_node(
         node["estleg:referencedLaw"] = refs
 
     return node
+
+
+def backfill_ecli_on_node(node: dict) -> bool:
+    """Stamp ``estleg:ecliIdentifier`` on a committed CourtDecision node."""
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:CourtDecision" not in types:
+        return False
+    if node.get("estleg:ecliIdentifier"):
+        return False
+    case_nr = node.get("estleg:caseNumber")
+    if not isinstance(case_nr, str):
+        return False
+    date_val = node.get("estleg:decisionDate")
+    if isinstance(date_val, dict):
+        date_val = date_val.get("@value")
+    ecli = mint_riigikohus_ecli(
+        case_nr, date_val if isinstance(date_val, str) else None
+    )
+    if not ecli:
+        return False
+    node["estleg:ecliIdentifier"] = ecli
+    return True
 
 
 # ---------------------------------------------------------------------------

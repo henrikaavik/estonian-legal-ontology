@@ -140,6 +140,60 @@ def classify_eu_doc_type(celex: str, nominal_type_id: str) -> str | None:
 
     return None
 
+
+def _node_types(node: dict) -> list[str]:
+    raw = node.get("@type", [])
+    return [raw] if isinstance(raw, str) else list(raw)
+
+
+def retarget_non_regulation_types(graph: list) -> int:
+    """Rewrite ``euDocumentType`` on legislation nodes using CELEX sector/type.
+
+    Sector-4 type-X → InternationalAgreement; sector-5 type-AP →
+    ParliamentPosition. Real ``^3\\d{4}R`` regulations are left alone.
+    Returns the number of nodes whose type changed (#394).
+    """
+    changed = 0
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        if "estleg:EULegislation" not in _node_types(node):
+            continue
+        celex = node.get("estleg:celexNumber")
+        if not isinstance(celex, str) or not celex:
+            continue
+        effective = classify_eu_doc_type(celex, "Regulation")
+        if not effective or effective == "Regulation":
+            continue
+        new_id = f"estleg:EUDocType_{effective}"
+        current = node.get("estleg:euDocumentType")
+        cur_id = current.get("@id") if isinstance(current, dict) else current
+        if cur_id != new_id:
+            node["estleg:euDocumentType"] = {"@id": new_id}
+            changed += 1
+    return changed
+
+
+def ensure_override_type_individuals(graph: list) -> int:
+    """Append missing EUDocType individuals for the #394 override types."""
+    have = {
+        n.get("@id")
+        for n in graph
+        if isinstance(n, dict) and isinstance(n.get("@id"), str)
+    }
+    added = 0
+    by_id = {n["@id"]: n for n in generate_schema_nodes() if "@id" in n}
+    for override in EU_DOC_TYPE_OVERRIDES.values():
+        iri = f"estleg:EUDocType_{override['type_id']}"
+        if iri in have:
+            continue
+        node = by_id.get(iri)
+        if node is not None:
+            graph.append(node)
+            added += 1
+    return added
+
+
 # EU institution mapping (corporate-body authority code → labels)
 EU_INSTITUTIONS = {
     "COM": ("EuropeanCommission", "Euroopa Komisjon", "European Commission"),
@@ -740,11 +794,48 @@ def parse_args() -> argparse.Namespace:
             "peeps so transposition edges are not dropped (#417)."
         ),
     )
+    parser.add_argument(
+        "--retarget-non-regulation",
+        action="store_true",
+        help=(
+            "Offline #394 pass: retarget sector-4/5 CELEX in the committed "
+            "regulations peep + combined + schema (no SPARQL)."
+        ),
+    )
     return parser.parse_args()
+
+
+def retarget_non_regulation_corpus(krr_dir: Path | None = None) -> dict[str, int]:
+    """Apply #394 CELEX-type retargeting to committed eurlex artifacts."""
+    root = krr_dir or (REPO_ROOT / "krr_outputs")
+    stats: dict[str, int] = {}
+    files = (
+        root / "eurlex" / "eurlex_regulations_peep.json",
+        root / "eurlex" / "eurlex_combined.jsonld",
+        root / "eurlex" / "eurlex_schema.json",
+    )
+    for path in files:
+        if not path.exists():
+            stats[path.name] = -1
+            continue
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        graph = doc.get("@graph", [])
+        changed = retarget_non_regulation_types(graph)
+        added = ensure_override_type_individuals(graph)
+        if changed or added:
+            save_json(path, doc)
+        stats[path.name] = changed
+    return stats
 
 
 def main():
     args = parse_args()
+    if args.retarget_non_regulation:
+        stats = retarget_non_regulation_corpus()
+        print("Retargeted non-Regulation CELEX types (#394):")
+        for name, n in stats.items():
+            print(f"  {name}: {n}")
+        return
     if args.rebuild_combined_from_peeps:
         stats = rebuild_eurlex_combined_from_peeps()
         print(

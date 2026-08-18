@@ -1005,6 +1005,7 @@ def main(argv: list[str] | None = None):
             files_with_output=_files_with_output,
             files_with_output_kov=_files_with_output_kov,
             files_skipped=files_skipped,
+            files_with_no_output=files_with_no_output,
             skip_reasons=_skip_reasons,
             triples_emitted=_triples,
             triples_emitted_kov=_triples_kov,

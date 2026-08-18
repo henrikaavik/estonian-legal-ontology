@@ -1358,8 +1358,6 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
 
     combined_context = dict(estleg_common.CONTEXT)
     combined_context["estleg"] = NEW_NS
-    # schema.org is only used on the combined header, not on per-law peeps.
-    combined_context["schema"] = "http://schema.org/"
 
     # First-occurrence-ordered list of merged nodes, plus an index by @id so a
     # recurring @id MERGES into the existing node instead of being dropped
