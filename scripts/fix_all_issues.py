@@ -39,9 +39,6 @@ conflated:
       - ``normalize_section_number`` — coerce ``estleg:sectionNumber`` to a
         string (#13). ``generate_kars_eriosa_jsonld.py`` emits string
         section numbers directly.
-      - ``fix_aos_naming`` — one-time Asjaõigusseadus file-rename (#3/#21).
-      - ``fix_notariaadiseadus_naming`` — one-time notariaadiseadus
-        file-rename (#11).
       - ``audit_duplicate_ids`` — cross-file ``@id`` collision report (#6).
         Reporting only; the generators produce file-disjoint id spaces.
       - ``fix_intra_file_duplicates`` / ``_fix_intra_file_duplicates_in_doc``
@@ -62,7 +59,7 @@ enforcement side of the contract.
 
 Originally fixed GitHub issues: #2/#17 (namespace), #3/#21 (AÕS naming),
 #4 (@type arrays), #5 (multi-valued property arrays), #6 (duplicate @id),
-#11 (notariaadiseadus naming), #12/#159 (dc:source), #13 (sectionNumber),
+#12/#159 (dc:source), #13 (sectionNumber),
 #14 (script namespace), #19 (INDEX.json), #26 (combined_ontology.jsonld).
 """
 
@@ -394,62 +391,6 @@ def _atomic_write_text(path: Path, content: str) -> None:
         except FileNotFoundError:
             pass
         raise
-
-
-def fix_aos_naming():
-    """Fix Asjaõigusseadus file naming (Issue #3/#21)."""
-    print("\n=== Fixing AÕS file naming ===")
-
-    # The typo variants (missing 'o')
-    typo_files = sorted(KRR_DIR.glob("asjaigusseadus_osa*_peep.json"))
-    correct_files = sorted(KRR_DIR.glob("asjaoigusseadus_osa*_peep.json"))
-
-    print(f"  Typo variant files: {[f.name for f in typo_files]}")
-    print(f"  Correct variant files: {[f.name for f in correct_files]}")
-
-    # The consolidated file asjaoigusseadus_osa6-13 covers parts 6-13
-    # The typo files cover parts 7-11 individually
-    # We keep the consolidated file and remove the typo individual files
-    for typo_file in typo_files:
-        # Extract part number
-        name = typo_file.name
-        corrected_name = name.replace("asjaigusseadus", "asjaoigusseadus")
-        corrected_path = KRR_DIR / corrected_name
-
-        if corrected_path.exists():
-            # Both variants exist - remove the typo one since correct exists
-            print(f"  Removing duplicate typo file: {name} (correct variant exists)")
-            typo_file.unlink()
-            stats["files_removed"] += 1
-        else:
-            # Only typo exists - rename it
-            print(f"  Renaming: {name} → {corrected_name}")
-            # But also fix @id values inside the file
-            doc = process_json_file(typo_file)
-            # Fix internal IDs that use the wrong prefix
-            raw = json.dumps(doc, ensure_ascii=False)
-            raw = raw.replace("asjaigusseadus", "asjaoigusseadus")
-            doc = json.loads(raw)
-            save_json(corrected_path, doc)
-            typo_file.unlink()
-            stats["files_renamed"] += 1
-
-
-def fix_notariaadiseadus_naming():
-    """Fix notariaadiseadus naming (Issue #11)."""
-    print("\n=== Fixing notariaadiseadus naming ===")
-
-    old_path = KRR_DIR / "notari_seadus_peep.json"
-    new_path = KRR_DIR / "notariaadiseadus_peep.json"
-
-    if old_path.exists():
-        doc = process_json_file(old_path)
-        save_json(new_path, doc)
-        old_path.unlink()
-        print("  Renamed: notari_seadus_peep.json → notariaadiseadus_peep.json")
-        stats["files_renamed"] += 1
-    else:
-        print(f"  File not found: {old_path.name}")
 
 
 def _audit_files(krr_dir: Path) -> list[Path]:
@@ -1470,54 +1411,16 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
 
 
 def main():
+    """Release build: INDEX + combined only (#467).
+
+    Legacy repair passes are not invoked. Use
+    ``scripts/archive/legacy_repairs.py --yes`` for emergency rewrites.
+    """
     print("=" * 60)
-    print("Estonian Legal Ontology - Comprehensive Fix Script")
+    print("Estonian Legal Ontology - release artifact build (#467)")
     print("=" * 60)
-
-    # Step 1: File naming fixes (before processing content)
-    fix_aos_naming()
-    fix_notariaadiseadus_naming()
-
-    # Step 2: Process all JSON files (namespace, @type, properties, etc.)
-    process_all_json_files()
-
-    # Step 3: Fix intra-file duplicate @id values
-    fix_intra_file_duplicates()
-
-    # Step 4: Audit cross-file duplicate IDs
-    audit_duplicate_ids()
-
-    # Step 5: Fix generator script
-    fix_generator_script()
-
-    # Step 6: Fix docs namespace
-    fix_docs_namespace()
-
-    # Step 7: Apply #426 legacy-statute deprecations (idempotent; normally a
-    # no-op) so the index/combined rebuilds below can never observe an
-    # unmarked legacy duplicate. generate_combined_jsonld() additionally
-    # fail-hards on violations for direct callers that skip main().
-    if LEGACY_STATUTE_DECISIONS_PATH.is_file():
-        summary = _legacy_deprecation.run(
-            LEGACY_STATUTE_DECISIONS_PATH, KRR_DIR, dry_run=False
-        )
-        print(
-            f"\n=== Legacy deprecations (#426): "
-            f"{summary['roots_deprecated']} root(s) newly marked, "
-            f"{summary['total_replacements']} reference(s) re-pointed ==="
-        )
-
-    # Step 8: Generate index
     generate_index()
-
-    # Step 9: Generate combined JSON-LD
     generate_combined_jsonld()
-
-    print("\n" + "=" * 60)
-    print("SUMMARY")
-    print("=" * 60)
-    for key, val in stats.items():
-        print(f"  {key}: {val}")
 
 
 if __name__ == "__main__":

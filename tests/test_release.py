@@ -112,11 +112,11 @@ class TestDAGValidity:
         assert topo.index("generate_transposition_mapping.py") < topo.index(
             "generate_harmonisation_links.py"
         )
-        # The combined-ontology rebuild (fix_all_issues.py) must be last — it
-        # depends on every enrichment step and regenerates the release
-        # artifact after enrichment (issue #252). The similarity aggregation
-        # runs immediately before it.
-        assert topo[-1] == "fix_all_issues.py"
+        # The combined-ontology rebuild (build_release_artifacts.py) must be
+        # last — it depends on every enrichment step and regenerates the
+        # release artifact after enrichment (issue #252 / #467). The
+        # similarity aggregation runs immediately before it.
+        assert topo[-1] == "build_release_artifacts.py"
         assert topo[-2] == "generate_similarity_index.py"
 
     def test_cyclic_dag_is_rejected(self) -> None:
@@ -632,8 +632,9 @@ class TestReleaseManifestShape:
         assert manifest["mode"] == "release-build"
         # DAG section: topo order + per-step reads/writes/depends.
         assert manifest["dag"]["topoOrder"][0] == "extract_cross_references.py"
-        # fix_all_issues.py rebuilds combined_ontology.jsonld last (issue #252).
-        assert manifest["dag"]["topoOrder"][-1] == "fix_all_issues.py"
+        # build_release_artifacts.py rebuilds combined_ontology.jsonld last
+        # (issue #252 / #467).
+        assert manifest["dag"]["topoOrder"][-1] == "build_release_artifacts.py"
         assert len(manifest["dag"]["steps"]) == len(r.STEPS)
         sample = manifest["dag"]["steps"][0]
         assert {"name", "dependsOn", "writes", "reads"} <= set(sample)

@@ -27,7 +27,7 @@ current generator no longer emits — no field is derived, fetched, or
 recomputed. Re-running the regulation generator corpus-wide would also work
 but is far heavier (re-parses every Riigi Teataja XML) and is the
 orchestrator's job; this targeted, deterministic, idempotent edit mirrors
-``scripts/backfill_eu_provenance.py``.
+``scripts/archive/backfill_eu_provenance.py``.
 
 Notes
 -----

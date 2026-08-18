@@ -363,7 +363,7 @@ STEPS: list[dict] = [
     # Every enrichment step above rewrites the source ``*_peep.json`` files.
     # ``combined_ontology.jsonld`` (the most-consumed release artifact and the
     # one the Seadusloome SHACL sync gate parses) and ``INDEX.json`` are
-    # *derived* from those peeps by ``scripts/fix_all_issues.py``
+    # *derived* from those peeps by ``scripts/build_release_artifacts.py``
     # (``generate_combined_jsonld`` / ``generate_index``) — nothing else
     # builds them. This step MUST run after all enrichment and BEFORE the
     # release validators, otherwise the artifact reflects the pre-enrichment
@@ -373,9 +373,9 @@ STEPS: list[dict] = [
     # before invoking the release validators, so the rebuild is guaranteed to
     # precede them and a failure here blocks the validators automatically.
     {
-        "name": "fix_all_issues.py",
+        "name": "build_release_artifacts.py",
         "description": "Rebuild combined_ontology.jsonld + INDEX.json",
-        "script": "fix_all_issues.py",
+        "script": "build_release_artifacts.py",
         "depends_on": [
             "extract_cross_references.py",
             "generate_inverse_references.py",

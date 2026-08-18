@@ -1792,7 +1792,7 @@ def main(argv: list[str] | None = None):
         # index would advertise more decisions than the emitted graph holds
         # (#398). The index total + case_type_counts + per-year breakdown are
         # tallied from this emitted set below, matching the de-duplicated peep
-        # graph (the same invariant rederive_court_case_types enforces).
+        # graph (the same invariant the archived #342 rederive pass enforced).
         emitted_in_year: list[dict] = []
         for dec in decisions:
             node = decision_to_node(dec, year, seen_ids, seen_keys)

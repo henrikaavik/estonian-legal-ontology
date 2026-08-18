@@ -403,12 +403,12 @@ class TestDryRunSummary:
 
 
 class TestCombinedOntologyRebuildStep:
-    """``fix_all_issues.py`` must be a DAG step that rebuilds
+    """``build_release_artifacts.py`` must be a DAG step that rebuilds
     ``combined_ontology.jsonld`` (+ ``INDEX.json``) AFTER every enrichment
     step and BEFORE the release validators. Without it the release artifact
     and the Seadusloome sync gate validate the pre-enrichment corpus."""
 
-    REBUILD_STEP = "fix_all_issues.py"
+    REBUILD_STEP = "build_release_artifacts.py"
 
     def _step(self, name: str) -> dict:
         return next(s for s in run_all_integration.STEPS if s["name"] == name)
@@ -416,8 +416,8 @@ class TestCombinedOntologyRebuildStep:
     def test_rebuild_step_is_registered(self) -> None:
         names = [s["name"] for s in run_all_integration.STEPS]
         assert self.REBUILD_STEP in names, (
-            "fix_all_issues.py must be registered as a DAG step so the "
-            "combined ontology is rebuilt after enrichment"
+            "build_release_artifacts.py must be registered as a DAG step so "
+            "the combined ontology is rebuilt after enrichment"
         )
 
     def test_rebuild_step_writes_combined_ontology_and_index(self) -> None:

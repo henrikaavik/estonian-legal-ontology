@@ -35,7 +35,7 @@ self-describing and a consumer can pin/cite it:
 - `combined_ontology.jsonld` — a dataset-level `owl:Ontology` /
   `void:Dataset` / `dcat:Dataset` node at `@graph[0]`, re-emitted from
   `estleg_common.combined_ontology_header()` every time
-  `fix_all_issues.generate_combined_jsonld()` runs (so it survives every
+  `build_release_artifacts.generate_combined_jsonld()` runs (so it survives every
   rebuild). Other combined `*.jsonld` files get the same in-band license /
   publisher stamp via `stamp_combined_dataset_head()`.
 
@@ -182,6 +182,7 @@ phase order is preserved exactly.
 | 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `sanctions_report.json` |
 | 14 | `extract_draft_impact.py` | — | `*_peep.json`, `draft_impact_report.json` |
 | 15 | `generate_similarity_index.py` | steps 1–14 (all) | `similarity_index.json`, `similarity_report.json` |
+| 16 | `build_release_artifacts.py` | steps 1–15 (all) | `combined_ontology.jsonld`, `INDEX.json` |
 
 `court_provision_links_report.json` includes both raw recall lift and its
 comparable denominator: use
@@ -504,9 +505,19 @@ rebuild; they are not part of the release contract:
 ### Operational rule of thumb
 
 > If `python3 scripts/run_all_integration.py --release` (or the targeted
-> `generate_*` / `fix_all_issues.py` steps) reproduces a file from committed
+> `generate_*` / `build_release_artifacts.py` steps) reproduces a file from committed
 > inputs, it is a **build artifact** — commit it on release for downstream
 > consumers and reviewers, but it is reconstructible. If you *type into* a
 > file by hand, it is **source** and must be committed. Anything written only
 > under `krr_outputs/reports/integration/` or a `.cache/`/`.bak.`/`.failed.`
 > path is **transient** and need not be committed at all.
+
+### From-scratch regen (zero backfill)
+
+A from-scratch `generate_*` run plus `python3 scripts/build_release_artifacts.py`
+must reproduce a validator-clean corpus **without** running
+`scripts/archive/` spent one-shots (`rederive_court_case_types.py`,
+`backfill_eu_provenance.py`, `legacy_repairs.py`, or the IRI migrations).
+Case-type classification and EU CELEX provenance are emitted by the
+generators themselves (#468). `migrate_uris.py` stays live as the URI
+registry owner, not as a post-hoc backfill.
