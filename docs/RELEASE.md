@@ -66,6 +66,14 @@ against `BUILD_EVALUATION_DATE` with a 45-day lag budget). `--fetch`
 IRI deltas are published as `krr_outputs/changes-<version>.jsonld` and
 linked from `metadata.jsonld` as a `dcat:distribution`.
 
+The committed tree is recorded in
+`krr_outputs/dataset_build_manifest.json` (dataset version, git SHA,
+pinned `generated` / `evaluationDate`, sample `estleg:kehtiv` dates,
+catalog counts). Regenerate with
+`python3 scripts/write_build_manifest.py`. Immutable GitHub Release
+assets (tagged downloads that replace mutable `/main` distribution
+URLs) are #473 and are not produced by this in-repo record.
+
 **When to bump:**
 
 - **MAJOR** — a breaking schema change (a removed/renamed property or class, an
@@ -454,6 +462,8 @@ delete and rebuild).
   coverage reports under `krr_outputs/reports/kov/*_coverage.json`, plus
   probe reports such as `krr_outputs/reports/annotations_pdf_probe.json`
 - the source-fetch manifests `krr_outputs/generation_manifest_*.json`
+- the committed-tree record `krr_outputs/dataset_build_manifest.json`
+  (issue #548; tagged GitHub Release assets are #473)
 
 The largest generated artifacts are committed through Git LFS:
 `combined_ontology.jsonld`, `similarity_index.json`,
