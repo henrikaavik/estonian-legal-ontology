@@ -24,11 +24,15 @@ pdf = [
   "pdfminer.six>=20231228",
 ]
 
+[project.scripts]
+estleg-load = "estleg_client.cli:main"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 
 [tool.coverage.run]
-source = ["scripts"]
+source = ["scripts", "estleg_client"]
 omit = ["scripts/__pycache__/*"]
 
 [tool.ruff]
@@ -36,21 +40,11 @@ line-length = 100
 target-version = "py311"
 
 [tool.setuptools]
-# This project ships scripts in ``scripts/`` rather than as an
-# importable package: the entrypoints are CLI scripts that
-# manipulate ``krr_outputs/`` and import each other via
-# ``sys.path`` injection at the top of each test/module. The
-# ``py-modules = []`` declaration tells setuptools to skip
-# package discovery — without it, the editable install would
-# attempt to package every top-level ``.py`` and fail because
-# the layout is not a flat-package.
+# Thin read-only consumer package (issue #551). Integrators can
+# ``from estleg_client import load_law`` instead of reimplementing
+# INDEX traversal and multi-osa assembly.
 #
-# Decision (issue #164 follow-up): keep the ``py-modules = []``
-# policy. Promoting ``scripts/`` to a real package
-# (``packages = ['scripts']`` + ``scripts/__init__.py``) would
-# require updating every ``sys.path`` injection site and every
-# ``from generate_X import Y`` to ``from scripts.generate_X
-# import Y`` — out of scope for the ontology-review remediation.
-# Revisit only if/when the project starts shipping importable
-# helpers to other consumers.
-py-modules = []
+# ``scripts/`` is still not packaged (issue #472). Do not add
+# ``packages = ['scripts']`` here — the producer CLIs keep their
+# ``sys.path`` layout until that follow-up.
+packages = ["estleg_client"]

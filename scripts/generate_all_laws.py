@@ -1388,7 +1388,7 @@ def generate_law_jsonld(
 
     ontology_node: dict = {
         "@id": ontology_id,
-        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "schema:Legislation"],
         "rdfs:label": f"{title} teemakaardistus",
         "dc:source": title,
         "dcterms:title": title,
@@ -1803,7 +1803,7 @@ def generate_law_stub_jsonld(
         rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
     ontology_node: dict = {
         "@id": f"estleg:{prefix}_Map_2026",
-        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "schema:Legislation"],
         "rdfs:label": f"{title} teemakaardistus",
         "dc:source": title,
         "dcterms:title": title,
@@ -1885,7 +1885,7 @@ def generate_multipart_law(
         # Issue #89: Mark file-level ontology node with estleg:Part type
         osa_ontology_node: dict = {
             "@id": ontology_id,
-            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part", "schema:Legislation"],
             "rdfs:label": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
             "dc:source": title,
             "dcterms:title": title,

@@ -8,7 +8,8 @@
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "eli": "http://data.europa.eu/eli/ontology#",
-    "eli-dl": "http://data.europa.eu/eli/eli-draft-legislation-ontology#"
+    "eli-dl": "http://data.europa.eu/eli/eli-draft-legislation-ontology#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,11 +17,16 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:subClassOf": {
-        "@id": "eli:LegalResource"
-      },
+      "rdfs:subClassOf": [
+        {
+          "@id": "eli:LegalResource"
+        },
+        {
+          "@id": "schema:Legislation"
+        }
+      ],
       "rdfs:label": "Act",
-      "rdfs:comment": "An Estonian or EU legislative act. In FRBR/ELI terms the act node is the Work (eli:LegalResource); its addressable point-in-time consolidations are estleg:ActExpression nodes (eli:LegalExpression) reachable via estleg:hasExpression (#608)."
+      "rdfs:comment": "An Estonian or EU legislative act. In FRBR/ELI terms the act node is the Work (eli:LegalResource); its addressable point-in-time consolidations are estleg:ActExpression nodes (eli:LegalExpression) reachable via estleg:hasExpression (#608). Also rdfs:subClassOf schema:Legislation so generic schema.org clients see acts as Legislation without a 1190-peep rewrite (#543)."
     },
     {
       "@id": "estleg:ActExpression",
@@ -1687,7 +1693,7 @@
         "@id": "eli:date_entry_in_force"
       },
       "rdfs:label": "Entry Into Force",
-      "rdfs:comment": "Date the act or amendment entered into force. rdfs:subPropertyOf eli:date_entry_in_force (#440)."
+      "rdfs:comment": "Date the act or amendment entered into force. rdfs:subPropertyOf eli:date_entry_in_force (#440). Comparable to schema:legislationDate; not a second rdfs:subPropertyOf (#543)."
     },
     {
       "@id": "estleg:euCourtCode",
@@ -2045,8 +2051,11 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "schema:text"
+      },
       "rdfs:label": "Legal Text",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. rdfs:subPropertyOf schema:text (#543)."
     },
     {
       "@id": "estleg:mappedPart",
@@ -2232,8 +2241,11 @@
       "@type": [
         "owl:ObjectProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "dcterms:references"
+      },
       "rdfs:label": "References",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. Inverse of estleg:referencedBy.",
+      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. Inverse of estleg:referencedBy. rdfs:subPropertyOf dcterms:references (#543).",
       "owl:inverseOf": {
         "@id": "estleg:referencedBy"
       }
@@ -3158,7 +3170,7 @@
         "owl:Class"
       ],
       "rdfs:label": "Harmoniseerimisseos (Harmonisation link)",
-      "rdfs:comment": "A link between an Estonian law and national laws of other EU member states that transpose the same EU directive."
+      "rdfs:comment": "Neighbour-state comparative NIM measure (LV/LT/FI/SE) sharing an EU directive with an Estonian act. Instances in combined_ontology.jsonld may be isStubNode closure stubs; real neighbour measures live in krr_outputs/harmonisation/. This class is not Estonian article-level transposition (see estleg:transposesDirective)."
     },
     {
       "@id": "estleg:EUInstitution",

@@ -642,18 +642,23 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
 # Unused in instance JSON-LD: rdf:type is ``@type``; rdf:langString is a
 # SHACL/Turtle datatype, not a JSON-LD term. Ticket #392.
 UNUSED_RDF_CONTEXT_LINE = '    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",\n'
-# schema.org is used in metadata.jsonld but not in combined_ontology.jsonld.
-UNUSED_SCHEMA_CONTEXT_LINE = '    "schema": "http://schema.org/",\n'
+# schema.org is used on act roots (``schema:Legislation``, #543) and in
+# metadata.jsonld. Official IRI is https://schema.org/ (with the slash).
+# Kept as a named constant so callers can detect the historical
+# ``http://schema.org/`` line; it is no longer stripped.
+UNUSED_SCHEMA_CONTEXT_LINE = '    "schema": "https://schema.org/",\n'
 
 
 def strip_unused_jsonld_context_prefixes(
     text: str, *, drop_schema: bool = False
 ) -> str:
-    """Remove unused ``rdf:`` (and optionally ``schema:``) @context lines."""
-    out = text.replace(UNUSED_RDF_CONTEXT_LINE, "")
-    if drop_schema:
-        out = out.replace(UNUSED_SCHEMA_CONTEXT_LINE, "")
-    return out
+    """Remove unused ``rdf:`` @context lines.
+
+    ``schema:`` is used (#543) and is never stripped, even if
+    ``drop_schema`` is True (parameter kept for call-site compatibility).
+    """
+    _ = drop_schema
+    return text.replace(UNUSED_RDF_CONTEXT_LINE, "")
 
 
 CONTEXT: dict[str, str] = {
@@ -668,6 +673,7 @@ CONTEXT: dict[str, str] = {
     "void": "http://rdfs.org/ns/void#",
     "dcat": "http://www.w3.org/ns/dcat#",
     "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
 }
 
 # Prefixes a combined JSON-LD @context must publish so in-band Dataset terms

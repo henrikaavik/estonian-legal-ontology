@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Client, schema.org bridges, non-graph indexes (#551, #543, #462)
+
+- `estleg_client` package: `load_law` / `estleg-load` (#551). `scripts/`
+  stays unpackaged (#472).
+- `estleg:Act` ⊑ `schema:Legislation`; `legalText` ⊑ `schema:text`;
+  `references` ⊑ `dcterms:references` (#543).
+- KOV similarity JSON and sanction `severity_index` formally documented
+  as non-graph application artifacts (#462).
+
 ### Release delta + refresh SLA (#549, #531)
 
 - `krr_outputs/changes-0.11.0.jsonld` is the first published IRI delta

@@ -12,6 +12,11 @@ Generates:
   - krr_outputs/reports/similarity_sample.json   (only with --emit-sample N)
   - krr_outputs/similarity/kov_similarity_index.json (KOV act-level pass)
 
+Those JSON files are **non-graph application artifacts** (issue #462) —
+a tf-idf / keyword-Jaccard application index, not RDF. SPARQL will not
+see those pairs unless they were also emitted as ``estleg:similarAct``
+or ``estleg:semanticallySimilarTo``.
+
 KOV act-level similarity (Layer 3)
 ----------------------------------
 The provision-level keyword-Jaccard pass above stays laws-and-state only.

@@ -46,6 +46,17 @@ Git LFS has materialised it. Without LFS it falls back to
 `perekonnaseadus_peep.json` plus `krr_outputs/sanctions/` and still prints
 an answer. Optional: `python3 examples/quickstart.py --graph PATH`.
 
+### Python client
+
+```python
+from estleg_client import load_law
+
+g = load_law("abipolitseiniku_seadus")  # or "ABIPOL"
+```
+
+`pip install -e .` also installs the `estleg-load` console script
+(`estleg-load abipolitseiniku_seadus` prints triple and provision counts).
+
 ### Load surfaces
 
 The corpus is published as two nested load surfaces — pick the one your query needs:
@@ -525,6 +536,10 @@ The ontology includes 15 integration layers that connect laws, court decisions, 
 | Institutional competence | `extract_institutional_competence.py` | Maps which institution enforces what |
 | Sanctions | `extract_sanctions.py` | Penalty and sanction cross-reference index |
 | Semantic similarity | `generate_similarity_index.py` | Keyword-based similarity between provisions |
+
+Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state comparative NIM measures (LV/LT/FI/SE); Estonian transposition is `estleg:transposesDirective` / the transposition mapping, not the hollow HarmonisationLink stubs.
+
+`krr_outputs/similarity_index.json` / `similarity_report.json` and the EUR-normalized severity scores in `krr_outputs/sanctions_report.json` are **non-graph** application indexes (issue #462); SPARQL does not see those pairs or scores.
 
 ### Running integration scripts
 

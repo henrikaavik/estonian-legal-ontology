@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 """
-Link Estonian laws to parallel implementations in other EU member states.
+Comparative NIM (national implementing measure) links for Latvia, Lithuania,
+Finland, and Sweden — not Estonian article-level transposition.
 
-For each transposition mapping (Estonian law → EU directive), queries EUR-Lex
-for how Latvia, Lithuania, Finland, and Sweden transposed the same directive.
-Creates harmonisation links showing which countries implemented the same EU law.
+For each Estonian law → EU directive row in the transposition mapping, queries
+EUR-Lex for how Latvia (LV), Lithuania (LT), Finland (FI), and Sweden (SE)
+implemented the same directive. The sidecar is a neighbour-state comparative
+layer. Estonian transposition itself lives on ``estleg:transposesDirective`` /
+``krr_outputs/transposition_mapping.json``, not in these HarmonisationLink
+records.
+
+``TARGET_COUNTRIES`` is LVA/LTU/FIN/SWE only. Do not add EST without a fetch
+of Estonian NIMs; this script does not model EE article-level transposition.
 
 Requires: krr_outputs/transposition_mapping.json (from generate_transposition_mapping.py)
 
@@ -77,8 +84,11 @@ RATE_DELAY = 1.5  # seconds between SPARQL requests
 _CELEX_ALLOWED = re.compile(r"[0-9A-Za-z()/]+")
 
 
-# Target countries: Baltic/Nordic neighbors. The keys are the ISO 3166-1
-# alpha-3 codes the Publications Office country vocabulary uses in
+# Target countries: Baltic/Nordic neighbors (LV/LT/FI/SE). This layer is
+# comparative NIM measures for those states, not Estonian article-level
+# transposition. EST is intentionally absent — do not add it without a
+# fetch of Estonian NIMs. The keys are the ISO 3166-1 alpha-3 codes the
+# Publications Office country vocabulary uses in
 # ``.../authority/country/<CODE>`` URIs (these match
 # ``cdm:measure_national_implementing_implemented_by_country`` exactly).
 TARGET_COUNTRIES = {
@@ -739,7 +749,10 @@ def _check_mapping_freshness(
 def main():
     args = parse_args()
     print("=" * 60)
-    print("Generate harmonisation links: Estonian laws ↔ neighboring EU states")
+    print(
+        "Generate comparative NIM measures for LV/LT/FI/SE "
+        "(not Estonian article-level transposition)"
+    )
     countries = ', '.join(f"{v['label_en']} ({k})" for k, v in TARGET_COUNTRIES.items())
     print(f"Target countries: {countries}")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
@@ -869,7 +882,7 @@ def main():
     print(f"  Saved: {schema_path.name}")
 
     # --- Step 4: Query EUR-Lex for parallel transpositions ---
-    print("\n--- Querying EUR-Lex for parallel transpositions ---")
+    print("\n--- Querying EUR-Lex for neighbour-state NIM measures (LV/LT/FI/SE) ---")
 
     harmonisation_data: list[dict] = []
     total_parallel_measures = 0

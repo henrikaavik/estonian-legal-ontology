@@ -10,6 +10,10 @@ Outputs:
   - krr_outputs/sanctions/  (per-law sanction JSON-LD files)
   - krr_outputs/sanctions_report.json
 
+``sanctions_report.json`` (including the EUR-normalized ``severity_index``)
+is a **non-graph application artifact** (issue #462). Severity scores are
+not RDF properties; query ``estleg:hasSanction`` for the graph layer.
+
 Estonian numerals
 -----------------
 Numeral parsing is intentionally **lemma-based** — only the forms listed

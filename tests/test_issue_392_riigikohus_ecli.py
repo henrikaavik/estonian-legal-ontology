@@ -13,9 +13,9 @@ from classify_eurovoc import EUROVOC_DOMAINS
 from extract_legal_concepts import is_noise_term
 
 
-def test_context_drops_unused_rdf_and_schema_prefixes():
+def test_context_drops_unused_rdf_and_keeps_schema_prefix():
     assert "rdf" not in estleg_common.CONTEXT
-    assert "schema" not in estleg_common.CONTEXT
+    assert estleg_common.CONTEXT["schema"] == "https://schema.org/"
     text = (
         Path(__file__).resolve().parent.parent
         / "scripts"

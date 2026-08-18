@@ -26,8 +26,9 @@ _MUST_NOT_ASSIGN_PINNED = ("generate_annotations.py", "generate_amendment_histor
 
 
 def test_context_contains_required_prefixes() -> None:
-    for key in ("estleg", "owl", "eli", "void", "dcat", "prov", "dcterms"):
+    for key in ("estleg", "owl", "eli", "void", "dcat", "prov", "dcterms", "schema"):
         assert key in estleg_common.CONTEXT, key
+    assert estleg_common.CONTEXT["schema"] == "https://schema.org/"
 
 
 def test_pinned_run_timestamp_follows_evaluation_date() -> None:
