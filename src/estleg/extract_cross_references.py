@@ -830,7 +830,15 @@ def resolve_preamble_citation(
             # Act IRI not in the prefix index — fall back to act-level.
             return (act_iri, act_iri)
         par = cit["paragraphs"][0]
-        target = prefix_to_provisions.get(prefix, {}).get(par)
+        lg = cit.get("lg")
+        if not lg and isinstance(cit.get("citationDetail"), str):
+            match = re.search(r"lg\s+(\d+)", cit["citationDetail"])
+            lg = match.group(1) if match else None
+        provisions = prefix_to_provisions.get(prefix, {})
+        target = next(
+            (provisions[key] for key in _provision_lookup_keys(par, lg) if key in provisions),
+            None,
+        )
         if target is None:
             # Paragraph not in provision index — fall back to act-level
             # for citation_target while keeping enabling_act_iri at act.
@@ -1092,10 +1100,16 @@ _GENITIVE_ALTERNATION = "|".join(
     re.escape(g) for g in sorted(FULLNAME_GENITIVE.keys(), key=len, reverse=True)
 )
 
+# Optional lõige after the § number (#512). Defined here so the in-law
+# patterns can capture ``KarS § 121 lg 2`` before the preamble block
+# below (which has its own ``_LG_TOKEN``).
+_LG_AFTER_PAR = r"(?:lõike(?:st|s)?|lõigete|lg)"
+_LG_TAIL = rf"(?:\s+{_LG_AFTER_PAR}\s+(\d+))?"
+
 # Pattern 1: Abbreviation + § + number(s)
 #   KarS § 121, KarS §-s 121, KarS § 121 lg 2 p 3, KarS §-de 208-210
 _PAT_ABBREV = re.compile(
-    rf"({_ABBREV_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
+    rf"({_ABBREV_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER}){_LG_TAIL}",
     re.UNICODE,
 )
 
@@ -1105,7 +1119,7 @@ _PAT_ABBREV = re.compile(
 # that the bare ``seadus(?:e|tiku)?`` form silently dropped (#363).
 _PAT_SELF = re.compile(
     rf"k[äa]esoleva\s+(?:seadus(?:e|tiku)?|koodeksi?)\s*"
-    rf"{PAR_SUFFIX}\s*({_PAR_NUMBER})",
+    rf"{PAR_SUFFIX}\s*({_PAR_NUMBER}){_LG_TAIL}",
     re.UNICODE | re.IGNORECASE,
 )
 
@@ -1114,7 +1128,7 @@ _PAT_SELF = re.compile(
 #   genitive table is non-empty (it always is in practice).
 _PAT_FULLNAME = (
     re.compile(
-        rf"({_GENITIVE_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
+        rf"({_GENITIVE_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER}){_LG_TAIL}",
         re.UNICODE | re.IGNORECASE,
     )
     if _GENITIVE_ALTERNATION
@@ -1147,6 +1161,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
         citations.append({
             "law_ref": abbrev,
             "paragraphs": paragraphs,
+            "lg": m.group(3),
             "is_self_ref": False,
             "span_start": m.start(),
             "citationText": m.group(0).strip(),
@@ -1159,6 +1174,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
         citations.append({
             "law_ref": "__SELF__",
             "paragraphs": paragraphs,
+            "lg": m.group(2),
             "is_self_ref": True,
             "span_start": m.start(),
             "citationText": m.group(0).strip(),
@@ -1175,6 +1191,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
                 citations.append({
                     "law_ref": abbrev,
                     "paragraphs": paragraphs,
+                    "lg": m.group(3),
                     "is_self_ref": False,
                     "span_start": m.start(),
                     "citationText": m.group(0).strip(),
@@ -1703,23 +1720,39 @@ def resolve_citation(
     if not prefixes:
         return []
 
+    lg = citation.get("lg")
+    if isinstance(lg, str):
+        lg = lg.strip() or None
+    else:
+        lg = None
+
     for par_num in citation["paragraphs"]:
-        # Search every candidate prefix; take the first prefix whose
-        # provision index carries this paragraph (exact match, then
-        # leading-zero-stripped).
-        stripped = par_num.lstrip("0") or "0"
+        # Prefer an existing lõige IRI when the citation names lg N (#512).
+        keys = _provision_lookup_keys(par_num, lg)
         for prefix in prefixes:
             provisions = prefix_to_provisions.get(prefix)
             if not provisions:
                 continue
-            if par_num in provisions:
-                resolved.append(provisions[par_num])
-                break
-            if stripped in provisions:
-                resolved.append(provisions[stripped])
+            found = next((provisions[key] for key in keys if key in provisions), None)
+            if found:
+                resolved.append(found)
                 break
 
     return resolved
+
+
+def _provision_lookup_keys(par_num: str, lg: str | None) -> list[str]:
+    """Index keys to try for one §, lõige-first when ``lg`` is set (#512)."""
+    stripped = par_num.lstrip("0") or "0"
+    keys: list[str] = []
+    if lg:
+        keys.append(f"{par_num}_Lg_{lg}")
+        if stripped != par_num:
+            keys.append(f"{stripped}_Lg_{lg}")
+    keys.append(par_num)
+    if stripped != par_num:
+        keys.append(stripped)
+    return keys
 
 
 def _xml_paragraph_key(par_el: ET.Element) -> str:

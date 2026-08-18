@@ -21,6 +21,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import NamedTuple
 
+from estleg.extract_cross_references import _provision_lookup_keys
 from estleg.estleg_common import (
     _FAILURE_SAMPLES_INMEMORY_CAP,
     BODY_CANON,
@@ -468,8 +469,9 @@ def extract_citations_from_text(
 
     # Pattern 1: Abbreviation + § + number(s)
     # #350: \b so VTMS/HKMS do not match the shorter TMS/KMS keys.
+    lg_tail = r"(?:\s+(?:lõike(?:st|s)?|lõigete|lg)\s+(\d+))?"
     pat_abbrev = re.compile(
-        rf"\b({abbrevs})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
+        rf"\b({abbrevs})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?){lg_tail}",
         re.UNICODE,
     )
     for m in pat_abbrev.finditer(text):
@@ -477,7 +479,9 @@ def extract_citations_from_text(
         par_range = m.group(2).strip()
         paragraphs = _expand_par_range(par_range, counters=counters)
         if paragraphs:
-            state_citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
+            state_citations.append(
+                {"law_ref": abbrev, "paragraphs": paragraphs, "lg": m.group(3)}
+            )
 
     # Pattern 2: Full name in genitive + § + number
     genitive_names = "|".join(
@@ -485,7 +489,7 @@ def extract_citations_from_text(
     )
     if genitive_names:
         pat_fullname = re.compile(
-            rf"({genitive_names})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
+            rf"({genitive_names})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?){lg_tail}",
             re.UNICODE | re.IGNORECASE,
         )
         for m in pat_fullname.finditer(text):
@@ -494,7 +498,9 @@ def extract_citations_from_text(
             paragraphs = _expand_par_range(par_range, counters=counters)
             abbrev = FULLNAME_GENITIVE.get(gen_name)
             if abbrev and paragraphs:
-                state_citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
+                state_citations.append(
+                    {"law_ref": abbrev, "paragraphs": paragraphs, "lg": m.group(3)}
+                )
 
     # Pattern 3: KOV act-level citation (Layer 2c PR #3)
     for m in PAT_KOV_ACT.finditer(text):
@@ -540,25 +546,23 @@ def _resolve_par_in_prefixes(
     par_num: str,
     prefixes: list[str],
     prefix_to_provisions: dict[str, dict[str, str]],
+    *,
+    lg: str | None = None,
 ) -> list[str]:
     """Return the distinct provision IRIs a single § resolves to.
 
-    Searches the UNION of ``prefixes`` (Issue #256), checking the raw key
-    first and the zero-stripped key as a fallback (mirroring the original
-    single-prefix behaviour). Returns distinct IRIs preserving the sorted
-    ``prefixes`` order so the caller can apply a deterministic tie-break
-    when the same § exists in more than one Part.
+    Searches the UNION of ``prefixes`` (Issue #256). When ``lg`` is set,
+    an existing ``_Par_N_Lg_M`` IRI wins (#512); otherwise the § node.
     """
     hits: list[str] = []
-    stripped = par_num.lstrip("0") or "0"
+    keys = _provision_lookup_keys(par_num, lg)
     for prefix in prefixes:
         provisions = prefix_to_provisions.get(prefix, {})
         if not provisions:
             continue
-        if par_num in provisions:
-            hits.append(provisions[par_num])
-        elif stripped in provisions:
-            hits.append(provisions[stripped])
+        found = next((provisions[key] for key in keys if key in provisions), None)
+        if found:
+            hits.append(found)
     return list(dict.fromkeys(hits))
 
 
@@ -605,9 +609,14 @@ def resolve_citations(
         prefixes = _normalize_prefixes(abbrev_to_prefixes.get(cit["law_ref"]))
         if not prefixes:
             continue
+        lg = cit.get("lg")
+        if isinstance(lg, str):
+            lg = lg.strip() or None
+        else:
+            lg = None
         for par_num in cit["paragraphs"]:
             hits = _resolve_par_in_prefixes(
-                par_num, prefixes, prefix_to_provisions
+                par_num, prefixes, prefix_to_provisions, lg=lg
             )
             if not hits:
                 continue

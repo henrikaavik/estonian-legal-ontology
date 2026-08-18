@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Citations target lõige when named (#512)
+
+- `references` and `interpretsLaw` resolve to `_Par_N_Lg_M` when the
+  citation includes `lg` and that lõige node exists. Otherwise they
+  stay on the §.
+
 ### Deontic layer on lõige (#515)
 
 - Classifiers attach `normativeType` / `targetGroup` / `hasSanction` to
