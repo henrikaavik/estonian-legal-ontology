@@ -131,6 +131,55 @@ def classify_change_type(title: str) -> tuple[str, str] | None:
 
 # ---------- fuzzy law-name resolution ----------
 
+# Issue #380: a year token in the affected-law name must not be ignored
+# when the only INDEX hit is a differently-year'd annual act (the 2026
+# riigieelarve law used to absorb every "YYYY. aasta riigieelarve …" bill).
+# Underscore is a word char, so ``estleg:2026_aasta_…`` must still yield 2026.
+_YEAR_RE = re.compile(r"(?<![A-Za-z0-9])((?:19|20)\d{2})(?![0-9])")
+# Snapshot suffix on every act IRI — not the act's own year.
+_MAP_STAMP_RE = re.compile(r"_Map_\d{4}\b")
+
+
+def years_mentioned(*texts: str) -> frozenset[str]:
+    """Return the set of 19xx/20xx year tokens appearing in ``texts``.
+
+    ``_Map_YYYY`` snapshot suffixes (``estleg:REELS_Map_2026``) are stripped
+    first so the ontology-map year is not treated as the act year (#380).
+    """
+    found: set[str] = set()
+    for text in texts:
+        if text:
+            found.update(_YEAR_RE.findall(_MAP_STAMP_RE.sub("", text)))
+    return frozenset(found)
+
+
+def _is_annual_budget_name(*texts: str) -> bool:
+    """True when any text names the annual state-budget act (riigieelarve)."""
+    return any("riigieelarve" in (text or "").lower() for text in texts)
+
+
+def year_compatible_law_match(affected_name: str, *candidate_texts: str) -> bool:
+    """Return False when a year-prefixed *budget* name hits another year's budget.
+
+    Issue #380 is about annual ``YYYY. aasta riigieelarve seadus`` acts, each
+    a distinct statute. Treaty titles keep a founding year as identity
+    (``2006. aasta rahvusvaheline …``) — a later bill about that instrument
+    must still resolve. Year-less candidates (the framework *Riigieelarve
+    seadus*) stay compatible.
+    """
+    if not _is_annual_budget_name(affected_name) or not _is_annual_budget_name(
+        *candidate_texts
+    ):
+        return True
+    wanted = years_mentioned(affected_name)
+    if not wanted:
+        return True
+    have = years_mentioned(*candidate_texts)
+    if not have:
+        return True
+    return bool(wanted & have)
+
+
 def normalize_law_name(name: str) -> str:
     """
     Normalize an Estonian law name for fuzzy matching:
@@ -297,8 +346,16 @@ def resolve_law_name(
     norm = normalize_law_name(affected_name)
     slug = slug_from_name(norm)
 
+    def _ok(entry: dict, key: str) -> bool:
+        return year_compatible_law_match(
+            affected_name,
+            key,
+            entry.get("name", ""),
+            entry.get("slug", ""),
+        )
+
     # 1. Direct slug match (still a deterministic exact-equality check)
-    if slug in lookup:
+    if slug in lookup and _ok(lookup[slug], slug):
         return lookup[slug]
 
     # 2. Substring match with word-boundary alignment. Sort keys so
@@ -307,6 +364,8 @@ def resolve_law_name(
     candidates: list[tuple[int, str, dict]] = []
     for key in sorted(lookup):
         entry = lookup[key]
+        if not _ok(entry, key):
+            continue
         if _contiguous_subsequence(slug, key) or _contiguous_subsequence(key, slug):
             candidates.append((len(key), key, entry))
     if candidates:
@@ -321,6 +380,8 @@ def resolve_law_name(
     best_key_len = float("inf")
     for key in sorted(lookup):
         entry = lookup[key]
+        if not _ok(entry, key):
+            continue
         key_tokens = set(key.split()) - {"ja", "ning", "seadus", "seadustik"}
         overlap = len(norm_tokens & key_tokens)
         if overlap >= 2 and (

@@ -430,7 +430,8 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
 def extract_text_from_law(data: dict) -> str:
     """
     Extract all searchable text from a law JSON-LD file.
-    Combines rdfs:label, estleg:sourceAct, and estleg:summary fields.
+    Combines rdfs:label, estleg:sourceAct, estleg:summary, and
+    estleg:legalText fields (#368 — do not stop at the 500-char summary).
 
     Each of these fields may arrive as a plain string, a
     ``{"@value": ..., "@language": "et"}`` value object, or a list of
@@ -446,6 +447,7 @@ def extract_text_from_law(data: dict) -> str:
             "rdfs:label",
             "estleg:sourceAct",
             "estleg:summary",
+            "estleg:legalText",
             "skos:prefLabel",
             "dc:description",
         ):

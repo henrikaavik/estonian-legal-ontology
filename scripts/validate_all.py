@@ -598,28 +598,22 @@ def validate_temporal_property_targets(files: list[Path]):
 
 
 def collect_internal_refs(filepath: Path, doc: dict) -> list[tuple[str, str, str, str]]:
+    """Collect internal object refs using the shared JSON-LD walker (#453)."""
     refs: list[tuple[str, str, str, str]] = []
-
-    def walk(value: object, prop: str, node_id: str) -> None:
-        if isinstance(value, dict):
-            ref_id = value.get("@id")
-            if isinstance(ref_id, str) and not ref_id.startswith(EXTERNAL_REF_PREFIXES):
-                refs.append((filepath.name, node_id, prop, ref_id))
-            for key, child in value.items():
-                if key != "@id":
-                    walk(child, prop, node_id)
-        elif isinstance(value, list):
-            for child in value:
-                walk(child, prop, node_id)
 
     for node in doc.get("@graph", []):
         if not isinstance(node, dict):
             continue
         node_id = node.get("@id", "?")
+        nid = node_id if isinstance(node_id, str) else "?"
         for prop, value in node.items():
-            if prop == "@id":
+            if prop in {"@id", "@type", "@context"}:
                 continue
-            walk(value, prop, node_id if isinstance(node_id, str) else "?")
+            for pred, ref_id in estleg_common.walk_object_refs(value, prop):
+                if isinstance(ref_id, str) and not ref_id.startswith(
+                    EXTERNAL_REF_PREFIXES
+                ):
+                    refs.append((filepath.name, nid, pred, ref_id))
     return refs
 
 

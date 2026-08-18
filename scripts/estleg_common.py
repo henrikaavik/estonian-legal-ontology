@@ -526,12 +526,13 @@ def iter_combined_overlay_files(krr_dir: Path) -> list[Path]:
     return sorted(files)
 
 
-def _walk_object_refs(value: object, predicate: str) -> Iterator[tuple[str, str]]:
+def walk_object_refs(value: object, predicate: str) -> Iterator[tuple[str, str]]:
     """Yield ``(predicate, ref)`` for every JSON-LD ``@id`` under ``value``.
 
-    Mirrors the Seadusloome sync gate's walker so the closure notion stays
-    identical: a nested object keeps the nearest non-``@list``/``@set`` key as
-    its predicate.
+    Single graph-closure walker (#453): a nested object keeps the nearest
+    non-``@list``/``@set`` key as its predicate. Used by the Seadusloome
+    sync gate, ``validate_all.collect_internal_refs``, and
+    ``iter_node_estleg_refs``.
     """
     if isinstance(value, dict):
         ref = value.get("@id")
@@ -541,10 +542,14 @@ def _walk_object_refs(value: object, predicate: str) -> Iterator[tuple[str, str]
             if key in {"@context", "@id"}:
                 continue
             child_predicate = predicate if key in {"@list", "@set"} else key
-            yield from _walk_object_refs(child, child_predicate)
+            yield from walk_object_refs(child, child_predicate)
     elif isinstance(value, list):
         for item in value:
-            yield from _walk_object_refs(item, predicate)
+            yield from walk_object_refs(item, predicate)
+
+
+# Back-compat alias — older call sites imported the private name.
+_walk_object_refs = walk_object_refs
 
 
 def canonical_estleg_ref(ref: str) -> str | None:
@@ -942,6 +947,19 @@ def jsonld_texts(value: object, *, prefer_language: str | None = None) -> list[s
         return []
     text = jsonld_text(value)
     return [text] if text else []
+
+
+def classifier_text(node: dict) -> str:
+    """Return the provision text heuristic classifiers should read (#368).
+
+    Prefer ``estleg:legalText`` so a 500-character ``estleg:summary``
+    preview cannot hide the rest of the provision. Fall back to summary
+    when legal text is absent (stubs, pre-legalText peeps).
+    """
+    text = jsonld_text(node.get("estleg:legalText", ""))
+    if text:
+        return text
+    return jsonld_text(node.get("estleg:summary", ""))
 
 
 # ---------------------------------------------------------------------------

@@ -111,6 +111,10 @@ def _truncate_on_boundary(text: str, max_len: int) -> str:
     return cut.rstrip() + "…"
 
 
+# Public name used by generate_regulations (issue #368).
+truncate_on_boundary = _truncate_on_boundary
+
+
 # Provision text-bearing tags. These NEST in Riigi Teataja XML — a ``loige``
 # subsection contains ``lause`` sentences which may wrap ``lauseOsa`` parts — so
 # an ``el.iter()`` walk matching every one of them appended a parent's

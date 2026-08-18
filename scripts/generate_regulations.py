@@ -43,6 +43,7 @@ from riigiteataja_common import (  # noqa: E402
     save_json,
     slugify,
     SourceListFetchError,
+    truncate_on_boundary,
 )
 
 DEFAULT_KEHTIV = "2026-05-01"
@@ -222,7 +223,7 @@ def extract_preamble(root: ET.Element) -> str:
 def provision_summary(display: str, label: str, source_title: str, body_text: str = "") -> str:
     """Return the SHACL-required compact summary for a regulation provision."""
     if body_text:
-        return body_text[:500]
+        return truncate_on_boundary(body_text, 500)
 
     label_text = " ".join(label.split())
     display_text = " ".join(display.split())
@@ -303,8 +304,8 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
         display = f"§ {nr}"
         ptitle = entry["title"].strip()
         text_full = entry["text"].strip()
-        # Trim summary to the first 500 chars (matches the structured path).
-        summary = text_full[:500] if text_full else ""
+        # #368: cut on a sentence/word boundary, not mid-token.
+        summary = truncate_on_boundary(text_full, 500) if text_full else ""
 
         p_id = f"estleg:{prefix}_Par_{sanitize_id(nr)}"
         if p_id in seen_ids:

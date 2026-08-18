@@ -39,7 +39,9 @@ from estleg_common import (
     COMBINED_CLOSURE_EXEMPT_PREDICATES,
     NS,
     PUBLIC_LOAD_SUBDIRS,
+    canonical_estleg_ref,
     iter_public_load_files,
+    walk_object_refs,
 )
 
 REPO = Path(__file__).resolve().parents[1]
@@ -112,12 +114,12 @@ def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
 
 
 def _canonical_estleg_id(value: str) -> str | None:
-    """Return compact ``estleg:`` form for internal IDs, else ``None``."""
-    if value.startswith("estleg:"):
-        return value
-    if value.startswith(NS):
-        return "estleg:" + value[len(NS):]
-    return None
+    """Return compact ``estleg:`` form for internal IDs, else ``None``.
+
+    Thin wrapper over :func:`estleg_common.canonical_estleg_ref` so the
+    two graph-closure gates share one IRI normaliser (#453).
+    """
+    return canonical_estleg_ref(value)
 
 
 # Called once per run (single validate_graph_closure call); intentionally
@@ -176,19 +178,12 @@ def _iter_graph_nodes(doc: object) -> Iterable[dict]:
 
 
 def _walk_jsonld_refs(value: object, predicate: str) -> Iterable[tuple[str, str]]:
-    """Yield ``(predicate, ref)`` pairs for JSON-LD object references."""
-    if isinstance(value, dict):
-        ref = value.get("@id")
-        if isinstance(ref, str):
-            yield predicate, ref
-        for key, child in value.items():
-            if key in {"@context", "@id"}:
-                continue
-            child_predicate = predicate if key in {"@list", "@set"} else key
-            yield from _walk_jsonld_refs(child, child_predicate)
-    elif isinstance(value, list):
-        for item in value:
-            yield from _walk_jsonld_refs(item, predicate)
+    """Yield ``(predicate, ref)`` pairs for JSON-LD object references.
+
+    Delegates to :func:`estleg_common.walk_object_refs` — the same walker
+    ``validate_all.collect_internal_refs`` uses (#453).
+    """
+    yield from walk_object_refs(value, predicate)
 
 
 def validate_graph_closure(

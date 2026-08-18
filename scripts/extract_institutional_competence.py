@@ -2,7 +2,7 @@
 """
 Extract which institutions are responsible for what from law text.
 
-Scans estleg:summary text in every provision for references to Estonian
+Scans provision legalText (falling back to summary) for references to Estonian
 state institutions and competence-assigning language, then creates
 estleg:Institution nodes and links provisions to competent authorities.
 
@@ -24,8 +24,8 @@ from functools import partial
 from estleg_common import (
     CONTEXT,
     BUILD_EVALUATION_DATE,
+    classifier_text,
     iter_peep_files,
-    jsonld_text,
     save_json,
     sanitize_id as _shared_sanitize_id,
 )
@@ -1156,7 +1156,7 @@ def _process_provision_node(
 
     Returns True iff the node was mutated.
     """
-    summary = jsonld_text(node.get("estleg:summary", ""))
+    summary = classifier_text(node)
     if not summary:
         return False
 

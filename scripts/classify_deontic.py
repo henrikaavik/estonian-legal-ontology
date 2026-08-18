@@ -2,7 +2,7 @@
 """
 Classify legal provisions by normative type (obligation, right, permission, prohibition).
 
-Analyses the estleg:summary text of each provision node in the JSON-LD law files
+Analyses the full provision text (legalText, falling back to summary) in law files
 and assigns an estleg:normativeType based on Estonian deontic language patterns.
 Also attempts to extract estleg:dutyHolder where possible.
 
@@ -21,6 +21,7 @@ from pathlib import Path
 
 from estleg_common import (
     BUILD_EVALUATION_DATE,
+    classifier_text,
     iter_peep_files,
     jsonld_text,
     save_json,  # #376: atomic tempfile+os.replace writer (replaces local non-atomic def)
@@ -530,10 +531,10 @@ def main() -> None:
             modified = False
 
             for node in doc["@graph"]:
-                # Generators may emit estleg:summary as a plain string or as a
-                # {"@value": ..., "@language": "et"} value object; jsonld_text
-                # normalises both before the regex-based classifier runs.
-                summary = jsonld_text(node.get("estleg:summary", ""))
+                # #368: read legalText first so the 500-char summary cap
+                # cannot hide the deontic cue. jsonld_text still unwraps
+                # {"@value": ..., "@language": "et"} shapes.
+                summary = classifier_text(node)
                 if not summary:
                     continue
 

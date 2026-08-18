@@ -2,7 +2,7 @@
 """
 Extract penalties and sanctions from law text.
 
-Scans estleg:summary text of each provision for Estonian sanction patterns
+Scans provision legalText (falling back to summary) for Estonian sanction patterns
 (imprisonment, fines, arrest, coercive payments) and creates estleg:Sanction
 nodes linked to the originating provision.
 
@@ -44,8 +44,8 @@ from functools import partial
 from estleg_common import (
     CONTEXT,
     BUILD_EVALUATION_DATE,
+    classifier_text,
     iter_peep_files,
-    jsonld_text,
     save_json,
     sanitize_id as _shared_sanitize_id,
 )
@@ -1157,7 +1157,7 @@ def main() -> int:
 
         # Step 3: run extraction over the cleared graph.
         for node in doc["@graph"]:
-            summary = jsonld_text(node.get("estleg:summary", ""))
+            summary = classifier_text(node)
             if not summary:
                 continue
 
