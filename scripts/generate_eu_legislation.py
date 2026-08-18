@@ -24,7 +24,12 @@ from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import CONTEXT, BUILD_EVALUATION_DATE, save_json
+from estleg_common import (
+    CONTEXT,
+    BUILD_EVALUATION_DATE,
+    save_json,
+    stamp_combined_dataset_head,
+)
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -426,15 +431,17 @@ def _is_valid_iso_date(value: object) -> bool:
     the malformed/partial dates CELLAR occasionally serves; an unchecked
     value would emit a syntactically invalid ``xsd:date`` literal and break
     downstream SHACL. Mirrors the court-decision generator's ``decisionDate``
-    guard (#394).
+    guard (#394). Also rejects years outside 1900..2100 so CELLAR's
+    1001-01-01 / 1002-02-02 null sentinels are omitted rather than typed
+    as xsd:date (#352).
     """
     if not isinstance(value, str):
         return False
     try:
-        datetime.strptime(value, "%Y-%m-%d")
+        parsed = datetime.strptime(value, "%Y-%m-%d")
     except ValueError:
         return False
-    return True
+    return 1900 <= parsed.year <= 2100
 
 
 # #607(b): the ELI canonical URI -> its *natural id* segment. An ELI URI is
@@ -763,6 +770,10 @@ def main():
             total += 1
 
     combined_doc = {"@context": CONTEXT, "@graph": combined_graph}
+    stamp_combined_dataset_head(
+        combined_doc,
+        label="Estonian Legal Ontology — EUR-Lex combined",
+    )
     combined_path = EURLEX_DIR / "eurlex_combined.jsonld"
     save_json(combined_path, combined_doc)
     print(f"  Saved: {combined_path.name} ({len(combined_graph)} nodes)")

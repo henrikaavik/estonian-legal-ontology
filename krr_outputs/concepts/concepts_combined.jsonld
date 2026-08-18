@@ -7,37 +7,36 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#"
   },
   "@graph": [
     {
       "@id": "estleg:LegalConcepts_Map_2026",
       "@type": [
-        "owl:Ontology"
+        "owl:Ontology",
+        "void:Dataset",
+        "dcat:Dataset"
       ],
-      "rdfs:label": "Eesti õiguse mõisted (Estonian Legal Concepts)",
+      "rdfs:label": "Estonian Legal Ontology — concepts combined",
       "dc:description": "Seaduses defineeritud õigusmõisted ja nende ristviited.",
       "dc:source": "Riigi Teataja XML",
       "estleg:totalConcepts": {
         "@value": "10004",
         "@type": "xsd:integer"
-      }
-    },
-    {
-      "@id": "estleg:LegalConcept",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Õigusmõiste (Legal Concept)",
-      "rdfs:comment": "Seaduses defineeritud mõiste — sättepõhine definitsioon. Provision-local legal-term definition extracted from one law's definition section."
-    },
-    {
-      "@id": "estleg:Concept",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Kanooniline mõiste (Canonical Concept)",
-      "rdfs:comment": "Kanooniline õigusmõiste — üks sõlm normaliseeritud termini kohta, mis koondab kõik sättepõhised definitsioonid. Canonical legal concept: one node per normalised term, aggregating every provision-local definition of that term."
+      },
+      "dcterms:title": {
+        "@value": "Estonian Legal Ontology — concepts combined",
+        "@language": "en"
+      },
+      "dcterms:publisher": {
+        "@id": "https://github.com/henrikaavik"
+      },
+      "dcterms:license": {
+        "@id": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "void:uriSpace": "https://w3id.org/estleg/"
     },
     {
       "@id": "estleg:definesTerm",
@@ -46,58 +45,6 @@
       ],
       "rdfs:label": "defineerib mõiste",
       "rdfs:comment": "Links a legal provision to a concept it defines."
-    },
-    {
-      "@id": "estleg:definesConcept",
-      "@type": [
-        "owl:ObjectProperty"
-      ],
-      "rdfs:label": "defineerib kanoonilise mõiste",
-      "rdfs:comment": "Links a provision-local legal-term definition node to the canonical estleg:Concept node for that term."
-    },
-    {
-      "@id": "estleg:definedIn",
-      "@type": [
-        "owl:ObjectProperty"
-      ],
-      "rdfs:label": "defineeritud",
-      "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the provision where the term is defined. Inverse of estleg:definesTerm.",
-      "owl:inverseOf": {
-        "@id": "estleg:definesTerm"
-      }
-    },
-    {
-      "@id": "estleg:hasDefinitionNode",
-      "@type": [
-        "owl:ObjectProperty"
-      ],
-      "rdfs:label": "defineeriv sõlm",
-      "rdfs:comment": "Links a canonical estleg:Concept node to every provision-local definition node (estleg:LegalConcept) that defines that term. Inverse of estleg:definesConcept.",
-      "owl:inverseOf": {
-        "@id": "estleg:definesConcept"
-      }
-    },
-    {
-      "@id": "estleg:definitionCount",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": "definitsioonide arv",
-      "rdfs:comment": "Number of provision-local definitions aggregated by a canonical estleg:Concept node.",
-      "rdfs:range": {
-        "@id": "xsd:integer"
-      }
-    },
-    {
-      "@id": "estleg:definitionVariantCount",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": "definitsioonivariantide arv",
-      "rdfs:comment": "Total number of distinct definition wordings observed for a canonical estleg:Concept node when only a capped subset is emitted as skos:definition.",
-      "rdfs:range": {
-        "@id": "xsd:integer"
-      }
     },
     {
       "@id": "estleg:Concept_abja_valla_teede_kasutamise_ja_kaitse_eeskiri_t1003627_tee_kaitsevoond",

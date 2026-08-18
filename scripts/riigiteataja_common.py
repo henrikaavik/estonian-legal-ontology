@@ -437,7 +437,16 @@ def parse_act_metadata(root: ET.Element) -> dict[str, str | None]:
         if not date_str:
             return None
         # Riigi Teataja dates often carry a TZ offset like "2024-07-29+03:00".
-        return date_str.split("+", 1)[0].split("Z", 1)[0]
+        cleaned = date_str.split("+", 1)[0].split("Z", 1)[0]
+        # #352: a well-formed 2918-10-17 would otherwise string-compare as
+        # the latest lastAmendmentDate. Same 1900..2100 band as
+        # extract_temporal_data.parse_date (no extra parser).
+        year_token = cleaned[:4]
+        if year_token.isdigit():
+            year = int(year_token)
+            if year < 1900 or year > 2100:
+                return None
+        return cleaned
 
     for el in root.iter():
         tag = ln(el.tag)

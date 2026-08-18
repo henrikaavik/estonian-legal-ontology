@@ -29,6 +29,7 @@ from estleg_common import (
     jsonld_text,
     save_json,
     sanitize_id as _shared_sanitize_id,
+    stamp_combined_dataset_head,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -45,6 +46,19 @@ CONCEPTS_DIR = KRR_DIR / "concepts"
 CONCEPTS_DIR.mkdir(parents=True, exist_ok=True)
 
 NS = "https://w3id.org/estleg/"
+
+# T-Box class/property IRIs owned by controlled_vocabulary.jsonld (#359).
+# This extractor must not emit declaration nodes for these; instance
+# estleg:Concept_* / estleg:LegalConcept_* individuals are still emitted.
+CV_OWNED_TBOX_IDS = frozenset({
+    "estleg:Concept",
+    "estleg:LegalConcept",
+    "estleg:definedIn",
+    "estleg:definesConcept",
+    "estleg:definitionCount",
+    "estleg:definitionVariantCount",
+    "estleg:hasDefinitionNode",
+})
 
 
 # Definition section titles to look for (case-insensitive matching)
@@ -851,6 +865,34 @@ def canonical_concept_id(term_lower: str, claimed: set[str]) -> str:
     return f"{base}_{n}"
 
 
+def generate_schema_nodes(*, total_concepts: int) -> list[dict]:
+    """Ontology header plus local-only schema nodes.
+
+    The seven T-Box IRIs in ``CV_OWNED_TBOX_IDS`` belong in
+    ``controlled_vocabulary.jsonld`` only (#359) and are not emitted here.
+    """
+    return [
+        {
+            "@id": "estleg:LegalConcepts_Map_2026",
+            "@type": ["owl:Ontology"],
+            "rdfs:label": "Eesti õiguse mõisted (Estonian Legal Concepts)",
+            "dc:description": "Seaduses defineeritud õigusmõisted ja nende ristviited.",
+            "dc:source": "Riigi Teataja XML",
+            "estleg:totalConcepts": {
+                "@value": str(total_concepts),
+                "@type": "xsd:integer",
+            },
+        },
+        # definesTerm is not in the CV; keep the local declaration.
+        {
+            "@id": "estleg:definesTerm",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": "defineerib mõiste",
+            "rdfs:comment": "Links a legal provision to a concept it defines.",
+        },
+    ]
+
+
 def main():
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Legal Concepts")
@@ -1066,121 +1108,10 @@ def main():
     # Step 4: Generate JSON-LD output
     print("\n[4/5] Generating JSON-LD concept files...")
 
-    # Build @graph for combined file
-    graph: list[dict] = [
-        {
-            "@id": "estleg:LegalConcepts_Map_2026",
-            "@type": ["owl:Ontology"],
-            "rdfs:label": "Eesti õiguse mõisted (Estonian Legal Concepts)",
-            "dc:description": "Seaduses defineeritud õigusmõisted ja nende ristviited.",
-            "dc:source": "Riigi Teataja XML",
-            "estleg:totalConcepts": {
-                "@value": str(len(all_concepts)),
-                "@type": "xsd:integer",
-            },
-        },
-        # LegalConcept class definition (the provision-local definition node).
-        {
-            "@id": "estleg:LegalConcept",
-            "@type": ["owl:Class"],
-            "rdfs:label": "Õigusmõiste (Legal Concept)",
-            "rdfs:comment": (
-                "Seaduses defineeritud mõiste — sättepõhine definitsioon. "
-                "Provision-local legal-term definition extracted from one "
-                "law's definition section."
-            ),
-        },
-        # Concept class definition — the canonical, cross-law term node (#134).
-        {
-            "@id": "estleg:Concept",
-            "@type": ["owl:Class"],
-            "rdfs:label": "Kanooniline mõiste (Canonical Concept)",
-            "rdfs:comment": (
-                "Kanooniline õigusmõiste — üks sõlm normaliseeritud termini "
-                "kohta, mis koondab kõik sättepõhised definitsioonid. "
-                "Canonical legal concept: one node per normalised term, "
-                "aggregating every provision-local definition of that term."
-            ),
-        },
-        # definesTerm property — provision → provision-local definition node.
-        {
-            "@id": "estleg:definesTerm",
-            "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "defineerib mõiste",
-            "rdfs:comment": "Links a legal provision to a concept it defines.",
-        },
-        # definesConcept property — provision-local definition node →
-        # canonical Concept node (the hub link that replaces the exactMatch
-        # clique, #134).
-        {
-            "@id": "estleg:definesConcept",
-            "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "defineerib kanoonilise mõiste",
-            "rdfs:comment": (
-                "Links a provision-local legal-term definition node to the "
-                "canonical estleg:Concept node for that term."
-            ),
-        },
-        # definedIn property — provision-local definition node → the
-        # provision where it is defined. (Original, provision-local
-        # meaning only — see the owl:inverseOf estleg:definesTerm axiom
-        # below. The canonical Concept → definition-node membership now
-        # uses estleg:hasDefinitionNode instead, so this property's
-        # inverse-of axiom no longer corrupts the definesTerm semantics.)
-        {
-            "@id": "estleg:definedIn",
-            "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "defineeritud",
-            "rdfs:comment": (
-                "Links a provision-local legal-term definition node "
-                "(estleg:LegalConcept) to the provision where the term is "
-                "defined. Inverse of estleg:definesTerm."
-            ),
-            "owl:inverseOf": {"@id": "estleg:definesTerm"},
-        },
-        # hasDefinitionNode property — canonical Concept node → the
-        # provision-local definition nodes that define it (#134, Finding
-        # F3). The natural inverse of estleg:definesConcept; introduced as
-        # a property distinct from estleg:definedIn so the latter's
-        # owl:inverseOf estleg:definesTerm axiom does not, under OWL
-        # reasoning, falsely conclude ``LegalConcept estleg:definesTerm
-        # Concept``.
-        {
-            "@id": "estleg:hasDefinitionNode",
-            "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "defineeriv sõlm",
-            "rdfs:comment": (
-                "Links a canonical estleg:Concept node to every "
-                "provision-local definition node (estleg:LegalConcept) "
-                "that defines that term. Inverse of estleg:definesConcept."
-            ),
-            "owl:inverseOf": {"@id": "estleg:definesConcept"},
-        },
-        # definitionCount — number of provisions defining a canonical Concept.
-        {
-            "@id": "estleg:definitionCount",
-            "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "definitsioonide arv",
-            "rdfs:comment": (
-                "Number of provision-local definitions aggregated by a "
-                "canonical estleg:Concept node."
-            ),
-            "rdfs:range": {"@id": "xsd:integer"},
-        },
-        # definitionVariantCount — distinct definition wordings, when the
-        # node only carries a capped subset of them.
-        {
-            "@id": "estleg:definitionVariantCount",
-            "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "definitsioonivariantide arv",
-            "rdfs:comment": (
-                "Total number of distinct definition wordings observed for a "
-                "canonical estleg:Concept node when only a capped subset is "
-                "emitted as skos:definition."
-            ),
-            "rdfs:range": {"@id": "xsd:integer"},
-        },
-    ]
+    # Build @graph for combined file. CV-owned T-Box class/property
+    # declarations are omitted (#359); only the ontology header and the
+    # local-only definesTerm property are emitted as schema nodes.
+    graph: list[dict] = generate_schema_nodes(total_concepts=len(all_concepts))
 
     # ---- Provision-local definition (LegalConcept) nodes ----
     # Track concept IDs to avoid duplicates in graph. Finding 2 (#171):
@@ -1368,6 +1299,10 @@ def main():
 
     # Save combined concepts file
     combined_doc = {"@context": CONTEXT, "@graph": graph}
+    stamp_combined_dataset_head(
+        combined_doc,
+        label="Estonian Legal Ontology — concepts combined",
+    )
     combined_path = CONCEPTS_DIR / "concepts_combined.jsonld"
     save_json(combined_path, combined_doc)
     print(f"  Saved: {combined_path.name} ({len(graph)} nodes)")

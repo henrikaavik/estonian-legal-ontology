@@ -29,7 +29,12 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import CONTEXT, BUILD_EVALUATION_DATE, save_json
+from estleg_common import (
+    CONTEXT,
+    BUILD_EVALUATION_DATE,
+    save_json,
+    stamp_combined_dataset_head,
+)
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -634,6 +639,10 @@ def main():
         combined_graph.append(decision_to_node(item))
 
     combined_doc = {"@context": CONTEXT, "@graph": combined_graph}
+    stamp_combined_dataset_head(
+        combined_doc,
+        label="Estonian Legal Ontology — CURIA combined",
+    )
     combined_path = CURIA_DIR / "curia_combined.jsonld"
     save_json(combined_path, combined_doc)
     print(f"  Saved: {combined_path.name} ({len(combined_graph)} nodes)")

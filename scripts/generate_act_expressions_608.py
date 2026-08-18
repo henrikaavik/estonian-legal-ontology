@@ -44,7 +44,15 @@ import argparse
 import json
 from pathlib import Path
 
-from estleg_common import CONTEXT, KRR_DIR, NS, jsonld_text, save_json  # noqa: F401
+from estleg_common import (  # noqa: F401
+    CONTEXT,
+    KRR_DIR,
+    NS,
+    ONTOLOGY_IRI,
+    jsonld_text,
+    save_json,
+    stamp_combined_dataset_head,
+)
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -57,7 +65,7 @@ OUTPUT_FILENAME = "act_expressions_combined.jsonld"
 # First line of a Git-LFS pointer placeholder (skip — not real JSON).
 _LFS_POINTER_PREFIX = "version https://git-lfs.github.com/spec/v1"
 
-# The minimal context the combined artifact publishes (exactly four prefixes).
+# Base prefixes; stamp_combined_dataset_head adds void/dcat/dcterms (#517).
 OUTPUT_CONTEXT: dict[str, str] = {
     key: CONTEXT[key] for key in ("estleg", "owl", "rdfs", "xsd")
 }
@@ -189,11 +197,21 @@ def find_act_root(peep_doc: dict) -> tuple[str | None, str | None]:
 
 
 def build_output_document(nodes: list[dict]) -> dict:
-    """Wrap Expression nodes in the combined artifact, ``@graph`` sorted by @id."""
-    return {
-        "@context": OUTPUT_CONTEXT,
+    """Wrap Expression nodes in the combined artifact, ``@graph`` sorted by @id.
+
+    A Dataset head is inserted at ``@graph[0]`` (#517); Expression nodes
+    follow in ``@id`` order so re-runs stay byte-stable.
+    """
+    doc = {
+        "@context": dict(OUTPUT_CONTEXT),
         "@graph": sorted(nodes, key=lambda node: node["@id"]),
     }
+    stamp_combined_dataset_head(
+        doc,
+        label="Estonian Legal Ontology — act expressions combined",
+        ontology_id=f"{ONTOLOGY_IRI}/dataset/act-expressions",
+    )
+    return doc
 
 
 # ---------------------------------------------------------------------------

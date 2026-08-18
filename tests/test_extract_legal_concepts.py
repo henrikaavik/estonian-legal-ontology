@@ -1166,25 +1166,23 @@ class TestFindingF3HasDefinitionNode:
                 assert tgt not in cc_ids, tgt
                 assert "_Par_" in tgt, tgt
 
-    def test_combined_graph_keeps_original_defined_in_inverse_axiom(
+    def test_combined_graph_does_not_redeclare_cv_tbox(
         self, tmp_path, monkeypatch
     ):
-        """The schema node emitted into concepts_combined.jsonld must keep
-        ``estleg:definedIn owl:inverseOf estleg:definesTerm`` (unchanged by
-        F3) AND declare ``estleg:hasDefinitionNode owl:inverseOf
-        estleg:definesConcept`` (the new property)."""
+        """#359: CV-owned T-Box IRIs must not be re-emitted as declaration
+        nodes. Inverse axioms live in controlled_vocabulary.jsonld."""
+        from extract_legal_concepts import CV_OWNED_TBOX_IDS
+
         graph = _run_extractor(
             tmp_path, monkeypatch,
             peeps={"law_a": _peep_text("law_a", "Test law A")},
             xmls={"law_a": _moisted_xml("1) klient — füüsiline isik;")},
         )
-        di = _by_id(graph, "estleg:definedIn")
-        assert di is not None
-        assert di.get("owl:inverseOf") == {"@id": "estleg:definesTerm"}, di
-        hdn = _by_id(graph, "estleg:hasDefinitionNode")
-        assert hdn is not None
-        assert "owl:ObjectProperty" in hdn.get("@type", [])
-        assert hdn.get("owl:inverseOf") == {"@id": "estleg:definesConcept"}, hdn
+        ids = {n.get("@id") for n in graph}
+        leaked = sorted(ids & CV_OWNED_TBOX_IDS)
+        assert not leaked, leaked
+        # Local-only schema (not in the CV) is still emitted.
+        assert _by_id(graph, "estleg:definesTerm") is not None
 
 
 class TestIssue134Vocabulary:

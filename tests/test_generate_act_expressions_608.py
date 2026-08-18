@@ -276,17 +276,19 @@ def test_build_output_document_sorts_graph_by_id():
     ]
     doc = G.build_output_document(unsorted)
     ids = [node["@id"] for node in doc["@graph"]]
-    assert ids == sorted(ids)
-    assert ids == [
+    assert ids[0] == f"{G.ONTOLOGY_IRI}/dataset/act-expressions"
+    assert ids[1:] == [
         "estleg:A_Map_Expr_20000101",
         "estleg:A_Map_Expr_20010101",
         "estleg:B_Map_Expr_20050309",
     ]
 
 
-def test_output_context_is_the_four_prefixes():
+def test_output_context_includes_dataset_prefixes():
     doc = G.build_output_document([])
-    assert set(doc["@context"]) == {"estleg", "owl", "rdfs", "xsd"}
+    assert {"estleg", "owl", "rdfs", "xsd", "void", "dcat", "dcterms"} <= set(
+        doc["@context"]
+    )
     assert doc["@context"]["estleg"] == G.NS
 
 

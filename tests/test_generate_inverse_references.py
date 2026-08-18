@@ -936,3 +936,29 @@ def test_act_root_aggregates_union_provision_edges(tmp_path):
     assert root["estleg:referencedBy"] == [{"@id": "estleg:Z_Par_2"}]
     assert root["estleg:interpretedBy"] == [{"@id": "estleg:RK_1"}]
     assert root["estleg:competentAuthority"] == [{"@id": "estleg:Institution_mta"}]
+
+
+def test_published_act_roots_carry_rolled_up_edges() -> None:
+    """#508: at least one committed law act-root has rolled-up references."""
+    repo = Path(__file__).resolve().parent.parent
+    hits = 0
+    scanned = 0
+    for path in sorted((repo / "krr_outputs").glob("*_peep.json"))[:80]:
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if not any(t in {"owl:Ontology", "estleg:Act", "estleg:Law"} for t in types):
+                continue
+            scanned += 1
+            if node.get("estleg:references") or node.get("estleg:referencedBy"):
+                hits += 1
+                break
+    assert scanned >= 10, scanned
+    assert hits >= 1, "no act-root references/referencedBy in first 80 law peeps"

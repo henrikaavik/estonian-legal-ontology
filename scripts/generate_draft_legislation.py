@@ -29,6 +29,7 @@ from estleg_common import (  # noqa: E402
     parse_xml,
     save_json,
     sanitize_id as _shared_sanitize_id,
+    stamp_combined_dataset_head,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -615,6 +616,10 @@ def main():
         combined_graph.append(d["node"])
 
     combined_doc = {"@context": CONTEXT, "@graph": combined_graph}
+    stamp_combined_dataset_head(
+        combined_doc,
+        label="Estonian Legal Ontology — drafts combined",
+    )
     combined_path = EELNOUD_DIR / "eelnoud_combined.jsonld"
     save_json(combined_path, combined_doc)
     print(f"  Saved: {combined_path.name} ({len(combined_graph)} nodes)")

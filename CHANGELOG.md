@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Date guards, T-Box, citation, in-band VoID (#352, #359, #446, #508, #517, #547)
+
+- `parse_date` / EUR-Lex ISO dates reject years outside 1900–2100; 17
+  CELLAR sentinel `transpositionDeadline` values removed from the
+  directives peep (#352).
+- Concept-layer T-Box no longer redeclares the 7 CV-owned class/property
+  IRIs (#359).
+- NormType individuals carry `skos:exactMatch` to LegalRuleML; 1,121 law
+  peeps now emit `eli:is_about` next to EuroVoc `dcterms:subject` (#446).
+- Act-root nodes carry rolled-up `references` / `referencedBy` /
+  `interpretedBy` / `competentAuthority` (#508).
+- Every combined `*.jsonld` carries an in-band `void:Dataset` /
+  `dcat:Dataset` head with license and publisher (#517).
+- README How to cite now has APA + BibTeX; `CITATION.cff` stays the
+  machine record. Zenodo DOI remains #473 (#547).
+
 ### Shared pipeline helpers (#449, #465, #376, #356, #452, #509)
 
 - One `sanitize_id` in `estleg_common` (numeric §-ranges become `_to_`;
@@ -16,8 +32,11 @@ All notable changes to this project will be documented in this file.
 - Validators share `is_non_data_file` for sidecar reports.
 - SHACL accepts `rdf:langString` titles/labels/summaries (`sh:uniqueLang`
   on labels).
-- `krr_outputs/void.ttl` is a standalone VoID/DCAT descriptor (#517
-  started; combined artifact not yet restamped).
+- `krr_outputs/void.ttl` is a standalone VoID/DCAT descriptor (#517).
+  Combined `*.jsonld` artifacts now carry an in-band Dataset head
+  (`owl:Ontology` + `void:Dataset` + `dcat:Dataset`, CC BY 4.0 compilation
+  license, publisher github.com/henrikaavik). The flagship file uses
+  `estleg_common.combined_ontology_header()` at `@graph[0]`.
 
 ### Repo hygiene (#538, #539)
 

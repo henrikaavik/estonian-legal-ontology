@@ -139,8 +139,23 @@ for s, p, o in g.triples((None, ESTLEG.interpretsLaw, None)):
 
 ### How to cite
 
-See [`CITATION.cff`](CITATION.cff). Pin the graph by `owl:versionIRI`
-(`https://w3id.org/estleg/0.11.0`), not an undated clone of `main`.
+Aavik, Henrik. (2026). *Estonian Legal Ontology* (Version 0.11.0) [Data set].
+https://w3id.org/estleg/0.11.0
+
+```bibtex
+@misc{aavik_estonian_legal_ontology_2026,
+  author  = {Aavik, Henrik},
+  title   = {Estonian Legal Ontology},
+  year    = {2026},
+  version = {0.11.0},
+  url     = {https://w3id.org/estleg/0.11.0},
+  note    = {Dataset}
+}
+```
+
+See [`CITATION.cff`](CITATION.cff) for the machine-readable record. Pin the
+graph by `owl:versionIRI` (`https://w3id.org/estleg/0.11.0`), not an undated
+clone of `main`. A Zenodo DOI is tracked as #473 and is not yet minted.
 Consumer contract: [`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 

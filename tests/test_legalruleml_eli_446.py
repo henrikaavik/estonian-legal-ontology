@@ -31,8 +31,11 @@ def test_normtype_individuals_map_to_legalruleml() -> None:
     }
     for nid, iri in expected.items():
         same = by_id[nid].get("owl:sameAs")
+        exact = by_id[nid].get("skos:exactMatch")
         assert isinstance(same, dict), nid
         assert same.get("@id") == iri
+        assert isinstance(exact, dict), nid
+        assert exact.get("@id") == iri
 
 
 def test_update_law_file_emits_eli_is_about(tmp_path: Path) -> None:
@@ -62,3 +65,41 @@ def test_update_law_file_emits_eli_is_about(tmp_path: Path) -> None:
     assert ev in node["dcterms:subject"]
     assert ev in node["eli:is_about"]
     assert "eli" in json.loads(peep.read_text(encoding="utf-8"))["@context"]
+
+
+def test_published_peeps_carry_eli_is_about() -> None:
+    """#446: EuroVoc subjects on committed law peeps also sit on eli:is_about."""
+    krr = REPO / "krr_outputs"
+    ev_nodes = 0
+    about_nodes = 0
+    for path in krr.glob("*_peep.json"):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            subj = node.get("dcterms:subject")
+            if isinstance(subj, dict):
+                subj = [subj]
+            if not isinstance(subj, list):
+                continue
+            if not any(
+                isinstance(ref, dict)
+                and str(ref.get("@id", "")).startswith("http://eurovoc.europa.eu/")
+                for ref in subj
+            ):
+                continue
+            ev_nodes += 1
+            about = node.get("eli:is_about")
+            if isinstance(about, dict):
+                about = [about]
+            if isinstance(about, list) and any(
+                isinstance(ref, dict)
+                and str(ref.get("@id", "")).startswith("http://eurovoc.europa.eu/")
+                for ref in about
+            ):
+                about_nodes += 1
+    assert ev_nodes >= 100, ev_nodes
+    assert about_nodes == ev_nodes, (about_nodes, ev_nodes)

@@ -32,10 +32,12 @@ self-describing and a consumer can pin/cite it:
 
 - `metadata.jsonld` — the `dcat:Dataset` / `owl:Ontology` dataset header
   (committed; bump by hand when you bump the constant).
-- `combined_ontology.jsonld` — a dataset-level `owl:Ontology` node at
-  `@graph[0]`, re-emitted from `estleg_common.combined_ontology_header()` every
-  time `fix_all_issues.generate_combined_jsonld()` runs (so it survives every
-  rebuild).
+- `combined_ontology.jsonld` — a dataset-level `owl:Ontology` /
+  `void:Dataset` / `dcat:Dataset` node at `@graph[0]`, re-emitted from
+  `estleg_common.combined_ontology_header()` every time
+  `fix_all_issues.generate_combined_jsonld()` runs (so it survives every
+  rebuild). Other combined `*.jsonld` files get the same in-band license /
+  publisher stamp via `stamp_combined_dataset_head()`.
 
 The `versionIRI` is `https://w3id.org/estleg/<version>` — each
 release is an independently dereferenceable IRI.
@@ -45,8 +47,10 @@ A standalone VoID + DCAT descriptor is committed at
 `https://w3id.org/estleg/dataset/estonian-legal-ontology`). It
 advertises `void:uriSpace`, an example resource, the GitHub-raw
 combined ontology dump, and linksets to EuroVoc, EUR-Lex/CELLAR, and
-Riigi Teataja. The compilation layer is offered under CC BY 4.0; a
-SPARQL endpoint is not claimed (that is #474).
+Riigi Teataja. Combined JSON-LD artifacts also carry an in-band Dataset
+head (`dcterms:title` / `publisher` / `license`) so a consumer who
+loads only the graph still sees the compilation-layer CC BY 4.0 offer.
+A SPARQL endpoint is not claimed (that is #474).
 
 **When to bump:**
 

@@ -606,15 +606,18 @@ ONTOLOGY_VERSION_IRI = f"{ONTOLOGY_IRI}/{ONTOLOGY_VERSION}"
 
 
 def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
-    """Build the ``owl:Ontology`` header node stamped into combined (#616).
+    """Build the ``owl:Ontology`` / Dataset header stamped into combined (#616, #517).
 
     ``combined_ontology.jsonld`` is synthesised from scratch each build and has
     no dataset-level header, so consumers had no in-graph version to pin. This
     returns a single header node (inserted at ``@graph[0]`` by the builder)
     carrying ``owl:versionInfo`` + ``owl:versionIRI`` so the shipped graph is
-    self-describing. It carries no ``estleg:`` object references, so it is inert
-    for the graph-closure gate. No wall-clock date — keeping the build
-    deterministic (the version string is the pinnable identity).
+    self-describing, plus the in-band VoID/DCAT Dataset typing and the
+    compilation-layer CC BY 4.0 license / publisher (#517). It carries no
+    ``estleg:`` object references (and no ``void:exampleResource`` pointing at
+    a corpus node), so it is inert for the graph-closure gate. No wall-clock
+    date — keeping the build deterministic (the version string is the
+    pinnable identity).
     """
     return {
         "@id": ONTOLOGY_IRI,
@@ -645,6 +648,158 @@ CONTEXT: dict[str, str] = {
     "dcat": "http://www.w3.org/ns/dcat#",
     "prov": "http://www.w3.org/ns/prov#",
 }
+
+# Prefixes a combined JSON-LD @context must publish so in-band Dataset terms
+# compact. dcterms is included because the head uses dcterms:title/publisher/license.
+COMBINED_DATASET_CONTEXT_PREFIXES: tuple[str, ...] = ("void", "dcat", "dcterms")
+
+# Combined JSON-LD distributions that carry an in-band Dataset head (#517).
+# ``relpath`` is relative to ``krr_outputs/``. Flagship uses
+# :func:`combined_ontology_header` unchanged; others may rename the label.
+COMBINED_JSONLD_TARGETS: tuple[dict[str, object], ...] = (
+    {
+        "relpath": "combined_ontology.jsonld",
+        "flagship": True,
+        "label": None,
+    },
+    {
+        "relpath": "eurlex/eurlex_combined.jsonld",
+        "flagship": False,
+        "label": "Estonian Legal Ontology — EUR-Lex combined",
+    },
+    {
+        "relpath": "curia/curia_combined.jsonld",
+        "flagship": False,
+        "label": "Estonian Legal Ontology — CURIA combined",
+    },
+    {
+        "relpath": "eelnoud/eelnoud_combined.jsonld",
+        "flagship": False,
+        "label": "Estonian Legal Ontology — drafts combined",
+    },
+    {
+        "relpath": "concepts/concepts_combined.jsonld",
+        "flagship": False,
+        "label": "Estonian Legal Ontology — concepts combined",
+    },
+    {
+        "relpath": "act_expressions_combined.jsonld",
+        "flagship": False,
+        "label": "Estonian Legal Ontology — act expressions combined",
+        "ontology_id": f"{ONTOLOGY_IRI}/dataset/act-expressions",
+    },
+)
+
+
+def combined_dataset_header(
+    *,
+    label: str | None = None,
+    ontology_id: str | None = None,
+    title: str | None = None,
+    version: str = ONTOLOGY_VERSION,
+) -> dict:
+    """Thin variant of :func:`combined_ontology_header` for non-flagship files.
+
+    Same compilation-layer license (CC BY 4.0), publisher, and Dataset types.
+    Callers may rename the distribution via ``label`` / ``ontology_id`` so a
+    subset graph is not published under the flagship ontology IRI. Still omits
+    ``void:exampleResource`` so it stays closure-inert.
+    """
+    header = combined_ontology_header(version)
+    if label is not None:
+        header["rdfs:label"] = label
+    if title is not None:
+        header["dcterms:title"] = {"@value": title, "@language": "en"}
+    elif label is not None:
+        header["dcterms:title"] = {"@value": label, "@language": "en"}
+    if ontology_id is not None:
+        header["@id"] = ontology_id
+    return header
+
+
+def _jsonld_type_list(value: object) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list):
+        return [item for item in value if isinstance(item, str)]
+    return []
+
+
+def is_ontology_or_dataset_head(node: object) -> bool:
+    """True when ``node`` is already an ontology / Dataset graph head."""
+    if not isinstance(node, dict):
+        return False
+    types = _jsonld_type_list(node.get("@type"))
+    return any(
+        item in types
+        for item in ("owl:Ontology", "void:Dataset", "dcat:Dataset", "schema:Dataset")
+    )
+
+
+def merge_dataset_context(context: object) -> dict:
+    """Copy ``context`` and ensure void / dcat / dcterms prefixes from CONTEXT."""
+    merged = dict(context) if isinstance(context, dict) else dict(CONTEXT)
+    for prefix in COMBINED_DATASET_CONTEXT_PREFIXES:
+        merged.setdefault(prefix, CONTEXT[prefix])
+    return merged
+
+
+def apply_inband_dataset_fields(node: dict, *, label: str | None = None) -> dict:
+    """Upgrade an existing ontology head with in-band Dataset fields (#517)."""
+    types = _jsonld_type_list(node.get("@type"))
+    for type_iri in ("owl:Ontology", "void:Dataset", "dcat:Dataset"):
+        if type_iri not in types:
+            types.append(type_iri)
+    node["@type"] = types
+    template = combined_ontology_header()
+    if label is not None:
+        node["rdfs:label"] = label
+        node["dcterms:title"] = {"@value": label, "@language": "en"}
+    elif "dcterms:title" not in node:
+        node["dcterms:title"] = template["dcterms:title"]
+    for key in ("dcterms:publisher", "dcterms:license", "void:uriSpace"):
+        if key not in node:
+            node[key] = template[key]
+    return node
+
+
+def stamp_combined_dataset_head(
+    doc: dict,
+    *,
+    flagship: bool = False,
+    label: str | None = None,
+    ontology_id: str | None = None,
+) -> dict:
+    """Insert or upgrade ``@graph[0]`` as an in-band Dataset head (#517).
+
+    Flagship ``combined_ontology.jsonld`` always gets
+    :func:`combined_ontology_header` at ``@graph[0]``. Other combined files
+    keep an existing ``owl:Ontology`` head (adding Dataset types + license)
+    or receive :func:`combined_dataset_header` when no head is present.
+    """
+    doc["@context"] = merge_dataset_context(doc.get("@context"))
+    graph = doc.get("@graph")
+    if not isinstance(graph, list):
+        graph = []
+        doc["@graph"] = graph
+
+    if flagship:
+        header = combined_ontology_header()
+        if graph and isinstance(graph[0], dict) and graph[0].get("@id") == header["@id"]:
+            graph[0] = header
+        else:
+            graph.insert(0, header)
+        return doc
+
+    if graph and is_ontology_or_dataset_head(graph[0]):
+        apply_inband_dataset_fields(graph[0], label=label)
+        return doc
+
+    graph.insert(
+        0,
+        combined_dataset_header(label=label, ontology_id=ontology_id),
+    )
+    return doc
 
 # ---------------------------------------------------------------------------
 # KOV body-word canonicalization and issuer-name normalization (Layer 2c PR #3)
