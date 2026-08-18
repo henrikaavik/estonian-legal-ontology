@@ -113,6 +113,7 @@ def get_law(law: str, as_of: str | None = None) -> dict[str, Any]:
         "abbrev": data.display_abbrev(rec),
         "status": data._text(act.get("estleg:temporalStatus")) if act else "",
         "consolidated_as_of": data.act_kehtiv_date(act),
+        "ontology_version": data.ontology_version(),
         "rt_url": data.rt_url(act),
         "eurovoc_subjects": subjects,
         "num_provisions": len(data.provision_nodes(graph)),
@@ -472,13 +473,13 @@ def court_decisions_for_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
 # 8. sanctions_for_law
 # ---------------------------------------------------------------------------
 @mcp.tool()
-def sanctions_for_law(law: str) -> list[dict[str, Any]]:
+def sanctions_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     """List the penalties / sanctions defined by a law.
 
     The enforcement-teeth lens: imprisonment, fines, and other penalties
     attached to the law's provisions, with the § that imposes each. Each item
     carries the riigiteataja.ee URL of the act. Returns an empty list when the
-    law defines no sanctions.
+    law defines no sanctions. ``limit`` caps the list (KarS has hundreds).
 
     Example question: "What penalties does the Penal Code (KarS) define?"
 
@@ -486,6 +487,8 @@ def sanctions_for_law(law: str) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
+        return []
+    if limit <= 0:
         return []
     rt = data.rt_url(data.act_node(data.load_law_graph(rec)))
     items: list[dict[str, Any]] = []
@@ -506,6 +509,8 @@ def sanctions_for_law(law: str) -> list[dict[str, Any]]:
                 "rt_url": rt,
             }
         )
+        if len(items) >= limit:
+            break
     return items
 
 
@@ -770,6 +775,38 @@ def regulations_by_issuer(institution: str, limit: int = 50) -> list[dict[str, A
         for r in data.regulations_by_issuer(institution)
     ]
     return _capped(rows, limit)
+
+
+@mcp.tool()
+def define_term(term: str, limit: int = 10) -> list[dict[str, Any]]:
+    """Look up a legal term in the concept graph.
+
+    Example question: "What does 'elatis' mean in the ontology?"
+    """
+    return data.define_term(term, limit=limit)
+
+
+@mcp.tool()
+def laws_for_subject(subject: str, limit: int = 20) -> list[dict[str, Any]]:
+    """Find laws tagged with a EuroVoc subject IRI or keyword.
+
+    Example question: "Which laws are about criminal law / eurovoc 573?"
+    """
+    return data.laws_for_subject(subject, limit=limit)
+
+
+@mcp.tool()
+def amendment_history(law: str, limit: int = 50) -> list[dict[str, Any]]:
+    """List effected amendment events for a law (not pending drafts).
+
+    Example question: "What amendments has KarS already received?"
+
+    Returns a list of {event_id, label, amendment_date, entry_into_force, amends}.
+    """
+    rec = data.resolve_law(law)
+    if rec is None:
+        return []
+    return data.amendment_events(rec, limit=limit)
 
 
 def _transport_security() -> TransportSecuritySettings:

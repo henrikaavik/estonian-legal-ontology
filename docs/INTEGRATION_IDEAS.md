@@ -1,6 +1,7 @@
-# Ontology Integration & Improvement Ideas
+# Integration ideas — delivered
 
-Ideas for making the Estonian Legal Ontology more interconnected, discoverable, and useful for automated legal analysis.
+Most items below shipped in the enrichment DAG. This file is a historical
+checklist, not an open backlog (#481).
 
 ---
 

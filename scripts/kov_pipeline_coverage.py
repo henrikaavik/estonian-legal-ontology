@@ -19,6 +19,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+from estleg_common import BUILD_EVALUATION_DATE
 
 _FAILURE_SAMPLE_CAP = 20
 
@@ -26,11 +27,10 @@ _FAILURE_SAMPLE_CAP = 20
 # Pinned, deterministic ``run_timestamp`` for git-tracked coverage reports
 # (issue #295). Embedding a live ``datetime.now()`` re-diffed every tracked
 # coverage file on each run (timestamp-only churn). ``CoverageReport`` requires
-# a valid UTC ISO-8601 timestamp, so we pin a fixed epoch sentinel rather than a
-# wall clock; the epoch makes "this is not a real run clock" unmistakable, and
-# genuine run time lives in ``wall_time_seconds``. Shared here so every coverage
-# writer imports the same value instead of redeclaring it locally.
-PINNED_RUN_TIMESTAMP = "1970-01-01T00:00:00+00:00"
+# a valid UTC ISO-8601 timestamp. #533: pin to BUILD_EVALUATION_DATE, not
+# the Unix epoch, so coverage sidecars do not look like 1970 data.
+
+PINNED_RUN_TIMESTAMP = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 
 
 # RFC-3339 / ISO-8601 UTC timestamp regex. We accept either a `Z`

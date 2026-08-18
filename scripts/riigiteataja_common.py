@@ -327,11 +327,16 @@ def fetch_xml(
 
 
 def strip_html_tags(text: str) -> str:
-    """Remove HTML tags and decode entities; collapse whitespace."""
+    """Remove HTML tags and decode entities; collapse whitespace.
+
+    Tags are stripped again *after* unescape (#554) so ``&lt;script&gt;``
+    cannot reconstitute a live tag in published legal text.
+    """
     text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"</p>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"<[^>]+>", "", text)
     text = html.unescape(text)
+    text = re.sub(r"<[^>]+>", "", text)
     text = re.sub(r" ", " ", text)
     text = re.sub(r"\s+", " ", text)
     return text.strip()

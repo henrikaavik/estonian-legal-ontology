@@ -286,3 +286,12 @@ class TestCollectTextBoundaryCut:
         el = _wrap_loige("Sõna " * 400)  # 2000 chars
         out = collect_text(el, max_len=500)
         assert len(out) <= 500
+
+
+def test_strip_html_tags_does_not_reconstitute_script_after_unescape():
+    """#554: unescape-after-strip must not revive ``&lt;script&gt;`` tags."""
+    raw = "ohutu &lt;script&gt;alert(1)&lt;/script&gt; tekst"
+    out = riigiteataja_common.strip_html_tags(raw)
+    assert "<script" not in out.lower()
+    assert "alert(1)" in out
+    assert "ohutu" in out

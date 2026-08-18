@@ -630,12 +630,16 @@ def main(argv: list[str] | None = None) -> int:
         f"({skipped_no_ontology} skipped: sub-part files without an "
         "owl:Ontology node)"
     )
-    expected_stamped = len(law_paths) - skipped_no_ontology
-    if stamped < expected_stamped:
+    # #333: the previous `stamped < expected_stamped` comparison was
+    # unreachable because `skipped_no_ontology` already counted every
+    # False return. Cross-check with verify_layer1.check_laws instead.
+    from verify_layer1 import check_laws
+
+    laws_ok, laws_detail = check_laws()
+    if not laws_ok:
         print(
-            f"WARN: stamped {stamped} but expected {expected_stamped} "
-            "applicable law files; check stamp_law_type / "
-            "is_stampable_law_node for drift.",
+            f"WARN: verify_layer1.check_laws failed after stamping "
+            f"({laws_detail}); stamp_law_type / INDEX drift.",
             file=sys.stderr,
         )
 

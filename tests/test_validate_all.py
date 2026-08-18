@@ -1507,6 +1507,21 @@ def test_readme_counts_match_metadata():
     def _ints(text: str) -> list[int]:
         return [int(m.replace(",", "")) for m in re.findall(r"\d[\d,]*", text)]
 
+    docs_readme = (repo_root / "docs" / "README.md").read_text(encoding="utf-8")
+    docs_status = next(
+        (ln for ln in docs_readme.splitlines() if ln.startswith("**Status:")), None
+    )
+    assert docs_status is not None, "docs/README.md is missing its **Status:** header"
+    docs_nums = set(_ints(docs_status))
+    for key in (
+        "estleg:enactedLawCount",
+        "estleg:draftLegislationCount",
+        "estleg:totalFiles",
+    ):
+        assert stats[key] in docs_nums, (
+            f"docs/README.md status line stale for {key}={stats[key]}"
+        )
+
     nums = set(_ints(status_line))
     for key in (
         "estleg:enactedLawCount",

@@ -97,6 +97,17 @@ def krr_dir() -> Path:
     return corpus_root() / "krr_outputs"
 
 
+@lru_cache(maxsize=1)
+def ontology_version() -> str:
+    """Read ``owl:versionInfo`` from the committed dataset header (#530)."""
+    meta = _load_json(corpus_root() / "metadata.jsonld")
+    if isinstance(meta, dict):
+        raw = meta.get("owl:versionInfo")
+        if isinstance(raw, str) and raw:
+            return raw
+    return ""
+
+
 # ---------------------------------------------------------------------------
 # Low-level JSON helpers
 # ---------------------------------------------------------------------------
@@ -452,6 +463,7 @@ def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
     if not query or not query.strip():
         return []
     needle = _fold(query.strip())
+    tokens = [t for t in needle.split() if t]
     records = _records_by_slug()
     human = _slug_to_human_abbrev()
     scored: list[tuple[int, str, LawRecord]] = []
@@ -460,11 +472,14 @@ def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
         hay_abbrev = _fold(rec.abbrev) if rec.abbrev else ""
         hay_human = _fold(human.get(rec.name, ""))
         hay_slug = _fold(rec.name)
+        hay_all = f"{hay_title} {hay_abbrev} {hay_human} {hay_slug}"
+        token_hit = bool(tokens) and all(t in hay_all for t in tokens)
         if (
             needle in hay_title
             or needle in hay_abbrev
             or (hay_human and needle in hay_human)
             or needle in hay_slug
+            or token_hit
         ):
             if needle in (hay_title, hay_abbrev, hay_human):
                 rank = 0
@@ -480,6 +495,58 @@ def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
     scored.sort(key=lambda t: (t[0], t[1]))
     cap = max(0, int(limit))
     return [rec for _, _, rec in scored[:cap]]
+
+
+def laws_for_subject(subject: str, limit: int = 20) -> list[dict[str, str]]:
+    """Laws whose EuroVoc ``dcterms:subject`` IRI or title contains ``subject`` (#504)."""
+    if not subject or not subject.strip() or limit <= 0:
+        return []
+    needle = _fold(subject.strip())
+    out: list[dict[str, str]] = []
+    for rec in _records_by_slug().values():
+        graph = load_law_graph(rec)
+        act = act_node(graph)
+        iris = _ids_of(act.get("dcterms:subject")) if act else []
+        hay = _fold(" ".join([rec.title, rec.name, *iris]))
+        if needle not in hay:
+            continue
+        out.append(
+            {
+                "name": rec.name,
+                "title": rec.title,
+                "abbrev": display_abbrev(rec),
+                "subjects": " ".join(iris),
+            }
+        )
+        if len(out) >= limit:
+            break
+    return out
+
+
+def define_term(term: str, limit: int = 10) -> list[dict[str, str]]:
+    """Lookup ``estleg:LegalConcept`` / Concept nodes by prefLabel (#501)."""
+    if not term or not term.strip() or limit <= 0:
+        return []
+    needle = _fold(term.strip())
+    graph = _graph_of(krr_dir() / "concepts" / "concepts_combined.jsonld")
+    out: list[dict[str, str]] = []
+    for node in graph:
+        types = _types_of(node)
+        if "estleg:LegalConcept" not in types and "estleg:Concept" not in types:
+            continue
+        label = _text(node.get("skos:prefLabel")) or _text(node.get("rdfs:label"))
+        if needle not in _fold(label):
+            continue
+        out.append(
+            {
+                "id": _id_of(node) or "",
+                "label": label,
+                "definition": _text(node.get("skos:definition") or node.get("estleg:definition")),
+            }
+        )
+        if len(out) >= limit:
+            break
+    return out
 
 
 @lru_cache(maxsize=1)
@@ -886,6 +953,28 @@ def _amendment_graph_for(record: LawRecord) -> Graph:
         return []
     base_slug = re.sub(r"_osa\d+$", "", record.name)
     return _graph_of(base / f"amendments_{base_slug}.json")
+
+
+def amendment_events(record: LawRecord, limit: int = 50) -> list[dict[str, str]]:
+    """Effected ``AmendmentEvent`` rows from the law's amendments sidecar (#502)."""
+    if limit <= 0:
+        return []
+    rows: list[dict[str, str]] = []
+    for node in _amendment_graph_for(record):
+        if "estleg:AmendmentEvent" not in _types_of(node):
+            continue
+        rows.append(
+            {
+                "event_id": _id_of(node) or "",
+                "label": _text(node.get("rdfs:label")),
+                "amendment_date": _text(node.get("estleg:amendmentDate")),
+                "entry_into_force": _text(node.get("estleg:entryIntoForce")),
+                "amends": _id_of(node.get("estleg:amends")),
+            }
+        )
+        if len(rows) >= limit:
+            break
+    return rows
 
 
 def amendment_link_drafts(record: LawRecord) -> dict[str, str]:
@@ -1432,8 +1521,11 @@ __all__ = [
     "Graph",
     "corpus_root",
     "krr_dir",
+    "ontology_version",
     "resolve_law",
     "search_law_records",
+    "laws_for_subject",
+    "define_term",
     "display_abbrev",
     "_law_slug_from_iri",
     "load_law_graph",
@@ -1452,6 +1544,7 @@ __all__ = [
     "institution_label",
     "draft_info",
     "amendment_link_drafts",
+    "amendment_events",
     "transposition_matches",
     "provision_version_timeline",
     "normalize_iso_date",

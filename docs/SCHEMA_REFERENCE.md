@@ -38,6 +38,7 @@
 * `estleg:references`: Defines cross-references to other legal provisions or laws.
 * `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
 * `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge.
+* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed) and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
 
 #### Draft Legislation Properties

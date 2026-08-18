@@ -11,6 +11,8 @@ The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. `validate_all.py` currently validates
 23,069 corpus JSON/JSON-LD files; full SHACL loads 23,064 shape-relevant files.
 
+**Query layer:** [`mcp_server/`](mcp_server/) (`estleg-mcp`, 15 tools). Local stdio or `https://estleg.sixtyfour.ee/mcp`. See [`mcp_server/README.md`](mcp_server/README.md). There is no REST `/api` surface; [`docs/API_GUIDE.md`](docs/API_GUIDE.md) is SPARQL/load guidance.
+
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
 
 Domestic regulations participate in the same cross-reference, EuroVoc, deontic, sanction, and similarity passes as enacted laws — the integration scripts iterate via `iter_peep_files()` from `estleg_common`, so any pipeline that runs over `*_peep.json` automatically covers laws and regulations alike.
@@ -134,6 +136,26 @@ g.parse("krr_outputs/riigikohus/riigikohus_2025_peep.json", format="json-ld")
 for s, p, o in g.triples((None, ESTLEG.interpretsLaw, None)):
     print(f"Decision {s} interprets {o}")
 ```
+
+### How to cite
+
+See [`CITATION.cff`](CITATION.cff). Pin the graph by `owl:versionIRI`
+(`https://w3id.org/estleg/0.11.0`), not an undated clone of `main`.
+Consumer contract: [`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+### Vocabulary cheat-sheet
+
+| Need | Predicate / class |
+|---|---|
+| This § belongs to which act? | `estleg:partOfAct` (IRI) — never `estleg:sourceAct` |
+| Incoming / outgoing cites | `estleg:referencedBy` / `estleg:references` |
+| Court interprets this § | `estleg:interpretedBy` / `estleg:interpretsLaw` |
+| Draft would change this act | `estleg:hasProposedAmendment` / `estleg:affectedLawName` |
+| Effected amendment | `estleg:AmendmentEvent` + `estleg:amends` (not drafts) |
+| Point-in-time text | `estleg:hasVersion` → `estleg:ProvisionVersion` (full surface only) |
+| Penalty | `estleg:hasSanction` → sidecar / combined overlay |
+| Combined stub? | `estleg:isStubNode` — filter it out of class counts |
 
 ### SPARQL query examples
 

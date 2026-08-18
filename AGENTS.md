@@ -13,6 +13,7 @@ correctness, validation gates, and project documentation.
 - `krr_outputs/` - generated JSON-LD corpus and aggregate artifacts.
 - `mcp_server/` - estleg-mcp natural-language query layer (14 tools).
 - `docs/` - schema references, validation notes, and release documentation.
+  See `docs/ARCHITECTURE.md` for load surfaces and consumer paths.
 - `.github/workflows/validate.yml` - CI validation entry point.
 
 ## Generated Artifacts

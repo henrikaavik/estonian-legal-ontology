@@ -105,6 +105,7 @@ GET_LAW_FIELDS = {
     "abbrev",
     "status",
     "consolidated_as_of",
+    "ontology_version",
     "rt_url",
     "eurovoc_subjects",
     "num_provisions",
@@ -120,6 +121,8 @@ def test_get_law_contract_fields() -> None:
     assert isinstance(law["eurovoc_subjects"], list)
     assert law["num_provisions"] > 10
     assert isinstance(law["num_chapters"], int)
+    assert law["ontology_version"] == data.ontology_version()
+    assert law["ontology_version"]
 
 
 def test_get_law_not_found_returns_note() -> None:
@@ -281,9 +284,16 @@ def test_sanctions_for_law_contract_fields_and_citation() -> None:
 
 
 def test_sanctions_for_law_unknown_returns_empty() -> None:
-    # sanctions_for_law takes no ``limit`` (unlike search/drafts/court); the
-    # contract here is graceful emptiness on a miss, never an exception.
     assert server.sanctions_for_law("no-such-law-xyz") == []
+    assert server.sanctions_for_law(KARS, limit=0) == []
+
+
+def test_sanctions_for_law_limit_caps_kars() -> None:
+    # #498: KarS has hundreds of sanctions; unbounded return overflowed chats.
+    capped = server.sanctions_for_law(KARS, limit=5)
+    assert len(capped) == 5
+    uncapped = server.sanctions_for_law(KARS, limit=10_000)
+    assert len(uncapped) > 5
 
 
 # ---------------------------------------------------------------------------
@@ -560,3 +570,24 @@ def test_regulations_by_issuer_limit_overflow_and_empty() -> None:
     # limit<=0 and an unknown institution follow the list-tool empty contract.
     assert server.regulations_by_issuer(VABARIIGI_VALITSUS, limit=0) == []
     assert server.regulations_by_issuer("no-such-institution-xyz") == []
+
+
+AMENDMENT_FIELDS = {"event_id", "label", "amendment_date", "entry_into_force", "amends"}
+
+
+def test_define_term_and_laws_for_subject() -> None:
+    terms = server.define_term("leping", limit=5)
+    assert isinstance(terms, list)
+    subjects = server.laws_for_subject("573", limit=5)
+    assert isinstance(subjects, list)
+    assert server.define_term("", limit=5) == []
+    assert server.laws_for_subject("no-such-subject-xyz", limit=5) == []
+
+
+def test_amendment_history_fields_and_empty() -> None:
+    items = server.amendment_history(KARS, limit=10)
+    assert items, "KarS has effected AmendmentEvents"
+    for it in items:
+        _assert_fields(it, AMENDMENT_FIELDS)
+    assert server.amendment_history("no-such-law-xyz") == []
+    assert server.amendment_history(KARS, limit=0) == []

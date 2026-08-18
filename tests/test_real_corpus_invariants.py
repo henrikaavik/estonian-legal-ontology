@@ -196,6 +196,58 @@ def test_directive_links_live_on_canonical_acts_not_deprecated():
         assert not harmonised, f"{stem} (deprecated) still carries harmonisedWith"
 
 
+def test_requested_cluster_values_are_estleg_curies():
+    """#420: requestedCluster must be a CURIE, never a prefix-less relative IRI."""
+    peeps = [
+        KRR / "perekonnaseadus_peep.json",
+        KRR / "toolepingu_seadus_peep.json",
+    ]
+    seen = 0
+    for path in peeps:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        for node in doc.get("@graph", []):
+            raw = node.get("estleg:requestedCluster")
+            if raw is None:
+                continue
+            ids = _ref_ids(raw) or (
+                {raw} if isinstance(raw, str) else set()
+            )
+            for iri in ids:
+                seen += 1
+                assert iri.startswith("estleg:"), f"{path.name} requestedCluster={iri!r}"
+                assert not iri.startswith("Cluster_"), f"prefix-less cluster {iri}"
+    assert seen > 0
+
+
+def test_vos_osa5_provisions_have_interpreted_by():
+    """#300: VÕS osa5 uses _Par_ IRIs and carries court inverses (not LegalPart-only)."""
+    doc = _load("volaoigusseadus_osa5_peep.json")
+    par_nodes = [
+        n
+        for n in doc.get("@graph", [])
+        if isinstance(n.get("@id"), str) and "_Par_" in n["@id"]
+    ]
+    assert par_nodes, "VÕS osa5 has no _Par_ provision nodes"
+    interpreted = [n for n in par_nodes if n.get("estleg:interpretedBy")]
+    assert interpreted, "VÕS osa5 has zero interpretedBy edges (#300 regression)"
+
+
+def test_transposition_inverse_on_directive_and_law():
+    """#319: both transposesDirective (law) and transposedBy (directive peep)."""
+    law = _load("karistusseadustik_osa1_peep.json")
+    law_dirs: set[str] = set()
+    for node in law.get("@graph", []):
+        law_dirs |= _ref_ids(node.get("estleg:transposesDirective"))
+    assert law_dirs, "KarS osa1 missing transposesDirective"
+    directives = _load("eurlex/eurlex_directives_peep.json")
+    inverse = False
+    for node in directives.get("@graph", []):
+        if node.get("@id") in law_dirs and _ref_ids(node.get("estleg:transposedBy")):
+            inverse = True
+            break
+    assert inverse, "directive peep missing transposedBy for a KarS CELEX (#319)"
+
+
 # --------------------------------------------------------------------------- #
 # Opt-in tier — needs the git-LFS combined graph / sweeps the version layer.
 # The json-validation CI job pulls combined and runs `pytest -m corpus`.
