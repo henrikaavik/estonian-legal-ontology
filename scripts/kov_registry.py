@@ -330,6 +330,32 @@ def _historical_municipality_name(
     return parts["root"].replace("_", " ").title()
 
 
+def municipality_status(
+    mapping_source: str, historical_name: str = ""
+) -> str:
+    """Return ``current`` or ``abolished`` for a KOV issuer (#526).
+
+    ``auto-match`` issuers without a historical name are today's
+    municipalities. ``haldusreform-2017`` / ``manual-review`` / any
+    predecessor name means the issuing body belongs to a defunct unit.
+    """
+    if mapping_source == "auto-match" and not (historical_name or "").strip():
+        return "current"
+    return "abolished"
+
+
+def issuer_slug_from_iri(iri: object) -> str | None:
+    """``estleg:Issuer_kaina_vallavolikogu`` → ``kaina_vallavolikogu``."""
+    if isinstance(iri, dict):
+        iri = iri.get("@id")
+    if not isinstance(iri, str):
+        return None
+    prefix = "estleg:Issuer_"
+    if iri.startswith(prefix):
+        return iri[len(prefix):]
+    return None
+
+
 _ALLOWED_MAPPING_SOURCES = {
     "auto-match",
     "haldusreform-2017",

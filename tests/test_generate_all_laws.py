@@ -543,12 +543,12 @@ class TestParagraphIdSuperscript:
         graph = doc["@graph"]
         assert any(node.get("@id") == "estleg:KORD_Par_26_1" for node in graph)
         assert any(
-            node.get("@id") == "estleg:KORD_Par_26_1_Dup2" for node in graph
+            node.get("@id") == "estleg:KORD_Par_26_1_x2" for node in graph
         )
         assert any(
-            node.get("@id") == "estleg:KORD_Par_26_1_Dup2_Lg_1"
+            node.get("@id") == "estleg:KORD_Par_26_1_x2_Lg_1"
             and node["estleg:parentProvision"] == {
-                "@id": "estleg:KORD_Par_26_1_Dup2"
+                "@id": "estleg:KORD_Par_26_1_x2"
             }
             for node in graph
         )
@@ -679,12 +679,13 @@ class TestParagraphIdSuperscript:
         assert len(ids) == len(set(ids))
         id_set = set(ids)
         assert "estleg:Cluster_KPSA_6" in id_set
-        assert "estleg:Cluster_KPSA_6_Dup2" in id_set
+        assert "estleg:Cluster_KPSA_6_17_17" in id_set
+        assert not any("_Dup" in i for i in id_set)
         # The two paragraphs resolve to the two distinct clusters.
         par16 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:KPSA_Par_16")
         par17 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:KPSA_Par_17")
         assert par16["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6"
-        assert par17["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6_Dup2"
+        assert par17["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6_17_17"
         for node in doc["@graph"]:
             ref = node.get("estleg:requestedCluster")
             if isinstance(ref, dict):
@@ -3829,14 +3830,14 @@ class TestSubsectionEmission:
         subs = _subsection_nodes(doc["@graph"])
         assert [s["@id"] for s in subs] == [
             "estleg:TDUPX_Par_1_Lg_2",
-            "estleg:TDUPX_Par_1_Lg_2_Dup2",
+            "estleg:TDUPX_Par_1_Lg_2_x2",
         ]
         par1 = next(
             node for node in doc["@graph"] if node.get("@id") == "estleg:TDUPX_Par_1"
         )
         assert par1["estleg:hasSubsection"] == [
             {"@id": "estleg:TDUPX_Par_1_Lg_2"},
-            {"@id": "estleg:TDUPX_Par_1_Lg_2_Dup2"},
+            {"@id": "estleg:TDUPX_Par_1_Lg_2_x2"},
         ]
 
     def test_missing_loige_numbers_get_ordered_fallback_ids(self):

@@ -702,6 +702,13 @@ estleg:DraftLegislationShape
         sh:datatype xsd:string ;
         sh:name "changeType" ;
         sh:description "Type of change proposed by draft: amends, repeals, supplements, enacts" ;
+    ] ;
+    sh:property [
+        sh:path estleg:enactedAs ;
+        estleg:graphClosureExempt true ;
+        sh:nodeKind sh:IRI ;
+        sh:name "enactedAs" ;
+        sh:description "Enacted act IRI for changeType=enacts drafts (#419). No sh:class — objects are cross-bucket act stubs." ;
     ] .
 
 # Shape for LegislativePhase instances
@@ -1856,6 +1863,13 @@ estleg:IssuerShape
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:name "mappingSource" ;
+    ] ;
+    sh:property [
+        sh:path estleg:municipalityStatus ;
+        sh:maxCount 1 ;
+        sh:in ( "current" "abolished" ) ;
+        sh:name "municipalityStatus" ;
+        sh:description "EHAK status: current municipality vs abolished-2017 issuer (#526)." ;
     ] ;
     sh:property [
         sh:path rdfs:label ;

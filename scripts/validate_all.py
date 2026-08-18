@@ -2788,7 +2788,7 @@ def validate_amendment_duplicate_bloat(krr_dir: Path = KRR_DIR):
 # mints more suffixes fails the default gate. Decreases are allowed.
 # Measured 2026-08-18 on krr_outputs/*_peep.json only (not regulations).
 DUPN_ID_RE = re.compile(r"_Dup\d+")
-DUPN_IRI_BASELINE = 584
+DUPN_IRI_BASELINE = 0
 
 
 def root_law_peep_files(krr_dir: Path = KRR_DIR) -> list[Path]:

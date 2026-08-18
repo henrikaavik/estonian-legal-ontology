@@ -12,6 +12,7 @@ This script:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -444,7 +445,7 @@ def _dedupe_paragraph_suffix(raw_suffix: str, counts: Counter[str]) -> str:
     counts[raw_suffix] += 1
     if counts[raw_suffix] == 1:
         return raw_suffix
-    return f"{raw_suffix}_Dup{counts[raw_suffix]}"
+    return f"{raw_suffix}_x{counts[raw_suffix]}"
 
 
 def _dedupe_subsection_suffix(raw_suffix: str, counts: Counter[str]) -> str:
@@ -453,21 +454,105 @@ def _dedupe_subsection_suffix(raw_suffix: str, counts: Counter[str]) -> str:
         return f"Unknown_{counts[raw_suffix]}"
     if counts[raw_suffix] == 1:
         return raw_suffix
-    return f"{raw_suffix}_Dup{counts[raw_suffix]}"
+    return f"{raw_suffix}_x{counts[raw_suffix]}"
 
 
-def _dedupe_structural_id(base_id: str, counts: Counter[str]) -> str:
+_DUPN_TAIL_RE = re.compile(r"_Dup\d+$")
+
+
+def content_derived_dup_suffix(label: str) -> str:
+    """Stable collision suffix from a heading / §-range (#448).
+
+    Prefer ``§min–max`` → ``min_max``; otherwise an 8-char SHA-1 of the
+    label. Never contains the substring ``_Dup``.
+    """
+    text = (label or "").strip()
+    match = re.search(r"§\s*(\d+)\s*[–\-]\s*(\d+)", text)
+    if match:
+        return f"{match.group(1)}_{match.group(2)}"
+    if text:
+        return hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
+    return "x"
+
+
+def remint_dupn_id(old_id: str, label: str, taken: set[str]) -> str:
+    """Replace a ``_DupN`` tail with a content-derived suffix (#448)."""
+    base = _DUPN_TAIL_RE.sub("", old_id)
+    suffix = content_derived_dup_suffix(label)
+    candidate = f"{base}_{suffix}"
+    n = 2
+    while candidate in taken or candidate == old_id:
+        candidate = f"{base}_{suffix}_{n}"
+        n += 1
+    return candidate
+
+
+def remint_dupn_ids(doc: dict) -> dict[str, str]:
+    """Rewrite ``_DupN`` @ids in a JSON-LD doc. Returns old→new remap."""
+    from estleg_common import jsonld_text
+
+    graph = doc.get("@graph", [])
+    taken = {
+        n.get("@id")
+        for n in graph
+        if isinstance(n, dict) and isinstance(n.get("@id"), str)
+    }
+    remap: dict[str, str] = {}
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        nid = node.get("@id")
+        if not isinstance(nid, str) or not _DUPN_TAIL_RE.search(nid):
+            continue
+        label = jsonld_text(node.get("rdfs:label") or node.get("skos:prefLabel") or "")
+        new_id = remint_dupn_id(nid, label, taken)
+        remap[nid] = new_id
+        taken.add(new_id)
+        taken.discard(nid)
+    if not remap:
+        return {}
+    for node in graph:
+        if isinstance(node, dict) and node.get("@id") in remap:
+            node["@id"] = remap[node["@id"]]
+    _rewrite_json_ids(doc, remap)
+    return remap
+
+
+def _rewrite_json_ids(value: object, remap: dict[str, str]) -> None:
+    """Replace remapped IRIs in ``@id`` objects and string values."""
+    if isinstance(value, dict):
+        iri = value.get("@id")
+        if isinstance(iri, str) and iri in remap:
+            value["@id"] = remap[iri]
+        for item in value.values():
+            _rewrite_json_ids(item, remap)
+    elif isinstance(value, list):
+        for item in value:
+            _rewrite_json_ids(item, remap)
+    elif isinstance(value, str):
+        pass
+
+
+def _dedupe_structural_id(
+    base_id: str, counts: Counter[str], *, content: str = ""
+) -> str:
     """Return a stable, file-local unique structural node IRI.
 
     RT occasionally repeats chapter or division numbers inside a law. Keep
-    the first IRI unchanged for backwards compatibility and suffix later
-    duplicates deterministically so downstream references resolve without
-    relying on the aggregate duplicate-id fixer.
+    the first IRI unchanged. Later collisions get a content-derived
+    suffix (#448) instead of ``_DupN``.
     """
     counts[base_id] += 1
     if counts[base_id] == 1:
         return base_id
-    return f"{base_id}_Dup{counts[base_id]}"
+    suffix = content_derived_dup_suffix(content or base_id)
+    candidate = f"{base_id}_{suffix}"
+    extra = 2
+    while candidate in counts:
+        candidate = f"{base_id}_{suffix}_{extra}"
+        extra += 1
+    counts[candidate] += 1
+    return candidate
 
 
 def _walk_paragraphs_direct(
@@ -1282,15 +1367,17 @@ def generate_law_jsonld(
                 structural_suffix = (
                     f"{osa_segment}{_chapter_id_suffix(ch, ch_nr, ch_title)}"
                 )
+                par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                 cluster_id = _dedupe_structural_id(
                     f"estleg:Cluster_{prefix}_{structural_suffix}",
                     structural_id_counts,
+                    content=f"{par_range} {ch_title}",
                 )
                 chapter_id = _dedupe_structural_id(
                     f"estleg:Chapter_{prefix}_{structural_suffix}",
                     structural_id_counts,
+                    content=f"{par_range} {ch_title}",
                 )
-                par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                 clusters.append({
                     "id": cluster_id,
                     "label": f"{par_range} {ch_title}".strip(),
@@ -1345,6 +1432,7 @@ def generate_law_jsonld(
                             f"estleg:Division_{prefix}_{structural_suffix}_"
                             f"{_division_id_suffix(jagu_el, j_nr, j_title)}",
                             structural_id_counts,
+                            content=f"{j_nr} {j_title}",
                         )
                         division_ids.append(div_id)
                         graph.append({
@@ -1390,10 +1478,14 @@ def generate_law_jsonld(
         if preamble_pars:
             preamble_label = "Sissejuhatavad sätted"
             preamble_cluster_id = _dedupe_structural_id(
-                f"estleg:Cluster_{prefix}_Preamble", structural_id_counts
+                f"estleg:Cluster_{prefix}_Preamble",
+                structural_id_counts,
+                content=preamble_label,
             )
             preamble_chapter_id = _dedupe_structural_id(
-                f"estleg:Chapter_{prefix}_Preamble", structural_id_counts
+                f"estleg:Chapter_{prefix}_Preamble",
+                structural_id_counts,
+                content=preamble_label,
             )
             clusters.append(
                 {"id": preamble_cluster_id, "label": preamble_label, "count": 0}
@@ -1759,15 +1851,17 @@ def generate_multipart_law(
                                 pass
                     # Issue #253: superscript-aware suffix (``6¹`` -> ``6_1``).
                     structural_suffix = _chapter_id_suffix(ch, ch_nr, ch_title)
+                    par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                     cluster_id = _dedupe_structural_id(
                         f"estleg:Cluster_{prefix}_{osa_nr}_{structural_suffix}",
                         structural_id_counts,
+                        content=f"{par_range} {ch_title}",
                     )
                     chapter_id = _dedupe_structural_id(
                         f"estleg:Chapter_{prefix}_{osa_nr}_{structural_suffix}",
                         structural_id_counts,
+                        content=f"{par_range} {ch_title}",
                     )
-                    par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                     clusters.append({"id": cluster_id, "label": f"{par_range} {ch_title}".strip(), "count": 0})
 
                     # Existing TopicCluster node (kept for backward compatibility)
@@ -1813,6 +1907,7 @@ def generate_multipart_law(
                                 f"estleg:Division_{prefix}_{osa_nr}_{structural_suffix}_"
                                 f"{_division_id_suffix(jagu_el, j_nr, j_title)}",
                                 structural_id_counts,
+                                content=f"{j_nr} {j_title}",
                             )
                             division_ids.append(div_id)
                             graph.append({
@@ -1859,10 +1954,12 @@ def generate_multipart_law(
                 preamble_cluster_id = _dedupe_structural_id(
                     f"estleg:Cluster_{prefix}_{osa_nr}_Preamble",
                     structural_id_counts,
+                    content=preamble_label,
                 )
                 preamble_chapter_id = _dedupe_structural_id(
                     f"estleg:Chapter_{prefix}_{osa_nr}_Preamble",
                     structural_id_counts,
+                    content=preamble_label,
                 )
                 clusters.append(
                     {"id": preamble_cluster_id, "label": preamble_label, "count": 0}

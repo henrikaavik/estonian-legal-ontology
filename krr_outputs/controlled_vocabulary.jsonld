@@ -3342,6 +3342,70 @@
       }
     },
     {
+      "@id": "estleg:Phase_Enacted",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase"
+      ],
+      "rdfs:label": "Vastu võetud",
+      "skos:prefLabel": "Enacted",
+      "rdfs:comment": "Eelnõu on vastu võetud ja jõustunud seadusena.",
+      "estleg:phaseOrder": {
+        "@value": "4",
+        "@type": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:Phase_Withdrawn",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase"
+      ],
+      "rdfs:label": "Tagasi võetud",
+      "skos:prefLabel": "Withdrawn",
+      "rdfs:comment": "Algataja võttis eelnõu menetlusest tagasi.",
+      "estleg:phaseOrder": {
+        "@value": "5",
+        "@type": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:Phase_Rejected",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase"
+      ],
+      "rdfs:label": "Tagasi lükatud",
+      "skos:prefLabel": "Rejected",
+      "rdfs:comment": "Eelnõu lükati menetluses tagasi.",
+      "estleg:phaseOrder": {
+        "@value": "6",
+        "@type": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:enactedAs",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "jõustus seadusena",
+      "rdfs:comment": "Links a draft with changeType=enacts to the enacted act IRI (#419). Deliberately no rdfs:range — objects are bare act stubs in the drafts SHACL bucket.",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      }
+    },
+    {
+      "@id": "estleg:municipalityStatus",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "municipalityStatus",
+      "rdfs:comment": "EHAK status of a KOV issuer or municipal regulation: current vs abolished (2017 haldusreform). Issue #526.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:DraftType",
       "@type": [
         "owl:Class"

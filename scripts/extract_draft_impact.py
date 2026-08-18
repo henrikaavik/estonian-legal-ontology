@@ -119,6 +119,31 @@ def classify_change_types(title: str) -> list[tuple[str, str]]:
     return [matches[ct] for ct in _CHANGE_TYPE_PRIORITY if ct in matches]
 
 
+_ENACT_TITLE_NOISE = re.compile(
+    r"\b(?:eelnõu|eelnou|seaduseelnõu|seaduseelnou)\b",
+    re.IGNORECASE,
+)
+
+
+def resolve_enacted_as(
+    title: str,
+    change_type: str | None,
+    lookup: dict[str, dict],
+    iri_map: dict[str, str],
+) -> str | None:
+    """Resolve a changeType=enacts draft title to an enacted act IRI (#419)."""
+    if change_type != "enacts" or not title:
+        return None
+    cleaned = _ENACT_TITLE_NOISE.sub(" ", title)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip(" .,-")
+    if not cleaned:
+        return None
+    entry = resolve_law_name(cleaned, lookup)
+    if not entry:
+        return None
+    return get_ontology_iri(entry, iri_map)
+
+
 def classify_change_type(title: str) -> tuple[str, str] | None:
     """Return the highest-priority (change_type, label_et) match, or None.
 
@@ -546,10 +571,15 @@ def main() -> None:
 
         # -- change type --
         ct = classify_change_type(title)
+        ctype = None
         if ct:
             ctype, clabel = ct
             node["estleg:changeType"] = ctype
             change_type_counts[ctype] += 1
+
+        enacted_iri = resolve_enacted_as(title, ctype, lookup, iri_map)
+        if enacted_iri:
+            node["estleg:enactedAs"] = {"@id": enacted_iri}
 
         # -- affected law resolution --
         affected_raw = node.get("estleg:affectedLawName")
@@ -666,6 +696,11 @@ def main() -> None:
             # disagreed with the list length (1414 vs 845 in the live corpus).
             "affected_law_names_unresolved": len(set(unresolved)),
             "law_files_with_inverse_links": inverse_count,
+            "enacted_as_resolved": sum(
+                1
+                for n in draft_nodes
+                if isinstance(n, dict) and n.get("estleg:enactedAs")
+            ),
         },
         "by_change_type": dict(sorted(change_type_counts.items(), key=lambda x: -x[1])),
         "most_affected_laws": [

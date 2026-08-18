@@ -30,7 +30,9 @@ from kov_registry import (
     IssuerEntry,
     Municipality,
     extract_historical_municipalities,
+    issuer_slug_from_iri,
     load_municipalities,
+    municipality_status,
     normalize_title,
     parse_issuer_slug,
 )
@@ -111,6 +113,9 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
                 "@id": municipality_iri(entry["currentMunicipalityCode"])
             },
             "estleg:mappingSource": entry["mappingSource"],
+            "estleg:municipalityStatus": municipality_status(
+                entry["mappingSource"], entry["historicalMunicipalityName"]
+            ),
         }
         if entry["mappingEvidence"]:
             node["estleg:mappingEvidence"] = entry["mappingEvidence"]
@@ -118,6 +123,33 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
             node["estleg:historicalMunicipalityName"] = entry["historicalMunicipalityName"]
         nodes.append(node)
     return {"@context": CONTEXT, "@graph": nodes}
+
+
+def issuer_status_map(issuers_doc: dict) -> dict[str, str]:
+    """slug → ``current``/``abolished`` from an issuers JSON-LD doc."""
+    out: dict[str, str] = {}
+    for node in issuers_doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        slug = issuer_slug_from_iri(node.get("@id"))
+        status = node.get("estleg:municipalityStatus")
+        if slug and status in {"current", "abolished"}:
+            out[slug] = status
+    return out
+
+
+def stamp_kov_act_municipality_status(act_node: dict, status_by_slug: dict[str, str]) -> bool:
+    """Copy issuer status onto a MunicipalRegulation act node (#526)."""
+    slug = issuer_slug_from_iri(act_node.get("estleg:enactedBy"))
+    if not slug:
+        return False
+    status = status_by_slug.get(slug)
+    if status is None:
+        return False
+    if act_node.get("estleg:municipalityStatus") == status:
+        return False
+    act_node["estleg:municipalityStatus"] = status
+    return True
 
 
 def build_historical_municipality_doc(

@@ -152,7 +152,7 @@ def classify_draft_type(title: str) -> tuple[str, str]:
         return "Bill", "Seaduseelnõu"
     elif "seisukoht" in title_lower or "euroopa liidu" in title_lower:
         return "EUPosition", "EL seisukoha eelnõu"
-    elif "ülevaade" in title_lower:
+    elif "ülevaade" in title_lower or "analüüs" in title_lower or "uuring" in title_lower:
         return "Report", "Ülevaade"
     elif "kodakondsus" in title_lower:
         return "CitizenshipDecision", "Kodakondsuse otsus"
@@ -293,6 +293,30 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:comment": {"@value": "Eelnõu on esitatud Vabariigi Valitsusele otsustamiseks.", "@language": "et"},
             "estleg:phaseOrder": {"@value": "3", "@type": "xsd:integer"},
         },
+        {
+            "@id": "estleg:Phase_Enacted",
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "rdfs:label": {"@value": "Vastu võetud", "@language": "et"},
+            "skos:prefLabel": {"@value": "Enacted", "@language": "en"},
+            "rdfs:comment": {"@value": "Eelnõu on vastu võetud ja jõustunud seadusena.", "@language": "et"},
+            "estleg:phaseOrder": {"@value": "4", "@type": "xsd:integer"},
+        },
+        {
+            "@id": "estleg:Phase_Withdrawn",
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "rdfs:label": {"@value": "Tagasi võetud", "@language": "et"},
+            "skos:prefLabel": {"@value": "Withdrawn", "@language": "en"},
+            "rdfs:comment": {"@value": "Algataja võttis eelnõu menetlusest tagasi.", "@language": "et"},
+            "estleg:phaseOrder": {"@value": "5", "@type": "xsd:integer"},
+        },
+        {
+            "@id": "estleg:Phase_Rejected",
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "rdfs:label": {"@value": "Tagasi lükatud", "@language": "et"},
+            "skos:prefLabel": {"@value": "Rejected", "@language": "en"},
+            "rdfs:comment": {"@value": "Eelnõu lükati menetluses tagasi.", "@language": "et"},
+            "estleg:phaseOrder": {"@value": "6", "@type": "xsd:integer"},
+        },
         # Draft type individuals
         {
             "@id": "estleg:DraftType_Bill",
@@ -390,6 +414,20 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "estleg:LegalProvision"},
             "rdfs:comment": {"@value": "Links a draft to the existing law it proposes to amend.", "@language": "en"},
+        },
+        {
+            "@id": "estleg:enactedAs",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": {"@value": "jõustus seadusena", "@language": "et"},
+            "rdfs:domain": {"@id": "estleg:DraftLegislation"},
+            "rdfs:comment": {
+                "@value": (
+                    "Links a draft with changeType=enacts to the enacted act "
+                    "IRI when the title resolves against INDEX. No rdfs:range "
+                    "— objects are often bare act stubs in the drafts bucket."
+                ),
+                "@language": "en",
+            },
         },
         # Datatype properties
         {
