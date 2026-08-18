@@ -746,12 +746,12 @@ The citation graph is still a single flat `estleg:references` / `estleg:referenc
 ### EU Transposition
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law. **This** (and `krr_outputs/transposition_mapping.json`) is Estonian transposition — not the HarmonisationLink layer. |
+| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law. **This** (and `krr_outputs/reports/transposition_mapping.json`) is Estonian transposition — not the HarmonisationLink layer. |
 | `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian law transposing this directive |
 | `estleg:harmonisedWith` | Act | HarmonisationLink (IRI) | Act → neighbour-state comparative NIM record (LV/LT/FI/SE) for the same EU directive. Not Estonian article-level transposition. Emitted **only** on law peeps (act-level). Inverse of `estleg:harmonises` (issue #425). Combined `estleg:HarmonisationLink` objects may be hollow `isStubNode` closure stubs; real neighbour measures live in `krr_outputs/harmonisation/`. |
 | `estleg:harmonises` | HarmonisationLink | Act (IRI) | Inverse: comparative NIM record → the Estonian act(s) that transpose the shared directive. Emitted **only** on the aggregate `estleg:Harmonisation_<celex>` nodes in `krr_outputs/harmonisation/harmonisation_by_directive/`. Inverse of `estleg:harmonisedWith` (issue #425). |
 
-> **Scope (issue #557).** Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state **comparative** NIM measures for LV/LT/FI/SE. They are **not** Estonian article-level transposition. Estonian transposition is `estleg:transposesDirective` / `krr_outputs/transposition_mapping.json`. Combined `estleg:HarmonisationLink` nodes may be hollow `isStubNode` closure stubs; real neighbour measures live in the sidecar.
+> **Scope (issue #557).** Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state **comparative** NIM measures for LV/LT/FI/SE. They are **not** Estonian article-level transposition. Estonian transposition is `estleg:transposesDirective` / `krr_outputs/reports/transposition_mapping.json`. Combined `estleg:HarmonisationLink` nodes may be hollow `isStubNode` closure stubs; real neighbour measures live in the sidecar.
 
 ### Subject Classification
 | Property | Domain | Range | Description |
@@ -1187,8 +1187,8 @@ SELECT ?provision ?label ?type ?maxPenalty WHERE {
 Two computed indexes are **non-graph** application artifacts (issue #462).
 They are not RDF; SPARQL over the published graph will not see them.
 
-- **KOV / law similarity JSON** (`krr_outputs/similarity_index.json`,
-  `krr_outputs/similarity_report.json`) is a **tf-idf / application index**
+- **KOV / law similarity JSON** (`krr_outputs/reports/similarity_index.json`,
+  `krr_outputs/reports/similarity_report.json`) is a **tf-idf / application index**
   (provision-level keyword-Jaccard in the sidecar; the optional KOV
   act-level pass uses bucketed TF-IDF cosine). SPARQL will not see those
   pairs unless they were also emitted as `estleg:similarAct` (KOV act-level
@@ -1196,7 +1196,7 @@ They are not RDF; SPARQL over the published graph will not see them.
   law/state pairs, as `estleg:semanticallySimilarTo`. Pair scores and the
   bulk of KOV pairs live only in the JSON sidecars.
 - **EUR-normalized sanction severity scores** in
-  `krr_outputs/sanctions_report.json` (`severity_index`, including
+  `krr_outputs/reports/sanctions_report.json` (`severity_index`, including
   `monetary_score` / `max_monetary_eur`) are **not** graph properties.
   Query `estleg:hasSanction` for the RDF sanctions layer
   (`estleg:Sanction` nodes with `sanctionType` / `maxPenalty`).

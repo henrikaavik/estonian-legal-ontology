@@ -6,7 +6,7 @@ Data source: EUR-Lex SPARQL endpoint — national transposition measures for Est
 Matches transposition titles against existing Estonian law ontology entries.
 
 Generates:
-  - krr_outputs/transposition_mapping.json           (report of all matches)
+  - krr_outputs/reports/transposition_mapping.json   (report of all matches)
   - krr_outputs/transposition_schema.json             (OWL property definitions)
   - Updates existing law JSON-LD files with estleg:transposesDirective
   - Updates EU directive entries with estleg:transposedBy
@@ -1002,7 +1002,7 @@ def _write_documented_empty_report(*, partial: bool, reason: str) -> Path:
         "missing_directives_sample": [],
         "missing_law_iris_sample": [],
     }
-    report_path = KRR_DIR / "transposition_mapping.json"
+    report_path = KRR_DIR / "reports" / "transposition_mapping.json"
     save_json(report_path, report)
     return report_path
 
@@ -1250,7 +1250,7 @@ def main():
         "missing_law_iris_sample": missing_law_iris[:50],
     }
 
-    report_path = KRR_DIR / "transposition_mapping.json"
+    report_path = KRR_DIR / "reports" / "transposition_mapping.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

@@ -1380,7 +1380,7 @@ def validate_transposition_mapping(krr_dir: Path = KRR_DIR):
     *and* unflagged layer is a release defect, not a no-op.
     """
     print("\n--- Transposition Mapping ---")
-    report_path = krr_dir / "transposition_mapping.json"
+    report_path = krr_dir / "reports" / "transposition_mapping.json"
     if not report_path.exists():
         warn("transposition_mapping.json: not found")
         return
@@ -2077,7 +2077,7 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
     # every harmonisedWith (act→directive) must be backed by a mapping row whose
     # law_files include that act's peep — else the link isn't reproducible and a
     # regen would silently drop it. Build directive CELEX → {peep filename}.
-    mapping_path = krr_dir / "transposition_mapping.json"
+    mapping_path = krr_dir / "reports" / "transposition_mapping.json"
     dir_files: dict[str, set[str]] = {}
     if mapping_path.is_file() and not _is_lfs_pointer(mapping_path):
         try:

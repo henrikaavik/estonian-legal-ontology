@@ -182,7 +182,7 @@ def test_keyword_floor_exclusions_are_reported_and_logged(tmp_path, monkeypatch,
 
     similarity.main()
 
-    report_path = krr / "similarity_report.json"
+    report_path = krr / "reports" / "similarity_report.json"
     report = json.loads(report_path.read_text(encoding="utf-8"))
 
     assert "excluded_provisions" in report
@@ -404,7 +404,7 @@ def test_pair_sharing_only_generic_legal_tokens_is_not_a_candidate(tmp_path, mon
 
     similarity.main()
 
-    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
+    index = json.loads((krr / "reports" / "similarity_index.json").read_text(encoding="utf-8"))
     assert index["total_pairs"] == 0
     assert index["pairs"] == []
 
@@ -441,8 +441,8 @@ def test_corpus_generic_keyword_cap_strips_high_frequency_tokens(tmp_path, monke
 
     similarity.main()
 
-    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
-    report = json.loads((krr / "similarity_report.json").read_text(encoding="utf-8"))
+    index = json.loads((krr / "reports" / "similarity_index.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "similarity_report.json").read_text(encoding="utf-8"))
     assert index["total_pairs"] == 0
     dropped = set(report["generic_keywords_dropped"])
     assert {"ametiasutus", "halduskorraldus", "teavitamine"} <= dropped
@@ -534,7 +534,7 @@ def test_injected_similarity_links_are_plain_id_refs(tmp_path, monkeypatch):
 
     # The index advertises the strip + where the scores actually live, and
     # still carries the per-pair score in its "pairs" list (sidecar-only).
-    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
+    index = json.loads((krr / "reports" / "similarity_index.json").read_text(encoding="utf-8"))
     assert index["link_emission"]["status_literal"] == "candidate"
     assert "plain" in index["link_emission"]["in_graph_shape"]
     assert "#422" in index["link_emission"]["in_graph_shape"]
@@ -654,7 +654,7 @@ def test_similarity_is_symmetric_reciprocal_backlinks(tmp_path, monkeypatch):
     assert _similar_targets(peep[0], "estleg:ActA_Par_1") == ["estleg:ActB_Par_1"]
     assert _similar_targets(peep[1], "estleg:ActB_Par_1") == ["estleg:ActA_Par_1"]
 
-    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
+    index = json.loads((krr / "reports" / "similarity_index.json").read_text(encoding="utf-8"))
     # Both directed edges are present in the index, and nothing was capped.
     directed = {(p["source"], p["target"]) for p in index["pairs"]}
     assert directed == {
@@ -694,10 +694,10 @@ def test_cap_applied_per_provision_after_symmetrization(tmp_path, monkeypatch):
         )[:2]
         assert sorted(targets) == expected
 
-    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
+    index = json.loads((krr / "reports" / "similarity_index.json").read_text(encoding="utf-8"))
     assert index["total_pairs"] == 8  # 4 provisions * min(3, 2)
     assert index["pairs_truncated_by_cap"] == 4  # 4 provisions * (3 - 2)
-    report = json.loads((krr / "similarity_report.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "similarity_report.json").read_text(encoding="utf-8"))
     assert report["pairs_truncated_by_cap"] == 4
 
 
@@ -732,7 +732,7 @@ def test_emit_sample_writes_well_formed_precision_sample(tmp_path, monkeypatch):
         assert row["reviewed_relevant"] is None
         assert isinstance(row["score"], (int, float))
     # The report cross-references the sample.
-    report = json.loads((krr / "similarity_report.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "similarity_report.json").read_text(encoding="utf-8"))
     assert report["precision_sample"]["path"] == "reports/similarity_sample.json"
     assert report["precision_sample"]["size"] == sample["sample_size"]
 
@@ -1592,7 +1592,7 @@ def test_no_kov_leaves_provision_index_unchanged(tmp_path, monkeypatch):
 
             m.setattr(similarity, "save_json", _save)
             similarity.main(include_kov_flag)
-        return (krr / "similarity_index.json").read_text(encoding="utf-8")
+        return (krr / "reports" / "similarity_index.json").read_text(encoding="utf-8")
 
     with_kov = _run([])
     no_kov = _run(["--no-kov"])

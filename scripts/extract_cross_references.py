@@ -2573,7 +2573,7 @@ def main() -> int:
         "per_file_stats": all_stats,
     }
 
-    report_path = KRR_DIR / "cross_references_report.json"
+    report_path = KRR_DIR / "reports" / "cross_references_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

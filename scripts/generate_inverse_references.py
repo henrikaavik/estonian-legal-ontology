@@ -936,7 +936,7 @@ def require_cross_reference_report(*, krr_dir: Path | None = None) -> None:
     ``KRR_DIR`` to a tmp tree without INDEX — they are not gated.
     """
     krr_dir = krr_dir if krr_dir is not None else KRR_DIR
-    report_path = krr_dir / CROSS_REFERENCES_REPORT
+    report_path = krr_dir / "reports" / CROSS_REFERENCES_REPORT
     if report_path.is_file():
         try:
             doc = json.loads(report_path.read_text(encoding="utf-8"))
@@ -958,7 +958,7 @@ def require_cross_reference_report(*, krr_dir: Path | None = None) -> None:
         return
     if (krr_dir / "INDEX.json").is_file():
         raise SystemExit(
-            "FATAL: missing krr_outputs/cross_references_report.json — "
+            "FATAL: missing krr_outputs/reports/cross_references_report.json — "
             "run extract_cross_references.py before "
             "generate_inverse_references.py (#470)"
         )
@@ -1293,7 +1293,7 @@ def main() -> int:
         },
     }
 
-    report_path = KRR_DIR / "inverse_references_report.json"
+    report_path = KRR_DIR / "reports" / "inverse_references_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

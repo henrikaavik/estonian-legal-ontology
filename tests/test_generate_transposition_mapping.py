@@ -258,7 +258,8 @@ def test_zero_fetch_without_allow_empty_exits_nonzero(tmp_path, monkeypatch):
     # An existing (legacy) report that must be left untouched on failure.
     legacy = {"generated": "2026-03-21", "source": "x", "total_measures_fetched": 0,
               "matched": 0, "unmatched": 0, "mappings": []}
-    (krr / "transposition_mapping.json").write_text(json.dumps(legacy), encoding="utf-8")
+    (krr / "reports").mkdir()
+    (krr / "reports" / "transposition_mapping.json").write_text(json.dumps(legacy), encoding="utf-8")
 
     monkeypatch.setattr(mod, "KRR_DIR", krr)
     monkeypatch.setattr(mod, "EURLEX_DIR", eurlex)
@@ -269,7 +270,7 @@ def test_zero_fetch_without_allow_empty_exits_nonzero(tmp_path, monkeypatch):
         mod.main()
     assert exc.value.code not in (0, None)
     # Report unchanged.
-    assert json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8")) == legacy
+    assert json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8")) == legacy
 
 
 def test_zero_fetch_with_allow_empty_writes_documented_empty_report(tmp_path, monkeypatch):
@@ -289,7 +290,7 @@ def test_zero_fetch_with_allow_empty_writes_documented_empty_report(tmp_path, mo
     rc = mod.main()
     assert rc in (0, None)
 
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     assert report["documented_empty"] is True
     assert report["mappings"] == []
     assert report["country"] == "EST"
@@ -318,7 +319,7 @@ def test_zero_fetch_allow_empty_partial_exits_two(tmp_path, monkeypatch):
     with pytest.raises(SystemExit) as exc:
         mod.main()
     assert exc.value.code == 2
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     assert report["documented_empty"] is True
     assert report["partial"] is True
 
@@ -478,7 +479,7 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
     rc = mod.main()
     assert rc in (0, None)
 
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     assert report["documented_empty"] is False
     assert report["total_measures_fetched"] == 1
     assert len(report["mappings"]) == 1
@@ -790,7 +791,7 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
     assert transposed_by == {"estleg:LIIKLUS_Map_2026", "estleg:RAUDTEE_Map_2026"}
 
     # Report records both law-directive pairs.
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     matched_laws = {m["matched_law_name"] for m in report["mappings"]}
     assert matched_laws == {"liiklusseadus", "raudteeseadus"}
 
@@ -1130,7 +1131,7 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
     assert transposed_by == {"estleg:RAUDTEE_Map_2026"}
 
     # The report records only the railway pairing.
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     matched_laws = {m["matched_law_name"] for m in report["mappings"]}
     assert matched_laws == {"raudteeseadus"}
 

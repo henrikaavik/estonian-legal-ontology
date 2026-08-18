@@ -172,7 +172,7 @@ STEPS: list[dict] = [
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
                   "riigikohus/*_peep.json", "eelnoud/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "cross_references_report.json"],
+                   "reports/cross_references_report.json"],
     },
     {
         "name": "generate_inverse_references.py",
@@ -181,9 +181,9 @@ STEPS: list[dict] = [
         # reads estleg:references written by extract_cross_references.py
         "depends_on": ["extract_cross_references.py"],
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
-                  "cross_references_report.json"],
+                  "reports/cross_references_report.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "inverse_references_report.json"],
+                   "reports/inverse_references_report.json"],
     },
 
     # -- Phase 2: EU transposition -----------------------------------------
@@ -195,7 +195,7 @@ STEPS: list[dict] = [
         "reads": ["*_peep.json", "eurlex/*_peep.json"],
         "writes": [
             "*_peep.json",
-            "transposition_mapping.json",
+            "reports/transposition_mapping.json",
             "eurlex/eurlex_combined.jsonld",
         ],
     },
@@ -226,7 +226,7 @@ STEPS: list[dict] = [
         "script": "generate_harmonisation_links.py",
         # reads transposition_mapping.json
         "depends_on": ["generate_transposition_mapping.py"],
-        "reads": ["transposition_mapping.json", "*_peep.json"],
+        "reads": ["reports/transposition_mapping.json", "*_peep.json"],
         "writes": ["*_peep.json", "harmonisation/harmonisation_report.json"],
     },
 
@@ -238,7 +238,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "riigikohus/*_peep.json"],
         "writes": ["riigikohus/*_peep.json", "*_peep.json",
-                   "court_provision_links_report.json"],
+                   "reports/court_provision_links_report.json"],
     },
     {
         "name": "classify_eurovoc.py",
@@ -247,7 +247,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "eurovoc_classification.json",
+                   "reports/eurovoc_classification.json",
                    "eurovoc_concept_scheme.jsonld"],
     },
     {
@@ -261,7 +261,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "temporal_data_report.json"],
+                   "reports/temporal_data_report.json"],
     },
     {
         "name": "generate_amendment_history.py",
@@ -270,7 +270,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["amendments/**/*.json", "*_peep.json",
-                   "amendment_history_report.json"],
+                   "reports/amendment_history_report.json"],
     },
     {
         "name": "extract_legal_concepts.py",
@@ -287,7 +287,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "deontic_classification_report.json"],
+                   "reports/deontic_classification_report.json"],
     },
     {
         "name": "classify_target_group.py",
@@ -296,7 +296,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "target_group_report.json"],
+                   "reports/target_group_report.json"],
     },
     {
         "name": "extract_institutional_competence.py",
@@ -305,7 +305,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["institutions/**/*.json", "*_peep.json",
-                   "institutional_competence_report.json"],
+                   "reports/institutional_competence_report.json"],
     },
     {
         "name": "extract_sanctions.py",
@@ -314,7 +314,7 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["sanctions/**/*.json", "*_peep.json",
-                   "sanctions_report.json"],
+                   "reports/sanctions_report.json"],
     },
     {
         "name": "extract_draft_impact.py",
@@ -322,7 +322,7 @@ STEPS: list[dict] = [
         "script": "extract_draft_impact.py",
         "depends_on": [],
         "reads": ["*_peep.json", "eelnoud/*_peep.json"],
-        "writes": ["*_peep.json", "draft_impact_report.json"],
+        "writes": ["*_peep.json", "reports/draft_impact_report.json"],
     },
 
     # -- Phase 4: Aggregation (reads fully-enriched data) -----------------
@@ -354,7 +354,7 @@ STEPS: list[dict] = [
         # similarity_index.json + report are the provision-level pass; the
         # KOV act-level pass writes one consolidated kov_similarity_index.json
         # plus idempotent back-links into the KOV act nodes themselves.
-        "writes": ["similarity_index.json", "similarity_report.json",
+        "writes": ["reports/similarity_index.json", "reports/similarity_report.json",
                    "similarity/kov_similarity_index.json",
                    "regulations/**/*_peep.json"],
     },

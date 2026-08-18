@@ -1635,7 +1635,7 @@ def main() -> int:
         "amendment_chains": amendment_chains_sorted,
     }
 
-    report_path = KRR_DIR / "amendment_history_report.json"
+    report_path = KRR_DIR / "reports" / "amendment_history_report.json"
     save_json(report_path, report)
 
     # Surface failures aggressively — silent swallowing was the root

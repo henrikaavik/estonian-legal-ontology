@@ -604,7 +604,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     report = classify_files(
         files,
-        report_path=KRR_DIR / "target_group_report.json",
+        report_path=KRR_DIR / "reports" / "target_group_report.json",
         write=not args.dry_run,
     )
     summary = report["summary"]

@@ -542,7 +542,7 @@ The ontology includes 15 integration layers that connect laws, court decisions, 
 
 Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state comparative NIM measures (LV/LT/FI/SE); Estonian transposition is `estleg:transposesDirective` / the transposition mapping, not the hollow HarmonisationLink stubs.
 
-`krr_outputs/similarity_index.json` / `similarity_report.json` and the EUR-normalized severity scores in `krr_outputs/sanctions_report.json` are **non-graph** application indexes (issue #462); SPARQL does not see those pairs or scores.
+`krr_outputs/reports/similarity_index.json` / `similarity_report.json` and the EUR-normalized severity scores in `krr_outputs/reports/sanctions_report.json` are **non-graph** application indexes (issue #462); SPARQL does not see those pairs or scores.
 
 ### Running integration scripts
 
@@ -619,19 +619,20 @@ python3 scripts/generate_similarity_index.py
 │   ├── institutions/         # Institutional competence mappings
 │   ├── sanctions/            # Penalty and sanction index
 │   ├── amendments/           # Amendment chain data
-│   ├── cross_references_report.json   # Cross-law reference index
-│   ├── inverse_references_report.json # Bidirectional reference index
-│   ├── court_provision_links_report.json # Court → provision link index
-│   ├── transposition_mapping.json     # EU directive transposition map
 │   ├── transposition_schema.json      # Transposition schema definitions
 │   ├── harmonisation/                 # Cross-border harmonisation links (LV/LT/FI/SE parallel transpositions)
-│   ├── eurovoc_classification.json    # EuroVoc topic classification
-│   ├── amendment_history_report.json  # Amendment history index
-│   ├── deontic_classification_report.json # Deontic classification index
-│   ├── draft_impact_report.json       # Draft impact analysis index
-│   ├── temporal_data_report.json      # Temporal validity index
-│   ├── similarity_index.json          # Semantic similarity index
-│   └── similarity_report.json         # Similarity analysis report
+│   └── reports/              # Report/index/mapping/classification sidecars (#471)
+│       ├── cross_references_report.json
+│       ├── inverse_references_report.json
+│       ├── court_provision_links_report.json
+│       ├── transposition_mapping.json
+│       ├── eurovoc_classification.json
+│       ├── amendment_history_report.json
+│       ├── deontic_classification_report.json
+│       ├── draft_impact_report.json
+│       ├── temporal_data_report.json
+│       ├── similarity_index.json
+│       └── similarity_report.json
 ├── docs/                     # Documentation
 │   ├── README.md             # Full project documentation
 │   ├── API_GUIDE.md          # SPARQL and API usage guide

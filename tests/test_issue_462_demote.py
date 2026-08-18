@@ -11,9 +11,9 @@ SCHEMA = REPO / "docs" / "SCHEMA_REFERENCE.md"
 README = REPO / "README.md"
 
 NAMED_JSON = (
-    REPO / "krr_outputs" / "similarity_index.json",
-    REPO / "krr_outputs" / "similarity_report.json",
-    REPO / "krr_outputs" / "sanctions_report.json",
+    REPO / "krr_outputs" / "reports" / "similarity_index.json",
+    REPO / "krr_outputs" / "reports" / "similarity_report.json",
+    REPO / "krr_outputs" / "reports" / "sanctions_report.json",
 )
 
 

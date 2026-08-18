@@ -354,7 +354,7 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
         assert s["code"] in row["matched_keywords"]
 
     # The classification report now advertises the sample tooling and gates.
-    report = json.loads((krr / "eurovoc_classification.json").read_text("utf-8"))
+    report = json.loads((krr / "reports" / "eurovoc_classification.json").read_text("utf-8"))
     qe = report["quality_evaluation"]
     assert qe["status"] == "tooling_available"
     assert qe["sample_emitted"]
@@ -456,7 +456,7 @@ def test_unclassified_files_are_processed_not_skipped(tmp_path, monkeypatch):
     assert cov.skip_reasons.get("parse_error") == 1
 
     report = json.loads(
-        (krr / "eurovoc_classification.json").read_text(encoding="utf-8")
+        (krr / "reports" / "eurovoc_classification.json").read_text(encoding="utf-8")
     )
     assert report["total_classified"] == 1
     assert report["total_unclassified"] == 1

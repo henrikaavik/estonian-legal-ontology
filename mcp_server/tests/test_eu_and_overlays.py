@@ -237,7 +237,7 @@ def test_layers_available_documents_overlays(monkeypatch: pytest.MonkeyPatch) ->
             },
             {
                 "layer": "similarity",
-                "path": "krr_outputs/similarity_index.json",
+                "path": "krr_outputs/reports/similarity_index.json",
                 "status": "excluded",
                 "tools": "",
                 "present": "no",

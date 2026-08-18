@@ -7,13 +7,13 @@ For each Estonian law → EU directive row in the transposition mapping, queries
 EUR-Lex for how Latvia (LV), Lithuania (LT), Finland (FI), and Sweden (SE)
 implemented the same directive. The sidecar is a neighbour-state comparative
 layer. Estonian transposition itself lives on ``estleg:transposesDirective`` /
-``krr_outputs/transposition_mapping.json``, not in these HarmonisationLink
+``krr_outputs/reports/transposition_mapping.json``, not in these HarmonisationLink
 records.
 
 ``TARGET_COUNTRIES`` is LVA/LTU/FIN/SWE only. Do not add EST without a fetch
 of Estonian NIMs; this script does not model EE article-level transposition.
 
-Requires: krr_outputs/transposition_mapping.json (from generate_transposition_mapping.py)
+Requires: krr_outputs/reports/transposition_mapping.json (from generate_transposition_mapping.py)
 
 Generates:
   - krr_outputs/harmonisation/harmonisation_report.json    (full report)
@@ -791,7 +791,7 @@ def main():
 
     # --- Step 1: Load transposition mapping ---
     print("\n--- Loading transposition mapping ---")
-    mapping_path = KRR_DIR / "transposition_mapping.json"
+    mapping_path = KRR_DIR / "reports" / "transposition_mapping.json"
     if not mapping_path.exists():
         print(f"ERROR: {mapping_path} not found.")
         print("Run generate_transposition_mapping.py first.")

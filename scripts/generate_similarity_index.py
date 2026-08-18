@@ -7,8 +7,8 @@ summary text. Adds estleg:semanticallySimilarTo links for provisions
 with high keyword overlap from different laws.
 
 Generates:
-  - krr_outputs/similarity_index.json
-  - krr_outputs/similarity_report.json
+  - krr_outputs/reports/similarity_index.json
+  - krr_outputs/reports/similarity_report.json
   - krr_outputs/reports/similarity_sample.json   (only with --emit-sample N)
   - krr_outputs/similarity/kov_similarity_index.json (KOV act-level pass)
 
@@ -1777,7 +1777,8 @@ def main(argv: list[str] | None = None):
 
     # Save similarity index
     print("\n[4/4] Saving outputs...")
-    index_path = KRR_DIR / "similarity_index.json"
+    index_path = KRR_DIR / "reports" / "similarity_index.json"
+    index_path.parent.mkdir(parents=True, exist_ok=True)
     save_json(index_path, {
         "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation_semantics": "candidate",
@@ -1979,7 +1980,8 @@ def main(argv: list[str] | None = None):
         buckets[bucket] += 1
     report["similarity_distribution"] = dict(sorted(buckets.items()))
 
-    report_path = KRR_DIR / "similarity_report.json"
+    report_path = KRR_DIR / "reports" / "similarity_report.json"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

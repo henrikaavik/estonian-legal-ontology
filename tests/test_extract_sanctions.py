@@ -1120,7 +1120,7 @@ class TestDatetimeNowUTC:
 
         rc = mod.main()
         assert rc in (0, None)
-        report_path = krr / "sanctions_report.json"
+        report_path = krr / "reports" / "sanctions_report.json"
         assert report_path.exists()
         with open(report_path, "r", encoding="utf-8") as fh:
             report = json.load(fh)
@@ -1380,7 +1380,7 @@ class TestStructuredPenaltyEndToEnd:
         assert "estleg:maxPenaltyCurrency" not in node
 
         # Report records the structured count, no unparsed.
-        report = json.load(open(krr / "sanctions_report.json"))
+        report = json.load(open(krr / "reports" / "sanctions_report.json"))
         assert report["penalty_normalisation"]["penalty_structured"] >= 1
         assert report["penalty_normalisation"]["penalty_unparsed"] == 0
 
@@ -1434,7 +1434,7 @@ class TestStructuredPenaltyEndToEnd:
                   "estleg:maxPenaltyCurrency"):
             assert k not in node, f"{k} must not be emitted for 'life'"
 
-        report = json.load(open(krr / "sanctions_report.json"))
+        report = json.load(open(krr / "reports" / "sanctions_report.json"))
         assert report["penalty_normalisation"]["penalty_unparsed"] >= 1
 
     def test_imprisonment_range_node_has_both_min_and_max_structured(
@@ -2214,7 +2214,7 @@ class TestSeverityIndexMonetaryExposure:
         rc = mod.main()
         assert rc in (0, None)
 
-        report = json.load(open(krr / "sanctions_report.json"))
+        report = json.load(open(krr / "reports" / "sanctions_report.json"))
         entry = next(
             e for e in report["severity_index"] if e["law"] == "bigfine"
         )
@@ -2264,7 +2264,7 @@ class TestSeverityIndexMonetaryExposure:
         rc = mod.main()
         assert rc in (0, None)
 
-        report = json.load(open(krr / "sanctions_report.json"))
+        report = json.load(open(krr / "reports" / "sanctions_report.json"))
         entry = next(
             e for e in report["severity_index"] if e["law"] == "imponly"
         )

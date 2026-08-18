@@ -1214,7 +1214,7 @@ def main(enable_kov: bool = True) -> None:
         "per_file_stats": per_file_stats,
     }
 
-    report_path = KRR_DIR / "court_provision_links_report.json"
+    report_path = KRR_DIR / "reports" / "court_provision_links_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

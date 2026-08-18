@@ -372,7 +372,7 @@ class TestAliasAmbiguousRefused:
             )
 
         # The report must record the refusal.
-        with open(krr / "inverse_references_report.json") as fh:
+        with open(krr / "reports" / "inverse_references_report.json") as fh:
             report = json.load(fh)
         assert "alias_ambiguous" in report
         assert "estleg:Vlaigusseadus_Par_14" in report["alias_ambiguous"]
@@ -740,7 +740,7 @@ class TestHasVersionRoundTrip:
 
         # The report records the version-inverse stats.
         report = json.loads(
-            (krr / "inverse_references_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "inverse_references_report.json").read_text(encoding="utf-8")
         )
         summ = report["summary"]
         assert summ["provisions_with_versions"] == 2
@@ -838,7 +838,8 @@ def test_require_cross_reference_report_fails_on_zero_citations(tmp_path):
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
-    (krr / "cross_references_report.json").write_text(
+    (krr / "reports").mkdir()
+    (krr / "reports" / "cross_references_report.json").write_text(
         json.dumps({"summary": {"total_citations_found": 0}}),
         encoding="utf-8",
     )
@@ -851,7 +852,8 @@ def test_require_cross_reference_report_accepts_populated_report(tmp_path):
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
-    (krr / "cross_references_report.json").write_text(
+    (krr / "reports").mkdir()
+    (krr / "reports" / "cross_references_report.json").write_text(
         json.dumps({"summary": {"total_citations_found": 12}}),
         encoding="utf-8",
     )

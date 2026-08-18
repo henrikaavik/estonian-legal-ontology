@@ -1180,6 +1180,31 @@ ESTONIAN_MONTH_ALT: str = "|".join(ESTONIAN_MONTHS_GENITIVE)
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+# #471: report/index/mapping/classification sidecars live under reports/,
+# not at the krr_outputs/ root among peeps.
+REPORTS_SUBDIR = "reports"
+REPORTS_DIR = KRR_DIR / REPORTS_SUBDIR
+ROOT_REPORT_SIDECARS: tuple[str, ...] = (
+    "amendment_history_report.json",
+    "court_provision_links_report.json",
+    "cross_references_report.json",
+    "deontic_classification_report.json",
+    "draft_impact_report.json",
+    "eurovoc_classification.json",
+    "institutional_competence_report.json",
+    "inverse_references_report.json",
+    "sanctions_report.json",
+    "similarity_index.json",
+    "similarity_report.json",
+    "target_group_report.json",
+    "temporal_data_report.json",
+    "transposition_mapping.json",
+)
+
+
+def report_file(krr_dir: Path, name: str) -> Path:
+    """Path of a #471 sidecar under ``<krr_dir>/reports/``."""
+    return krr_dir / REPORTS_SUBDIR / name
 
 
 # ---------------------------------------------------------------------------

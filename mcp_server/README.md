@@ -227,7 +227,7 @@ directly against the real corpus in `tests/test_data.py`.
 ## Follow-up: semantic search (v1 limitation)
 
 This version does **not** offer semantic / similarity search. The corpus's
-`krr_outputs/similarity_index.json` and `krr_outputs/combined_ontology.jsonld`
+`krr_outputs/reports/similarity_index.json` and `krr_outputs/combined_ontology.jsonld`
 ship as Git LFS pointers and are not real JSON in a plain clone, so the server
 reads per-file and never loads the combined graph. A semantic-search tool is a
 natural follow-up, gated on `git lfs pull` to materialise those artifacts (and

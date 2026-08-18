@@ -8,7 +8,7 @@ nodes linked to the originating provision.
 
 Outputs:
   - krr_outputs/sanctions/  (per-law sanction JSON-LD files)
-  - krr_outputs/sanctions_report.json
+  - krr_outputs/reports/sanctions_report.json
 
 ``sanctions_report.json`` (including the EUR-normalized ``severity_index``)
 is a **non-graph application artifact** (issue #462). Severity scores are
@@ -1371,7 +1371,7 @@ def main() -> int:
         },
     }
 
-    report_path = KRR_DIR / "sanctions_report.json"
+    report_path = KRR_DIR / "reports" / "sanctions_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

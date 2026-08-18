@@ -599,7 +599,7 @@ class TestCoverageTriplesSplit:
         assert rc in (None, 0)
 
         report = json.loads(
-            (krr / "amendment_history_report.json").read_text(
+            (krr / "reports" / "amendment_history_report.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -1564,7 +1564,7 @@ class TestTotalAmendmentsCountsUniques:
 
         # Report-level reference count is the unique count too.
         report = json.loads(
-            (krr / "amendment_history_report.json").read_text("utf-8")
+            (krr / "reports" / "amendment_history_report.json").read_text("utf-8")
         )
         assert report["summary"]["total_amendment_references"] == 1
 
@@ -1814,7 +1814,7 @@ class TestReportIsByteStable:
     def test_report_has_no_generated_field(self, tmp_path, monkeypatch):
         krr = self._run(tmp_path, monkeypatch)
         report = json.loads(
-            (krr / "amendment_history_report.json").read_text("utf-8")
+            (krr / "reports" / "amendment_history_report.json").read_text("utf-8")
         )
         assert "generated" not in report
         # Sanity: the analytical content is still present.
@@ -1822,10 +1822,10 @@ class TestReportIsByteStable:
 
     def test_report_byte_identical_across_reruns(self, tmp_path, monkeypatch):
         krr = self._run(tmp_path, monkeypatch)
-        first = (krr / "amendment_history_report.json").read_bytes()
+        first = (krr / "reports" / "amendment_history_report.json").read_bytes()
         # Re-run over a fresh tree with the SAME inputs; report must match.
         krr2 = self._run(tmp_path / "again", monkeypatch)
-        second = (krr2 / "amendment_history_report.json").read_bytes()
+        second = (krr2 / "reports" / "amendment_history_report.json").read_bytes()
         assert first == second
 
     def test_coverage_run_timestamp_is_pinned(self, tmp_path, monkeypatch):

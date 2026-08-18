@@ -820,7 +820,7 @@ class TestActLevelPlacement:
         assert "estleg:entryIntoForce" not in concept
 
         report = json.loads(
-            (krr / "temporal_data_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "temporal_data_report.json").read_text(encoding="utf-8")
         )
         assert report["summary"]["skipped_no_act_node"] >= 1
         entry = next(e for e in report["laws"] if e["file"] == "concept_only_peep.json")
@@ -1002,7 +1002,7 @@ def _run_main_over_single_peep(tmp_path, monkeypatch, temporal_kehtivus,
     doc = json.loads(peep.read_text(encoding="utf-8"))
     act = next(n for n in doc["@graph"] if "owl:Ontology" in n["@type"])
     report = json.loads(
-        (krr / "temporal_data_report.json").read_text(encoding="utf-8")
+        (krr / "reports" / "temporal_data_report.json").read_text(encoding="utf-8")
     )
     return act, report
 
@@ -1168,7 +1168,7 @@ class TestReportDeterminism:
         if hasattr(mod, "REPO_ROOT"):
             monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
 
-        report_path = krr / "temporal_data_report.json"
+        report_path = krr / "reports" / "temporal_data_report.json"
         mod.main(evaluation_date="2026-01-01")
         first = report_path.read_bytes()
         mod.main(evaluation_date="2026-01-01")

@@ -855,7 +855,7 @@ def main(evaluation_date: str | None = None):
         },
         "laws": report_entries,
     }
-    report_path = KRR_DIR / "temporal_data_report.json"
+    report_path = KRR_DIR / "reports" / "temporal_data_report.json"
     save_json(report_path, report)
 
     # Summary

@@ -167,21 +167,21 @@ phase order is preserved exactly.
 
 | # | Step (`scripts/…`) | `depends_on` | Key `writes` (under `krr_outputs/`) |
 |---|---|---|---|
-| 1 | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `cross_references_report.json` |
-| 2 | `generate_inverse_references.py` | `extract_cross_references.py` | `*_peep.json`, `regulations/**/*_peep.json`, `inverse_references_report.json` |
-| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `transposition_mapping.json` |
+| 1 | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
+| 2 | `generate_inverse_references.py` | `extract_cross_references.py` | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
+| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json` |
 | 4 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
-| 5 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `court_provision_links_report.json` |
-| 6 | `classify_eurovoc.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `eurovoc_classification.json` |
-| 7 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `temporal_data_report.json` |
-| 8 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `amendment_history_report.json` |
+| 5 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
+| 6 | `classify_eurovoc.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/eurovoc_classification.json` |
+| 7 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
+| 8 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
 | 9 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
-| 10 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `deontic_classification_report.json` |
-| 11 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `target_group_report.json` |
-| 12 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `institutional_competence_report.json` |
-| 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `sanctions_report.json` |
-| 14 | `extract_draft_impact.py` | — | `*_peep.json`, `draft_impact_report.json` |
-| 15 | `generate_similarity_index.py` | steps 1–14 (all) | `similarity_index.json`, `similarity_report.json` |
+| 10 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
+| 11 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
+| 12 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
+| 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
+| 14 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
+| 15 | `generate_similarity_index.py` | steps 1–14 (all) | `reports/similarity_index.json`, `reports/similarity_report.json` |
 | 16 | `build_release_artifacts.py` | steps 1–15 (all) | `combined_ontology.jsonld`, `INDEX.json` |
 
 `court_provision_links_report.json` includes both raw recall lift and its
@@ -451,10 +451,10 @@ delete and rebuild).
   `krr_outputs/institutions/`, `krr_outputs/provision_versions/`,
   `krr_outputs/annotations/`, `krr_outputs/harmonisation/`, and
   `krr_outputs/regulations/` (the shaped per-item JSON-LD)
-- the cross-corpus indexes/maps `krr_outputs/similarity_index.json`,
-  `krr_outputs/eurovoc_classification.json`,
-  `krr_outputs/transposition_mapping.json`
-- the per-domain `*_report.json` summaries at the `krr_outputs/` root
+- the cross-corpus indexes/maps `krr_outputs/reports/similarity_index.json`,
+  `krr_outputs/reports/eurovoc_classification.json`,
+  `krr_outputs/reports/transposition_mapping.json`
+- the per-domain `*_report.json` summaries under `krr_outputs/reports/`
   (`cross_references_report.json`, `inverse_references_report.json`,
   `court_provision_links_report.json`, `temporal_data_report.json`,
   `amendment_history_report.json`, `deontic_classification_report.json`,
@@ -467,8 +467,8 @@ delete and rebuild).
   (issue #548; tagged GitHub Release assets are #473)
 
 The largest generated artifacts are committed through Git LFS:
-`combined_ontology.jsonld`, `similarity_index.json`,
-`eurovoc_classification.json`, `annotations/oiguskantsler_seisukohad.jsonld`,
+`combined_ontology.jsonld`, `reports/similarity_index.json`,
+`reports/eurovoc_classification.json`, `annotations/oiguskantsler_seisukohad.jsonld`,
 `curia/curia_combined.jsonld`, and `eurlex/eurlex_combined.jsonld`. Run
 `git lfs install` before cloning or validating the full release surface.
 

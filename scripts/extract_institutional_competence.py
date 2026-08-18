@@ -8,7 +8,7 @@ estleg:Institution nodes and links provisions to competent authorities.
 
 Outputs:
   - krr_outputs/institutions/  (per-institution JSON-LD files)
-  - krr_outputs/institutional_competence_report.json
+  - krr_outputs/reports/institutional_competence_report.json
 """
 
 from __future__ import annotations
@@ -1482,7 +1482,7 @@ def write_report(state: _PipelineState, total_law_files: int) -> Path:
         },
     }
 
-    report_path = KRR_DIR / "institutional_competence_report.json"
+    report_path = KRR_DIR / "reports" / "institutional_competence_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
     return report_path

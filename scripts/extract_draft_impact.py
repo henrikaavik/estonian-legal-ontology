@@ -9,7 +9,7 @@ titles, and adds inverse estleg:affectedBy links on enacted-law files.
 Outputs:
   - Updated krr_outputs/eelnoud/eelnoud_combined.jsonld  (enriched with IRI links)
   - Updated law *_peep.json files (with estleg:affectedBy)
-  - krr_outputs/draft_impact_report.json
+  - krr_outputs/reports/draft_impact_report.json
 """
 
 from __future__ import annotations
@@ -713,7 +713,7 @@ def main() -> None:
         "unresolved_law_names": sorted(set(unresolved)),
     }
 
-    report_path = KRR_DIR / "draft_impact_report.json"
+    report_path = KRR_DIR / "reports" / "draft_impact_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

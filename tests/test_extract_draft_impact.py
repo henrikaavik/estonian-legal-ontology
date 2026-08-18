@@ -422,7 +422,7 @@ class TestGeneratedDraftValueObjects:
         assert draft["estleg:changeType"] == "amends"
         assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map_2026"}
 
-        report = json.loads((krr / "draft_impact_report.json").read_text(encoding="utf-8"))
+        report = json.loads((krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8"))
         assert report["pending_changes_by_ministry"] == {
             "Justiitsministeerium": 1,
             "Rahandusministeerium": 1,
@@ -649,7 +649,7 @@ class TestAmendsLawDedup:
         ]
 
         report = json.loads(
-            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8")
         )
         # Resolved counted ONCE per distinct IRI, not once per name string.
         assert report["summary"]["affected_law_names_resolved"] == 1
@@ -688,7 +688,7 @@ class TestReportIsByteStable:
         mod.main()
 
         report = json.loads(
-            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8")
         )
         assert "generated" not in report, (
             "draft_impact_report.json must not embed a wall-clock "
@@ -790,7 +790,7 @@ class TestUnresolvedCountMatchesList:
         mod.main()
 
         report = json.loads(
-            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8")
         )
         summary_count = report["summary"]["affected_law_names_unresolved"]
         list_len = len(report["unresolved_law_names"])

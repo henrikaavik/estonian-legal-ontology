@@ -101,7 +101,7 @@ def test_eurlex_index_splits_override_types():
 
 
 def test_draft_impact_unresolved_count_matches_list():
-    path = KRR / "draft_impact_report.json"
+    path = KRR / "reports" / "draft_impact_report.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
     names = doc["unresolved_law_names"]
     assert doc["summary"]["affected_law_names_unresolved"] == len(names)

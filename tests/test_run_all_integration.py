@@ -1022,9 +1022,10 @@ def test_resume_precondition_flags_missing_distinctive_writes(
     monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
     step = {
         "name": "extract_cross_references.py",
-        "writes": ["*_peep.json", "cross_references_report.json"],
+        "writes": ["*_peep.json", "reports/cross_references_report.json"],
     }
     missing = run_all_integration._missing_resume_writes(step)
-    assert missing == ["cross_references_report.json"]
-    (krr / "cross_references_report.json").write_text("{}", encoding="utf-8")
+    assert missing == ["reports/cross_references_report.json"]
+    (krr / "reports").mkdir()
+    (krr / "reports" / "cross_references_report.json").write_text("{}", encoding="utf-8")
     assert run_all_integration._missing_resume_writes(step) == []

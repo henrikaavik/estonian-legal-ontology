@@ -1138,7 +1138,7 @@ def test_validate_transposition_mapping_rejects_legacy_shape(tmp_path):
     """The legacy `{matched, unmatched, mappings}` report shape fails (#129)."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-03-21",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1160,7 +1160,7 @@ def test_validate_transposition_mapping_rejects_empty_unflagged(tmp_path):
     """Current shape but empty `mappings` and no `documented_empty` -> error."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1185,7 +1185,7 @@ def test_validate_transposition_mapping_accepts_documented_empty(tmp_path):
     """An explicitly flagged empty snapshot passes."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1209,7 +1209,7 @@ def test_validate_transposition_mapping_accepts_populated(tmp_path):
     """A non-empty `mappings` array in the current shape passes."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1236,7 +1236,7 @@ def test_validate_transposition_mapping_flags_stale_count(tmp_path):
     forgets to recompute the header otherwise ships silently."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11", "source": "x", "country": "EST",
             "total_measures_fetched": 5, "total_matched": 5, "total_unmatched": 0,
@@ -1255,7 +1255,7 @@ def test_validate_transposition_mapping_flags_peep_named_law(tmp_path):
     stem (a retarget that used Path(file).stem leaves a trailing '_peep')."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11", "source": "x", "country": "EST",
             "total_measures_fetched": 1, "total_matched": 1, "total_unmatched": 0,
@@ -2792,7 +2792,7 @@ def test_harmonisation_symmetry_flags_unbacked_mapping(tmp_path):
         {"@id": "estleg:Harmonisation_32002L0073", "@type": ["estleg:HarmonisationLink"],
          "estleg:harmonises": [{"@id": "estleg:TOOLEP_Map"}]},
     ]})
-    write_json(krr / "transposition_mapping.json", {
+    write_json(krr / "reports" / "transposition_mapping.json", {
         "generated": "x", "source": "x", "country": "EST", "total_measures_fetched": 1,
         "total_matched": 1, "total_unmatched": 0, "unique_directives": 1, "unique_laws": 1,
         "mappings": [{"directive_celex": "32002L0073", "matched_law_name": "vordse_kohtlemise_seadus",

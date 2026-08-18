@@ -8,7 +8,7 @@ Also attempts to extract estleg:dutyHolder where possible.
 
 Outputs:
   - Updated *_peep.json files with estleg:normativeType and estleg:dutyHolder
-  - krr_outputs/deontic_classification_report.json  (statistics)
+  - krr_outputs/reports/deontic_classification_report.json  (statistics)
 """
 
 from __future__ import annotations
@@ -602,7 +602,7 @@ def main() -> None:
         },
     }
 
-    report_path = KRR_DIR / "deontic_classification_report.json"
+    report_path = KRR_DIR / "reports" / "deontic_classification_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

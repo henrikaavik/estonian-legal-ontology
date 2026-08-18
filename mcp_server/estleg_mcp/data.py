@@ -1184,7 +1184,7 @@ def _sanction_graph_for(record: LawRecord) -> Graph:
 @lru_cache(maxsize=1)
 def _transposition_mappings() -> list[Node]:
     """Return the ``mappings`` list from ``transposition_mapping.json``."""
-    doc = _load_json(krr_dir() / "transposition_mapping.json")
+    doc = _load_json(krr_dir() / "reports" / "transposition_mapping.json")
     if isinstance(doc, dict):
         mappings = doc.get("mappings")
         if isinstance(mappings, list):
@@ -1848,8 +1848,8 @@ def layers_available() -> list[dict[str, str]]:
         ),
         (
             "transposition",
-            "transposition_mapping.json",
-            "transposition_mapping.json",
+            "reports/transposition_mapping.json",
+            "reports/transposition_mapping.json",
             "wired",
             "transposition",
             "",
@@ -1872,8 +1872,8 @@ def layers_available() -> list[dict[str, str]]:
         ),
         (
             "similarity",
-            "similarity_index.json",
-            "similarity_index.json",
+            "reports/similarity_index.json",
+            "reports/similarity_index.json",
             "excluded",
             "",
             "Git LFS pointer; no semantic-search tool in v1",

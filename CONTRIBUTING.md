@@ -15,7 +15,7 @@ SHACL policy) read [AGENTS.md](AGENTS.md) — it is the source of truth.
   `scripts/riigiteataja_common.py` rather than duplicating parsing or filesystem
   logic.
 - **Large artifacts are Git LFS** (`combined_ontology.jsonld`,
-  `similarity_index.json`, and four others). Run `git lfs pull` if you need the
+  `reports/similarity_index.json`, and four others). Run `git lfs pull` if you need the
   real bytes; CI pulls them per-job.
 
 ## Workflow
@@ -61,7 +61,7 @@ reviewer** in addition to the normal code review, and are routed to the
 - **Deontic classification** (`estleg:normativeType`) — `scripts/classify_deontic.py`
 - **Court decisions** — `krr_outputs/riigikohus/**`, `krr_outputs/curia/**`,
   `scripts/generate_court_decisions.py`, `scripts/extract_court_provision_links.py`
-- **Transposition & harmonisation** — `krr_outputs/transposition_mapping.json`,
+- **Transposition & harmonisation** — `krr_outputs/reports/transposition_mapping.json`,
   `krr_outputs/harmonisation/**`, `scripts/generate_transposition_mapping.py`,
   `scripts/generate_harmonisation_links.py`
 - **Institutional competence** — `krr_outputs/institutions/**`,

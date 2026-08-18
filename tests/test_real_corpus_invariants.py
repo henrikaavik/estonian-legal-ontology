@@ -17,7 +17,7 @@ Two tiers, matched to what each CI job has on disk:
 
 * **Default (unmarked).** Load the non-LFS committed artifacts — the
   1,190 ``*_peep.json`` files, ``INDEX.json``,
-  ``transposition_mapping.json``, and the harmonisation report + the law
+  ``reports/transposition_mapping.json``, and the harmonisation report + the law
   peeps PR #633 migrated — and assert real values. These need no git-LFS
   and run in the lightweight ``pytest`` CI job: the first real-artifact
   assertions the default suite has ever carried.
@@ -145,7 +145,7 @@ def test_transposition_mapping_header_matches_body():
     """The exact invariant a manual edit silently broke across PR #633's
     review rounds: the header count must equal the body length, and no
     ``matched_law_name`` may carry a ``_peep`` filename-stem suffix."""
-    tm = _load("transposition_mapping.json")
+    tm = _load("reports/transposition_mapping.json")
     mappings = tm["mappings"]
     assert tm["total_matched"] == len(mappings), (
         f"total_matched={tm['total_matched']} but {len(mappings)} mappings"

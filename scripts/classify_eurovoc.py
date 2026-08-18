@@ -8,7 +8,7 @@ All ids are verified real EuroVoc descriptor ids (#421); the old→new audit
 trail lives in data/eurovoc_domain_mapping.json.
 
 Generates:
-  - krr_outputs/eurovoc_classification.json    (report of all classifications)
+  - krr_outputs/reports/eurovoc_classification.json    (report of all classifications)
   - krr_outputs/eurovoc_concept_scheme.jsonld  (SKOS ConceptScheme + Concepts, #544)
   - Updates existing law JSON-LD files with dcterms:subject
 """
@@ -1039,7 +1039,7 @@ def main(argv: list[str] | None = None):
         "unclassified_laws": sorted(unclassified),
     }
 
-    report_path = KRR_DIR / "eurovoc_classification.json"
+    report_path = KRR_DIR / "reports" / "eurovoc_classification.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 

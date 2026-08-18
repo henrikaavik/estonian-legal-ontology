@@ -65,7 +65,7 @@ _PART_PEEP = {
 
 HARM_DIR = KRR_DIR / "harmonisation" / "harmonisation_by_directive"
 REPORT = KRR_DIR / "harmonisation" / "harmonisation_report.json"
-MAPPING = KRR_DIR / "transposition_mapping.json"
+MAPPING = KRR_DIR / "reports" / "transposition_mapping.json"
 
 
 def _is_vos_part(iri: str) -> bool:
