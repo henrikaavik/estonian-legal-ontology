@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Iterator
 from urllib.parse import urlsplit, urlunsplit
 
-import requests
+import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
 # Single source of truth: NS, CONTEXT, the Estonian transliteration table,
 # sanitize_id, slugify, and save_json all live in estleg_common. They are
@@ -34,6 +34,7 @@ from estleg_common import (  # noqa: F401  -- re-exports for public API
     NS,
     _ESTONIAN_TRANSLITERATION,
     _TRANSLIT_TABLE,
+    allowed_get,
     iter_peep_files,
     sanitize_id,
     save_json,
@@ -223,7 +224,7 @@ def fetch_acts(
         for attempt in range(max_retries + 1):
             attempts_made = attempt
             try:
-                resp = requests.get(SEARCH_URL, params=params, timeout=timeout)
+                resp = allowed_get(SEARCH_URL, params=params, timeout=timeout)
                 resp.raise_for_status()
                 data = resp.json()
                 last_error = None
@@ -308,7 +309,7 @@ def fetch_xml(
     full_url = build_xml_url(url)
 
     try:
-        resp = requests.get(full_url, timeout=timeout)
+        resp = allowed_get(full_url, timeout=timeout)
         resp.raise_for_status()
         resp.encoding = "utf-8"
         xml_text = resp.text

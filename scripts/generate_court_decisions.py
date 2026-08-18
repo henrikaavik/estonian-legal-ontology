@@ -46,12 +46,13 @@ import urllib.parse
 from datetime import datetime
 from pathlib import Path
 
-import requests
+import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
 from estleg_common import (
     BUILD_EVALUATION_DATE,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
+    allowed_get,
     save_json,
 )
 
@@ -509,7 +510,7 @@ def parse_html_table(html_text: str) -> list[dict]:
 def fetch_year(year: int) -> list[dict]:
     """Fetch all decisions for a given year."""
     # First request to get total count
-    resp = requests.get(
+    resp = allowed_get(
         SEARCH_URL,
         params={"aasta": year, "pageSize": PAGE_SIZE},
         timeout=30,
@@ -529,7 +530,7 @@ def fetch_year(year: int) -> list[dict]:
 
     for page in range(2, total_pages + 1):
         time.sleep(RATE_DELAY)
-        resp = requests.get(
+        resp = allowed_get(
             SEARCH_URL,
             params={"aasta": year, "pageSize": PAGE_SIZE, "lk": page},
             timeout=30,
@@ -950,7 +951,7 @@ def _http_get_decision_page(url: str) -> str:
     last_exc: BaseException | None = None
     for attempt in range(DETAIL_RETRIES):
         try:
-            resp = requests.get(
+            resp = allowed_get(
                 url,
                 headers={"User-Agent": DETAIL_USER_AGENT},
                 timeout=DETAIL_TIMEOUT,

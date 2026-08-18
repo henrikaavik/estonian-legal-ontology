@@ -824,6 +824,101 @@ def amendment_history(law: str, limit: int = 50) -> list[dict[str, Any]]:
     return data.amendment_events(rec, limit=limit)
 
 
+# ---------------------------------------------------------------------------
+# 18. eu_case_law_for_directive (ticket #505)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def eu_case_law_for_directive(celex: str, limit: int = 20) -> list[dict[str, Any]]:
+    """Find CURIA decisions that mention an EU directive CELEX number.
+
+    The EU-side mirror of ``court_decisions_for_law``: after ``transposition``
+    returns a CELEX (e.g. ``32000L0060``), this searches the committed CURIA
+    peeps for judgments / orders / opinions whose label, ``celexNumber``,
+    ``owl:sameAs``, ``dcterms:source``, or text mention that CELEX. Spaces and
+    a ``CELEX:`` prefix are stripped. The CURIA corpus currently has no
+    ``interprets`` edges (#418), so the join is a CELEX substring match, not a
+    graph walk. Each item carries the CURIA / EUR-Lex URL.
+
+    Example question: "Which CURIA judgments interpret directive 32000L0060?"
+
+    Returns a list of {ecli_or_celex, title, curia_or_eurlex_url}. No matches
+    (or an empty CELEX) yield ``[{note}]``; ``limit`` <= 0 yields ``[]``.
+    """
+    if limit <= 0:
+        return []
+    needle = data.normalize_celex(celex)
+    if not needle:
+        return [{"note": f"No CELEX number in {celex!r}."}]
+    rows = data.eu_case_law_for_directive(needle, limit=limit)
+    if rows:
+        return rows
+    return [
+        {
+            "note": (
+                f"No CURIA decisions mention CELEX {needle!r}. The committed "
+                "CURIA peeps have no interprets edges (#418); matching is a "
+                "CELEX substring on label / celexNumber / owl:sameAs / "
+                "dcterms:source."
+            )
+        }
+    ]
+
+
+# ---------------------------------------------------------------------------
+# 19. harmonisation_for_directive (ticket #540)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def harmonisation_for_directive(celex: str, limit: int = 20) -> list[dict[str, Any]]:
+    """Load the cross-border harmonisation sidecar for one directive CELEX.
+
+    Opens ``krr_outputs/harmonisation/harmonisation_by_directive/harm_<celex>.json``
+    on demand (the overlay loader; not a scan of every harm file). Lists the
+    Estonian act(s) and other member-state measures that share that directive.
+
+    Example question: "Which neighbouring states also transposed 32000L0060?"
+
+    Returns a list of {id, label, member_state, national_celex, harmonises}.
+    Unknown / missing CELEX yields ``[{note}]``; ``limit`` <= 0 yields ``[]``.
+    """
+    if limit <= 0:
+        return []
+    needle = data.normalize_celex(celex)
+    if not needle:
+        return [{"note": f"No CELEX number in {celex!r}."}]
+    rows = data.harmonisation_for_directive(needle, limit=limit)
+    if rows:
+        return rows
+    return [
+        {
+            "note": (
+                f"No harmonisation sidecar for CELEX {needle!r} "
+                "(krr_outputs/harmonisation/harmonisation_by_directive/"
+                f"harm_{needle}.json)."
+            )
+        }
+    ]
+
+
+# ---------------------------------------------------------------------------
+# 20. layers_available (ticket #540)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def layers_available() -> list[dict[str, Any]]:
+    """List which corpus sidecars the MCP surface reads vs excludes.
+
+    Overlay coverage (#540): concepts are wired through ``define_term``;
+    harmonisation is opened per-CELEX by ``harmonisation_for_directive``;
+    sanctions / amendments / regulations / provision versions are already
+    wired. Combined-graph-only and LFS artifacts (similarity,
+    ``combined_ontology.jsonld``, annotations, EUR-Lex peeps) are listed as
+    ``excluded`` so a silent dead layer is documented rather than implied.
+
+    Returns a list of {layer, path, status, tools, present, note} where
+    ``status`` is ``wired``, ``loadable``, or ``excluded``.
+    """
+    return data.layers_available()
+
+
 def _transport_security() -> TransportSecuritySettings:
     """DNS-rebinding protection policy for the streamable-HTTP transport.
 

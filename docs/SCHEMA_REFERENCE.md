@@ -37,7 +37,7 @@
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
 * `estleg:references`: Defines cross-references to other legal provisions or laws.
 * `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
-* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge.
+* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge. The predicate is used in instance data and declared in `metadata.jsonld`, but it is **not** yet a node in `controlled_vocabulary.jsonld`, so issue #439 does **not** invent an `owl:FunctionalProperty` axiom for it.
 * `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed) and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
 
@@ -284,10 +284,10 @@ SELECT ?decision ?label ?date WHERE {
 Estonian domestic regulations (*määrused*) are subordinate legal acts issued under an enabling law. They are produced by `scripts/generate_regulations.py` from Riigi Teataja and stored under `krr_outputs/regulations/riik/` (state-level) and, in Phase 2, `krr_outputs/regulations/kov/` (municipal). Provisions of regulations are subclasses of `estleg:LegalProvision` and therefore reuse the existing provision-level shapes, queries, and integrations.
 
 ### DomesticRegulation (`estleg:DomesticRegulation`)
-Common superclass for any Estonian domestic regulation, regardless of level. `rdfs:subClassOf estleg:Act`. Its two branches — the state-level `estleg:NationalRegulation` and the municipal `estleg:MunicipalRegulation` — are **sibling** subclasses, so no entailment path makes a municipal regulation a state regulation (issue #424). `estleg:DomesticRegulation` is intentionally **never stamped on instances**: membership is left to RDFS subclass entailment, and the shared domestic-regulation SHACL constraints are applied by listing `estleg:NationalRegulation` and `estleg:MunicipalRegulation` as explicit `sh:targetClass` values rather than targeting the superclass.
+Common superclass for any Estonian domestic regulation, regardless of level. `rdfs:subClassOf estleg:Act`. Its two branches — the state-level `estleg:NationalRegulation` and the municipal `estleg:MunicipalRegulation` — are **sibling** subclasses, so no entailment path makes a municipal regulation a state regulation (issue #424). The controlled vocabulary also asserts `estleg:MunicipalRegulation owl:disjointWith estleg:NationalRegulation` (issue #439). `estleg:DomesticRegulation` is intentionally **never stamped on instances**: membership is left to RDFS subclass entailment, and the shared domestic-regulation SHACL constraints are applied by listing `estleg:NationalRegulation` and `estleg:MunicipalRegulation` as explicit `sh:targetClass` values rather than targeting the superclass.
 
 ### NationalRegulation (`estleg:NationalRegulation`)
-State-level Estonian regulation (*riigi tasandi määrus*) issued by a state organ. `rdfs:subClassOf estleg:DomesticRegulation` and superclass of the government and ministerial regulation classes below. **Not** a superclass of `estleg:MunicipalRegulation` — the two are siblings (issue #424). Concrete state-regulation instances carry this type plus exactly one of the more specific subclasses below.
+State-level Estonian regulation (*riigi tasandi määrus*) issued by a state organ. `rdfs:subClassOf estleg:DomesticRegulation` and superclass of the government and ministerial regulation classes below. **Not** a superclass of `estleg:MunicipalRegulation` — the two are siblings (issue #424) and `owl:disjointWith` each other (issue #439). Concrete state-regulation instances carry this type plus exactly one of the more specific subclasses below.
 
 ### GovernmentRegulation (`estleg:GovernmentRegulation`)
 Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subclass of `NationalRegulation`.
@@ -296,7 +296,7 @@ Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subcla
 Regulation issued by an individual minister (e.g. *Sotsiaalminister*, *Justiitsminister*). Subclass of `NationalRegulation`.
 
 ### MunicipalRegulation (`estleg:MunicipalRegulation`)
-Regulation issued by a local government council or government (KOV). `rdfs:subClassOf estleg:DomesticRegulation` — a sibling of `NationalRegulation`, **not** a subclass of it (issue #424; the earlier `subClassOf NationalRegulation` axiom was a logical error that entailed every municipal regulation as state-level). Generated KOV regulation act nodes are typed `estleg:MunicipalRegulation` (plus `estleg:Act`) **only** — the former dual-typing with `estleg:NationalRegulation` was removed and a backfill strips the stray type from all 11,059 KOV files. Shared domestic-regulation SHACL constraints still apply because `MunicipalRegulationShape` names `estleg:MunicipalRegulation` as an explicit `sh:targetClass`, so no OWL/RDFS inference is required at validation time.
+Regulation issued by a local government council or government (KOV). `rdfs:subClassOf estleg:DomesticRegulation` — a sibling of `NationalRegulation`, **not** a subclass of it (issue #424; the earlier `subClassOf NationalRegulation` axiom was a logical error that entailed every municipal regulation as state-level). The T-Box also asserts `owl:disjointWith estleg:NationalRegulation` (issue #439). Generated KOV regulation act nodes are typed `estleg:MunicipalRegulation` (plus `estleg:Act`) **only** — the former dual-typing with `estleg:NationalRegulation` was removed and a backfill strips the stray type from all 11,059 KOV files. Shared domestic-regulation SHACL constraints still apply because `MunicipalRegulationShape` names `estleg:MunicipalRegulation` as an explicit `sh:targetClass`, so no OWL/RDFS inference is required at validation time.
 
 ### Annex (`estleg:Annex`)
 Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
@@ -673,10 +673,10 @@ Represents a section (jagu/peatükk) in the KarS special parts structure, genera
 > RDFS subclass inference at validation time.
 
 ### AmendmentEvent (`estleg:AmendmentEvent`)
-Represents an **effected** amendment event — a change actually applied to an act, derived from Riigi Teataja `<muutmismarge>` markers. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`. Effected events carry `estleg:amends`, `estleg:amendmentDate` / `estleg:entryIntoForce`, and the latest one per act may carry `estleg:isCurrentAmendment`; act roots link to them via `estleg:amendedBy`. Never-enacted draft amendments are **not** modelled with this class — see `estleg:ProposedAmendment` below (issue #423).
+Represents an **effected** amendment event — a change actually applied to an act, derived from Riigi Teataja `<muutmismarge>` markers. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`. Effected events carry `estleg:amends`, `estleg:amendmentDate` / `estleg:entryIntoForce`, and the latest one per act may carry `estleg:isCurrentAmendment`; act roots link to them via `estleg:amendedBy`. Never-enacted draft amendments are **not** modelled with this class — see `estleg:ProposedAmendment` below (issue #423). The controlled vocabulary asserts `estleg:AmendmentEvent owl:disjointWith estleg:ProposedAmendment` (issue #439).
 
 ### ProposedAmendment (`estleg:ProposedAmendment`)
-Represents a **proposed, not-yet-enacted** amendment derived from a draft amendment bill in EIS (Review / Submission / PublicConsultation phase). Because the referenced draft has not been adopted, the node MUST NOT be typed `estleg:AmendmentEvent` and MUST NOT assert effected semantics (issue #423). A `ProposedAmendment` carries proposal-scoped predicates only:
+Represents a **proposed, not-yet-enacted** amendment derived from a draft amendment bill in EIS (Review / Submission / PublicConsultation phase). Because the referenced draft has not been adopted, the node MUST NOT be typed `estleg:AmendmentEvent` and MUST NOT assert effected semantics (issue #423). The T-Box formalises this as `estleg:ProposedAmendment owl:disjointWith estleg:AmendmentEvent` (issue #439). A `ProposedAmendment` carries proposal-scoped predicates only:
 
 * `estleg:proposesToAmend` → the target act/provision (proposal scope; **not** `estleg:amends`, which asserts an effected change).
 * `estleg:publicationDate` → the draft's EIS publication date (**not** `estleg:amendmentDate`, which is reserved for adoption dates).
@@ -702,10 +702,23 @@ These properties enable cross-referencing between different parts of the legal s
 ### Cross-Law References
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:references` | LegalProvision | LegalProvision (IRI) | Cross-reference to another provision |
+| `estleg:references` | LegalProvision | LegalProvision (IRI) | Cross-reference to another provision. **Untyped** in the current corpus: extractors emit a flat `estleg:references` list and do not yet attach `estleg:referenceType`. A later emission pass is required before repeal / legal-basis / exception / derogation queries can distinguish those edges (issue #513; T-Box only in this slice). |
 | `estleg:referencedBy` | LegalProvision | LegalProvision (IRI) | Inverse: provisions referencing this one |
+| `estleg:referenceType` | `Citation` ∪ `rdf:Statement` | `ReferenceType` (`RefType_*` individual) | T-Box qualifier for a reified `estleg:Citation` or an `rdf:Statement` of an `estleg:references` edge (issue #513). Closed individuals: `RefType_Citation`, `RefType_Repeal`, `RefType_LegalBasis`, `RefType_Exception`, `RefType_Derogation`. **Not emitted on existing `estleg:references` edges** until a later pass. |
 | `estleg:semanticallySimilarTo` | LegalProvision | LegalProvision (IRI) | Provisions with similar content from other laws |
 | `estleg:definesTerm` | LegalProvision | LegalConcept (IRI) | Legal concept defined by this provision |
+
+#### Reference types (`estleg:ReferenceType`, issue #513 T-Box)
+
+The citation graph is still a single flat `estleg:references` / `estleg:referencedBy` pair. The controlled vocabulary now declares `estleg:referenceType` and the five `estleg:RefType_*` individuals so a later extractor can classify an edge without inventing new predicates. Until that emission pass, **do not assume** a `references` triple is a repeal, legal basis, exception, or derogation — it is only an untyped mention.
+
+| Individual | Estonian | English |
+|------------|----------|---------|
+| `estleg:RefType_Citation` | Viide | Citation (unspecified mention) |
+| `estleg:RefType_Repeal` | Kehtetuks tunnistamine | Repeal |
+| `estleg:RefType_LegalBasis` | Õiguslik alus | Legal basis |
+| `estleg:RefType_Exception` | Erand | Exception |
+| `estleg:RefType_Derogation` | Derogatsioon | Derogation |
 
 ### Court Decision Links
 | Property | Domain | Range | Description |
@@ -1181,7 +1194,7 @@ stubs. See the README "Load surfaces" section.
     - `estleg:NationalRegulation` — state-level
       - `estleg:GovernmentRegulation`
       - `estleg:MinisterialRegulation`
-    - `estleg:MunicipalRegulation` — municipal (KOV); sibling of `NationalRegulation`, not a subclass
+    - `estleg:MunicipalRegulation` — municipal (KOV); sibling of `NationalRegulation`, not a subclass; `owl:disjointWith NationalRegulation` (#439)
 - `estleg:Municipality` — territorial KOV unit (top-level)
 - `estleg:Issuer` — `rdfs:subClassOf estleg:Institution`
 - `estleg:KovProvision` — `rdfs:subClassOf estleg:LegalProvision`
@@ -1332,6 +1345,7 @@ on the source act.
 - `estleg:citationTarget` — provision OR act IRI (cardinality 1)
 - `estleg:citationDetail` — `"lg 1 p 34"` style literal (optional)
 - `estleg:citationText` — original input substring (optional, recommended)
+- `estleg:referenceType` — optional `estleg:RefType_*` individual (issue #513 T-Box). Declared so a later emission pass can type preamble citations; **not** populated on existing `Citation` nodes or on unreified `estleg:references` edges yet.
 
 **IRI pattern:** `estleg:Citation_<source-act-shortid>_<seq>` where
 `<source-act-shortid>` is the source act's @id minus `estleg:` and

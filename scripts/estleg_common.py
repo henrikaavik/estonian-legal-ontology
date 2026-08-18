@@ -17,6 +17,9 @@ import xml.etree.ElementTree as ET
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import urljoin, urlsplit
+
+import requests
 
 # ---------------------------------------------------------------------------
 # Well-known abbreviation -> full law name mappings (union of both scripts)
@@ -1299,3 +1302,88 @@ def slugify(text: str, max_len: int = 80) -> str:
     text = text.lower().strip()
     text = re.sub(r"[^a-z0-9]+", "_", text)
     return text.strip("_")[:max_len].rstrip("_")
+
+
+# ---------------------------------------------------------------------------
+# HTTP fetch policy (issue #558)
+# ---------------------------------------------------------------------------
+
+# Official legal-source hosts the scrapers may contact. Hostname match is
+# exact (no parent-domain wildcard) so an attacker-controlled absolute URL
+# or a 30x off this set cannot be fetched as law text.
+ALLOWED_HTTP_HOSTS: frozenset[str] = frozenset(
+    {
+        "www.riigiteataja.ee",
+        "riigiteataja.ee",
+        "eelnoud.valitsus.ee",
+        "www.eelnoud.valitsus.ee",
+        "rikos.rik.ee",
+        "www.rikos.rik.ee",
+        "publications.europa.eu",
+        "www.publications.europa.eu",
+        "eur-lex.europa.eu",
+        "www.eur-lex.europa.eu",
+    }
+)
+
+
+def assert_allowed_http_url(url: str) -> str:
+    """Return the lowercase hostname if ``url`` is on the HTTP allow-list.
+
+    Only ``http``/``https`` URLs whose hostname is in
+    :data:`ALLOWED_HTTP_HOSTS` are accepted. A trailing DNS-dot is stripped
+    so ``www.riigiteataja.ee.`` cannot slip past the exact-host check.
+    Raises ``ValueError`` for a missing host, a non-http(s) scheme, or any
+    other host (issue #558).
+    """
+    parts = urlsplit(url)
+    if parts.scheme not in {"http", "https"}:
+        raise ValueError(f"URL scheme {parts.scheme!r} is not allow-listed: {url}")
+    host = (parts.hostname or "").lower().rstrip(".")
+    if not host or host not in ALLOWED_HTTP_HOSTS:
+        raise ValueError(f"Host {host!r} is not on the HTTP allow-list: {url}")
+    return host
+
+
+def _response_hooks(value: object) -> list:
+    if value is None:
+        return []
+    if callable(value):
+        return [value]
+    return list(value)
+
+
+def _reject_off_host_redirect(response: object, *_args: object, **_kwargs: object) -> object:
+    """requests response hook: re-check a redirect ``Location`` hop."""
+    headers = getattr(response, "headers", None) or {}
+    location = headers.get("Location")
+    if location and (
+        getattr(response, "is_redirect", False)
+        or getattr(response, "is_permanent_redirect", False)
+    ):
+        assert_allowed_http_url(urljoin(getattr(response, "url", "") or "", location))
+    return response
+
+
+def allowed_get(url: str, **kwargs):
+    """``requests.get`` gated on the official legal-source host allow-list.
+
+    Parses ``url``, rejects any host outside :data:`ALLOWED_HTTP_HOSTS` with
+    ``ValueError``, and defaults ``allow_redirects`` to ``False`` so a 30x
+    cannot bounce the fetch off-host (issue #558). If the caller explicitly
+    sets ``allow_redirects=True``, each hop's ``Location`` is re-checked
+    against the same allow-list.
+
+    The #558 remainder (persist ``sha256`` of each fetched body as
+    ``estleg:contentHash`` on the per-act manifest) is not implemented here.
+    """
+    assert_allowed_http_url(url)
+    kwargs.setdefault("allow_redirects", False)
+    if kwargs.get("allow_redirects"):
+        hooks = dict(kwargs.get("hooks") or {})
+        hooks["response"] = [
+            _reject_off_host_redirect,
+            *_response_hooks(hooks.get("response")),
+        ]
+        kwargs["hooks"] = hooks
+    return requests.get(url, **kwargs)

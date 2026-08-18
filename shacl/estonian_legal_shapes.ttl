@@ -1985,3 +1985,24 @@ estleg:AnnotationShape
         sh:name "annotationDate" ;
         sh:description "Date the annotation was authored or published." ;
     ] .
+
+# Closed IRI enum for estleg:referenceType (#513 T-Box).
+# Existing unreified estleg:references edges do not carry this property;
+# the shape only fires when a later emission pass asserts it.
+estleg:ReferenceTypeConstraint
+    a sh:NodeShape ;
+    sh:targetSubjectsOf estleg:referenceType ;
+    sh:property [
+        sh:path estleg:referenceType ;
+        estleg:graphClosureExempt true ;
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            estleg:RefType_Citation
+            estleg:RefType_Repeal
+            estleg:RefType_LegalBasis
+            estleg:RefType_Exception
+            estleg:RefType_Derogation
+        ) ;
+        sh:name "referenceType" ;
+        sh:description "Closed citation/reference-edge type (#513 T-Box). Existing estleg:references edges remain untyped until a later emission pass." ;
+    ] .

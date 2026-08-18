@@ -163,6 +163,10 @@ matches nothing returns an empty list (or a `note`), never an error.
 | `sanctions_for_law(law)` | Penalties the law defines | "What penalties does KarS define?" |
 | `competent_authority_for_law(law)` | Which institutions enforce/administer it | "Which authority enforces the Personal Data Protection Act?" |
 | `transposition(query)` | EU directive ↔ Estonian law, both directions | "Which Estonian law transposes EU directive 31990L0314?" (or pass a law name to go the other way) |
+| `eu_case_law_for_directive(celex, limit=20)` | CURIA decisions that mention a directive CELEX | "Which CURIA judgments interpret 32000L0060?" |
+| `define_term(term, limit=10)` | Look up a legal term in the concepts overlay | "What does 'elatis' mean in the ontology?" |
+| `harmonisation_for_directive(celex, limit=20)` | Cross-border measures sharing a directive CELEX | "Which neighbouring states also transposed 32000L0060?" |
+| `layers_available()` | Which sidecars MCP reads vs excludes | "Does MCP load the harmonisation / similarity overlays?" |
 | `regulations_for_law(law, limit=50)` | Regulations (määrused) issued under / implementing a statute | "Which regulations are issued under the Local Government Organisation Act (KOKS)?" |
 | `get_regulation(name)` | One-regulation overview (issuer, parent statute, status, citation) | "Give me an overview of regulation t302269." |
 | `regulations_by_issuer(institution, limit=50)` | All regulations enacted by a body (ministry, government, municipality) | "Which regulations has the Minister of Finance (Rahandusminister) issued?" |
@@ -177,6 +181,30 @@ matches nothing returns an empty list (or a `note`), never an error.
 - **Court decision** — the decision's `estleg:decisionLink` (riigikohus.ee).
 - **Draft** — the draft's EIS link (eelnoud.valitsus.ee).
 - **EU** — CELEX → `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:<celex>`.
+- **CURIA** — the decision's `estleg:curiaLink` (EUR-Lex ET TXT), else the same CELEX URL.
+
+### Overlay coverage (#540)
+
+MCP reads **per-file sidecars**, never `combined_ontology.jsonld`. `layers_available()`
+returns this table at runtime (`status` = `wired` / `loadable` / `excluded`).
+
+| Sidecar | Status | How MCP reaches it |
+|---------|--------|--------------------|
+| Law peeps + `INDEX.json` | wired | `search_laws`, `get_law`, `get_provision`, references |
+| `concepts/concepts_combined.jsonld` | wired | `define_term` (overlay loader; not the law peeps) |
+| `harmonisation/…/harm_<celex>.json` | loadable | `harmonisation_for_directive` opens **one** file when asked |
+| `sanctions/`, `amendments/`, `regulations/` | wired | `sanctions_for_law`, `amendment_history`, regulation tools |
+| `provision_versions/` | wired | `get_provision(as_of=…)`, `provision_history` |
+| `riigikohus/`, `eelnoud/`, `institutions/` | wired | court / draft / authority tools |
+| `curia/curia_*_peep.json` | wired | `eu_case_law_for_directive` (CELEX substring; no `#418` interprets edges) |
+| `transposition_mapping.json` | wired | `transposition` |
+| `eurlex/*_peep.json` | excluded | CELEX/EUR-Lex URLs only; peeps are not scanned |
+| `annotations/` | excluded | no MCP reader |
+| `concepts/concept_crossref_report.json` | excluded | build report only |
+| `similarity_index.json`, `combined_ontology.jsonld` | excluded | Git LFS; not loaded (see semantic-search note below) |
+
+Harmonisation is **not** a full-layer index: only the matching `harm_<celex>.json`
+is opened. Concepts **are** fully wired through `define_term`.
 
 ## Development
 

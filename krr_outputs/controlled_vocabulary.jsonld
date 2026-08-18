@@ -36,7 +36,8 @@
     {
       "@id": "estleg:expressionOf",
       "@type": [
-        "owl:ObjectProperty"
+        "owl:ObjectProperty",
+        "owl:FunctionalProperty"
       ],
       "rdfs:subPropertyOf": {
         "@id": "eli:realizes"
@@ -118,7 +119,10 @@
         "owl:Class"
       ],
       "rdfs:label": "AmendmentEvent",
-      "rdfs:comment": "Reusable class materialized for vocabulary coverage validation."
+      "rdfs:comment": "An effected amendment event — a change actually applied to an act, derived from Riigi Teataja muutmismarge markers. owl:disjointWith estleg:ProposedAmendment: a never-enacted draft proposal is not an effected legal change (issues #423, #439).",
+      "owl:disjointWith": {
+        "@id": "estleg:ProposedAmendment"
+      }
     },
     {
       "@id": "estleg:Annex",
@@ -206,7 +210,10 @@
         "owl:Class"
       ],
       "rdfs:label": "ProposedAmendment",
-      "rdfs:comment": "A draft-based proposed amendment derived from a non-enacted draft bill: it proposes — but has not effected — a change to an act. Deliberately NOT a subclass of estleg:AmendmentEvent (which asserts effected legal changes); proposals carry estleg:proposesToAmend / estleg:publicationDate instead of estleg:amends / estleg:amendmentDate, and never estleg:isCurrentAmendment. See issue #423."
+      "rdfs:comment": "A draft-based proposed amendment derived from a non-enacted draft bill: it proposes — but has not effected — a change to an act. Deliberately NOT a subclass of estleg:AmendmentEvent (which asserts effected legal changes); owl:disjointWith estleg:AmendmentEvent (issues #423, #439). Proposals carry estleg:proposesToAmend / estleg:publicationDate instead of estleg:amends / estleg:amendmentDate, and never estleg:isCurrentAmendment.",
+      "owl:disjointWith": {
+        "@id": "estleg:AmendmentEvent"
+      }
     },
     {
       "@id": "estleg:Sanction",
@@ -2972,7 +2979,10 @@
         "@id": "estleg:DomesticRegulation"
       },
       "rdfs:label": "National Regulation",
-      "rdfs:comment": "A state-level Estonian regulation (riigi tasandi määrus) issued by a state organ. Superclass of the government and ministerial regulation classes. Subclass of estleg:DomesticRegulation, NOT of estleg:MunicipalRegulation: a municipal regulation is a sibling, not an instance, of this class (issue #424)."
+      "rdfs:comment": "A state-level Estonian regulation (riigi tasandi määrus) issued by a state organ. Superclass of the government and ministerial regulation classes. Subclass of estleg:DomesticRegulation, NOT of estleg:MunicipalRegulation: a municipal regulation is a sibling, not an instance, of this class (issue #424). owl:disjointWith estleg:MunicipalRegulation (issue #439).",
+      "owl:disjointWith": {
+        "@id": "estleg:MunicipalRegulation"
+      }
     },
     {
       "@id": "estleg:MinisterialRegulation",
@@ -3005,7 +3015,10 @@
         "@id": "estleg:DomesticRegulation"
       },
       "rdfs:label": "Municipal Regulation",
-      "rdfs:comment": "A municipal (KOV) regulation enacted by a local-government issuer (volikogu or valitsus) — kohaliku omavalitsuse määrus. Subclass of estleg:DomesticRegulation. Deliberately NOT a subclass of estleg:NationalRegulation: a KOV määrus is local-government, not state-level, legislation, so no entailment path makes it a state regulation (issue #424; was a logical error corrected from the earlier subClassOf NationalRegulation hack)."
+      "rdfs:comment": "A municipal (KOV) regulation enacted by a local-government issuer (volikogu or valitsus) — kohaliku omavalitsuse määrus. Subclass of estleg:DomesticRegulation. Deliberately NOT a subclass of estleg:NationalRegulation: a KOV määrus is local-government, not state-level, legislation, so no entailment path makes it a state regulation (issue #424; was a logical error corrected from the earlier subClassOf NationalRegulation hack). owl:disjointWith estleg:NationalRegulation (issue #439).",
+      "owl:disjointWith": {
+        "@id": "estleg:NationalRegulation"
+      }
     },
     {
       "@id": "estleg:KovProvision",
@@ -3678,6 +3691,118 @@
         "@language": "en"
       },
       "estleg:caseTypeCode": "5"
+    },
+    {
+      "@id": "estleg:ReferenceType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Viite liik (Reference Type)",
+      "rdfs:comment": "Closed enum of citation / reference-edge types (issue #513 T-Box). Individuals: estleg:RefType_Citation, estleg:RefType_Repeal, estleg:RefType_LegalBasis, estleg:RefType_Exception, estleg:RefType_Derogation. Existing unreified estleg:references edges remain untyped until a later emission pass attaches estleg:referenceType."
+    },
+    {
+      "@id": "estleg:RefType_Citation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ReferenceType"
+      ],
+      "rdfs:label": {
+        "@value": "Viide",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Citation",
+        "@language": "en"
+      },
+      "rdfs:comment": "A general citation or mention, without repeal / legal-basis / exception / derogation force (issue #513)."
+    },
+    {
+      "@id": "estleg:RefType_Repeal",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ReferenceType"
+      ],
+      "rdfs:label": {
+        "@value": "Kehtetuks tunnistamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Repeal",
+        "@language": "en"
+      },
+      "rdfs:comment": "The citing provision or act repeals (tunnistatakse kehtetuks) the cited target (issue #513)."
+    },
+    {
+      "@id": "estleg:RefType_LegalBasis",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ReferenceType"
+      ],
+      "rdfs:label": {
+        "@value": "Õiguslik alus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Legal basis",
+        "@language": "en"
+      },
+      "rdfs:comment": "The cited target is the enabling legal basis (kehtestatakse … alusel) for the citing act or provision (issue #513)."
+    },
+    {
+      "@id": "estleg:RefType_Exception",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ReferenceType"
+      ],
+      "rdfs:label": {
+        "@value": "Erand",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Exception",
+        "@language": "en"
+      },
+      "rdfs:comment": "The citing provision is an exception to the general rule in the cited target (issue #513)."
+    },
+    {
+      "@id": "estleg:RefType_Derogation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ReferenceType"
+      ],
+      "rdfs:label": {
+        "@value": "Derogatsioon",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Derogation",
+        "@language": "en"
+      },
+      "rdfs:comment": "The citing provision derogates from the cited target (issue #513)."
+    },
+    {
+      "@id": "estleg:referenceType",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "viite liik (reference type)",
+      "rdfs:comment": "Qualifies a reified estleg:Citation, or an rdf:Statement of an estleg:references edge, with one of the estleg:RefType_* individuals (issue #513 T-Box). Existing unreified estleg:references edges are untyped until a later emission pass.",
+      "rdfs:domain": {
+        "@type": "owl:Class",
+        "owl:unionOf": {
+          "@list": [
+            {
+              "@id": "estleg:Citation"
+            },
+            {
+              "@id": "rdf:Statement"
+            }
+          ]
+        }
+      },
+      "rdfs:range": {
+        "@id": "estleg:ReferenceType"
+      }
     }
   ]
 }

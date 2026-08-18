@@ -95,3 +95,61 @@ def test_scripts_inventory_readme_exists():
     text = (REPO / "scripts" / "README.md").read_text(encoding="utf-8")
     assert "live-DAG" in text
     assert "spent-migration" in text
+
+
+def test_schema_reference_documents_disjoint_axioms_439():
+    """#439: sibling-class disjointness is documented, not only asserted in the CV."""
+    text = (REPO / "docs" / "SCHEMA_REFERENCE.md").read_text(encoding="utf-8")
+    assert "owl:disjointWith" in text
+    assert "MunicipalRegulation" in text
+    assert "ProposedAmendment" in text
+
+
+def test_schema_reference_documents_untyped_references_513():
+    """#513 T-Box: existing references stay untyped until a later emission pass."""
+    text = (REPO / "docs" / "SCHEMA_REFERENCE.md").read_text(encoding="utf-8")
+    assert "estleg:referenceType" in text
+    assert "RefType_Repeal" in text
+    assert "untyped" in text.lower()
+
+
+def test_deprecate_legacy_statutes_is_live_infra_not_spent_migration():
+    """#534: deprecate_legacy_statutes is live-DAG / live infra, not a spent one-shot."""
+    text = (REPO / "scripts" / "README.md").read_text(encoding="utf-8")
+    needle = "deprecate_legacy_statutes"
+    assert needle in text
+
+    idx = text.find(needle)
+    window = text[max(0, idx - 160) : idx + len(needle) + 160]
+    assert "live" in window.lower(), (
+        f"{needle} must appear near the word 'live' (live-DAG / live infra)"
+    )
+
+    table_mentions = [
+        line
+        for line in text.splitlines()
+        if line.startswith("|") and needle in line
+    ]
+    live_bucket = [line for line in table_mentions if "live" in line.lower()]
+    assert live_bucket, f"{needle} must appear in a live bucket row"
+
+    spent_only = table_mentions and all("spent-migration" in line for line in table_mentions)
+    assert not spent_only, f"{needle} must not be listed only under spent-migration"
+
+
+def test_metadata_dataset_language_excludes_eng():
+    """#511: corpus instance text is Estonian-only; do not advertise ENG."""
+    import json
+
+    meta = json.loads((REPO / "metadata.jsonld").read_text(encoding="utf-8"))
+    languages = meta.get("dcterms:language")
+    if isinstance(languages, dict):
+        languages = [languages]
+    iris = {
+        item.get("@id")
+        for item in (languages or [])
+        if isinstance(item, dict)
+    }
+    eng = "http://publications.europa.eu/resource/authority/language/ENG"
+    assert eng not in iris
+    assert "http://publications.europa.eu/resource/authority/language/EST" in iris

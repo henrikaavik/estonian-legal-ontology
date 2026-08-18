@@ -23,9 +23,9 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
-import requests
+import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
-from estleg_common import save_json
+from estleg_common import allowed_get, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -792,7 +792,7 @@ def get_all_laws(
             params["kehtivKehtetus"] = "false"
             params["mitteJoustunud"] = "false"
         try:
-            resp = requests.get(
+            resp = allowed_get(
                 SEARCH_URL,
                 params=params,
                 timeout=30,
@@ -942,7 +942,7 @@ def fetch_xml(
 
     full_url = BASE_URL + url if url.startswith("/") else url
     try:
-        resp = requests.get(full_url, timeout=60)
+        resp = allowed_get(full_url, timeout=60)
         resp.raise_for_status()
         resp.encoding = "utf-8"
         xml_text = resp.text

@@ -287,6 +287,91 @@ def test_transposition_inverse_on_directive_and_law():
     assert inverse, "directive peep missing transposedBy for a KarS CELEX (#319)"
 
 
+def test_kars_osa1_root_is_in_force():
+    """Published fact (#555): KarS osa 1 act root is KARIST_2_Osa1_1_87, in force."""
+    doc = _load("karistusseadustik_osa1_peep.json")
+    node = next(
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:KARIST_2_Osa1_1_87"
+    )
+    types = node.get("@type")
+    if isinstance(types, str):
+        types = [types]
+    assert "estleg:Act" in (types or []), "KARIST_2_Osa1_1_87 lost its Act type"
+    assert node.get("estleg:temporalStatus") == "inForce", (
+        "KarS osa1 root is no longer temporalStatus=inForce"
+    )
+
+
+def test_municipal_regulation_is_not_subclass_of_national_regulation():
+    """Published TBox fact (#424/#555): MunicipalRegulation is a sibling of
+    NationalRegulation under DomesticRegulation, not a subclass of it."""
+    doc = _load("controlled_vocabulary.jsonld")
+    node = next(
+        n
+        for n in doc.get("@graph", [])
+        if n.get("@id") == "estleg:MunicipalRegulation"
+    )
+    parents = _ref_ids(node.get("rdfs:subClassOf"))
+    assert "estleg:DomesticRegulation" in parents, (
+        "MunicipalRegulation lost rdfs:subClassOf DomesticRegulation"
+    )
+    assert "estleg:NationalRegulation" not in parents, (
+        "MunicipalRegulation must not be a subclass of NationalRegulation"
+    )
+
+
+def test_draft_klim23_1259_is_draft_intent():
+    """Published fact (#555): KLIM/23-1259 is a DraftIntent (VTK), not a bill."""
+    doc = _load("eelnoud/eelnoud_publicconsultation_peep.json")
+    node = next(
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:Draft_KLIM23_1259"
+    )
+    assert "estleg:DraftType_DraftIntent" in _ref_ids(node.get("estleg:draftType")), (
+        "Draft_KLIM23_1259 lost draftType DraftType_DraftIntent"
+    )
+
+
+def test_ravs_chapter_5_has_part_par_87():
+    """Published fact (#375/#555): RavS chapter 5 lists § 87 as a direct part."""
+    doc = _load("ravimiseadus_peep.json")
+    node = next(
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:Chapter_RavS_5"
+    )
+    assert "estleg:RavS_Par_87" in _ref_ids(node.get("estleg:hasPart")), (
+        "Chapter_RavS_5.hasPart no longer includes RavS_Par_87"
+    )
+
+
+def test_kars_par_121_is_kehaline_vaarkohtlemine():
+    """Published fact (#555): KarS § 121 is Kehaline väärkohtlemine."""
+    doc = _load("karistusseadustik_osa2_peep.json")
+    node = next(
+        n
+        for n in doc.get("@graph", [])
+        if n.get("@id") == "estleg:KARIST_2_Osa2_Par_121"
+    )
+    assert node.get("rdfs:label") == "§ 121. Kehaline väärkohtlemine", (
+        "KarS § 121 title drifted from the published Riigi Teataja heading"
+    )
+
+
+def test_kars_par_121_carries_imprisonment_and_pecuniary_sanctions():
+    """Published fact (#555): KarS § 121 lists both imprisonment and a fine."""
+    doc = _load("karistusseadustik_osa2_peep.json")
+    node = next(
+        n
+        for n in doc.get("@graph", [])
+        if n.get("@id") == "estleg:KARIST_2_Osa2_Par_121"
+    )
+    sanctions = _ref_ids(node.get("estleg:hasSanction"))
+    assert {
+        "estleg:Sanction_KARIST_2_Osa2_Par_121_imprisonment",
+        "estleg:Sanction_KARIST_2_Osa2_Par_121_pecuniary_punishment",
+    } <= sanctions, (
+        "KarS § 121 lost a published hasSanction (imprisonment and/or pecuniary)"
+    )
+
+
 # --------------------------------------------------------------------------- #
 # Opt-in tier — needs the git-LFS combined graph / sweeps the version layer.
 # The json-validation CI job pulls combined and runs `pytest -m corpus`.

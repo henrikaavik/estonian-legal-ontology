@@ -21,10 +21,8 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
 
-import requests
-
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from estleg_common import save_json  # noqa: E402
+from estleg_common import allowed_get, save_json  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -231,7 +229,7 @@ def fetch_rss(url: str) -> list[dict]:
     """Fetch and parse an RSS feed, returning list of items."""
     print(f"  Fetching {url}...")
     try:
-        resp = requests.get(url, timeout=60)
+        resp = allowed_get(url, timeout=60)
         resp.raise_for_status()
         resp.encoding = "utf-8"
     except Exception as e:

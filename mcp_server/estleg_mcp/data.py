@@ -664,11 +664,15 @@ def laws_for_subject(subject: str, limit: int = 20) -> list[dict[str, str]]:
 
 
 def define_term(term: str, limit: int = 10) -> list[dict[str, str]]:
-    """Lookup ``estleg:LegalConcept`` / Concept nodes by prefLabel (#501)."""
+    """Lookup ``estleg:LegalConcept`` / Concept nodes by prefLabel (#501/#540).
+
+    Reads ``krr_outputs/concepts/concepts_combined.jsonld`` via the overlay
+    loader -- not the law peeps.
+    """
     if not term or not term.strip() or limit <= 0:
         return []
     needle = _fold(term.strip())
-    graph = _graph_of(krr_dir() / "concepts" / "concepts_combined.jsonld")
+    graph = overlay_graph("concepts")
     out: list[dict[str, str]] = []
     for node in graph:
         types = _types_of(node)
@@ -839,6 +843,22 @@ def eurlex_url(celex: str) -> str:
     if not celex:
         return ""
     return f"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:{celex}"
+
+
+def normalize_celex(raw: str) -> str:
+    """Normalise a CELEX query the same way the EU tools accept one.
+
+    Strips surrounding whitespace and internal spaces, drops a leading
+    ``CELEX:`` wrapper, and uppercases. ``32000 L0060`` and ``celex:32000l0060``
+    both become ``32000L0060``. Returns ``""`` for an empty input.
+    """
+    text = (raw or "").strip()
+    if not text:
+        return ""
+    text = re.sub(r"\s+", "", text)
+    if text[:6].upper() == "CELEX:":
+        text = text[6:]
+    return text.upper()
 
 
 # ---------------------------------------------------------------------------
@@ -1655,45 +1675,379 @@ def regulations_by_issuer(institution: str) -> list[RegulationRecord]:
     return matched
 
 
+# ---------------------------------------------------------------------------
+# Overlay sidecars (#540) -- concepts + per-CELEX harmonisation
+#
+# MCP already reads sanctions / amendments / regulations / provision_versions
+# per law. These two extra loaders open the remaining high-value sidecars
+# *when asked* (one concepts file, or one harm_<celex>.json) instead of
+# merging the whole enrichment tree.
+# ---------------------------------------------------------------------------
+def overlay_path(layer: str, key: str = "") -> Path | None:
+    """Resolve a sidecar overlay file. Unknown layer or empty key -> ``None``."""
+    name = (layer or "").strip().lower()
+    if name == "concepts":
+        return krr_dir() / "concepts" / "concepts_combined.jsonld"
+    if name in {"harmonisation", "harmonization"}:
+        celex = normalize_celex(key)
+        if not celex:
+            return None
+        return (
+            krr_dir()
+            / "harmonisation"
+            / "harmonisation_by_directive"
+            / f"harm_{celex}.json"
+        )
+    return None
+
+
+@lru_cache(maxsize=64)
+def overlay_graph(layer: str, key: str = "") -> tuple[Node, ...]:
+    """``@graph`` of an overlay sidecar, or ``()`` when the file is missing."""
+    path = overlay_path(layer, key)
+    if path is None:
+        return ()
+    return tuple(_graph_of(path))
+
+
+def harmonisation_for_directive(celex: str, limit: int = 20) -> list[dict[str, str]]:
+    """Member-state / EE harmonisation rows for one directive CELEX (#540).
+
+    Opens ``harmonisation/harmonisation_by_directive/harm_<celex>.json`` via
+    :func:`overlay_graph`. Returns ``[]`` when the CELEX is empty, ``limit``
+    is not positive, or no harm file exists.
+    """
+    if limit <= 0:
+        return []
+    needle = normalize_celex(celex)
+    if not needle:
+        return []
+    rows: list[dict[str, str]] = []
+    for node in overlay_graph("harmonisation", needle):
+        if "estleg:HarmonisationLink" not in _types_of(node):
+            continue
+        rows.append(
+            {
+                "id": node.get("@id", "") if isinstance(node.get("@id"), str) else "",
+                "label": _text(node.get("rdfs:label")),
+                "member_state": _text(node.get("estleg:memberStateCode")),
+                "national_celex": _text(node.get("estleg:nationalCelex")),
+                "harmonises": " ".join(_ids_of(node.get("estleg:harmonises"))),
+            }
+        )
+        if len(rows) >= limit:
+            break
+    return rows
+
+
+def layers_available() -> list[dict[str, str]]:
+    """Which ``krr_outputs/`` sidecars the MCP surface reads (#540).
+
+    ``status`` is ``wired`` (a tool reads it), ``loadable`` (opened on demand
+    via :func:`overlay_graph`), or ``excluded`` (documented gap). ``present``
+    is ``yes``/``no`` for the on-disk path in this clone.
+    """
+    krr = krr_dir()
+
+    def _present(rel: str) -> str:
+        path = krr / rel
+        if any(ch in rel for ch in "*?"):
+            return "yes" if path.parent.is_dir() and any(path.parent.glob(path.name)) else "no"
+        if path.is_dir():
+            return "yes" if any(path.iterdir()) else "no"
+        return "yes" if path.is_file() else "no"
+
+    rows = (
+        (
+            "laws",
+            "*_peep.json",
+            "INDEX.json",
+            "wired",
+            "search_laws, get_law, get_provision",
+            "Per-law peeps; never combined_ontology.jsonld",
+        ),
+        (
+            "concepts",
+            "concepts/concepts_combined.jsonld",
+            "concepts/concepts_combined.jsonld",
+            "wired",
+            "define_term",
+            "LegalConcept / Concept prefLabels via overlay_graph",
+        ),
+        (
+            "harmonisation",
+            "harmonisation/harmonisation_by_directive/harm_*.json",
+            "harmonisation/harmonisation_by_directive/harm_*.json",
+            "loadable",
+            "harmonisation_for_directive",
+            "One harm_<celex>.json when asked; not a full-layer scan",
+        ),
+        (
+            "sanctions",
+            "sanctions/sanctions_*.json",
+            "sanctions",
+            "wired",
+            "sanctions_for_law",
+            "",
+        ),
+        (
+            "amendments",
+            "amendments/amendments_*.json",
+            "amendments",
+            "wired",
+            "amendment_history, drafts_affecting_law",
+            "",
+        ),
+        (
+            "regulations",
+            "regulations/riik + regulations/kov",
+            "regulations",
+            "wired",
+            "regulations_for_law, get_regulation, regulations_by_issuer",
+            "",
+        ),
+        (
+            "provision_versions",
+            "provision_versions/*.jsonld",
+            "provision_versions",
+            "wired",
+            "get_provision(as_of), provision_history, get_law(as_of)",
+            "",
+        ),
+        (
+            "riigikohus",
+            "riigikohus/riigikohus_*_peep.json",
+            "riigikohus",
+            "wired",
+            "court_decisions_for_law",
+            "",
+        ),
+        (
+            "curia",
+            "curia/curia_*_peep.json",
+            "curia",
+            "wired",
+            "eu_case_law_for_directive",
+            "No interprets edges (#418); CELEX substring match",
+        ),
+        (
+            "eelnoud",
+            "eelnoud/eelnoud_*_peep.json",
+            "eelnoud",
+            "wired",
+            "drafts_affecting_law",
+            "",
+        ),
+        (
+            "institutions",
+            "institutions/institution_*.json",
+            "institutions",
+            "wired",
+            "competent_authority_for_law",
+            "",
+        ),
+        (
+            "transposition",
+            "transposition_mapping.json",
+            "transposition_mapping.json",
+            "wired",
+            "transposition",
+            "",
+        ),
+        (
+            "eurlex",
+            "eurlex/*_peep.json",
+            "eurlex",
+            "excluded",
+            "",
+            "Reached via transposition + CELEX URLs, not the eurlex peeps",
+        ),
+        (
+            "annotations",
+            "annotations/",
+            "annotations",
+            "excluded",
+            "",
+            "MCP does not load the annotations sidecar",
+        ),
+        (
+            "similarity",
+            "similarity_index.json",
+            "similarity_index.json",
+            "excluded",
+            "",
+            "Git LFS pointer; no semantic-search tool in v1",
+        ),
+        (
+            "combined_ontology",
+            "combined_ontology.jsonld",
+            "combined_ontology.jsonld",
+            "excluded",
+            "",
+            "Git LFS; MCP never loads the aggregate graph",
+        ),
+        (
+            "concept_crossref",
+            "concepts/concept_crossref_report.json",
+            "concepts/concept_crossref_report.json",
+            "excluded",
+            "",
+            "Build report only; define_term reads concepts_combined",
+        ),
+    )
+    out: list[dict[str, str]] = []
+    for layer, display, check, status, tools, note in rows:
+        out.append(
+            {
+                "layer": layer,
+                "path": f"krr_outputs/{display}",
+                "status": status,
+                "tools": tools,
+                "present": _present(check),
+                "note": note,
+            }
+        )
+    return out
+
+
+# ---------------------------------------------------------------------------
+# CURIA decisions for a directive CELEX (#505)
+# ---------------------------------------------------------------------------
+def _curia_peep_paths() -> list[Path]:
+    """Committed CURIA peeps (not the combined / schema / INDEX artifacts)."""
+    curia = krr_dir() / "curia"
+    if not curia.is_dir():
+        return []
+    return sorted(curia.glob("curia_*_peep.json"))
+
+
+@lru_cache(maxsize=1)
+def _curia_decisions() -> tuple[Node, ...]:
+    """All ``estleg:EUCourtDecision`` nodes from the CURIA peeps.
+
+    Cached for the process lifetime. Tests should monkeypatch this (or
+    :func:`_curia_peep_paths`) rather than parse the ~22k-decision corpus.
+    """
+    out: list[Node] = []
+    for path in _curia_peep_paths():
+        for node in _graph_of(path):
+            if "estleg:EUCourtDecision" in _types_of(node):
+                out.append(node)
+    return tuple(out)
+
+
+def _node_mentions_celex(node: Node, celex: str) -> bool:
+    """True when label / celexNumber / sameAs / source / text mention ``celex``.
+
+    CURIA has no ``estleg:interprets`` edges (#418), so a CELEX substring on
+    those fields is the join the MCP surface can actually evaluate.
+    """
+    if not celex:
+        return False
+    needle = celex.casefold()
+    for field in (
+        "estleg:celexNumber",
+        "rdfs:label",
+        "estleg:legalText",
+        "estleg:summary",
+        "dcterms:title",
+        "dc:description",
+    ):
+        if needle in _text(node.get(field)).casefold():
+            return True
+    for field in ("owl:sameAs", "dcterms:source", "dc:source"):
+        if needle in _text(node.get(field)).casefold():
+            return True
+        for iri in _ids_of(node.get(field)):
+            if needle in iri.casefold():
+                return True
+    return False
+
+
+def _curia_or_eurlex_url(node: Node) -> str:
+    """Prefer ``estleg:curiaLink``, else the EUR-Lex URL for the decision CELEX."""
+    link = _text(node.get("estleg:curiaLink")) or _id_of(node.get("estleg:curiaLink"))
+    if link:
+        return link
+    own = _text(node.get("estleg:celexNumber"))
+    return eurlex_url(own) if own else ""
+
+
+def eu_case_law_for_directive(celex: str, limit: int = 20) -> list[dict[str, str]]:
+    """CURIA decisions whose metadata mentions a directive CELEX (#505).
+
+    Empty CELEX or ``limit`` <= 0 yields ``[]`` (the server wraps a miss as
+    ``[{note}]``). Hits are ``{ecli_or_celex, title, curia_or_eurlex_url}``.
+    """
+    if limit <= 0:
+        return []
+    needle = normalize_celex(celex)
+    if not needle:
+        return []
+    cap = max(0, int(limit))
+    rows: list[dict[str, str]] = []
+    for node in _curia_decisions():
+        if not _node_mentions_celex(node, needle):
+            continue
+        ecli = _text(node.get("estleg:ecliIdentifier"))
+        own_celex = _text(node.get("estleg:celexNumber"))
+        rows.append(
+            {
+                "ecli_or_celex": ecli or own_celex,
+                "title": _text(node.get("rdfs:label")) or _text(node.get("dcterms:title")),
+                "curia_or_eurlex_url": _curia_or_eurlex_url(node),
+            }
+        )
+        if len(rows) >= cap:
+            break
+    return rows
+
+
 __all__ = [
+    "Graph",
     "LawRecord",
     "Node",
-    "Graph",
+    "RegulationRecord",
+    "_law_slug_from_iri",
+    "act_kehtiv_date",
+    "act_node",
+    "act_title",
+    "amendment_events",
+    "amendment_link_drafts",
+    "chapter_nodes",
+    "clean_display",
     "corpus_root",
-    "krr_dir",
-    "ontology_version",
-    "resolve_law",
-    "search_law_records",
-    "laws_for_subject",
+    "count_provisions_in_force",
+    "court_decision",
     "define_term",
     "display_abbrev",
-    "_law_slug_from_iri",
-    "load_law_graph",
-    "act_node",
-    "provision_nodes",
-    "chapter_nodes",
+    "draft_info",
+    "eu_case_law_for_directive",
+    "eurlex_url",
     "find_provision",
+    "harmonisation_for_directive",
+    "institution_label",
+    "krr_dir",
+    "law_version_index",
+    "laws_for_subject",
+    "layers_available",
+    "load_law_graph",
+    "normalize_celex",
+    "normalize_iso_date",
+    "ontology_version",
+    "overlay_graph",
+    "overlay_path",
     "provision_label",
-    "clean_display",
-    "act_title",
-    "act_kehtiv_date",
+    "provision_nodes",
+    "provision_version_timeline",
+    "regulations_by_issuer",
+    "regulations_for_law",
+    "resolve_law",
+    "resolve_regulation",
     "rt_url",
     "rt_url_for_slug",
-    "eurlex_url",
-    "court_decision",
-    "institution_label",
-    "draft_info",
-    "amendment_link_drafts",
-    "amendment_events",
+    "search_law_records",
     "transposition_matches",
-    "provision_version_timeline",
-    "normalize_iso_date",
-    "version_in_force_on",
-    "law_version_index",
-    "count_provisions_in_force",
     "version_coverage_span",
-    "RegulationRecord",
-    "regulations_for_law",
-    "resolve_regulation",
-    "regulations_by_issuer",
+    "version_in_force_on",
 ]
