@@ -395,17 +395,39 @@ def resolve_law_name(
     return best_match
 
 
+def prefer_act_iri(iris: list[str]) -> str | None:
+    """Pick the whole-act IRI from a multipart law's candidate act nodes (#379).
+
+    A ``_Map_`` IRI wins. Otherwise the lowest numeric ``_OsaN`` wins so
+    lexicographic ``osa10 < osa1`` cannot steal the link.
+    """
+    present = [iri for iri in iris if isinstance(iri, str) and iri]
+    if not present:
+        return None
+    maps = [iri for iri in present if "_Map_" in iri]
+    if maps:
+        return sorted(maps)[0]
+
+    def _osa_key(iri: str) -> tuple[int, str]:
+        match = re.search(r"_Osa(\d+)", iri)
+        return (int(match.group(1)), iri) if match else (10**9, iri)
+
+    return sorted(present, key=_osa_key)[0]
+
+
 def get_ontology_iri(law_entry: dict, iri_map: dict[str, str]) -> str | None:
     """Look up the actual ontology @id for a law entry using the pre-built IRI map.
 
     Returns None if no matching ontology IRI is found, avoiding synthetic
-    IRIs that would create dangling references.
+    IRIs that would create dangling references. Multipart laws prefer a
+    ``_Map_`` IRI, then the lowest-numbered osa (#379).
     """
-    for f in law_entry.get("files", []):
-        iri = iri_map.get(f)
-        if iri:
-            return iri
-    return None
+    iris = [
+        iri_map[name]
+        for name in law_entry.get("files", [])
+        if name in iri_map
+    ]
+    return prefer_act_iri(iris)
 
 
 def main() -> None:

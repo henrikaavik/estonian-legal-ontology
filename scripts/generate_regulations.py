@@ -340,8 +340,32 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
 
 
 # ---------------------------------------------------------------------------
-# Temporal coherence — repealed-before-snapshot guard (issue #374)
+# Temporal coherence — repealed-act tombstone (issue #374)
 # ---------------------------------------------------------------------------
+
+# SHACL ``LegalProvisionShape`` requires ``estleg:summary``. Surgical
+# corpus stripping therefore replaces void-law summaries with this marker
+# rather than deleting the predicate. ``estleg:legalText`` is dropped.
+REPEALED_BODY_TOMBSTONE = "Repealed; provision body suppressed (issue #374)."
+_TEMPORAL_STATUS_REPEALED_MARKER = b'"estleg:temporalStatus": "repealed"'
+
+
+def _iso_day(value: str | None) -> str | None:
+    """Return the ``YYYY-MM-DD`` prefix, or None when blank/missing."""
+    if not value:
+        return None
+    day = str(value).strip()[:10]
+    return day or None
+
+
+def _xsd_date_value(value) -> str | None:
+    """Unwrap a JSON-LD xsd:date (plain string or ``{"@value": ...}``)."""
+    if isinstance(value, dict):
+        value = value.get("@value")
+    if value is None:
+        return None
+    return _iso_day(str(value))
+
 
 def _repealed_before_snapshot(repeal_date: str | None, kehtiv: str | None) -> bool:
     """Return True when an act was already repealed *before* the snapshot.
@@ -351,20 +375,75 @@ def _repealed_before_snapshot(repeal_date: str | None, kehtiv: str | None) -> bo
     ``kehtiv`` was legally void at snapshot time — Riigi Teataja occasionally
     returns such stale rows under a ``kehtiv`` query (issue #374). We treat
     only ``repeal_date < kehtiv`` as repealed-before-snapshot so acts repealed
-    *on* the snapshot date (still in force that day) and active acts remain
-    untouched — backward-compatible with every currently-active regulation.
+    *on* the snapshot date (still in force that day) remain snapshot-active.
 
     Both dates are ISO ``YYYY-MM-DD`` strings (offset already stripped by
     :func:`parse_act_metadata`); lexicographic comparison is therefore a
     correct chronological comparison. Missing/blank either side -> False.
     """
-    if not repeal_date or not kehtiv:
+    repeal_day = _iso_day(repeal_date)
+    snapshot_day = _iso_day(kehtiv)
+    if not repeal_day or not snapshot_day:
         return False
-    # Compare on the date prefix only, defensively, in case an unstripped
-    # offset or time component slips through ("2025-10-24T..." / "...+03:00").
-    repeal_day = str(repeal_date)[:10]
-    snapshot_day = str(kehtiv)[:10]
     return repeal_day < snapshot_day
+
+
+def _repealed_as_of(repeal_date: str | None, as_of: str | None) -> bool:
+    """Return True when ``repeal_date`` is on or before ``as_of``.
+
+    Inclusive, matching ``extract_temporal_data.determine_temporal_status``
+    (an act is ``repealed`` on its repeal day).
+    """
+    repeal_day = _iso_day(repeal_date)
+    as_of_day = _iso_day(as_of)
+    if not repeal_day or not as_of_day:
+        return False
+    return repeal_day <= as_of_day
+
+
+def _should_tombstone_regulation(
+    repeal_date: str | None,
+    kehtiv: str | None,
+    *,
+    temporal_status: str | None = None,
+    evaluation_date: str | None = None,
+) -> bool:
+    """Tombstone when the act is repealed *or* void at the snapshot.
+
+    Issue #374: legally-void text must not be served as substantive.
+
+    * ``temporal_status == "repealed"`` always tombstones, even when
+      ``repeal_date`` is after an older hardcoded ``kehtiv`` (the vangla
+      sisekorraeeskiri case: repeal 2026-05-04, snapshot 2026-05-01).
+    * ``repeal_date < kehtiv`` tombstones snapshot-stale RT rows.
+    * When ``temporal_status`` is omitted, status is inferred against
+      ``evaluation_date`` (default ``BUILD_EVALUATION_DATE``), the same
+      pin ``extract_temporal_data`` uses.
+    """
+    if temporal_status == "repealed":
+        return True
+    if _repealed_before_snapshot(repeal_date, kehtiv):
+        return True
+    if temporal_status is None:
+        return _repealed_as_of(
+            repeal_date, evaluation_date or BUILD_EVALUATION_DATE
+        )
+    return False
+
+
+def _is_provision_node(node: object) -> bool:
+    return isinstance(node, dict) and "estleg:paragrahv" in node
+
+
+def _node_has_legal_text(node: dict) -> bool:
+    text = node.get("estleg:legalText")
+    if text is None:
+        return False
+    if isinstance(text, dict):
+        text = text.get("@value")
+    if text is None:
+        return False
+    return bool(str(text).strip())
 
 
 # ---------------------------------------------------------------------------
@@ -378,6 +457,8 @@ def build_regulation_jsonld(
     *,
     is_kov: bool,
     kehtiv: str | None = None,
+    temporal_status: str | None = None,
+    evaluation_date: str | None = None,
 ) -> tuple[dict, dict[str, int]]:
     """Generate the JSON-LD document for one regulation.
 
@@ -387,6 +468,12 @@ def build_regulation_jsonld(
     ``estleg:kehtiv`` so downstream staleness checks (missing-only
     re-runs) can compare a stored snapshot date against the current
     run.
+
+    ``temporal_status`` (optional) is the already-derived
+    ``estleg:temporalStatus``. When omitted, a repealed status is
+    inferred from ``repealDate`` vs ``evaluation_date`` (default
+    ``BUILD_EVALUATION_DATE``). Either a derived ``repealed`` status
+    or a pre-snapshot repeal tombstones the body (issue #374).
     """
     metadata = parse_act_metadata(root)
     tid = metadata.get("terviktekstId") or info.get("tid") or ""
@@ -406,21 +493,30 @@ def build_regulation_jsonld(
     if rt_url:
         rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
 
-    # Issue #374: an act already repealed *before* the snapshot date is
-    # legally void at snapshot time. Riigi Teataja sometimes returns such
-    # stale rows under a `kehtiv` query. Tombstone it — keep the act node
-    # (with its repealDate / temporalStatus so the index can exclude it from
-    # the active count) but emit NO provision/annex/preamble content, so
-    # void law text is never served as substantive.
-    repealed_before_snapshot = _repealed_before_snapshot(
-        metadata.get("repealDate"), kehtiv
+    # Issue #374: an act that is already repealed (temporalStatus), or
+    # whose repealDate is strictly before the snapshot, is legally void
+    # as substantive law. Riigi Teataja sometimes returns stale rows
+    # under a `kehtiv` query, and extract_temporal_data later marks
+    # acts that lapsed after an older hardcoded snapshot. Tombstone
+    # both — keep the act node (repealDate / temporalStatus so the
+    # index can exclude it from the active count) but emit NO
+    # provision/annex/preamble content.
+    repeal_date = metadata.get("repealDate")
+    repealed_before_snapshot = _repealed_before_snapshot(repeal_date, kehtiv)
+    tombstone = _should_tombstone_regulation(
+        repeal_date,
+        kehtiv,
+        temporal_status=temporal_status,
+        evaluation_date=evaluation_date,
     )
 
-    if repealed_before_snapshot:
+    if tombstone:
         provisions: list[dict] = []
         annexes: list[dict] = []
         preamble = ""
-        parse_mode = "repealedBeforeSnapshot"
+        parse_mode = (
+            "repealedBeforeSnapshot" if repealed_before_snapshot else "repealed"
+        )
     else:
         # Provisions: try structured first, fall back to HTMLKonteiner
         provisions = collect_structured_paragraphs(root, prefix, title, class_id, ontology_id)
@@ -485,17 +581,25 @@ def build_regulation_jsonld(
             "No structured paragraphs, HTML paragraphs, annexes, or preamble "
             "were parsed from the source XML."
         )
-    elif repealed_before_snapshot:
+    elif tombstone:
         # Tombstone marker (issue #374). ``temporalStatus=repealed`` mirrors
         # extract_temporal_data's vocabulary so downstream consumers (e.g. the
-        # KOV similarity pass) can filter on a single predicate; contentStatus
-        # explains why the body is intentionally empty.
+        # KOV similarity pass) can filter on a single predicate. Pre-snapshot
+        # voids also get ``contentStatus=repealedBeforeSnapshot``; a later
+        # repeal (in force at kehtiv, repealed as of the evaluation pin)
+        # keeps temporalStatus only so we do not mis-label the snapshot.
         ontology_node["estleg:temporalStatus"] = "repealed"
-        ontology_node["estleg:contentStatus"] = "repealedBeforeSnapshot"
-        ontology_node["estleg:contentStatusReason"] = (
-            f"Act repealed on {metadata.get('repealDate')}, before the snapshot "
-            f"date {kehtiv}; provision content suppressed (issue #374)."
-        )
+        if repealed_before_snapshot:
+            ontology_node["estleg:contentStatus"] = "repealedBeforeSnapshot"
+            ontology_node["estleg:contentStatusReason"] = (
+                f"Act repealed on {repeal_date}, before the snapshot "
+                f"date {kehtiv}; provision content suppressed (issue #374)."
+            )
+        else:
+            ontology_node["estleg:contentStatusReason"] = (
+                f"Act temporalStatus=repealed (repealDate {repeal_date}); "
+                "provision content suppressed (issue #374)."
+            )
 
     graph: list[dict] = [
         ontology_node,
@@ -516,6 +620,7 @@ def build_regulation_jsonld(
         "html_fallback": int(parse_mode == "html_fallback"),
         "no_paragraphs": int(parse_mode == "no_paragraphs"),
         "repealed_before_snapshot": int(repealed_before_snapshot),
+        "repealed": int(tombstone),
     }
 
     return {"@context": CONTEXT, "@graph": graph}, stats
@@ -643,16 +748,14 @@ def summarize_regulation_doc(doc: dict) -> dict:
     issuer = ontology.get("estleg:issuer") or "(unknown)"
     content_status = ontology.get("estleg:contentStatus")
     is_stub = content_status == "noStructuredBody"
-    # Issue #374: an act repealed before the snapshot is tombstoned — the
-    # generator wrote `contentStatus=repealedBeforeSnapshot` (and
-    # `temporalStatus=repealed`) and suppressed its body. Surface it as its
-    # own status so it neither inflates the ``full`` coverage bucket nor the
-    # active-regulation count.
-    is_repealed_pre_snapshot = (
+    # Issue #374: any ``temporalStatus=repealed`` act (pre-snapshot
+    # tombstone *or* later-repealed) is excluded from the ``full``
+    # coverage bucket and from ``activeRegulations``.
+    is_repealed = (
         content_status == "repealedBeforeSnapshot"
         or ontology.get("estleg:temporalStatus") == "repealed"
     )
-    if is_repealed_pre_snapshot:
+    if is_repealed:
         status = "repealed"
     elif is_stub:
         status = "stub"
@@ -664,12 +767,12 @@ def summarize_regulation_doc(doc: dict) -> dict:
         "has_preamble": int(bool(ontology.get("estleg:preambleText"))),
         "html_fallback": int(ontology.get("estleg:parseMode") == "html_fallback"),
         "no_paragraphs": int(is_stub),
-        "repealed_before_snapshot": int(is_repealed_pre_snapshot),
+        "repealed_before_snapshot": int(is_repealed),
         "issuer": issuer if isinstance(issuer, str) else "(unknown)",
         # Issue #119: per-act coverage status surfaced in the index.
         # ``stub`` = act-level node only (no structured body); ``full``
         # = structured (or HTML-fallback) provisions present; ``repealed``
-        # = repealed-before-snapshot tombstone (issue #374).
+        # = temporalStatus=repealed tombstone (issue #374).
         "status": status,
         "contentStatus": content_status if isinstance(content_status, str) else None,
     }
@@ -732,7 +835,14 @@ def build_regulation_index(
         if stats["status"] == "stub":
             entry["reason"] = "no structured paragraphs, annexes, or preamble parsed from source XML"
         elif stats["status"] == "repealed":
-            entry["reason"] = "repealed before snapshot; provision content suppressed (issue #374)"
+            if stats["contentStatus"] == "repealedBeforeSnapshot":
+                entry["reason"] = (
+                    "repealed before snapshot; provision content suppressed (issue #374)"
+                )
+            else:
+                entry["reason"] = (
+                    "temporalStatus=repealed; provision content suppressed (issue #374)"
+                )
         act_entries.append(entry)
 
     return {
@@ -741,8 +851,8 @@ def build_regulation_index(
         "kov": is_kov,
         # ``totalRegulations`` stays == len(files) (the validate_all
         # filesystem-parity invariant). Issue #374: the *active* corpus size
-        # is surfaced separately so consumers can exclude repealed-before-
-        # snapshot tombstones without re-scanning every peep file.
+        # excludes every ``temporalStatus=repealed`` act (not only
+        # pre-snapshot tombstones) so consumers do not need to rescan.
         "totalRegulations": len(files),
         "activeRegulations": len(files) - totals["repealed_before_snapshot"],
         "repealedBeforeSnapshotCount": totals["repealed_before_snapshot"],
@@ -926,12 +1036,187 @@ def source_removed_files(
     return removed
 
 
+def strip_repealed_provision_bodies(
+    doc: dict,
+    *,
+    kehtiv: str | None = None,
+) -> dict[str, int]:
+    """Drop void provision body fields from a ``temporalStatus=repealed`` act.
+
+    Keeps provision ``@id`` / types / structural links and the act-level
+    repeal metadata. ``estleg:legalText`` is removed; ``estleg:summary``
+    is replaced with :data:`REPEALED_BODY_TOMBSTONE` so SHACL
+    ``LegalProvisionShape`` still sees a required summary. Pre-snapshot
+    repeals also receive ``contentStatus=repealedBeforeSnapshot``.
+
+    No-op (and returns zeros) when the act is not repealed.
+    """
+    graph = doc.get("@graph")
+    if not isinstance(graph, list):
+        return {"stripped": 0, "provisions": 0}
+
+    ontology = _ontology_node(doc) or {}
+    if ontology.get("estleg:temporalStatus") != "repealed":
+        return {"stripped": 0, "provisions": 0}
+
+    repeal_date = _xsd_date_value(ontology.get("estleg:repealDate"))
+    file_kehtiv = _xsd_date_value(ontology.get("estleg:kehtiv")) or kehtiv
+    stripped = 0
+    provisions = 0
+    for node in graph:
+        if not _is_provision_node(node):
+            continue
+        provisions += 1
+        changed = False
+        if "estleg:legalText" in node:
+            del node["estleg:legalText"]
+            changed = True
+        summary = node.get("estleg:summary")
+        if summary != REPEALED_BODY_TOMBSTONE:
+            node["estleg:summary"] = REPEALED_BODY_TOMBSTONE
+            changed = True
+        if changed:
+            stripped += 1
+
+    if _repealed_before_snapshot(repeal_date, file_kehtiv or DEFAULT_KEHTIV):
+        if ontology.get("estleg:contentStatus") != "repealedBeforeSnapshot":
+            ontology["estleg:contentStatus"] = "repealedBeforeSnapshot"
+            ontology["estleg:contentStatusReason"] = (
+                f"Act repealed on {repeal_date}, before the snapshot "
+                f"date {file_kehtiv or DEFAULT_KEHTIV}; provision content "
+                "suppressed (issue #374)."
+            )
+
+    return {"stripped": stripped, "provisions": provisions}
+
+
+def iter_repealed_regulation_peeps(out_dir: Path) -> list[Path]:
+    """Return peep paths whose bytes mention ``temporalStatus=repealed``."""
+    hits: list[Path] = []
+    for path in regulation_files(out_dir):
+        try:
+            raw = path.read_bytes()
+        except OSError:
+            continue
+        if _TEMPORAL_STATUS_REPEALED_MARKER not in raw:
+            continue
+        hits.append(path)
+    return hits
+
+
+def strip_repealed_regulation_corpus(
+    out_dir: Path,
+    *,
+    kehtiv: str | None = None,
+) -> dict[str, int]:
+    """Surgical issue #374 pass over every repealed peep under ``out_dir``."""
+    totals: Counter[str] = Counter()
+    for path in iter_repealed_regulation_peeps(out_dir):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            continue
+        ontology = _ontology_node(doc) or {}
+        if ontology.get("estleg:temporalStatus") != "repealed":
+            continue
+        totals["repealed_acts"] += 1
+        stats = strip_repealed_provision_bodies(doc, kehtiv=kehtiv)
+        totals["provisions"] += stats["provisions"]
+        if stats["stripped"]:
+            save_json(path, doc)
+            totals["acts_stripped"] += 1
+            totals["provisions_stripped"] += stats["stripped"]
+    return dict(totals)
+
+
+def count_repealed_with_provision_legal_text(out_dir: Path) -> list[str]:
+    """Return peep paths that are repealed and still carry provision legalText."""
+    remaining: list[str] = []
+    for path in iter_repealed_regulation_peeps(out_dir):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            continue
+        ontology = _ontology_node(doc) or {}
+        if ontology.get("estleg:temporalStatus") != "repealed":
+            continue
+        for node in doc.get("@graph", []):
+            if _is_provision_node(node) and _node_has_legal_text(node):
+                remaining.append(str(path))
+                break
+    return remaining
+
+
+def update_index_repealed_counts(
+    out_dir: Path,
+    *,
+    is_kov: bool,
+    kehtiv: str | None = None,
+    doc_cache: dict[Path, dict] | None = None,
+) -> dict:
+    """Patch ``activeRegulations`` onto an existing regulation index.
+
+    Preserves the committed ``files`` list and other fields. Counts every
+    ``temporalStatus=repealed`` act (not only pre-snapshot tombstones).
+    ``totalRegulations`` stays equal to the on-disk peep count.
+    """
+    index_name = "REGULATIONS_KOV_INDEX.json" if is_kov else "REGULATIONS_RIIK_INDEX.json"
+    index_path = out_dir / index_name
+    if index_path.is_file():
+        with open(index_path, "r", encoding="utf-8") as f:
+            index = json.load(f)
+    else:
+        index = {"kov": is_kov, "files": []}
+
+    files = regulation_files(out_dir)
+    repealed = 0
+    for path in files:
+        doc: dict | None = None
+        if doc_cache is not None:
+            doc = doc_cache.get(path)
+        if doc is None:
+            try:
+                raw = path.read_bytes()
+            except OSError:
+                continue
+            if b"repealed" not in raw:
+                continue
+            try:
+                doc = json.loads(raw)
+            except json.JSONDecodeError:
+                continue
+        if summarize_regulation_doc(doc)["status"] == "repealed":
+            repealed += 1
+
+    index["kov"] = is_kov
+    if kehtiv:
+        index["kehtiv"] = kehtiv
+    elif "kehtiv" not in index:
+        index["kehtiv"] = DEFAULT_KEHTIV
+    index["totalRegulations"] = len(files)
+    index["activeRegulations"] = len(files) - repealed
+    index["repealedBeforeSnapshotCount"] = repealed
+    save_json(index_path, index)
+    return index
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--kov", action="store_true", help="Generate KOV (municipal) regulations instead of state-level.")
     parser.add_argument("--kehtiv", default=DEFAULT_KEHTIV, help="Snapshot date YYYY-MM-DD (default: %(default)s).")
     parser.add_argument("--limit", type=int, default=None, help="Process at most N regulations (for dry runs).")
     parser.add_argument("--sleep", type=float, default=0.3, help="Seconds to sleep between XML fetches (be polite).")
+    parser.add_argument(
+        "--strip-repealed-bodies",
+        action="store_true",
+        help=(
+            "Offline issue #374 pass: strip legalText/summary from every "
+            "temporalStatus=repealed peep under the output directory and "
+            "refresh activeRegulations on the index. Does not fetch XML."
+        ),
+    )
     mode_group = parser.add_mutually_exclusive_group()
     mode_group.add_argument(
         "--missing-only",
@@ -960,6 +1245,28 @@ def main():
     out_dir = OUTPUT_KOV if is_kov else OUTPUT_RIIK
     out_dir.mkdir(parents=True, exist_ok=True)
     cache_subdir = "maarus_kov" if is_kov else "maarus"
+
+    if args.strip_repealed_bodies:
+        print("=" * 70)
+        print(
+            f"Strip repealed regulation bodies "
+            f"(kov={'true' if is_kov else 'false'}, kehtiv={args.kehtiv})"
+        )
+        print("=" * 70)
+        stats = strip_repealed_regulation_corpus(out_dir, kehtiv=args.kehtiv)
+        index_doc = update_index_repealed_counts(
+            out_dir, is_kov=is_kov, kehtiv=args.kehtiv
+        )
+        remaining = count_repealed_with_provision_legal_text(out_dir)
+        print(f"  Repealed acts seen:         {stats.get('repealed_acts', 0)}")
+        print(f"  Acts stripped:              {stats.get('acts_stripped', 0)}")
+        print(f"  Provisions stripped:        {stats.get('provisions_stripped', 0)}")
+        print(f"  Remaining with legalText:   {len(remaining)}")
+        print(f"  Active regulations:         {index_doc['activeRegulations']}")
+        print(
+            f"  Repealed (index count):     {index_doc['repealedBeforeSnapshotCount']}"
+        )
+        return
 
     print("=" * 70)
     print(f"Generate regulations (kov={'true' if is_kov else 'false'}, kehtiv={args.kehtiv}, mode={mode})")

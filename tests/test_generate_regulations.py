@@ -27,8 +27,11 @@ import estleg_common
 import generate_regulations
 import riigiteataja_common
 from generate_regulations import (
+    REPEALED_BODY_TOMBSTONE,
     _gid_rank,
+    _repealed_as_of,
     _repealed_before_snapshot,
+    _should_tombstone_regulation,
     build_regulation_index,
     build_regulation_jsonld,
     classify_issuer,
@@ -37,7 +40,9 @@ from generate_regulations import (
     provision_summary,
     regulation_file_tid,
     source_removed_files,
+    strip_repealed_provision_bodies,
     summarize_regulation_doc,
+    update_index_repealed_counts,
     write_regulation_output,
 )
 from riigiteataja_common import (
@@ -747,15 +752,74 @@ class TestRepealedBeforeSnapshotGenerator:
         assert ont["estleg:parseMode"] == "structured"
         assert stats["repealed_before_snapshot"] == 0
 
-    def test_repealed_on_snapshot_date_keeps_body(self):
-        # An act repealed *on* the snapshot date is still in force that day.
+    def test_repealed_on_snapshot_date_is_tombstoned_as_currently_repealed(self):
+        # Still in force *on* the snapshot day (predicate is False) but
+        # as of BUILD_EVALUATION_DATE the act is repealed → no body.
         root = _reg_xml("810", "811", repeal="2026-05-01")
-        doc, _stats = build_regulation_jsonld(
+        doc, stats = build_regulation_jsonld(
             "Lõppev määrus", {}, root, is_kov=False, kehtiv="2026-05-01"
         )
-        assert len(_provisions(doc["@graph"])) == 1
+        assert _provisions(doc["@graph"]) == []
         ont = _node_by_id(doc["@graph"], "estleg:Reg_810_Map_2026")
+        assert ont["estleg:temporalStatus"] == "repealed"
+        assert ont.get("estleg:contentStatus") != "repealedBeforeSnapshot"
+        assert stats["repealed"] == 1
+        assert stats["repealed_before_snapshot"] == 0
+
+    def test_repealed_after_older_snapshot_if_temporal_status_repealed(self):
+        # vangla_sisekorraeeskiri: repeal 2026-05-04, kehtiv 2026-05-01.
+        # Inference against the snapshot date would keep the body; an
+        # explicit temporalStatus=repealed must still tombstone.
+        root = _reg_xml("162619", "120122025019", repeal="2026-05-04")
+        doc, stats = build_regulation_jsonld(
+            "Vangla sisekorraeeskiri",
+            {},
+            root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            temporal_status="repealed",
+            evaluation_date="2026-05-01",
+        )
+        assert _provisions(doc["@graph"]) == []
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_162619_Map_2026")
+        assert ont is not None
+        assert ont["estleg:temporalStatus"] == "repealed"
+        assert ont.get("estleg:contentStatus") != "repealedBeforeSnapshot"
+        assert ont["estleg:repealDate"] == {"@value": "2026-05-04", "@type": "xsd:date"}
+        assert stats["repealed"] == 1
+        assert stats["repealed_before_snapshot"] == 0
+        assert stats["paragraphs"] == 0
+
+    def test_inferred_repealed_as_of_evaluation_date_tombstones(self):
+        root = _reg_xml("162620", "1", repeal="2026-05-04")
+        doc, stats = build_regulation_jsonld(
+            "Vangla sisekorraeeskiri",
+            {},
+            root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            evaluation_date="2026-06-01",
+        )
+        assert _provisions(doc["@graph"]) == []
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_162620_Map_2026")
+        assert ont["estleg:temporalStatus"] == "repealed"
+        assert stats["repealed"] == 1
+
+    def test_future_repeal_after_evaluation_date_keeps_body(self):
+        root = _reg_xml("830", "831", repeal="2026-12-01")
+        doc, stats = build_regulation_jsonld(
+            "Tuleviku määrus",
+            {},
+            root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            evaluation_date="2026-06-01",
+        )
+        assert len(_provisions(doc["@graph"])) == 1
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_830_Map_2026")
         assert "estleg:temporalStatus" not in ont
+        assert "estleg:legalText" in _provisions(doc["@graph"])[0]
+        assert stats["repealed"] == 0
 
     def test_summarize_classifies_repealed_status(self):
         root = _reg_xml("820", "821", repeal="2025-01-01")
@@ -808,6 +872,168 @@ class TestRepealedBeforeSnapshotIndex:
         assert "issue #374" in repealed_entry["reason"]
         # No void provision text was indexed for the tombstone.
         assert index["totalParagraphs"] == 1
+
+    def test_active_count_excludes_temporal_status_repealed_not_just_pre_snapshot(
+        self, tmp_path
+    ):
+        """activeRegulations drops every temporalStatus=repealed act."""
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        active_root = _reg_xml("700", "701", repeal=None)
+        active_doc, _ = build_regulation_jsonld(
+            "Aktiivne määrus", {}, active_root, is_kov=False, kehtiv="2026-05-01"
+        )
+        (out_dir / "active_t700_peep.json").write_text(
+            json.dumps(active_doc), encoding="utf-8"
+        )
+        # In force at the 2026-05-01 snapshot, repealed afterwards.
+        later_root = _reg_xml("162619", "9", repeal="2026-05-04")
+        later_doc, _ = build_regulation_jsonld(
+            "Vangla sisekorraeeskiri",
+            {},
+            later_root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            temporal_status="repealed",
+            evaluation_date="2026-05-01",
+        )
+        (out_dir / "vangla_t162619_peep.json").write_text(
+            json.dumps(later_doc), encoding="utf-8"
+        )
+
+        index = build_regulation_index(out_dir, is_kov=False, kehtiv="2026-05-01")
+        assert index["totalRegulations"] == 2
+        assert index["activeRegulations"] == 1
+        assert index["repealedBeforeSnapshotCount"] == 1
+        later_entry = next(
+            a for a in index["acts"] if a["file"] == "vangla_t162619_peep.json"
+        )
+        assert later_entry["status"] == "repealed"
+        assert "issue #374" in later_entry["reason"]
+
+
+class TestRepealedAsOfAndShouldTombstone:
+    """Unit coverage for the as-of / OR-ed tombstone predicate (issue #374)."""
+
+    def test_repealed_as_of_is_inclusive(self):
+        assert _repealed_as_of("2026-05-04", "2026-05-04") is True
+        assert _repealed_as_of("2026-05-04", "2026-05-03") is False
+        assert _repealed_as_of("2026-05-04", "2026-06-01") is True
+
+    def test_explicit_repealed_status_wins_over_older_snapshot(self):
+        assert (
+            _should_tombstone_regulation(
+                "2026-05-04",
+                "2026-05-01",
+                temporal_status="repealed",
+                evaluation_date="2026-05-01",
+            )
+            is True
+        )
+
+    def test_in_force_status_is_not_inferred_away(self):
+        # Caller already classified inForce (e.g. a historical snapshot
+        # rebuild): do not tombstone just because eval date is later.
+        assert (
+            _should_tombstone_regulation(
+                "2026-05-04",
+                "2026-05-01",
+                temporal_status="inForce",
+                evaluation_date="2026-06-01",
+            )
+            is False
+        )
+
+    def test_pre_snapshot_still_tombstones_even_if_marked_in_force(self):
+        assert (
+            _should_tombstone_regulation(
+                "2025-10-24",
+                "2026-05-01",
+                temporal_status="inForce",
+            )
+            is True
+        )
+
+
+class TestStripRepealedProvisionBodies:
+    """Surgical corpus helper: drop legalText/summary, keep identity."""
+
+    def _repealed_doc(self, *, repeal: str, kehtiv: str | None = None) -> dict:
+        act: dict = {
+            "@id": "estleg:Reg_1_Map_2026",
+            "@type": ["owl:Ontology", "estleg:Act"],
+            "estleg:temporalStatus": "repealed",
+            "estleg:repealDate": {"@value": repeal, "@type": "xsd:date"},
+        }
+        if kehtiv:
+            act["estleg:kehtiv"] = {"@value": kehtiv, "@type": "xsd:date"}
+        return {
+            "@graph": [
+                act,
+                {
+                    "@id": "estleg:Reg_1_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:Regulation_1"],
+                    "estleg:paragrahv": "§ 1.",
+                    "rdfs:label": "§ 1. Reguleerimisala",
+                    "estleg:sourceAct": "Test",
+                    "estleg:summary": "Käesolev määrus reguleerib midagi olulist.",
+                    "estleg:legalText": "Käesolev määrus reguleerib midagi olulist ja sisukat.",
+                },
+            ]
+        }
+
+    def test_strip_drops_legal_text_and_replaces_summary(self):
+        doc = self._repealed_doc(repeal="2026-05-04", kehtiv="2026-05-01")
+        stats = strip_repealed_provision_bodies(doc)
+        assert stats["stripped"] == 1
+        prov = doc["@graph"][1]
+        assert "estleg:legalText" not in prov
+        assert prov["estleg:summary"] == REPEALED_BODY_TOMBSTONE
+        assert prov["@id"] == "estleg:Reg_1_Par_1"
+        assert prov["estleg:paragrahv"] == "§ 1."
+        act = doc["@graph"][0]
+        assert act["estleg:temporalStatus"] == "repealed"
+        assert act["estleg:repealDate"]["@value"] == "2026-05-04"
+        assert act.get("estleg:contentStatus") != "repealedBeforeSnapshot"
+
+    def test_strip_sets_pre_snapshot_content_status(self):
+        doc = self._repealed_doc(repeal="2025-10-24", kehtiv="2026-05-01")
+        strip_repealed_provision_bodies(doc)
+        act = doc["@graph"][0]
+        assert act["estleg:contentStatus"] == "repealedBeforeSnapshot"
+        assert "issue #374" in act["estleg:contentStatusReason"]
+
+    def test_strip_is_noop_for_in_force_act(self):
+        doc = self._repealed_doc(repeal="2026-05-04")
+        doc["@graph"][0]["estleg:temporalStatus"] = "inForce"
+        stats = strip_repealed_provision_bodies(doc)
+        assert stats["stripped"] == 0
+        assert "estleg:legalText" in doc["@graph"][1]
+
+    def test_update_index_counts_temporal_status_repealed(self, tmp_path):
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        doc = self._repealed_doc(repeal="2026-05-04", kehtiv="2026-05-01")
+        (out_dir / "later_t1_peep.json").write_text(
+            json.dumps(doc), encoding="utf-8"
+        )
+        (out_dir / "REGULATIONS_RIIK_INDEX.json").write_text(
+            json.dumps(
+                {
+                    "kov": False,
+                    "kehtiv": "2026-05-01",
+                    "totalRegulations": 1,
+                    "files": ["later_t1_peep.json"],
+                }
+            ),
+            encoding="utf-8",
+        )
+        index = update_index_repealed_counts(
+            out_dir, is_kov=False, kehtiv="2026-05-01"
+        )
+        assert index["totalRegulations"] == 1
+        assert index["activeRegulations"] == 0
+        assert index["repealedBeforeSnapshotCount"] == 1
 
 
 # ---------------------------------------------------------------------------

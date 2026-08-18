@@ -152,5 +152,5 @@ def test_committed_kars_content_hash_matches_cached_xml() -> None:
     peep = json.loads(
         (repo / "krr_outputs" / "karistusseadustik_osa1_peep.json").read_text()
     )
-    root = next(n for n in peep["@graph"] if n.get("@id") == "estleg:KARIST_2_Osa1_1_87")
+    root = next(n for n in peep["@graph"] if n.get("@id") == "estleg:KARIST_2_Osa1")
     assert root.get("estleg:contentHash") == sha256_hex(xml)

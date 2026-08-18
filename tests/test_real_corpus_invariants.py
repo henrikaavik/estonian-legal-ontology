@@ -288,15 +288,15 @@ def test_transposition_inverse_on_directive_and_law():
 
 
 def test_kars_osa1_root_is_in_force():
-    """Published fact (#555): KarS osa 1 act root is KARIST_2_Osa1_1_87, in force."""
+    """Published fact (#555): KarS osa 1 act root is KARIST_2_Osa1, in force."""
     doc = _load("karistusseadustik_osa1_peep.json")
     node = next(
-        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:KARIST_2_Osa1_1_87"
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:KARIST_2_Osa1"
     )
     types = node.get("@type")
     if isinstance(types, str):
         types = [types]
-    assert "estleg:Act" in (types or []), "KARIST_2_Osa1_1_87 lost its Act type"
+    assert "estleg:Act" in (types or []), "KARIST_2_Osa1 lost its Act type"
     assert node.get("estleg:temporalStatus") == "inForce", (
         "KarS osa1 root is no longer temporalStatus=inForce"
     )
