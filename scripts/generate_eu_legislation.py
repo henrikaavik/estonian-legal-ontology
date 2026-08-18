@@ -494,10 +494,12 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
         return None
 
     safe_celex = sanitize_celex(item["celex"])
+    title_lit = {"@value": item["title"][:500], "@language": "et"}
     node: dict = {
         "@id": f"estleg:EU_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
-        "rdfs:label": {"@value": item["title"][:500], "@language": "et"},
+        "rdfs:label": title_lit,
+        "dcterms:title": dict(title_lit),
         "estleg:celexNumber": item["celex"],
         "estleg:euDocumentType": {"@id": f"estleg:EUDocType_{effective_type_id}"},
     }

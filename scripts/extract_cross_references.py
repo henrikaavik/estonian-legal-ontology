@@ -25,6 +25,7 @@ import re
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from typing import NamedTuple
 
 from estleg_common import (
     BUILD_EVALUATION_DATE,
@@ -703,6 +704,38 @@ def build_issuer_registry(
     return out
 
 
+class IssuerRegistryIndex(NamedTuple):
+    """O(1) views of ``issuer_registry`` for KOV-internal resolution."""
+
+    label_to_muni: dict[str, str]
+    labels_by_muni_btype: dict[tuple[str, str], list[str]]
+    labels_by_muni: dict[str, list[str]]
+
+
+def index_issuer_registry(
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> IssuerRegistryIndex:
+    """Index an issuer registry once per pipeline run.
+
+    ``label_to_muni`` keeps the first municipality seen for a
+    normalised label (Path A). ``labels_by_muni_btype`` and
+    ``labels_by_muni`` preserve registry insertion order (Path B).
+    """
+    label_to_muni: dict[str, str] = {}
+    labels_by_muni_btype: dict[tuple[str, str], list[str]] = {}
+    labels_by_muni: dict[str, list[str]] = {}
+    for _iri, (label, mun_iri, btype) in issuer_registry.items():
+        if label not in label_to_muni:
+            label_to_muni[label] = mun_iri
+        labels_by_muni_btype.setdefault((mun_iri, btype), []).append(label)
+        labels_by_muni.setdefault(mun_iri, []).append(label)
+    return IssuerRegistryIndex(
+        label_to_muni=label_to_muni,
+        labels_by_muni_btype=labels_by_muni_btype,
+        labels_by_muni=labels_by_muni,
+    )
+
+
 def build_citation_iri(source_act_iri: str, seq: int) -> str:
     """Build a SHACL-valid Citation IRI from the source act @id and a
     1-based sequence number. The 'estleg:' prefix is stripped from the
@@ -894,6 +927,7 @@ def resolve_kov_internal_act_ref(
     act_number: str,
     kov_act_lookup_by_number: dict[tuple[str, str], list[str]],
     issuer_registry: dict[str, tuple[str, str, str]],
+    issuer_indexes: IssuerRegistryIndex | None = None,
 ) -> str | None:
     """Resolve a KOV-internal act reference by act_number, scoped to the
     source act's municipality.
@@ -913,6 +947,10 @@ def resolve_kov_internal_act_ref(
         issuer_registry: issuer @id → (label_normalized, municipality @id,
             body_type). The label is the rdfs:label from
             issuers_kov_peep.json passed through _normalize_issuer_label.
+        issuer_indexes: precomputed views of ``issuer_registry``. Built
+            once in ``main()`` and threaded through the pipeline. When
+            omitted, indexes are built from ``issuer_registry`` for this
+            call (unit tests that only pass the registry).
 
     Returns the resolved target @id only when the candidate list
     narrows to exactly one entry. Otherwise None.
@@ -920,15 +958,16 @@ def resolve_kov_internal_act_ref(
     if source_municipality is None:
         return None
 
+    if issuer_indexes is None:
+        issuer_indexes = index_issuer_registry(issuer_registry)
+
     # Path A: explicit issuer string from the body text — the most
     # reliable disambiguator. Verify it belongs to the source
     # municipality (cross-municipality citations should be skipped).
     if explicit_issuer is not None:
-        municipality_for_issuer = None
-        for _iri, (label, mun_iri, _btype) in issuer_registry.items():
-            if label == explicit_issuer:
-                municipality_for_issuer = mun_iri
-                break
+        municipality_for_issuer = issuer_indexes.label_to_muni.get(
+            explicit_issuer
+        )
         if municipality_for_issuer != source_municipality:
             return None
         candidates = kov_act_lookup_by_number.get(
@@ -938,13 +977,14 @@ def resolve_kov_internal_act_ref(
 
     # Path B: no explicit issuer — enumerate issuers in the source
     # municipality, narrow by body_type when supplied.
-    candidate_labels: list[str] = []
-    for _iri, (label, mun_iri, btype) in issuer_registry.items():
-        if mun_iri != source_municipality:
-            continue
-        if body_type is not None and btype != body_type:
-            continue
-        candidate_labels.append(label)
+    if body_type is not None:
+        candidate_labels = issuer_indexes.labels_by_muni_btype.get(
+            (source_municipality, body_type), []
+        )
+    else:
+        candidate_labels = issuer_indexes.labels_by_muni.get(
+            source_municipality, []
+        )
 
     matches: list[str] = []
     for label in candidate_labels:
@@ -1911,6 +1951,7 @@ def _run_kov_body_pass(
     *,
     kov_act_lookup_by_number: dict[tuple[str, str], list[str]],
     issuer_registry: dict[str, tuple[str, str, str]],
+    issuer_indexes: IssuerRegistryIndex | None = None,
 ) -> dict:
     """Run the KOV body-text reference pass over ``graph``.
 
@@ -1946,6 +1987,9 @@ def _run_kov_body_pass(
 
     counted_ids: set[str] = set()
 
+    if issuer_indexes is None:
+        issuer_indexes = index_issuer_registry(issuer_registry)
+
     for prov_node in graph:
         if not is_provision_node(prov_node):
             continue
@@ -1977,6 +2021,7 @@ def _run_kov_body_pass(
                 act_number=ref["act_number"],
                 kov_act_lookup_by_number=kov_act_lookup_by_number,
                 issuer_registry=issuer_registry,
+                issuer_indexes=issuer_indexes,
             )
             if target is not None:
                 new_targets.append(target)
@@ -2046,6 +2091,7 @@ def process_law_file(
     *,
     kov_act_lookup_by_number: dict[tuple[str, str], list[str]] | None = None,
     issuer_registry: dict[str, tuple[str, str, str]] | None = None,
+    issuer_indexes: IssuerRegistryIndex | None = None,
     act_iri_to_prefix: dict[str, str] | None = None,
 ) -> dict:
     """
@@ -2105,6 +2151,7 @@ def process_law_file(
             graph,
             kov_act_lookup_by_number=kov_act_lookup_by_number,
             issuer_registry=issuer_registry or {},
+            issuer_indexes=issuer_indexes,
         )
         pass_results.append(kov_stats)
 
@@ -2363,6 +2410,7 @@ def main() -> int:
     kov_act_lookup = build_kov_act_lookup(kov_root, DATA_DIR, issuers_path)
     kov_act_lookup_by_number = build_kov_act_lookup_by_number(kov_root)
     issuer_registry = build_issuer_registry(issuers_path)
+    issuer_indexes = index_issuer_registry(issuer_registry)
     print(f"  state-reg lookup: {len(state_reg_lookup)} entries")
     print(f"  KOV act lookup (date-keyed): {len(kov_act_lookup)} entries")
     print(f"  KOV act lookup (number-only): {len(kov_act_lookup_by_number)} keys")
@@ -2397,6 +2445,7 @@ def main() -> int:
             json_file, abbrev_to_prefix, prefix_to_provisions, iri_to_file,
             kov_act_lookup_by_number=kov_act_lookup_by_number,
             issuer_registry=issuer_registry,
+            issuer_indexes=issuer_indexes,
             act_iri_to_prefix=act_iri_to_prefix,
         )
         all_stats.append(stats)

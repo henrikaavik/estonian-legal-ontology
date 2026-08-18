@@ -29,6 +29,21 @@ def test_regulation_node_never_gets_transposition_deadline() -> None:
     assert "estleg:transpositionDeadline" not in node
 
 
+def test_legislation_node_emits_dcterms_title() -> None:
+    """#348: legislation nodes ship dcterms:title, not only rdfs:label."""
+    item = {
+        "celex": "32016R0679",
+        "title": "Isikuandmete kaitse üldmäärus",
+        "authors": [],
+    }
+    node = mod.legislation_to_node(item, "Regulation")
+    assert node["dcterms:title"] == {
+        "@value": "Isikuandmete kaitse üldmäärus",
+        "@language": "et",
+    }
+    assert node["rdfs:label"]["@value"] == node["dcterms:title"]["@value"]
+
+
 def test_decision_node_never_gets_transposition_deadline() -> None:
     """A Decision node must not emit a transposition deadline either (#288)."""
     item = {

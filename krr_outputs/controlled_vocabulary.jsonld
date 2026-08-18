@@ -1820,10 +1820,7 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Has Section",
-      "rdfs:comment": "Links a hierarchy node (chapter/division/subdivision) to its sections (#567 OWL-DL TBox completion). No rdfs:domain — sections attach at several hierarchy levels; the range is estleg:Section, which has no NodeShape so the rdfs:range is inference-safe.",
-      "rdfs:range": {
-        "@id": "estleg:Section"
-      }
+      "rdfs:comment": "Links a hierarchy node (chapter/division/subdivision) to its sections (#567 OWL-DL TBox completion). Deliberately no rdfs:domain and no rdfs:range — sections attach at several hierarchy levels; objects include UnresolvedReferencePlaceholder stubs, and a range would RDFS-type those stubs as estleg:Section under the bucket SHACL gate (issue #377)."
     },
     {
       "@id": "estleg:hasSubdivision",
@@ -1888,6 +1885,17 @@
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. Inverse of estleg:interpretsLaw (estleg:interpretsLaw is the canonical T-Box definition; it lives in krr_outputs/riigikohus/riigikohus_schema.json with its rdfs:domain/rdfs:range).",
       "owl:inverseOf": {
         "@id": "estleg:interpretsLaw"
+      }
+    },
+    {
+      "@id": "estleg:interpretsEULaw",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "interprets EU law",
+      "rdfs:comment": "Links an estleg:EUCourtDecision to an estleg:EULegislation node named in the decision label (CELEX/directive/regulation citation). Domain may be estleg:EUCourtDecision. Deliberately NO rdfs:range — objects are often bare estleg:EU_* stubs inside the curia SHACL bucket; a range would phantom-type them as EULegislation under inference=rdfs.",
+      "rdfs:domain": {
+        "@id": "estleg:EUCourtDecision"
       }
     },
     {

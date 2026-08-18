@@ -1729,6 +1729,48 @@ def test_load_kov_acts_keeps_act_without_temporal_status(tmp_path):
     assert {act["iri"] for act in acts} == {"estleg:Reg_10003_Map_2026"}
 
 
+def test_build_corpus_act_index_seeds_preloaded_acts_and_skips_kov_scan(
+    tmp_path, monkeypatch
+):
+    """preloaded_acts seeds KOV IRIs; the file walk is include_kov=False (#386).
+
+    ``run_kov_similarity_pass`` already parsed every KOV peep via
+    ``_load_kov_acts``. Re-walking the KOV tree just to map act IRI ->
+    file was the #386 remainder; seeding from those records must still
+    surface both the KOV IRI and any law/state IRI from the non-KOV scan.
+    """
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir(parents=True, exist_ok=True)
+    law_path = krr / "jaatmeseadus_peep.json"
+    law_path.write_text(
+        json.dumps(_state_act_doc("JAATS_Map_2026", [_WASTE_TEXT])),
+        encoding="utf-8",
+    )
+    kov_path = _write_kov(
+        krr, "tallinna_vv", "38601",
+        _kov_act_doc("38601", "jaatmehoolduseeskiri", [_WASTE_TEXT]),
+    )
+    preloaded = similarity._load_kov_acts([kov_path])
+    assert len(preloaded) == 1
+
+    seen_include_kov: list[bool] = []
+
+    def _fake_iter(include_kov=False):
+        seen_include_kov.append(include_kov)
+        # When KOV is excluded the walk must not need the KOV peep —
+        # the preloaded record is the only source of that IRI.
+        return [law_path, kov_path] if include_kov else [law_path]
+
+    monkeypatch.setattr(similarity, "KRR_DIR", krr)
+    monkeypatch.setattr(similarity, "iter_peep_files", _fake_iter)
+
+    index = similarity._build_corpus_act_index(preloaded_acts=preloaded)
+
+    assert seen_include_kov == [False]
+    assert index["estleg:Reg_38601_Map_2026"] == kov_path
+    assert index["estleg:JAATS_Map_2026"] == law_path
+
+
 # ===========================================================================
 # #581 — boilerplate perfect-1.0 edges (annex indexing + empty-body guard)
 # ===========================================================================

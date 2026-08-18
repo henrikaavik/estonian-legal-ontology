@@ -747,15 +747,18 @@ def main(argv: list[str] | None = None):
     laws_meta: list[dict] = []
     # Coverage skip-reasons for files dropped at metadata-read time
     _skip_reasons: dict[str, int] = {}
+    files_skipped = 0
     for f in peep_files:
         try:
             meta = read_act_metadata_from_peep(f)
         except PeepMetadataParseError as exc:
             _skip_reasons["parse_error"] = _skip_reasons.get("parse_error", 0) + 1
+            files_skipped += 1
             print(f"    ERROR reading metadata: {exc}")
             continue
         if meta is None:
             _skip_reasons["no_act_node"] = _skip_reasons.get("no_act_node", 0) + 1
+            files_skipped += 1
             continue
         # Use the @id as the canonical "name" for the report — for
         # backwards-compat with the report shape, also store a
@@ -775,8 +778,8 @@ def main(argv: list[str] | None = None):
     # --emit-sample flag, so a sample can be written cheaply at the end.
     sample_pool: list[dict] = []
     files_updated = 0
-    files_skipped = 0
     files_error = 0
+    files_with_no_output = 0
     unclassified: list[str] = []
 
     # Coverage counters
@@ -827,10 +830,7 @@ def main(argv: list[str] | None = None):
 
             if not domains:
                 unclassified.append(name)
-                files_skipped += 1
-                _skip_reasons["unclassified"] = (
-                    _skip_reasons.get("unclassified", 0) + 1
-                )
+                files_with_no_output += 1
                 continue
 
             rel_file = (
@@ -967,6 +967,7 @@ def main(argv: list[str] | None = None):
         "total_laws_processed": len(laws_meta),
         "total_classified": len(classifications),
         "total_unclassified": len(unclassified),
+        "files_with_no_output": files_with_no_output,
         "files_updated": files_updated,
         "files_error": files_error,
         "domain_statistics": domain_stats,

@@ -209,6 +209,18 @@ STEPS: list[dict] = [
         "writes": ["eurlex/eurlex_combined.jsonld"],
     },
     {
+        "name": "link_curia_eu_legislation.py",
+        "description": "CURIA decision → EU legislation interpretsEULaw (#418)",
+        "script": "link_curia_eu_legislation.py",
+        "depends_on": ["rebuild_eurlex_combined"],
+        "reads": ["curia/*_peep.json", "eurlex/*_peep.json"],
+        "writes": [
+            "curia/*_peep.json",
+            "curia/curia_combined.jsonld",
+            "curia/curia_eu_link_report.json",
+        ],
+    },
+    {
         "name": "generate_harmonisation_links.py",
         "description": "Cross-border harmonisation links",
         "script": "generate_harmonisation_links.py",
@@ -368,6 +380,7 @@ STEPS: list[dict] = [
             "generate_inverse_references.py",
             "generate_transposition_mapping.py",
             "rebuild_eurlex_combined",
+            "link_curia_eu_legislation.py",
             "generate_harmonisation_links.py",
             "extract_court_provision_links.py",
             "classify_eurovoc.py",

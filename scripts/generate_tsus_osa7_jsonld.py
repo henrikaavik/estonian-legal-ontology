@@ -109,24 +109,28 @@ CLASS_DECLS: list[tuple[str, str]] = [
 ]
 
 # owl:ObjectProperty TBox: fragment -> (label, domain-fragment, range-fragment).
-PROPERTY_DECLS: list[tuple[str, str, str, str]] = [
+# hasSection / hasProvision / coversConcept deliberately omit domain and
+# range (#377): a range would RDFS-type UnresolvedReferencePlaceholder /
+# LegalProvision / Concept stubs as Section / Provision / LegalConcept.
+PROPERTY_DECLS: list[tuple[str, str, str | None, str | None]] = [
     ("hasChapter", "sisaldab peatükki", "LegalPart", "Chapter"),
     ("hasDivision", "sisaldab jagu", "Chapter", "Division"),
-    ("hasSection", "sisaldab paragrahvi", "Division", "Section"),
-    ("hasProvision", "sisaldab normiteksti", "Section", "Provision"),
-    ("coversConcept", "katab mõistet", "Section", "LegalConcept"),
+    ("hasSection", "sisaldab paragrahvi", None, None),
+    ("hasProvision", "sisaldab normiteksti", None, None),
+    ("coversConcept", "katab mõistet", None, None),
 ]
 
 # LegalConcept individuals. The committed module emits three cross-cutting
 # concepts BEFORE the hierarchy and five aegumine-specific concepts AFTER the
 # sections; the split + ordering is reproduced.
+# Fragments are ASCII transliterations (Õ→O, ä→a; #383); rdfs:label stays Estonian.
 CONCEPTS_TOP: list[tuple[str, str]] = [
-    ("ÕigusteKaitsmine", "Õiguste kaitsmine"),
-    ("ÕigusteEnnetamine", "Õiguste ennetamine"),
+    ("OigusteKaitsmine", "Õiguste kaitsmine"),
+    ("OigusteEnnetamine", "Õiguste ennetamine"),
     ("Aegumine", "Aegumine"),
 ]
 CONCEPTS_BOTTOM: list[tuple[str, str]] = [
-    ("AegumiseTagajärjed", "Aegumise tagajärjed"),
+    ("AegumiseTagajarjed", "Aegumise tagajärjed"),
     ("TehingustTulenevaNoudeAegumine", "Tehingust tuleneva nõude aegumine"),
     ("SeadusestTulenevaNoudeAegumine", "Seadusest tuleneva nõude aegumine"),
     ("AegumineErijuhtudel", "Aegumine erijuhtudel"),
@@ -135,18 +139,18 @@ CONCEPTS_BOTTOM: list[tuple[str, str]] = [
 
 # Per-section coversConcept mapping (section local-id -> ordered concept frags).
 SECTION_CONCEPTS: dict[str, list[str]] = {
-    "TsUS_Par_138": ["ÕigusteEnnetamine"],
-    "TsUS_Par_139": ["ÕigusteEnnetamine"],
-    "TsUS_Par_140": ["ÕigusteEnnetamine", "ÕigusteKaitsmine"],
-    "TsUS_Par_141": ["ÕigusteEnnetamine", "ÕigusteKaitsmine"],
-    "TsUS_Par_142": ["Aegumine", "AegumiseTagajärjed"],
-    "TsUS_Par_143": ["Aegumine", "AegumiseTagajärjed", "ÕigusteKaitsmine"],
-    "TsUS_Par_144": ["Aegumine", "AegumiseTagajärjed"],
-    "TsUS_Par_145": ["Aegumine", "AegumiseTagajärjed"],
-    "Par145_1": ["Aegumine", "AegumiseTagajärjed"],
+    "TsUS_Par_138": ["OigusteEnnetamine"],
+    "TsUS_Par_139": ["OigusteEnnetamine"],
+    "TsUS_Par_140": ["OigusteEnnetamine", "OigusteKaitsmine"],
+    "TsUS_Par_141": ["OigusteEnnetamine", "OigusteKaitsmine"],
+    "TsUS_Par_142": ["Aegumine", "AegumiseTagajarjed"],
+    "TsUS_Par_143": ["Aegumine", "AegumiseTagajarjed", "OigusteKaitsmine"],
+    "TsUS_Par_144": ["Aegumine", "AegumiseTagajarjed"],
+    "TsUS_Par_145": ["Aegumine", "AegumiseTagajarjed"],
+    "Par145_1": ["Aegumine", "AegumiseTagajarjed"],
     "TsUS_Par_146": ["Aegumine", "TehingustTulenevaNoudeAegumine"],
     "TsUS_Par_147": ["Aegumine", "TehingustTulenevaNoudeAegumine"],
-    "TsUS_Par_148": ["Aegumine", "ÕigusteEnnetamine", "TehingustTulenevaNoudeAegumine"],
+    "TsUS_Par_148": ["Aegumine", "OigusteEnnetamine", "TehingustTulenevaNoudeAegumine"],
     "TsUS_Par_149": ["Aegumine", "SeadusestTulenevaNoudeAegumine"],
     "TsUS_Par_150": ["Aegumine", "SeadusestTulenevaNoudeAegumine"],
     "TsUS_Par_151": ["Aegumine", "SeadusestTulenevaNoudeAegumine"],
@@ -157,15 +161,15 @@ SECTION_CONCEPTS: dict[str, list[str]] = {
     "TsUS_Par_156": ["Aegumine", "AegumineErijuhtudel"],
     "TsUS_Par_157": ["Aegumine", "AegumineErijuhtudel"],
     "TsUS_Par_158": ["Aegumine", "AegumiseKatkemineJaPeatumine"],
-    "TsUS_Par_159": ["Aegumine", "AegumiseKatkemineJaPeatumine", "ÕigusteKaitsmine"],
-    "TsUS_Par_160": ["Aegumine", "ÕigusteKaitsmine", "AegumiseKatkemineJaPeatumine"],
-    "TsUS_Par_161": ["Aegumine", "ÕigusteKaitsmine", "AegumiseKatkemineJaPeatumine"],
-    "TsUS_Par_162": ["Aegumine", "AegumiseKatkemineJaPeatumine", "ÕigusteEnnetamine"],
+    "TsUS_Par_159": ["Aegumine", "AegumiseKatkemineJaPeatumine", "OigusteKaitsmine"],
+    "TsUS_Par_160": ["Aegumine", "OigusteKaitsmine", "AegumiseKatkemineJaPeatumine"],
+    "TsUS_Par_161": ["Aegumine", "OigusteKaitsmine", "AegumiseKatkemineJaPeatumine"],
+    "TsUS_Par_162": ["Aegumine", "AegumiseKatkemineJaPeatumine", "OigusteEnnetamine"],
     "TsUS_Par_163": ["Aegumine", "AegumiseKatkemineJaPeatumine"],
     "TsUS_Par_164": ["Aegumine", "AegumiseKatkemineJaPeatumine"],
     "TsUS_Par_165": ["Aegumine", "AegumiseKatkemineJaPeatumine"],
     "TsUS_Par_166": ["Aegumine", "AegumiseKatkemineJaPeatumine"],
-    "TsUS_Par_167": ["Aegumine", "ÕigusteEnnetamine", "AegumiseKatkemineJaPeatumine"],
+    "TsUS_Par_167": ["Aegumine", "OigusteEnnetamine", "AegumiseKatkemineJaPeatumine"],
     "TsUS_Par_168": ["AegumiseKatkemineJaPeatumine", "Aegumine"],
     "TsUS_Par_169": ["Aegumine", "AegumiseKatkemineJaPeatumine"],
 }
@@ -174,7 +178,7 @@ SECTION_CONCEPTS: dict[str, list[str]] = {
 # amendments AFTER the hand-built snapshot (e.g. §160¹/§167¹) that have no
 # curated entry. The division's own theme + the umbrella "Aegumine".
 DIVISION_DEFAULT_CONCEPTS: dict[str, list[str]] = {
-    "Division1": ["Aegumine", "AegumiseTagajärjed"],
+    "Division1": ["Aegumine", "AegumiseTagajarjed"],
     "Division2": ["Aegumine", "TehingustTulenevaNoudeAegumine"],
     "Division3": ["Aegumine", "SeadusestTulenevaNoudeAegumine"],
     "Division4": ["Aegumine", "AegumineErijuhtudel"],
@@ -493,15 +497,16 @@ def build_graph(osa: ET.Element) -> list[dict]:
 
     # 3. owl:ObjectProperty TBox -----------------------------------------
     for frag, label, dom, rng in PROPERTY_DECLS:
-        graph.append(
-            {
-                "@id": f"{NS}{frag}",
-                "@type": ["owl:ObjectProperty"],
-                "rdfs:label": label,
-                "rdfs:domain": {"@id": f"{NS}{dom}"},
-                "rdfs:range": {"@id": f"{NS}{rng}"},
-            }
-        )
+        node: dict = {
+            "@id": f"{NS}{frag}",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": label,
+        }
+        if dom:
+            node["rdfs:domain"] = {"@id": f"{NS}{dom}"}
+        if rng:
+            node["rdfs:range"] = {"@id": f"{NS}{rng}"}
+        graph.append(node)
 
     # 4. cross-cutting concepts (before the hierarchy) -------------------
     for frag, label in CONCEPTS_TOP:

@@ -370,6 +370,101 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
 
 
 # ---------------------------------------------------------------------------
+# Regression for #394 item 2: unclassified acts were counted as both
+# processed and skipped, so files_processed + files_skipped exceeded
+# input_files_total. Unclassified files were processed (no EuroVoc
+# output). JSON / no-act-node failures remain skipped.
+# ---------------------------------------------------------------------------
+
+
+def _write_act_peep(path: Path, *, act_id: str, title: str, summary: str) -> Path:
+    path.write_text(json.dumps({
+        "@context": {"estleg": "https://w3id.org/estleg/",
+                     "owl": "http://www.w3.org/2002/07/owl#",
+                     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+                     "dcterms": "http://purl.org/dc/terms/"},
+        "@graph": [
+            {"@id": act_id,
+             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+             "rdfs:label": {"@value": title, "@language": "et"}},
+            {"@id": act_id.replace("_Map_2026", "_Par_1"),
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+             "estleg:summary": {"@value": summary, "@language": "et"}},
+        ],
+    }), encoding="utf-8")
+    return path
+
+
+def test_unclassified_files_are_processed_not_skipped(tmp_path, monkeypatch):
+    """#394 item 2: unclassified acts count as processed, not skipped."""
+    import classify_eurovoc
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    classified = _write_act_peep(
+        krr / "classified_peep.json",
+        act_id="estleg:Classified_1_Map_2026",
+        title="Autoriõiguse seadus",
+        summary=(
+            "Arst suunab patsiendi haiglasse ravimite saamiseks "
+            "ja teos on kaitstud autoriõigusega."
+        ),
+    )
+    unclassified = _write_act_peep(
+        krr / "unclassified_peep.json",
+        act_id="estleg:Bland_1_Map_2026",
+        title="Zzzq",
+        summary="Zzzq.",
+    )
+    no_act = krr / "provision_only_peep.json"
+    no_act.write_text(json.dumps({
+        "@context": {"estleg": "https://w3id.org/estleg/",
+                     "owl": "http://www.w3.org/2002/07/owl#"},
+        "@graph": [
+            {"@id": "estleg:LooseProvision",
+             "@type": ["owl:NamedIndividual"],
+             "rdfs:label": "stray"},
+        ],
+    }), encoding="utf-8")
+    bad_json = krr / "bad_peep.json"
+    bad_json.write_text("{not json", encoding="utf-8")
+
+    peeps = [classified, unclassified, no_act, bad_json]
+    captured: dict = {}
+
+    monkeypatch.setattr(classify_eurovoc, "KRR_DIR", krr)
+    monkeypatch.setattr(classify_eurovoc, "iter_peep_files", lambda *a, **k: peeps)
+
+    def _capture_coverage(report, path):
+        captured["report"] = report
+        captured["path"] = path
+
+    monkeypatch.setattr(classify_eurovoc, "write_coverage_report",
+                        _capture_coverage)
+
+    classify_eurovoc.main([])
+
+    cov = captured["report"]
+    assert cov.input_files_total == 4
+    assert cov.files_processed == 2
+    assert cov.files_skipped == 2
+    assert cov.files_processed + cov.files_skipped == cov.input_files_total
+    assert cov.files_with_output == 1
+    assert "unclassified" not in cov.skip_reasons
+    assert cov.skip_reasons.get("no_act_node") == 1
+    assert cov.skip_reasons.get("parse_error") == 1
+
+    report = json.loads(
+        (krr / "eurovoc_classification.json").read_text(encoding="utf-8")
+    )
+    assert report["total_classified"] == 1
+    assert report["total_unclassified"] == 1
+    assert report["files_with_no_output"] == 1
+    assert report["files_with_no_output"] <= report["total_laws_processed"]
+
+
+# ---------------------------------------------------------------------------
 # Regression for #331 + #360: the international-affairs gate (descriptor 3474,
 # pre-#421 code "0411") is raised to >=2 distinct keywords so a lone
 # context-ambiguous term no longer tags a domestic act. #331 covers

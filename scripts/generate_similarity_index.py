@@ -1278,10 +1278,25 @@ def _build_state_vector(
     return vec or None
 
 
-def _build_corpus_act_index() -> dict[str, Path]:
-    """Map every corpus act IRI -> its peep file (for cross-layer lookup)."""
+def _build_corpus_act_index(
+    preloaded_acts: list[dict] | None = None,
+) -> dict[str, Path]:
+    """Map every corpus act IRI -> its peep file (for cross-layer lookup).
+
+    When ``preloaded_acts`` is given (the already-loaded KOV records from
+    :func:`_load_kov_acts`), seed the map from each record's ``iri`` +
+    ``file`` and scan only non-KOV peeps for law/state IRIs. Omit it to
+    keep the full ``include_kov=True`` walk used by other callers.
+    """
     act_iri_to_file: dict[str, Path] = {}
-    for fpath in iter_peep_files(include_kov=True):
+    include_kov = preloaded_acts is None
+    if preloaded_acts is not None:
+        for act in preloaded_acts:
+            iri = act.get("iri")
+            fpath = act.get("file")
+            if isinstance(iri, str) and fpath is not None:
+                act_iri_to_file.setdefault(iri, fpath)
+    for fpath in iter_peep_files(include_kov=include_kov):
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)
@@ -1425,7 +1440,9 @@ def run_kov_similarity_pass() -> dict:
     print(f"  {len(buckets)} buckets; {len(oversize)} over the size cap")
 
     # Cross-layer state-act vector cache (shared across all acts).
-    act_iri_to_file = _build_corpus_act_index()
+    # Seed from the already-loaded KOV acts so we do not re-parse the
+    # ~11k KOV peeps just to map act IRI -> file (#386).
+    act_iri_to_file = _build_corpus_act_index(preloaded_acts=acts)
     state_vector_cache: dict[str, dict[str, float] | None] = {}
 
     # Intra-bucket peers are kept SEPARATE from cross-layer peers through the

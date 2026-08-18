@@ -10,6 +10,8 @@ SPARQL call is needed — so this is a deterministic, idempotent local backfill:
     owl:sameAs      -> {"@id": "http://publications.europa.eu/resource/celex/<CELEX>"}
                        (+ {"@id": "<ELI URI>"} for legislation with an ELI — #610)
     dcterms:source  -> {"@id": "http://publications.europa.eu/resource/celex/<CELEX>"}
+    dcterms:title   -> copy of rdfs:label when missing (legislation + decisions;
+                       committed artifacts predate the generator emit)
     eli:id_local    -> the ELI natural id "<reg/2008/15>" (EULegislation only,
                        derived from estleg:eliIdentifier; CELEX fallback when no
                        ELI URI — #607b; case-law has no ELI)
@@ -141,6 +143,17 @@ def backfill_node(node: dict) -> bool:
         eli_uri = _eli_uri(node)
         if eli_uri and not _sameas_has(node, eli_uri):
             _append_sameas(node, eli_uri)
+            changed = True
+    # Committed eurlex/curia artifacts predate dcterms:title on decisions
+    # (and legislation still only emits rdfs:label). Copy the existing
+    # rdfs:label object/string; do not invent a title if the label is absent.
+    if "dcterms:title" not in node:
+        label = node.get("rdfs:label")
+        if isinstance(label, str):
+            node["dcterms:title"] = label
+            changed = True
+        elif isinstance(label, dict):
+            node["dcterms:title"] = dict(label)
             changed = True
     return changed
 

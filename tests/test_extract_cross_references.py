@@ -729,6 +729,125 @@ class TestKovBodyTextScope:
         )
         assert target is None
 
+    def test_path_a_with_prebuilt_indexes_matches_registry_scan(
+        self, fixture_data
+    ):
+        from extract_cross_references import (
+            index_issuer_registry,
+            resolve_kov_internal_act_ref,
+        )
+        lookup, registry = fixture_data
+        indexes = index_issuer_registry(registry)
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer="tallinna linnavolikogu",
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+            issuer_indexes=indexes,
+        )
+        assert target == "estleg:Reg_TLN15_Map_2020"
+
+    def test_path_a_cross_muni_with_prebuilt_indexes_returns_none(
+        self, fixture_data
+    ):
+        from extract_cross_references import (
+            index_issuer_registry,
+            resolve_kov_internal_act_ref,
+        )
+        lookup, registry = fixture_data
+        indexes = index_issuer_registry(registry)
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer="tartu linnavolikogu",
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+            issuer_indexes=indexes,
+        )
+        assert target is None
+
+    def test_path_b_with_prebuilt_indexes_matches_registry_scan(
+        self, fixture_data
+    ):
+        from extract_cross_references import (
+            index_issuer_registry,
+            resolve_kov_internal_act_ref,
+        )
+        lookup, registry = fixture_data
+        indexes = index_issuer_registry(registry)
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer=None,
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+            issuer_indexes=indexes,
+        )
+        assert target == "estleg:Reg_TLN15_Map_2020"
+
+
+class TestIndexIssuerRegistry:
+    def test_groups_labels_by_muni_and_btype(self):
+        from extract_cross_references import index_issuer_registry
+
+        registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+            "estleg:Issuer_tallinna_linnavalitsus": (
+                "tallinna linnavalitsus",
+                "estleg:Municipality_tallinn", "valitsus",
+            ),
+            "estleg:Issuer_tartu_linnavolikogu": (
+                "tartu linnavolikogu",
+                "estleg:Municipality_tartu", "volikogu",
+            ),
+        }
+        idx = index_issuer_registry(registry)
+
+        assert idx.label_to_muni == {
+            "tallinna linnavolikogu": "estleg:Municipality_tallinn",
+            "tallinna linnavalitsus": "estleg:Municipality_tallinn",
+            "tartu linnavolikogu": "estleg:Municipality_tartu",
+        }
+        assert idx.labels_by_muni_btype == {
+            ("estleg:Municipality_tallinn", "volikogu"): [
+                "tallinna linnavolikogu",
+            ],
+            ("estleg:Municipality_tallinn", "valitsus"): [
+                "tallinna linnavalitsus",
+            ],
+            ("estleg:Municipality_tartu", "volikogu"): [
+                "tartu linnavolikogu",
+            ],
+        }
+        assert idx.labels_by_muni == {
+            "estleg:Municipality_tallinn": [
+                "tallinna linnavolikogu",
+                "tallinna linnavalitsus",
+            ],
+            "estleg:Municipality_tartu": ["tartu linnavolikogu"],
+        }
+
+    def test_first_label_wins_on_duplicate_normalised_labels(self):
+        from extract_cross_references import index_issuer_registry
+
+        registry = {
+            "estleg:Issuer_a": (
+                "shared label", "estleg:Municipality_a", "volikogu",
+            ),
+            "estleg:Issuer_b": (
+                "shared label", "estleg:Municipality_b", "volikogu",
+            ),
+        }
+        idx = index_issuer_registry(registry)
+        assert idx.label_to_muni["shared label"] == "estleg:Municipality_a"
+
 
 class TestKovBodyTextSavesFile:
     """A KOV peep that gains references ONLY from the new Layer 2b

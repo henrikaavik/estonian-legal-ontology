@@ -1127,6 +1127,14 @@ estleg:EUCourtDecisionShape
         sh:datatype xsd:string ;
         sh:name "euCaseNumber" ;
         sh:description "EU case number(s), e.g. C-438/14. Multi-valued for joined cases (#606 item 5: 'Liidetud kohtuasjad C-403/08, C-429/08')." ;
+    ] ;
+    # Issue #455: optional and inference-safe. Curia-bucket objects are often
+    # bare estleg:EU_* stubs — no sh:minCount, no sh:class, no rdfs:range.
+    sh:property [
+        sh:path estleg:interpretsEULaw ;
+        sh:nodeKind sh:IRI ;
+        sh:name "interpretsEULaw" ;
+        sh:description "Optional link from this EU court decision to an EU act named in the decision. Objects may be bare estleg:EU_* stubs; do not constrain with sh:class estleg:EULegislation." ;
     ] .
 
 # Shape for EUCourtDecisionType instances
