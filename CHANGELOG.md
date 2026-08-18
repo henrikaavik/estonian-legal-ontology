@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### INDEX body coverage, version citations, consistency stamp (#507, #524, #522)
+
+- INDEX laws carry `provisionCount` / `legalTextCount` / `stubKind`. 132
+  summary-only peeps now expose `legalText`. Non-treaty empty baseline is 2
+  (`validate_index_body_coverage`, #507).
+- All 124,899 ProvisionVersion nodes have `rtUrl`, `sourceAct`, and
+  `provisionRef` (#524 citation half; embeddings still open).
+- `partOfAct` is functional; TemporalStatus InForce ⊤ Repealed; dataset
+  `consistencyChecked` stamp + `check_tbox_consistency.py` (#522).
+
 ### Client, schema.org bridges, non-graph indexes (#551, #543, #462)
 
 - `estleg_client` package: `load_law` / `estleg-load` (#551). `scripts/`

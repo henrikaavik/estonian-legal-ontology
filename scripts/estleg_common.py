@@ -622,7 +622,8 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
     ``estleg:`` object references (and no ``void:exampleResource`` pointing at
     a corpus node), so it is inert for the graph-closure gate. No wall-clock
     date — keeping the build deterministic (the version string is the
-    pinnable identity).
+    pinnable identity). ``estleg:consistencyChecked`` is the #522 T-Box
+    checker stamp (not an owlrl run over this 265 MB graph).
     """
     return {
         "@id": ONTOLOGY_IRI,
@@ -637,6 +638,7 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
         "owl:versionInfo": version,
         "owl:versionIRI": {"@id": f"{ONTOLOGY_IRI}/{version}"},
         "void:uriSpace": NS,
+        "estleg:consistencyChecked": {"@value": True, "@type": "xsd:boolean"},
     }
 
 # Unused in instance JSON-LD: rdf:type is ``@type``; rdf:langString is a

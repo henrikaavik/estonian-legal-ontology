@@ -109,9 +109,11 @@ def test_partofact_functional_only_if_declared_in_cv():
     )
 
 
-def test_partofact_not_invented_in_controlled_vocabulary():
-    """#439: skip rather than mint estleg:partOfAct in the CV."""
-    assert "estleg:partOfAct" not in _vocab_index()
+def test_partofact_declared_functional_in_controlled_vocabulary():
+    """#522: partOfAct is now a CV FunctionalProperty (closes the #439 deferral)."""
+    node = _vocab_index()["estleg:partOfAct"]
+    assert _has_type(node, "owl:ObjectProperty")
+    assert _has_type(node, "owl:FunctionalProperty")
 
 
 def test_no_invented_versioning_iris_in_new_tbox_nodes():

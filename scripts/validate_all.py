@@ -36,6 +36,10 @@ from estleg_common import (  # noqa: E402
     iter_krr_jsonld_files,
 )
 from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
+from index_body_coverage import (  # noqa: E402
+    EMPTY_SUBSTANTIVE_BASELINE,
+    classify_index_entry,
+)
 from multipart_coverage import (  # noqa: E402
     iter_multipart_index_entries,
     unmarked_multipart_gaps,
@@ -818,6 +822,67 @@ def validate_multipart_coverage(krr_dir: Path = KRR_DIR, *, allow_missing_index:
         )
     if unmarked == 0:
         print(f"  Checked {len(entries)} multipart INDEX entries; no unmarked osa gaps")
+
+
+def validate_index_body_coverage(krr_dir: Path = KRR_DIR, *, allow_missing_index: bool = False):
+    """Issue #507: INDEX laws must not regress on empty / summaryOnly bodies."""
+    print("\n--- INDEX body coverage ---")
+    index_path = krr_dir / "INDEX.json"
+    if not index_path.exists():
+        if allow_missing_index:
+            warn(f"{index_path.name}: registry not found (allowed via --allow-missing-index)")
+        else:
+            error(
+                f"{index_path.name}: registry not found — the committed INDEX.json "
+                f"is required. Pass --allow-missing-index to permit a not-yet-"
+                f"generated tree."
+            )
+        return
+
+    doc = validate_json_syntax(index_path)
+    if doc is None:
+        return
+    laws = doc.get("laws")
+    if not isinstance(laws, list):
+        error(f"{index_path.name}: laws is not an array")
+        return
+
+    empty_count = 0
+    summary_only = 0
+    treaty_count = 0
+    unmarked_empty = 0
+    for law in laws:
+        if not isinstance(law, dict):
+            continue
+        coverage = classify_index_entry(law, krr_dir)
+        name = law.get("name") or "<unnamed>"
+        provision_count = coverage["provisionCount"]
+        legal_text_count = coverage["legalTextCount"]
+        kind = coverage.get("stubKind")
+        if provision_count > 0 and legal_text_count == 0:
+            summary_only += 1
+            error(
+                f"{index_path.name}: law {name!r} has provisionCount={provision_count} "
+                f"but legalTextCount=0 (summaryOnly is not allowed after backfill)"
+            )
+        if kind == "empty":
+            empty_count += 1
+            if law.get("stubKind") != "empty":
+                unmarked_empty += 1
+                error(f"{index_path.name}: unmarked empty non-treaty law {name!r}")
+        elif kind == "treaty":
+            treaty_count += 1
+
+    if empty_count > EMPTY_SUBSTANTIVE_BASELINE:
+        error(
+            f"{index_path.name}: empty non-treaty count {empty_count} exceeds "
+            f"EMPTY_SUBSTANTIVE_BASELINE={EMPTY_SUBSTANTIVE_BASELINE}"
+        )
+    if summary_only == 0 and unmarked_empty == 0 and empty_count <= EMPTY_SUBSTANTIVE_BASELINE:
+        print(
+            f"  Checked {len(laws)} INDEX laws; {treaty_count} treaty stubs, "
+            f"{empty_count} empty (baseline {EMPTY_SUBSTANTIVE_BASELINE})"
+        )
 
 
 def validate_regulation_indexes(krr_dir: Path = KRR_DIR):
@@ -2343,6 +2408,147 @@ def validate_provision_version_encoding(krr_dir: Path = KRR_DIR):
         )
 
 
+def version_layer_lag(pv_doc: dict, kehtiv: str) -> str | None:
+    """Return max ``versionValidFrom`` when it is strictly before *kehtiv*.
+
+    #532: the committed version layer can trail the law-peep snapshot
+    (max validFrom 2026-05-22 vs kehtiv 2026-05-24). Returns that max
+    date when a lag is present; ``None`` when dates are equal/later, or
+    when the sidecar has no dated ProvisionVersion nodes to compare.
+    """
+    if not isinstance(pv_doc, dict) or not kehtiv:
+        return None
+    newest: str | None = None
+    for node in pv_doc.get("@graph") or []:
+        if not isinstance(node, dict):
+            continue
+        if "estleg:ProvisionVersion" not in node_types(node):
+            continue
+        raw = node.get("estleg:versionValidFrom")
+        value = raw.get("@value") if isinstance(raw, dict) else raw
+        if isinstance(value, str) and value:
+            if newest is None or value > newest:
+                newest = value
+    if newest is None:
+        return None
+    if newest < kehtiv:
+        return newest
+    return None
+
+
+def _index_files_by_slug(krr_dir: Path) -> dict[str, list[str]]:
+    mapping: dict[str, list[str]] = {}
+    index_path = krr_dir / "INDEX.json"
+    try:
+        doc = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return mapping
+    if not isinstance(doc, dict):
+        return mapping
+    for law in doc.get("laws") or []:
+        if not isinstance(law, dict):
+            continue
+        name = law.get("name")
+        files = law.get("files")
+        if isinstance(name, str) and name and isinstance(files, list):
+            mapping[name] = [f for f in files if isinstance(f, str) and f]
+    return mapping
+
+
+def _kehtiv_literal(node: dict) -> str | None:
+    raw = node.get("estleg:kehtiv")
+    value = raw.get("@value") if isinstance(raw, dict) else raw
+    if isinstance(value, str) and value:
+        return value
+    return None
+
+
+def _kehtiv_for_slug(
+    slug: str, krr_dir: Path, index_files: dict[str, list[str]]
+) -> str | None:
+    """First ``estleg:kehtiv`` found on the law peep(s) for *slug*."""
+    seen: set[Path] = set()
+    candidates: list[Path] = []
+
+    def _add(path: Path) -> None:
+        if path.is_file() and path not in seen:
+            seen.add(path)
+            candidates.append(path)
+
+    _add(krr_dir / f"{slug}_peep.json")
+    for fname in index_files.get(slug) or []:
+        _add(krr_dir / fname)
+    for extra in sorted(krr_dir.glob(f"{slug}_*_peep.json")):
+        _add(extra)
+    for path in candidates:
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            kehtiv = _kehtiv_literal(node)
+            if kehtiv:
+                return kehtiv
+    return None
+
+
+def validate_version_layer_freshness(krr_dir: Path = KRR_DIR):
+    """#532 warning gate: sidecar max ``versionValidFrom`` must not trail peep kehtiv.
+
+    Current corpus max is 2026-05-22 against peep kehtiv 2026-05-24 — emit a
+    **warning**, not an error, so CI stays green until the version layer is
+    regenerated. Does not invent missing 2026-05-23/24 redactions.
+    """
+    print("\n--- Provision Version Freshness (#532) ---")
+    pv_dir = krr_dir / "provision_versions"
+    if not pv_dir.is_dir():
+        warn("provision_versions/: not found — skipping version-layer freshness gate")
+        return
+
+    index_files = _index_files_by_slug(krr_dir)
+    lagging = 0
+    scanned = 0
+    sample: tuple[str, str, str] | None = None
+    for path in sorted(pv_dir.glob("*.jsonld")):
+        if _is_lfs_pointer(path):
+            continue
+        kehtiv = _kehtiv_for_slug(path.stem, krr_dir, index_files)
+        if not kehtiv:
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        scanned += 1
+        newest = version_layer_lag(doc, kehtiv)
+        if newest is None:
+            continue
+        lagging += 1
+        if sample is None:
+            sample = (path.name, newest, kehtiv)
+    if lagging:
+        first = (
+            f"{sample[0]} max={sample[1]} kehtiv={sample[2]}"
+            if sample
+            else "n/a"
+        )
+        warn(
+            f"#532: {lagging} provision_versions sidecar(s) lag peep kehtiv "
+            f"(max versionValidFrom < kehtiv) across {scanned} compared "
+            f"file(s). First: {first}. Warning only — regenerate the version "
+            f"layer in lockstep with the law snapshot; do not invent missing "
+            f"redactions."
+        )
+        print(f"  lagging sidecars: {lagging}")
+    else:
+        print(f"  OK: {scanned} sidecar(s) at or after peep kehtiv")
+
+
 def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
     """Run the parity check for every documented subcorpus combined.
 
@@ -3083,6 +3289,7 @@ def main(argv: list[str] | None = None):
     validate_transposition_mapping(krr_dir)
     validate_registry_index(krr_dir, allow_missing_index=allow_missing_index)
     validate_multipart_coverage(krr_dir, allow_missing_index=allow_missing_index)
+    validate_index_body_coverage(krr_dir, allow_missing_index=allow_missing_index)
     validate_regulation_indexes(krr_dir)
     validate_act_coverage_reconciliation(krr_dir)
     validate_legacy_deprecations(krr_dir)
@@ -3090,6 +3297,7 @@ def main(argv: list[str] | None = None):
     validate_combined_graph_closure(krr_dir)
     validate_provision_version_monotonicity(krr_dir)
     validate_provision_version_encoding(krr_dir)
+    validate_version_layer_freshness(krr_dir)
     validate_provision_text_quality(krr_dir)
     validate_harmonisation_symmetry(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)

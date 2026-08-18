@@ -89,6 +89,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
 
 import estleg_common  # noqa: E402
 import deprecate_legacy_statutes as _legacy_deprecation  # noqa: E402
+from index_body_coverage import apply_body_coverage_fields  # noqa: E402
 from multipart_coverage import (  # noqa: E402
     apply_known_multipart_annotations,
     preserve_multipart_annotations,
@@ -872,6 +873,7 @@ def generate_index():
             entry["parts_mapped"] = sorted(info["parts"])
         preserve_multipart_annotations(entry, existing_laws_by_name.get(base_name))
         apply_known_multipart_annotations(entry)
+        apply_body_coverage_fields(entry, KRR_DIR)
         index["laws"].append(entry)
 
     # #426: emit the deprecated-duplicate section (deterministic: sorted

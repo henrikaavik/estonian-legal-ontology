@@ -2180,6 +2180,31 @@
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
     },
     {
+      "@id": "estleg:partOfAct",
+      "@type": [
+        "owl:ObjectProperty",
+        "owl:FunctionalProperty"
+      ],
+      "rdfs:label": "osa aktist (part of act)",
+      "rdfs:comment": "IRI link from a provision (or Chapter) to its parent act root. owl:FunctionalProperty: a provision belongs to at most one act (issue #522). Distinct from the literal estleg:sourceAct title.",
+      "rdfs:domain": {
+        "@type": "owl:Class",
+        "owl:unionOf": {
+          "@list": [
+            {
+              "@id": "estleg:LegalProvision"
+            },
+            {
+              "@id": "estleg:Chapter"
+            }
+          ]
+        }
+      },
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
+    },
+    {
       "@id": "estleg:phaseOrder",
       "@type": [
         "owl:DatatypeProperty"
@@ -2385,7 +2410,145 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Temporal Status",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "ABox values are the xsd:string tokens inForce / repealed / unknown (SHACL also admits notYetEffective). Those tokens correspond to the T-Box individuals estleg:TemporalStatus_InForce, estleg:TemporalStatus_Repealed, and estleg:TemporalStatus_Unknown; this property stays a DatatypeProperty and is not rewritten to an ObjectProperty (issue #522)."
+    },
+    {
+      "@id": "estleg:TemporalStatus",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:label": "Ajaliselt kehtivuse staatus (Temporal Status)",
+      "rdfs:comment": "SKOS-adjacent class for the closed temporal-status vocabulary (issue #522). Members live in estleg:TemporalStatusScheme. ABox estleg:temporalStatus values remain the string tokens inForce / repealed / unknown; they are not rewritten to these IRIs."
+    },
+    {
+      "@id": "estleg:TemporalStatusScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Ajaliselt kehtivuse staatuse skeem (Temporal Status Scheme)",
+      "skos:prefLabel": [
+        {
+          "@value": "Õigusakti ajalise kehtivuse staatused",
+          "@language": "et"
+        },
+        {
+          "@value": "Act temporal-status scheme",
+          "@language": "en"
+        }
+      ],
+      "dcterms:title": "Temporal Status Scheme",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:TemporalStatus_InForce"
+        },
+        {
+          "@id": "estleg:TemporalStatus_Repealed"
+        },
+        {
+          "@id": "estleg:TemporalStatus_Unknown"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:TemporalStatus_InForce",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept",
+        "estleg:TemporalStatus"
+      ],
+      "rdfs:label": "In force",
+      "skos:prefLabel": [
+        {
+          "@value": "Kehtiv",
+          "@language": "et"
+        },
+        {
+          "@value": "In force",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "inForce",
+      "skos:inScheme": {
+        "@id": "estleg:TemporalStatusScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:TemporalStatusScheme"
+      },
+      "rdfs:comment": "T-Box individual for the ABox token inForce. owl:disjointWith estleg:TemporalStatus_Repealed (issue #522).",
+      "owl:disjointWith": {
+        "@id": "estleg:TemporalStatus_Repealed"
+      }
+    },
+    {
+      "@id": "estleg:TemporalStatus_Repealed",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept",
+        "estleg:TemporalStatus"
+      ],
+      "rdfs:label": "Repealed",
+      "skos:prefLabel": [
+        {
+          "@value": "Kehtetu",
+          "@language": "et"
+        },
+        {
+          "@value": "Repealed",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "repealed",
+      "skos:inScheme": {
+        "@id": "estleg:TemporalStatusScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:TemporalStatusScheme"
+      },
+      "rdfs:comment": "T-Box individual for the ABox token repealed. owl:disjointWith estleg:TemporalStatus_InForce (issue #522).",
+      "owl:disjointWith": {
+        "@id": "estleg:TemporalStatus_InForce"
+      }
+    },
+    {
+      "@id": "estleg:TemporalStatus_Unknown",
+      "@type": [
+        "owl:NamedIndividual",
+        "skos:Concept",
+        "estleg:TemporalStatus"
+      ],
+      "rdfs:label": "Unknown",
+      "skos:prefLabel": [
+        {
+          "@value": "Teadmata",
+          "@language": "et"
+        },
+        {
+          "@value": "Unknown",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "unknown",
+      "skos:inScheme": {
+        "@id": "estleg:TemporalStatusScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:TemporalStatusScheme"
+      },
+      "rdfs:comment": "T-Box individual for the ABox token unknown (issue #522)."
+    },
+    {
+      "@id": "estleg:consistencyChecked",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "consistency checked",
+      "rdfs:comment": "Dataset-level xsd:boolean stamp that the #522 T-Box consistency checker has run (no list-valued temporalStatus that is both inForce and repealed; no node with two distinct partOfAct IRIs). Not an owlrl proof over combined_ontology.jsonld.",
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
     },
     {
       "@id": "estleg:targetGroup",

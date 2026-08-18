@@ -77,6 +77,7 @@ from estleg_common import (  # noqa: E402
     CONTEXT,
     KRR_DIR,
     iter_peep_files,
+    jsonld_text,
     parse_xml,
     parse_xml_file,
     save_json,
@@ -175,6 +176,14 @@ class LawTarget:
 
 _PROVISION_TYPE_RE = re.compile(r"^estleg:LegalProvision_")
 _PAR_IRI_RE = re.compile(r"_Par_(?P<suffix>[0-9]+(?:_[0-9]+)?)$")
+# versionOf IRI → human citation: prefix, optional _OsaN, _Par_N, optional _LgN.
+_PROVISION_REF_RE = re.compile(
+    r"^(?P<head>.+)_Par_(?P<par>\d+(?:_\d+)?(?:_to_\d+(?:_\d+)?)?)"
+    r"(?:_Lg_?(?P<lg>\d+))?$"
+)
+_RT_AKT_URL = "https://www.riigiteataja.ee/akt/"
+_ESTLEG_PREFIX = "estleg:"
+_ESTLEG_NS = "https://w3id.org/estleg/"
 
 
 def _peep_files_for_slug(slug: str, krr_dir: Path = KRR_DIR) -> list[Path]:
@@ -294,6 +303,235 @@ def reclassify_report_missing_peep_rows(
         row["error"] = new_error
         row["warnings"] = [new_error]
     return report
+
+
+# ---------------------------------------------------------------------------
+# #524 — citation-complete ProvisionVersion nodes
+# ---------------------------------------------------------------------------
+
+
+def _node_type_list(node: dict) -> list[str]:
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        return [types]
+    if isinstance(types, list):
+        return [t for t in types if isinstance(t, str)]
+    return []
+
+
+def _citation_text(value: object) -> str:
+    """Plain string from a JSON-LD literal (string, @value object, or int id)."""
+    if isinstance(value, bool):
+        return ""
+    if isinstance(value, int):
+        return str(value)
+    return jsonld_text(value).strip()
+
+
+def _local_estleg_name(iri: str) -> str:
+    if iri.startswith(_ESTLEG_PREFIX):
+        return iri[len(_ESTLEG_PREFIX) :]
+    if iri.startswith(_ESTLEG_NS):
+        return iri[len(_ESTLEG_NS) :]
+    return iri
+
+
+def rt_url_from_redaction_id(rid: str) -> str:
+    """Return the Riigi Teataja HTML akt URL for a redaction / terviktekst id."""
+    return f"{_RT_AKT_URL}{str(rid).strip()}"
+
+
+def provision_ref_from_iri(iri: str) -> str:
+    """Human citation from a provision IRI.
+
+    ``estleg:PKS_Par_1`` → ``PKS § 1``;
+    ``estleg:KARIST_2_Osa2_Par_88_Lg_1`` → ``KARIST_2 § 88 lg 1``.
+    Multipart ``_OsaN`` is dropped from the displayed abbreviation.
+    """
+    local = _local_estleg_name(iri.strip())
+    match = _PROVISION_REF_RE.match(local)
+    if not match:
+        return ""
+    head = re.sub(r"_Osa_?\d+$", "", match.group("head"))
+    if not head:
+        return ""
+    par = match.group("par").replace("_to_", "–")
+    ref = f"{head} § {par}"
+    lg = match.group("lg")
+    if lg:
+        ref = f"{ref} lg {lg}"
+    return ref
+
+
+def stamp_version_citation(
+    node: dict,
+    *,
+    act_title: str,
+    act_iri: str | None,
+) -> bool:
+    """Idempotently stamp #524 citation fields onto a ProvisionVersion node.
+
+    Sets ``estleg:rtUrl`` from ``versionRedactionId``, ``estleg:sourceAct``
+    from *act_title*, ``estleg:provisionRef`` from ``versionOf`` ``@id``, and
+    ``estleg:partOfAct`` from *act_iri* when known. Returns True iff the node
+    changed.
+    """
+    if not isinstance(node, dict):
+        return False
+    if "estleg:ProvisionVersion" not in _node_type_list(node):
+        return False
+    changed = False
+    rid = _citation_text(node.get("estleg:versionRedactionId"))
+    if rid:
+        url = rt_url_from_redaction_id(rid)
+        if node.get("estleg:rtUrl") != url:
+            node["estleg:rtUrl"] = url
+            changed = True
+    title = (act_title or "").strip()
+    if title and node.get("estleg:sourceAct") != title:
+        node["estleg:sourceAct"] = title
+        changed = True
+    version_of = node.get("estleg:versionOf")
+    if isinstance(version_of, dict):
+        provision_iri = version_of.get("@id")
+    elif isinstance(version_of, str):
+        provision_iri = version_of
+    else:
+        provision_iri = None
+    if isinstance(provision_iri, str) and provision_iri:
+        pref = provision_ref_from_iri(provision_iri)
+        if pref and node.get("estleg:provisionRef") != pref:
+            node["estleg:provisionRef"] = pref
+            changed = True
+    if act_iri:
+        expected = {"@id": act_iri}
+        if node.get("estleg:partOfAct") != expected:
+            node["estleg:partOfAct"] = expected
+            changed = True
+    return changed
+
+
+def _sidecar_act_title(doc: dict) -> str:
+    """Act title from the sidecar ontology node (``dc:source``, else label)."""
+    for node in doc.get("@graph") or []:
+        if not isinstance(node, dict):
+            continue
+        if "owl:Ontology" not in _node_type_list(node):
+            continue
+        src = _citation_text(node.get("dc:source"))
+        if src:
+            return src
+        label = _citation_text(node.get("rdfs:label"))
+        if label:
+            return label
+    return ""
+
+
+def _act_iri_from_peep_path(path: Path) -> str | None:
+    """Return the first ``estleg:Act`` ``@id`` in *path*, or None."""
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    if not isinstance(doc, dict):
+        return None
+    for node in doc.get("@graph") or []:
+        if not isinstance(node, dict):
+            continue
+        if "estleg:Act" not in _node_type_list(node):
+            continue
+        iri = node.get("@id")
+        if isinstance(iri, str) and iri:
+            return iri
+    return None
+
+
+def _index_files_by_slug(krr_dir: Path) -> dict[str, list[str]]:
+    mapping: dict[str, list[str]] = {}
+    index_path = krr_dir / "INDEX.json"
+    try:
+        doc = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return mapping
+    if not isinstance(doc, dict):
+        return mapping
+    for law in doc.get("laws") or []:
+        if not isinstance(law, dict):
+            continue
+        name = law.get("name")
+        files = law.get("files")
+        if isinstance(name, str) and name and isinstance(files, list):
+            mapping[name] = [f for f in files if isinstance(f, str) and f]
+    return mapping
+
+
+def _resolve_act_iri(
+    slug: str, krr_dir: Path, index_files: dict[str, list[str]]
+) -> str | None:
+    """Act ``@id`` from ``<slug>_peep.json``, else the first INDEX peep file."""
+    single = krr_dir / f"{slug}_peep.json"
+    if single.is_file():
+        iri = _act_iri_from_peep_path(single)
+        if iri:
+            return iri
+    files = index_files.get(slug) or []
+    if files:
+        first = krr_dir / files[0]
+        if first.is_file():
+            return _act_iri_from_peep_path(first)
+    return None
+
+
+def backfill_version_sidecars(pv_dir: Path, krr_dir: Path) -> dict[str, int]:
+    """Stamp #524 citation fields onto committed ``provision_versions/*.jsonld``.
+
+    Resolves ``act_title`` from each sidecar's ontology ``dc:source`` (else
+    ``rdfs:label``) and ``act_iri`` from ``<slug>_peep.json`` or the first
+    INDEX file for multipart laws. Rewrites via :func:`save_json`.
+    """
+    stats = {
+        "files": 0,
+        "files_scanned": 0,
+        "nodes": 0,
+        "nodes_seen": 0,
+        "missing_act_iri": 0,
+    }
+    if not pv_dir.is_dir():
+        return stats
+    index_files = _index_files_by_slug(krr_dir)
+    act_iri_cache: dict[str, str | None] = {}
+    for path in sorted(pv_dir.glob("*.jsonld")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        if not isinstance(doc, dict):
+            continue
+        stats["files_scanned"] += 1
+        act_title = _sidecar_act_title(doc)
+        slug = path.stem
+        if slug not in act_iri_cache:
+            act_iri_cache[slug] = _resolve_act_iri(slug, krr_dir, index_files)
+        act_iri = act_iri_cache[slug]
+        if act_iri is None:
+            stats["missing_act_iri"] += 1
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
+            continue
+        file_changed = False
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            if "estleg:ProvisionVersion" not in _node_type_list(node):
+                continue
+            stats["nodes_seen"] += 1
+            if stamp_version_citation(node, act_title=act_title, act_iri=act_iri):
+                stats["nodes"] += 1
+                file_changed = True
+        if file_changed:
+            save_json(path, doc)
+            stats["files"] += 1
+    return stats
 
 
 # ---------------------------------------------------------------------------
@@ -1224,16 +1462,10 @@ def synthesise_versions(
             }
             if redaction.global_id:
                 node["estleg:versionRedactionId"] = redaction.global_id
-                # #524: a version node is citation-complete on its own —
-                # RT redaction URL + denormalised act / § so a consumer
-                # does not have to join back to the peep.
-                node["estleg:rtUrl"] = (
-                    f"https://www.riigiteataja.ee/akt/{redaction.global_id}"
-                )
-            node["estleg:sourceAct"] = target.title
-            node["estleg:provisionRef"] = f"{target.prefix} § {suffix}"
-            if target.act_iri:
-                node["estleg:partOfAct"] = {"@id": target.act_iri}
+            # #524: citation-complete on the version node itself.
+            stamp_version_citation(
+                node, act_title=target.title, act_iri=target.act_iri
+            )
             versions_here.append(node)
         if versions_here:
             per_provision[provision_iri] = versions_here
@@ -1856,6 +2088,14 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
             "in versionText / labels (#355). Does not fetch."
         ),
     )
+    parser.add_argument(
+        "--backfill-citations",
+        action="store_true",
+        help=(
+            "Stamp estleg:rtUrl / sourceAct / provisionRef / partOfAct on "
+            "committed provision_versions/*.jsonld (#524). Does not fetch."
+        ),
+    )
     args = parser.parse_args(argv)
     if args.max_redactions is not None and args.max_redactions < 0:
         parser.error("--max-redactions must be non-negative (0 = unbounded)")
@@ -1876,6 +2116,16 @@ def main(argv: list[str] | None = None) -> int:
         print(
             f"U+FFFD cleanup: {stats['files']} file(s), "
             f"{stats['nodes']} node(s), {stats['fields']} field(s)"
+        )
+        if not args.backfill_citations:
+            return 0
+    if args.backfill_citations:
+        stats = backfill_version_sidecars(VERSIONS_DIR, KRR_DIR)
+        print(
+            f"#524 citation backfill: {stats['files']} file(s), "
+            f"{stats['nodes']} node(s) of {stats['nodes_seen']} "
+            f"(scanned {stats['files_scanned']}, "
+            f"missing_act_iri={stats['missing_act_iri']})"
         )
         return 0
     start_perf = time.perf_counter()
