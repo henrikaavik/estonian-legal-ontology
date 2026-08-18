@@ -89,6 +89,10 @@ if str(_SCRIPTS_DIR) not in sys.path:
 
 import estleg_common  # noqa: E402
 import deprecate_legacy_statutes as _legacy_deprecation  # noqa: E402
+from multipart_coverage import (  # noqa: E402
+    apply_known_multipart_annotations,
+    preserve_multipart_annotations,
+)
 
 OLD_NS = "https://example.org/estonian-legal#"
 NEW_NS = "https://w3id.org/estleg/"
@@ -788,12 +792,17 @@ def generate_index():
     deprecated_groups: dict[str, dict] = {}
     index_path = KRR_DIR / "INDEX.json"
     registry_exceptions = dict(DEFAULT_REGISTRY_EXCEPTIONS)
+    existing_laws_by_name: dict[str, dict] = {}
     if index_path.exists():
         try:
             with open(index_path, "r", encoding="utf-8") as f:
                 existing_index = json.load(f)
             if isinstance(existing_index, dict) and isinstance(existing_index.get("registry_exceptions"), dict):
                 registry_exceptions.update(existing_index["registry_exceptions"])
+            if isinstance(existing_index, dict):
+                for previous in existing_index.get("laws") or []:
+                    if isinstance(previous, dict) and isinstance(previous.get("name"), str):
+                        existing_laws_by_name[previous["name"]] = previous
         except (json.JSONDecodeError, OSError, UnicodeDecodeError):
             pass
 
@@ -861,6 +870,8 @@ def generate_index():
         }
         if info["parts"]:
             entry["parts_mapped"] = sorted(info["parts"])
+        preserve_multipart_annotations(entry, existing_laws_by_name.get(base_name))
+        apply_known_multipart_annotations(entry)
         index["laws"].append(entry)
 
     # #426: emit the deprecated-duplicate section (deterministic: sorted

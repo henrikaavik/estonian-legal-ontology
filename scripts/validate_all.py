@@ -36,6 +36,10 @@ from estleg_common import (  # noqa: E402
     iter_krr_jsonld_files,
 )
 from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
+from multipart_coverage import (  # noqa: E402
+    iter_multipart_index_entries,
+    unmarked_multipart_gaps,
+)
 
 # #519: the combined builder forward-chains rdf:type over the subclass
 # hierarchy, so a provision's combined @type is its source @type plus the
@@ -779,6 +783,41 @@ def validate_registry_index(krr_dir: Path = KRR_DIR, *, allow_missing_index: boo
         error(f"{index_path.name}: total_files={doc['total_files']} but registry lists {indexed_file_count} files")
 
     print(f"  Checked {len(laws)} indexed laws and {indexed_file_count} indexed files")
+
+
+def validate_multipart_coverage(krr_dir: Path = KRR_DIR, *, allow_missing_index: bool = False):
+    """Issue #556: every min–max osa hole on a multipart INDEX entry must be marked."""
+    print("\n--- Multipart coverage ---")
+    index_path = krr_dir / "INDEX.json"
+    if not index_path.exists():
+        if allow_missing_index:
+            warn(f"{index_path.name}: registry not found (allowed via --allow-missing-index)")
+        else:
+            error(
+                f"{index_path.name}: registry not found — the committed INDEX.json "
+                f"is required. Pass --allow-missing-index to permit a not-yet-"
+                f"generated tree."
+            )
+        return
+
+    doc = validate_json_syntax(index_path)
+    if doc is None:
+        return
+
+    entries = iter_multipart_index_entries(doc)
+    unmarked = 0
+    for entry in entries:
+        gaps = unmarked_multipart_gaps(entry)
+        if not gaps:
+            continue
+        unmarked += 1
+        name = entry.get("name") or "<unnamed>"
+        error(
+            f"{index_path.name}: multipart law {name!r} has unmarked osa gaps "
+            f"{gaps}; set multipart_gaps or intentionally_skipped_osa"
+        )
+    if unmarked == 0:
+        print(f"  Checked {len(entries)} multipart INDEX entries; no unmarked osa gaps")
 
 
 def validate_regulation_indexes(krr_dir: Path = KRR_DIR):
@@ -3043,6 +3082,7 @@ def main(argv: list[str] | None = None):
     validate_temporal_property_targets(files)
     validate_transposition_mapping(krr_dir)
     validate_registry_index(krr_dir, allow_missing_index=allow_missing_index)
+    validate_multipart_coverage(krr_dir, allow_missing_index=allow_missing_index)
     validate_regulation_indexes(krr_dir)
     validate_act_coverage_reconciliation(krr_dir)
     validate_legacy_deprecations(krr_dir)

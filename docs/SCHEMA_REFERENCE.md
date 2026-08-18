@@ -20,6 +20,7 @@
 4. **DraftLegislation (`estleg:DraftLegislation`)**
    - Represents a legislative draft (eelnõu) that is in the legislative process but not yet enacted.
    - Source: [EIS – Eelnõude infosüsteem](https://eelnoud.valitsus.ee)
+   - ELI-DL v3: `rdfs:subClassOf eli-dl:DraftLegislationWork` (`http://data.europa.eu/eli/eli-draft-legislation-ontology#`). Phase individuals are additionally typed `eli-dl:ProcessStage` (issue #443). `estleg:amends` / `estleg:enactedAs` are not `eli-dl:foresees_change_of` (effected change and enactment, not a draft-impact forecast).
 5. **LegislativePhase (`estleg:LegislativePhase`)**
    - Represents the current stage of a draft in the legislative pipeline.
    - Phases: `Phase_PublicConsultation`, `Phase_Review`, `Phase_Submission`
@@ -1209,7 +1210,7 @@ stubs. See the README "Load surfaces" section.
 | `estleg:enactedByMunicipality` | `MunicipalRegulation`, `KovProvision` | `Municipality` | Which KOV unit |
 | `estleg:titleNormalized` | `MunicipalRegulation` | `xsd:string` | Lowercased, transliterated, prefix-stripped title |
 | `estleg:partOfAct` | `KovProvision` | `Act` | IRI link from provision to parent act |
-| `estleg:ehakCode` | `Municipality` | `xsd:string` | Four-digit EHAK code |
+| `estleg:ehakCode` | `Municipality` | `xsd:string` | Four-digit EHAK code; every Municipality also has `rdfs:seeAlso` to the EHAK classifier and curated `owl:sameAs` Wikidata (`data/ehak/municipality_wikidata.json`, #518) |
 | `estleg:county` | `Municipality` | `xsd:string` | Maakond |
 | `estleg:bodyType` | `Issuer` | `xsd:string` | `"volikogu"` \| `"valitsus"` |
 | `estleg:currentMunicipality` | `Issuer` | `Municipality` | Today's successor for legacy issuers |

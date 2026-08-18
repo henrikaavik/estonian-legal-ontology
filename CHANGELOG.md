@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Getting started, ELI-DL, concepts, INDEX gaps (#542, #443, #458, #556, #518)
+
+- `examples/quickstart.py` plus a three-command README 5-minute start that
+  prints answered SPARQL sentences (#542).
+- `estleg:DraftLegislation` ⊑ `eli-dl:DraftLegislationWork`; Phase
+  individuals typed `eli-dl:ProcessStage` (#443).
+- Concepts layer: 126 `kehtetu` nodes removed; 12 plural pairs folded;
+  `Concept_5imbsusteem` merged (#458).
+- INDEX multipart gaps are annotated (TsÜS 1/3/5/6, TsMS 8/9, VÕS osa6
+  repealed); unmarked holes fail `validate_all` (#556).
+- Every current municipality has an EHAK `rdfs:seeAlso`; 16 curated
+  Wikidata `owl:sameAs` links (#518 remainder: acts/institutions).
+
 ### Chapter / CURIA / EuroVoc identity (#436, #441, #544, #442 remainder)
 
 - Chapters point at their TopicCluster with `dcterms:subject` instead of

@@ -38,6 +38,10 @@ EELNOUD_DIR = KRR_DIR / "eelnoud"
 EELNOUD_DIR.mkdir(parents=True, exist_ok=True)
 
 NS = "https://w3id.org/estleg/"
+# ELI-DL v3 namespace. Used only on the draft T-Box (eelnoud_schema.json),
+# never merged into shared CONTEXT — that would unused-prefix every peep (#443).
+ELI_DL_NS = "http://data.europa.eu/eli/eli-draft-legislation-ontology#"
+ELI_DL_SCHEMA_CONTEXT = {**CONTEXT, "eli-dl": ELI_DL_NS}
 
 # Shared title-prefix length for title-only draft @id generation
 # (generate_draft_node fallback) and main() dedup keys. Using different
@@ -250,8 +254,15 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:DraftLegislation",
             "@type": ["owl:Class"],
+            "rdfs:subClassOf": {"@id": "eli-dl:DraftLegislationWork"},
             "rdfs:label": {"@value": "Eelnõu (Draft Legislation)", "@language": "et"},
-            "rdfs:comment": {"@value": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses.", "@language": "et"},
+            "rdfs:comment": {
+                "@value": (
+                    "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus "
+                    "menetluses. ELI-DL v3: rdfs:subClassOf eli-dl:DraftLegislationWork (#443)."
+                ),
+                "@language": "et",
+            },
             "dc:description": {"@value": "A legislative draft that has not yet been enacted into law but is in the legislative process.", "@language": "en"},
         },
         # LegislativePhase class
@@ -271,7 +282,7 @@ def generate_schema_nodes() -> list[dict]:
         # Phase individuals
         {
             "@id": "estleg:Phase_PublicConsultation",
-            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
             "rdfs:label": {"@value": "Avalik konsultatsioon", "@language": "et"},
             "skos:prefLabel": {"@value": "Public Consultation", "@language": "en"},
             "rdfs:comment": {"@value": "Eelnõu on avalikul konsultatsioonil – üldsus saab arvamust avaldada.", "@language": "et"},
@@ -279,7 +290,7 @@ def generate_schema_nodes() -> list[dict]:
         },
         {
             "@id": "estleg:Phase_Review",
-            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
             "rdfs:label": {"@value": "Kooskõlastamine", "@language": "et"},
             "skos:prefLabel": {"@value": "Inter-ministerial Review", "@language": "en"},
             "rdfs:comment": {"@value": "Eelnõu on ministeeriumidevahelisel kooskõlastamisel.", "@language": "et"},
@@ -287,7 +298,7 @@ def generate_schema_nodes() -> list[dict]:
         },
         {
             "@id": "estleg:Phase_Submission",
-            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
             "rdfs:label": {"@value": "Esitatud Vabariigi Valitsusele", "@language": "et"},
             "skos:prefLabel": {"@value": "Submitted to Government", "@language": "en"},
             "rdfs:comment": {"@value": "Eelnõu on esitatud Vabariigi Valitsusele otsustamiseks.", "@language": "et"},
@@ -295,7 +306,7 @@ def generate_schema_nodes() -> list[dict]:
         },
         {
             "@id": "estleg:Phase_Enacted",
-            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
             "rdfs:label": {"@value": "Vastu võetud", "@language": "et"},
             "skos:prefLabel": {"@value": "Enacted", "@language": "en"},
             "rdfs:comment": {"@value": "Eelnõu on vastu võetud ja jõustunud seadusena.", "@language": "et"},
@@ -303,7 +314,7 @@ def generate_schema_nodes() -> list[dict]:
         },
         {
             "@id": "estleg:Phase_Withdrawn",
-            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
             "rdfs:label": {"@value": "Tagasi võetud", "@language": "et"},
             "skos:prefLabel": {"@value": "Withdrawn", "@language": "en"},
             "rdfs:comment": {"@value": "Algataja võttis eelnõu menetlusest tagasi.", "@language": "et"},
@@ -311,7 +322,7 @@ def generate_schema_nodes() -> list[dict]:
         },
         {
             "@id": "estleg:Phase_Rejected",
-            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
+            "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
             "rdfs:label": {"@value": "Tagasi lükatud", "@language": "et"},
             "skos:prefLabel": {"@value": "Rejected", "@language": "en"},
             "rdfs:comment": {"@value": "Eelnõu lükati menetluses tagasi.", "@language": "et"},
@@ -604,7 +615,7 @@ def main():
     # Generate schema file
     print("\n--- Generating schema file ---")
     schema_doc = {
-        "@context": CONTEXT,
+        "@context": ELI_DL_SCHEMA_CONTEXT,
         "@graph": generate_schema_nodes(),
     }
     schema_path = EELNOUD_DIR / "eelnoud_schema.json"

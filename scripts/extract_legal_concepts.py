@@ -27,6 +27,7 @@ from estleg_common import (
     BUILD_EVALUATION_DATE,
     iter_peep_files,
     jsonld_text,
+    jsonld_texts,
     save_json,
     sanitize_id as _shared_sanitize_id,
     stamp_combined_dataset_head,
@@ -836,6 +837,445 @@ def _normalize_definition_for_dedup(definition: str) -> str:
     return d.rstrip(".;,…- \t\r\n–—")
 
 
+# ---------------------------------------------------------------------------
+# Issue #458 — drop leftover kehtetu concept nodes; fold singular/plural
+# ---------------------------------------------------------------------------
+
+_CONCEPT_TYPE_TOKENS = frozenset({
+    "estleg:Concept",
+    "estleg:LegalConcept",
+    "skos:Concept",
+})
+_KEHTETU_LINK_PROPS = (
+    "estleg:definesConcept",
+    "skos:closeMatch",
+    "skos:exactMatch",
+)
+_FOLD_LINK_PROPS = _KEHTETU_LINK_PROPS + ("estleg:hasDefinitionNode",)
+_PLURAL_SUFFIXES = ("te", "d")  # longer first so ``-te`` wins over a trailing ``-d``
+_MIN_PLURAL_STEM_LEN = 3
+# Fold only when this many obvious pairs are present — fewer is too easy to
+# over-merge. The committed corpus has 12 exact ``-d`` pairs (0 ``-te``).
+_MIN_PLURAL_PAIRS_TO_FOLD = 3
+_MOJIBAKE_CONCEPT_FOLDS = (
+    ("estleg:Concept_imbsusteem", "estleg:Concept_5imbsusteem"),
+)
+
+
+def _node_type_set(node: dict) -> set[str]:
+    types = node.get("@type", [])
+    if isinstance(types, str):
+        return {types} if types else set()
+    if isinstance(types, list):
+        return {t for t in types if isinstance(t, str)}
+    return set()
+
+
+def _is_concept_typed(node: dict) -> bool:
+    return bool(_node_type_set(node) & _CONCEPT_TYPE_TOKENS)
+
+
+def _is_canonical_concept(node: dict) -> bool:
+    types = _node_type_set(node)
+    return "estleg:Concept" in types and "estleg:LegalConcept" not in types
+
+
+def _id_is_kehtetu(nid: str) -> bool:
+    """True when ``@id`` ends with ``_kehtetu`` or contains ``_kehtetu_``.
+
+    Compared case-insensitively so ``_Kehtetu`` / ``_KEHTETU_`` tails match.
+    """
+    low = nid.casefold()
+    return low.endswith("_kehtetu") or "_kehtetu_" in low
+
+
+def _label_is_exact_kehtetu(node: dict) -> bool:
+    """True when prefLabel or rdfs:label is exactly ``kehtetu``.
+
+    Lang-tagged objects and plain strings are both accepted. Surrounding
+    ``[]`` / ``()`` are stripped (same rule as :func:`is_noise_term`).
+    """
+    for raw in (
+        jsonld_texts(node.get("skos:prefLabel"))
+        + jsonld_texts(node.get("rdfs:label"))
+    ):
+        if _strip_term_brackets(raw.strip().casefold()) == "kehtetu":
+            return True
+    return False
+
+
+def _is_kehtetu_concept_node(node: dict) -> bool:
+    if not isinstance(node, dict) or not _is_concept_typed(node):
+        return False
+    nid = node.get("@id", "")
+    if isinstance(nid, str) and _id_is_kehtetu(nid):
+        return True
+    return _label_is_exact_kehtetu(node)
+
+
+def _rewrite_id_refs(
+    value: object,
+    *,
+    remap: dict[str, str] | None = None,
+    drop: set[str] | None = None,
+    drop_self: str | None = None,
+) -> object | None:
+    """Remap / drop JSON-LD ``@id`` refs. ``None`` means the property is empty."""
+    remap = remap or {}
+    drop = drop or set()
+    items = value if isinstance(value, list) else [value]
+    single = not isinstance(value, list)
+    out: list = []
+    seen: set[str] = set()
+    for item in items:
+        if isinstance(item, dict):
+            rid = item.get("@id")
+            if not isinstance(rid, str):
+                out.append(item)
+                continue
+            rid = remap.get(rid, rid)
+            if rid in drop or rid == drop_self or rid in seen:
+                continue
+            seen.add(rid)
+            rewritten = dict(item)
+            rewritten["@id"] = rid
+            out.append(rewritten)
+        elif isinstance(item, str):
+            rid = remap.get(item, item)
+            if rid in drop or rid == drop_self or rid in seen:
+                continue
+            seen.add(rid)
+            out.append(rid)
+        else:
+            out.append(item)
+    if not out:
+        return None
+    if single and len(out) == 1:
+        return out[0]
+    return out
+
+
+def _scrub_link_props(
+    node: dict,
+    props: tuple[str, ...],
+    *,
+    remap: dict[str, str] | None = None,
+    drop: set[str] | None = None,
+) -> None:
+    self_id = node.get("@id") if isinstance(node.get("@id"), str) else None
+    for prop in props:
+        if prop not in node:
+            continue
+        rewritten = _rewrite_id_refs(
+            node[prop], remap=remap, drop=drop, drop_self=self_id,
+        )
+        if rewritten is None:
+            node.pop(prop, None)
+        else:
+            node[prop] = rewritten
+
+
+def strip_kehtetu_concepts(graph: list) -> int:
+    """Drop Concept/skos:Concept nodes that are repealed-marker noise.
+
+    A typed concept node is removed when its ``skos:prefLabel`` or
+    ``rdfs:label`` (lang-tagged or plain) is exactly ``kehtetu``
+    (case-insensitive, after bracket strip) OR its ``@id`` ends with
+    ``_kehtetu`` / contains ``_kehtetu_`` (case-insensitive). Incoming
+    ``estleg:definesConcept``, ``skos:closeMatch`` and ``skos:exactMatch``
+    edges that pointed at a removed id are dropped.
+
+    Mutates ``graph`` in place. Returns the number of nodes removed.
+    """
+    if not isinstance(graph, list):
+        return 0
+    removed_ids: set[str] = set()
+    kept: list = []
+    for node in graph:
+        if isinstance(node, dict) and _is_kehtetu_concept_node(node):
+            nid = node.get("@id")
+            if isinstance(nid, str) and nid:
+                removed_ids.add(nid)
+            continue
+        kept.append(node)
+    if removed_ids:
+        for node in kept:
+            if isinstance(node, dict):
+                _scrub_link_props(node, _KEHTETU_LINK_PROPS, drop=removed_ids)
+    removed = len(graph) - len(kept)
+    graph[:] = kept
+    return removed
+
+
+def _pref_label_surface(node: dict) -> str:
+    return jsonld_text(node.get("skos:prefLabel")).strip()
+
+
+def _iter_literals(value: object) -> list[dict]:
+    """Normalise a SKOS literal property to a list of ``{@value,@language}``."""
+    if value is None:
+        return []
+    items = value if isinstance(value, list) else [value]
+    out: list[dict] = []
+    for item in items:
+        if isinstance(item, dict) and isinstance(item.get("@value"), str):
+            lit = {"@value": item["@value"]}
+            lang = item.get("@language")
+            if isinstance(lang, str) and lang:
+                lit["@language"] = lang
+            out.append(lit)
+        elif isinstance(item, str) and item:
+            out.append({"@value": item, "@language": "et"})
+    return out
+
+
+def _add_alt_label(node: dict, text: str) -> None:
+    if not text:
+        return
+    existing = _iter_literals(node.get("skos:altLabel"))
+    seen = {lit["@value"].casefold() for lit in existing}
+    pref = _pref_label_surface(node)
+    if pref:
+        seen.add(pref.casefold())
+    if text.casefold() in seen:
+        return
+    existing.append({"@value": text, "@language": "et"})
+    node["skos:altLabel"] = existing
+
+
+def _declared_variant_count(node: dict) -> int:
+    raw = node.get("estleg:definitionVariantCount")
+    if isinstance(raw, dict):
+        try:
+            return int(raw.get("@value"))
+        except (TypeError, ValueError):
+            pass
+    return len(_iter_literals(node.get("skos:definition")))
+
+
+def _merge_definition_literals(dst: dict, src: dict) -> None:
+    dst_declared = _declared_variant_count(dst)
+    items = _iter_literals(dst.get("skos:definition"))
+    seen = {
+        _normalize_definition_for_dedup(lit["@value"])
+        for lit in items
+        if lit.get("@value")
+    }
+    extra = 0
+    for lit in _iter_literals(src.get("skos:definition")):
+        key = _normalize_definition_for_dedup(lit.get("@value", ""))
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        items.append(lit)
+        extra += 1
+    if items:
+        dst["skos:definition"] = items[:_MAX_CONCEPT_DEFINITIONS]
+    true_total = max(dst_declared + extra, len(seen))
+    if true_total > _MAX_CONCEPT_DEFINITIONS:
+        dst["estleg:definitionVariantCount"] = {
+            "@value": str(true_total),
+            "@type": "xsd:integer",
+        }
+    else:
+        dst.pop("estleg:definitionVariantCount", None)
+
+
+def _merge_concept_nodes(keep: dict, drop: dict) -> None:
+    """Fold ``drop`` into ``keep``: altLabel, definitions, definition nodes."""
+    drop_pref = _pref_label_surface(drop)
+    if drop_pref:
+        _add_alt_label(keep, drop_pref)
+    for lit in _iter_literals(drop.get("skos:altLabel")):
+        _add_alt_label(keep, lit["@value"])
+    keep_defs = [
+        r.get("@id")
+        for r in (
+            keep.get("estleg:hasDefinitionNode")
+            if isinstance(keep.get("estleg:hasDefinitionNode"), list)
+            else (
+                [keep["estleg:hasDefinitionNode"]]
+                if keep.get("estleg:hasDefinitionNode")
+                else []
+            )
+        )
+        if isinstance(r, dict) and r.get("@id")
+    ]
+    drop_defs = [
+        r.get("@id")
+        for r in (
+            drop.get("estleg:hasDefinitionNode")
+            if isinstance(drop.get("estleg:hasDefinitionNode"), list)
+            else (
+                [drop["estleg:hasDefinitionNode"]]
+                if drop.get("estleg:hasDefinitionNode")
+                else []
+            )
+        )
+        if isinstance(r, dict) and r.get("@id")
+    ]
+    merged_def_ids: list[str] = []
+    seen_def: set[str] = set()
+    for rid in keep_defs + drop_defs:
+        if rid and rid not in seen_def:
+            seen_def.add(rid)
+            merged_def_ids.append(rid)
+    if merged_def_ids:
+        keep["estleg:hasDefinitionNode"] = [{"@id": rid} for rid in merged_def_ids]
+        keep["estleg:definitionCount"] = {
+            "@value": str(len(merged_def_ids)),
+            "@type": "xsd:integer",
+        }
+    _merge_definition_literals(keep, drop)
+    # Absorb close/exact matches now; caller remaps leftover ids afterwards.
+    for prop in ("skos:closeMatch", "skos:exactMatch"):
+        extra = drop.get(prop)
+        if not extra:
+            continue
+        existing = keep.get(prop)
+        if existing is None:
+            keep[prop] = extra if isinstance(extra, list) else [extra]
+        else:
+            if not isinstance(existing, list):
+                existing = [existing]
+            if not isinstance(extra, list):
+                extra = [extra]
+            keep[prop] = existing + extra
+
+
+def _fold_concept_id_pairs(graph: list, pairs: list[tuple[str, str]]) -> int:
+    """Merge each ``(keep_id, drop_id)`` pair; remap incoming links.
+
+    Returns the number of dropped nodes.
+    """
+    if not pairs or not isinstance(graph, list):
+        return 0
+    by_id = {
+        n["@id"]: n
+        for n in graph
+        if isinstance(n, dict) and isinstance(n.get("@id"), str)
+    }
+    remap: dict[str, str] = {}
+    for keep_id, drop_id in pairs:
+        keep = by_id.get(keep_id)
+        drop = by_id.get(drop_id)
+        if keep is None or drop is None or keep is drop:
+            continue
+        _merge_concept_nodes(keep, drop)
+        remap[drop_id] = keep_id
+    if not remap:
+        return 0
+    drop_ids = set(remap)
+    kept: list = []
+    for node in graph:
+        if isinstance(node, dict) and node.get("@id") in drop_ids:
+            continue
+        if isinstance(node, dict):
+            _scrub_link_props(node, _FOLD_LINK_PROPS, remap=remap)
+        kept.append(node)
+    graph[:] = kept
+    return len(remap)
+
+
+def find_plural_concept_pairs(graph: list) -> list[tuple[str, str, str, str]]:
+    """Obvious canonical pairs whose prefLabel differs by ``-d`` / ``-te``.
+
+    Returns ``(singular_id, plural_id, singular_label, plural_label)``.
+    A pair is accepted only when each side is a unique canonical
+    ``estleg:Concept`` and the plural matches exactly one singular suffix.
+    """
+    if not isinstance(graph, list):
+        return []
+    by_label: dict[str, list[dict]] = {}
+    for node in graph:
+        if not isinstance(node, dict) or not _is_canonical_concept(node):
+            continue
+        pref = _pref_label_surface(node)
+        if not pref:
+            continue
+        by_label.setdefault(pref.casefold(), []).append(node)
+
+    pairs: list[tuple[str, str, str, str]] = []
+    seen_plural: set[str] = set()
+    for plabel, pnodes in by_label.items():
+        if len(pnodes) != 1:
+            continue
+        matches: list[tuple[str, str, dict]] = []
+        for suf in _PLURAL_SUFFIXES:
+            if not plabel.endswith(suf):
+                continue
+            if len(plabel) - len(suf) < _MIN_PLURAL_STEM_LEN:
+                continue
+            stem = plabel[: -len(suf)]
+            snodes = by_label.get(stem)
+            if snodes and len(snodes) == 1:
+                matches.append((suf, stem, snodes[0]))
+        if len(matches) != 1:
+            continue
+        _suf, stem, snode = matches[0]
+        pnode = pnodes[0]
+        sid = snode.get("@id")
+        pid = pnode.get("@id")
+        if not isinstance(sid, str) or not isinstance(pid, str) or sid == pid:
+            continue
+        if pid in seen_plural:
+            continue
+        seen_plural.add(pid)
+        pairs.append((sid, pid, _pref_label_surface(snode), _pref_label_surface(pnode)))
+    pairs.sort(key=lambda row: (row[2].casefold(), row[3].casefold(), row[0], row[1]))
+    return pairs
+
+
+def fold_plural_concepts(
+    graph: list, *, min_pairs: int = _MIN_PLURAL_PAIRS_TO_FOLD,
+) -> int:
+    """Fold plural canonical Concepts into the singular as ``skos:altLabel``.
+
+    Only runs when at least ``min_pairs`` safe exact ``-d``/``-te`` pairs
+    are present (default 3) — fewer is skipped rather than over-merged.
+    Incoming ``definesConcept`` / SKOS match / ``hasDefinitionNode`` refs
+    to the plural id are retargeted to the singular. Returns the number of
+    plural nodes deleted (0 when the fold is skipped).
+    """
+    pairs = find_plural_concept_pairs(graph)
+    if len(pairs) < min_pairs:
+        return 0
+    return _fold_concept_id_pairs(graph, [(s, p) for s, p, _sl, _pl in pairs])
+
+
+def fold_mojibake_concept_pairs(graph: list) -> int:
+    """Fold the known ``Concept_5imbsusteem`` / ``Concept_imbsusteem`` pair."""
+    return _fold_concept_id_pairs(graph, list(_MOJIBAKE_CONCEPT_FOLDS))
+
+
+def _sync_total_concepts(graph: list) -> None:
+    """Keep the dataset head's ``estleg:totalConcepts`` = LegalConcept count."""
+    if not graph or not isinstance(graph[0], dict):
+        return
+    if "estleg:totalConcepts" not in graph[0]:
+        return
+    n_legal = sum(
+        1
+        for n in graph
+        if isinstance(n, dict) and "estleg:LegalConcept" in _node_type_set(n)
+    )
+    graph[0]["estleg:totalConcepts"] = {
+        "@value": str(n_legal),
+        "@type": "xsd:integer",
+    }
+
+
+def scrub_concept_graph(graph: list) -> dict[str, int]:
+    """Apply #458 hygiene in place: kehtetu strip, plural fold, mojibake fold."""
+    counts = {
+        "kehtetu_removed": strip_kehtetu_concepts(graph),
+        "plurals_folded": fold_plural_concepts(graph),
+        "mojibake_folded": fold_mojibake_concept_pairs(graph),
+    }
+    _sync_total_concepts(graph)
+    return counts
+
+
 def _most_common(values: list[str]) -> str:
     """Return the most frequent value in ``values``; ties broken by sorting
     the surface form ascending so the result is deterministic."""
@@ -1296,6 +1736,17 @@ def main():
                 node[prop] = valid[0]
             else:
                 node[prop] = valid
+
+    # #458: drop leftover kehtetu concept individuals, fold obvious
+    # singular/plural duplicate Concepts, and collapse the imbsüsteem
+    # encoding-variant pair so remints stay as clean as the committed file.
+    _hygiene = scrub_concept_graph(graph)
+    if any(_hygiene.values()):
+        print(
+            f"  #458 hygiene: removed {_hygiene['kehtetu_removed']} kehtetu "
+            f"concept(s), folded {_hygiene['plurals_folded']} plural(s), "
+            f"{_hygiene['mojibake_folded']} mojibake pair(s)"
+        )
 
     # Save combined concepts file
     combined_doc = {"@context": CONTEXT, "@graph": graph}

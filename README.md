@@ -31,6 +31,21 @@ instead of JSON-LD.
 
 ## Quick Start
 
+### 5-minute start
+
+Three commands — then answered sentences, not a triple dump:
+
+```bash
+git lfs pull -I krr_outputs/combined_ontology.jsonld
+python3 -m pip install 'rdflib>=7.1,<8'
+python3 examples/quickstart.py
+```
+
+`examples/quickstart.py` prefers `krr_outputs/combined_ontology.jsonld` when
+Git LFS has materialised it. Without LFS it falls back to
+`perekonnaseadus_peep.json` plus `krr_outputs/sanctions/` and still prints
+an answer. Optional: `python3 examples/quickstart.py --graph PATH`.
+
 ### Load surfaces
 
 The corpus is published as two nested load surfaces — pick the one your query needs:

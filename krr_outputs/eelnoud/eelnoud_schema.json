@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli-dl": "http://data.europa.eu/eli/eli-draft-legislation-ontology#"
   },
   "@graph": [
     {
@@ -14,8 +15,11 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "eli-dl:DraftLegislationWork"
+      },
       "rdfs:label": "Eelnõu (Draft Legislation)",
-      "rdfs:comment": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses.",
+      "rdfs:comment": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses. ELI-DL v3: rdfs:subClassOf eli-dl:DraftLegislationWork (#443).",
       "dc:description": "A legislative draft that has not yet been enacted into law but is in the legislative process."
     },
     {
@@ -38,7 +42,8 @@
       "@id": "estleg:Phase_PublicConsultation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegislativePhase"
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage"
       ],
       "rdfs:label": "Avalik konsultatsioon",
       "skos:prefLabel": "Public Consultation",
@@ -52,7 +57,8 @@
       "@id": "estleg:Phase_Review",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegislativePhase"
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage"
       ],
       "rdfs:label": "Kooskõlastamine",
       "skos:prefLabel": "Inter-ministerial Review",
@@ -66,7 +72,8 @@
       "@id": "estleg:Phase_Submission",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegislativePhase"
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage"
       ],
       "rdfs:label": "Esitatud Vabariigi Valitsusele",
       "skos:prefLabel": "Submitted to Government",
@@ -80,7 +87,8 @@
       "@id": "estleg:Phase_Enacted",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegislativePhase"
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage"
       ],
       "rdfs:label": "Vastu võetud",
       "skos:prefLabel": "Enacted",
@@ -93,7 +101,8 @@
       "@id": "estleg:Phase_Withdrawn",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegislativePhase"
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage"
       ],
       "rdfs:label": "Tagasi võetud",
       "skos:prefLabel": "Withdrawn",
@@ -106,7 +115,8 @@
       "@id": "estleg:Phase_Rejected",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegislativePhase"
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage"
       ],
       "rdfs:label": "Tagasi lükatud",
       "skos:prefLabel": "Rejected",

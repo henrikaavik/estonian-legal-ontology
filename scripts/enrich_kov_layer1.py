@@ -2,6 +2,7 @@
 
 Reads:
   - data/ehak/municipalities.json
+  - data/ehak/municipality_wikidata.json (curated EHAK → Wikidata QIDs, #518)
   - data/ehak/issuers.json
   - krr_outputs/regulations/kov/<issuer>/*_peep.json
   - krr_outputs/*_peep.json (laws)
@@ -18,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -43,6 +45,7 @@ EHAK_DIR = REPO_ROOT / "data" / "ehak"
 KOV_DIR = KRR_DIR / "regulations" / "kov"
 
 MUNICIPALITIES_OUT = KRR_DIR / "municipalities_peep.json"
+MUNICIPALITY_WIKIDATA = EHAK_DIR / "municipality_wikidata.json"
 ISSUERS_OUT = KRR_DIR / "issuers_kov_peep.json"
 # Historical (pre-merger) municipality nodes — issue #130. Written under
 # data/ehak/ (alongside municipalities.json / issuers.json, the source
@@ -50,6 +53,12 @@ ISSUERS_OUT = KRR_DIR / "issuers_kov_peep.json"
 # krr_outputs/ file-count statistics validated against metadata.jsonld.
 # It is added to the `kov` SHACL bucket in shacl_validate_all.py.
 HISTORICAL_MUNICIPALITIES_OUT = EHAK_DIR / "historical_municipalities.jsonld"
+# Statistics Estonia public classifier; ``code`` is the 4-digit EHAK id.
+EHAK_CLASSIFIER_IRI = (
+    "https://metaweb.stat.ee/klassifikaator_avalik?id=EHAK&code={code}"
+)
+WIKIDATA_ENTITY_PREFIX = "http://www.wikidata.org/entity/"
+_QID_RE = re.compile(r"^Q[1-9][0-9]*$")
 
 # >5 missing law files in INDEX.json indicates real corpus drift,
 # not the occasional stale entry. Hard-fail in that case so the
@@ -71,8 +80,65 @@ def historical_municipality_iri(former_ehak_code: str) -> str:
     return f"estleg:HistoricalMunicipality_{former_ehak_code}"
 
 
-def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
+def ehak_classifier_iri(ehak_code: str) -> str:
+    return EHAK_CLASSIFIER_IRI.format(code=ehak_code)
+
+
+def wikidata_entity_iri(qid: str) -> str:
+    if not qid.startswith("Q"):
+        qid = f"Q{qid}"
+    return f"{WIKIDATA_ENTITY_PREFIX}{qid}"
+
+
+def load_municipality_wikidata(path: Path) -> dict[str, str]:
+    """Load curated EHAK code → Wikidata QID. Missing file → empty map."""
+    if not path.is_file():
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        payload = json.load(fh)
+    if not isinstance(payload, dict):
+        raise ValueError(
+            f"municipality_wikidata.json must be an object, got {type(payload).__name__}"
+        )
+    out: dict[str, str] = {}
+    for code, value in payload.items():
+        if code.startswith("_"):
+            continue
+        if not (len(code) == 4 and code.isdigit()):
+            raise ValueError(f"EHAK code must be a 4-digit string, got {code!r}")
+        if isinstance(value, str):
+            qid = value
+        elif isinstance(value, dict):
+            qid = value.get("qid") or value.get("wikidata")
+        else:
+            raise ValueError(f"Invalid Wikidata entry for {code}: {value!r}")
+        if not isinstance(qid, str) or not _QID_RE.fullmatch(qid):
+            raise ValueError(f"Invalid Wikidata QID for {code}: {qid!r}")
+        out[code] = qid
+    return out
+
+
+def municipality_identity_links(
+    ehak_code: str, wikidata_qid: str | None = None
+) -> dict:
+    """EHAK ``rdfs:seeAlso`` always; Wikidata ``owl:sameAs`` only when curated."""
+    links: dict = {
+        "rdfs:seeAlso": {"@id": ehak_classifier_iri(ehak_code)},
+    }
+    if wikidata_qid:
+        links["owl:sameAs"] = {"@id": wikidata_entity_iri(wikidata_qid)}
+    return links
+
+
+def build_municipality_doc(
+    municipalities: dict[str, Municipality],
+    wikidata_by_code: dict[str, str] | None = None,
+) -> dict:
     """Build the JSON-LD document containing all Municipality nodes."""
+    if wikidata_by_code is None:
+        wikidata_by_code = load_municipality_wikidata(
+            EHAK_DIR / MUNICIPALITY_WIKIDATA.name
+        )
     nodes = [
         {
             "@id": "estleg:Municipalities_Map_2026",
@@ -83,13 +149,15 @@ def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
     ]
     for code in sorted(municipalities):
         mun = municipalities[code]
-        nodes.append({
+        node = {
             "@id": municipality_iri(code),
             "@type": ["owl:NamedIndividual", "estleg:Municipality"],
             "rdfs:label": mun["name"],
             "estleg:ehakCode": code,
             "estleg:county": mun["county"],
-        })
+        }
+        node.update(municipality_identity_links(code, wikidata_by_code.get(code)))
+        nodes.append(node)
     return {"@context": CONTEXT, "@graph": nodes}
 
 

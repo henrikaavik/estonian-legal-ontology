@@ -987,7 +987,12 @@ class TestIssue134HubLinksReplaceClique:
 class TestIssue134NoiseFilterEndToEnd:
     """Junk terms (single-char already dropped at extraction; kehtetu /
     stopword-only / all-noise-definition terms) get NO canonical Concept and
-    their provision-local nodes get NO estleg:definesConcept."""
+    their provision-local nodes get NO estleg:definesConcept.
+
+    #458 additionally deletes leftover ``kehtetu`` provision-local nodes
+    (exact prefLabel / ``_kehtetu`` id) so remints stay as clean as the
+    committed concepts file.
+    """
 
     def test_kehtetu_and_stopword_terms_get_no_concept(self, tmp_path, monkeypatch):
         graph = _run_extractor(
@@ -1011,12 +1016,13 @@ class TestIssue134NoiseFilterEndToEnd:
             pref = lc.get("skos:prefLabel")
             pref_value = pref.get("@value") if isinstance(pref, dict) else pref
             lc_by_label[pref_value] = lc
-        # The provision-local nodes for the junk terms still exist…
-        assert "kehtetu" in lc_by_label
+        # #458: kehtetu provision-local nodes are stripped from the graph.
+        # Other junk terms still exist as LegalConcept individuals, but
+        # with no estleg:definesConcept / skos:exactMatch hub link.
+        assert "kehtetu" not in lc_by_label
         assert "ja" in lc_by_label
         assert "foo" in lc_by_label
-        # …but with no estleg:definesConcept / skos:exactMatch hub link.
-        for label in ("kehtetu", "ja", "foo"):
+        for label in ("ja", "foo"):
             assert "estleg:definesConcept" not in lc_by_label[label], label
             assert "skos:exactMatch" not in lc_by_label[label], label
         # Whereas the real concept's node is fully linked.
