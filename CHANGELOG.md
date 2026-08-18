@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Act roots are not sameAs dated RT XML (#447)
+
+- Law and regulation generators keep `dcterms:source` for the Riigi
+  Teataja XML URL and no longer emit `owl:sameAs` to that file.
+  Wikidata and EU CELLAR sameAs stay. `validate_act_xml_sameas` rejects
+  the FRBR conflation.
+
 ### Act roots are not owl:Ontology (#435)
 
 - Law and regulation individuals are typed `estleg:Act` / `estleg:Law` /

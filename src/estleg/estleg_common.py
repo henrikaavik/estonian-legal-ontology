@@ -1253,6 +1253,48 @@ def strip_ontology_from_domain_individual(node: dict) -> bool:
     return True
 
 
+def jsonld_id_values(value: object) -> list[str]:
+    """Flatten a JSON-LD IRI value (string, ``{"@id"}``, or list) to strings."""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        iri = value.get("@id")
+        return [iri] if isinstance(iri, str) else []
+    if isinstance(value, list):
+        iris: list[str] = []
+        for item in value:
+            iris.extend(jsonld_id_values(item))
+        return iris
+    return []
+
+
+def is_xml_sameas_iri(iri: str) -> bool:
+    """True for a manifestation file IRI (``…/akt/<id>.xml``)."""
+    return iri.rsplit("?", 1)[0].endswith(".xml")
+
+
+def strip_xml_sameas(node: dict) -> bool:
+    """Drop ``owl:sameAs`` targets that end in ``.xml`` (#447).
+
+    ``dcterms:source`` is left untouched. Remaining sameAs values are
+    rewritten as a single object or a list. Returns True when the node
+    changed.
+    """
+    if "owl:sameAs" not in node:
+        return False
+    kept = [iri for iri in jsonld_id_values(node.get("owl:sameAs")) if not is_xml_sameas_iri(iri)]
+    original = jsonld_id_values(node.get("owl:sameAs"))
+    if kept == original:
+        return False
+    if not kept:
+        del node["owl:sameAs"]
+    elif len(kept) == 1:
+        node["owl:sameAs"] = {"@id": kept[0]}
+    else:
+        node["owl:sameAs"] = [{"@id": iri} for iri in kept]
+    return True
+
+
 # #471: report/index/mapping/classification sidecars live under reports/,
 # not at the krr_outputs/ root among peeps.
 REPORTS_SUBDIR = "reports"

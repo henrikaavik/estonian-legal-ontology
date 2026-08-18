@@ -673,7 +673,6 @@ def generate_law_jsonld(
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
-        ontology_node["owl:sameAs"] = {"@id": rt_source_url}
     kehtiv_value = _kehtiv_node(kehtiv)
     if kehtiv_value is not None:
         ontology_node["estleg:kehtiv"] = kehtiv_value
@@ -759,7 +758,6 @@ def generate_law_stub_jsonld(
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
-        ontology_node["owl:sameAs"] = {"@id": rt_source_url}
     kehtiv_value = _kehtiv_node(kehtiv)
     if kehtiv_value is not None:
         ontology_node["estleg:kehtiv"] = kehtiv_value
@@ -837,7 +835,6 @@ def generate_multipart_law(
         }
         if rt_source_url:
             osa_ontology_node["dcterms:source"] = {"@id": rt_source_url}
-            osa_ontology_node["owl:sameAs"] = {"@id": rt_source_url}
         if kehtiv_value is not None:
             osa_ontology_node["estleg:kehtiv"] = kehtiv_value
             _stamp_terviktekst_id(osa_ontology_node, terviktekst_id)

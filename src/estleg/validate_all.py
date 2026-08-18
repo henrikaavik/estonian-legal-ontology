@@ -30,8 +30,11 @@ from estleg.deprecate_legacy_statutes import verify_decisions_applied
 from estleg.estleg_common import (
     act_deprecation,
     act_root_node,
+    is_domain_individual,
     is_non_data_file,
+    is_xml_sameas_iri,
     iter_krr_jsonld_files,
+    jsonld_id_values,
 )
 
 # #519: the combined builder forward-chains rdf:type over the subclass
@@ -463,6 +466,25 @@ def validate_dc_source(filepath: Path, doc: dict):
                 error(
                     f"{filepath.name}: {key} must be a string or array of strings "
                     f"at graph[{i}] (@id={node.get('@id', '?')}, got {type(value).__name__})"
+                )
+
+
+def validate_act_xml_sameas(filepath: Path, doc: dict):
+    """Reject ``owl:sameAs`` to a ``*.xml`` file on act/regulation individuals (#447).
+
+    ``dcterms:source`` may still cite the Riigi Teataja XML. EU CELLAR
+    and Wikidata sameAs are not ``*.xml`` and are left alone.
+    """
+    if "@graph" not in doc:
+        return
+    for node in doc["@graph"]:
+        if not isinstance(node, dict) or not is_domain_individual(node):
+            continue
+        for iri in jsonld_id_values(node.get("owl:sameAs")):
+            if is_xml_sameas_iri(iri):
+                error(
+                    f"{filepath.name}: owl:sameAs must not target a .xml "
+                    f"manifestation on act {node.get('@id', '?')} ({iri})"
                 )
 
 
@@ -3364,6 +3386,7 @@ def main(argv: list[str] | None = None):
         validate_section_numbers(filepath, doc)
         validate_dc_source(filepath, doc)
         validate_source_provenance(filepath, doc)
+        validate_act_xml_sameas(filepath, doc)
         validate_xsd_dates(filepath, doc)
         validate_affected_law_names(filepath, doc)
         internal_refs.extend(collect_internal_refs(filepath, doc))

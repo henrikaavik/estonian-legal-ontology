@@ -546,7 +546,6 @@ def build_regulation_jsonld(
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
-        ontology_node["owl:sameAs"] = {"@id": rt_source_url}
     if issuer:
         ontology_node["estleg:issuer"] = issuer
     if metadata.get("actNumber"):
