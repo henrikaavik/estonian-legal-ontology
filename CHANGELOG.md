@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### dutyHolder is a TargetGroup IRI (#460)
+
+- `estleg:dutyHolder` is no longer a free string. The deontic extractor
+  only writes values that classify against the target-group lexicon;
+  unmapped sentence-initial junk is dropped. Committed peeps and
+  `combined_ontology.jsonld` were reminted. SHACL `sh:in` matches
+  `targetGroup`.
+
 ### Producer package layout (#472)
 
 - Live producer modules live in `src/estleg/`. `pip install -e .` exposes

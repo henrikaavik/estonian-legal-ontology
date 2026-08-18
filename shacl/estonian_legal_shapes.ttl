@@ -321,9 +321,16 @@ estleg:LegalProvisionShape
     ] ;
     sh:property [
         sh:path estleg:dutyHolder ;
-        sh:datatype xsd:string ;
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            estleg:TargetGroup_Citizen
+            estleg:TargetGroup_Business
+            estleg:TargetGroup_PublicBody
+            estleg:TargetGroup_Official
+            estleg:TargetGroup_NGO
+        ) ;
         sh:name "dutyHolder" ;
-        sh:description "Entity responsible for fulfilling the duty" ;
+        sh:description "Entity responsible for fulfilling the duty, as a TargetGroup individual (#460). Unmapped sentence-initial junk is not stored." ;
     ] ;
     sh:property [
         sh:path estleg:targetGroup ;

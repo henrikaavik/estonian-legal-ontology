@@ -2,9 +2,10 @@
 """Classify LegalProvision target groups for administrative-burden analysis.
 
 The classifier is deliberately deterministic. It first maps explicit
-``estleg:dutyHolder`` literals, then falls back to deontic text cues in the
-provision summary/full text. Unmapped duty holders are surfaced in the report
-for manual review instead of hidden behind an external LLM dependency.
+``estleg:dutyHolder`` values (TargetGroup IRIs, or leftover phrases) then
+falls back to deontic text cues in the provision summary/full text.
+Unmapped duty-holder phrases are dropped from the graph (#460) rather than
+kept as free literals.
 """
 
 from __future__ import annotations
@@ -332,24 +333,73 @@ def classify_text(text: str) -> list[str]:
     return [group for group in TARGET_GROUP_ORDER if group in found]
 
 
+def duty_holder_tokens(value: object) -> tuple[list[str], bool]:
+    """Map a dutyHolder value to target-group tokens.
+
+    Returns ``(tokens, present)``. ``present`` is true when the node carried
+    any dutyHolder value (IRI, phrase, or list). Tokens come from compact
+    TargetGroup IRIs when those are already stored, otherwise from
+    ``classify_text`` over leftover phrases. Unmapped phrases yield
+    ``([], True)`` so callers can drop them (#460).
+    """
+    if value in (None, "", [], {}):
+        return [], False
+    iris = normalize_target_group_value(value)
+    if iris:
+        return [_IRI_TO_TOKEN[iri] for iri in iris], True
+    phrases: list[str] = []
+    if isinstance(value, list):
+        phrases = [jsonld_text(item) for item in value]
+    else:
+        phrases = [jsonld_text(value)]
+    phrases = [phrase for phrase in phrases if phrase]
+    if not phrases:
+        return [], True
+    found: set[str] = set()
+    for phrase in phrases:
+        found.update(classify_text(phrase))
+    return [group for group in TARGET_GROUP_ORDER if group in found], True
+
+
+def upgrade_node_duty_holder(node: dict) -> bool:
+    """Rewrite ``estleg:dutyHolder`` to TargetGroup IRIs, or drop junk.
+
+    Returns True when the node changed. Already-correct IRI lists are
+    left untouched (idempotent).
+    """
+    if "estleg:dutyHolder" not in node:
+        return False
+    tokens, present = duty_holder_tokens(node.get("estleg:dutyHolder"))
+    if not present:
+        return False
+    if not tokens:
+        del node["estleg:dutyHolder"]
+        return True
+    new = emit_target_group(tokens)
+    if node.get("estleg:dutyHolder") == new:
+        return False
+    node["estleg:dutyHolder"] = new
+    return True
+
+
 def classify_node(node: dict) -> tuple[list[str], bool]:
     """Classify one provision node.
 
-    Returns ``(groups, used_duty_holder)`` where ``used_duty_holder`` only
-    records whether the provision had a dutyHolder literal available for the
-    first-pass dictionary mapping.
+    Returns ``(groups, used_duty_holder)`` where ``used_duty_holder`` is
+    true when a dutyHolder value was present (IRI or phrase), whether or
+    not it classified.
     """
-    duty_text = jsonld_text(node.get("estleg:dutyHolder", ""))
+    duty_tokens, duty_present = duty_holder_tokens(node.get("estleg:dutyHolder"))
     summary = jsonld_text(node.get("estleg:summary", ""))
     legal_text = jsonld_text(node.get("estleg:legalText", ""))
     label = jsonld_text(node.get("rdfs:label", ""))
 
-    # Prefer the dutyHolder-derived group when the dutyHolder literal itself
+    # Prefer the dutyHolder-derived group when the dutyHolder value itself
     # classifies: the duty holder is the authoritative subject of the
     # provision, so scanning (and unioning) the body text would only
     # over-broaden the result with incidental mentions (#277). Fall back to the
     # body cues only when there is no dutyHolder, or it does not classify.
-    groups = set(classify_text(duty_text))
+    groups = set(duty_tokens)
     if not groups:
         body_text = " ".join(part for part in (label, summary, legal_text) if part)
         if body_text:
@@ -365,7 +415,7 @@ def classify_node(node: dict) -> tuple[list[str], bool]:
                     [g for g in TARGET_GROUP_ORDER if g in groups][:2]
                 )
 
-    return [group for group in TARGET_GROUP_ORDER if group in groups], bool(duty_text)
+    return [group for group in TARGET_GROUP_ORDER if group in groups], duty_present
 
 
 def classify_files(
@@ -401,6 +451,12 @@ def classify_files(
                     counts["dutyHolder_classified"] += 1
                 else:
                     duty = jsonld_text(node.get("estleg:dutyHolder", "")).strip()
+                    if not duty:
+                        raw = node.get("estleg:dutyHolder")
+                        if isinstance(raw, dict):
+                            duty = str(raw.get("@id") or "")
+                        elif isinstance(raw, str):
+                            duty = raw
                     if duty:
                         unmapped_duty_holders[duty] += 1
 
@@ -575,6 +631,100 @@ def upgrade_jsonld_target_group_stream(
     return stats
 
 
+_DUTY_HOLDER_STRING_LINE_RE = re.compile(
+    r'^(\s*)"estleg:dutyHolder":\s*"(.*)"(\s*,?)\s*$'
+)
+
+
+def upgrade_duty_holder_files(files: list[Path], *, write: bool = True) -> dict[str, int]:
+    """Remint or drop free-string ``estleg:dutyHolder`` values on peeps."""
+    stats = Counter()
+    for path in files:
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError:
+            stats["files_skipped"] += 1
+            continue
+        if '"estleg:dutyHolder"' not in text:
+            stats["files_skipped"] += 1
+            continue
+        try:
+            doc = json.loads(text)
+        except ValueError:
+            stats["files_skipped"] += 1
+            continue
+        if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+            stats["files_skipped"] += 1
+            continue
+        stats["files_scanned"] += 1
+        file_changed = False
+        for node in doc["@graph"]:
+            if not isinstance(node, dict):
+                continue
+            if upgrade_node_duty_holder(node):
+                stats["nodes_changed"] += 1
+                file_changed = True
+        if file_changed:
+            stats["files_changed"] += 1
+            if write:
+                save_json(path, doc)
+    return stats
+
+
+def upgrade_jsonld_duty_holder_stream(
+    src: Path,
+    dest: Path | None = None,
+) -> dict[str, int]:
+    """Line-stream remint of pretty-printed ``estleg:dutyHolder`` strings."""
+    dest = dest or src
+    tmp = dest.with_name(dest.name + ".dh-iri.tmp")
+    stats = {"lines": 0, "rewritten": 0, "dropped": 0}
+    pending: str | None = None
+
+    def flush(line: str | None) -> None:
+        nonlocal pending
+        if pending is not None:
+            out.write(pending)
+        pending = line
+
+    try:
+        with src.open(encoding="utf-8") as handle, tmp.open(
+            "w", encoding="utf-8", newline="\n"
+        ) as out:
+            for line in handle:
+                stats["lines"] += 1
+                match = _DUTY_HOLDER_STRING_LINE_RE.match(line)
+                if not match:
+                    flush(line)
+                    continue
+                indent, raw, comma = match.groups()
+                tokens, _present = duty_holder_tokens(raw)
+                if not tokens:
+                    stats["dropped"] += 1
+                    if comma.strip() != ",":
+                        # Last property: strip the previous line's trailing comma.
+                        if pending is not None and pending.rstrip().endswith(","):
+                            pending = pending.rstrip()[:-1] + pending[len(pending.rstrip()) :]
+                    continue
+                iris = [target_group_iri(token) for token in tokens]
+                chunk = [f'{indent}"estleg:dutyHolder": [\n']
+                for index, iri in enumerate(iris):
+                    tail = "," if index < len(iris) - 1 else ""
+                    chunk.append(f"{indent}  {{\n")
+                    chunk.append(f'{indent}    "@id": "{iri}"\n')
+                    chunk.append(f"{indent}  }}{tail}\n")
+                chunk.append(f"{indent}]{comma}\n")
+                flush("".join(chunk))
+                stats["rewritten"] += 1
+            flush(None)
+        tmp.replace(dest)
+    except Exception:
+        if tmp.exists():
+            tmp.unlink()
+        raise
+    return stats
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -592,9 +742,21 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="replace legacy string tokens with TargetGroup IRIs without reclassifying",
     )
+    parser.add_argument(
+        "--upgrade-duty-holders",
+        action="store_true",
+        help="map dutyHolder phrases to TargetGroup IRIs or drop unmapped junk (#460)",
+    )
     args = parser.parse_args(argv)
 
     files = iter_peep_files(include_kov=not args.exclude_kov)
+    if args.upgrade_duty_holders:
+        stats = upgrade_duty_holder_files(files, write=not args.dry_run)
+        print("Estonian Legal Ontology - dutyHolder IRI remint (#460)")
+        print(f"  Files scanned: {stats['files_scanned']}")
+        print(f"  Files changed: {stats['files_changed']}")
+        print(f"  Nodes changed: {stats['nodes_changed']}")
+        return 0
     if args.upgrade_iris:
         stats = upgrade_target_group_iris_files(files, write=not args.dry_run)
         print("Estonian Legal Ontology - Target Group IRI remint (#460)")

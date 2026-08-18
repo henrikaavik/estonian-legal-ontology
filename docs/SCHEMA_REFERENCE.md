@@ -962,8 +962,16 @@ SELECT ?text ?type ?source WHERE {
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
 | `estleg:normativeType` | LegalProvision | NormativeType (IRI) | Obligation, right, permission, prohibition, definition |
-| `estleg:dutyHolder` | LegalProvision | `xsd:string` | Who must comply (e.g., "tööandja") |
+| `estleg:dutyHolder` | LegalProvision | TargetGroup (IRI) | Who must comply. Same closed enum as `targetGroup` (`estleg:TargetGroup_*`). Unmapped sentence-initial phrases are not stored (#460). |
 | `estleg:targetGroup` | LegalProvision | TargetGroup (IRI), multi-valued | Affected group(s): `estleg:TargetGroup_Citizen`, `_Business`, `_PublicBody`, `_Official`, `_NGO` |
+
+Citizen share (#460 sample review): `targetGroup` is not assigned by
+absence-of-others. Weak generic cues (`isik` / `kasutaja` / `valdaja` /
+`omanik`) are dropped when a business or public-body cue is also present.
+Committed samples: `estleg:AS_Par_17` (Alkoholiseadus) is business-only
+(alcohol handler); `estleg:TLS_Par_2` (Töölepingu seadus) is citizen
+(employee). Remaining citizen assignments require an explicit addressee
+cue such as `töötaja` or `füüsiline isik`.
 
 ### Institutional Competence
 | Property | Domain | Range | Description |

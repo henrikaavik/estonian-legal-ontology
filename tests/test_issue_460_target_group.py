@@ -6,11 +6,15 @@ import json
 import re
 from pathlib import Path
 
+from estleg.classify_deontic import duty_holder_for_text, extract_duty_holder
 from estleg.classify_target_group import (
     classify_files,
     classify_node,
+    classify_text,
     normalize_target_group_value,
     target_group_iri,
+    upgrade_jsonld_duty_holder_stream,
+    upgrade_node_duty_holder,
     upgrade_node_target_group_iris,
 )
 
@@ -177,3 +181,115 @@ def test_combined_target_group_values_are_iris_when_materialized():
                 iris += 1
     assert leftover == 0
     assert iris > 0
+
+
+def test_junk_sentence_initial_duty_holder_is_not_emitted():
+    """#460: Klaasijäätmed / Trammil / Muuhulgas extract but do not write."""
+    for sentence in (
+        "Klaasijäätmed peab ladustama eraldi.",
+        "Trammil peab olema kehtiv sõidupilet.",
+        "Muuhulgas peab arvestama ilmastikuga.",
+    ):
+        phrase = extract_duty_holder(sentence)
+        assert phrase  # regex still fires
+        assert classify_text(phrase) == []
+        assert duty_holder_for_text(sentence) is None
+
+
+def test_mapped_duty_holder_emits_target_group_iri():
+    emitted = duty_holder_for_text("Tööandja peab pidama arvestust.")
+    assert emitted == [{"@id": BUSINESS_IRI}]
+
+
+def test_upgrade_node_duty_holder_maps_and_drops():
+    mapped = {"estleg:dutyHolder": "Tööandja ja töötaja"}
+    assert upgrade_node_duty_holder(mapped) is True
+    ids = {item["@id"] for item in mapped["estleg:dutyHolder"]}
+    assert ids == {CITIZEN_IRI, BUSINESS_IRI}
+    assert upgrade_node_duty_holder(mapped) is False
+
+    junk = {"estleg:dutyHolder": "Klaasijäätmed"}
+    assert upgrade_node_duty_holder(junk) is True
+    assert "estleg:dutyHolder" not in junk
+
+
+def test_stream_upgrade_rewrites_or_drops_duty_holder(tmp_path):
+    src = tmp_path / "fragment.jsonld"
+    src.write_text(
+        '{\n  "@graph": [\n    {\n'
+        '      "estleg:dutyHolder": "Tööandja",\n'
+        '      "rdfs:label": "keep"\n'
+        "    },\n    {\n"
+        '      "estleg:dutyHolder": "Klaasijäätmed",\n'
+        '      "rdfs:label": "drop"\n'
+        "    }\n  ]\n}\n",
+        encoding="utf-8",
+    )
+    stats = upgrade_jsonld_duty_holder_stream(src)
+    assert stats["rewritten"] == 1
+    assert stats["dropped"] == 1
+    text = src.read_text(encoding="utf-8")
+    assert '"Tööandja"' not in text
+    assert "Klaasijäätmed" not in text
+    assert '"@id": "estleg:TargetGroup_Business"' in text
+    assert upgrade_jsonld_duty_holder_stream(src)["rewritten"] == 0
+
+
+def test_shacl_duty_holder_path_is_iri_enum():
+    text = SHAPES.read_text(encoding="utf-8")
+    start = text.index("sh:path estleg:dutyHolder ;")
+    end = text.index("] ;", start)
+    block = text[start:end]
+    assert "sh:nodeKind sh:IRI" in block
+    assert "xsd:string" not in block
+    assert "estleg:TargetGroup_Business" in block
+
+
+def test_committed_target_group_report_has_no_unmapped_duty_holders():
+    report = json.loads(
+        (REPO / "krr_outputs" / "reports" / "target_group_report.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert report["top_unmapped_duty_holders"] == []
+    assert report["summary"]["dutyHolder_coverage"] == 1.0
+    assert report["summary"]["provisions_with_dutyHolder"] == report["summary"][
+        "dutyHolder_classified"
+    ]
+
+
+def test_committed_law_peeps_have_no_string_duty_holders():
+    leftover = 0
+    iris = 0
+    for path in (REPO / "krr_outputs").glob("*_peep.json"):
+        text = path.read_text(encoding="utf-8")
+        if '"estleg:dutyHolder"' not in text:
+            continue
+        doc = json.loads(text)
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict) or "estleg:dutyHolder" not in node:
+                continue
+            value = node["estleg:dutyHolder"]
+            if isinstance(value, str):
+                leftover += 1
+            else:
+                iris += len(_target_group_values(value))
+    assert leftover == 0
+    assert iris > 0
+
+
+def test_citizen_share_sample_review_committed_provisions():
+    """#460 DoD: citizen share is justified by committed samples, not absence."""
+    alcohol = json.loads(
+        (REPO / "krr_outputs" / "alkoholiseadus_peep.json").read_text(encoding="utf-8")
+    )
+    as17 = next(n for n in alcohol["@graph"] if n.get("@id") == "estleg:AS_Par_17")
+    as_groups = _target_group_values(as17.get("estleg:targetGroup"))
+    assert as_groups == [BUSINESS_IRI]
+
+    tls = json.loads(
+        (REPO / "krr_outputs" / "toolepinguseadus_peep.json").read_text(encoding="utf-8")
+    )
+    tls2 = next(n for n in tls["@graph"] if n.get("@id") == "estleg:TLS_Par_2")
+    tls_groups = _target_group_values(tls2.get("estleg:targetGroup"))
+    assert tls_groups == [CITIZEN_IRI]

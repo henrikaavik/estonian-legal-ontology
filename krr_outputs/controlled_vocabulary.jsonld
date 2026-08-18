@@ -1736,10 +1736,19 @@
     {
       "@id": "estleg:dutyHolder",
       "@type": [
-        "owl:DatatypeProperty"
+        "owl:ObjectProperty"
       ],
-      "rdfs:label": "Duty Holder",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:TargetGroup"
+      },
+      "rdfs:label": [
+        { "@value": "Duty holder", "@language": "en" },
+        { "@value": "Kohustatud isik", "@language": "et" }
+      ],
+      "rdfs:comment": "Who must comply. Values are estleg:TargetGroup individuals (#460), not free literals. Sentence-initial junk that does not match the target-group lexicon is dropped."
     },
     {
       "@id": "estleg:entryIntoForce",
@@ -2613,7 +2622,7 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Target Group",
-      "rdfs:comment": "Closed target-group classification for LegalProvision deontic effects: citizen, business, public_body, official, or ngo. HEURISTIC: derived by keyword/dutyHolder matching over the provision text (#576), preferring the dutyHolder's subject and capping an unanchored body-text union; treat as an advisory addressee indicator, not a definitive legal determination. The legacy string value is retained; estleg:targetGroupConcept (#609) materializes the equivalent first-class SKOS concept (estleg:TargetGroup_*), bridged by skos:notation."
+      "rdfs:comment": "Closed target-group classification for LegalProvision deontic effects. Values are estleg:TargetGroup individuals (#460). HEURISTIC: derived by keyword/dutyHolder matching over the provision text (#576), preferring the dutyHolder's subject and capping an unanchored body-text union; treat as an advisory addressee indicator, not a definitive legal determination. estleg:targetGroupConcept (#609) materializes the equivalent first-class SKOS concept (estleg:TargetGroup_*), bridged by skos:notation."
     },
     {
       "@id": "estleg:TargetGroup",

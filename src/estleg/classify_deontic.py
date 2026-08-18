@@ -19,6 +19,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
+from estleg.classify_target_group import classify_text, emit_target_group
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     classifier_text,
@@ -461,6 +462,22 @@ def extract_duty_holder(text: str) -> str | None:
     return None
 
 
+def duty_holder_for_text(text: str) -> list[dict[str, str]] | None:
+    """Return TargetGroup IRIs for a mapped duty holder, else None (#460).
+
+    Sentence-initial junk (``Klaasijäätmed``, ``Trammil``, ``Muuhulgas``)
+    still matches the surface regex but does not classify against the
+    target-group lexicon, so it is not written.
+    """
+    phrase = extract_duty_holder(text)
+    if not phrase:
+        return None
+    groups = classify_text(phrase)
+    if not groups:
+        return None
+    return emit_target_group(groups)
+
+
 def main() -> None:
     print("=" * 70)
     print("Estonian Legal Ontology - Deontic Classification")
@@ -554,7 +571,7 @@ def main() -> None:
                     stats_per_type[short] += 1
                     modified = True
 
-                holder = extract_duty_holder(summary)
+                holder = duty_holder_for_text(summary)
                 if holder:
                     node["estleg:dutyHolder"] = holder
                     _triples += 1
