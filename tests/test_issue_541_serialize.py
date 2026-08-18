@@ -92,7 +92,7 @@ COMBINED_TTL = REPO / "krr_outputs" / "combined_ontology.ttl"
 GITATTRIBUTES = REPO / ".gitattributes"
 # Last serialize_corpus.py run over combined_ontology.jsonld (do not
 # rdflib-parse the 400+ MB dumps in pytest).
-COMBINED_TRIPLE_COUNT = 2_584_923
+COMBINED_TRIPLE_COUNT = 2_664_215
 
 
 def _count_nonempty_lines(path: Path) -> int:

@@ -671,6 +671,11 @@ def _index_base_name(name: str) -> tuple[str, str | None]:
     """
     import re
 
+    # #379: ``karistusseadustik_map`` is the act-root Map peep for the
+    # same statute as ``karistusseadustik_osa1``, not a separate law.
+    if name.endswith("_map"):
+        return name[: -len("_map")], None
+
     match = re.match(r"^(.+?)(_osa\d+.*)?$", name)
     if match:
         base_name = match.group(1)
@@ -806,9 +811,13 @@ def generate_index():
         index["registry_exceptions"] = registry_exceptions
 
     for base_name, info in sorted(laws.items()):
+        def _file_sort_key(filename: str) -> tuple[int, str]:
+            # #379: Map peep is the act-root file and must be listed first.
+            return (0, filename) if filename.endswith("_map_peep.json") else (1, filename)
+
         entry = {
             "name": base_name,
-            "files": sorted(info["files"]),
+            "files": sorted(info["files"], key=_file_sort_key),
         }
         if info["parts"]:
             entry["parts_mapped"] = sorted(info["parts"])

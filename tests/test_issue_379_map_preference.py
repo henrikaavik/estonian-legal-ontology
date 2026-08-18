@@ -57,6 +57,13 @@ def test_committed_annotations_do_not_target_osa_parts():
     assert leftovers == []
 
 
+def test_index_base_name_groups_map_with_osa_parts():
+    import fix_all_issues as fix
+
+    assert fix._index_base_name("karistusseadustik_map") == ("karistusseadustik", None)
+    assert fix._index_base_name("karistusseadustik_osa1") == ("karistusseadustik", "1")
+
+
 def test_kars_map_peep_exists_and_is_index_first():
     repo = Path(__file__).resolve().parents[1]
     peep = json.loads(

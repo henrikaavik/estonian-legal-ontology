@@ -78,7 +78,7 @@ The combined file is a single top-level `@graph` array (not
 line-streamable), so JSON-LD load is all-or-nothing.
 
 Prefer `.nt` / N-Quads for bulk load. The committed N-Triples dump is
-2,584,923 triples. Generate with `scripts/serialize_corpus.py`:
+2,664,215 triples. Generate with `scripts/serialize_corpus.py`:
 
 ```bash
 python3 scripts/serialize_corpus.py \
