@@ -10,13 +10,8 @@ from __future__ import annotations
 
 import argparse
 import sys
-from pathlib import Path
 
-_SCRIPTS = Path(__file__).resolve().parent.parent
-if str(_SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(_SCRIPTS))
-
-import fix_all_issues as _fix  # noqa: E402
+from estleg import fix_all_issues as _fix
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-import generate_missing_parts
+from estleg import generate_missing_parts
 
 
 def _node_by_id(doc: dict, node_id: str) -> dict:
@@ -331,14 +331,14 @@ def test_vos_output_slug_matches_generate_all_laws(tmp_path, monkeypatch) -> Non
     assert "volaigusseadus_osa6_peep.json" not in produced
 
     # Canonical slug must equal generate_all_laws.slugify of the title.
-    from scripts.generate_all_laws import slugify  # noqa: PLC0415
+    from estleg.generate_all_laws import slugify
 
     assert slugify("Võlaõigusseadus") == "volaoigusseadus"
 
 
 def test_helpers_resolve_from_generate_all_laws() -> None:
-    from scripts import generate_all_laws  # noqa: PLC0415
-    from scripts.generate_missing_parts import (  # noqa: PLC0415
+    from estleg import generate_all_laws
+    from estleg.generate_missing_parts import (
         _iter_loiked,
         _loige_numbers,
         _paragraph_id_suffix,
@@ -359,7 +359,12 @@ def test_helpers_resolve_from_generate_all_laws() -> None:
     # ``generate_all_laws`` module while the test imports the package-
     # qualified ``scripts.generate_all_laws``; these are distinct module-
     # cache entries, so compare provenance instead.)
-    assert collect_text.__module__ in {"generate_all_laws", "law_structure"}
+    assert collect_text.__module__ in {
+        "generate_all_laws",
+        "law_structure",
+        "estleg.generate_all_laws",
+        "estleg.law_structure",
+    }
     assert (
         collect_text.__code__.co_filename
         == generate_all_laws.collect_text.__code__.co_filename

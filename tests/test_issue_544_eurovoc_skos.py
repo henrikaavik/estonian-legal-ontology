@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import classify_eurovoc as ev  # noqa: E402
+from estleg import classify_eurovoc as ev
 
 REPO = Path(__file__).resolve().parent.parent
 SKOS_PATH = REPO / "krr_outputs" / "eurovoc_concept_scheme.jsonld"

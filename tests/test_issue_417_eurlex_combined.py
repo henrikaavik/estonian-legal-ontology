@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import run_all_integration
-from generate_eu_legislation import rebuild_eurlex_combined_from_peeps
+from estleg import run_all_integration
+from estleg.generate_eu_legislation import rebuild_eurlex_combined_from_peeps
 
 
 def _count_pred(graph: list, pred: str) -> int:

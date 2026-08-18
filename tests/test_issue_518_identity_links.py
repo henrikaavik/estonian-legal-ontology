@@ -10,17 +10,14 @@ point at the e-Justice resolver. No network at test time.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from enrich_kov_layer1 import (  # noqa: E402
+from estleg.enrich_kov_layer1 import (
     ehak_classifier_iri,
     municipality_identity_links,
     wikidata_entity_iri,
 )
-from generate_court_decisions import ecli_see_also_iri  # noqa: E402
+from estleg.generate_court_decisions import ecli_see_also_iri
 
 REPO = Path(__file__).resolve().parent.parent
 MUNICIPALITIES_PEEP = REPO / "krr_outputs" / "municipalities_peep.json"

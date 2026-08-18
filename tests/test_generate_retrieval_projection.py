@@ -14,14 +14,11 @@ Two tiers:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_retrieval_projection as grp  # noqa: E402
+from estleg import generate_retrieval_projection as grp
 
 EVAL_DATE = "2026-06-01"
 RT_BASE = "https://www.riigiteataja.ee/akt/"
@@ -529,7 +526,7 @@ def test_deprecated_law_is_skipped(tmp_path):
 
 def test_retrieval_subtree_excluded_from_corpus_counter():
     """The derived retrieval artifacts must not inflate the corpus file count."""
-    import estleg_common
+    from estleg import estleg_common
 
     krr = Path("krr_outputs")
     for rel in (
@@ -547,7 +544,7 @@ def test_retrieval_subtree_excluded_from_corpus_counter():
 # ---------------------------------------------------------------------------
 @pytest.mark.corpus
 def test_real_corpus_smoke(tmp_path):
-    import validate_all
+    from estleg import validate_all
 
     krr = Path(__file__).resolve().parent.parent / "krr_outputs"
     index = krr / "INDEX.json"

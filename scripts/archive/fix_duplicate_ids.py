@@ -28,9 +28,9 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
-from estleg_common import iter_peep_files, sanitize_id
+from estleg.estleg_common import iter_peep_files, sanitize_id
 
-KRR_DIR = Path(__file__).resolve().parents[1] / "krr_outputs"
+KRR_DIR = Path(__file__).resolve().parents[2] / "krr_outputs"
 
 
 def _atomic_write_json(filepath: str | Path, doc: object) -> None:

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Producer package layout (#472)
+
+- Live producer modules live in `src/estleg/`. `pip install -e .` exposes
+  `estleg-generate-laws`, `estleg-run-pipeline`, and `estleg-validate`.
+  `scripts/` keeps one-release shims; `sys.path.insert` hacks are gone.
+
 ### INDEX body coverage, version citations, consistency stamp (#507, #524, #522)
 
 - INDEX laws carry `provisionCount` / `legalTextCount` / `stubKind`. 132
@@ -16,8 +22,7 @@ All notable changes to this project will be documented in this file.
 
 ### Client, schema.org bridges, non-graph indexes (#551, #543, #462)
 
-- `estleg_client` package: `load_law` / `estleg-load` (#551). `scripts/`
-  stays unpackaged (#472).
+- `estleg_client` package: `load_law` / `estleg-load` (#551).
 - `estleg:Act` ⊑ `schema:Legislation`; `legalText` ⊑ `schema:text`;
   `references` ⊑ `dcterms:references` (#543).
 - KOV similarity JSON and sanction `severity_index` formally documented

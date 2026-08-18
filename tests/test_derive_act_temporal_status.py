@@ -5,12 +5,8 @@ nodes are stamped), and that an already-determined status is never overwritten.
 """
 
 import json
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import derive_act_temporal_status as D  # noqa: E402
+from estleg import derive_act_temporal_status as D
 
 ASOF = "2026-06-01"
 

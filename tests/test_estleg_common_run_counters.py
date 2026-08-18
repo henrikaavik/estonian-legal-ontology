@@ -1,16 +1,14 @@
 """Tests for _RunCounters and _safe_load in estleg_common."""
 from __future__ import annotations
 
-import sys
+import re
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import (
-    PAR_SUFFIX,
+from estleg.estleg_common import (
     _FAILURE_SAMPLES_INMEMORY_CAP,
+    PAR_SUFFIX,
     _RunCounters,
     _safe_load,
     build_globalid_xml_lookup,
@@ -18,7 +16,6 @@ from estleg_common import (
     save_json,
     source_provenance,
 )
-import re
 
 
 def test_run_counters_defaults() -> None:
@@ -238,7 +235,7 @@ def test_iter_peep_files_handles_paths_outside_krr_dir(
     tree. With the old ``str(p.relative_to(KRR_DIR))`` sort key this
     would raise ValueError.
     """
-    import estleg_common
+    from estleg import estleg_common
 
     fake_krr = tmp_path / "krr"
     fake_krr.mkdir()
@@ -346,10 +343,7 @@ def test_source_provenance_output_passes_validate_all_validators():
     validate_dc_source)."""
     import importlib
 
-    scripts_dir = Path(__file__).resolve().parents[1] / "scripts"
-    if str(scripts_dir) not in sys.path:
-        sys.path.insert(0, str(scripts_dir))
-    validate_all = importlib.import_module("validate_all")
+    validate_all = importlib.import_module("estleg.validate_all")
     validate_all.reset()
 
     node = {

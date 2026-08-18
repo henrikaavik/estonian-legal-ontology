@@ -1,17 +1,13 @@
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from generate_draft_legislation import (
+from estleg.generate_draft_legislation import (
     TITLE_KEY_LEN,
     classify_draft_type,
     detect_affected_laws,
     generate_draft_node,
     sanitize_id,
 )
-
 
 # --------------------------------------------------------------------- #
 # Issue #304 — classify_draft_type must test the väljatöötamiskavatsus
@@ -130,7 +126,7 @@ class TestTitleKeyLen:
     def test_main_dedups_title_only_drafts_on_same_sixty_char_prefix(
         self, tmp_path, monkeypatch
     ):
-        import generate_draft_legislation as mod
+        from estleg import generate_draft_legislation as mod
 
         title_a = self._long_title()
         title_b = title_a[:TITLE_KEY_LEN] + "OTHER_TAIL"
@@ -333,7 +329,7 @@ class TestIndexIsByteStable:
     }
 
     def _run(self, tmp_path, monkeypatch):
-        import generate_draft_legislation as mod
+        from estleg import generate_draft_legislation as mod
 
         eelnoud = tmp_path / "eelnoud"
         eelnoud.mkdir(parents=True, exist_ok=True)
@@ -407,7 +403,7 @@ class TestDraftOutputIsSortedById:
     ]
 
     def _run(self, tmp_path, monkeypatch):
-        import generate_draft_legislation as mod
+        from estleg import generate_draft_legislation as mod
 
         eelnoud = tmp_path / "eelnoud"
         eelnoud.mkdir(parents=True, exist_ok=True)
@@ -472,7 +468,7 @@ class TestDraftOutputIsSortedById:
             encoding="utf-8"
         )
 
-        import generate_draft_legislation as mod
+        from estleg import generate_draft_legislation as mod
 
         eelnoud_b = tmp_path / "eelnoud_b"
         eelnoud_b.mkdir(parents=True, exist_ok=True)
@@ -498,7 +494,7 @@ class TestDetectAffectedLawsYearPrefix:
     """#380 — leading year token must be captured, not stripped."""
 
     def test_year_prefixed_law_name_keeps_year(self):
-        from generate_draft_legislation import detect_affected_laws
+        from estleg.generate_draft_legislation import detect_affected_laws
 
         result = detect_affected_laws(
             "2016. aasta riigieelarve seaduse muutmise seadus"
@@ -509,7 +505,7 @@ class TestDetectAffectedLawsYearPrefix:
         assert not any(name.lower().startswith("aasta ") for name in result)
 
     def test_plain_multiword_law_name_still_detected(self):
-        from generate_draft_legislation import detect_affected_laws
+        from estleg.generate_draft_legislation import detect_affected_laws
 
         # The [\w.]+ leading-token change must not break ordinary multi-word
         # genitive detection.

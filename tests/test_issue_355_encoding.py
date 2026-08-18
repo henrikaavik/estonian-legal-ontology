@@ -9,14 +9,11 @@ helpers directly — they must not be mocked.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_provision_versions as gpv
-import validate_all
-from generate_provision_versions import (
+from estleg import generate_provision_versions as gpv
+from estleg import validate_all
+from estleg.generate_provision_versions import (
     decode_rt_xml_bytes,
     strip_or_repair_fffd_in_version_text,
 )

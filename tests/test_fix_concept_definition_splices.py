@@ -7,18 +7,13 @@ tmp_path tests — no corpus, no LFS, no network.
 from __future__ import annotations
 
 import json
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
 
-SCRIPTS = Path(__file__).resolve().parent.parent / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
-
-import extract_legal_concepts as elc  # noqa: E402
-import fix_concept_definition_splices as fix  # noqa: E402
+from estleg import extract_legal_concepts as elc
+from estleg import fix_concept_definition_splices as fix
 
 
 # --------------------------------------------------------------------------

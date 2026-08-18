@@ -4,10 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import generate_all_laws
-import law_structure
-import riigiteataja_common
-
+from estleg import generate_all_laws, law_structure, riigiteataja_common
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -26,7 +23,6 @@ def test_laws_fetch_xml_delegates_to_commons(monkeypatch, tmp_path) -> None:
         seen["url"] = url
         seen["cache_name"] = cache_name
         seen["kwargs"] = kwargs
-        return None
 
     monkeypatch.setattr(generate_all_laws, "DATA_DIR", tmp_path)
     monkeypatch.setattr(generate_all_laws, "common_fetch_xml", fake_common_fetch_xml)

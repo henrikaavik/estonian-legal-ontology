@@ -5,12 +5,9 @@ but excluded from validation / public-load / SHACL sidecar buckets.
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import (
+from estleg.estleg_common import (
     NON_DATA_STEM_SUFFIXES,
     is_non_data_file,
     is_public_jsonld_data_file,
@@ -50,7 +47,7 @@ def test_iter_krr_jsonld_files_counts_reports_skips_regen_state(tmp_path: Path) 
 
 
 def test_validate_all_uses_shared_or_exclude_suffixes() -> None:
-    import validate_all
+    from estleg import validate_all
 
     if hasattr(validate_all, "EXCLUDE_SUFFIXES"):
         suffixes = validate_all.EXCLUDE_SUFFIXES
@@ -63,7 +60,7 @@ def test_validate_all_uses_shared_or_exclude_suffixes() -> None:
 
 
 def test_shacl_sidecar_helper_excludes_review_json() -> None:
-    import shacl_validate_all as sva
+    from estleg import shacl_validate_all as sva
 
     review = Path("foo_review.json")
     helper = getattr(sva, "_is_sidecar_data_file", None)

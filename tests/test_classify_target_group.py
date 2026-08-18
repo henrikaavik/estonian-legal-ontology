@@ -3,14 +3,10 @@
 from __future__ import annotations
 
 import json
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 
 def test_classify_text_covers_all_target_group_enums():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     assert classify_text("Töötaja peab esitama andmed") == ["citizen"]
     assert classify_text("Tööandja peab pidama arvestust") == ["business"]
@@ -20,7 +16,7 @@ def test_classify_text_covers_all_target_group_enums():
 
 
 def test_classify_node_accepts_multi_valued_duty_holder():
-    from classify_target_group import classify_node
+    from estleg.classify_target_group import classify_node
 
     node = {
         "estleg:dutyHolder": "Tööandja ja töötaja",
@@ -34,7 +30,7 @@ def test_classify_node_accepts_multi_valued_duty_holder():
 
 
 def test_classify_node_uses_deontic_text_when_duty_holder_missing():
-    from classify_target_group import classify_node
+    from estleg.classify_target_group import classify_node
 
     node = {
         "estleg:summary": "Tarbijal on õigus saada ettevõtjalt teavet.",
@@ -55,20 +51,20 @@ def test_classify_node_uses_deontic_text_when_duty_holder_missing():
 # ---------------------------------------------------------------------------
 
 def test_shared_cue_kasutaja_is_single_valued():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     # ``kasutaja`` ("user") used to be in both lists → always [citizen, business].
     assert classify_text("Kasutaja peab maksma teenuse eest.") == ["citizen"]
 
 
 def test_shared_cue_volgnik_is_single_valued():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     assert classify_text("Võlgnik peab tasuma võla.") == ["citizen"]
 
 
 def test_shared_cue_maksumaksja_is_business_only():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     # ``maksumaksja`` / ``maksukohustuslane`` resolve to business only now.
     assert classify_text("Maksumaksja peab esitama deklaratsiooni.") == ["business"]
@@ -76,7 +72,7 @@ def test_shared_cue_maksumaksja_is_business_only():
 
 
 def test_juriidiline_isik_is_business_not_citizen():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     assert classify_text("Juriidiline isik peab esitama aruande.") == ["business"]
     assert classify_text("Juriidilise isiku kohustus on esitada andmed.") == [
@@ -85,14 +81,14 @@ def test_juriidiline_isik_is_business_not_citizen():
 
 
 def test_fuusiline_and_bare_isik_remain_citizen():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     assert classify_text("Füüsiline isik peab esitama taotluse.") == ["citizen"]
     assert classify_text("Isik peab esitama taotluse.") == ["citizen"]
 
 
 def test_duty_holder_group_preferred_over_body_cues():
-    from classify_target_group import classify_node
+    from estleg.classify_target_group import classify_node
 
     # The dutyHolder (Tööandja = business) classifies, so the body mention of
     # ``töötaja`` (citizen) must NOT be unioned in — result is business only.
@@ -106,7 +102,7 @@ def test_duty_holder_group_preferred_over_body_cues():
 
 
 def test_unmapped_duty_holder_falls_back_to_body_cues():
-    from classify_target_group import classify_node
+    from estleg.classify_target_group import classify_node
 
     # When the dutyHolder literal does not classify, the body cues are used.
     node = {
@@ -126,7 +122,7 @@ def test_unmapped_duty_holder_falls_back_to_body_cues():
 # ---------------------------------------------------------------------------
 
 def test_koolitus_does_not_match_public_body():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     # Evidence from the issue: training participation, no school entity.
     assert "public_body" not in classify_text("Koolitusel osalemine on kohustuslik.")
@@ -140,7 +136,7 @@ def test_koolitus_does_not_match_public_body():
 
 
 def test_real_kool_still_matches_public_body():
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     # Nominative and the enumerated case inflections must still classify.
     # (Sentences avoid incidental cues from other groups so the result is the
@@ -152,7 +148,7 @@ def test_real_kool_still_matches_public_body():
 
 
 def test_classify_files_writes_target_groups_and_report(tmp_path):
-    from classify_target_group import classify_files
+    from estleg.classify_target_group import classify_files
 
     peep = tmp_path / "sample_peep.json"
     report_path = tmp_path / "target_group_report.json"
@@ -207,7 +203,7 @@ def test_classify_files_writes_target_groups_and_report(tmp_path):
 def test_seltsing_is_not_ngo():
     """#576: ``seltsing`` (a civil-law partnership) must not match the NGO
     ``selts*`` cue; ``selts``/``seltsi`` (society) still does."""
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     assert "ngo" not in classify_text("Seltsingu liikmed vastutavad solidaarselt.")
     assert "ngo" in classify_text("Selts korraldab heategevuslikke üritusi.")
@@ -217,7 +213,7 @@ def test_seltsing_is_not_ngo():
 def test_bare_juhatus_is_not_business():
     """#576: a bare ``juhatus`` (board) is not a business cue — MTÜs and public
     bodies have one too; only a company's board signals business."""
-    from classify_target_group import classify_text
+    from estleg.classify_target_group import classify_text
 
     assert "business" not in classify_text("Mittetulundusühingu juhatus otsustas.")
     assert "business" not in classify_text("Sihtasutuse juhatuse liige esitab aruande.")
@@ -228,7 +224,7 @@ def test_bare_juhatus_is_not_business():
 def test_body_union_capped_when_no_duty_holder():
     """#576: a body-text fallback union with ≥3 incidental addressees is capped
     to the two highest-priority groups; the dutyHolder path is never capped."""
-    from classify_target_group import classify_node
+    from estleg.classify_target_group import classify_node
 
     # Mentions cues for citizen, business, ngo, official, public_body.
     node = {
@@ -251,7 +247,7 @@ def test_body_union_capped_when_no_duty_holder():
 
 def test_alcohol_handler_is_not_citizen_only():
     """#460: alkoholikäitleja / ettevõtja duties must not be citizen-only."""
-    from classify_target_group import classify_node
+    from estleg.classify_target_group import classify_node
 
     node = {
         "estleg:summary": (

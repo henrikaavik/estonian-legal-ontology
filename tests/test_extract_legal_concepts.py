@@ -3,14 +3,9 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
 import pytest
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer2a"
@@ -28,7 +23,7 @@ def _run_extractor(tmp_path, monkeypatch, peeps: dict[str, str], xmls: dict[str,
     under a temp ``krr_outputs`` / ``data/riigiteataja`` tree, point
     ``extract_legal_concepts`` at it, run ``main()``, and return the parsed
     ``concepts_combined.jsonld`` ``@graph``."""
-    import extract_legal_concepts as mod
+    from estleg import extract_legal_concepts as mod
 
     krr = tmp_path / "krr_outputs"
     concepts = krr / "concepts"
@@ -48,7 +43,7 @@ def _run_extractor(tmp_path, monkeypatch, peeps: dict[str, str], xmls: dict[str,
     monkeypatch.setattr(mod, "DATA_DIR", data_dir)
     monkeypatch.setattr(mod, "CONCEPTS_DIR", concepts)
     monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
-    import estleg_common
+    from estleg import estleg_common
     monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
 
     rc = mod.main()
@@ -113,7 +108,7 @@ class TestParToIriLookup:
         """Walk the KOV fixture's @graph and build a (par_nr, par_display)
         → @id lookup. The fixture's only provision is § 1 with @id
         estleg:Reg_9999_Par_1."""
-        from extract_legal_concepts import build_par_to_iri_lookup
+        from estleg.extract_legal_concepts import build_par_to_iri_lookup
 
         with open(PEEP_FIXTURE, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
@@ -125,7 +120,7 @@ class TestParToIriLookup:
         assert lookup.get("§ 1.") == "estleg:Reg_9999_Par_1"
 
     def test_skips_non_provision_nodes(self):
-        from extract_legal_concepts import build_par_to_iri_lookup
+        from estleg.extract_legal_concepts import build_par_to_iri_lookup
         doc = {
             "@graph": [
                 {"@id": "estleg:Act_X", "@type": ["owl:Ontology"]},
@@ -154,7 +149,7 @@ class TestExtractConceptsWithLookup:
         is_definition_paragraph; the `1) <term> — <definition>;`
         body matches extract_definitions_from_text.
         """
-        from extract_legal_concepts import extract_concepts_from_xml
+        from estleg.extract_legal_concepts import extract_concepts_from_xml
 
         xml = tmp_path / "kov_act.xml"
         xml.write_text("""<?xml version="1.0" encoding="UTF-8"?>
@@ -199,7 +194,7 @@ class TestExtractConceptsWithLookup:
         existing slug-derived IRI shape is preserved. Ensures we
         don't break the laws-only callers that haven't been updated
         to pass the lookup yet."""
-        from extract_legal_concepts import extract_concepts_from_xml
+        from estleg.extract_legal_concepts import extract_concepts_from_xml
 
         xml = tmp_path / "law.xml"
         xml.write_text("""<?xml version="1.0" encoding="UTF-8"?>
@@ -240,7 +235,7 @@ class TestIssue171DefinitionPattern:
     (lookahead) so multi-clause definitions survive intact."""
 
     def test_embedded_semicolon_kept_in_definition(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         # KMS § 2 1) ... — long-form clause with an embedded semicolon
         # before the next numbered marker.
         text = (
@@ -256,13 +251,13 @@ class TestIssue171DefinitionPattern:
         assert "sealhulgas käibemaksukohuslane" in defs[0][2]
 
     def test_trailing_semicolon_stripped(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) klient — füüsiline isik;"
         defs = extract_definitions_from_text(text)
         assert defs[0][2] == "füüsiline isik", defs[0][2]
 
     def test_last_definition_terminates_at_eos(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) klient — füüsiline isik 2) teenus — pakutav abi"
         defs = extract_definitions_from_text(text)
         # Two definitions, both intact.
@@ -279,7 +274,7 @@ class TestIssue260HyphenatedFirstTerm:
     and the separator dash must be space-surrounded."""
 
     def test_multichar_hyphenated_first_term_kept_whole(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) tee-ehitus – teede rajamine ja korrashoid;"
         defs = extract_definitions_from_text(text)
         assert len(defs) == 1, defs
@@ -289,7 +284,7 @@ class TestIssue260HyphenatedFirstTerm:
         assert defs[0][2].startswith("teede rajamine"), defs[0]
 
     def test_single_letter_prefix_hyphenated_term_not_dropped(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) e-arve – elektrooniline arve;"
         defs = extract_definitions_from_text(text)
         # Previously dropped entirely (parsed term "e" failed len < 2).
@@ -298,7 +293,7 @@ class TestIssue260HyphenatedFirstTerm:
         assert defs[0][2] == "elektrooniline arve", defs[0]
 
     def test_hyphenated_term_in_multi_item_list(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) e-arve – elektrooniline arve; 2) tee-ehitus – teede rajamine;"
         defs = extract_definitions_from_text(text)
         terms = [t for _n, t, _d in defs]
@@ -312,7 +307,7 @@ class TestIssue261InlineCrossReference:
     definition-item start (``\\d+\\) term <space-dash-space>``)."""
 
     def test_inline_numbered_reference_does_not_truncate(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) tulu – käesoleva seaduse 2) punktis nimetatud summa kokku;"
         defs = extract_definitions_from_text(text)
         assert len(defs) == 1, defs
@@ -323,7 +318,7 @@ class TestIssue261InlineCrossReference:
         ), defs[0]
 
     def test_real_item_after_inline_reference_still_splits(self):
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         # An inline "2)" reference inside item 1, then a genuine item 2.
         text = (
             "1) tulu – käesoleva seaduse 2) punktis nimetatud summa; "
@@ -344,7 +339,7 @@ class TestIssue171ConceptIdDisambiguation:
     seen_concept_ids."""
 
     def test_disambiguator_uses_law_par_def(self):
-        from extract_legal_concepts import _disambiguate_concept_id
+        from estleg.extract_legal_concepts import _disambiguate_concept_id
         seen = {"estleg:Concept_isik"}
         concept = {
             "concept_id": "estleg:Concept_isik",
@@ -355,7 +350,7 @@ class TestIssue171ConceptIdDisambiguation:
         assert cid == "estleg:Concept_isik_law_a_2_1", cid
 
     def test_disambiguator_appends_monotonic_on_collision(self):
-        from extract_legal_concepts import _disambiguate_concept_id
+        from estleg.extract_legal_concepts import _disambiguate_concept_id
         seen = {"estleg:Concept_isik", "estleg:Concept_isik_law_a_2_1"}
         concept = {
             "concept_id": "estleg:Concept_isik",
@@ -366,7 +361,7 @@ class TestIssue171ConceptIdDisambiguation:
         assert cid == "estleg:Concept_isik_law_a_2_1_2", cid
 
     def test_no_collision_returns_base(self):
-        from extract_legal_concepts import _disambiguate_concept_id
+        from estleg.extract_legal_concepts import _disambiguate_concept_id
         seen = set()
         concept = {
             "concept_id": "estleg:Concept_unique_term",
@@ -379,7 +374,7 @@ class TestIssue171ConceptIdDisambiguation:
         """End-to-end: two laws each defining 'isik' in their § 2 1)
         clauses — both must survive in the combined graph and neither
         is silently dropped."""
-        import extract_legal_concepts as mod
+        from estleg import extract_legal_concepts as mod
         krr = tmp_path / "krr_outputs"
         concepts = krr / "concepts"
         reports = krr / "reports" / "kov"
@@ -432,7 +427,7 @@ class TestIssue171ConceptIdDisambiguation:
         monkeypatch.setattr(mod, "DATA_DIR", data_dir)
         monkeypatch.setattr(mod, "CONCEPTS_DIR", concepts)
         monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
-        import estleg_common
+        from estleg import estleg_common
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
 
         rc = mod.main()
@@ -460,7 +455,7 @@ class TestIssue171ConceptIdDisambiguation:
         assert len(ids) == 2
 
     def test_close_match_targets_are_seen(self):
-        from extract_legal_concepts import _disambiguate_concept_id
+        from estleg.extract_legal_concepts import _disambiguate_concept_id
         # A closeMatch/exactMatch target should always end up in
         # seen_concept_ids — pin via the helper's API.
         seen: set[str] = set()
@@ -483,7 +478,7 @@ class TestIssue171DeterministicOrdering:
         # Inspect the source for any remaining `list({...})` over a set.
         # The source helper file is assumed unchanged across this call.
         from pathlib import Path
-        src = Path(__file__).resolve().parent.parent / "scripts" / "extract_legal_concepts.py"
+        src = Path(__file__).resolve().parent.parent / "src" / "estleg" / "extract_legal_concepts.py"
         text = src.read_text(encoding="utf-8")
         # Allow `list({` patterns inside docstrings (the comments
         # discussing the bug). Strip docstrings before scanning.
@@ -508,7 +503,7 @@ class TestIssue171CloseMatchCrossProduct:
     cross-product with bidirectional arcs, not just the first."""
 
     def test_bucketed_pairs_returns_all_close_matches(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # 'auto' / 'auta' / 'auto1' all within edit distance < 3.
         terms = ["auto", "auta", "auts"]
         pairs = _bucketed_close_match_pairs(terms)
@@ -524,7 +519,7 @@ class TestIssue171BucketingPerformance:
     pairs when the corpus exceeds the old 5000-cap."""
 
     def test_bucketing_finds_pairs_in_large_corpus(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # Build a 200-term corpus seeded with two known close pairs
         # ("isiku" / "isikud", distance 1; "auto" / "auts", distance 1)
         # and many unrelated short terms.
@@ -549,7 +544,7 @@ class TestIssue278LeadingEditBuckets:
         return (a, b) in s or (b, a) in s
 
     def test_leading_char_substitution_linked(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # d=1, differs only in the FIRST character — never shared a bucket
         # under the old prefix signature.
         pairs = _bucketed_close_match_pairs(["tasu", "kasu"])
@@ -558,27 +553,27 @@ class TestIssue278LeadingEditBuckets:
         assert any(d == 1 for *_p, d in pairs), pairs
 
     def test_transposed_first_two_chars_linked(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # Transposing the first two characters is a distance-2 edit and
         # changes the leading 2-char prefix, so the old bucketing missed it.
         pairs = _bucketed_close_match_pairs(["liige", "ilige"])
         assert self._linked(pairs, "liige", "ilige"), pairs
 
     def test_double_leading_substitution_linked(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # Both leading chars differ (d=2) — the hardest case for any
         # prefix-keyed scheme.
         pairs = _bucketed_close_match_pairs(["xxabc", "yyabc"])
         assert self._linked(pairs, "xxabc", "yyabc"), pairs
 
     def test_distance_three_not_linked(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # Guard: pairs at edit distance >= 3 must still be excluded.
         pairs = _bucketed_close_match_pairs(["abcd", "wxyz"])
         assert not self._linked(pairs, "abcd", "wxyz"), pairs
 
     def test_leading_edit_found_in_large_corpus(self):
-        from extract_legal_concepts import _bucketed_close_match_pairs
+        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
         # The leading-char pair must surface even buried in a large,
         # otherwise-unrelated vocabulary.
         terms = [f"word{i:03d}" for i in range(200)]
@@ -631,7 +626,7 @@ class TestIssue171TripleCounting:
     """
 
     def test_triples_match_emitted_concept_count(self, tmp_path, monkeypatch):
-        import extract_legal_concepts as mod
+        from estleg import extract_legal_concepts as mod
         krr = tmp_path / "krr_outputs"
         concepts = krr / "concepts"
         reports = krr / "reports" / "kov"
@@ -677,7 +672,7 @@ class TestIssue171TripleCounting:
         monkeypatch.setattr(mod, "DATA_DIR", data_dir)
         monkeypatch.setattr(mod, "CONCEPTS_DIR", concepts)
         monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
-        import estleg_common
+        from estleg import estleg_common
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
 
         mod.main()
@@ -712,7 +707,7 @@ class TestIssue171ParToIriCollision:
     the ambiguity flag."""
 
     def test_collision_stores_list(self):
-        from extract_legal_concepts import build_par_to_iri_lookup
+        from estleg.extract_legal_concepts import build_par_to_iri_lookup
         doc = {
             "@graph": [
                 {"@id": "estleg:Reg_X_Par_1", "estleg:paragrahv": "§ 1."},
@@ -724,7 +719,7 @@ class TestIssue171ParToIriCollision:
         assert lookup["1"] == ["estleg:Reg_X_Par_1", "estleg:Reg_X_Lisa_Par_1"]
 
     def test_no_collision_keeps_string(self):
-        from extract_legal_concepts import build_par_to_iri_lookup
+        from estleg.extract_legal_concepts import build_par_to_iri_lookup
         doc = {
             "@graph": [
                 {"@id": "estleg:Reg_X_Par_1", "estleg:paragrahv": "§ 1."},
@@ -735,7 +730,7 @@ class TestIssue171ParToIriCollision:
         assert isinstance(lookup["1"], str)
 
     def test_resolve_returns_ambiguous_flag(self):
-        from extract_legal_concepts import resolve_provision_id
+        from estleg.extract_legal_concepts import resolve_provision_id
         lookup = {"1": ["estleg:A_Par_1", "estleg:B_Par_1"]}
         provision_id, ambig = resolve_provision_id(lookup, "1", "§ 1.")
         # Picks first, surfaces ambiguity.
@@ -743,7 +738,7 @@ class TestIssue171ParToIriCollision:
         assert ambig is True
 
     def test_resolve_unique_no_ambiguity(self):
-        from extract_legal_concepts import resolve_provision_id
+        from estleg.extract_legal_concepts import resolve_provision_id
         lookup = {"1": "estleg:A_Par_1"}
         provision_id, ambig = resolve_provision_id(lookup, "1", "§ 1.")
         assert provision_id == "estleg:A_Par_1"
@@ -757,7 +752,7 @@ class TestIssue171ExceptionHandling:
     def test_specific_exceptions_only_caught(self):
         """Pin: the source uses the narrow except clause, not bare Exception."""
         from pathlib import Path
-        src = Path(__file__).resolve().parent.parent / "scripts" / "extract_legal_concepts.py"
+        src = Path(__file__).resolve().parent.parent / "src" / "estleg" / "extract_legal_concepts.py"
         text = src.read_text(encoding="utf-8")
         # The specific exceptions live in the per-law try/except. Bare
         # Exception in main()'s loop has been removed.
@@ -768,7 +763,7 @@ class TestIssue171ExceptionHandling:
         assert "except (ET.ParseError, OSError, KeyError, json.JSONDecodeError)" in text
 
     def test_failure_exit_threshold_constant(self):
-        from extract_legal_concepts import _FAILURE_EXIT_THRESHOLD
+        from estleg.extract_legal_concepts import _FAILURE_EXIT_THRESHOLD
         assert isinstance(_FAILURE_EXIT_THRESHOLD, int)
         assert _FAILURE_EXIT_THRESHOLD >= 1
 
@@ -779,7 +774,7 @@ class TestIssue171ImportTraceback:
 
     def test_traceback_imported(self):
         from pathlib import Path
-        src = Path(__file__).resolve().parent.parent / "scripts" / "extract_legal_concepts.py"
+        src = Path(__file__).resolve().parent.parent / "src" / "estleg" / "extract_legal_concepts.py"
         text = src.read_text(encoding="utf-8")
         assert "import traceback" in text
 
@@ -809,7 +804,7 @@ class TestIssue134NoiseFilterUnit:
         "the of",
     ])
     def test_is_noise_term_true(self, term):
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term(term) is True, term
 
     @pytest.mark.parametrize("term", [
@@ -820,7 +815,7 @@ class TestIssue134NoiseFilterUnit:
         "ühisveevärgi ja",  # trailing stopword but not stopword-only
     ])
     def test_is_noise_term_false(self, term):
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term(term) is False, term
 
     @pytest.mark.parametrize("definition", [
@@ -834,7 +829,7 @@ class TestIssue134NoiseFilterUnit:
         "välja jäetud",
     ])
     def test_is_noise_definition_true(self, definition):
-        from extract_legal_concepts import is_noise_definition
+        from estleg.extract_legal_concepts import is_noise_definition
         assert is_noise_definition(definition) is True, definition
 
     @pytest.mark.parametrize("definition", [
@@ -842,7 +837,7 @@ class TestIssue134NoiseFilterUnit:
         "kogumissüsteemi sattunud reostunud vesi",
     ])
     def test_is_noise_definition_false(self, definition):
-        from extract_legal_concepts import is_noise_definition
+        from estleg.extract_legal_concepts import is_noise_definition
         assert is_noise_definition(definition) is False, definition
 
 
@@ -1177,7 +1172,7 @@ class TestFindingF3HasDefinitionNode:
     ):
         """#359: CV-owned T-Box IRIs must not be re-emitted as declaration
         nodes. Inverse axioms live in controlled_vocabulary.jsonld."""
-        from extract_legal_concepts import CV_OWNED_TBOX_IDS
+        from estleg.extract_legal_concepts import CV_OWNED_TBOX_IDS
 
         graph = _run_extractor(
             tmp_path, monkeypatch,
@@ -1360,7 +1355,7 @@ class TestIssue303SubsectionPrefixContamination:
         return ET.fromstring(xml)
 
     def test_collect_full_text_drops_counter_elements(self):
-        from extract_legal_concepts import collect_full_text
+        from estleg.extract_legal_concepts import collect_full_text
         xml = _numbered_kov_xml(
             _alampunkt("1", "Tee – maantee")
             + _alampunkt("2", "kohalik tee – vallatee")
@@ -1373,7 +1368,7 @@ class TestIssue303SubsectionPrefixContamination:
         assert "1)" in ft and "2)" in ft
 
     def test_trailing_counter_does_not_bleed_into_last_definition(self):
-        from extract_legal_concepts import (
+        from estleg.extract_legal_concepts import (
             collect_full_text,
             extract_definitions_from_text,
         )
@@ -1390,7 +1385,7 @@ class TestIssue303SubsectionPrefixContamination:
         assert not re.search(r";\s*\d+\s*$", defs[0][2]), defs[0][2]
 
     def test_content_digits_preserved(self):
-        from extract_legal_concepts import collect_full_text
+        from estleg.extract_legal_concepts import collect_full_text
         # A cross-reference number (§ 4 lõikes 3) and a parenthesised content
         # number (kakskümmend (20) meetrit) live inside <tavatekst> — they are
         # NOT numbering elements and must survive intact.
@@ -1409,7 +1404,7 @@ class TestIssue303SubsectionPrefixContamination:
         """Belt-and-suspenders: even if a raw text bypassing collect_full_text
         carries a trailing ``; N`` artefact, extract_definitions_from_text
         strips it."""
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         defs = extract_definitions_from_text("1) vesi – joogivesi; 2")
         assert defs[0][2] == "joogivesi", defs
 
@@ -1417,7 +1412,7 @@ class TestIssue303SubsectionPrefixContamination:
         """The defensive strip must only remove a TRAILING bare ``; N`` — an
         embedded ``; <word>`` clause (no trailing digit) is #171 content and
         must survive."""
-        from extract_legal_concepts import extract_definitions_from_text
+        from estleg.extract_legal_concepts import extract_definitions_from_text
         text = "1) imporditud kaup — kaup; sealhulgas eksport 2) muu — x asi"
         defs = extract_definitions_from_text(text)
         assert "sealhulgas eksport" in defs[0][2], defs[0]
@@ -1450,13 +1445,13 @@ class TestIssue391DedupNormalisation:
     definitionVariantCount, no near-duplicate skos:definition slots)."""
 
     def test_bare_trailing_counter_collapses(self):
-        from extract_legal_concepts import _normalize_definition_for_dedup
+        from estleg.extract_legal_concepts import _normalize_definition_for_dedup
         a = _normalize_definition_for_dedup("reostunud vesi; 17")
         b = _normalize_definition_for_dedup("reostunud vesi")
         assert a == b == "reostunud vesi", (a, b)
 
     def test_counter_with_open_paren_collapses(self):
-        from extract_legal_concepts import _normalize_definition_for_dedup
+        from estleg.extract_legal_concepts import _normalize_definition_for_dedup
         variants = [
             "reovesi; 17",
             "reovesi; 22 (",
@@ -1469,7 +1464,7 @@ class TestIssue391DedupNormalisation:
     def test_embedded_semicolon_without_digit_preserved(self):
         """A genuine ``; <word>`` clause (no digit) must NOT be stripped —
         otherwise the #171 multi-clause definitions would regress."""
-        from extract_legal_concepts import _normalize_definition_for_dedup
+        from estleg.extract_legal_concepts import _normalize_definition_for_dedup
         got = _normalize_definition_for_dedup("kaup; sealhulgas eksport")
         assert got == "kaup; sealhulgas eksport", got
 
@@ -1514,7 +1509,7 @@ class TestIssue323CopulaIntroNoise:
         "see mõistetakse järgmiselt",
     ])
     def test_copula_phrase_rejected(self, term):
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term(term) is True, term
 
     @pytest.mark.parametrize("term", [
@@ -1527,7 +1522,7 @@ class TestIssue323CopulaIntroNoise:
         "pension",
     ])
     def test_real_terms_not_rejected(self, term):
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term(term) is False, term
 
     def test_end_to_end_no_copula_concept_node(self, tmp_path, monkeypatch):
@@ -1655,12 +1650,12 @@ class TestIssue392UppercaseAbbreviations:
 
     @pytest.mark.parametrize("abbrev", ["TA", "ET"])
     def test_uppercase_abbrev_not_noise(self, abbrev):
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term(abbrev.lower(), abbrev) is False, abbrev
 
     @pytest.mark.parametrize("word", ["ta", "et"])
     def test_lowercase_stopword_still_noise(self, word):
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         # Original surface form lowercase → still a stopword.
         assert is_noise_term(word, word) is True, word
 
@@ -1668,19 +1663,19 @@ class TestIssue392UppercaseAbbreviations:
     def test_default_no_original_keeps_backcompat(self, word):
         """With no original_term supplied (laws-only / legacy callers), the
         stopword behaviour is unchanged — still noise."""
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term(word) is True, word
 
     def test_uppercase_non_stopword_abbrev_still_concept(self):
         """A non-stopword uppercase abbreviation (``KOV``) was never noise and
         must stay non-noise regardless of the new branch."""
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term("kov", "KOV") is False
 
     def test_uppercase_single_char_still_filtered(self):
         """The length guard fires before the stopword skip, so an all-upper
         single character is still noise."""
-        from extract_legal_concepts import is_noise_term
+        from estleg.extract_legal_concepts import is_noise_term
         assert is_noise_term("a", "A") is True
 
     def test_end_to_end_uppercase_abbrev_gets_concept(self, tmp_path, monkeypatch):
@@ -1713,34 +1708,35 @@ class TestIssue376AtomicSaveJson:
     truncates the target to 0 bytes before writing."""
 
     def test_save_json_is_imported_from_estleg_common(self):
-        import extract_legal_concepts as mod
-        assert mod.save_json.__module__ == "estleg_common", mod.save_json.__module__
+        from estleg import extract_legal_concepts as mod
+        assert mod.save_json.__module__ == "estleg.estleg_common", mod.save_json.__module__
 
     def test_no_local_non_atomic_save_json_definition(self):
         src = (
             Path(__file__).resolve().parent.parent
-            / "scripts" / "extract_legal_concepts.py"
+            / "src" / "estleg" / "extract_legal_concepts.py"
         ).read_text(encoding="utf-8")
         # The local `def save_json` (with its non-atomic open(...,'w')) is gone.
         assert "def save_json(" not in src, (
             "local save_json definition still present — must use the atomic "
             "estleg_common.save_json"
         )
-        # And it is imported from estleg_common.
-        assert "save_json" in src and "from estleg_common import" in src
+        # And it is imported from the shared package module.
+        assert "save_json" in src and "from estleg.estleg_common import" in src
 
     def test_save_json_uses_atomic_replace(self):
         """The bound function's source uses the atomic tempfile/os.replace
         path."""
         import inspect
-        import extract_legal_concepts as mod
+
+        from estleg import extract_legal_concepts as mod
         body = inspect.getsource(mod.save_json)
         assert "os.replace" in body, body
 
     def test_partial_write_leaves_no_zero_byte_file(self, tmp_path):
         """A serialisation failure must NOT leave a truncated/zero-byte target
         (the whole point of the atomic write)."""
-        import extract_legal_concepts as mod
+        from estleg import extract_legal_concepts as mod
 
         target = tmp_path / "out.json"
         target.write_text('{"existing": true}\n', encoding="utf-8")

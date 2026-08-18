@@ -22,8 +22,8 @@ import argparse
 import json
 from pathlib import Path
 
-from estleg_common import REPO_ROOT, save_json
-from generate_court_decisions import _decision_year_key, classify_case
+from estleg.estleg_common import REPO_ROOT, save_json
+from estleg.generate_court_decisions import _decision_year_key, classify_case
 
 CASE_TYPE_PREFIX = "estleg:CaseType_"
 

@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import estleg_common
-import validate_all
-import validate_seadusloome_sync as seadusloome
+from estleg import estleg_common, validate_all
+from estleg import validate_seadusloome_sync as seadusloome
 
 
 def test_sync_gate_walker_is_the_shared_helper():

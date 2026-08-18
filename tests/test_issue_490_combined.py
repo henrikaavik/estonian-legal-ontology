@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import estleg_common
+from estleg import estleg_common
 
 REPO = Path(__file__).resolve().parent.parent
 COMBINED = REPO / "krr_outputs" / "combined_ontology.jsonld"
@@ -83,10 +83,8 @@ def test_combined_stub_required_paths_are_present() -> None:
 
 def test_legacy_deprecation_decisions_match_on_disk_roots() -> None:
     """#490 rebuild is blocked unless #426 marks match current IRIs."""
-    import sys
 
-    sys.path.insert(0, str(REPO / "scripts"))
-    import deprecate_legacy_statutes as dep
+    from estleg import deprecate_legacy_statutes as dep
 
     checked, violations = dep.verify_decisions_applied(
         REPO / "data" / "legacy_statute_decisions.json",

@@ -9,17 +9,14 @@ instance ``estleg:Concept_*`` / ``estleg:LegalConcept_*`` individuals stay.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from extract_legal_concepts import CV_OWNED_TBOX_IDS, generate_schema_nodes
+from estleg.extract_legal_concepts import CV_OWNED_TBOX_IDS, generate_schema_nodes
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 VOCAB = REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld"
 CONCEPTS = REPO_ROOT / "krr_outputs" / "concepts" / "concepts_combined.jsonld"
-EXTRACTOR = REPO_ROOT / "scripts" / "extract_legal_concepts.py"
+EXTRACTOR = REPO_ROOT / "src" / "estleg" / "extract_legal_concepts.py"
 
 TBOX_IDS = (
     "estleg:Concept",

@@ -4,15 +4,11 @@ from __future__ import annotations
 import ast
 import inspect
 import json
-import sys
 from datetime import date as date_cls
 from datetime import timedelta
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
 import pytest
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer2a"
@@ -22,7 +18,7 @@ XML_FIXTURE = FIXTURE_DIR / "sample_kov_xml.xml"
 
 class TestBuildGlobalIdLookup:
     def test_recursive_xml_discovery(self, tmp_path):
-        from extract_temporal_data import build_globalid_xml_lookup
+        from estleg.extract_temporal_data import build_globalid_xml_lookup
 
         # Stage three XML files in subdirectories to mimic the real layout
         rt = tmp_path / "data" / "riigiteataja"
@@ -49,7 +45,7 @@ class TestBuildGlobalIdLookup:
     def test_kov_xml_in_maarus_kov_subdir(self, tmp_path):
         """KOV XML lives at data/riigiteataja/maarus_kov/reg_<gid>.xml;
         the recursive walk must find it."""
-        from extract_temporal_data import build_globalid_xml_lookup
+        from estleg.extract_temporal_data import build_globalid_xml_lookup
         rt = tmp_path / "data" / "riigiteataja"
         (rt / "maarus_kov").mkdir(parents=True)
         # Use the kov fixture's globalId
@@ -66,7 +62,7 @@ class TestBuildGlobalIdLookup:
 
 class TestPublicationYearFallback:
     def test_parse_rt_year_accepts_plain_year_and_timezone_offsets(self):
-        from extract_temporal_data import parse_rt_year
+        from estleg.extract_temporal_data import parse_rt_year
 
         assert parse_rt_year("2012") == "2012"
         assert parse_rt_year("2012+02:00") == "2012"
@@ -74,7 +70,7 @@ class TestPublicationYearFallback:
 
     @pytest.mark.parametrize("value", ["", "12", "201", "20122", "abcd", "2012-01"])
     def test_parse_rt_year_rejects_malformed_years(self, value):
-        from extract_temporal_data import parse_rt_year
+        from estleg.extract_temporal_data import parse_rt_year
 
         assert parse_rt_year(value) is None
 
@@ -82,7 +78,7 @@ class TestPublicationYearFallback:
         # #571: a year-only record (RTaasta, no avaldamineKuupaev) must NOT get a
         # fabricated YYYY-01-01 publicationDate — only a year-precision
         # publication_year (emitted as estleg:publicationYear, xsd:gYear).
-        from extract_temporal_data import extract_temporal_from_xml
+        from estleg.extract_temporal_data import extract_temporal_from_xml
 
         xml_path = tmp_path / "rt.xml"
         xml_path.write_text(
@@ -100,7 +96,7 @@ class TestPublicationYearFallback:
     def test_extract_temporal_reads_real_avaldamine_tag(self, tmp_path):
         # #571 regression: the real RT tag is "avaldamineKuupaev" (with "ne") —
         # a precise publication date must be read, not the year-only fallback.
-        from extract_temporal_data import extract_temporal_from_xml
+        from estleg.extract_temporal_data import extract_temporal_from_xml
 
         xml_path = tmp_path / "rt.xml"
         xml_path.write_text(
@@ -120,7 +116,7 @@ class TestPublicationYearFallback:
         # #571 (review): publicationYear must be in TEMPORAL_KEYS_TO_CLEAR so a
         # re-derivation can't leave a stale year on a record that later gains an
         # exact publicationDate or loses publication metadata.
-        from extract_temporal_data import clear_temporal_keys
+        from estleg.extract_temporal_data import clear_temporal_keys
 
         graph = [{"@id": "estleg:A", "@type": ["estleg:Act"],
                   "estleg:publicationYear": {"@value": "2012", "@type": "xsd:gYear"}}]
@@ -130,14 +126,14 @@ class TestPublicationYearFallback:
     def test_index_fallback_reads_real_avaldamine_tag(self):
         # #571 (review): the INDEX fallback map must also use the real tag
         # "avaldamineKuupaev" — otherwise fallback records lose publication_date.
-        from extract_temporal_data import _index_to_temporal
+        from estleg.extract_temporal_data import _index_to_temporal
 
         assert _index_to_temporal({"avaldamineKuupaev": "2020-03-04"})["publication_date"] == "2020-03-04"
 
 
 class TestTemporalStatusEvaluationDate:
     def test_evaluation_date_controls_not_yet_effective_status(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
 
         temporal = {"entry_into_force": "2026-06-01"}
 
@@ -145,7 +141,7 @@ class TestTemporalStatusEvaluationDate:
         assert determine_temporal_status(temporal, evaluation_date="2026-06-01") == "inForce"
 
     def test_evaluation_date_controls_repealed_status(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
 
         temporal = {"valid_until": "2026-05-15"}
 
@@ -154,8 +150,8 @@ class TestTemporalStatusEvaluationDate:
 
     def test_default_evaluation_date_is_build_pin_not_wall_clock(self):
         """#470: omitted evaluation_date uses BUILD_EVALUATION_DATE, not date.today()."""
-        from estleg_common import BUILD_EVALUATION_DATE
-        from extract_temporal_data import determine_temporal_status
+        from estleg.estleg_common import BUILD_EVALUATION_DATE
+        from estleg.extract_temporal_data import determine_temporal_status
 
         pin = date_cls.fromisoformat(BUILD_EVALUATION_DATE)
         after_pin = (pin + timedelta(days=1)).isoformat()
@@ -173,7 +169,7 @@ class TestNoDateTodayEvaluationFallback:
     """#470: standalone runs must not default evaluation to wall-clock today()."""
 
     def test_module_does_not_call_date_today(self):
-        import extract_temporal_data as mod
+        from estleg import extract_temporal_data as mod
 
         tree = ast.parse(inspect.getsource(mod))
         today_calls = [
@@ -198,7 +194,7 @@ class TestNoDateTodayEvaluationFallback:
     def test_main_defaults_evaluation_date_to_build_pin(
         self, tmp_path, monkeypatch
     ):
-        from estleg_common import BUILD_EVALUATION_DATE
+        from estleg.estleg_common import BUILD_EVALUATION_DATE
 
         act, report = _run_main_over_single_peep(
             tmp_path, monkeypatch,
@@ -211,7 +207,7 @@ class TestNoDateTodayEvaluationFallback:
 
 class TestPairPeepWithXml:
     def test_pairs_via_globalid_attribute(self, tmp_path):
-        from extract_temporal_data import pair_peep_with_xml
+        from estleg.extract_temporal_data import pair_peep_with_xml
 
         peep = tmp_path / "act.json"
         peep.write_text(json.dumps({
@@ -234,7 +230,7 @@ class TestPairPeepWithXml:
         assert result == xml
 
     def test_unpaired_returns_none(self, tmp_path):
-        from extract_temporal_data import pair_peep_with_xml
+        from estleg.extract_temporal_data import pair_peep_with_xml
         peep = tmp_path / "act.json"
         peep.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/"},
@@ -252,7 +248,7 @@ class TestPairPeepWithXml:
         fallback, the new pairing would silently drop XML for every
         law, regressing existing temporal/amendment-history coverage.
         """
-        from extract_temporal_data import pair_peep_with_xml
+        from estleg.extract_temporal_data import pair_peep_with_xml
 
         # Stage a law peep file with NO estleg:globalId
         rt = tmp_path / "data" / "riigiteataja"
@@ -288,7 +284,7 @@ class TestPairPeepWithXml:
         """Multi-part laws like asjaoigusseadus_osa1 share their
         XML with the base slug (asjaoigusseadus.xml). The slug
         fallback strips _osaN before re-resolving."""
-        from extract_temporal_data import pair_peep_with_xml
+        from estleg.extract_temporal_data import pair_peep_with_xml
 
         rt = tmp_path / "data" / "riigiteataja"
         rt.mkdir(parents=True)
@@ -326,8 +322,8 @@ class TestMainUsesGlobalIdLookup:
     """
 
     def test_main_pairs_kov_via_globalid(self, tmp_path, monkeypatch):
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
 
         # Stage a tiny tree
         krr = tmp_path / "krr_outputs"
@@ -433,7 +429,7 @@ class TestParseDateTimezoneOffsets:
         ],
     )
     def test_parses_various_offset_positions(self, value, expected):
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
         assert parse_date(value) == expected
 
     def test_negative_trailing_offset_does_not_eat_date_separator(self):
@@ -442,11 +438,11 @@ class TestParseDateTimezoneOffsets:
         regex were ambiguous. Confirm the new fromisoformat-first
         path keeps the day component intact.
         """
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
         assert parse_date("2024-12-31-04:00") == "2024-12-31"
 
     def test_invalid_returns_none(self):
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
         assert parse_date("not-a-date") is None
         assert parse_date("") is None
 
@@ -475,7 +471,7 @@ class TestParseDateYearRangeGuard:
         ],
     )
     def test_implausible_year_returns_none(self, value):
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
         assert parse_date(value) is None
 
     @pytest.mark.parametrize(
@@ -487,13 +483,13 @@ class TestParseDateYearRangeGuard:
         ],
     )
     def test_plausible_year_passes(self, value, expected):
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
         assert parse_date(value) == expected
 
     def test_guard_applies_to_regex_fallback_path(self):
         """The DD.MM.YYYY branch is only reached via the regex fallback
         (fromisoformat rejects it), so the guard must fire there too."""
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
         # In range -> passes via the fallback.
         assert parse_date("15.06.2024") == "2024-06-15"
         # Out of range via the same fallback branch -> dropped.
@@ -506,11 +502,12 @@ class TestCoerceIsoDate:
 
     def test_returns_date_object(self):
         from datetime import date as _date
-        from extract_temporal_data import _coerce_iso_date
+
+        from estleg.extract_temporal_data import _coerce_iso_date
         assert _coerce_iso_date("2024-01-15") == _date(2024, 1, 15)
 
     def test_assertion_on_non_string(self):
-        from extract_temporal_data import _coerce_iso_date
+        from estleg.extract_temporal_data import _coerce_iso_date
         with pytest.raises(AssertionError):
             _coerce_iso_date(20240115)  # type: ignore[arg-type]
 
@@ -520,11 +517,11 @@ class TestDetermineTemporalStatusUnknown:
     date fields are present, instead of falling through to ``inForce``."""
 
     def test_empty_temporal_returns_unknown(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         assert determine_temporal_status({}) == "unknown"
 
     def test_all_none_temporal_returns_unknown(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {
             "entry_into_force": None,
             "valid_from": None,
@@ -539,12 +536,12 @@ class TestDetermineTemporalStatusUnknown:
     def test_only_publication_date_returns_unknown(self):
         """publication_date alone is metadata, not actionable for
         in-force/repealed determination."""
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {"publication_date": "2024-01-01"}
         assert determine_temporal_status(temporal) == "unknown"
 
     def test_with_actionable_date_returns_in_force(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {"entry_into_force": "2020-01-01"}
         assert determine_temporal_status(
             temporal, evaluation_date="2024-01-01"
@@ -558,7 +555,7 @@ class TestDetermineTemporalStatusDateComparison:
         """A subtle string-vs-date bug is that DD.MM.YYYY would sort
         wrong if it slipped through. We force-parse and verify the
         comparison still works on date objects."""
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {"valid_until": "2024-05-15"}
         assert determine_temporal_status(
             temporal, evaluation_date="2024-05-14"
@@ -568,7 +565,7 @@ class TestDetermineTemporalStatusDateComparison:
         ) == "repealed"
 
     def test_invalidation_date_repealed(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {"invalidation_date": "2024-06-30"}
         assert determine_temporal_status(
             temporal, evaluation_date="2024-07-01"
@@ -581,7 +578,7 @@ class TestMuutmisKuupaevAllOccurrences:
     """
 
     def test_picks_latest_of_multiple_muutmis_kuupaev(self, tmp_path):
-        from extract_temporal_data import extract_temporal_from_xml
+        from estleg.extract_temporal_data import extract_temporal_from_xml
         xml_path = tmp_path / "many_amendments.xml"
         xml_path.write_text(
             "<akt><metaandmed>"
@@ -596,7 +593,7 @@ class TestMuutmisKuupaevAllOccurrences:
 
     def test_combines_muutmismarge_and_muutmis_kuupaev(self, tmp_path):
         """Latest wins regardless of which element sourced it."""
-        from extract_temporal_data import extract_temporal_from_xml
+        from estleg.extract_temporal_data import extract_temporal_from_xml
         xml_path = tmp_path / "mixed.xml"
         xml_path.write_text(
             "<akt><metaandmed>"
@@ -619,8 +616,8 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
     def test_index_fallback_with_no_dates_yields_unknown(
         self, tmp_path, monkeypatch
     ):
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
         krr.mkdir()
@@ -674,8 +671,8 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
         dates, those dates are mapped onto the temporal dict so the
         status reflects them.
         """
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
         krr.mkdir()
@@ -729,7 +726,7 @@ class TestActLevelPlacement:
     """
 
     def test_is_act_level_node(self):
-        from extract_temporal_data import is_act_level_node
+        from estleg.extract_temporal_data import is_act_level_node
         assert is_act_level_node({"@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]})
         assert is_act_level_node({"@type": ["estleg:Act"]})
         assert not is_act_level_node({"@type": ["owl:Ontology"]})
@@ -739,7 +736,7 @@ class TestActLevelPlacement:
         assert not is_act_level_node({})
 
     def test_find_act_node_prefers_ontology_then_act(self):
-        from extract_temporal_data import find_act_node
+        from estleg.extract_temporal_data import find_act_node
         graph = [
             {"@id": "estleg:P1", "@type": ["estleg:LegalProvision"]},
             {"@id": "estleg:A1", "@type": ["estleg:Act"]},
@@ -754,7 +751,7 @@ class TestActLevelPlacement:
         assert find_act_node([]) is None
 
     def test_clear_temporal_keys_scrubs_non_act_nodes(self):
-        from extract_temporal_data import clear_temporal_keys
+        from estleg.extract_temporal_data import clear_temporal_keys
         graph = [
             {"@id": "estleg:M1", "@type": ["owl:Ontology", "estleg:Act"],
              "estleg:temporalStatus": "inForce"},
@@ -778,8 +775,8 @@ class TestActLevelPlacement:
         must strip any stale temporal props it already carries, and must
         count it under skipped_no_act_node in the report.
         """
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -831,8 +828,8 @@ class TestActLevelPlacement:
     ):
         """When an act node IS present, only it (not sibling provision
         nodes) receives temporal props."""
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -896,7 +893,7 @@ class TestRepealBeforeEntrySanityGuard:
     """
 
     def test_invalidation_before_entry_yields_unknown(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {
             "entry_into_force": "2025-01-01",
             "invalidation_date": "2020-12-31",
@@ -908,7 +905,7 @@ class TestRepealBeforeEntrySanityGuard:
         ) == "unknown"
 
     def test_valid_until_before_entry_yields_unknown(self):
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {
             "entry_into_force": "2025-01-01",
             "valid_until": "2020-12-31",
@@ -921,7 +918,7 @@ class TestRepealBeforeEntrySanityGuard:
         """entry == end is a same-day open/close, not a contradiction;
         the guard uses strict ``<`` so this falls through to the normal
         repealed/in-force logic (repealed here, as end <= today)."""
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {
             "entry_into_force": "2025-01-01",
             "invalidation_date": "2025-01-01",
@@ -933,7 +930,7 @@ class TestRepealBeforeEntrySanityGuard:
     def test_end_after_entry_classifies_normally(self):
         """Sanity: a well-ordered law (entry < end) is unaffected by the
         guard and classifies on the usual past/future logic."""
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {
             "entry_into_force": "2010-01-01",
             "invalidation_date": "2020-12-31",
@@ -950,7 +947,7 @@ class TestRepealBeforeEntrySanityGuard:
     def test_no_entry_into_force_skips_guard(self):
         """When there is no entry_into_force the guard cannot fire; a
         past valid_until still classifies ``repealed`` as before."""
-        from extract_temporal_data import determine_temporal_status
+        from estleg.extract_temporal_data import determine_temporal_status
         temporal = {"valid_until": "2020-12-31"}
         assert determine_temporal_status(
             temporal, evaluation_date="2024-01-01"
@@ -963,8 +960,8 @@ def _run_main_over_single_peep(tmp_path, monkeypatch, temporal_kehtivus,
     INDEX.json ``kehtivus`` block, run main(), and return the act node.
     Keeps the #287 enrichment tests free of XML-pairing boilerplate.
     """
-    import extract_temporal_data as mod
-    import estleg_common
+    from estleg import estleg_common
+    from estleg import extract_temporal_data as mod
 
     krr = tmp_path / "krr_outputs"
     rt = tmp_path / "data" / "riigiteataja"
@@ -1134,8 +1131,8 @@ class TestReportDeterminism:
     ):
         """Two runs with identical inputs and the same evaluation date
         must produce byte-identical report bytes (no timestamp churn)."""
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1203,8 +1200,8 @@ class TestSinglePassClearAndEnrich:
     """
 
     def test_single_save_per_file(self, tmp_path, monkeypatch):
-        import extract_temporal_data as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1265,13 +1262,13 @@ class TestIssue602NamedYearBand:
     repeated in both date-parse paths); boundary behaviour is unchanged."""
 
     def test_band_constants_present(self):
-        import extract_temporal_data as td
+        from estleg import extract_temporal_data as td
 
         assert td.MIN_PLAUSIBLE_YEAR == 1900
         assert td.MAX_PLAUSIBLE_YEAR == 2100
 
     def test_implausible_years_rejected_both_paths(self):
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
 
         # ISO path (fromisoformat) and strptime fallback both drop out-of-band.
         assert parse_date("2918-01-01") is None      # digit transposition
@@ -1279,7 +1276,7 @@ class TestIssue602NamedYearBand:
         assert parse_date("31.12.1899") is None      # below band (strptime)
 
     def test_plausible_years_kept(self):
-        from extract_temporal_data import parse_date
+        from estleg.extract_temporal_data import parse_date
 
         assert parse_date("2019-06-18") == "2019-06-18"
         assert parse_date("01.01.2100") == "2100-01-01"

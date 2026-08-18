@@ -15,16 +15,11 @@ available locally.
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-
-import estleg_common
-
+from estleg import estleg_common
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REAL_KRR_DIR = REPO_ROOT / "krr_outputs"

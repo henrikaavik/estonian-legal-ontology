@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import write_build_manifest as wbm
+from estleg import write_build_manifest as wbm
 
 REPO = Path(__file__).resolve().parent.parent
 MANIFEST = REPO / "krr_outputs" / "dataset_build_manifest.json"

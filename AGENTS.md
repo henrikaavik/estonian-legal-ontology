@@ -108,7 +108,7 @@ Use the narrowest relevant command while developing, then broaden before
 finishing data-quality work:
 
 ```bash
-python3 -m ruff check scripts/ tests/
+python3 -m ruff check scripts/ src/estleg/ tests/
 python3 -m pytest -q
 python3 scripts/validate_all.py
 python3 scripts/shacl_validate_all.py --all

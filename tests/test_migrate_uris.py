@@ -10,8 +10,8 @@ from unittest.mock import patch
 
 import pytest
 
-import migrate_uris
-from migrate_uris import (
+from estleg import migrate_uris
+from estleg.migrate_uris import (
     NEW_IRI_FORMAT_RE,
     PAR_NO_UNDERSCORE_RE,
     RENAME_FAMILY_AMENDMENT,

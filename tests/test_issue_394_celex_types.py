@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_eu_legislation as gel
+from estleg import generate_eu_legislation as gel
 
 KRR = Path(__file__).resolve().parent.parent / "krr_outputs"
 

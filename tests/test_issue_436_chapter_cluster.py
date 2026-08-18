@@ -6,8 +6,8 @@ import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-import generate_all_laws
-from generate_all_laws import (
+from estleg import generate_all_laws
+from estleg.generate_all_laws import (
     chapter_cluster_subject,
     retarget_chapter_cluster_identity,
 )

@@ -27,11 +27,7 @@ from pathlib import Path
 
 import pytest
 
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import run_all_integration as r  # noqa: E402  (import after sys.path mutation)
-
+from estleg import run_all_integration as r
 
 # ---------------------------------------------------------------------------
 # Fixtures

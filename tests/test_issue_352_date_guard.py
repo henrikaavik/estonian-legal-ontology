@@ -9,18 +9,15 @@ here pin that so a later refactor cannot drop it.
 from __future__ import annotations
 
 import json
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_eu_legislation as eu_mod
-import validate_all
-from extract_temporal_data import parse_date
-from riigiteataja_common import parse_act_metadata
+from estleg import generate_eu_legislation as eu_mod
+from estleg import validate_all
+from estleg.extract_temporal_data import parse_date
+from estleg.riigiteataja_common import parse_act_metadata
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 EURLEX_DIRECTIVES_PEEP = REPO_ROOT / "krr_outputs" / "eurlex" / "eurlex_directives_peep.json"

@@ -9,20 +9,17 @@ the header helper stamps future builds only.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-from rdflib import Graph, RDF, URIRef
+from rdflib import RDF, Graph, URIRef
 from rdflib.namespace import PROV, RDFS
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common  # noqa: E402
+from estleg import estleg_common
 
 REPO = Path(__file__).resolve().parent.parent
 VOID_TTL = REPO / "krr_outputs" / "void.ttl"
 VOCAB = REPO / "krr_outputs" / "controlled_vocabulary.jsonld"
-GENERATE_ALL_LAWS = REPO / "scripts" / "generate_all_laws.py"
+GENERATE_ALL_LAWS = REPO / "src" / "estleg" / "generate_all_laws.py"
 
 DATASET = URIRef("https://w3id.org/estleg/dataset/estonian-legal-ontology")
 ACTIVITY = URIRef("https://w3id.org/estleg/Activity_CorpusBuild_0_11_0")

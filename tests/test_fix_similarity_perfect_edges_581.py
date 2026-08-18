@@ -14,15 +14,11 @@ enabling-law boilerplate). It must:
 """
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import fix_similarity_perfect_edges_581 as fix  # noqa: E402
-
+from estleg import fix_similarity_perfect_edges_581 as fix
 
 # ---------------------------------------------------------------------------
 # Fixture builders — a tiny fake corpus mirroring the real index/peep shapes.

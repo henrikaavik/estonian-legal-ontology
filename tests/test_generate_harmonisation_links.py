@@ -24,14 +24,11 @@ freshness gate, graph[0] guard) and intentionally do not overlap with it.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_harmonisation_links as harmonisation  # noqa: E402
+from estleg import generate_harmonisation_links as harmonisation
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_PATH = (
@@ -410,7 +407,7 @@ def test_fetch_other_transpositions_accepts_valid_celex(
 # files' inverted back-edge (estleg:harmonisedWith → estleg:harmonises).
 # ---------------------------------------------------------------------------
 
-import migrate_harmonises_inverse as migrate  # noqa: E402
+from estleg import migrate_harmonises_inverse as migrate  # noqa: E402
 
 
 def _make_harm_file(tmp_path: Path, *, predicate: str) -> Path:

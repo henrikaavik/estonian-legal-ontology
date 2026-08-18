@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
@@ -19,7 +16,7 @@ def _iter_kov_inclusive(*args, **kwargs):
     `mod.iter_peep_files` with this wrapper so KOV-staged peeps are
     visible regardless of whether the production unpin has landed yet.
     """
-    from estleg_common import iter_peep_files as _real_iter
+    from estleg.estleg_common import iter_peep_files as _real_iter
     kwargs.pop("include_kov", None)
     return _real_iter(include_kov=True, **kwargs)
 
@@ -38,9 +35,9 @@ class TestKovBodyWordDetection:
         ("linnavolikogusse", "linnavolikogu"),
     ])
     def test_linnavolikogu_matches_basic_form(self, text, expected):
-        from extract_institutional_competence import (
-            _canonical_body_slug,
+        from estleg.extract_institutional_competence import (
             GENERIC_PATTERNS,
+            _canonical_body_slug,
         )
         match = None
         for pat, _label, _itype in GENERIC_PATTERNS:
@@ -69,9 +66,9 @@ class TestKovBodyWordDetection:
         ("linnavalitsusse", "linnavalitsus"),
     ])
     def test_vallavalitsus_inflections(self, text, expected):
-        from extract_institutional_competence import (
-            _canonical_body_slug,
+        from estleg.extract_institutional_competence import (
             GENERIC_PATTERNS,
+            _canonical_body_slug,
         )
         match = None
         for pat, _label, _itype in GENERIC_PATTERNS:
@@ -105,9 +102,9 @@ class TestKovBodyWordDetection:
         legal text ("vallavalitsusel on õigus...", "linnavolikogult
         küsib", etc.). Layer 2c PR #2 review surfaced 29 corpus
         cases of "vallavalitsusel on õigus" alone."""
-        from extract_institutional_competence import (
-            _canonical_body_slug,
+        from estleg.extract_institutional_competence import (
             GENERIC_PATTERNS,
+            _canonical_body_slug,
         )
         match = None
         for pat, _label, _itype in GENERIC_PATTERNS:
@@ -124,7 +121,7 @@ class TestKovBodyWordDetection:
         named-institution detection. detect_institutions returns
         Riigikohus first when both 'Riigikohus' and 'linnavolikogu'
         appear in the same provision text."""
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(
             "Riigikohus otsustab; linnavolikogu kehtestab korra"
         )
@@ -179,7 +176,7 @@ class TestResolveKovAuthority:
         }
 
     def test_path1_source_issuer_same_body_resolves_directly(self, reg):
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavolikogu",
             source_municipality="estleg:Municipality_mulgi",
@@ -189,7 +186,7 @@ class TestResolveKovAuthority:
         assert result == "estleg:Issuer_abja_vallavolikogu"
 
     def test_path2_paired_body_slug_swap(self, reg):
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavalitsus",
             source_municipality="estleg:Municipality_mulgi",
@@ -202,7 +199,7 @@ class TestResolveKovAuthority:
         """Source act enacted by a vallavolikogu; detected
         linnavolikogu — same body type but slug suffix mismatch.
         Resolver abstains."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="linnavolikogu",
             source_municipality="estleg:Municipality_mulgi",
@@ -218,7 +215,7 @@ class TestResolveKovAuthority:
         Issuer_other_vallavalitsus in the same modern municipality.
         Resolver MUST abstain — Path 3 must NOT bind to a conflated
         historical issuer."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavalitsus",
             source_municipality="estleg:Municipality_xyz",
@@ -232,7 +229,7 @@ class TestResolveKovAuthority:
         executive); detected vallavolikogu (rural council). Even
         though Issuer_elva_vallavolikogu IS in the registry, the
         cross-family swap (linna* → valla*) must be rejected."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavolikogu",
             source_municipality="estleg:Municipality_elva",
@@ -243,7 +240,7 @@ class TestResolveKovAuthority:
 
     def test_path2_cross_family_valla_to_linna_abstains(self, reg):
         """Mirror of the prior test in the other direction."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="linnavolikogu",
             source_municipality="estleg:Municipality_mulgi",
@@ -257,7 +254,7 @@ class TestResolveKovAuthority:
         Municipality_singleton but source_issuer's registry entry
         says Municipality_mulgi. Path 1+2 abstain; Path 3 then runs
         against the act's stated municipality."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         reg_with_bad = dict(reg)
         reg_with_bad["estleg:Issuer_consistent_act_issuer"] = (
             "consistent act issuer",
@@ -275,7 +272,7 @@ class TestResolveKovAuthority:
         """Same Layer 1 inconsistency, but the act's stated
         municipality has zero suffix-compatible matches. Resolver
         abstains entirely."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         reg_with_bad = dict(reg)
         reg_with_bad["estleg:Issuer_consistent_act_issuer"] = (
             "consistent act issuer",
@@ -292,7 +289,7 @@ class TestResolveKovAuthority:
     def test_path3_unique_fallback_resolves(self, reg):
         """source_issuer is None; Path 3 finds the unique
         suffix-compatible issuer in the source municipality."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavolikogu",
             source_municipality="estleg:Municipality_singleton",
@@ -303,7 +300,7 @@ class TestResolveKovAuthority:
 
     def test_path3_ambiguous_returns_none(self, reg):
         """Path 3 finds two suffix-compatible issuers. Abstain."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavolikogu",
             source_municipality="estleg:Municipality_dup",
@@ -314,7 +311,7 @@ class TestResolveKovAuthority:
 
     def test_no_municipality_returns_none(self, reg):
         """source_municipality=None — every path requires it; abstain."""
-        from extract_institutional_competence import _resolve_kov_authority
+        from estleg.extract_institutional_competence import _resolve_kov_authority
         result = _resolve_kov_authority(
             body_slug="vallavolikogu",
             source_municipality=None,
@@ -336,7 +333,7 @@ class TestResolveKovAuthority:
     def test_is_path3_case_predicate(
         self, reg, source_issuer, source_municipality, expected
     ):
-        from extract_institutional_competence import _is_path3_case
+        from estleg.extract_institutional_competence import _is_path3_case
         assert _is_path3_case(
             source_issuer=source_issuer,
             source_municipality=source_municipality,
@@ -350,9 +347,9 @@ class TestResolveKovAuthority:
         when _is_path3_case returns True AND the resolver returns
         a non-None IRI, the IRI must come from Path 3 (registry
         scan in source_municipality)."""
-        from extract_institutional_competence import (
-            _resolve_kov_authority,
+        from estleg.extract_institutional_competence import (
             _is_path3_case,
+            _resolve_kov_authority,
             _swap_issuer_body_suffix,
         )
         cases = [
@@ -429,8 +426,8 @@ class TestExtractCompetenceWithIssuerBinding:
     def test_kov_act_competence_binds_to_issuer(
         self, issuers_registry_file, monkeypatch
     ):
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -484,8 +481,8 @@ class TestExtractCompetenceWithIssuerBinding:
     ):
         """Law-typed peep (no enactedByMunicipality). Detected
         linnavolikogu must NOT bind."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -535,8 +532,8 @@ class TestExtractCompetenceWithIssuerBinding:
     ):
         """Named institutions (Riigikohus etc.) follow the existing
         Institution_* path even in KOV peeps."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -615,8 +612,8 @@ class TestAuthorityRefDeduplication:
         """Reviewer-cited regression: polva hankekord §1 had three
         identical Issuer_polva_vallavalitsus refs because the summary
         mentioned vallavalitsus three times in different cases."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -674,8 +671,8 @@ class TestAuthorityRefDeduplication:
         contain duplicate (provision, type, law) tuples when the
         same named institution is detected multiple times in one
         summary."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -769,8 +766,8 @@ class TestCompetenceIdempotency:
     def test_stale_competentauthority_cleared_when_text_changes(
         self, issuers_registry_file, monkeypatch
     ):
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -814,8 +811,8 @@ class TestCompetenceIdempotency:
         """A peep's enactedByMunicipality flips between runs;
         recomputed resolution reflects the new value, not the
         stale prior emission."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -866,8 +863,8 @@ class TestCompetenceIdempotency:
     ):
         """Peep with no detections AND no prior triples — mtime
         preserved (no spurious write)."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -929,8 +926,8 @@ class TestStaleInstitutionFileDeletion:
     def test_stale_institutions_json_deleted_when_no_provisions_cite_it(
         self, issuers_registry_file, monkeypatch
     ):
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -974,8 +971,8 @@ class TestStaleInstitutionFileDeletion:
         AND a peep that triggers Riigikohus detection — the file
         MUST be preserved (NOT deleted via incorrect stem-prefix
         comparison)."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -1019,8 +1016,8 @@ class TestStaleInstitutionFileDeletion:
         """When at least one peep returns load_json None or no @graph,
         stale-file deletion is skipped (preserves files whose owning
         peeps failed to load)."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         institutions_dir.mkdir(parents=True, exist_ok=True)
@@ -1084,8 +1081,8 @@ class TestCompetenceCoverageReport:
     def test_coverage_report_written_with_kov_split(
         self, issuers_registry_file, monkeypatch
     ):
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         reports_dir = krr / "reports" / "kov"
@@ -1150,8 +1147,8 @@ class TestCompetenceCoverageReport:
     ):
         """Triple-monkeypatch trick (iter_peep_files + load_json +
         save_json) — 11,001 synthetic KOV paths with no detection."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         reports_dir = krr / "reports" / "kov"
@@ -1206,8 +1203,8 @@ class TestCompetenceCoverageReport:
     ):
         """State law with KOV body word counts toward
         unresolved_references."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = issuers_registry_file
         institutions_dir = krr / "institutions"
         reports_dir = krr / "reports" / "kov"
@@ -1248,8 +1245,8 @@ class TestCompetenceCoverageReport:
         """KOV act whose enactedBy is unknown to the registry; act's
         enactedByMunicipality has exactly one suffix-compatible
         Issuer match. Resolver uses Path 3 -> fallback_hits >= 1."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = tmp_path / "krr_outputs"
         institutions_dir = krr / "institutions"
         reports_dir = krr / "reports" / "kov"
@@ -1315,7 +1312,7 @@ class TestCorpusInvariant:
 
     @pytest.mark.slow
     def test_kov_competentauthority_is_issuer_iri(self):
-        from estleg_common import iter_peep_files, KRR_DIR
+        from estleg.estleg_common import KRR_DIR, iter_peep_files
         if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
             pytest.fail("krr_outputs/ empty; corpus invariant was not checked")
 
@@ -1370,25 +1367,25 @@ class TestIssue170SubstringLeak:
     reject these."""
 
     def test_mta_substring_in_unrelated_word_is_rejected(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         # 'uMTAga' contains MTA as a substring, but \bMTA\b won't match.
         results = detect_institutions("kasutati uMTAga maagilist sõna")
         assert all(s != "maksu_ja_tolliamet" for _, s, _ in results)
 
     def test_ppa_substring_in_unrelated_word_is_rejected(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         # PPA inside hyperPPAclause should not match.
         results = detect_institutions("toimetab edasi hyperPPAclause vorm")
         assert all(s != "politsei_ja_piirivalveamet" for _, s, _ in results)
 
     def test_mta_word_boundary_match_is_kept(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions("MTA juhend on kohustuslik")
         slugs = {s for _, s, _ in results}
         assert "maksu_ja_tolliamet" in slugs
 
     def test_riigikogu_inside_unrelated_word_is_rejected(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         # 'Riigikogu' as a substring of 'rahvusVabariigikogu' (synthetic) shouldn't fire.
         results = detect_institutions(
             "X rahvusVabariigikogu Y", )
@@ -1402,7 +1399,7 @@ class TestIssue170AbbreviationFullnamePrecedence:
     institution. The abbreviation entry must be suppressed."""
 
     def test_mta_and_full_name_collapse_to_one_institution(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(
             "Maksu- ja Tolliamet vastutab MTA poolt välja antud reeglite eest"
         )
@@ -1412,7 +1409,7 @@ class TestIssue170AbbreviationFullnamePrecedence:
         assert "mta" not in slugs
 
     def test_ppa_and_full_name_collapse(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(
             "Politsei- ja Piirivalveamet ehk PPA tegutseb"
         )
@@ -1421,7 +1418,7 @@ class TestIssue170AbbreviationFullnamePrecedence:
         assert "ppa" not in slugs
 
     def test_lone_mta_still_registers_when_full_name_absent(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions("MTA poolt määratud sanktsioon")
         slugs = {s for _, s, _ in results}
         assert "maksu_ja_tolliamet" in slugs
@@ -1433,7 +1430,7 @@ class TestIssue170MinistryCaseInsensitive:
     and 'rahandusministeeriumile' match."""
 
     def test_lowercase_ministeerium_matches(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(
             "siseministeeriumi pädevuses on järgmine"
         )
@@ -1441,7 +1438,7 @@ class TestIssue170MinistryCaseInsensitive:
         assert "siseministeerium" in slugs
 
     def test_inflected_ministeerium_collapses_to_nominative(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(
             "rahandusministeeriumile esitatakse aruanne"
         )
@@ -1449,7 +1446,7 @@ class TestIssue170MinistryCaseInsensitive:
         assert "rahandusministeerium" in slugs
 
     def test_lowercase_inspektsioon_matches(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions("andmekaitseinspektsiooni nõuandel")
         slugs = {s for _, s, _ in results}
         # via the explicit inflection-strip path
@@ -1462,13 +1459,13 @@ class TestIssue170KohusSuppression:
     independent of `found` accumulator state ordering."""
 
     def test_generic_kohus_kept_when_alone(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions("kohus otsustab vaidluse")
         slugs = {s for _, s, _ in results}
         assert "kohus" in slugs
 
     def test_generic_kohus_suppressed_with_riigikohus(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(
             "Riigikohus võib edastada kohusele uue otsuse"
         )
@@ -1477,7 +1474,7 @@ class TestIssue170KohusSuppression:
         assert "kohus" not in slugs
 
     def test_generic_kohus_suppressed_with_halduskohus(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions("halduskohus tuvastas kohuse rikkumise")
         slugs = {s for _, s, _ in results}
         assert "halduskohus" in slugs
@@ -1512,7 +1509,7 @@ class TestIssue170InflectionCollapse:
         ("kaitseministeeriumiga", "kaitseministeerium"),
     ])
     def test_normalize_iri_suffix_collapses_inflection(self, form, expected):
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         assert normalize_iri_suffix(form) == expected
 
     def test_inflected_form_does_not_create_sibling_iri(self):
@@ -1520,7 +1517,7 @@ class TestIssue170InflectionCollapse:
         'Statistikaameti' must share a single IRI suffix, not produce
         Institution_statistikaametile + Institution_statistikaameti
         siblings."""
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         # Run two detections separately and verify they collapse.
         results_a = detect_institutions("Statistikaametile esitati taotlus")
         results_b = detect_institutions("Statistikaameti otsus on lõplik")
@@ -1572,7 +1569,7 @@ class TestIssue118ExtendedCaseSuffixes:
         ("Vabariigivalitsusele", "vabariigivalitsus"),
     ])
     def test_extended_case_suffix_collapses_to_nominative(self, form, expected):
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         assert normalize_iri_suffix(form) == expected
 
     @pytest.mark.parametrize("text,expected", [
@@ -1582,14 +1579,14 @@ class TestIssue118ExtendedCaseSuffixes:
         ("linnavalitsuseni", "linnavalitsus"),    # terminative
     ])
     def test_canonical_body_slug_widened_cases(self, text, expected):
-        from extract_institutional_competence import _canonical_body_slug
+        from estleg.extract_institutional_competence import _canonical_body_slug
         assert _canonical_body_slug(text) == expected
 
     def test_no_inflected_institution_slugs_on_disk(self):
         """After the re-run every krr_outputs/institutions/institution_*.json
         filename stem must already be its own canonical slug — i.e.
         normalize_iri_suffix() is a fixed point on it."""
-        from extract_institutional_competence import INST_DIR, normalize_iri_suffix
+        from estleg.extract_institutional_competence import INST_DIR, normalize_iri_suffix
         offenders: list[tuple[str, str]] = []
         for path in sorted(INST_DIR.glob("institution_*.json")):
             slug = path.stem.removeprefix("institution_")
@@ -1634,14 +1631,14 @@ class TestIssue118AliasCollapse:
         ("Riigikohus", "riigikohus"),
     ])
     def test_alias_collapses_predecessor_to_canonical(self, form, expected):
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         assert normalize_iri_suffix(form) == expected
 
     def test_abbreviation_then_alias_chain(self):
         """An abbreviation that maps to a predecessor full-name slug must
         still land on the canonical successor — the alias is applied
         after the abbreviation expansion."""
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         # 'mta' -> 'maksu_ja_tolliamet' (the abbrev map already points at
         # the merged name); the alias step is a no-op here but must not
         # break the lookup.
@@ -1651,7 +1648,7 @@ class TestIssue118AliasCollapse:
         """Detecting a pre-merger reference in provision text must yield
         the canonical successor's Institution slug, so a single node
         absorbs both 'Maksuamet' and 'Maksu- ja Tolliamet' mentions."""
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         pre = detect_institutions("Maksuamet teostab järelevalvet maksukohustuse üle.")
         post = detect_institutions("Maksu- ja Tolliamet teostab järelevalvet.")
         pre_slugs = {s for _, s, _ in pre}
@@ -1664,7 +1661,7 @@ class TestIssue118AliasCollapse:
     def test_alias_loader_skips_self_referential_and_malformed(self, tmp_path, monkeypatch):
         """_load_institution_aliases must drop entries that are missing a
         canonical, map a slug to itself, or aren't dicts/strings."""
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         bad_table = {
             "version": 1,
             "aliases": {
@@ -1680,7 +1677,7 @@ class TestIssue118AliasCollapse:
         assert loaded == {"goodkey": "goodvalue", "stringform": "anothertarget"}
 
     def test_missing_alias_file_returns_empty(self, tmp_path):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         assert mod._load_institution_aliases(tmp_path / "does_not_exist.json") == {}
 
 
@@ -1721,7 +1718,7 @@ class TestIssue118AliasCollapseExtended:
         ("Kodakondsus- ja Migratsiooniametile", "politsei_ja_piirivalveamet"),
     ])
     def test_inflected_predecessor_collapses_to_successor(self, form, expected):
-        from extract_institutional_competence import normalize_iri_suffix, sanitize_id
+        from estleg.extract_institutional_competence import normalize_iri_suffix, sanitize_id
         # detect_institutions runs sanitize_id() on generic matches before
         # normalize_iri_suffix(); mirror that so multi-word predecessor
         # names are exercised the same way the pipeline does.
@@ -1732,7 +1729,7 @@ class TestIssue118AliasCollapseExtended:
         named-institution suffix plus every alias `canonical` target — so
         Maksu- ja Tolliamet and Põllumajandus- ja Toiduamet are accepted
         even when their on-disk file is briefly absent."""
-        from extract_institutional_competence import _curated_canonical_suffixes
+        from estleg.extract_institutional_competence import _curated_canonical_suffixes
         seeded = _curated_canonical_suffixes()
         assert "maksu_ja_tolliamet" in seeded
         assert "pollumajandus_ja_toiduamet" in seeded
@@ -1743,7 +1740,7 @@ class TestIssue118AliasCollapseExtended:
         """A stale ``institution_maksu__ja_tolliamet.json`` on disk must be
         registered under the collapsed slug the normaliser emits, so
         predecessor references aren't dropped as unknown_institution."""
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         inst = tmp_path / "institutions"
         inst.mkdir(parents=True)
         (inst / "institution_maksu__ja_tolliamet.json").write_text(
@@ -1757,7 +1754,7 @@ class TestIssue118AliasCollapseExtended:
         """Bootstrap mode: an empty institutions dir yields an empty set
         (no curated seeding) so a freshly-cloned tree still populates
         everything from scratch."""
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         inst = tmp_path / "institutions"
         inst.mkdir(parents=True)
         assert mod._load_canonical_institutions(inst) == set()
@@ -1765,7 +1762,7 @@ class TestIssue118AliasCollapseExtended:
     def test_real_corpus_has_canonical_alias_target_files(self):
         """End-state: the regenerated corpus has an institution file for
         every alias `canonical` target (the re-run reconciliation)."""
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         present = {
             p.stem.removeprefix("institution_")
             for p in mod.INST_DIR.glob("institution_*.json")
@@ -1783,7 +1780,7 @@ class TestIssue170CrossProvisionDedup:
     twice."""
 
     def test_record_provision_does_not_duplicate(self):
-        from extract_institutional_competence import (
+        from estleg.extract_institutional_competence import (
             _PipelineState,
             _record_provision_for_institution,
         )
@@ -1813,7 +1810,7 @@ class TestIssue170TruncationAware:
     appliesToProvision list itself is capped."""
 
     def test_truncated_count_surfaced(self, tmp_path, monkeypatch):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         krr = tmp_path / "krr_outputs"
         institutions_dir = krr / "institutions"
         krr.mkdir()
@@ -1846,7 +1843,7 @@ class TestIssue170TruncationAware:
             "@graph": [],
         }), encoding="utf-8")
 
-        import estleg_common
+        from estleg import estleg_common
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
@@ -1885,7 +1882,7 @@ class TestIssue215CompetenceBackfill:
     """Issue #215: Competence nodes expose grantedBy and competenceArea."""
 
     def test_select_granted_by_majority_tie_and_broad_spread(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
 
         # Strict plurality (2 vs 1) → return the plurality act.
         assert _select_granted_by([
@@ -1910,7 +1907,7 @@ class TestIssue215CompetenceBackfill:
     def test_write_institution_files_emits_granted_by_and_competence_area(
         self, tmp_path, monkeypatch
     ):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         institutions_dir = tmp_path / "institutions"
         institutions_dir.mkdir()
@@ -1959,8 +1956,8 @@ class TestIssue170CanonicalValidation:
     surfaced in the coverage report."""
 
     def test_unknown_institution_dropped(self, tmp_path, monkeypatch):
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = tmp_path / "krr_outputs"
         institutions_dir = krr / "institutions"
         reports_dir = krr / "reports" / "kov"
@@ -2024,8 +2021,8 @@ class TestIssue170CanonicalValidation:
     def test_bootstrap_mode_when_registry_empty(self, tmp_path, monkeypatch):
         """When the canonical registry is empty (fresh-clone bootstrap),
         validation is disabled — all detections still emit."""
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         krr = tmp_path / "krr_outputs"
         institutions_dir = krr / "institutions"
         reports_dir = krr / "reports" / "kov"
@@ -2071,7 +2068,8 @@ class TestIssue170NoImportSideEffect:
 
     def test_import_does_not_mkdir(self, tmp_path, monkeypatch):
         import importlib
-        import extract_institutional_competence as mod
+
+        from estleg import extract_institutional_competence as mod
         # Point at a location that doesn't exist; reload the module and
         # confirm nothing was created.
         nonexistent = tmp_path / "shouldnt_exist"
@@ -2090,14 +2088,14 @@ class TestIssue170MainRefactor:
     the helpers."""
 
     def test_helpers_are_exported(self):
-        from extract_institutional_competence import (
+        from estleg.extract_institutional_competence import (
+            _ensure_dirs,
+            _PipelineState,
+            _record_provision_for_institution,
             process_law_file,
+            write_coverage,
             write_institution_files,
             write_report,
-            write_coverage,
-            _PipelineState,
-            _ensure_dirs,
-            _record_provision_for_institution,
         )
         assert callable(process_law_file)
         assert callable(write_institution_files)
@@ -2117,7 +2115,7 @@ class TestIssue170DeadInflectionMapDeleted:
     by importing the (now-private) map."""
 
     def test_inflection_map_has_no_double_underscore_keys(self):
-        from extract_institutional_competence import _INFLECTION_MAP
+        from estleg.extract_institutional_competence import _INFLECTION_MAP
         bad = [k for k in _INFLECTION_MAP if "__" in k]
         assert bad == [], (
             f"unreachable double-underscore keys still in _INFLECTION_MAP: {bad}"
@@ -2135,19 +2133,19 @@ class TestIssue258CompetenceTypeOrdering:
     def test_kehtestab_jarelevalve_is_regulation_not_supervision(self):
         """The exact case named in the issue: a regulation verb that happens
         to mention the supervision noun must classify as `regulation`."""
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Minister kehtestab järelevalve korra"
         ) == "regulation"
 
     def test_annab_loa_with_jarelevalve_is_licensing(self):
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Amet annab loa ja teostab järelevalve raames kontrolli"
         ) == "licensing"
 
     def test_kontrollib_with_jarelevalve_is_enforcement(self):
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Asutus kontrollib järelevalve käigus nõuete täitmist"
         ) == "enforcement"
@@ -2161,14 +2159,14 @@ class TestIssue258CompetenceTypeOrdering:
         """The genuine supervision phrases (verb adjacent to the noun) must
         still classify as `supervision` even though the bare noun is now
         demoted below the action verbs."""
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(text) == "supervision"
 
     def test_bare_jarelevalve_noun_still_falls_back_to_supervision(self):
         """When no operative verb is present, the bare 'järelevalve' noun is
         still a (weak) supervision signal — the demoted pattern is reached
         as the last resort."""
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Järelevalve toimub seaduses sätestatud korras"
         ) == "supervision"
@@ -2189,7 +2187,7 @@ class TestIssue259GenericAgencyOverMatch:
         "ametkond koguneb istungile",
     ])
     def test_derivational_forms_are_not_institutions(self, text):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         results = detect_institutions(text)
         assert results == [], (
             f"derivational form should not be detected as an institution: "
@@ -2197,7 +2195,7 @@ class TestIssue259GenericAgencyOverMatch:
         )
 
     def test_politseiametnik_slug_absent(self):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         slugs = {s for _, s, _ in
                  detect_institutions("politseiametnik teostab järelevalvet")}
         assert "politseiametnik" not in slugs
@@ -2215,7 +2213,7 @@ class TestIssue259GenericAgencyOverMatch:
         ("Tooinspektsioonile esitatakse kaebus", "tooinspektsioon"),
     ])
     def test_real_agency_names_still_detected(self, text, expected_slug):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         slugs = {s for _, s, _ in detect_institutions(text)}
         assert expected_slug in slugs, (
             f"{text!r} -> {slugs!r}, expected {expected_slug!r}"
@@ -2226,18 +2224,18 @@ class TestIssue259GenericAgencyOverMatch:
         which is a valid *amet case form but never a real institution — the
         stoplist drops it (this is what produced the committed
         institution_mitteamet.json)."""
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         assert detect_institutions("mitteameti otsus") == []
         assert detect_institutions("edastati mitteametile") == []
 
     def test_mitteamet_in_stoplist(self):
-        from extract_institutional_competence import _INSTITUTION_STOPLIST
+        from estleg.extract_institutional_competence import _INSTITUTION_STOPLIST
         assert "mitteamet" in _INSTITUTION_STOPLIST
 
     def test_agency_pattern_excludes_nik_lik_kond_endings(self):
         """Direct regex-level assertion: the *amet pattern must not match
         the derivational endings -nik / -lik / -kond / -likult."""
-        from extract_institutional_competence import GENERIC_PATTERNS
+        from estleg.extract_institutional_competence import GENERIC_PATTERNS
         amet_pat = next(
             pat for pat, label, _itype in GENERIC_PATTERNS
             if label == "agency" and "amet" in pat.pattern
@@ -2261,24 +2259,24 @@ class TestIssue274GrantedByTies:
     sort-order winner for 1-1, 2-2 and 3-way singleton cases."""
 
     def test_two_two_tie_returns_none(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
         # Sort-order would have picked "estleg:AA"; the contract says abstain.
         assert _select_granted_by([
             "estleg:ZZ", "estleg:ZZ", "estleg:AA", "estleg:AA",
         ]) is None
 
     def test_three_way_singleton_tie_returns_none(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
         assert _select_granted_by([
             "estleg:A", "estleg:B", "estleg:C",
         ]) is None
 
     def test_all_singleton_two_acts_returns_none(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
         assert _select_granted_by(["estleg:A", "estleg:B"]) is None
 
     def test_strict_plurality_returned(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
         # 2 vs 1 — a strict plurality, so the top act IS returned.
         assert _select_granted_by([
             "estleg:A", "estleg:A", "estleg:B",
@@ -2290,14 +2288,14 @@ class TestIssue274GrantedByTies:
         ]) == "estleg:A"
 
     def test_unanimous_and_sole_singleton_returned(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
         assert _select_granted_by([
             "estleg:A", "estleg:A", "estleg:A",
         ]) == "estleg:A"
         assert _select_granted_by(["estleg:A"]) == "estleg:A"
 
     def test_non_estleg_refs_ignored(self):
-        from extract_institutional_competence import _select_granted_by
+        from estleg.extract_institutional_competence import _select_granted_by
         # Only estleg: refs count; with the noise stripped this is a sole
         # singleton.
         assert _select_granted_by([
@@ -2321,7 +2319,7 @@ class TestIssue321MinisterInflectedForms:
     def test_evidence_case_from_ticket(self):
         """The exact regression named in the issue: a genitive-stem oblique
         form previously yielded ``[]``."""
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         slugs = {s for _, s, _ in
                  detect_institutions("sotsiaalministril on õigus kehtestada")}
         assert "sotsiaalminister" in slugs
@@ -2346,7 +2344,7 @@ class TestIssue321MinisterInflectedForms:
         ("siseministriks nimetati isik", "siseminister"),
     ])
     def test_inflected_minister_detected_and_collapsed(self, text, expected):
-        from extract_institutional_competence import detect_institutions
+        from estleg.extract_institutional_competence import detect_institutions
         slugs = {s for _, s, _ in detect_institutions(text)}
         assert expected in slugs, f"{text!r} -> {slugs!r}, expected {expected!r}"
 
@@ -2354,7 +2352,7 @@ class TestIssue321MinisterInflectedForms:
         """Nominative + several oblique forms of the SAME ministry must
         normalize to a single slug (no Institution_sotsiaalministril
         sibling alongside Institution_sotsiaalminister)."""
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         forms = [
             "sotsiaalminister", "sotsiaalministri", "sotsiaalministril",
             "sotsiaalministrile", "sotsiaalministrilt", "sotsiaalministrit",
@@ -2371,14 +2369,14 @@ class TestIssue321MinisterInflectedForms:
     def test_normalize_iri_suffix_collapses_minister_inflection(
         self, form, expected
     ):
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         assert normalize_iri_suffix(form) == expected
 
     def test_ministeerium_forms_unaffected(self):
         """The ``minister`` genitive-stem handling must NOT swallow
         ``ministeerium`` forms (different lexeme; its genitive is the
         regular ``ministeeriumi``, de-inflected by the existing rule)."""
-        from extract_institutional_competence import normalize_iri_suffix
+        from estleg.extract_institutional_competence import normalize_iri_suffix
         assert normalize_iri_suffix("siseministeerium") == "siseministeerium"
         assert normalize_iri_suffix("siseministeeriumi") == "siseministeerium"
         assert normalize_iri_suffix(
@@ -2389,7 +2387,7 @@ class TestIssue321MinisterInflectedForms:
     def test_generic_minister_pattern_matches_genitive_stem(self):
         """Direct regex-level assertion: the generic ministry pattern must
         match the ``ministri`` genitive stem, not just literal ``minister``."""
-        from extract_institutional_competence import GENERIC_PATTERNS
+        from estleg.extract_institutional_competence import GENERIC_PATTERNS
         minister_pat = next(
             pat for pat, label, _itype in GENERIC_PATTERNS
             if label == "ministry" and "minister" in pat.pattern
@@ -2415,13 +2413,13 @@ class TestIssue322CompetenceTypeHighestSpecificity:
         grants a licence AND mentions a verb-adjacent supervision phrase
         previously collapsed to ``supervision``; it must now be
         ``licensing``."""
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Amet annab loa ja teostab järelevalvet maksukohustuse üle"
         ) == "licensing"
 
     def test_licensing_wins_over_bare_jarelevalve_and_teostab(self):
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Amet väljastab luba ja teostab järelevalve raames kontrolli"
         ) == "licensing"
@@ -2443,7 +2441,7 @@ class TestIssue322CompetenceTypeHighestSpecificity:
         ("Käesolev säte kirjeldab üldist eesmärki", "general"),
     ])
     def test_specificity_ladder(self, text, expected):
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(text) == expected, (
             f"{text!r} classified wrong"
         )
@@ -2451,7 +2449,7 @@ class TestIssue322CompetenceTypeHighestSpecificity:
     def test_competence_patterns_are_ordered_by_descending_specificity(self):
         """detect_competence_type's early-skip relies on COMPETENCE_PATTERNS
         being sorted highest-specificity-first; guard that invariant."""
-        from extract_institutional_competence import COMPETENCE_PATTERNS
+        from estleg.extract_institutional_competence import COMPETENCE_PATTERNS
         specificities = [spec for _pat, _ctype, spec in COMPETENCE_PATTERNS]
         assert specificities == sorted(specificities, reverse=True), (
             f"COMPETENCE_PATTERNS not in descending specificity order: "
@@ -2475,7 +2473,7 @@ class TestIssue373LicensingTegevusluba:
         "Finantsinspektsioon annab tegevusloa krediidiasutusele",
     ])
     def test_tegevusluba_grant_is_licensing(self, text):
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(text) == "licensing", (
             f"{text!r} should be licensing"
         )
@@ -2483,7 +2481,7 @@ class TestIssue373LicensingTegevusluba:
     def test_tegevusluba_no_longer_falls_through_to_general(self):
         """Regression guard for the exact bug: without the new patterns this
         text classified ``general``."""
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type(
             "Inspektsioon annab tegevusloa, kui nõuded on täidetud"
         ) != "general"
@@ -2491,14 +2489,14 @@ class TestIssue373LicensingTegevusluba:
     def test_plain_loa_still_licensing(self):
         """The original ``annab loa`` / ``väljastab luba`` forms must still
         classify as licensing (no regression)."""
-        from extract_institutional_competence import detect_competence_type
+        from estleg.extract_institutional_competence import detect_competence_type
         assert detect_competence_type("Amet annab loa taotlejale") == "licensing"
         assert detect_competence_type(
             "Amet väljastab luba taotlejale") == "licensing"
 
     def test_tegevusluba_patterns_present(self):
         """The compound-licensing patterns exist in COMPETENCE_PATTERNS."""
-        from extract_institutional_competence import COMPETENCE_PATTERNS
+        from estleg.extract_institutional_competence import COMPETENCE_PATTERNS
         joined = " ".join(pat.pattern for pat, _ctype, _spec in COMPETENCE_PATTERNS)
         assert "tegevusloa" in joined, (
             "no 'tegevusloa' licensing pattern found in COMPETENCE_PATTERNS"
@@ -2518,8 +2516,8 @@ class TestIssue376AtomicSaveJson:
     (tempfile + ``os.replace``)."""
 
     def test_save_json_is_the_atomic_estleg_common_implementation(self):
-        import extract_institutional_competence as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_institutional_competence as mod
         assert mod.save_json is estleg_common.save_json
 
     def test_save_json_uses_atomic_replace_not_truncating_open(self, tmp_path):
@@ -2528,7 +2526,7 @@ class TestIssue376AtomicSaveJson:
         new bytes land; the atomic version writes to a tempfile and
         ``os.replace``s, so a failed serialization leaves the ORIGINAL file
         intact."""
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         target = tmp_path / "inst.json"
         mod.save_json(target, {"@graph": [{"@id": "estleg:Inst_a"}]})
@@ -2553,7 +2551,8 @@ class TestIssue376AtomicSaveJson:
 
     def test_save_json_roundtrip(self, tmp_path):
         import json as _json
-        import extract_institutional_competence as mod
+
+        from estleg import extract_institutional_competence as mod
         target = tmp_path / "out.json"
         doc = {"@context": {"estleg": "x"}, "@graph": [{"@id": "estleg:A"}]}
         mod.save_json(target, doc)
@@ -2566,7 +2565,7 @@ class TestIssue376AtomicSaveJson:
         monkeypatches ``mod.save_json``; the production call sites must pick
         up the override. Verify the name is a rebindable module attribute and
         that bare-name calls resolve through it."""
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
         calls = []
         original = mod.save_json
         try:
@@ -2583,7 +2582,7 @@ class TestCanonicalizeInstitutionLabel:
     for rdfs:label, while already-canonical named institutions are preserved."""
 
     def test_inflected_single_word_labels_are_nominative(self):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         assert mod.canonicalize_institution_label("Finantsinspektsioonilt") == "Finantsinspektsioon"
         assert mod.canonicalize_institution_label("haldusametile") == "haldusamet"
@@ -2591,7 +2590,7 @@ class TestCanonicalizeInstitutionLabel:
         assert mod.canonicalize_institution_label("välisministriga") == "välisminister"
 
     def test_inflected_multiword_labels_deinflect_head(self):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         assert (
             mod.canonicalize_institution_label("Politsei- ja Piirivalveametile")
@@ -2603,13 +2602,13 @@ class TestCanonicalizeInstitutionLabel:
         )
 
     def test_already_canonical_labels_unchanged(self):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         for canonical in ("Riigikohus", "Keeleinspektsioon", "Maksu- ja Tolliamet"):
             assert mod.canonicalize_institution_label(canonical) == canonical
 
     def test_empty_label_is_safe(self):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         assert mod.canonicalize_institution_label("") == ""
 
@@ -2659,7 +2658,7 @@ class TestIssue365HasCompetence:
     def test_extractor_emits_has_competence_on_institution(
         self, tmp_path, monkeypatch
     ):
-        import extract_institutional_competence as mod
+        from estleg import extract_institutional_competence as mod
 
         institutions_dir = tmp_path / "institutions"
         institutions_dir.mkdir()

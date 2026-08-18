@@ -6,16 +6,13 @@ instead of pasting a private ``@context`` or a 1970 sentinel.
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-import estleg_common
+from estleg import estleg_common
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 OWL_FINGERPRINT = '"owl": "http://www.w3.org/2002/07/owl#"'
-_PINNED_ASSIGN = re.compile(r"^PINNED_RUN_TIMESTAMP =", re.M)
+_PINNED_ASSIGN = re.compile(r"^PINNED_RUN_TIMESTAMP =", re.MULTILINE)
 _ALLOWED_PINNED_ASSIGN = frozenset(
     {
         "estleg_common.py",

@@ -8,12 +8,9 @@ are typed exactly as the post-#267 generator emits them: ``estleg:MunicipalRegul
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import backfill_kov_regulation_typing as bkt
+from estleg import backfill_kov_regulation_typing as bkt
 
 
 def _root(extra_types: list[str]) -> dict:

@@ -15,9 +15,9 @@ from pathlib import Path
 
 import pytest
 
-import estleg_common
-import generate_annotations as ga
-from generate_annotations import (
+from estleg import estleg_common
+from estleg import generate_annotations as ga
+from estleg.generate_annotations import (
     Opinion,
     build_annotations_for_opinion,
     build_law_index,
@@ -883,7 +883,7 @@ def test_run_scrape_limit_zero_fetches_until_listing_exhausted(tmp_path: Path, m
     pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
     seen: list[str] = []
 
-    def _fake_fetch(url, **k):  # noqa: ANN001
+    def _fake_fetch(url, **k):
         seen.append(url)
         return pages.get(url)  # page 0 only; page 1 returns None -> stop
 
@@ -908,7 +908,7 @@ def test_run_scrape_with_mocked_listing(tmp_path: Path, monkeypatch: pytest.Monk
     _fixture_corpus(krr)
     pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
 
-    def _fake_fetch(url, **k):  # noqa: ANN001
+    def _fake_fetch(url, **k):
         return pages.get(url)  # page 0 only; page 1 returns None -> stop
 
     monkeypatch.setattr(ga, "_fetch_url", _fake_fetch)
@@ -934,7 +934,7 @@ def test_run_scrape_no_pdf_body_skips_extraction(tmp_path: Path, monkeypatch: py
     pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
     monkeypatch.setattr(ga, "_fetch_url", lambda url, **k: pages.get(url))
 
-    def _boom(*_args, **_kwargs):  # noqa: ANN002, ANN003
+    def _boom(*_args, **_kwargs):
         raise AssertionError("attach_pdf_text_layers must not be called when use_pdf_body=False")
 
     monkeypatch.setattr(ga, "attach_pdf_text_layers", _boom)
@@ -964,7 +964,7 @@ def test_run_scrape_pdf_body_on_invokes_extraction(tmp_path: Path, monkeypatch: 
         "extraction_unavailable": 0, "unusable_or_scanned": 0, "non_pdf_urls": 0,
     }
 
-    def _record(opinions, **_kwargs):  # noqa: ANN001, ANN003
+    def _record(opinions, **_kwargs):
         calls.append(1)
         return opinions, dict(_empty_stats)
 
@@ -1005,7 +1005,7 @@ def _block_pdfminer_import(monkeypatch: pytest.MonkeyPatch) -> None:
 
     real_import = builtins.__import__
 
-    def _fake_import(name, *args, **kwargs):  # noqa: ANN001, ANN002, ANN003
+    def _fake_import(name, *args, **kwargs):
         if name == "pdfminer" or name.startswith("pdfminer."):
             raise ImportError("simulated: pdfminer.six not installed")
         return real_import(name, *args, **kwargs)
@@ -1029,7 +1029,7 @@ def _patch_scrape_with_pdfminer_unavailable(monkeypatch: pytest.MonkeyPatch) -> 
     _block_pdfminer_import(monkeypatch)
     real_attach = ga.attach_pdf_text_layers
 
-    def _attach_with_fake_fetch(opinions, **_kwargs):  # noqa: ANN001, ANN003
+    def _attach_with_fake_fetch(opinions, **_kwargs):
         return real_attach(
             opinions,
             fetcher=lambda url, **k: b"%PDF-1.7 fake",
@@ -1056,10 +1056,10 @@ def test_attach_pdf_text_layers_counts_every_pdf_as_unavailable_when_pdfminer_mi
     # extraction_unavailable == pdf_urls (and pdf_urls > 0).
     op = ga.Opinion("x", "Üldine seisukoht", "https://x/x.pdf", "2024-02-04", (), "")
 
-    def _fetcher(url, **_kwargs):  # noqa: ANN001
+    def _fetcher(url, **_kwargs):
         return b"%PDF-1.7 fake"
 
-    def _unavailable_extractor(_pdf_bytes):  # noqa: ANN001
+    def _unavailable_extractor(_pdf_bytes):
         return None, 'pdfminer.six not installed; run pip install -e ".[pdf]"'
 
     enriched, stats = ga.attach_pdf_text_layers(
@@ -1194,10 +1194,10 @@ def test_pdf_text_layer_probe_reports_ocr_recommendation():
         ),
     ]
 
-    def _fetcher(url, **_kwargs):  # noqa: ANN001
+    def _fetcher(url, **_kwargs):
         return url.encode("utf-8")
 
-    def _extractor(pdf_bytes):  # noqa: ANN001
+    def _extractor(pdf_bytes):
         if b"usable" in pdf_bytes:
             return "Õiguskantsleri seisukoha tekst. " * 30, None
         return "", None
@@ -1358,10 +1358,10 @@ def test_scrape_opinion_resolves_law_cited_after_cap(tmp_path: Path):
     assert len(big) > _OLD_PDF_BODY_SCAN_CAP
     op = ga.Opinion("after-cap", "Üldine seisukoht", "https://x/after-cap.pdf", "2024-02-04", (), "")
 
-    def _fetcher(url, **_kwargs):  # noqa: ANN001
+    def _fetcher(url, **_kwargs):
         return b"%PDF-1.7 fake"
 
-    def _extractor(_pdf_bytes):  # noqa: ANN001
+    def _extractor(_pdf_bytes):
         return big, None
 
     enriched, stats = ga.attach_pdf_text_layers(
@@ -1403,11 +1403,11 @@ def test_pdf_text_layer_probe_skips_non_pdf_urls():
     ]
     fetched: list[str] = []
 
-    def _fetcher(url, **_kwargs):  # noqa: ANN001
+    def _fetcher(url, **_kwargs):
         fetched.append(url)
         return url.encode("utf-8")
 
-    def _extractor(_pdf_bytes):  # noqa: ANN001
+    def _extractor(_pdf_bytes):
         return "Õiguskantsleri seisukoha tekst. " * 30, None
 
     report = ga.probe_pdf_text_layers(

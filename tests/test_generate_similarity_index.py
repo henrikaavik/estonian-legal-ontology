@@ -1,10 +1,7 @@
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_similarity_index as similarity
+from estleg import generate_similarity_index as similarity
 
 
 def write_doc(path: Path, act_type: str = "estleg:Law") -> None:

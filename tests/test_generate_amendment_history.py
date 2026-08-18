@@ -11,10 +11,7 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
@@ -23,9 +20,9 @@ class TestAmendmentHistoryDiscovery:
     @pytest.mark.parametrize(
         "module_name",
         [
-            "generate_amendment_history",
-            "estleg_common",
-            "extract_temporal_data",
+            "estleg.generate_amendment_history",
+            "estleg.estleg_common",
+            "estleg.extract_temporal_data",
         ],
     )
     def test_pair_peep_with_xml_dry_across_imports(self, tmp_path, module_name):
@@ -78,12 +75,12 @@ class TestAmendmentHistoryDiscovery:
         pair_peep_with_xml live in estleg_common alongside
         iter_peep_files — the canonical home of pipeline-shared
         helpers. Layer 2b's preamble scanner imports from here."""
-        from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
+        from estleg.estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
         assert callable(build_globalid_xml_lookup)
         assert callable(pair_peep_with_xml)
 
     def test_recursive_glob_finds_kov_xml(self, tmp_path):
-        from generate_amendment_history import build_globalid_xml_lookup
+        from estleg.generate_amendment_history import build_globalid_xml_lookup
         rt = tmp_path / "data" / "riigiteataja"
         (rt / "maarus_kov").mkdir(parents=True)
         (rt / "maarus_kov" / "reg_kov_888.xml").write_text(
@@ -99,8 +96,8 @@ class TestAmendmentHistoryDiscovery:
         main() over a tiny KOV-like fixture and asserts an XML file
         under maarus_kov/ paired by globalId contributed an amendment
         chain entry."""
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -199,7 +196,7 @@ class TestRtReferenceRegex:
     """
 
     def _scan(self, tmp_path: Path, body: str) -> list[str]:
-        from generate_amendment_history import extract_rt_references_from_text
+        from estleg.generate_amendment_history import extract_rt_references_from_text
 
         xml_path = tmp_path / "fixture.xml"
         xml_path.write_text(
@@ -249,7 +246,7 @@ class TestMatchLawNameStrict:
     """
 
     def test_exact_normalised_title_wins(self):
-        from generate_amendment_history import match_law_name_to_slug
+        from estleg.generate_amendment_history import match_law_name_to_slug
 
         # title_map values are now LISTS of slugs (issue #595).
         title_map = {"riigieelarve seadus": ["riigieelarve_seadus"]}
@@ -259,7 +256,7 @@ class TestMatchLawNameStrict:
         assert result == "riigieelarve_seadus"
 
     def test_substring_no_longer_matches_unrelated_law(self):
-        from generate_amendment_history import match_law_name_to_slug
+        from estleg.generate_amendment_history import match_law_name_to_slug
 
         # Two unrelated titles. Substring of "muutmise seadus" inside the
         # second one would have matched in the old code; under the new
@@ -278,7 +275,7 @@ class TestMatchLawNameStrict:
         assert result == "muutmise_seadus"
 
     def test_ambiguous_jaccard_match_bails_with_failure_log(self):
-        from generate_amendment_history import match_law_name_to_slug
+        from estleg.generate_amendment_history import match_law_name_to_slug
 
         # Two title entries with IDENTICAL token sets but different
         # slugs — Jaccard is exactly 1.0 against the input for both,
@@ -308,7 +305,7 @@ class TestStableAmendmentSuffix:
     (issue #173 #1)."""
 
     def test_suffix_stable_across_calls_with_same_rt_reference(self):
-        from generate_amendment_history import _stable_amend_suffix
+        from estleg.generate_amendment_history import _stable_amend_suffix
 
         a = {"rt_reference": "RT I, 2024, 5, 1", "date": "2024-01-01"}
         s1 = _stable_amend_suffix(a)
@@ -317,14 +314,14 @@ class TestStableAmendmentSuffix:
         assert len(s1) == 10
 
     def test_suffix_differs_for_different_rt_refs(self):
-        from generate_amendment_history import _stable_amend_suffix
+        from estleg.generate_amendment_history import _stable_amend_suffix
 
         a = {"rt_reference": "RT I, 2024, 5, 1"}
         b = {"rt_reference": "RT I, 2024, 6, 2"}
         assert _stable_amend_suffix(a) != _stable_amend_suffix(b)
 
     def test_amend_sort_key_prefers_entry_into_force(self):
-        from generate_amendment_history import _amend_sort_key
+        from estleg.generate_amendment_history import _amend_sort_key
 
         late_eif = {"date": "2010-01-01", "entry_into_force": "2024-01-01"}
         early_eif = {"date": "2024-12-31", "entry_into_force": "2010-01-01"}
@@ -332,7 +329,7 @@ class TestStableAmendmentSuffix:
         assert _amend_sort_key(early_eif) < _amend_sort_key(late_eif)
 
     def test_amend_sort_key_falls_back_to_date_when_no_eif(self):
-        from generate_amendment_history import _amend_sort_key
+        from estleg.generate_amendment_history import _amend_sort_key
 
         a = {"date": "2010-01-01", "entry_into_force": None}
         b = {"date": "2020-01-01", "entry_into_force": None}
@@ -345,7 +342,7 @@ class TestOsaOrderKeyCanonicalPart:
     osa10/osa11 cannot win over osa2 under lexical-string or glob ordering."""
 
     def test_osa_order_key_is_numeric_and_no_suffix_sorts_as_zero(self):
-        from generate_amendment_history import _osa_order_key
+        from estleg.generate_amendment_history import _osa_order_key
 
         # Natural numeric ordering: osa1 < osa2 < osa10 < osa11. Lexical
         # string order would (wrongly) place "_osa10"/"_osa11" before "_osa2".
@@ -361,7 +358,7 @@ class TestOsaOrderKeyCanonicalPart:
         assert _osa_order_key("osariik_seadus") == (0, "osariik_seadus")
 
     def test_sorting_members_like_list_puts_osa1_first(self):
-        from generate_amendment_history import _osa_order_key
+        from estleg.generate_amendment_history import _osa_order_key
 
         # Mirrors main()'s grouping: (slug, info) tuples arrive in arbitrary
         # insertion/glob order; sorting by the key must make members[0] the
@@ -388,8 +385,8 @@ class TestMultipartLawAggregation:
     file in turn."""
 
     def _setup(self, tmp_path: Path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -551,8 +548,8 @@ class TestCoverageTriplesSplit:
     """Regression coverage for split coverage triples (issue #173 #3)."""
 
     def test_summary_exposes_both_metrics(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -623,9 +620,9 @@ class TestFailuresSink:
     used to swallow corruption silently."""
 
     def test_load_law_files_appends_failures(self, tmp_path, monkeypatch):
-        from generate_amendment_history import load_law_files
-        import estleg_common
-        import generate_amendment_history as mod
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
+        from estleg.generate_amendment_history import load_law_files
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -641,7 +638,7 @@ class TestFailuresSink:
         assert any("broken_peep.json" in f for f in failures), failures
 
     def test_extract_amendments_logs_parse_error(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         bad = tmp_path / "bad.xml"
         bad.write_text("<not-xml>>", encoding="utf-8")
@@ -651,7 +648,7 @@ class TestFailuresSink:
         assert any("bad.xml" in f for f in failures)
 
     def test_extract_rt_references_logs_parse_error(self, tmp_path):
-        from generate_amendment_history import extract_rt_references_from_text
+        from estleg.generate_amendment_history import extract_rt_references_from_text
 
         bad = tmp_path / "bad.xml"
         bad.write_text("<not-xml>>", encoding="utf-8")
@@ -663,8 +660,8 @@ class TestFailuresSink:
     def test_load_draft_amendments_logs_parse_error(
         self, tmp_path, monkeypatch
     ):
-        from generate_amendment_history import load_draft_amendments
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
+        from estleg.generate_amendment_history import load_draft_amendments
 
         eelnoud = tmp_path / "eelnoud"
         eelnoud.mkdir()
@@ -678,7 +675,7 @@ class TestFailuresSink:
         assert any("eelnoud_combined" in f for f in failures), failures
 
     def test_clear_amended_by_logs_parse_error(self, tmp_path):
-        from generate_amendment_history import clear_amended_by_from_file
+        from estleg.generate_amendment_history import clear_amended_by_from_file
 
         broken = tmp_path / "broken_peep.json"
         broken.write_text("{not json", encoding="utf-8")
@@ -690,8 +687,8 @@ class TestFailuresSink:
     def test_main_prints_p1_banner_when_failures(
         self, tmp_path, monkeypatch, capsys
     ):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -729,7 +726,7 @@ class TestShortPrefixForBaseSlug:
     """``short_prefix_for_base_slug`` — registry abbrev > Reg_<id> stem > slug."""
 
     def test_uses_registry_abbreviation(self):
-        from generate_amendment_history import short_prefix_for_base_slug
+        from estleg.generate_amendment_history import short_prefix_for_base_slug
 
         abbreviations = {
             "karistusseadustik": {"abbrev": "KARIST_2", "source": "auto",
@@ -741,7 +738,7 @@ class TestShortPrefixForBaseSlug:
         ) == "KARIST_2"
 
     def test_falls_back_to_reg_id_stem_for_unregistered_regulation(self):
-        from generate_amendment_history import short_prefix_for_base_slug
+        from estleg.generate_amendment_history import short_prefix_for_base_slug
 
         # base_slug absent from the registry → recover Reg_<id> from the
         # canonical ontology IRI (NOT from the slug's _t<id> suffix, which can
@@ -753,7 +750,7 @@ class TestShortPrefixForBaseSlug:
         ) == "Reg_1056294"
 
     def test_falls_back_to_sanitized_slug_when_nothing_better(self):
-        from generate_amendment_history import sanitize_id, short_prefix_for_base_slug
+        from estleg.generate_amendment_history import sanitize_id, short_prefix_for_base_slug
 
         # No registry entry and the ontology IRI yields no *shorter* stem →
         # keep the (sanitised) slug rather than crash.
@@ -768,19 +765,19 @@ class TestShortPrefixForBaseSlug:
 
 class TestLoadLawAbbreviations:
     def test_loads_registry(self, tmp_path):
-        from generate_amendment_history import load_law_abbreviations
+        from estleg.generate_amendment_history import load_law_abbreviations
 
         p = tmp_path / "law_abbreviations.json"
         p.write_text(json.dumps({"x": {"abbrev": "X"}}), encoding="utf-8")
         assert load_law_abbreviations(p) == {"x": {"abbrev": "X"}}
 
     def test_missing_file_returns_empty(self, tmp_path):
-        from generate_amendment_history import load_law_abbreviations
+        from estleg.generate_amendment_history import load_law_abbreviations
 
         assert load_law_abbreviations(tmp_path / "nope.json") == {}
 
     def test_corrupt_file_records_failure_and_returns_empty(self, tmp_path):
-        from generate_amendment_history import load_law_abbreviations
+        from estleg.generate_amendment_history import load_law_abbreviations
 
         p = tmp_path / "law_abbreviations.json"
         p.write_text("{not json", encoding="utf-8")
@@ -791,7 +788,7 @@ class TestLoadLawAbbreviations:
 
 class TestAmendmentChainCleanup:
     def test_remove_obsolete_chain_files_keeps_current_bases(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         amendments_dir = tmp_path / "amendments"
         amendments_dir.mkdir()
@@ -810,7 +807,7 @@ class TestAmendmentChainCleanup:
     def test_obsolete_chain_cleanup_disabled_when_pairing_is_not_trustworthy(
         self, tmp_path, monkeypatch
     ):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         amendments_dir = tmp_path / "amendments"
         amendments_dir.mkdir()
@@ -827,7 +824,7 @@ class TestAmendmentChainCleanup:
         assert stale.exists()
 
     def test_remove_amendment_chain_file_is_idempotent(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         amendments_dir = tmp_path / "amendments"
         amendments_dir.mkdir()
@@ -840,7 +837,7 @@ class TestAmendmentChainCleanup:
         assert not chain.exists()
 
     def test_chain_file_preserved_when_pairing_fails(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         amendments_dir = krr / "amendments"
@@ -881,7 +878,7 @@ class TestAmendmentChainCleanup:
     def test_per_chain_deletion_skipped_when_unsafe_failures_present(
         self, tmp_path, monkeypatch
     ):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         amendments_dir = krr / "amendments"
@@ -929,7 +926,7 @@ class TestAmendmentChainCleanup:
         assert chain.exists()
 
     def test_soft_failures_do_not_suppress_chain_cleanup(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         amendments_dir = krr / "amendments"
@@ -983,8 +980,8 @@ class TestGeneratorEmitsCompactAmendmentIris:
     law has no registry entry."""
 
     def _setup(self, tmp_path: Path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1145,7 +1142,7 @@ class TestExtractAmendmentsDedup:
     def test_same_rt_reference_across_three_markers_collapses_to_one(
         self, tmp_path
     ):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # Three markers all citing RT I, 2024, 10 — the classic RT-repeat
         # pattern. One marker is the "complete" one (date + EIF); the other
@@ -1175,7 +1172,7 @@ class TestExtractAmendmentsDedup:
         assert out[0]["entry_into_force"] == "2024-06-01"
 
     def test_distinct_rt_references_are_kept(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         m1 = (
             "<muutmismarge><avaldamismarge>"
@@ -1192,7 +1189,7 @@ class TestExtractAmendmentsDedup:
         assert refs == ["I, 2024, 10", "I, 2024, 11"]
 
     def test_degenerate_reference_with_empty_year_not_produced(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # avaldamismarge with RTosa + RTartikkel but NO RTaasta — the old
         # code emitted ``"I, , , 13"`` (the degenerate "RT I, , , 13" from
@@ -1217,7 +1214,7 @@ class TestExtractAmendmentsDedup:
     def test_year_only_without_number_or_article_is_not_a_reference(
         self, tmp_path
     ):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # RTaasta present but neither RTnr nor RTartikkel — not unique enough
         # to be a real citation, so no rt_reference (falls back to the tuple).
@@ -1233,7 +1230,7 @@ class TestExtractAmendmentsDedup:
         assert out[0]["rt_reference"] is None, out[0]
 
     def test_no_reference_dedups_by_date_eif_aktviide_tuple(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # Two markers, no avaldamismarge at all, identical date+EIF — must
         # collapse via the (date, entry_into_force, akt_viide) tuple key.
@@ -1259,13 +1256,13 @@ class TestParseDateYearSanity:
     """
 
     def test_rejects_far_future_typo_year(self):
-        from generate_amendment_history import parse_date
+        from estleg.generate_amendment_history import parse_date
 
         assert parse_date("2918-10-17") is None
         assert parse_date("3006-03-02") is None
 
     def test_accepts_plausible_recent_year(self):
-        from generate_amendment_history import parse_date
+        from estleg.generate_amendment_history import parse_date
 
         assert parse_date("2003-07-15") == "2003-07-15"
         assert parse_date("1994-01-12") == "1994-01-12"
@@ -1273,19 +1270,19 @@ class TestParseDateYearSanity:
     def test_accepts_near_future_within_slack(self):
         from datetime import date
 
-        from generate_amendment_history import parse_date
+        from estleg.generate_amendment_history import parse_date
 
         next_year = date.today().year + 1
         assert parse_date(f"{next_year}-01-01") == f"{next_year}-01-01"
 
     def test_rejects_year_below_floor(self):
-        from generate_amendment_history import parse_date
+        from estleg.generate_amendment_history import parse_date
 
         # Pre-1990: predates the modern Riigi Teataja timeline.
         assert parse_date("1899-12-31") is None
 
     def test_still_parses_alternate_formats_when_plausible(self):
-        from generate_amendment_history import parse_date
+        from estleg.generate_amendment_history import parse_date
 
         assert parse_date("01.02.2003") == "2003-02-01"
         assert parse_date("2003-02-01T12:00:00") == "2003-02-01"
@@ -1296,13 +1293,13 @@ class TestAmendingActOfflineDerivation:
     (issue #587) — the amending-act identifier was 0% covered before."""
 
     def test_prefers_rt_reference(self):
-        from generate_amendment_history import _amending_act_value
+        from estleg.generate_amendment_history import _amending_act_value
 
         amend = {"rt_reference": "RT I, 2002, 57, 356", "akt_viide": "178370"}
         assert _amending_act_value(amend) == "RT I, 2002, 57, 356"
 
     def test_numeric_akt_viide_becomes_riigiteataja_url(self):
-        from generate_amendment_history import _amending_act_value
+        from estleg.generate_amendment_history import _amending_act_value
 
         amend = {"rt_reference": None, "akt_viide": "178370"}
         assert (
@@ -1311,13 +1308,13 @@ class TestAmendingActOfflineDerivation:
         )
 
     def test_non_numeric_akt_viide_kept_verbatim(self):
-        from generate_amendment_history import _amending_act_value
+        from estleg.generate_amendment_history import _amending_act_value
 
         amend = {"akt_viide": "RT III 1994"}
         assert _amending_act_value(amend) == "RT III 1994"
 
     def test_returns_none_when_no_identifier(self):
-        from generate_amendment_history import _amending_act_value
+        from estleg.generate_amendment_history import _amending_act_value
 
         assert _amending_act_value({"date": "2003-01-01"}) is None
         assert _amending_act_value({"akt_viide": "  "}) is None
@@ -1325,7 +1322,7 @@ class TestAmendingActOfflineDerivation:
     def test_generator_emits_amending_act_from_xml(self, tmp_path):
         """End-to-end through the XML parser: an ``aktViide`` globalId in a
         ``<muutmismarge>`` surfaces as ``estleg:amendingAct`` on the event."""
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         marker = (
             "<muutmismarge>"
@@ -1364,7 +1361,7 @@ class TestInversionGuardEveryRecord:
     def test_single_unmerged_marker_with_impossible_eif_is_nulled(
         self, tmp_path
     ):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # ONE marker (no duplicate to merge) whose entry-into-force precedes
         # the adoption date by ~356 days — physically impossible. The #353
@@ -1385,7 +1382,7 @@ class TestInversionGuardEveryRecord:
         assert out[0]["entry_into_force"] is None
 
     def test_small_retroactive_window_is_preserved(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # A legitimate short retroactive clause (eif a few weeks before
         # adoption) is WITHIN the tolerance window and must NOT be nulled.
@@ -1407,7 +1404,7 @@ class TestBuildTitleToSlugMapAmbiguity:
     bind an ambiguous (co-named) title to an arbitrary act (issue #595)."""
 
     def test_map_collects_all_slugs_for_duplicate_title(self):
-        from generate_amendment_history import build_title_to_slug_map
+        from estleg.generate_amendment_history import build_title_to_slug_map
 
         laws = {
             "kohanime_a": {"title": "Kohanime määramine"},
@@ -1424,7 +1421,7 @@ class TestBuildTitleToSlugMapAmbiguity:
         ]
 
     def test_ambiguous_exact_title_returns_none_and_logs(self):
-        from generate_amendment_history import (
+        from estleg.generate_amendment_history import (
             build_title_to_slug_map,
             match_law_name_to_slug,
         )
@@ -1446,7 +1443,7 @@ class TestBuildTitleToSlugMapAmbiguity:
         ), failures
 
     def test_unique_title_still_resolves(self):
-        from generate_amendment_history import (
+        from estleg.generate_amendment_history import (
             build_title_to_slug_map,
             match_law_name_to_slug,
         )
@@ -1459,7 +1456,7 @@ class TestBuildTitleToSlugMapAmbiguity:
         )
 
     def test_ambiguous_does_not_fall_through_to_fuzzier_stage(self):
-        from generate_amendment_history import (
+        from estleg.generate_amendment_history import (
             build_title_to_slug_map,
             match_law_name_to_slug,
         )
@@ -1485,8 +1482,8 @@ class TestTotalAmendmentsCountsUniques:
     spurious ``_2``/``_3`` Amendment nodes (issue #263)."""
 
     def _setup(self, tmp_path: Path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1574,8 +1571,8 @@ class TestGeneratorEmitsAmendingActAndSkipsCorruptCurrent:
     corrupt/future date never wins ``estleg:isCurrentAmendment``."""
 
     def _setup(self, tmp_path: Path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1676,7 +1673,7 @@ class TestAmendedByRequiresActNode:
     SKIPPED, not stamped via the old ``graph[0]`` fallback (issue #289)."""
 
     def test_find_act_node_prefers_ontology_act_then_any_act(self):
-        from generate_amendment_history import find_act_node
+        from estleg.generate_amendment_history import find_act_node
 
         concept = {"@id": "estleg:C", "@type": ["estleg:LegalConcept"]}
         plain_act = {"@id": "estleg:A2", "@type": ["estleg:Act"]}
@@ -1687,8 +1684,8 @@ class TestAmendedByRequiresActNode:
         assert find_act_node([]) is None
 
     def test_graph0_non_act_node_is_not_stamped(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1767,8 +1764,8 @@ class TestReportIsByteStable:
     pinned, so reruns over the same inputs are byte-identical (issue #295)."""
 
     def _run(self, tmp_path: Path, monkeypatch):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
@@ -1829,7 +1826,7 @@ class TestReportIsByteStable:
         assert first == second
 
     def test_coverage_run_timestamp_is_pinned(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         krr = self._run(tmp_path, monkeypatch)
         cov = json.loads(
@@ -1846,8 +1843,8 @@ class TestReportIsByteStable:
 
 def _setup_main_env(tmp_path: Path, monkeypatch):
     """Wire generate_amendment_history.main() onto an isolated tmp tree."""
-    import generate_amendment_history as mod
-    import estleg_common
+    from estleg import estleg_common
+    from estleg import generate_amendment_history as mod
 
     krr = tmp_path / "krr_outputs"
     rt = tmp_path / "data" / "riigiteataja"
@@ -2073,7 +2070,7 @@ class TestDedupDateCoherence:
         return p
 
     def test_days_between_basic(self):
-        from generate_amendment_history import _days_between
+        from estleg.generate_amendment_history import _days_between
 
         assert _days_between("2024-01-01", "2024-01-31") == 30
         # later before earlier -> negative
@@ -2082,7 +2079,7 @@ class TestDedupDateCoherence:
         assert _days_between("garbage", "2024-01-01") is None
 
     def test_sanitize_nulls_impossible_eif(self):
-        from generate_amendment_history import _sanitize_merged_amendment
+        from estleg.generate_amendment_history import _sanitize_merged_amendment
 
         # eif ~356 days before adoption (the issue #353 evidence shape).
         amend = {"date": "2026-02-26", "entry_into_force": "2025-03-07",
@@ -2094,7 +2091,7 @@ class TestDedupDateCoherence:
         assert any("impossible_eif_before_date" in f for f in failures), failures
 
     def test_sanitize_keeps_small_retroactive_window(self):
-        from generate_amendment_history import _sanitize_merged_amendment
+        from estleg.generate_amendment_history import _sanitize_merged_amendment
 
         # eif 10 days before adoption — within tolerance, kept untouched.
         amend = {"date": "2024-06-10", "entry_into_force": "2024-05-31"}
@@ -2102,7 +2099,7 @@ class TestDedupDateCoherence:
         assert out["entry_into_force"] == "2024-05-31"
 
     def test_backfill_refuses_inverting_eif(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # Two markers sharing the SAME akt_viide (so they dedup to one key)
         # but with NO rt_reference. One supplies only an adoption date
@@ -2128,13 +2125,13 @@ class TestDedupDateCoherence:
         merged = out[0]
         # date preserved; eif either absent or NOT a >90d inversion.
         assert merged.get("date") == "2026-02-26"
-        from generate_amendment_history import _days_between
+        from estleg.generate_amendment_history import _days_between
         if merged.get("entry_into_force"):
             delta = _days_between(merged["date"], merged["entry_into_force"])
             assert delta is None or delta >= -90, merged
 
     def test_identical_markers_still_merge(self, tmp_path):
-        from generate_amendment_history import extract_amendments_from_xml
+        from estleg.generate_amendment_history import extract_amendments_from_xml
 
         # Regression guard for #263: genuinely identical repeated markers
         # (same date AND eif, coherent) must still collapse to one.
@@ -2162,7 +2159,7 @@ class TestDraftLabelUnwrap:
     AmendmentLink label never embeds a Python dict repr."""
 
     def test_load_draft_amendments_unwraps_value_object(self, tmp_path, monkeypatch):
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         eelnoud = tmp_path / "eelnoud"
         eelnoud.mkdir()
@@ -2290,7 +2287,7 @@ class TestDraftEventsSorted:
         # The #387 rationale: IRIs are id-based, so sorting preserves them.
         # Run with two input orderings; the SET of AmendmentLink @ids matches.
         def run(order: list[dict]) -> set[str]:
-            import generate_amendment_history as mod  # noqa: F401
+            from estleg import generate_amendment_history as mod  # noqa: F401
             sub = tmp_path / ("o" + str(len(order)) + "_" + order[0]["id"][-4:])
             krr, rt, m = _setup_main_env(sub, monkeypatch)
             _write_part(krr, "ordseadus", "9460", "Ordseadus")
@@ -2631,8 +2628,8 @@ class TestSaveJsonIsAtomic:
     ``open('w')`` (issue #376)."""
 
     def test_save_json_is_estleg_common_symbol(self):
-        import generate_amendment_history as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_amendment_history as mod
 
         assert mod.save_json is estleg_common.save_json
 
@@ -2640,7 +2637,7 @@ class TestSaveJsonIsAtomic:
         # Force os.replace to raise mid-write: the destination must be left
         # UNTOUCHED (no zero-byte truncation), proving the write is atomic and
         # not the old in-place ``open(path,'w')`` that truncates first.
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         target = tmp_path / "out.json"
         target.write_text('{"existing": true}\n', encoding="utf-8")
@@ -2664,7 +2661,7 @@ class TestSaveJsonIsAtomic:
         # The atomic writer must keep the exact byte format the local one used
         # (ensure_ascii=False, indent=2, trailing newline) so swapping it in
         # doesn't re-diff every emitted file.
-        import generate_amendment_history as mod
+        from estleg import generate_amendment_history as mod
 
         p = tmp_path / "fmt.json"
         mod.save_json(p, {"key": "väärtus", "n": 1})

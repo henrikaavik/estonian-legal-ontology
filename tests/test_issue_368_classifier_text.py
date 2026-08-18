@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from classify_eurovoc import extract_text_from_law
-from estleg_common import classifier_text
-from generate_regulations import provision_summary
+from estleg.classify_eurovoc import extract_text_from_law
+from estleg.estleg_common import classifier_text
+from estleg.generate_regulations import provision_summary
 
 
 def test_classifier_text_prefers_legal_text_over_truncated_summary():

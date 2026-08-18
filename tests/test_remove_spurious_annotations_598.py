@@ -13,14 +13,10 @@ plus tmp_path file fixtures (no real corpus).
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_annotations as ga  # noqa: E402
-import remove_spurious_annotations_598 as rsa  # noqa: E402
-
+from estleg import generate_annotations as ga
+from estleg import remove_spurious_annotations_598 as rsa
 
 # ---------------------------------------------------------------------------
 # Fixtures: a tiny real _LawIndex + matching iri_title, and node/doc builders.

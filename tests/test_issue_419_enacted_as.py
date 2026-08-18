@@ -2,13 +2,10 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from extract_draft_impact import resolve_enacted_as
-from generate_draft_legislation import classify_draft_type
+from estleg.extract_draft_impact import resolve_enacted_as
+from estleg.generate_draft_legislation import classify_draft_type
 
 
 def test_resolve_enacted_as_only_for_enacts():

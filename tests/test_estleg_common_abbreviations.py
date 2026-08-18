@@ -14,12 +14,9 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS, slugify
+from estleg.estleg_common import FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS, slugify
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -122,7 +119,7 @@ def test_docstring_corpus_count_matches_metadata_total_files() -> None:
     total_files = _find_total_files(metadata)
     assert total_files is not None, "metadata.jsonld lacks estleg:totalFiles"
 
-    source = (REPO_ROOT / "scripts" / "estleg_common.py").read_text(
+    source = (REPO_ROOT / "src" / "estleg" / "estleg_common.py").read_text(
         encoding="utf-8"
     )
     # Every "(currently <N>)" baseline in the file must equal totalFiles.

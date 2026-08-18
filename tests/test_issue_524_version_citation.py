@@ -3,16 +3,13 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_provision_versions as gpv
-import validate_all
-from generate_provision_versions import (
+from estleg import generate_provision_versions as gpv
+from estleg import validate_all
+from estleg.generate_provision_versions import (
     backfill_version_sidecars,
     provision_ref_from_iri,
     rt_url_from_redaction_id,

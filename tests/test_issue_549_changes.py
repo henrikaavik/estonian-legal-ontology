@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import emit_release_changes as erc
+from estleg import emit_release_changes as erc
 
 REPO = Path(__file__).resolve().parent.parent
 METADATA = REPO / "metadata.jsonld"

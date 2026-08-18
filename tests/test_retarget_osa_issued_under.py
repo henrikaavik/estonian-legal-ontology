@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from retarget_osa_issued_under import (
+from estleg.retarget_osa_issued_under import (
     ISSUED_UNDER_KEY,
     OSA_BASE_TO_SHORTCODE,
     OSA_TARGET_RE,
@@ -19,7 +19,6 @@ from retarget_osa_issued_under import (
     resolve_target,
     retarget_doc,
 )
-
 
 # ── pattern + resolve_target ───────────────────────────────────────────────
 

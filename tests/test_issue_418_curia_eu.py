@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import link_curia_eu_legislation as linker
+from estleg import link_curia_eu_legislation as linker
 
 
 def test_parse_directive_classic_emu():

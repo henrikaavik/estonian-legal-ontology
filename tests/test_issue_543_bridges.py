@@ -11,8 +11,7 @@ import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-import estleg_common
-import generate_all_laws
+from estleg import estleg_common, generate_all_laws
 
 REPO = Path(__file__).resolve().parent.parent
 VOCAB = REPO / "krr_outputs" / "controlled_vocabulary.jsonld"

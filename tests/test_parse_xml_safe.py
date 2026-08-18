@@ -5,14 +5,9 @@ input instead of expanding them via ``xml.etree.ElementTree.fromstring``.
 """
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import parse_xml
+from estleg.estleg_common import parse_xml
 
 BILLION_LAUGHS = """<?xml version="1.0"?>
 <!DOCTYPE lolz [

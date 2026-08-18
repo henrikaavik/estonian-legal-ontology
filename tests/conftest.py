@@ -4,11 +4,6 @@ from types import ModuleType
 
 import pytest
 
-_SCRIPTS = Path(__file__).resolve().parent.parent / "scripts"
-sys.path.insert(0, str(_SCRIPTS))
-# After scripts/ so live modules still win (#468).
-sys.path.insert(1, str(_SCRIPTS / "archive"))
-
 
 def pytest_configure(config: pytest.Config) -> None:
     """Register custom markers used across the test suite.
@@ -150,7 +145,9 @@ def _clear_validate_all_errors(request: pytest.FixtureRequest):
     cause false positives.
     """
     test_module = request.module
-    validate_all = sys.modules.get("validate_all")
+    validate_all = sys.modules.get("estleg.validate_all") or sys.modules.get(
+        "validate_all"
+    )
     target = getattr(test_module, "validate_all", None) or validate_all
     if target is not None and hasattr(target, "errors"):
         target.errors.clear()

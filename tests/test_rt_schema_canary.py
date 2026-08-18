@@ -9,16 +9,12 @@ depends on.
 
 from __future__ import annotations
 
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
-SCRIPTS = REPO / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
+from estleg import generate_all_laws as gal
 
-import generate_all_laws as gal  # noqa: E402
+REPO = Path(__file__).resolve().parent.parent
 
 KARS_XML = REPO / "data" / "riigiteataja" / "karistusseadustik.xml"
 

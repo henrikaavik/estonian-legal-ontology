@@ -19,12 +19,8 @@ Covers the classification / encoding regressions tracked in:
 from __future__ import annotations
 
 import inspect
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_eu_court_decisions as mod  # noqa: E402
+from estleg import generate_eu_court_decisions as mod
 
 NBSP = "\u00a0"  # non-breaking space (U+00A0)
 

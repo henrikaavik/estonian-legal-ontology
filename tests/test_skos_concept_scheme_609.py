@@ -1,6 +1,6 @@
 """Tests for ``skos_concept_scheme_609`` (#609): SKOS concept-scheme binding.
 
-``conftest.py`` puts ``scripts/`` on ``sys.path``, so the module imports by
+The module is imported from the ``estleg`` package (#472), so it imports by
 name. Tests operate on synthetic concept nodes (no dependency on the real
 ~13 MB corpus file) plus tmp-file round-trips for the LFS guard and the
 dry-run / ``--apply`` write semantics.
@@ -10,7 +10,7 @@ from __future__ import annotations
 import copy
 import json
 
-import skos_concept_scheme_609 as S
+from estleg import skos_concept_scheme_609 as S
 
 SCHEME = {"@id": "estleg:LegalConceptScheme"}
 

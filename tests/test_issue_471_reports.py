@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import estleg_common
-import run_all_integration
+from estleg import estleg_common, run_all_integration
 
 REPO = Path(__file__).resolve().parent.parent
 KRR = REPO / "krr_outputs"

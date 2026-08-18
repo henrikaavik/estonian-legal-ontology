@@ -6,10 +6,8 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import eurlex_common  # noqa: E402
-import generate_transposition_mapping as mod  # noqa: E402
+from estleg import eurlex_common
+from estleg import generate_transposition_mapping as mod
 
 REPO_ROOT_FOR_TESTS = Path(__file__).resolve().parent.parent
 
@@ -499,8 +497,7 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
 
     # validate_all's gate accepts the populated report (no error recorded).
     import importlib
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    validate_all = importlib.import_module("validate_all")
+    validate_all = importlib.import_module("estleg.validate_all")
     validate_all.errors.clear()
     validate_all.validate_transposition_mapping(krr_dir=krr)
     assert validate_all.errors == []

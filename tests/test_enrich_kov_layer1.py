@@ -4,14 +4,11 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
-from enrich_kov_layer1 import build_municipality_doc
+from estleg.enrich_kov_layer1 import build_municipality_doc
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer1"
@@ -22,7 +19,7 @@ SAMPLE_LAW = FIXTURE_DIR / "sample_law.json"
 
 class TestBuildMunicipalityDoc:
     def test_builds_jsonld_doc(self):
-        from kov_registry import load_municipalities
+        from estleg.kov_registry import load_municipalities
         muns = load_municipalities(MIN_MUNICIPALITIES)
         doc = build_municipality_doc(muns)
 
@@ -65,7 +62,7 @@ class TestBuildIssuerDoc:
         }
 
     def test_builds_jsonld_doc(self, issuers):
-        from enrich_kov_layer1 import build_issuer_doc
+        from estleg.enrich_kov_layer1 import build_issuer_doc
         doc = build_issuer_doc(issuers)
         graph = doc["@graph"]
 
@@ -111,7 +108,7 @@ class TestEnrichKovActFile:
         return dest
 
     def test_act_node_enriched(self, temp_act, issuer):
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         enrich_kov_act_file(temp_act, issuer)
         with open(temp_act, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
@@ -126,7 +123,7 @@ class TestEnrichKovActFile:
         assert "estleg:MunicipalRegulation" in act["@type"]
 
     def test_provisions_enriched(self, temp_act, issuer):
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         enrich_kov_act_file(temp_act, issuer)
         with open(temp_act, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
@@ -139,7 +136,7 @@ class TestEnrichKovActFile:
             assert p["estleg:partOfAct"] == {"@id": "estleg:Reg_1014955_Map_2026"}
 
     def test_idempotent(self, temp_act, issuer):
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         enrich_kov_act_file(temp_act, issuer)
         once = json.load(open(temp_act, encoding="utf-8"))
         enrich_kov_act_file(temp_act, issuer)
@@ -150,7 +147,7 @@ class TestEnrichKovActFile:
         # A KOV file shape that lacks any estleg:MunicipalRegulation node
         # must fail loudly — not silently skip while the orchestrator
         # increments its enriched-count.
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         bad = tmp_path / "broken.json"
         bad.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -168,7 +165,7 @@ class TestEnrichKovActFile:
         # Two MunicipalRegulation nodes in one file must also fail —
         # otherwise provisions would all link to whichever comes first
         # and partial enrichment would corrupt the file silently.
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         bad = tmp_path / "two_acts.json"
         bad.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -192,7 +189,7 @@ class TestStampLawType:
         return dest
 
     def test_stamps_law_type(self, temp_law):
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         stamp_law_type(temp_law)
         with open(temp_law, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
@@ -204,7 +201,7 @@ class TestStampLawType:
         assert "estleg:Act" in law_node["@type"]
 
     def test_idempotent(self, temp_law):
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         stamp_law_type(temp_law)
         once = json.load(open(temp_law, encoding="utf-8"))
         stamp_law_type(temp_law)
@@ -222,7 +219,7 @@ class TestStampLawType:
         with open(temp_law, "w", encoding="utf-8") as fh:
             json.dump(doc, fh)
 
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         stamp_law_type(temp_law)
         with open(temp_law, "r", encoding="utf-8") as fh:
             doc2 = json.load(fh)
@@ -235,7 +232,7 @@ class TestStampActType:
     inference."""
 
     def test_stamps_act_on_national_regulation(self, tmp_path):
-        from enrich_kov_layer1 import stamp_act_type
+        from estleg.enrich_kov_layer1 import stamp_act_type
         f = tmp_path / "reg.json"
         f.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -253,7 +250,7 @@ class TestStampActType:
         assert "estleg:NationalRegulation" in types  # preserved
 
     def test_idempotent(self, tmp_path):
-        from enrich_kov_layer1 import stamp_act_type
+        from estleg.enrich_kov_layer1 import stamp_act_type
         f = tmp_path / "reg.json"
         f.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -322,7 +319,7 @@ class TestOrchestratorEndToEnd:
         }), encoding="utf-8")
 
         # Patch module-level paths
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "EHAK_DIR", ehak)
@@ -365,7 +362,7 @@ class TestStampLawTypeApplicability:
     """
 
     def test_returns_true_when_ontology_node_present(self, tmp_path):
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         f = tmp_path / "law.json"
         f.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -379,7 +376,7 @@ class TestStampLawTypeApplicability:
         assert stamp_law_type(f) is True
 
     def test_returns_false_when_no_ontology_node(self, tmp_path):
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         # A sub-part file that lacks an owl:Ontology node — typical
         # for *_osa6_peep.json, where the parent file carries the
         # owl:Ontology marker.
@@ -399,7 +396,7 @@ class TestStampLawTypeApplicability:
         # Files whose root is already a regulation subclass go
         # through stamp_act_type — stamp_law_type must skip them
         # AND report False so callers don't double-count.
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         f = tmp_path / "regulation.json"
         f.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -416,7 +413,7 @@ class TestStampLawTypeApplicability:
         # stamp_law_type and verify_layer1.check_laws use. If the
         # contract drifts, verify_layer1 silently undercounts. This
         # test pins the contract.
-        from enrich_kov_layer1 import is_stampable_law_node
+        from estleg.enrich_kov_layer1 import is_stampable_law_node
         # Stampable: an owl:Ontology that isn't a regulation subclass.
         assert is_stampable_law_node(["owl:Ontology"]) is True
         assert is_stampable_law_node(
@@ -440,7 +437,7 @@ class TestStampLawTypeIdempotentNoMtimeChurn:
     """
 
     def test_second_run_does_not_rewrite(self, tmp_path):
-        from enrich_kov_layer1 import stamp_law_type
+        from estleg.enrich_kov_layer1 import stamp_law_type
         f = tmp_path / "law.json"
         f.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -486,12 +483,12 @@ class TestEnrichKovActFileIdempotentNoMtimeChurn:
         }
 
     def test_first_run_writes_returns_true(self, tmp_path, issuer):
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         f = self._stage(tmp_path)
         assert enrich_kov_act_file(f, issuer) is True
 
     def test_second_run_does_not_write_returns_false(self, tmp_path, issuer):
-        from enrich_kov_layer1 import enrich_kov_act_file
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
         f = self._stage(tmp_path)
         enrich_kov_act_file(f, issuer)
         first_mtime = os.stat(f).st_mtime_ns
@@ -512,7 +509,7 @@ class TestStampActTypeRaisesOnKovInput:
     """
 
     def test_raises_on_municipal_regulation(self, tmp_path):
-        from enrich_kov_layer1 import stamp_act_type
+        from estleg.enrich_kov_layer1 import stamp_act_type
         f = tmp_path / "kov.json"
         f.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/",
@@ -569,7 +566,7 @@ class TestParallelKovEnrichment:
         return tmp_path, krr, ehak
 
     def _patch_paths(self, monkeypatch, tmp_path, krr, ehak):
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "EHAK_DIR", ehak)
@@ -584,7 +581,7 @@ class TestParallelKovEnrichment:
     def test_workers_two_produces_same_result_as_serial(
         self, staged_repo, monkeypatch,
     ):
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         tmp_path, krr, ehak = staged_repo
         self._patch_paths(monkeypatch, tmp_path, krr, ehak)
         rc = mod.main(["--workers=2"])
@@ -606,7 +603,7 @@ class TestParallelKovEnrichment:
             assert "estleg:titleNormalized" in act
 
     def test_invalid_workers_value_rejected(self, staged_repo, monkeypatch):
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         tmp_path, krr, ehak = staged_repo
         self._patch_paths(monkeypatch, tmp_path, krr, ehak)
         with pytest.raises(SystemExit):
@@ -632,7 +629,7 @@ class TestVerifyLayer1:
         return tmp_path
 
     def _patch_paths(self, monkeypatch, tmp_path: Path) -> None:
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         monkeypatch.setattr(mod, "REPO", tmp_path)
         monkeypatch.setattr(mod, "KRR", tmp_path / "krr_outputs")
         monkeypatch.setattr(
@@ -654,7 +651,7 @@ class TestVerifyLayer1:
             {"slug": "tartu_linnavolikogu"},
         ]), encoding="utf-8")
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_issuer_count()
         assert ok is True
         assert detail == "2/2"
@@ -675,7 +672,7 @@ class TestVerifyLayer1:
             encoding="utf-8",
         )
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_issuer_count()
         assert ok is False
         assert detail == "2/3"
@@ -701,7 +698,7 @@ class TestVerifyLayer1:
             ],
         }), encoding="utf-8")
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_kov_provisions()
         assert ok is False
         # The verifier names the failure mode in the detail string so
@@ -725,7 +722,7 @@ class TestVerifyLayer1:
             ],
         }), encoding="utf-8")
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_kov_provisions()
         assert ok is False
         assert ">1 MunicipalRegulation" in detail
@@ -753,7 +750,7 @@ class TestVerifyLayer1:
             ],
         }), encoding="utf-8")
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_kov_provisions()
         assert ok is False
         assert "no @id" in detail
@@ -799,7 +796,7 @@ class TestVerifyLayer1:
             extra_types=["estleg:NationalRegulation"],
         )
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_kov_acts()
         # Non-fatal: the file is fully enriched, so the check passes.
         assert ok is True
@@ -818,7 +815,7 @@ class TestVerifyLayer1:
         self._stage(tmp_path)
         self._write_kov_act(tmp_path, "clean_peep.json", extra_types=[])
         self._patch_paths(monkeypatch, tmp_path)
-        import verify_layer1 as mod
+        from estleg import verify_layer1 as mod
         ok, detail = mod.check_kov_acts()
         assert ok is True
         assert "WARN" not in detail
@@ -832,7 +829,7 @@ class TestLoadLawPathsFailThreshold:
     """
 
     def _patch_paths(self, monkeypatch, tmp_path, krr, ehak):
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "EHAK_DIR", ehak)
@@ -845,7 +842,7 @@ class TestLoadLawPathsFailThreshold:
         )
 
     def test_above_threshold_returns_nonzero(self, tmp_path, monkeypatch, capsys):
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         krr = tmp_path / "krr_outputs"
         ehak = tmp_path / "data" / "ehak"
         krr.mkdir()
@@ -871,7 +868,7 @@ class TestLoadLawPathsFailThreshold:
         assert "exceeds the tolerance threshold" in captured.err
 
     def test_at_or_below_threshold_passes(self, tmp_path, monkeypatch):
-        import enrich_kov_layer1 as mod
+        from estleg import enrich_kov_layer1 as mod
         krr = tmp_path / "krr_outputs"
         ehak = tmp_path / "data" / "ehak"
         krr.mkdir()

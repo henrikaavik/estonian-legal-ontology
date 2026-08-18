@@ -8,12 +8,9 @@ JSON-LD allowlist, and must be idempotent across consecutive runs.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import fix_all_issues  # noqa: E402
+from estleg import fix_all_issues
 
 
 def write_json(path: Path, doc: dict) -> None:
@@ -1024,10 +1021,10 @@ def test_detect_duplicates_returns_only_multi_file_ids(tmp_path, monkeypatch):
 
 import importlib  # noqa: E402
 
-import estleg_common  # noqa: E402
+from estleg import estleg_common  # noqa: E402
 
-validate_all = importlib.import_module("validate_all")
-generate_draft_legislation = importlib.import_module("generate_draft_legislation")
+validate_all = importlib.import_module("estleg.validate_all")
+generate_draft_legislation = importlib.import_module("estleg.generate_draft_legislation")
 
 
 # Per-node `validate_all` validators that take (filepath, doc). These are the
@@ -1254,7 +1251,7 @@ def test_intra_file_dedup_is_noop_on_clean_generator_output():
 # #426: generate_combined_jsonld refuses to build over unmarked deprecations
 # ---------------------------------------------------------------------------
 def _deprecation_fixture(tmp_path, monkeypatch):
-    import deprecate_legacy_statutes as dls
+    from estleg import deprecate_legacy_statutes as dls
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()

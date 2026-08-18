@@ -10,7 +10,7 @@ from pathlib import Path
 
 from rdflib import Dataset, Graph
 
-import serialize_corpus as sc
+from estleg import serialize_corpus as sc
 
 REPO = Path(__file__).resolve().parent.parent
 README = REPO / "README.md"

@@ -88,14 +88,17 @@ def test_cli_prints_triple_and_provision_counts(capsys: pytest.CaptureFixture[st
 
 
 def test_pyproject_packages_estleg_client_policy() -> None:
-    """#551 replaces py-modules = [] with packages = ['estleg_client']."""
+    """#551 consumer package plus #472 producer package."""
     text = (REPO / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'packages = ["estleg_client"]' in text
+    assert 'packages = ["estleg", "estleg_client"]' in text
     assert "py-modules = []" not in text
     assert "#551" in text
     assert "#472" in text
     assert 'packages = ["scripts"]' not in text
     assert 'estleg-load = "estleg_client.cli:main"' in text
+    assert 'estleg-generate-laws = "estleg.generate_all_laws:main"' in text
+    assert 'estleg-run-pipeline = "estleg.run_all_integration:main"' in text
+    assert 'estleg-validate = "estleg.validate_all:main"' in text
 
 
 def test_readme_quick_start_has_client_snippet() -> None:

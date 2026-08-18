@@ -2,14 +2,11 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
-from kov_registry import (
+from estleg.kov_registry import (
     HALDUSREFORM_2017_MERGE_DATE,
     _merge_date_for_source,
     auto_match_municipality,
@@ -21,7 +18,6 @@ from kov_registry import (
     normalize_title,
     parse_issuer_slug,
 )
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer1"
@@ -183,7 +179,7 @@ class TestAutoMatchMunicipality:
         # 'Tallinn' is the only consonant-final current municipality;
         # its slug root is 'tallinna' (genitive). The +"a" rule must
         # remain in place to keep that pairing.
-        from kov_registry import _matches_municipality_root
+        from estleg.kov_registry import _matches_municipality_root
         assert _matches_municipality_root("tallinna", "Tallinn") is True
         assert _matches_municipality_root("tallinn", "Tallinn") is True
         # Vowel-final names should not silently match an `+a` extension

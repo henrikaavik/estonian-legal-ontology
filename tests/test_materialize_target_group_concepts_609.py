@@ -7,14 +7,9 @@ writes, ``--dry-run`` overrides ``--apply``, Git-LFS pointer skip).
 """
 
 import json
-import sys
 from pathlib import Path
 
-# conftest.py already adds scripts/ to sys.path; this mirror keeps the module
-# importable when the file is run in isolation.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import materialize_target_group_concepts_609 as M  # noqa: E402
+from estleg import materialize_target_group_concepts_609 as M
 
 CITIZEN = {"@id": "estleg:TargetGroup_Citizen"}
 BUSINESS = {"@id": "estleg:TargetGroup_Business"}

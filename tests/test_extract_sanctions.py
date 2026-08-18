@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
@@ -22,7 +19,7 @@ def _iter_kov_inclusive(*args, **kwargs):
     wrapper becomes a no-op — but keep it in the tests so they remain
     self-contained and independent of task-execution order.
     """
-    from estleg_common import iter_peep_files as _real_iter
+    from estleg.estleg_common import iter_peep_files as _real_iter
     kwargs.pop("include_kov", None)
     return _real_iter(include_kov=True, **kwargs)
 
@@ -36,7 +33,7 @@ class TestClassifyEnforcementLevel:
     """
 
     def test_municipal_regulation_returns_municipality(self):
-        from extract_sanctions import _classify_enforcement_level
+        from estleg.extract_sanctions import _classify_enforcement_level
         act = {
             "@id": "estleg:Reg_TLN_15_Map_2020",
             "@type": ["owl:Ontology", "estleg:Act",
@@ -45,7 +42,7 @@ class TestClassifyEnforcementLevel:
         assert _classify_enforcement_level(act) == "municipality"
 
     def test_law_returns_state(self):
-        from extract_sanctions import _classify_enforcement_level
+        from estleg.extract_sanctions import _classify_enforcement_level
         act = {
             "@id": "estleg:KOKS_Map_2026",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
@@ -53,7 +50,7 @@ class TestClassifyEnforcementLevel:
         assert _classify_enforcement_level(act) == "state"
 
     def test_government_regulation_returns_state(self):
-        from extract_sanctions import _classify_enforcement_level
+        from estleg.extract_sanctions import _classify_enforcement_level
         act = {
             "@id": "estleg:Reg_VV251_Map_2007",
             "@type": ["owl:Ontology", "estleg:Act",
@@ -63,7 +60,7 @@ class TestClassifyEnforcementLevel:
 
     def test_string_type_normalised(self):
         """@type as a bare string (not list) must be handled."""
-        from extract_sanctions import _classify_enforcement_level
+        from estleg.extract_sanctions import _classify_enforcement_level
         # Edge case — Layer 1 generators always emit lists, but the
         # JSON-LD spec allows strings, so the helper must be robust.
         act_string_type = {
@@ -142,8 +139,8 @@ class TestSanctionExtractionWithEnforcementStamp:
         """KOV act with a fine-bearing provision → provision gains
         BOTH estleg:hasSanction AND
         estleg:enforcedAtLevel = 'municipality'."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir()
@@ -169,8 +166,8 @@ class TestSanctionExtractionWithEnforcementStamp:
         self, sample_state_peep, tmp_path, monkeypatch
     ):
         """Law-typed act → provision gains 'state' stamp."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir()
@@ -197,8 +194,8 @@ class TestSanctionExtractionWithEnforcementStamp:
         """Provision whose summary has no sanction pattern does NOT
         gain estleg:enforcedAtLevel. Preserves the 'only on
         sanction-bearing provisions' rule."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir(parents=True)
@@ -241,8 +238,8 @@ class TestSanctionExtractionWithEnforcementStamp:
         """A provision that emits MULTIPLE Sanction_* records still
         gains exactly ONE estleg:enforcedAtLevel literal (a bare
         string, NOT a list of repeated values)."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir(parents=True)
@@ -303,8 +300,8 @@ class TestSanctionsIdempotency:
         """Provision starts with prior hasSanction + enforcedAtLevel.
         The act's summary is updated to text the regex won't match.
         Second run strips BOTH triples (peep-side idempotency)."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir(parents=True)
@@ -352,8 +349,8 @@ class TestSanctionsIdempotency:
         is changed by an upstream corpus correction (Law → Municipal
         Regulation or vice versa), the recomputed enforcedAtLevel
         reflects the new type, not the prior emission."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir(parents=True)
@@ -406,8 +403,8 @@ class TestSanctionsIdempotency:
     ):
         """A peep with no sanctions and no prior stamps shouldn't
         change between runs (no spurious writes)."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir(parents=True)
@@ -448,8 +445,8 @@ class TestSanctionsIdempotency:
         the corresponding krr_outputs/sanctions/sanctions_<law>.json
         file is DELETED so orphan Sanction_* nodes don't outlive the
         inverse pass."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         sanctions_dir.mkdir(parents=True)
@@ -478,7 +475,7 @@ class TestSanctionsIdempotency:
         # provision that no longer carries hasSanction.
         # The filename uses sanitize_id of the law slug — match the
         # script's filename convention exactly.
-        from extract_sanctions import sanitize_id
+        from estleg.extract_sanctions import sanitize_id
         stale_filename = f"sanctions_{sanitize_id('lostsanc')}.json"
         stale_path = sanctions_dir / stale_filename
         stale_path.write_text(json.dumps({
@@ -524,8 +521,8 @@ class TestSanctionsCoverageReport:
         """Stage 1 KOV act + 1 state law, both with sanction text.
         Run main(). Assert the coverage JSON exists with files_with_output_kov >= 1
         and triples_emitted_kov >= 1."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         reports_dir = krr / "reports" / "kov"
@@ -606,8 +603,8 @@ class TestSanctionsCoverageReport:
         per-file flow processes each path identically, so one canned
         doc covers all 11,001 calls.
         """
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
         reports_dir = krr / "reports" / "kov"
@@ -686,7 +683,7 @@ class TestCorpusInvariant:
 
     @pytest.mark.slow
     def test_every_has_sanction_provision_has_exactly_one_enforced_at_level(self):
-        from estleg_common import iter_peep_files, KRR_DIR
+        from estleg.estleg_common import KRR_DIR, iter_peep_files
         if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
             pytest.fail("krr_outputs/ empty; corpus invariant was not checked")
 
@@ -743,7 +740,7 @@ class TestImprisonmentUnitHeuristic:
     """
 
     def test_no_unit_emits_no_penalty(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         # No unit: previous code would have emitted "5 years"; new code
         # emits nothing from the fallback (no other branch matches
         # the bare digit form either).
@@ -755,22 +752,22 @@ class TestImprisonmentUnitHeuristic:
     def test_no_unit_at_30_emits_no_penalty(self):
         """The previous heuristic mapped 30 → '30 months'. The new
         code refuses to guess and emits nothing."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("vangistusega 30")
         assert results == []
 
     def test_explicit_aasta_unit_yields_years(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("vangistus 5 aasta")
         assert any(r.get("max_penalty") == "5 years" for r in results)
 
     def test_explicit_kuu_unit_yields_months(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("vangistusega 6 kuud")
         assert any(r.get("max_penalty") == "6 months" for r in results)
 
     def test_explicit_paev_unit_yields_days(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("vangistusega 14 päeva")
         assert any(r.get("max_penalty") == "14 days" for r in results)
 
@@ -782,7 +779,7 @@ class TestImprisonmentWordRegexAnchored:
     """
 
     def test_unsupported_numeral_does_not_match(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         # 'ksdjflk' is not a numeral; the prior `\w+` pattern would
         # have captured it and yielded a None _parse_number, but the
         # new pattern won't even match.
@@ -791,12 +788,12 @@ class TestImprisonmentWordRegexAnchored:
         assert results == []
 
     def test_supported_numeral_still_matches(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kuni viieaastase vangistusega")
         assert any(r.get("max_penalty") == "5 years" for r in results)
 
     def test_range_pattern_with_supported_numerals(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment(
             "kahe kuni viieaastase vangistusega"
         )
@@ -816,7 +813,7 @@ class TestIssue273ImprisonmentRangeOrdering:
     def test_high_to_low_word_range_is_reordered(self):
         """The exact case named in the issue: 'kümne kuni viieaastase'
         (ten down to five years) must yield min 5 / max 10."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kümne kuni viieaastase vangistusega")
         assert any(
             r.get("min_penalty") == "5 years"
@@ -825,7 +822,7 @@ class TestIssue273ImprisonmentRangeOrdering:
         ), results
 
     def test_high_to_low_digit_range_is_reordered(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("10 kuni 5 aastase vangistusega")
         assert any(
             r.get("min_penalty") == "5 years"
@@ -836,7 +833,7 @@ class TestIssue273ImprisonmentRangeOrdering:
     def test_low_to_high_word_range_unchanged(self):
         """A normal low-to-high range must pass through untouched (no
         spurious swap)."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kahe kuni viieaastase vangistusega")
         assert any(
             r.get("min_penalty") == "2 years"
@@ -847,7 +844,7 @@ class TestIssue273ImprisonmentRangeOrdering:
     def test_min_never_exceeds_max(self):
         """Invariant across both branches: for every range record emitted,
         the numeric min must be <= the numeric max."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         for text in (
             "kümne kuni viieaastase vangistusega",
             "10 kuni 5 aastase vangistusega",
@@ -861,7 +858,7 @@ class TestIssue273ImprisonmentRangeOrdering:
                     assert lo <= hi, f"{text!r} -> {r!r}"
 
     def test_ordered_year_range_helper_swaps_and_sorts(self):
-        from extract_sanctions import _ordered_year_range
+        from estleg.extract_sanctions import _ordered_year_range
         assert _ordered_year_range(10, 5) == ("5 years", "10 years")
         assert _ordered_year_range(2, 5) == ("2 years", "5 years")
         assert _ordered_year_range(7, 7) == ("7 years", "7 years")
@@ -872,8 +869,8 @@ class TestSanctionIRICounterDeterministic:
     counts so IRI assignment is reproducible across runs."""
 
     def test_sorted_before_iri_assignment(self, tmp_path, monkeypatch):
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -931,8 +928,8 @@ class TestPecuniaryStatutoryDefaultFlag:
     """
 
     def test_pecuniary_default_flag_lands(self, tmp_path, monkeypatch):
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -963,7 +960,7 @@ class TestPecuniaryStatutoryDefaultFlag:
         assert rc in (0, None)
 
         # Find the sanction file produced for this law.
-        from extract_sanctions import sanitize_id
+        from estleg.extract_sanctions import sanitize_id
         sanc_file = sanctions_dir / f"sanctions_{sanitize_id('pecu')}.json"
         assert sanc_file.exists()
         with open(sanc_file, "r", encoding="utf-8") as fh:
@@ -981,7 +978,7 @@ class TestPecuniaryStatutoryDefaultFlag:
 
     def test_extract_pecuniary_records_flag(self):
         """Unit-level: extract_pecuniary tags its emitted records."""
-        from extract_sanctions import extract_pecuniary
+        from estleg.extract_sanctions import extract_pecuniary
         results = extract_pecuniary("karistatakse rahalise karistusega")
         assert results
         assert all(r.get("is_statutory_default") is True for r in results)
@@ -997,7 +994,7 @@ class TestArrestFallbackTightened:
     def test_arestima_word_does_not_match(self):
         """``arestima`` (verb 'to arrest') outside sentencing
         language must not produce a 30-day record."""
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         results = extract_arrest("Politsei võib arestima kahtlustatava.")
         # No fallback emission — no sentencing verb in context.
         assert results == []
@@ -1005,14 +1002,14 @@ class TestArrestFallbackTightened:
     def test_punishment_suffix_without_sentencing_verb_does_not_match(self):
         """``arestiga`` alone (no karistatakse/kohaldatakse) does
         not trigger the fallback."""
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         results = extract_arrest("Otsus täidetakse arestiga.")
         assert results == []
 
     def test_full_sentencing_context_triggers_fallback(self):
         """``karistatakse ... arestiga`` triggers the statutory
         fallback with the flag set."""
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         results = extract_arrest(
             "Selle eest karistatakse rahatrahviga või arestiga."
         )
@@ -1024,7 +1021,7 @@ class TestArrestFallbackTightened:
         )
 
     def test_explicit_day_count_wins_over_fallback(self):
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         results = extract_arrest(
             "Karistatakse aresti kuni 15 päeva."
         )
@@ -1039,12 +1036,12 @@ class TestEstonianNumeralsHelpers:
     """Public helper for tests/diagnostics returns the supported set."""
 
     def test_helper_returns_frozenset(self):
-        from extract_sanctions import estonian_numerals_supported
+        from estleg.extract_sanctions import estonian_numerals_supported
         s = estonian_numerals_supported()
         assert isinstance(s, frozenset)
 
     def test_helper_includes_canonical_lemmas(self):
-        from extract_sanctions import estonian_numerals_supported
+        from estleg.extract_sanctions import estonian_numerals_supported
         s = estonian_numerals_supported()
         for lemma in ("ühe", "kahe", "viie", "kümne",
                       "kahekümne", "sada", "tuhat"):
@@ -1060,11 +1057,11 @@ class TestProvisionRefEmptyFallback:
     """
 
     def test_empty_when_no_info(self):
-        from extract_sanctions import _provision_ref
+        from estleg.extract_sanctions import _provision_ref
         assert _provision_ref({}) == ""
 
     def test_with_paragrahv_and_law_abbr(self):
-        from extract_sanctions import _provision_ref
+        from estleg.extract_sanctions import _provision_ref
         ref = _provision_ref({
             "estleg:paragrahv": "121",
             "estleg:lawAbbreviation": "KarS",
@@ -1075,7 +1072,7 @@ class TestProvisionRefEmptyFallback:
     def test_with_node_id_only(self):
         """Falls back to law abbreviation parsed from @id when
         explicit lawAbbreviation is missing."""
-        from extract_sanctions import _provision_ref
+        from estleg.extract_sanctions import _provision_ref
         ref = _provision_ref({
             "@id": "estleg:KarS_p121",
             "estleg:paragrahv": "121",
@@ -1085,7 +1082,7 @@ class TestProvisionRefEmptyFallback:
     def test_label_no_parenthetical_when_ref_empty(self):
         """Integration: ``_build_label`` does not emit '(unknown)'
         when ``_provision_ref`` returns ''."""
-        from extract_sanctions import _build_label, _provision_ref
+        from estleg.extract_sanctions import _build_label, _provision_ref
         empty_ref = _provision_ref({})
         assert empty_ref == ""
         label = _build_label(
@@ -1105,9 +1102,9 @@ class TestDatetimeNowUTC:
     def test_report_generated_uses_utc_today(
         self, tmp_path, monkeypatch
     ):
-        import extract_sanctions as mod
-        import estleg_common
-        from estleg_common import BUILD_EVALUATION_DATE
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
+        from estleg.estleg_common import BUILD_EVALUATION_DATE
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1170,7 +1167,7 @@ class TestParsePenaltyToStructured:
     def test_parseable_strings(self, penalty_str, expected):
         from decimal import Decimal
 
-        from extract_sanctions import _parse_penalty_to_structured
+        from estleg.extract_sanctions import _parse_penalty_to_structured
 
         result = _parse_penalty_to_structured(penalty_str)
         assert result is not None, f"{penalty_str!r} should parse"
@@ -1192,12 +1189,12 @@ class TestParsePenaltyToStructured:
         ],
     )
     def test_unparseable_strings_return_none(self, penalty_str):
-        from extract_sanctions import _parse_penalty_to_structured
+        from estleg.extract_sanctions import _parse_penalty_to_structured
 
         assert _parse_penalty_to_structured(penalty_str) is None
 
     def test_returned_unit_is_in_controlled_set(self):
-        from extract_sanctions import (
+        from estleg.extract_sanctions import (
             PENALTY_UNITS,
             _parse_penalty_to_structured,
         )
@@ -1209,7 +1206,7 @@ class TestParsePenaltyToStructured:
             assert res[1] in PENALTY_UNITS
 
     def test_currency_only_emitted_for_monetary(self):
-        from extract_sanctions import (
+        from estleg.extract_sanctions import (
             PENALTY_UNIT_MONETARY,
             _parse_penalty_to_structured,
         )
@@ -1229,7 +1226,7 @@ class TestStructuredPenaltyFieldHelpers:
     count of penalty strings that couldn't be parsed."""
 
     def test_fields_block_for_monetary(self):
-        from extract_sanctions import _structured_penalty_fields
+        from estleg.extract_sanctions import _structured_penalty_fields
 
         fields, miss = _structured_penalty_fields("15000 EUR", "max")
         assert miss == 0
@@ -1240,7 +1237,7 @@ class TestStructuredPenaltyFieldHelpers:
         assert fields["estleg:maxPenaltyCurrency"] == "EUR"
 
     def test_fields_block_for_duration_has_no_currency(self):
-        from extract_sanctions import _structured_penalty_fields
+        from estleg.extract_sanctions import _structured_penalty_fields
 
         fields, miss = _structured_penalty_fields("5 years", "max")
         assert miss == 0
@@ -1251,14 +1248,14 @@ class TestStructuredPenaltyFieldHelpers:
         assert "estleg:maxPenaltyCurrency" not in fields
 
     def test_fields_block_unparseable_returns_empty_and_one(self):
-        from extract_sanctions import _structured_penalty_fields
+        from estleg.extract_sanctions import _structured_penalty_fields
 
         fields, miss = _structured_penalty_fields("life", "max")
         assert fields == {}
         assert miss == 1
 
     def test_min_prefix_uses_min_property_names(self):
-        from extract_sanctions import _structured_penalty_fields
+        from estleg.extract_sanctions import _structured_penalty_fields
 
         fields, _miss = _structured_penalty_fields("3 years", "min")
         assert "estleg:minPenaltyAmount" in fields
@@ -1266,7 +1263,7 @@ class TestStructuredPenaltyFieldHelpers:
         assert fields["estleg:minPenaltyUnit"] == "years"
 
     def test_attach_handles_both_min_and_max(self):
-        from extract_sanctions import _attach_structured_penalties
+        from estleg.extract_sanctions import _attach_structured_penalties
 
         node = {"@id": "estleg:X"}
         miss = _attach_structured_penalties(
@@ -1283,7 +1280,7 @@ class TestStructuredPenaltyFieldHelpers:
         assert node["estleg:minPenaltyUnit"] == "years"
 
     def test_attach_skips_missing_penalty_keys(self):
-        from extract_sanctions import _attach_structured_penalties
+        from estleg.extract_sanctions import _attach_structured_penalties
 
         node = {"@id": "estleg:X"}
         miss = _attach_structured_penalties(node, {"sanction_type": "fine"})
@@ -1291,7 +1288,7 @@ class TestStructuredPenaltyFieldHelpers:
         assert node == {"@id": "estleg:X"}
 
     def test_attach_unparseable_max_only_bumps_one(self):
-        from extract_sanctions import _attach_structured_penalties
+        from estleg.extract_sanctions import _attach_structured_penalties
 
         node = {"@id": "estleg:X"}
         miss = _attach_structured_penalties(node, {"max_penalty": "life"})
@@ -1309,11 +1306,11 @@ class TestStructuredPenaltyFieldHelpers:
     def test_decimal_literal_renders_cleanly(self):
         from decimal import Decimal
 
-        from extract_sanctions import _decimal_literal
+        from estleg.extract_sanctions import _decimal_literal
 
-        assert _decimal_literal(Decimal("5")) == "5"
-        assert _decimal_literal(Decimal("15000")) == "15000"
-        assert _decimal_literal(Decimal("300")) == "300"
+        assert _decimal_literal(Decimal(5)) == "5"
+        assert _decimal_literal(Decimal(15000)) == "15000"
+        assert _decimal_literal(Decimal(300)) == "300"
         # A genuine fractional value is preserved (trailing zeros trimmed).
         assert _decimal_literal(Decimal("5.50")) == "5.5"
 
@@ -1327,8 +1324,8 @@ class TestStructuredPenaltyEndToEnd:
     def test_parseable_fine_node_has_structured_trio(
         self, tmp_path, monkeypatch
     ):
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1358,7 +1355,7 @@ class TestStructuredPenaltyEndToEnd:
         rc = mod.main()
         assert rc in (0, None)
 
-        from extract_sanctions import sanitize_id
+        from estleg.extract_sanctions import sanitize_id
         sanc_file = sanctions_dir / f"sanctions_{sanitize_id('struct_fine')}.json"
         assert sanc_file.exists()
         with open(sanc_file, "r", encoding="utf-8") as fh:
@@ -1387,8 +1384,8 @@ class TestStructuredPenaltyEndToEnd:
     def test_life_imprisonment_node_has_no_structured_fields_and_bumps_counter(
         self, tmp_path, monkeypatch
     ):
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1417,7 +1414,7 @@ class TestStructuredPenaltyEndToEnd:
         rc = mod.main()
         assert rc in (0, None)
 
-        from extract_sanctions import sanitize_id
+        from estleg.extract_sanctions import sanitize_id
         sanc_file = sanctions_dir / f"sanctions_{sanitize_id('life')}.json"
         assert sanc_file.exists()
         with open(sanc_file, "r", encoding="utf-8") as fh:
@@ -1440,8 +1437,8 @@ class TestStructuredPenaltyEndToEnd:
     def test_imprisonment_range_node_has_both_min_and_max_structured(
         self, tmp_path, monkeypatch
     ):
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1470,7 +1467,7 @@ class TestStructuredPenaltyEndToEnd:
         rc = mod.main()
         assert rc in (0, None)
 
-        from extract_sanctions import sanitize_id
+        from estleg.extract_sanctions import sanitize_id
         sanc_file = sanctions_dir / f"sanctions_{sanitize_id('range')}.json"
         with open(sanc_file, "r", encoding="utf-8") as fh:
             sdoc = json.load(fh)
@@ -1497,8 +1494,8 @@ class TestStructuredPenaltyEndToEnd:
     ):
         """The #169 ``estleg:isStatutoryDefault`` flag still lands on a
         node that also carries the #133 structured penalty fields."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1527,7 +1524,7 @@ class TestStructuredPenaltyEndToEnd:
         rc = mod.main()
         assert rc in (0, None)
 
-        from extract_sanctions import sanitize_id
+        from estleg.extract_sanctions import sanitize_id
         sanc_file = sanctions_dir / f"sanctions_{sanitize_id('pecu_struct')}.json"
         with open(sanc_file, "r", encoding="utf-8") as fh:
             sdoc = json.load(fh)
@@ -1734,7 +1731,7 @@ class TestProvisionRefStripsSectionSign:
     """
 
     def test_paragrahv_with_section_sign_not_doubled(self):
-        from extract_sanctions import _provision_ref
+        from estleg.extract_sanctions import _provision_ref
         ref = _provision_ref({
             "estleg:paragrahv": "§ 53.",
             "estleg:lawAbbreviation": "AS",
@@ -1743,7 +1740,7 @@ class TestProvisionRefStripsSectionSign:
         assert "§ §" not in ref
 
     def test_paragrahv_with_section_sign_and_extra_space(self):
-        from extract_sanctions import _provision_ref
+        from estleg.extract_sanctions import _provision_ref
         ref = _provision_ref({
             "estleg:paragrahv": "§   8.",
             "estleg:lawAbbreviation": "Reg",
@@ -1754,7 +1751,7 @@ class TestProvisionRefStripsSectionSign:
     def test_paragrahv_without_section_sign_unchanged(self):
         """A bare numeric paragrahv (no leading sign) is unaffected —
         backward-compat with the existing _provision_ref tests."""
-        from extract_sanctions import _provision_ref
+        from estleg.extract_sanctions import _provision_ref
         ref = _provision_ref({
             "estleg:paragrahv": "121",
             "estleg:lawAbbreviation": "KarS",
@@ -1766,7 +1763,7 @@ class TestProvisionRefStripsSectionSign:
         """End-to-end: the rdfs:label built from a ``"§ N"`` paragrahv
         carries a single section sign (issue #302's user-visible
         symptom: ``"Arrest, max 30 days (AS § § 53.)"``)."""
-        from extract_sanctions import _build_label, _provision_ref
+        from estleg.extract_sanctions import _build_label, _provision_ref
         ref = _provision_ref({
             "estleg:paragrahv": "§ 53.",
             "estleg:lawAbbreviation": "AS",
@@ -1792,7 +1789,7 @@ class TestKaristatakseFallbackScoped:
     """
 
     def test_citation_year_not_captured_as_imprisonment(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         # "2002" is a citation year; no plausible "kuni 2002 aastase".
         text = ("Karistatakse 2002 kohaselt rahatrahvi või "
                 "aastase vangistusega.")
@@ -1802,7 +1799,7 @@ class TestKaristatakseFallbackScoped:
         ), results
 
     def test_cross_ref_paragraph_number_not_captured(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         text = ("Karistatakse käesoleva seadustiku §-s 118 "
                 "sätestatud aastase vangistusega.")
         results = extract_imprisonment(text)
@@ -1813,7 +1810,7 @@ class TestKaristatakseFallbackScoped:
     def test_bogus_year_does_not_add_second_node(self):
         """The real value comes from the word form; the citation year
         must NOT be appended as an extra imprisonment_2 record."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         text = ("RT I 2002, 56, 350 redaktsioonis karistatakse seda "
                 "tegu, mis on 2002 aastast kehtinud, kuni "
                 "kolmeaastase vangistusega.")
@@ -1830,7 +1827,7 @@ class TestKaristatakseFallbackScoped:
         (it also requires ``kuni``), so the result is empty. This
         isolates the fallback guard from the unguarded digit max-only
         branch (which legitimately handles ``kuni N aastase``)."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         text = "Karistatakse 1995 redaktsiooni alusel aastase vangistusega."
         results = extract_imprisonment(text)
         assert not any(
@@ -1845,7 +1842,8 @@ class TestKaristatakseFallbackScoped:
         same surface form. A 4-digit ``kuni`` value reachable only via the
         greedy fallback span is dropped."""
         import re
-        from extract_sanctions import _ESTONIAN_NUMBERS  # noqa: F401
+
+        from estleg.extract_sanctions import _ESTONIAN_NUMBERS  # noqa: F401
         # Re-derive the exact guarded fallback contract: kuni-adjacent
         # digit, sentence-bounded, value <= 25.
         pat = (r"karistatakse[^.]*?\bkuni\s+(\d+)\s*[-\s]*"
@@ -1860,7 +1858,7 @@ class TestKaristatakseFallbackScoped:
     def test_legitimate_digit_kuni_still_captured(self):
         """A genuine ``karistatakse ... kuni N aastase vangistusega``
         (N <= 25) is still captured."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment(
             "Selle eest karistatakse rahatrahvi või kuni 12 "
             "aastase vangistusega."
@@ -1882,17 +1880,17 @@ class TestImprisonmentSplitAndHyphenatedNumerals:
     """
 
     def test_split_teen_numeral_max(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kuni kaheksateist aastase vangistusega")
         assert any(r.get("max_penalty") == "18 years" for r in results), results
 
     def test_split_round_numeral_max(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kuni kümne aastase vangistusega")
         assert any(r.get("max_penalty") == "10 years" for r in results), results
 
     def test_hyphenated_numeral_range(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kahe- kuni kaheksa-aastase vangistusega")
         assert any(
             r.get("min_penalty") == "2 years"
@@ -1903,12 +1901,12 @@ class TestImprisonmentSplitAndHyphenatedNumerals:
     def test_compound_numeral_still_matches(self):
         """Regression: the original compound form (no space/hyphen)
         must keep matching."""
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kuni viieaastase vangistusega")
         assert any(r.get("max_penalty") == "5 years" for r in results), results
 
     def test_compound_range_still_matches(self):
-        from extract_sanctions import extract_imprisonment
+        from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment("kahe kuni viieaastase vangistusega")
         assert any(
             r.get("min_penalty") == "2 years"
@@ -1929,19 +1927,19 @@ class TestFineEurosBroadened:
     """
 
     def test_genitive_rahatrahvi_kuni(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
         results = extract_fine_euros("rahatrahvi kuni 32 000 eurot")
         assert any(r.get("max_penalty") == "32000 EUR" for r in results), results
 
     def test_suuruses_kuni_with_intervening_words(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
         results = extract_fine_euros(
             "Rahatrahv määratakse suuruses kuni 5000 eurot"
         )
         assert any(r.get("max_penalty") == "5000 EUR" for r in results), results
 
     def test_dash_range_min_and_max(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
         results = extract_fine_euros("rahatrahv 64–16 000 eurot")
         assert any(
             r.get("min_penalty") == "64 EUR"
@@ -1952,19 +1950,19 @@ class TestFineEurosBroadened:
     def test_dash_range_does_not_also_emit_single_value(self):
         """The dash branch must not additionally emit a lone-number
         record for the same phrase."""
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
         results = extract_fine_euros("rahatrahv 64–16 000 eurot")
         assert len(results) == 1, results
 
     def test_plain_rahatrahviga_still_matches(self):
         """Regression: the original ``rahatrahv(iga) N eurot`` form must
         keep matching (the broadened ``\\w{0,3}`` covers ``-iga``)."""
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
         results = extract_fine_euros("rahatrahviga 800 eurot")
         assert any(r.get("max_penalty") == "800 EUR" for r in results), results
 
     def test_kuni_max_still_matches(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
         results = extract_fine_euros("rahatrahv kuni 1200 eurot")
         assert any(r.get("max_penalty") == "1200 EUR" for r in results), results
 
@@ -1975,11 +1973,11 @@ class TestMojutustrahvExtractor:
     """
 
     def test_mojutustrahv_in_all_extractors(self):
-        from extract_sanctions import ALL_EXTRACTORS, extract_mojutustrahv
+        from estleg.extract_sanctions import ALL_EXTRACTORS, extract_mojutustrahv
         assert extract_mojutustrahv in ALL_EXTRACTORS
 
     def test_mojutustrahv_with_amount(self):
-        from extract_sanctions import extract_mojutustrahv
+        from estleg.extract_sanctions import extract_mojutustrahv
         results = extract_mojutustrahv("mõjutustrahv suurusega 40 eurot")
         assert any(
             r.get("sanction_type") == "fine"
@@ -1988,12 +1986,12 @@ class TestMojutustrahvExtractor:
         ), results
 
     def test_mojutustrahv_kuni_amount(self):
-        from extract_sanctions import extract_mojutustrahv
+        from estleg.extract_sanctions import extract_mojutustrahv
         results = extract_mojutustrahv("mõjutustrahv kuni 1200 eurot")
         assert any(r.get("max_penalty") == "1200 EUR" for r in results), results
 
     def test_mojutustrahv_bare_mention(self):
-        from extract_sanctions import extract_mojutustrahv
+        from estleg.extract_sanctions import extract_mojutustrahv
         results = extract_mojutustrahv("kohaldatakse mõjutustrahvi")
         assert results
         assert results[0].get("sanction_type") == "fine"
@@ -2002,7 +2000,7 @@ class TestMojutustrahvExtractor:
     def test_mojutustrahv_via_extract_sanctions_pipeline(self):
         """``extract_sanctions`` (the full dispatcher) emits the
         mõjutustrahv fine record."""
-        from extract_sanctions import extract_sanctions
+        from estleg.extract_sanctions import extract_sanctions
         results = extract_sanctions("mõjutustrahv suurusega 40 eurot")
         assert any(
             r.get("sanction_type") == "fine"
@@ -2024,7 +2022,7 @@ class TestCoerciveBoilerplate:
     """
 
     def test_asendustaitmise_boilerplate_captures_amount(self):
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
         text = ("sunniraha asendustäitmise ja sunniraha seaduses "
                 "sätestatud korras kuni 15 000 eurot")
         results = extract_coercive(text)
@@ -2035,7 +2033,7 @@ class TestCoerciveBoilerplate:
         ), results
 
     def test_gdpr_ceiling_20m_captured(self):
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
         text = ("kohaldada sunniraha asendustäitmise ja sunniraha "
                 "seaduses sätestatud korras kuni 20 000 000 eurot")
         results = extract_coercive(text)
@@ -2044,14 +2042,14 @@ class TestCoerciveBoilerplate:
     def test_tight_form_still_matches(self):
         """Regression: the original tight ``sunniraha kuni N eurot``
         form must keep matching."""
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
         results = extract_coercive("sunniraha kuni 6400 eurot")
         assert any(r.get("max_penalty") == "6400 EUR" for r in results), results
 
     def test_bare_mention_without_amount_unchanged(self):
         """A sunniraha mention with no euro amount still yields a bare
         coercive_payment record (no max_penalty)."""
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
         results = extract_coercive("Kohus võib määrata sunniraha.")
         assert results
         assert results[0].get("sanction_type") == "coercive_payment"
@@ -2061,7 +2059,7 @@ class TestCoerciveBoilerplate:
         """The 150-char window stays within the sentence — a sunniraha
         in one sentence does not bind to a ``kuni N eurot`` in the
         next."""
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
         text = ("Kohus määrab sunniraha. Eraldi sätestatakse kuni "
                 "9999 eurot muudel alustel.")
         results = extract_coercive(text)
@@ -2083,7 +2081,7 @@ class TestArrestConditionClauseNotImposed:
     """
 
     def test_kohaldatud_aresti_condition_no_arrest(self):
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         # KarS §331¹ shape: aresti is the object of "kohaldatud".
         text = ("Kui isiku suhtes on selle eest täitemenetluses "
                 "kohaldatud aresti, – karistatakse rahalise karistuse "
@@ -2092,13 +2090,13 @@ class TestArrestConditionClauseNotImposed:
         assert results == [], results
 
     def test_rakendatud_aresti_condition_no_arrest(self):
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         text = ("Kui on rakendatud aresti, karistatakse "
                 "vangistusega.")
         assert extract_arrest(text) == []
 
     def test_maaratud_aresti_condition_no_arrest(self):
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         text = ("Kui on määratud aresti, kohaldatakse "
                 "rahatrahvi.")
         assert extract_arrest(text) == []
@@ -2106,7 +2104,7 @@ class TestArrestConditionClauseNotImposed:
     def test_genuine_imposed_arrest_still_fires(self):
         """A real ``karistatakse ... arestiga`` (no condition verb
         before the token) still yields the 30-day statutory default."""
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         results = extract_arrest(
             "Selle eest karistatakse rahatrahviga või arestiga."
         )
@@ -2119,14 +2117,14 @@ class TestArrestConditionClauseNotImposed:
     def test_explicit_day_count_unaffected_by_condition_gate(self):
         """An explicit day count is read by the earlier branch and is
         never gated by the condition-clause check."""
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         results = extract_arrest("Karistatakse aresti kuni 15 päeva.")
         assert any(r.get("max_penalty") == "15 days" for r in results)
 
     def test_condition_verb_far_away_does_not_suppress(self):
         """A past-passive verb more than ~10 tokens before the arrest
         token does not suppress a genuine imposed arrest."""
-        from extract_sanctions import extract_arrest
+        from estleg.extract_sanctions import extract_arrest
         text = ("Kui kohtu poolt on kohaldatud rahatrahvi ja samuti "
                 "mitmeid muid haldusmeetmeid ning lisaks veel teisi "
                 "menetlustoiminguid erinevatel alustel, siis "
@@ -2145,13 +2143,14 @@ class TestSeverityIndexMonetaryExposure:
 
     def test_monetary_amount_helper_reads_monetary_unit_only(self):
         from decimal import Decimal
-        from extract_sanctions import _monetary_amount_eur
+
+        from estleg.extract_sanctions import _monetary_amount_eur
         monetary = {
             "estleg:maxPenaltyUnit": "monetary",
             "estleg:maxPenaltyAmount": {"@value": "20000000",
                                         "@type": "xsd:decimal"},
         }
-        assert _monetary_amount_eur(monetary) == Decimal("20000000")
+        assert _monetary_amount_eur(monetary) == Decimal(20000000)
         # Non-monetary units return None.
         years = {
             "estleg:maxPenaltyUnit": "years",
@@ -2165,11 +2164,12 @@ class TestSeverityIndexMonetaryExposure:
 
     def test_monetary_score_monotonic_and_bounded(self):
         from decimal import Decimal
-        from extract_sanctions import _monetary_score
+
+        from estleg.extract_sanctions import _monetary_score
         assert _monetary_score(None) == 0.0
-        s64 = _monetary_score(Decimal("64"))
-        s_mid = _monetary_score(Decimal("32000"))
-        s_max = _monetary_score(Decimal("20000000"))
+        s64 = _monetary_score(Decimal(64))
+        s_mid = _monetary_score(Decimal(32000))
+        s_max = _monetary_score(Decimal(20000000))
         assert 0.0 < s64 < s_mid < s_max
         assert s_max == 1.0
         assert 0.0 <= s64 <= 1.0
@@ -2180,8 +2180,8 @@ class TestSeverityIndexMonetaryExposure:
         """End-to-end: a law with a large euro fine gets a populated
         ``max_monetary_eur``/``monetary_score`` in the report's
         severity_index; the type ordinal is still exposed."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -2231,8 +2231,8 @@ class TestSeverityIndexMonetaryExposure:
         """A law whose only sanction is imprisonment exposes
         ``max_monetary_eur == None`` and ``monetary_score == 0.0`` —
         the field is additive and does not perturb the type ordering."""
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -2284,16 +2284,16 @@ class TestAtomicSaveJson:
     """
 
     def test_save_json_is_estleg_common_atomic(self):
-        import extract_sanctions as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_sanctions as mod
         # The module-level name now resolves to the shared atomic impl.
         assert mod.save_json is estleg_common.save_json
-        assert mod.save_json.__module__ == "estleg_common"
+        assert mod.save_json.__module__ == "estleg.estleg_common"
 
     def test_save_json_writes_via_atomic_replace(self, tmp_path):
         """A successful write produces the expected JSON with a trailing
         newline and leaves no ``.tmp`` droppings."""
-        import extract_sanctions as mod
+        from estleg import extract_sanctions as mod
         out = tmp_path / "doc.json"
         mod.save_json(out, {"@graph": [{"@id": "estleg:X"}]})
         text = out.read_text(encoding="utf-8")
@@ -2306,7 +2306,7 @@ class TestAtomicSaveJson:
         """If serialization fails mid-write, no partial/zero-byte file
         is left at the target path (the atomic contract). A set is not
         JSON-serialisable, so json.dump raises."""
-        import extract_sanctions as mod
+        from estleg import extract_sanctions as mod
         out = tmp_path / "doc.json"
         with pytest.raises(TypeError):
             mod.save_json(out, {"bad": {1, 2, 3}})
@@ -2319,7 +2319,7 @@ class TestAtomicSaveJson:
         """The existing test pattern ``monkeypatch.setattr(mod,
         'save_json', ...)`` must still intercept calls (the gate-fail
         coverage test relies on this)."""
-        import extract_sanctions as mod
+        from estleg import extract_sanctions as mod
         calls = []
         monkeypatch.setattr(mod, "save_json", lambda fp, doc: calls.append(fp))
         mod.save_json(Path("/nonexistent/x.json"), {"a": 1})
@@ -2332,20 +2332,20 @@ class TestIssue602AmountRobustness:
     sunniraha capture must not be inflated 100x by stripping the comma."""
 
     def test_clean_euro_amount_rejects_newline_span(self):
-        from extract_sanctions import _clean_euro_amount
+        from estleg.extract_sanctions import _clean_euro_amount
 
         assert _clean_euro_amount("500\n2024") is None
         assert _clean_euro_amount("500\t2024") is None
 
     def test_clean_euro_amount_strips_space_and_nbsp(self):
-        from extract_sanctions import _clean_euro_amount
+        from estleg.extract_sanctions import _clean_euro_amount
 
         assert _clean_euro_amount("16 000") == "16000"
         assert _clean_euro_amount("16 000") == "16000"
         assert _clean_euro_amount("32") == "32"
 
     def test_kuni_fine_does_not_store_newline_spanning_amount(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
 
         # The window bridges a line break; the result must not be a junk
         # "500\n2024 EUR" record. (No valid same-line amount → no fine.)
@@ -2354,13 +2354,13 @@ class TestIssue602AmountRobustness:
         assert all("\t" not in r.get("max_penalty", "") for r in out)
 
     def test_bare_fine_does_not_store_newline_spanning_amount(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
 
         out = extract_fine_euros("rahatrahv 500\n2024 eurot")
         assert all("\n" not in r.get("max_penalty", "") for r in out)
 
     def test_valid_fine_amounts_still_extracted(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
 
         assert extract_fine_euros("rahatrahvi kuni 1200 eurot") == [
             {"sanction_type": "fine", "max_penalty": "1200 EUR"}
@@ -2370,14 +2370,14 @@ class TestIssue602AmountRobustness:
         ]
 
     def test_dash_range_still_extracted(self):
-        from extract_sanctions import extract_fine_euros
+        from estleg.extract_sanctions import extract_fine_euros
 
         out = extract_fine_euros("rahatrahv 64–16 000 eurot")
         assert {"sanction_type": "fine", "max_penalty": "16000 EUR",
                 "min_penalty": "64 EUR"} in out
 
     def test_sunniraha_comma_decimal_is_rejected_not_inflated(self):
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
 
         out = extract_coercive("sunniraha kuni 1 000,50 eurot")
         # The pre-fix bug stored "100050 EUR" (comma stripped → 100x). The
@@ -2387,21 +2387,21 @@ class TestIssue602AmountRobustness:
         assert amounts == []
 
     def test_sunniraha_integral_comma_decimal_kept_as_integer(self):
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
 
         out = extract_coercive("sunniraha kuni 1 000,00 eurot")
         assert {"sanction_type": "coercive_payment",
                 "max_penalty": "1000 EUR"} in out
 
     def test_sunniraha_plain_thousands_still_extracted(self):
-        from extract_sanctions import extract_coercive
+        from estleg.extract_sanctions import extract_coercive
 
         out = extract_coercive("sunniraha kuni 20 000 000 eurot")
         assert {"sanction_type": "coercive_payment",
                 "max_penalty": "20000000 EUR"} in out
 
     def test_clean_decimal_helper(self):
-        from extract_sanctions import _clean_decimal_euro_amount
+        from estleg.extract_sanctions import _clean_decimal_euro_amount
 
         assert _clean_decimal_euro_amount("1000,50") is None
         assert _clean_decimal_euro_amount("1000,00") == "1000"

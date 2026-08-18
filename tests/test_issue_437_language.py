@@ -8,12 +8,9 @@ when an English gloss exists). Law peeps stay plain ``xsd:string``.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common  # noqa: E402
+from estleg import estleg_common
 
 REPO = Path(__file__).resolve().parent.parent
 SCHEMA = REPO / "docs" / "SCHEMA_REFERENCE.md"

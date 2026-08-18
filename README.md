@@ -54,8 +54,10 @@ from estleg_client import load_law
 g = load_law("abipolitseiniku_seadus")  # or "ABIPOL"
 ```
 
-`pip install -e .` also installs the `estleg-load` console script
-(`estleg-load abipolitseiniku_seadus` prints triple and provision counts).
+`pip install -e .` also installs console scripts: `estleg-load`
+(`estleg-load abipolitseiniku_seadus` prints triple and provision counts),
+`estleg-generate-laws`, `estleg-run-pipeline`, and `estleg-validate`.
+Producer modules live in `src/estleg/`; `scripts/` keeps one-release shims.
 
 ### Load surfaces
 
@@ -727,11 +729,16 @@ See [docs/SCHEMA_REFERENCE.md](docs/SCHEMA_REFERENCE.md) for full schema documen
 python3 -m pip install -e ".[dev]"
 ```
 
+That install puts `src/estleg/` on the package path and exposes
+`estleg-generate-laws`, `estleg-run-pipeline`, and `estleg-validate`.
+`python3 scripts/<name>.py` remains a shim onto the same modules.
+
 ## Validation
 
 ```bash
 python3 -m pytest -q
-python3 scripts/validate_all.py
+estleg-validate
+# or: python3 scripts/validate_all.py
 ```
 
 CI runs tests and validation for changes to scripts, tests, SHACL, metadata,

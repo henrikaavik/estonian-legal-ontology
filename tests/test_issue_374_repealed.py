@@ -10,8 +10,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import generate_regulations
-from generate_regulations import (
+from estleg import generate_regulations
+from estleg.generate_regulations import (
     count_repealed_with_provision_legal_text,
     strip_repealed_provision_bodies,
 )

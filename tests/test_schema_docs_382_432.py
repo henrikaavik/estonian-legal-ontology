@@ -24,7 +24,7 @@ def test_schema_reference_instance_labels_are_plain_estonian() -> None:
     assert not re.search(
         r"language-tagged\s+(Estonian/?English|et/?en)",
         window,
-        re.I,
+        re.IGNORECASE,
     ), "instance rdfs:label must not be documented as language-tagged et/en"
 
 
@@ -34,5 +34,5 @@ def test_schema_reference_documents_kehtiv_as_snapshot_date() -> None:
     idx = text.find("estleg:kehtiv")
     assert idx != -1, "SCHEMA_REFERENCE.md must document estleg:kehtiv"
     window = text[idx : idx + 500]
-    assert re.search(r"snapshot|consolidation", window, re.I), window
+    assert re.search(r"snapshot|consolidation", window, re.IGNORECASE), window
     assert "#432" in window

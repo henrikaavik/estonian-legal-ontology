@@ -7,13 +7,9 @@ synthetic nodes so no krr_outputs artifact is required) plus the companion
 from __future__ import annotations
 
 import copy
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import KNOWN_ABBREVIATIONS
-from fix_data_quality_588 import (
+from estleg.estleg_common import KNOWN_ABBREVIATIONS
+from estleg.fix_data_quality_588 import (
     CURIA_NODE_ID,
     fix_curia_doc,
     fix_ep_doc,

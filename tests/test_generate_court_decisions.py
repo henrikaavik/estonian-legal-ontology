@@ -31,16 +31,12 @@ from __future__ import annotations
 
 import json
 import logging
-import sys
 import urllib.parse
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_court_decisions as gcd
-
+from estleg import generate_court_decisions as gcd
 
 # ---------------------------------------------------------------------------
 # classify_case
@@ -957,7 +953,7 @@ def _stub_fetch_ok(monkeypatch: pytest.MonkeyPatch) -> list[str]:
     """Make ``fetch_decision_text`` return deterministic text; track calls."""
     seen: list[str] = []
 
-    def _fake(case_nr, *, use_cache=True, session_fetched=None):  # noqa: ARG001
+    def _fake(case_nr, *, use_cache=True, session_fetched=None):
         if session_fetched is not None:
             session_fetched[:] = [True]
         seen.append(case_nr)
@@ -1031,10 +1027,9 @@ class TestEnrichFullText:
     def test_failed_fetch_does_not_add_property(
         self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        def _fake(case_nr, *, use_cache=True, session_fetched=None):  # noqa: ARG001
+        def _fake(case_nr, *, use_cache=True, session_fetched=None):
             if session_fetched is not None:
                 session_fetched[:] = [True]
-            return None  # simulate a non-decision / transient-failure response
 
         monkeypatch.setattr(gcd, "fetch_decision_text", _fake)
         stats = gcd.enrich_full_text(limit=2)
@@ -1051,7 +1046,7 @@ class TestEnrichFullText:
         called: list[bool] = []
         monkeypatch.setattr(
             gcd, "enrich_full_text",
-            lambda *a, **k: called.append(True) or {},  # noqa: ARG005
+            lambda *a, **k: called.append(True) or {},
         )
         # Stub out the heavy scrape path so plain main() returns fast.
         monkeypatch.setattr(gcd, "fetch_year", lambda *_a, **_k: [])

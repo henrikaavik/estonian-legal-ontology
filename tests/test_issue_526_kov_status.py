@@ -2,16 +2,13 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from enrich_kov_layer1 import (
+from estleg.enrich_kov_layer1 import (
     issuer_status_map,
     stamp_kov_act_municipality_status,
 )
-from kov_registry import municipality_status
+from estleg.kov_registry import municipality_status
 
 
 def test_municipality_status_rules():
@@ -68,7 +65,7 @@ def test_committed_kov_act_inherits_issuer_status():
         / "hallatava_asutuse_kaina_spordikeskus_moodustamine_t1013354_peep.json"
     )
     doc = json.loads(path.read_text(encoding="utf-8"))
-    from generate_similarity_index import find_kov_act_node
+    from estleg.generate_similarity_index import find_kov_act_node
 
     act = find_kov_act_node(doc)
     assert act is not None

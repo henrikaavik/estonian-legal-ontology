@@ -2,10 +2,7 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 REPO = Path(__file__).resolve().parent.parent
 LRML = "http://docs.oasis-open.org/legalruleml/ns/v1.0/#"
@@ -39,7 +36,7 @@ def test_normtype_individuals_map_to_legalruleml() -> None:
 
 
 def test_update_law_file_emits_eli_is_about(tmp_path: Path) -> None:
-    from classify_eurovoc import update_law_file_eurovoc
+    from estleg.classify_eurovoc import update_law_file_eurovoc
 
     peep = tmp_path / "law_peep.json"
     peep.write_text(

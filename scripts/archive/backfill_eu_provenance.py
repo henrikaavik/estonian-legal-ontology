@@ -44,8 +44,8 @@ import argparse
 import json
 from pathlib import Path
 
-from estleg_common import REPO_ROOT, save_json
-from generate_eu_legislation import eli_natural_id
+from estleg.estleg_common import REPO_ROOT, save_json
+from estleg.generate_eu_legislation import eli_natural_id
 
 EU_CELEX_RESOURCE = "http://publications.europa.eu/resource/celex/{celex}"
 ELI_PREFIX_IRI = "http://data.europa.eu/eli/ontology#"

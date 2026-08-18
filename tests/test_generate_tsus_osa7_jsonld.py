@@ -17,13 +17,9 @@ Teataja-style XML rather than the network, exercising
 
 from __future__ import annotations
 
-import sys
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_tsus_osa7_jsonld as gt
+from estleg import generate_tsus_osa7_jsonld as gt
 
 NS = gt.NS
 

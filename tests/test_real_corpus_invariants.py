@@ -381,7 +381,7 @@ def test_combined_graph_is_closed():
     """The shipped ``combined_ontology.jsonld`` loads standalone with zero
     dangling ``estleg:`` object refs — the real-data check the suite has
     only ever run against synthetic one-node fixtures."""
-    import validate_all
+    from estleg import validate_all
 
     combined = KRR / "combined_ontology.jsonld"
     if not combined.exists() or validate_all._is_lfs_pointer(combined):

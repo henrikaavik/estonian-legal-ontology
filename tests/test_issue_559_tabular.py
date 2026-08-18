@@ -10,12 +10,12 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-import serialize_tabular as st
+from estleg import serialize_tabular as st
 
 REPO = Path(__file__).resolve().parent.parent
 README = REPO / "README.md"
 EXPORTS = REPO / "krr_outputs" / "exports"
-SCRIPT = REPO / "scripts" / "serialize_tabular.py"
+SCRIPT = REPO / "src" / "estleg" / "serialize_tabular.py"
 
 FIXTURE_GRAPH = {
     "@context": {

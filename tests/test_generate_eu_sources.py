@@ -1,18 +1,15 @@
 from __future__ import annotations
 
 import json
-import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import eurlex_common
-import generate_eu_court_decisions as curia
-import generate_eu_legislation as eurlex
-import generate_harmonisation_links as harmonisation
+from estleg import eurlex_common
+from estleg import generate_eu_court_decisions as curia
+from estleg import generate_eu_legislation as eurlex
+from estleg import generate_harmonisation_links as harmonisation
 
 
 def test_eurlex_pagination_query_is_ordered(monkeypatch):

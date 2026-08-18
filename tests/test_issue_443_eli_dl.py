@@ -8,13 +8,14 @@ subclassed. Shared estleg_common.CONTEXT must not grow an unused eli-dl prefix.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from estleg_common import CONTEXT
-from generate_draft_legislation import ELI_DL_NS, ELI_DL_SCHEMA_CONTEXT, generate_schema_nodes
+from estleg.estleg_common import CONTEXT
+from estleg.generate_draft_legislation import (
+    ELI_DL_NS,
+    ELI_DL_SCHEMA_CONTEXT,
+    generate_schema_nodes,
+)
 
 REPO = Path(__file__).resolve().parent.parent
 VOCAB = REPO / "krr_outputs" / "controlled_vocabulary.jsonld"

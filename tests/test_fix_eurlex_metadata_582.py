@@ -11,12 +11,9 @@ dry-run-default / ``--apply`` file behaviour.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import fix_eurlex_metadata_582 as fix
+from estleg import fix_eurlex_metadata_582 as fix
 
 COMMISSION = fix.COMMISSION_IRI
 COUNCIL = fix.COUNCIL_IRI

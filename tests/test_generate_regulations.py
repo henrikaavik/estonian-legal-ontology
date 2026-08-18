@@ -23,10 +23,8 @@ from pathlib import Path
 
 import pytest
 
-import estleg_common
-import generate_regulations
-import riigiteataja_common
-from generate_regulations import (
+from estleg import estleg_common, generate_regulations, riigiteataja_common
+from estleg.generate_regulations import (
     REPEALED_BODY_TOMBSTONE,
     _gid_rank,
     _repealed_as_of,
@@ -45,14 +43,13 @@ from generate_regulations import (
     update_index_repealed_counts,
     write_regulation_output,
 )
-from riigiteataja_common import (
+from estleg.riigiteataja_common import (
     SourceListFetchError,
     fetch_acts,
     iter_peep_files,
     new_page_stats,
     parse_act_metadata,
 )
-
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "regulations"
 
@@ -1342,7 +1339,7 @@ class TestGatherRegulationsLimit:
     """
 
     def test_limit_caps_page_size(self, monkeypatch):
-        import generate_regulations as mod
+        from estleg import generate_regulations as mod
 
         captured: dict = {}
 
@@ -1369,7 +1366,7 @@ class TestGatherRegulationsLimit:
         assert len(regs) == 3
 
     def test_no_limit_uses_full_page_size(self, monkeypatch):
-        import generate_regulations as mod
+        from estleg import generate_regulations as mod
 
         captured: dict = {}
 
@@ -1421,7 +1418,7 @@ class TestMissingPartsCli:
         </akt>"""
 
     def test_smoke_no_paragraph_id_collisions_across_parts(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1457,7 +1454,7 @@ class TestMissingPartsCli:
         )
 
     def test_class_iri_does_not_carry_osa7_typo(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1486,7 +1483,7 @@ class TestMissingPartsCli:
                 ), c
 
     def test_paragraph_iri_namespaced_per_part(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1514,7 +1511,7 @@ class TestMissingPartsCli:
             assert f"_Osa{osa_nr}_" in iri, (osa_nr, iri)
 
     def test_vos_part_emits_subsections_and_full_legal_text(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1544,7 +1541,7 @@ class TestMissingPartsCli:
         }
 
     def test_vos_part_without_loige_has_legal_text_but_no_subsection(self):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         root = ET.fromstring(
             """<akt><osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
@@ -1571,7 +1568,7 @@ class TestMissingPartsCli:
         )
 
     def test_vos_part_subsection_ids_preserve_superscripts(self):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         root = ET.fromstring(
             """<akt><osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
@@ -1601,7 +1598,7 @@ class TestMissingPartsCli:
         ]
 
     def test_main_returns_int_exit_code(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         # Failure path — a non-existent XML — must return non-zero.
         rc = mod.main([
@@ -1612,7 +1609,7 @@ class TestMissingPartsCli:
         assert rc == 1
 
     def test_select_law_match_picks_max_globalid(self):
-        from generate_missing_parts import _select_law_match
+        from estleg.generate_missing_parts import _select_law_match
 
         rows = [
             {"pealkiri": "Võlaõigusseadus", "globaalID": "12345"},
@@ -1625,7 +1622,7 @@ class TestMissingPartsCli:
         assert match["globaalID"] == "20000"
 
     def test_select_law_match_prefers_exact_over_substring(self):
-        from generate_missing_parts import _select_law_match
+        from estleg.generate_missing_parts import _select_law_match
 
         rows = [
             {"pealkiri": "Võlaõigusseaduse muutmise seadus", "globaalID": "9999"},
@@ -1639,7 +1636,7 @@ class TestMissingPartsCli:
         assert match["pealkiri"] == "Võlaõigusseadus"
 
     def test_argparse_vos_osa_repeatable(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")

@@ -1,12 +1,7 @@
 """#448 — content-derived collision suffixes replace _DupN."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from generate_all_laws import (
+from estleg.generate_all_laws import (
     content_derived_dup_suffix,
     remint_dupn_id,
     remint_dupn_ids,
@@ -51,7 +46,7 @@ def test_remint_dupn_ids_rewrites_graph_and_refs():
 
 
 def test_committed_law_peeps_have_no_dupn_iris():
-    from validate_all import count_dupn_iris, root_law_peep_files
+    from estleg.validate_all import count_dupn_iris, root_law_peep_files
 
     count = count_dupn_iris(root_law_peep_files())
     assert count == 0, f"still {count} _DupN IRIs on root law peeps"

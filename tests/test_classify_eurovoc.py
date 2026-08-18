@@ -1,13 +1,8 @@
 """Discovery and output-path tests for classify_eurovoc."""
 from __future__ import annotations
 
-from pathlib import Path
 import json
-import sys
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-
+from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE = (Path(__file__).parent / "fixtures" / "kov_layer2a"
@@ -17,7 +12,7 @@ FIXTURE = (Path(__file__).parent / "fixtures" / "kov_layer2a"
 def _read_act_metadata(path: Path):
     """The helper under test: pull title/source from a peep file's
     act-typed node without consulting INDEX.json."""
-    from classify_eurovoc import read_act_metadata_from_peep
+    from estleg.classify_eurovoc import read_act_metadata_from_peep
     return read_act_metadata_from_peep(path)
 
 
@@ -64,7 +59,7 @@ class TestReadActMetadataFromPeep:
         assert _read_act_metadata(registry) is None
 
     def test_raises_parse_error_for_malformed_json(self, tmp_path):
-        from classify_eurovoc import PeepMetadataParseError
+        from estleg.classify_eurovoc import PeepMetadataParseError
 
         bad = tmp_path / "bad_peep.json"
         bad.write_text("{not json", encoding="utf-8")
@@ -78,7 +73,7 @@ class TestReadActMetadataFromPeep:
 
 
 def test_extract_text_normalizes_to_nfc_casefold():
-    from classify_eurovoc import extract_text_from_law
+    from estleg.classify_eurovoc import extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{"estleg:summary": "ÕIGUS TÖÖ"}]})
 
@@ -90,7 +85,7 @@ def test_classify_text_normalises_regex_pattern(monkeypatch):
     casefold normalised before being matched, so that authors can write
     them with uppercase letters and decomposed diacritics and still get
     a match against the (already normalised) corpus."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     # ``r:`` pattern with decomposed diacritic (O + COMBINING TILDE) and
     # uppercase letters. After NFC + casefold normalisation in
@@ -126,7 +121,7 @@ def test_classify_text_normalises_regex_pattern(monkeypatch):
 # ---------------------------------------------------------------------------
 
 def test_extract_text_unwraps_value_object_fields():
-    from classify_eurovoc import extract_text_from_law
+    from estleg.classify_eurovoc import extract_text_from_law
 
     plain = extract_text_from_law({"@graph": [{
         "rdfs:label": "Toolepingu seadus",
@@ -151,7 +146,7 @@ def test_extract_text_unwraps_value_object_fields():
 
 
 def test_read_act_metadata_unwraps_value_object_label(tmp_path):
-    from classify_eurovoc import read_act_metadata_from_peep
+    from estleg.classify_eurovoc import read_act_metadata_from_peep
 
     peep = tmp_path / "act_peep.json"
     peep.write_text(json.dumps({
@@ -177,7 +172,7 @@ def test_read_act_metadata_unwraps_value_object_label(tmp_path):
 def test_risky_domain_single_short_stem_hit_gets_no_subject():
     """One occurrence of a short stem in a risky domain (health care, 'arst')
     must NOT assign that domain — the distinct-keyword gate (>=2) blocks it."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law(
         {"@graph": [{"estleg:summary": "Asutuse juures tootab arst."}]}
@@ -190,7 +185,7 @@ def test_risky_domain_single_short_stem_hit_gets_no_subject():
 
 def test_risky_domain_two_distinct_hits_gets_subject():
     """Two distinct keyword hits in the same risky domain clear the gate."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": "Arst suunab patsiendi haiglasse ravimite saamiseks.",
@@ -210,7 +205,7 @@ def test_risky_domain_two_distinct_hits_gets_subject():
 def test_distinctive_domain_single_hit_still_assigned():
     """A domain made of long/distinctive keywords keeps the >=1 default —
     one hit on 'autoriõigus' assigns intellectual-property (2817)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law(
         {"@graph": [{"estleg:summary": "Teos on kaitstud autoriõigusega."}]}
@@ -224,7 +219,7 @@ def test_distinctive_domain_single_hit_still_assigned():
 def test_advertising_single_keyword_domain_stays_at_one():
     """Advertising (2862) has a single keyword ('reklaam') — it must stay at
     the >=1 default, otherwise it could never be assigned."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     assert classify_eurovoc.MIN_DISTINCT_KEYWORDS_OVERRIDES.get("2862", 1) == 1
     text = classify_eurovoc.extract_text_from_law(
@@ -244,7 +239,7 @@ def test_nouetele_substring_does_not_assign_civil_law():
     """'nõue' (civil-law 523) matches as a substring inside 'nõuetele'/
     'nõuetekohastele' ("requirements"). A technical-requirements act that
     mentions no other civil-law term must NOT be tagged civil-law (#275)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": "Toode peab vastama nõuetekohastele nõuetele.",
@@ -258,7 +253,7 @@ def test_nouetele_substring_does_not_assign_civil_law():
 def test_kunstlik_substring_does_not_assign_culture():
     """'kunst' (culture 317) matches inside 'kunstlik' ("artificial"). A lone
     such substring hit must not assign culture (#275)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law(
         {"@graph": [{"estleg:summary": "Kunstlik valgustus peab olema piisav."}]}
@@ -272,7 +267,7 @@ def test_kunstlik_substring_does_not_assign_culture():
 def test_civil_law_assigned_with_two_distinct_keywords():
     """With a genuine civil-law context ('leping' + 'kahju') the domain still
     clears the bumped distinct-keyword gate (#275)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": "Lepingu rikkumisega tekitatud kahju tuleb hüvitada.",
@@ -289,7 +284,7 @@ def test_new_short_stem_overrides_require_two_distinct_keywords():
     Keys are the post-#421 verified descriptor ids (civil law 523, culture
     317, customs 502, environmental protection 2825, maritime transport 4522,
     construction policy 2475, social security 4050)."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     for code in ("523", "317", "502", "2825", "4522", "2475", "4050"):
         assert classify_eurovoc.MIN_DISTINCT_KEYWORDS_OVERRIDES[code] == 2
@@ -301,7 +296,7 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
     """The --emit-sample flag produces a well-formed JSON sample of
     (act, assigned_subjects, matched_keywords) tuples and the report
     advertises the precision gates."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     # Re-point the module's KRR_DIR at an isolated tmp tree containing a
     # single classifiable act, so main() does not touch the real corpus.
@@ -397,7 +392,7 @@ def _write_act_peep(path: Path, *, act_id: str, title: str, summary: str) -> Pat
 
 def test_unclassified_files_are_processed_not_skipped(tmp_path, monkeypatch):
     """#394 item 2: unclassified acts count as processed, not skipped."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -479,7 +474,7 @@ def test_protokoll_substring_does_not_assign_international_affairs():
     """A domestic procedural act whose only international-affairs signal is
     'protokoll' inside 'protokollitakse' ("is recorded in minutes") must NOT
     be tagged 3474 (#331)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": "Menetlustoiming protokollitakse ja allkirjastatakse.",
@@ -495,7 +490,7 @@ def test_lone_rahvusvaheli_does_not_assign_international_affairs():
     """A purely domestic law that mentions an international standard once
     ('rahvusvaheline') but carries no second international-affairs keyword
     must NOT be tagged 3474 (#360)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": (
@@ -512,7 +507,7 @@ def test_lone_rahvusvaheli_does_not_assign_international_affairs():
 def test_international_affairs_assigned_with_two_distinct_keywords():
     """A genuine international-affairs act ('rahvusvaheline' + 'konventsioon')
     still clears the raised >=2 distinct-keyword gate (#331/#360)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": (
@@ -537,7 +532,7 @@ def test_ratifitseerimise_is_an_international_affairs_keyword():
     """'ratifitseerimise' must be in the 3474 keyword list so ratification acts
     that mention it plus one more international-affairs term are recalled
     (#383)."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     keywords = classify_eurovoc.EUROVOC_DOMAINS["3474"][3]
     assert "ratifitseerimise" in keywords
@@ -549,7 +544,7 @@ def test_topeltmaksustamise_is_a_taxation_keyword():
     """'topeltmaksustamise' must be in the 1021 (tax system) keyword list
     (#383). 1021 is gated at >=2 distinct keywords; a double-taxation treaty
     co-mentions a 'maks'-family stem, so the gate stays reachable."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     keywords = classify_eurovoc.EUROVOC_DOMAINS["1021"][3]
     assert "topeltmaksustamise" in keywords
@@ -581,7 +576,7 @@ def test_lone_tarbija_does_not_assign_consumer_protection():
     """A district-heating ordinance whose only consumer-protection signal is
     'tarbija' (heat-subscriber) must NOT be tagged consumer-protection
     (#360)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": (
@@ -598,7 +593,7 @@ def test_lone_tarbija_does_not_assign_consumer_protection():
 def test_consumer_protection_assigned_with_two_distinct_keywords():
     """A genuine consumer-protection act ('tarbija' + 'garantii') still clears
     the raised >=2 distinct-keyword gate (#360)."""
-    from classify_eurovoc import classify_text, extract_text_from_law
+    from estleg.classify_eurovoc import classify_text, extract_text_from_law
 
     text = extract_text_from_law({"@graph": [{
         "estleg:summary": (
@@ -616,7 +611,7 @@ def test_international_affairs_and_consumer_protection_gates_reachable():
     """The reconciled #331/#360 change gates international-affairs (3474) and
     consumer-protection (2836) at >=2 distinct keywords, and both keyword
     lists are long enough to reach the gate."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     for code in ("3474", "2836"):
         assert classify_eurovoc.MIN_DISTINCT_KEYWORDS_OVERRIDES[code] == 2
@@ -637,7 +632,7 @@ def test_international_affairs_and_consumer_protection_gates_reachable():
 def test_eurovoc_table_matches_verified_mapping_file():
     """EUROVOC_DOMAINS keys/labels agree 1:1 with the #421 audit trail in
     data/eurovoc_domain_mapping.json (verified official prefLabels)."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     mapping_path = REPO_ROOT / "data" / "eurovoc_domain_mapping.json"
     mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
@@ -663,7 +658,7 @@ def test_eurovoc_ids_are_numeric_for_shacl():
     """All descriptor ids must be purely numeric so the minted
     http://eurovoc.europa.eu/{id} IRIs keep satisfying the SHACL pattern
     ^http://eurovoc\\.europa\\.eu/[0-9]+$ on dcterms:subject (#421)."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     for code in classify_eurovoc.EUROVOC_DOMAINS:
         assert code.isdigit(), f"non-numeric EuroVoc id {code!r}"
@@ -682,7 +677,7 @@ def test_eurovoc_descriptors_match_official_labels():
     """Spot-check (#392 lineage, re-keyed by #421): maritime transport,
     social security and fundamental rights carry the official descriptor
     ids and prefLabels."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     expected = {
         "4522": ("maritime-transport", "meretransport", "maritime transport"),
@@ -700,7 +695,7 @@ def test_eurovoc_descriptor_fix_preserves_keywords():
     """#421 remapped identifiers/labels only — the keyword lists (and
     therefore the matching behaviour) are carried over unchanged (shown here
     for the #392-lineage trio under their new ids)."""
-    import classify_eurovoc
+    from estleg import classify_eurovoc
 
     assert classify_eurovoc.EUROVOC_DOMAINS["4522"][3] == [
         "meresõit", "laev", "sadam", "merendus",

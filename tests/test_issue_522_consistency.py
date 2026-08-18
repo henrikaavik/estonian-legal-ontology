@@ -8,8 +8,8 @@ from pathlib import Path
 from rdflib import Graph, Literal, URIRef
 from rdflib.namespace import XSD
 
-import check_tbox_consistency as checker
-import estleg_common
+from estleg import check_tbox_consistency as checker
+from estleg import estleg_common
 
 REPO = Path(__file__).resolve().parent.parent
 VOCAB = REPO / "krr_outputs" / "controlled_vocabulary.jsonld"

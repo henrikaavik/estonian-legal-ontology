@@ -7,15 +7,12 @@ corpus-invariant check is marked ``@pytest.mark.corpus`` and skipped by default.
 from __future__ import annotations
 
 import json
-import sys
 from datetime import date
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
 import pytest
 
-import fix_amendment_dates_587 as fix
+from estleg import fix_amendment_dates_587 as fix
 
 
 def _event(

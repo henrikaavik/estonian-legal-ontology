@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from multipart_coverage import (
+from estleg.multipart_coverage import (
     iter_multipart_index_entries,
     unmarked_multipart_gaps,
 )

@@ -15,14 +15,10 @@ and clean bodies that must be left untouched. All run in-memory / tmp_path.
 from __future__ import annotations
 
 import json
-import sys
-from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import clean_annotation_boilerplate_619 as clean  # noqa: E402
+from estleg import clean_annotation_boilerplate_619 as clean
 
 # ---------------------------------------------------------------------------
 # Real-corpus-shaped fixtures

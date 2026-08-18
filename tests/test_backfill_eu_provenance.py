@@ -2,13 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
 import backfill_eu_provenance as bep
-
 
 CELEX_LEG = "32016R0679"
 CELEX_DEC = "61999TO0159"

@@ -26,12 +26,9 @@ Covers:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 
 class TestActLevelIndex:
@@ -40,8 +37,8 @@ class TestActLevelIndex:
         (an act-level IRI) must be writable as referencedBy on that
         target file. collect_all_references must index act-level
         nodes for this to work."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -97,8 +94,8 @@ class TestImplementedByBodyTextExclusion:
         """Run main() over a graph where source act A has both body-text
         references to target X and issuedUnder to target Y. Verify X
         does NOT gain implementedBy; Y does."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -182,8 +179,8 @@ class TestImplementedByIdempotency:
         implementedByCount triples on the next run. Without
         clear_stale_implemented_by(), the apply-only path would
         leave stale triples in place forever."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -247,7 +244,7 @@ class TestAliasResolveAmbiguous:
     def test_resolve_alias_refuses_when_multiple_canonicals_match(
         self, monkeypatch
     ):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # Two canonical IRIs both carry Par_14: ambiguous.
         iri_to_file = {
@@ -277,7 +274,7 @@ class TestAliasResolveAmbiguous:
     def test_resolve_alias_resolves_when_only_one_canonical_matches(
         self, monkeypatch
     ):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         iri_to_file = {
             "estleg:VOS_Par_14": Path("/tmp/vos_peep.json"),
@@ -310,8 +307,8 @@ class TestAliasAmbiguousRefused:
     def test_main_records_ambiguous_alias_in_report(
         self, tmp_path, monkeypatch
     ):
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -396,8 +393,8 @@ class TestVerifySymmetryCategorisation:
         carries the paragraph number must produce a
         ``unresolved-after-alias`` mismatch (NOT ``does not exist``).
         """
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -445,8 +442,8 @@ class TestVerifySymmetryCategorisation:
         must be ``genuine-missing-back-link`` — not the legacy
         "missing referencedBy" string.
         """
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -499,8 +496,8 @@ class TestAtomicSaveJsonImport:
         local non-atomic open('w') variant; it must reuse the atomic
         estleg_common.save_json so a crash mid-write never truncates a
         peep file to 0 bytes (#376)."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         # Same function object — proves the local shadow is gone and the
         # atomic implementation is in use everywhere save_json is called.
@@ -509,7 +506,7 @@ class TestAtomicSaveJsonImport:
     def test_atomic_save_json_writes_via_replace(self, tmp_path):
         """Sanity check that the imported save_json actually performs an
         atomic write: no leftover .tmp droppings and a trailing newline."""
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         target = tmp_path / "out.json"
         mod.save_json(target, {"@graph": [{"@id": "estleg:X"}]})
@@ -582,7 +579,7 @@ def _write_versions_corpus(krr):
 
 class TestCollectVersionInverse:
     def test_groups_versions_by_provision_in_order(self, tmp_path, monkeypatch):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -599,7 +596,7 @@ class TestCollectVersionInverse:
         }
 
     def test_missing_versions_dir_returns_empty(self, tmp_path, monkeypatch):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         monkeypatch.setattr(
             mod, "VERSIONS_DIR", tmp_path / "does_not_exist",
@@ -609,7 +606,7 @@ class TestCollectVersionInverse:
     def test_dedupes_duplicate_version_edge(self, tmp_path, monkeypatch):
         """If a version IRI appears twice pointing at the same provision
         (e.g. an accidentally merged sidecar), it is listed only once."""
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         vd = krr / "provision_versions"
@@ -632,7 +629,7 @@ class TestCollectVersionInverse:
 
 class TestApplyHasVersion:
     def test_writes_has_version_on_provision_nodes(self, tmp_path):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -667,7 +664,7 @@ class TestApplyHasVersion:
     def test_unresolved_provision_is_reported_not_written(self, tmp_path):
         """A provision referenced by a sidecar but absent from any peep
         file must be returned as unresolved, never silently dropped."""
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -688,8 +685,8 @@ class TestHasVersionRoundTrip:
         """End-to-end: after main(), every ProvisionVersion's
         estleg:versionOf -> P has a matching estleg:hasVersion -> V on P
         (round-trip symmetry, #345)."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -752,8 +749,8 @@ class TestHasVersionRoundTrip:
         """Running main() twice produces identical hasVersion (no
         duplication, no stale accumulation) — the clear pass strips the
         prior run's triples before re-applying."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -782,8 +779,8 @@ class TestHasVersionRoundTrip:
         """A provision carrying a pre-existing (stale) hasVersion pointing
         at a version that no longer exists in any sidecar must lose it on
         the next run."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -823,7 +820,7 @@ def test_require_cross_reference_report_fails_when_index_present_and_report_miss
     tmp_path, monkeypatch
 ):
     """#470: production tree (has INDEX.json) without the forward-ref report."""
-    import generate_inverse_references as mod
+    from estleg import generate_inverse_references as mod
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -834,7 +831,7 @@ def test_require_cross_reference_report_fails_when_index_present_and_report_miss
 
 
 def test_require_cross_reference_report_fails_on_zero_citations(tmp_path):
-    import generate_inverse_references as mod
+    from estleg import generate_inverse_references as mod
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -848,7 +845,7 @@ def test_require_cross_reference_report_fails_on_zero_citations(tmp_path):
 
 
 def test_require_cross_reference_report_accepts_populated_report(tmp_path):
-    import generate_inverse_references as mod
+    from estleg import generate_inverse_references as mod
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -871,7 +868,7 @@ class TestHasVersionResolutionDegraded:
     """Pure unit tests for ``hasversion_resolution_degraded`` (#606)."""
 
     def test_healthy_resolution_not_degraded(self):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # All provisions resolved (empty unresolved) -> healthy.
         version_inverse = {
@@ -885,7 +882,7 @@ class TestHasVersionResolutionDegraded:
         assert mod.hasversion_resolution_degraded(many, ["estleg:P_0"]) is False
 
     def test_degraded_resolution_flagged(self):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # The real-world symptom: 13 of 38,512 provisions resolved.
         version_inverse = {
@@ -899,7 +896,7 @@ class TestHasVersionResolutionDegraded:
         )
 
     def test_empty_version_inverse_not_degraded(self):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # No targets at all -> no signal, and no division by zero.
         assert mod.hasversion_resolution_degraded({}, []) is False
@@ -907,7 +904,7 @@ class TestHasVersionResolutionDegraded:
 
 def test_act_root_aggregates_union_provision_edges(tmp_path):
     """#508: provision-level references roll up onto the act root."""
-    import generate_inverse_references as mod
+    from estleg import generate_inverse_references as mod
 
     path = tmp_path / "x_peep.json"
     path.write_text(

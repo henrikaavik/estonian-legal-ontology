@@ -6,12 +6,9 @@ from __future__ import annotations
 
 import copy
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_eu_court_decisions as mod
+from estleg import generate_eu_court_decisions as mod
 
 KRR = Path(__file__).resolve().parent.parent / "krr_outputs"
 COURT_OPINIONS = KRR / "curia" / "curia_court_opinions_peep.json"

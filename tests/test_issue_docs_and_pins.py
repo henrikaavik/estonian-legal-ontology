@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import kov_pipeline_coverage as kpc
-from estleg_common import BUILD_EVALUATION_DATE, ONTOLOGY_VERSION
+from estleg import kov_pipeline_coverage as kpc
+from estleg.estleg_common import BUILD_EVALUATION_DATE, ONTOLOGY_VERSION
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -82,9 +82,9 @@ def test_draft_and_court_generators_use_atomic_save_json():
     import ast
 
     for rel in (
-        "scripts/generate_draft_legislation.py",
-        "scripts/generate_court_decisions.py",
-        "scripts/generate_all_laws.py",
+        "src/estleg/generate_draft_legislation.py",
+        "src/estleg/generate_court_decisions.py",
+        "src/estleg/generate_all_laws.py",
     ):
         tree = ast.parse((REPO / rel).read_text(encoding="utf-8"))
         defs = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]

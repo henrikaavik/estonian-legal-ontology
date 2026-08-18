@@ -5,9 +5,8 @@ from __future__ import annotations
 import inspect
 from pathlib import Path
 
-import build_release_artifacts as build
-import fix_all_issues
-import run_all_integration
+from estleg import build_release_artifacts as build
+from estleg import fix_all_issues, run_all_integration
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -34,7 +33,7 @@ def test_release_mains_do_not_invoke_legacy_repairs() -> None:
 def test_rename_passes_are_gone() -> None:
     assert not hasattr(fix_all_issues, "fix_aos_naming")
     assert not hasattr(fix_all_issues, "fix_notariaadiseadus_naming")
-    text = (REPO / "scripts" / "fix_all_issues.py").read_text(encoding="utf-8")
+    text = (REPO / "src" / "estleg" / "fix_all_issues.py").read_text(encoding="utf-8")
     assert "asjaigusseadus" not in text
     assert "notari_seadus_peep" not in text
 

@@ -1,13 +1,8 @@
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common
-import fix_all_issues
-import validate_all
+from estleg import estleg_common, fix_all_issues, validate_all
 
 
 @pytest.fixture(autouse=True)
@@ -1393,10 +1388,8 @@ def test_validate_metadata_catalog_flags_distribution_count_drift(tmp_path, monk
     _minimal_corpus_for_metadata(krr)
     # Build a metadata.jsonld whose statistics block is correct but whose
     # distribution count is wrong.
-    import sys
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    import validate_all as va
+    from estleg import validate_all as va
 
     actual = va.metadata_stats(krr)
     metadata = {
@@ -1423,10 +1416,8 @@ def test_validate_metadata_catalog_passes_when_distribution_counts_agree(tmp_pat
     """Correct `estleg:statistics` AND `dcat:distribution` counts -> no error."""
     krr = tmp_path / "krr_outputs"
     _minimal_corpus_for_metadata(krr)
-    import sys
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    import validate_all as va
+    from estleg import validate_all as va
 
     actual = va.metadata_stats(krr)
     metadata = {
@@ -1462,10 +1453,8 @@ def test_distribution_count_keys_cover_riigikohus_and_kov():
     unnoticed while the catalog validator stays green. Pin that both
     titles are covered and map to real `metadata_stats()` keys.
     """
-    import sys
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    import validate_all as va
+    from estleg import validate_all as va
 
     stats_keys = set(va.metadata_stats(va.KRR_DIR).keys())
     expected = {
@@ -2403,7 +2392,7 @@ class TestCiRegressionGuards:
 def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, Path]:
     import json
 
-    import deprecate_legacy_statutes as dls
+    from estleg import deprecate_legacy_statutes as dls
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()

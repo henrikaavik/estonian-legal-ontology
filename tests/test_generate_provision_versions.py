@@ -15,8 +15,8 @@ from pathlib import Path
 
 import pytest
 
-import generate_provision_versions as gpv
-from generate_provision_versions import (
+from estleg import generate_provision_versions as gpv
+from estleg.generate_provision_versions import (
     LawTarget,
     Redaction,
     build_law_target,
@@ -542,7 +542,7 @@ class _FakeResponse:
     def __init__(self, payload: dict):
         self._payload = payload
 
-    def raise_for_status(self) -> None:  # noqa: D401 - mimic requests.Response
+    def raise_for_status(self) -> None:
         return None
 
     def json(self) -> dict:
@@ -576,7 +576,7 @@ def test_fetch_redaction_chain_sorted_oldest_to_newest_with_dates(monkeypatch: p
         ]
     }
 
-    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+    def fake_get(url, params=None, timeout=None):
         assert url == gpv.SEARCH_URL
         if params and params.get("kehtiv"):
             return _FakeResponse(current_payload)
@@ -633,7 +633,7 @@ def test_fetch_redaction_chain_handles_t_time_and_negative_offsets(
         ]
     }
 
-    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+    def fake_get(url, params=None, timeout=None):
         if params and params.get("kehtiv"):
             return _FakeResponse(current_payload)
         return _FakeResponse(full_payload)
@@ -684,7 +684,7 @@ def test_fetch_redaction_chain_retains_edition_ending_on_run_date(
         ]
     }
 
-    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+    def fake_get(url, params=None, timeout=None):
         if params and params.get("kehtiv"):
             return _FakeResponse(current_payload)
         return _FakeResponse(full_payload)
@@ -844,7 +844,7 @@ def test_main_existing_peep_without_par_nodes_is_not_labeled_no_peep(
     )
     monkeypatch.setattr(gpv, "iter_peep_files", lambda *a, **k: list(krr.glob("*_peep.json")))
 
-    def _boom(*a, **k):  # noqa: ANN001
+    def _boom(*a, **k):
         raise AssertionError("ineligible peep must not hit the network")
 
     monkeypatch.setattr(gpv.requests, "get", _boom)
@@ -1626,7 +1626,7 @@ def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, 
     monkeypatch.setattr(gpv, "COVERAGE_PATH", krr / "reports" / "kov" / "extract_provision_versions_coverage.json")
     monkeypatch.setattr(gpv, "iter_peep_files", lambda *a, **k: [])
 
-    def _boom(*a, **k):  # noqa: ANN001
+    def _boom(*a, **k):
         raise AssertionError("--limit 0 must not hit the network")
 
     monkeypatch.setattr(gpv.requests, "get", _boom)

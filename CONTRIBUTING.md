@@ -33,7 +33,7 @@ Run these locally before pushing; CI runs the same set (see
 `.github/workflows/validate.yml`):
 
 ```bash
-python3 -m ruff check scripts/ tests/ mcp_server/   # lint
+python3 -m ruff check scripts/ src/estleg/ tests/ mcp_server/   # lint
 python3 -m pytest -q                                # unit + real-corpus tests
 python3 scripts/validate_all.py                     # JSON-LD hygiene + graph closure
 python3 scripts/shacl_validate_all.py --all         # SHACL conformance (all buckets)

@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from rdflib import Graph, Literal, RDF, URIRef
+from rdflib import RDF, Graph, Literal, URIRef
 from rdflib.namespace import DCAT, DCTERMS, VOID
 
 REPO = Path(__file__).resolve().parent.parent

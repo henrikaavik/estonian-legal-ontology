@@ -5,9 +5,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import validate_all
-from estleg_common import KRR_DIR
-from index_body_coverage import (
+from estleg import validate_all
+from estleg.estleg_common import KRR_DIR
+from estleg.index_body_coverage import (
     EMPTY_SUBSTANTIVE_BASELINE,
     classify_index_entry,
     is_treaty_slug,

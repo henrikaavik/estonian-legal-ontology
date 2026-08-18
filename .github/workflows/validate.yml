@@ -12,6 +12,7 @@ on:
       - 'data/**'
       - 'krr_outputs/**'
       - 'scripts/**'
+      - 'src/**'
       - 'tests/**'
       - 'shacl/**'
       - 'mcp_server/**'
@@ -26,6 +27,7 @@ on:
       - 'data/**'
       - 'krr_outputs/**'
       - 'scripts/**'
+      - 'src/**'
       - 'tests/**'
       - 'shacl/**'
       - 'mcp_server/**'
@@ -98,7 +100,7 @@ jobs:
         # ``mcp_server/`` is a standalone package with its own [tool.ruff]
         # config; ruff applies it hierarchically per file, so a single
         # invocation lints the corpus tooling and the MCP server together.
-        run: python3 -m ruff check scripts/ tests/ mcp_server/
+        run: python3 -m ruff check scripts/ src/estleg/ tests/ mcp_server/
 
   pytest:
     runs-on: ubuntu-latest

@@ -16,12 +16,9 @@ sub-corpora) and must:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import validate_combined_standalone as gate  # noqa: E402
+from estleg import validate_combined_standalone as gate
 
 CONTEXT = {
     "estleg": "https://w3id.org/estleg/",

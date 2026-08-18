@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_court_decisions as gcd
+from estleg import generate_court_decisions as gcd
 
 REPO = Path(__file__).resolve().parent.parent
 CURIA_SCHEMA = REPO / "krr_outputs" / "curia" / "curia_schema.json"

@@ -2,15 +2,12 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common
-import generate_court_decisions as gcd
-from classify_eurovoc import EUROVOC_DOMAINS
-from extract_legal_concepts import is_noise_term
+from estleg import estleg_common
+from estleg import generate_court_decisions as gcd
+from estleg.classify_eurovoc import EUROVOC_DOMAINS
+from estleg.extract_legal_concepts import is_noise_term
 
 
 def test_context_drops_unused_rdf_and_keeps_schema_prefix():

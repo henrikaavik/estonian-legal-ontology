@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 
-from migrate_osa_range_ids import collect_osa_range_remap, stable_osa_iri
+from estleg.migrate_osa_range_ids import collect_osa_range_remap, stable_osa_iri
 
 
 def test_stable_osa_iri_strips_par_range():
@@ -19,8 +19,8 @@ def test_stable_osa_iri_strips_par_range():
 
 def test_committed_peeps_have_no_range_encoded_osa_ids():
     """Corpus gate: the volatile ``_OsaN_min_max`` act @id is gone."""
-    from pathlib import Path
     import re
+    from pathlib import Path
 
     krr = Path(__file__).resolve().parents[1] / "krr_outputs"
     leftover = []

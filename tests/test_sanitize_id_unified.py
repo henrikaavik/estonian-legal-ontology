@@ -7,17 +7,14 @@ different IRI from the same input.
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from estleg.estleg_common import sanitize_id
 
-from estleg_common import sanitize_id
-
-SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
-_DEF_SANITIZE_ID = re.compile(r"^def sanitize_id\b", re.M)
+SCRIPTS = Path(__file__).resolve().parents[1] / "src" / "estleg"
+_DEF_SANITIZE_ID = re.compile(r"^def sanitize_id\b", re.MULTILINE)
 CROSS_GENERATOR_FIXTURES = ("1–94", "194", "ÄS", "3-5", "Karistus")
 
 
@@ -78,7 +75,7 @@ def test_generate_all_laws_shares_or_agrees() -> None:
             "caller-migration agent may still be running (#449)"
         )
 
-    from generate_all_laws import sanitize_id as gal_sanitize_id
+    from estleg.generate_all_laws import sanitize_id as gal_sanitize_id
 
     if gal_sanitize_id is sanitize_id:
         return

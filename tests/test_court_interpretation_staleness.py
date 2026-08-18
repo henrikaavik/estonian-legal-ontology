@@ -6,12 +6,8 @@ synthetic version index so it is independent of the live corpus.
 """
 
 import json
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import derive_court_interpretation_staleness as D  # noqa: E402
+from estleg import derive_court_interpretation_staleness as D
 
 # P1: v1 in force 2010-01-01..2015-12-31, then v2 from 2016-01-01 (open).
 # P2: a single open version from 2008.

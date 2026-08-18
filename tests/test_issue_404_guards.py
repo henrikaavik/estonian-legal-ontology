@@ -5,9 +5,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from generate_amendment_history import _draft_publication_sort_key
-from generate_similarity_index import extract_provisions_from_file
-from generate_transposition_mapping import jsonld_text, normalize_text
+from estleg.generate_amendment_history import _draft_publication_sort_key
+from estleg.generate_similarity_index import extract_provisions_from_file
+from estleg.generate_transposition_mapping import jsonld_text, normalize_text
 
 
 def test_similarity_skips_non_string_node_id(tmp_path: Path):

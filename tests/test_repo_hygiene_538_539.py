@@ -47,7 +47,7 @@ def _gitignore_lists(path: str) -> bool:
 
     posix = Path(path).as_posix()
     for entry in entries:
-        token = entry[1:] if entry.startswith("/") else entry
+        token = entry.removeprefix("/")
         if token.endswith("/"):
             if posix.startswith(token) or posix.startswith(token.rstrip("/")):
                 return True

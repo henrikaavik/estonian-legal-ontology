@@ -11,11 +11,11 @@ import json
 
 import pytest
 
-from extract_legal_concepts import (
+from estleg.extract_legal_concepts import (
     CONCEPTS_DIR,
+    _strip_term_brackets,
     is_noise_term,
     strip_kehtetu_concepts,
-    _strip_term_brackets,
 )
 
 CONCEPTS_FILE = CONCEPTS_DIR / "concepts_combined.jsonld"

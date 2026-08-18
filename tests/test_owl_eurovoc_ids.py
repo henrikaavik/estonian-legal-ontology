@@ -9,12 +9,9 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import classify_eurovoc  # noqa: E402
+from estleg import classify_eurovoc
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 KRR = REPO_ROOT / "krr_outputs"

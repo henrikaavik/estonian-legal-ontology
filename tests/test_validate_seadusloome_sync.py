@@ -8,12 +8,9 @@ so the exit code and the printed grouped summary can be asserted against.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import validate_seadusloome_sync  # noqa: E402
+from estleg import validate_seadusloome_sync
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SHAPES_DIR = REPO_ROOT / "shacl"

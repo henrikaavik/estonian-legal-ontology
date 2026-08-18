@@ -7,14 +7,11 @@ sector and injects the two sentinel court individuals into the schema.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import fix_curia_court_contamination as fix
+from estleg import fix_curia_court_contamination as fix
 
 
 def _decision(celex: str, court: str = fix.COURT_OF_JUSTICE) -> dict:

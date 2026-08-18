@@ -1,10 +1,7 @@
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import shacl_validate_all
+from estleg import shacl_validate_all
 
 
 def touch(path: Path) -> None:

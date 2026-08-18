@@ -8,13 +8,10 @@ node stops being inert for the closure gate.
 """
 
 import json
-import sys
 import tomllib
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common  # noqa: E402
+from estleg import estleg_common
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -79,7 +76,7 @@ def test_version_header_is_exempt_from_combined_parity(tmp_path):
     combined, so the parity gate only saw the header on the next rebuild — this
     locks in the exemption so it can't silently regress.
     """
-    import validate_all
+    from estleg import validate_all
 
     # A combined carrying one real source node + the synthesised version header.
     combined = {

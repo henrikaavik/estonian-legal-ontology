@@ -3,17 +3,13 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from classify_deontic import (
+from estleg.classify_deontic import (
     _leading_permission_over_condition,
     classify_provision,
     extract_duty_holder,
 )
-from estleg_common import jsonld_text
-
+from estleg.estleg_common import jsonld_text
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE = (Path(__file__).parent / "fixtures" / "kov_layer2a"

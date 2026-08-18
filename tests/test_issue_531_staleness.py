@@ -6,7 +6,7 @@ import json
 from datetime import date
 from pathlib import Path
 
-import check_rt_staleness as crs
+from estleg import check_rt_staleness as crs
 
 REPO = Path(__file__).resolve().parent.parent
 METADATA = REPO / "metadata.jsonld"

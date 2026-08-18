@@ -7,19 +7,16 @@ Helpers are imported from the example; SPARQL is not reimplemented here.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 from rdflib import Graph
 
+import quickstart
+
 REPO = Path(__file__).resolve().parent.parent
 EXAMPLES = REPO / "examples"
 README = REPO / "README.md"
-
-sys.path.insert(0, str(EXAMPLES))
-
-import quickstart  # noqa: E402
 
 ESTLEG = "https://w3id.org/estleg/"
 

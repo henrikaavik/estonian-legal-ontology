@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from estleg_common import jsonld_text, jsonld_texts
-from extract_draft_impact import resolve_law_name, year_compatible_law_match
+from estleg.estleg_common import jsonld_text, jsonld_texts
+from estleg.extract_draft_impact import resolve_law_name, year_compatible_law_match
 
 REPO = Path(__file__).resolve().parents[1]
 EELNOUD = REPO / "krr_outputs" / "eelnoud" / "eelnoud_combined.jsonld"

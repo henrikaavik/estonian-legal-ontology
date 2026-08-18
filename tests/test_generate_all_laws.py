@@ -15,8 +15,7 @@ from pathlib import Path
 
 import pytest
 
-import estleg_common
-import generate_all_laws
+from estleg import estleg_common, generate_all_laws
 
 _SHAPES_PATH = (
     generate_all_laws.REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"

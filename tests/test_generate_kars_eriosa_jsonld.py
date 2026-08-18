@@ -15,14 +15,9 @@ Covers the regression fixes called out in issue #177:
 
 from __future__ import annotations
 
-import sys
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_kars_eriosa_jsonld as gke
-
+from estleg import generate_kars_eriosa_jsonld as gke
 
 # ---------------------------------------------------------------------------
 # sanitize_identifier
@@ -462,7 +457,7 @@ class TestContextDcNamespace:
         """The eriosa ``dc`` IRI MUST equal the shared corpus context so
         ``dc:title``/``dc:source``/``dc:references`` expand identically."""
         try:
-            import estleg_common  # noqa: PLC0415  (scripts/ on sys.path)
+            from estleg import estleg_common
         except Exception:  # pragma: no cover - defensive: skip if unavailable
             import pytest
 

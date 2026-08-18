@@ -9,12 +9,12 @@ import sys
 import tempfile
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 KRR_DIR = PROJECT_ROOT / "krr_outputs"
 DEFAULT_REPORT_PATH = KRR_DIR / "reports" / "multipart_iri_migration_report.json"
 
@@ -275,7 +275,7 @@ def _target_collisions(
     rename_map: dict[str, str], existing_iris: set[str]
 ) -> set[str]:
     """New IRIs that already name a distinct un-renamed node (#341.10)."""
-    from migrate_uris import target_iri_collisions
+    from estleg.migrate_uris import target_iri_collisions
 
     return target_iri_collisions(rename_map, existing_iris)
 
@@ -482,7 +482,7 @@ def build_report(
     return {
         "pipeline": "migrate_multipart_iri_scheme",
         "mode": mode,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "laws": laws_report,
         "rename_map_size": plan.rename_map_size,
         "ambiguous_canonical_choices": plan.ambiguities,

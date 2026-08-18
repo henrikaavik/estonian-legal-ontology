@@ -6,8 +6,8 @@ import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-import generate_all_laws
-from migrate_uris import target_iri_collisions
+from estleg import generate_all_laws
+from estleg.migrate_uris import target_iri_collisions
 
 
 def _one_par_xml() -> str:

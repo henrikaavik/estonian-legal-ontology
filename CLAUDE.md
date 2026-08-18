@@ -18,7 +18,7 @@ in `scripts/`. It is the data backend behind seadusloome.sixtyfour.ee.
 - Do not hand-edit generated artifacts such as `krr_outputs/combined_ontology.jsonld`;
   regenerate via the canonical builders.
 - Before finishing data-quality work, run the gates:
-  `python3 -m ruff check scripts/ tests/`, `python3 -m pytest -q`,
+  `python3 -m ruff check scripts/ src/estleg/ tests/`, `python3 -m pytest -q`,
   `python3 scripts/validate_all.py`, `python3 scripts/shacl_validate_all.py --all`.
 - Reuse helpers in `scripts/estleg_common.py` / `scripts/riigiteataja_common.py`
   rather than duplicating parsing or filesystem logic.

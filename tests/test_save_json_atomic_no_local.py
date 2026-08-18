@@ -10,15 +10,12 @@ import ast
 import importlib
 import inspect
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from estleg import estleg_common
 
-import estleg_common
-
-SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
-_DEF_SAVE_JSON = re.compile(r"^def save_json\b", re.M)
+SCRIPTS = Path(__file__).resolve().parents[1] / "src" / "estleg"
+_DEF_SAVE_JSON = re.compile(r"^def save_json\b", re.MULTILINE)
 
 SAVE_JSON_MODULES = (
     "classify_deontic",
@@ -42,7 +39,10 @@ def _imports_save_json_from_estleg_common(src: str) -> bool:
     except SyntaxError:
         return False
     for node in tree.body:
-        if isinstance(node, ast.ImportFrom) and node.module == "estleg_common":
+        if isinstance(node, ast.ImportFrom) and node.module in {
+            "estleg_common",
+            "estleg.estleg_common",
+        }:
             for alias in node.names:
                 if alias.name == "save_json":
                     return True
@@ -86,7 +86,7 @@ def test_listed_modules_bind_estleg_common_save_json() -> None:
             not_imported.append(name)
             continue
         try:
-            mod = importlib.import_module(name)
+            mod = importlib.import_module(f"estleg.{name}")
         except Exception:
             continue
         if getattr(mod, "save_json", None) is not estleg_common.save_json:
@@ -106,7 +106,7 @@ def test_classify_eurovoc_save_json_delegates() -> None:
     if not re.search(r"\bsave_json\b", src):
         return
 
-    mod = importlib.import_module("classify_eurovoc")
+    mod = importlib.import_module("estleg.classify_eurovoc")
     bound = getattr(mod, "save_json", None)
     if bound is None or bound is estleg_common.save_json:
         return
@@ -121,9 +121,7 @@ def test_classify_eurovoc_save_json_delegates() -> None:
         if isinstance(stmt, ast.Expr) and isinstance(stmt.value, ast.Constant):
             continue
         call = None
-        if isinstance(stmt, ast.Expr) and isinstance(stmt.value, ast.Call):
-            call = stmt.value
-        elif isinstance(stmt, ast.Return) and isinstance(stmt.value, ast.Call):
+        if isinstance(stmt, ast.Expr) and isinstance(stmt.value, ast.Call) or isinstance(stmt, ast.Return) and isinstance(stmt.value, ast.Call):
             call = stmt.value
         assert call is not None, (
             "classify_eurovoc.save_json must only print and/or call "

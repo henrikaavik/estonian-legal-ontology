@@ -107,7 +107,7 @@ refresh completed the full law corpus refresh, Riigikohus full-text
 ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
 PDF-body annotation ingestion. Final local gates passed:
 
-- `python3 -m ruff check scripts/ tests/`
+- `python3 -m ruff check scripts/ src/estleg/ tests/`
 - `python3 -m pytest -q` (`1568 passed, 2 skipped`)
 - `python3 scripts/validate_all.py` (`23,069 files`, zero errors/warnings)
 - `python3 scripts/shacl_validate_all.py --all` (`23,064 files`,

@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import generate_harmonisation_links as harmonisation
+from estleg import generate_harmonisation_links as harmonisation
 
 REPO = Path(__file__).resolve().parent.parent
 

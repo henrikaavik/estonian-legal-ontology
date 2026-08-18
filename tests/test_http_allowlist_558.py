@@ -8,15 +8,12 @@ bounce a fetch off-host. Fetched bodies are hashed with
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-import estleg_common
-from estleg_common import ALLOWED_HTTP_HOSTS, allowed_get, assert_allowed_http_url
+from estleg import estleg_common
+from estleg.estleg_common import ALLOWED_HTTP_HOSTS, allowed_get, assert_allowed_http_url
 
 
 class _Resp:
@@ -122,7 +119,7 @@ def test_allow_redirects_true_rejects_off_host_location(
 
 
 def test_sha256_hex_is_stable() -> None:
-    from estleg_common import sha256_hex
+    from estleg.estleg_common import sha256_hex
 
     assert sha256_hex("abc") == sha256_hex(b"abc")
     assert len(sha256_hex("abc")) == 64
@@ -130,7 +127,7 @@ def test_sha256_hex_is_stable() -> None:
 
 
 def test_record_fetch_hash_writes_manifest(tmp_path: Path) -> None:
-    from estleg_common import record_fetch_hash, sha256_hex
+    from estleg.estleg_common import record_fetch_hash, sha256_hex
 
     dest = tmp_path / "fetch_content_hashes.json"
     digest = sha256_hex("body")
@@ -145,7 +142,7 @@ def test_committed_kars_content_hash_matches_cached_xml() -> None:
     import json
     from pathlib import Path
 
-    from estleg_common import sha256_hex
+    from estleg.estleg_common import sha256_hex
 
     repo = Path(__file__).resolve().parents[1]
     xml = (repo / "data" / "riigiteataja" / "karistusseadustik.xml").read_bytes()

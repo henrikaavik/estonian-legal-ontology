@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from migrate_malformed_iris import (
+from estleg.migrate_malformed_iris import (
     apply_iri,
     build_trailing_div_remap,
     collapse_underscores,
@@ -75,7 +72,7 @@ def test_rewrite_walks_nested_refs() -> None:
 
 
 def test_slugify_still_rstrips_after_cut() -> None:
-    from estleg_common import slugify
+    from estleg.estleg_common import slugify
 
     # 80-char cut landing on '_' must not leave a trailing underscore (#346).
     text = "a" * 70 + "_" + "bbbbbbbbbb"

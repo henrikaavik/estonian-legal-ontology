@@ -15,14 +15,11 @@ All tests run against in-memory / tmp_path fixtures (no real corpus).
 from __future__ import annotations
 
 import json
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import dedupe_summaries_629 as dd
-import riigiteataja_common as rc
+from estleg import dedupe_summaries_629 as dd
+from estleg import riigiteataja_common as rc
 
 # ---------------------------------------------------------------------------
 # Part 1 — generator fix: nested text tags counted once (collect_text /

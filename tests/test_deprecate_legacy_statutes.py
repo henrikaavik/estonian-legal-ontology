@@ -14,12 +14,9 @@ internal self-references intact, and never touch ``keep`` files.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import deprecate_legacy_statutes as dls
+from estleg import deprecate_legacy_statutes as dls
 
 ESTLEG = "https://w3id.org/estleg/"
 

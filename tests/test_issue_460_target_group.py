@@ -4,12 +4,9 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from classify_target_group import (  # noqa: E402
+from estleg.classify_target_group import (
     classify_files,
     classify_node,
     normalize_target_group_value,
@@ -136,7 +133,7 @@ def test_stream_upgrade_rewrites_pretty_printed_array(tmp_path):
         '        "citizen",\n        "business"\n      ]\n    }\n  ]\n}\n',
         encoding="utf-8",
     )
-    from classify_target_group import upgrade_jsonld_target_group_stream
+    from estleg.classify_target_group import upgrade_jsonld_target_group_stream
 
     stats = upgrade_jsonld_target_group_stream(src)
     assert stats["tokens_replaced"] == 2

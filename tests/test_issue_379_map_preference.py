@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from ensure_multipart_map_peeps import map_iri_for_osa
-from extract_draft_impact import prefer_act_iri
+from estleg.ensure_multipart_map_peeps import map_iri_for_osa
+from estleg.extract_draft_impact import prefer_act_iri
 
 
 def test_prefer_act_iri_map_beats_osa():
@@ -58,7 +58,7 @@ def test_committed_annotations_do_not_target_osa_parts():
 
 
 def test_index_base_name_groups_map_with_osa_parts():
-    import fix_all_issues as fix
+    from estleg import fix_all_issues as fix
 
     assert fix._index_base_name("karistusseadustik_map") == ("karistusseadustik", None)
     assert fix._index_base_name("karistusseadustik_osa1") == ("karistusseadustik", "1")

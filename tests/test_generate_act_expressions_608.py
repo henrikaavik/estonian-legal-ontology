@@ -7,12 +7,9 @@ output determinism (sorted ``@graph``, byte-stable re-runs).
 """
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_act_expressions_608 as G  # noqa: E402
+from estleg import generate_act_expressions_608 as G
 
 
 # ---------------------------------------------------------------------------

@@ -18,17 +18,13 @@ import os
 import shutil
 import subprocess
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 from unittest import mock
 
 import pytest
 
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import run_all_integration  # noqa: E402  (import after sys.path mutation)
-
+from estleg import run_all_integration
 
 # ---------------------------------------------------------------------------
 # Shared helpers
