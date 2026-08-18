@@ -359,7 +359,7 @@ def test_helpers_resolve_from_generate_all_laws() -> None:
     # ``generate_all_laws`` module while the test imports the package-
     # qualified ``scripts.generate_all_laws``; these are distinct module-
     # cache entries, so compare provenance instead.)
-    assert collect_text.__module__ == "generate_all_laws"
+    assert collect_text.__module__ in {"generate_all_laws", "law_structure"}
     assert (
         collect_text.__code__.co_filename
         == generate_all_laws.collect_text.__code__.co_filename

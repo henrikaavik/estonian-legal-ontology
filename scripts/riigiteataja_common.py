@@ -19,6 +19,7 @@ import re
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from collections.abc import Callable
 from typing import Iterator
 from urllib.parse import urlsplit, urlunsplit
 
@@ -182,13 +183,14 @@ def fetch_acts(
     kov: bool | None = None,
     kehtiv: str | None = None,
     text_filter: str = "terviktekst",
-    limiit: int = 500,
+    limiit: int | None = 500,
     max_pages: int = 100,
     timeout: int = 30,
     allow_partial: bool = False,
     max_retries: int = 2,
     retry_sleep: float = 1.0,
     stats: dict | None = None,
+    stop_on_short_page: bool = True,
 ) -> Iterator[dict]:
     """Yield acts from the Riigi Teataja search API page by page.
 
@@ -214,10 +216,11 @@ def fetch_acts(
     while page <= max_pages:
         params: dict[str, str | int | bool] = {
             "leht": page,
-            "limiit": limiit,
             "dokument": document,
             "tekst": text_filter,
         }
+        if limiit is not None:
+            params["limiit"] = limiit
         if kehtiv:
             params["kehtiv"] = kehtiv
             params["kehtivKehtetus"] = "false"
@@ -261,7 +264,11 @@ def fetch_acts(
             break
         for act in aktid:
             yield act
-        if len(aktid) < limiit:
+        if stop_on_short_page and limiit is not None and len(aktid) < limiit:
+            break
+        if page >= max_pages:
+            if stats is not None:
+                stats["pageLimitHit"] = True
             break
         page += 1
 
@@ -291,14 +298,30 @@ def fetch_xml(
     cache_name: str,
     cache_subdir: str | None = None,
     *,
+    cache_dir: Path | None = None,
+    fallback_cache_name: str | None = None,
     refresh: bool = False,
     timeout: int = 60,
     min_size: int = 200,
+    validate_root: Callable[[ET.Element], bool] | None = None,
+    on_bytes: Callable[[bytes], None] | None = None,
 ) -> ET.Element | None:
-    """Fetch and cache act XML; return its parsed root element."""
-    cache_dir = DATA_DIR / cache_subdir if cache_subdir else DATA_DIR
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    cache_path = cache_dir / f"{cache_name}.xml"
+    """Fetch and cache act XML; return its parsed root element.
+
+    ``cache_dir`` overrides the default ``DATA_DIR`` / ``cache_subdir``
+    destination so callers (and tests) can redirect the on-disk cache.
+    ``fallback_cache_name`` is consulted after ``cache_name`` on a cache
+    hit (law tid-qualified then slug-only files, #165). ``validate_root``
+    rejects a parsed tree (HTML/error pages, #601). ``on_bytes`` receives
+    the accepted payload (cache bytes or downloaded UTF-8).
+    """
+    dest = cache_dir if cache_dir is not None else (
+        DATA_DIR / cache_subdir if cache_subdir else DATA_DIR
+    )
+    dest.mkdir(parents=True, exist_ok=True)
+    names = [cache_name]
+    if fallback_cache_name and fallback_cache_name != cache_name:
+        names.append(fallback_cache_name)
 
     # Reuse any cached file the write path would have accepted. The write
     # guard below only persists XML of at least ``min_size`` bytes, so the
@@ -306,11 +329,20 @@ def fetch_xml(
     # old hard-coded ``> 1000``) silently re-fetched every 200–1000-byte
     # cached file on each run (issue #296). Parse failures still fall
     # through to a fresh fetch, so a corrupt cache self-heals.
-    if not refresh and cache_path.exists() and cache_path.stat().st_size >= min_size:
-        try:
-            return parse_xml_file(cache_path)
-        except (ET.ParseError, ValueError):
-            pass
+    if not refresh:
+        for name in names:
+            cache_path = dest / f"{name}.xml"
+            if not (cache_path.exists() and cache_path.stat().st_size >= min_size):
+                continue
+            try:
+                root = parse_xml_file(cache_path)
+            except (ET.ParseError, ValueError):
+                continue
+            if validate_root is not None and not validate_root(root):
+                continue
+            if on_bytes is not None:
+                on_bytes(cache_path.read_bytes())
+            return root
 
     full_url = build_xml_url(url)
 
@@ -321,8 +353,14 @@ def fetch_xml(
         xml_text = resp.text
         if len(xml_text) < min_size:
             return None
+        root = parse_xml(xml_text)
+        if validate_root is not None and not validate_root(root):
+            return None
+        cache_path = dest / f"{cache_name}.xml"
         cache_path.write_text(xml_text, encoding="utf-8")
-        return parse_xml(xml_text)
+        if on_bytes is not None:
+            on_bytes(xml_text.encode("utf-8"))
+        return root
     except Exception as e:
         print(f"    Fetch error: {e}")
         return None

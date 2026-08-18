@@ -12,7 +12,6 @@ This script:
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
@@ -28,12 +27,39 @@ import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
 from estleg_common import (
     CONTEXT,
-    allowed_get,
-    parse_xml,
     save_json,
     sanitize_id,
     sha256_hex,
     slugify,
+)
+from law_structure import (  # noqa: F401 — re-exported for tests / generate_missing_parts
+    _chapter_id_suffix,
+    _division_id_suffix,
+    _iter_loiked,
+    _loige_body_text,
+    _loige_numbers,
+    _paragraph_id_suffix,
+    _sup_to_unicode,
+    _truncate_at_boundary,
+    _walk_paragraphs_direct,
+    build_subsections,
+    chapter_cluster_subject,
+    collect_full_text,
+    collect_text,
+    emit_hierarchy_and_provisions,
+    provision_summary,
+    remint_dupn_id,
+    remint_dupn_ids,
+    content_derived_dup_suffix,
+)
+from riigiteataja_common import (
+    BASE_URL,
+    SourceListFetchError,
+    ct,
+    fetch_acts,
+    fetch_xml as common_fetch_xml,
+    ln,
+    new_page_stats,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -41,8 +67,6 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
-BASE_URL = "https://www.riigiteataja.ee"
 NS = "https://w3id.org/estleg/"
 DEFAULT_KEHTIV = "2026-05-01"
 # #558: sha256 of the last fetched/cached RT XML, keyed by cache_name/slug.
@@ -72,17 +96,6 @@ DEFAULT_REGEN_STATE_NAME = ".regen_state.json"
 REGEN_STATE_SCHEMA_VERSION = 1
 # Argparse sentinel for bare ``--regen-state``; resolved after KRR_DIR is configured.
 DEFAULT_REGEN_STATE_SENTINEL = "__default_regen_state__"
-
-
-def ln(tag: str) -> str:
-    return tag.split("}", 1)[1] if "}" in tag else tag
-
-
-def ct(el: ET.Element, name: str) -> str | None:
-    for c in el:
-        if ln(c.tag) == name and c.text:
-            return c.text.strip()
-    return None
 
 
 def build_law_slug_map(
@@ -172,628 +185,6 @@ def build_law_slug_map(
     return slugs
 
 
-# Issue #255: amendment / publication / entry-into-force markers. Riigi
-# Teataja stores editorial metadata ("Kehtetu -", "(jõustumine muudetud -
-# RT I, ...)", "terviktekst RT paberkandjal", EU-Council boilerplate) inside
-# these subtrees. Their ``tavatekst``/``lause``/``lauseOsa`` descendants must
-# never leak into ``estleg:legalText`` / ``estleg:summary``.
-_MARKER_TAGS: frozenset[str] = frozenset(
-    {"muutmismarge", "avaldamismarge", "joustumismarge"}
-)
-
-
-def _iter_text_nodes(el: ET.Element):
-    """Yield descendant elements of ``el`` in document order, skipping any
-    amendment/publication/entry-into-force marker subtree.
-
-    A drop-in replacement for ``el.iter()`` in the text extractors that
-    prunes whole ``muutmismarge``/``avaldamismarge``/``joustumismarge``
-    subtrees (#255) rather than walking into them. ``el`` itself is
-    yielded only when it is not a marker root.
-    """
-    if ln(el.tag) in _MARKER_TAGS:
-        return
-    yield el
-    for child in el:
-        yield from _iter_text_nodes(child)
-
-
-def _marker_pruned_text(el: ET.Element) -> str:
-    """Return ``el``'s text content with marker subtrees pruned (#255).
-
-    Mirrors ``"".join(el.itertext())`` but drops any text that lives
-    inside a ``muutmismarge``/``avaldamismarge``/``joustumismarge``
-    subtree, so a marker nested *inside* a ``loige``/``lause`` does not
-    leak into the citable text the way raw ``itertext()`` would.
-    """
-    out: list[str] = []
-    if el.text:
-        out.append(el.text)
-    for child in el:
-        if ln(child.tag) in _MARKER_TAGS:
-            if child.tail:
-                out.append(child.tail)
-            continue
-        out.append(_marker_pruned_text(child))
-        if child.tail:
-            out.append(child.tail)
-    return "".join(out)
-
-
-# Issue #368: how far back from the hard ``max_len`` cap ``collect_text`` may
-# scan for a sentence/word boundary before falling back to a raw slice. Keeps
-# the cut close to the cap (so the preview stays ~full) while avoiding a cut
-# mid-token.
-_SUMMARY_BOUNDARY_WINDOW = 60
-# Sentence terminators recognised by the boundary-aware truncation.
-_SENTENCE_END_CHARS = ".!?…"
-
-
-def _truncate_at_boundary(
-    text: str, max_len: int, *, window: int = _SUMMARY_BOUNDARY_WINDOW
-) -> str:
-    """Return ``text`` cut to at most ``max_len`` chars on a clean boundary.
-
-    Issue #368: a raw ``text[:max_len]`` slice severs the summary mid-word
-    (``…kohustatud arvut``). Instead, when the text is longer than the cap
-    we look back up to ``window`` characters for a sentence terminator
-    (``.!?…`` followed by whitespace) and, failing that, the last
-    whitespace, cutting there. Only if no boundary exists in the window do
-    we fall back to the hard slice so the cap is always honoured.
-    """
-    if len(text) <= max_len:
-        return text
-    head = text[:max_len]
-    lo = max(0, max_len - window)
-    # Prefer a sentence boundary: a terminator inside the window whose next
-    # char (still within ``head``) is whitespace.
-    best_sentence = -1
-    for i in range(max_len - 1, lo - 1, -1):
-        if head[i] in _SENTENCE_END_CHARS:
-            nxt = text[i + 1] if i + 1 < len(text) else " "
-            if nxt.isspace():
-                best_sentence = i + 1
-                break
-    if best_sentence != -1:
-        return head[:best_sentence].rstrip()
-    # Else cut at the last whitespace within the window.
-    space = head.rfind(" ", lo)
-    if space != -1:
-        return head[:space].rstrip()
-    # No boundary available: honour the cap with a raw slice.
-    return head
-
-
-def collect_text(el: ET.Element, max_len: int = 500) -> str:
-    """Return a boundary-truncated preview of the provision's full text.
-
-    Delegates to :func:`collect_full_text` (the lõige-structured, non-doubling
-    text builder) and truncates at a sentence/word boundary (#368). #613: the
-    previous independent leaf-walk matched both a ``lause`` container *and* its
-    nested ``lauseOsa`` (``_iter_text_nodes`` yields parent then child), so it
-    double-counted every multi-lõige body and emitted ``estleg:summary`` as the
-    text repeated. Reusing the single source of provision text keeps the summary
-    a clean, single preview that always agrees with ``estleg:legalText``.
-    (collect_full_text already renders <sup>N</sup> as Unicode superscript, #572.)
-    """
-    full = collect_full_text(el)
-    return _truncate_at_boundary(full, max_len) if full else ""
-
-
-def provision_summary(text: str, title: str, display: str) -> str:
-    """Return the SHACL-required summary for a provision node."""
-    summary = text.strip()
-    if summary:
-        return summary
-    if title.strip():
-        return f"{display.strip()} {title.strip()}".strip()
-    return display.strip() or "Sisukokkuvõte puudub"
-
-
-# Mapping of Unicode superscript digits to plain digits.
-_SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
-    "¹": "1",  # superscript 1
-    "²": "2",  # superscript 2
-    "³": "3",  # superscript 3
-    "⁰": "0",  # superscript 0
-    "⁴": "4",  # superscript 4
-    "⁵": "5",  # superscript 5
-    "⁶": "6",  # superscript 6
-    "⁷": "7",  # superscript 7
-    "⁸": "8",  # superscript 8
-    "⁹": "9",  # superscript 9
-}
-
-# Inverse map (plain digit -> Unicode superscript glyph) for rendering a leaked
-# literal ``<sup>N</sup>`` as the proper superscript ``¹²³`` in display/body
-# strings (#572). RT stores superscripted structural numbers as literal CDATA
-# (``§ 1<sup>1</sup>.``); without conversion the markup leaks verbatim into
-# rdfs:label / estleg:paragrahv / legalText / subsectionNumber / summary.
-_DIGIT_TO_SUPERSCRIPT: dict[str, str] = {v: k for k, v in _SUPERSCRIPT_DIGIT_MAP.items()}
-_SUP_TAG_RE = re.compile(r"<sup>\s*(\d+)\s*</sup>")
-
-
-def _sup_to_unicode(text: str) -> str:
-    """Convert literal ``<sup>N</sup>`` markup to Unicode superscript digits (#572).
-
-    Any residual bare ``<sup>``/``</sup>`` tags (non-digit content) are stripped
-    so no HTML markup survives into the citable strings.
-    """
-    if not text or "<sup>" not in text:
-        return text
-    converted = _SUP_TAG_RE.sub(
-        lambda m: "".join(_DIGIT_TO_SUPERSCRIPT.get(d, d) for d in m.group(1)), text
-    )
-    return converted.replace("<sup>", "").replace("</sup>", "")
-
-
-def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
-    """Extract the superscript index carried by ``el``'s ``number_tag`` child.
-
-    Riigi Teataja records superscripted structural numbers in two forms:
-      * ``ylaIndeks="N"`` attribute on the number element (``paragrahvNr``,
-        ``peatykkNr``, ``jaguNr``; canonical, machine-friendly);
-      * the ``kuvatavNr`` CDATA, either as a Unicode superscript glyph or
-        as ``<sup>N</sup>`` markup.
-
-    Returns the index as a plain digit string ("1", "2", ...) or ``""``
-    when no superscript is present. Generalises the original
-    paragraph-only extractor so chapters/divisions (``6¹``) get the same
-    treatment as paragraphs (``§ 22¹``) — #253.
-    """
-    for c in el:
-        if ln(c.tag) == number_tag:
-            ya = c.attrib.get("ylaIndeks")
-            if ya and ya.strip():
-                return ya.strip()
-            break
-
-    kuv = None
-    for c in el:
-        if ln(c.tag) == "kuvatavNr":
-            kuv = "".join(c.itertext()) or ""
-            break
-    if not kuv:
-        return ""
-
-    m = re.search(
-        r"\d+\s*(?:<sup>\s*(\d+)\s*</sup>|([¹²³⁰⁴-⁹]+))",
-        kuv,
-    )
-    if not m:
-        return ""
-    if m.group(1):
-        return m.group(1).strip()
-    if m.group(2):
-        return "".join(_SUPERSCRIPT_DIGIT_MAP.get(ch, "") for ch in m.group(2))
-    return ""
-
-
-def _superscript_index(par_el: ET.Element) -> str:
-    """Extract the superscript index for a paragrahv element.
-
-    Thin wrapper over :func:`_superscript_index_from` for the
-    ``paragrahvNr`` number element. Returns the index as a plain digit
-    string ("1", "2", ...) or ``""`` when no superscript is present.
-    """
-    return _superscript_index_from(par_el, "paragrahvNr")
-
-
-def _structural_id_suffix(el: ET.Element, number: str, number_tag: str) -> str:
-    """Return the IRI suffix for a structural element (chapter/division).
-
-    Combines the structural ``number`` (already extracted via ``ct``) with
-    any superscript index carried by ``el``'s ``number_tag`` child so that
-    ``6`` and ``6¹`` produce distinct suffixes ``6`` vs ``6_1`` — mirroring
-    :func:`_paragraph_id_suffix` for paragraphs (``Par_22`` vs ``Par_22_1``).
-    This replaces the old ``sanitize_id(number)`` suffix that collapsed
-    superscript chapters onto their base sibling (#253).
-    """
-    base = sanitize_id(number) if number else "Unknown"
-    sup = _superscript_index_from(el, number_tag)
-    if sup:
-        return f"{base}_{sanitize_id(sup)}"
-    return base
-
-
-def _chapter_id_suffix(ch_el: ET.Element, ch_nr: str, ch_title: str) -> str:
-    """Return the IRI suffix for a ``peatykk`` (chapter) element.
-
-    Uses ``peatykkNr`` plus any ``ylaIndeks`` superscript (``6¹`` →
-    ``6_1``); falls back to the chapter title (truncated) only when the
-    chapter has no number, preserving the previous behaviour for
-    title-only chapters (#253).
-    """
-    if ch_nr:
-        return _structural_id_suffix(ch_el, ch_nr, "peatykkNr")
-    # Issue #354: the 20-char title truncation can leave a trailing ``_``
-    # (``…KASUTAMINE_``) that near-collides with a real sibling suffix.
-    return sanitize_id(ch_title[:20]).rstrip("_") or "Unknown"
-
-
-def _division_id_suffix(jagu_el: ET.Element, j_nr: str, j_title: str) -> str:
-    """Return the IRI suffix for a ``jagu`` (division) element.
-
-    Uses ``jaguNr`` plus any ``ylaIndeks`` superscript; falls back to the
-    title (truncated) when the division has no number (#253).
-    """
-    if j_nr:
-        return _structural_id_suffix(jagu_el, j_nr, "jaguNr")
-    # Issue #354: strip a trailing ``_`` left by the 20-char title cut so a
-    # title-only division does not produce ``…KASUTAMINE_`` colliding with a
-    # ``…KASUTAMINE`` sibling.
-    return sanitize_id(j_title[:20]).rstrip("_") or "Unknown"
-
-
-def _paragraph_id_suffix(par_el: ET.Element) -> str:
-    """Return the canonical IRI suffix for a paragrahv element.
-
-    Combines ``paragrahvNr`` with any superscript index so that
-    duplicate paragraph numbers (``§ 22`` and ``§ 22¹``) get distinct,
-    order-independent IRIs (``Par_22`` vs ``Par_22_1``). This replaces
-    the previous insertion-order disambiguation (#156, #165 fix 2).
-    """
-    par_nr = ct(par_el, "paragrahvNr") or ""
-    sup = _superscript_index(par_el)
-    base = sanitize_id(par_nr) if par_nr else "Unknown"
-    if sup:
-        return f"{base}_{sanitize_id(sup)}"
-    return base
-
-
-def _dedupe_paragraph_suffix(raw_suffix: str, counts: Counter[str]) -> str:
-    counts[raw_suffix] += 1
-    if counts[raw_suffix] == 1:
-        return raw_suffix
-    return f"{raw_suffix}_x{counts[raw_suffix]}"
-
-
-def _dedupe_subsection_suffix(raw_suffix: str, counts: Counter[str]) -> str:
-    counts[raw_suffix] += 1
-    if raw_suffix == "Unknown":
-        return f"Unknown_{counts[raw_suffix]}"
-    if counts[raw_suffix] == 1:
-        return raw_suffix
-    return f"{raw_suffix}_x{counts[raw_suffix]}"
-
-
-_DUPN_TAIL_RE = re.compile(r"_Dup\d+$")
-
-
-def content_derived_dup_suffix(label: str) -> str:
-    """Stable collision suffix from a heading / §-range (#448).
-
-    Prefer ``§min–max`` → ``min_max``; otherwise an 8-char SHA-1 of the
-    label. Never contains the substring ``_Dup``.
-    """
-    text = (label or "").strip()
-    match = re.search(r"§\s*(\d+)\s*[–\-]\s*(\d+)", text)
-    if match:
-        return f"{match.group(1)}_{match.group(2)}"
-    if text:
-        return hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
-    return "x"
-
-
-def remint_dupn_id(old_id: str, label: str, taken: set[str]) -> str:
-    """Replace a ``_DupN`` tail with a content-derived suffix (#448)."""
-    base = _DUPN_TAIL_RE.sub("", old_id)
-    suffix = content_derived_dup_suffix(label)
-    candidate = f"{base}_{suffix}"
-    n = 2
-    while candidate in taken or candidate == old_id:
-        candidate = f"{base}_{suffix}_{n}"
-        n += 1
-    return candidate
-
-
-def remint_dupn_ids(doc: dict) -> dict[str, str]:
-    """Rewrite ``_DupN`` @ids in a JSON-LD doc. Returns old→new remap."""
-    from estleg_common import jsonld_text
-
-    graph = doc.get("@graph", [])
-    taken = {
-        n.get("@id")
-        for n in graph
-        if isinstance(n, dict) and isinstance(n.get("@id"), str)
-    }
-    remap: dict[str, str] = {}
-    for node in graph:
-        if not isinstance(node, dict):
-            continue
-        nid = node.get("@id")
-        if not isinstance(nid, str) or not _DUPN_TAIL_RE.search(nid):
-            continue
-        label = jsonld_text(node.get("rdfs:label") or node.get("skos:prefLabel") or "")
-        new_id = remint_dupn_id(nid, label, taken)
-        remap[nid] = new_id
-        taken.add(new_id)
-        taken.discard(nid)
-    if not remap:
-        return {}
-    for node in graph:
-        if isinstance(node, dict) and node.get("@id") in remap:
-            node["@id"] = remap[node["@id"]]
-    _rewrite_json_ids(doc, remap)
-    return remap
-
-
-def _rewrite_json_ids(value: object, remap: dict[str, str]) -> None:
-    """Replace remapped IRIs in ``@id`` objects and string values."""
-    if isinstance(value, dict):
-        iri = value.get("@id")
-        if isinstance(iri, str) and iri in remap:
-            value["@id"] = remap[iri]
-        for item in value.values():
-            _rewrite_json_ids(item, remap)
-    elif isinstance(value, list):
-        for item in value:
-            _rewrite_json_ids(item, remap)
-    elif isinstance(value, str):
-        pass
-
-
-def _dedupe_structural_id(
-    base_id: str, counts: Counter[str], *, content: str = ""
-) -> str:
-    """Return a stable, file-local unique structural node IRI.
-
-    RT occasionally repeats chapter or division numbers inside a law. Keep
-    the first IRI unchanged. Later collisions get a content-derived
-    suffix (#448) instead of ``_DupN``.
-    """
-    counts[base_id] += 1
-    if counts[base_id] == 1:
-        return base_id
-    suffix = content_derived_dup_suffix(content or base_id)
-    candidate = f"{base_id}_{suffix}"
-    extra = 2
-    while candidate in counts:
-        candidate = f"{base_id}_{suffix}_{extra}"
-        extra += 1
-    counts[candidate] += 1
-    return candidate
-
-
-def _walk_paragraphs_direct(
-    container: ET.Element,
-    *,
-    block_tags: tuple[str, ...] = ("peatykk", "jagu", "osa"),
-) -> list[ET.Element]:
-    """Return paragrahv elements that belong DIRECTLY to ``container``.
-
-    Recursively descends through wrapper elements but stops as soon as
-    it encounters a deeper structural block — paragraphs inside those
-    nested blocks belong to the inner block, not to ``container``.
-    Replaces the ``ch.iter()`` walk that mis-attributed paragraphs in
-    osa → peatykk → jagu nesting (#166).
-    """
-    out: list[ET.Element] = []
-    for child in container:
-        tag = ln(child.tag)
-        if tag == "paragrahv":
-            out.append(child)
-        elif tag in block_tags:
-            continue
-        else:
-            out.extend(_walk_paragraphs_direct(child, block_tags=block_tags))
-    return out
-
-
-def _loige_body_text(loige_el: ET.Element) -> str:
-    """Return the joined text of one ``loige`` subtree.
-
-    Concatenates the ``lauseOsa``/``lause``/``tavatekst`` fragments below
-    the lõige, normalising whitespace and dropping fragments of length
-    <= 3 (the same filter ``collect_full_text`` applies). The lõige's own
-    ``(N)`` marker is *not* prepended here — callers add it when they want
-    the marker (the provision-level ``estleg:legalText`` does;
-    ``estleg:legalText`` on a Subsection node also does, mirroring the
-    provision-level form).
-    """
-    body_parts: list[str] = []
-    for grandchild in _iter_text_nodes(loige_el):
-        tag = ln(grandchild.tag)
-        if tag in ("lauseOsa", "lause", "tavatekst"):
-            txt = _marker_pruned_text(grandchild).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                body_parts.append(txt)
-    return _sup_to_unicode(" ".join(body_parts).strip())
-
-
-def _superscript_from_text(value: str) -> str:
-    """Extract a trailing superscript index from a number-bearing string.
-
-    Mirrors the ``kuvatavNr`` branch of ``_superscript_index`` but works
-    on a bare string (a ``loige`` ``kuvatavNr`` like ``(2)`` or ``(2¹)``).
-    Machine ``loigeNr`` superscripts are carried in the ``ylaIndeks``
-    attribute, so this fallback only matters for the display form.
-    Returns the index as a plain digit string ("1", "2", ...) or ``""``.
-    """
-    if not value:
-        return ""
-    m = re.search(
-        r"\d+\s*(?:<sup>\s*(\d+)\s*</sup>|([¹²³⁰⁴-⁹]+))",
-        value,
-    )
-    if not m:
-        return ""
-    if m.group(1):
-        return m.group(1).strip()
-    if m.group(2):
-        return "".join(_SUPERSCRIPT_DIGIT_MAP.get(ch, "") for ch in m.group(2))
-    return ""
-
-
-def _loige_numbers(loige_el: ET.Element) -> tuple[str, str]:
-    """Return ``(display_number, id_suffix)`` for one ``loige`` element.
-
-    The *display number* is the human-facing lõige label — preferring the
-    ``kuvatavNr`` CDATA (stripped of its parentheses; e.g. ``(2¹)`` →
-    ``2¹``) and falling back to ``loigeNr``. The *id suffix* is the
-    canonical, order-independent IRI fragment: the base ``loigeNr`` digits
-    plus any superscript index (``ylaIndeks`` on the ``loigeNr`` element,
-    or a Unicode/``<sup>`` superscript glyph in ``kuvatavNr``), joined
-    with an underscore — ``§ 14 lg 2¹`` → ``2_1``. This mirrors
-    ``_paragraph_id_suffix`` for paragrahv elements.
-    """
-    loige_nr = ""
-    ya = ""
-    for sub in loige_el:
-        if ln(sub.tag) == "loigeNr":
-            if sub.text:
-                loige_nr = sub.text.strip()
-            ya = (sub.attrib.get("ylaIndeks") or "").strip()
-            break
-
-    kuv_raw = ""
-    for sub in loige_el:
-        if ln(sub.tag) == "kuvatavNr":
-            kuv_raw = "".join(sub.itertext()).strip()
-            break
-    kuv_inner = re.sub(r"[()]", "", kuv_raw).strip() if kuv_raw else ""
-
-    # Display: kuvatavNr (without parens) wins, else loigeNr, else "".
-    # #572: render leaked literal <sup>N</sup> as Unicode superscript.
-    display = _sup_to_unicode(kuv_inner or loige_nr)
-
-    # ID suffix base + superscript.
-    base = loige_nr
-    if not base:
-        # No machine loigeNr — fall back to the digits in the display form.
-        m = re.match(r"\s*(\d+)", kuv_inner)
-        base = m.group(1) if m else kuv_inner
-    sup = ya
-    if not sup and kuv_raw:
-        sup = _superscript_from_text(kuv_raw)
-    # sanitize_id keeps [0-9A-Za-z_] only, so a base like "2" stays "2"
-    # and any stray punctuation is dropped before it becomes an IRI fragment.
-    base_clean = sanitize_id(base) if base else "Unknown"
-    if sup:
-        return display, f"{base_clean}_{sanitize_id(sup)}"
-    return display, base_clean
-
-
-def _iter_loiked(el: ET.Element) -> list[ET.Element]:
-    """Return the direct ``loige`` children of a paragrahv element, in
-    document order."""
-    return [child for child in el if ln(child.tag) == "loige"]
-
-
-def collect_full_text(el: ET.Element) -> str:
-    """Return the complete text of a provision, preserving lõige boundaries.
-
-    Each ``loige`` is prefixed with its own marker (``(N) ...``) drawn
-    from ``loigeNr`` (or ``kuvatavNr`` when ``loigeNr`` is missing).
-    When no lõige structure exists, fall back to concatenating the raw
-    text fragments (``lauseOsa``/``lause``/``tavatekst``) directly so
-    single-paragraph laws still emit useful text.
-    """
-    lõige_blocks: list[str] = []
-    for child in _iter_loiked(el):
-        loige_nr, _suffix = _loige_numbers(child)
-        body = _loige_body_text(child)
-        if not body:
-            continue
-        if loige_nr:
-            lõige_blocks.append(f"({loige_nr}) {body}")
-        else:
-            lõige_blocks.append(body)
-
-    if lõige_blocks:
-        return _sup_to_unicode(" ".join(lõige_blocks))
-
-    parts: list[str] = []
-    for child in _iter_text_nodes(el):
-        tag = ln(child.tag)
-        if tag in ("lauseOsa", "lause", "tavatekst"):
-            txt = _marker_pruned_text(child).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                parts.append(txt)
-    return _sup_to_unicode(" ".join(parts))
-
-
-def build_subsections(
-    par_el: ET.Element,
-    provision_id: str,
-    *,
-    abbrev_prefix: str,
-    par_suffix: str,
-    paragraph_display: str,
-    osa_nr: str | None = None,
-    seen_ids: set[str] | None = None,
-) -> list[dict]:
-    """Build ``estleg:Subsection`` nodes for one paragrahv's ``loige`` children.
-
-    Each lõige becomes one ``estleg:Subsection`` named individual:
-      * ``@id``: ``estleg:<PREFIX>[_Osa<N>]_Par_<parSuffix>_Lg_<loigeSuffix>``
-        (superscript ``§ 14 lg 2¹`` → ``..._Par_14_Lg_2_1``);
-      * ``@type``: ``["estleg:Subsection", "owl:NamedIndividual"]``;
-      * ``estleg:subsectionNumber``: the display lõige number as a string;
-      * ``estleg:legalText``: the lõige's own text, prefixed with its
-        ``(N)`` marker (mirroring the provision-level ``estleg:legalText``);
-      * ``estleg:parentProvision``: ``{"@id": provision_id}``;
-      * ``rdfs:label``: e.g. ``"§ 14 lg 2"``.
-
-    Subsections whose lõige carries no usable text are skipped (an empty
-    lõige is a structural artefact, not a citable unit, and SHACL requires
-    ``estleg:legalText``). Returns the nodes in document order. Repeated
-    source suffixes are disambiguated with stable ``_DupN`` suffixes;
-    ``seen_ids``, when supplied, accumulates the emitted Subsection IRIs
-    and still catches impossible post-disambiguation collisions.
-    """
-    if seen_ids is None:
-        seen_ids = set()
-    # Paragraph display strings from kuvatavNr carry a trailing period and
-    # whitespace ("§ 14. "); strip it so the Subsection label reads
-    # "§ 14 lg 2" rather than "§ 14.  lg 2".
-    par_label_base = None
-    if paragraph_display:
-        cleaned = re.sub(r"\s+", " ", paragraph_display).strip().rstrip(".").strip()
-        par_label_base = cleaned or None
-    subsection_nodes: list[dict] = []
-    suffix_counts: Counter[str] = Counter()
-    for loige_el in _iter_loiked(par_el):
-        display_nr, suffix = _loige_numbers(loige_el)
-        body = _loige_body_text(loige_el)
-        if not body:
-            # Empty lõige (e.g. a repealed-marker placeholder) — no
-            # citable text, so no Subsection node.
-            continue
-        suffix = _dedupe_subsection_suffix(suffix, suffix_counts)
-        osa_segment = f"_Osa{osa_nr}" if osa_nr else ""
-        sub_id = f"estleg:{abbrev_prefix}{osa_segment}_Par_{par_suffix}_Lg_{suffix}"
-        if sub_id in seen_ids:
-            raise ValueError(
-                f"Duplicate subsection IRI {sub_id!r} produced for prefix "
-                f"{abbrev_prefix!r} after duplicate suffix disambiguation."
-            )
-        seen_ids.add(sub_id)
-
-        legal_text = f"({display_nr}) {body}" if display_nr else body
-
-        # estleg:legalText / estleg:subsectionNumber are emitted as plain
-        # (xsd:string) literals, matching estleg:SubsectionShape's
-        # sh:datatype xsd:string and the existing estleg:legalText data in
-        # the corpus (the generate_missing_parts.py outputs).
-        node: dict = {
-            "@id": sub_id,
-            "@type": ["estleg:Subsection", "owl:NamedIndividual"],
-            "estleg:subsectionNumber": display_nr or suffix,
-            "estleg:legalText": legal_text,
-            "estleg:parentProvision": {"@id": provision_id},
-        }
-        if par_label_base and display_nr:
-            node["rdfs:label"] = f"{par_label_base} lg {display_nr}"
-        subsection_nodes.append(node)
-    return subsection_nodes
-
-
-class SourceListFetchError(RuntimeError):
-    """Raised when the law source list cannot be fetched completely."""
-
 
 PAGE_SCAN_LIMIT = 250
 
@@ -813,70 +204,35 @@ def get_all_laws(
     operators can see when the cap matters.
     """
     all_laws: dict[str, dict] = {}
-    page = 1
     rows_seen = 0
-    completed = False
-    pages_scanned = 0
-    cap_hit = False
-    # Per-page success/fail/retry counters surfaced in the manifest so a
-    # consumer can see which pages were fetched vs. failed. ``get_all_laws``
-    # has no retry-with-backoff loop, so ``pagesRetried`` stays 0 here; the
-    # key is kept for parity with the regulation/common counters.
-    page_stats = {"pagesFetchedOk": 0, "pagesFailed": 0, "pagesRetried": 0}
-    while True:
-        params: dict[str, str | int] = {
-            "leht": page,
-            "dokument": "seadus",
-            "tekst": "terviktekst",
-        }
-        if kehtiv:
-            params["kehtiv"] = kehtiv
-            params["kehtivKehtetus"] = "false"
-            params["mitteJoustunud"] = "false"
-        try:
-            resp = allowed_get(
-                SEARCH_URL,
-                params=params,
-                timeout=30,
-            )
-            resp.raise_for_status()
-            data = resp.json()
-        except Exception as e:
-            page_stats["pagesFailed"] += 1
-            message = f"API error on page {page}: {e}"
-            print(f"  {message}")
-            if allow_partial:
-                break
-            raise SourceListFetchError(message) from e
+    page_stats = new_page_stats()
+    for law in fetch_acts(
+        "seadus",
+        kehtiv=kehtiv,
+        limiit=None,
+        max_pages=page_limit,
+        allow_partial=allow_partial,
+        stop_on_short_page=False,
+        max_retries=0,
+        stats=page_stats,
+    ):
+        rows_seen += 1
+        title = law.get("pealkiri", "").strip()
+        if not title:
+            continue
+        gid = str(law.get("globaalID", ""))
+        if title not in all_laws or gid > all_laws[title]["gid"]:
+            all_laws[title] = {
+                "gid": gid,
+                "tid": str(law.get("terviktekstID", "")),
+                "url": law.get("url", ""),
+                "kehtivus": law.get("kehtivus", {}),
+                "lyhend": law.get("lyhend", ""),
+            }
 
-        page_stats["pagesFetchedOk"] += 1
-        aktid = data.get("aktid", [])
-        pages_scanned = page
-        if not aktid:
-            completed = True
-            break
-
-        for law in aktid:
-            rows_seen += 1
-            title = law.get("pealkiri", "").strip()
-            if not title:
-                continue
-            gid = str(law.get("globaalID", ""))
-            # Keep the entry with the largest globalID (most recent)
-            if title not in all_laws or gid > all_laws[title]["gid"]:
-                all_laws[title] = {
-                    "gid": gid,
-                    "tid": str(law.get("terviktekstID", "")),
-                    "url": law.get("url", ""),
-                    "kehtivus": law.get("kehtivus", {}),
-                    "lyhend": law.get("lyhend", ""),
-                }
-        page += 1
-        if page > page_limit:
-            cap_hit = True
-            completed = False
-            break
-
+    cap_hit = bool(page_stats.get("pageLimitHit"))
+    pages_scanned = page_stats["pagesFetchedOk"] + page_stats["pagesFailed"]
+    completed = (not cap_hit) and page_stats["pagesFailed"] == 0
     if cap_hit and not allow_partial:
         raise SourceListFetchError(
             f"Riigi Teataja pagination cap hit at page {page_limit} "
@@ -895,7 +251,11 @@ def get_all_laws(
         "uniqueActs": len(all_laws),
         "complete": completed,
         "partialAllowed": allow_partial,
-        "pages": page_stats,
+        "pages": {
+            "pagesFetchedOk": page_stats["pagesFetchedOk"],
+            "pagesFailed": page_stats["pagesFailed"],
+            "pagesRetried": page_stats["pagesRetried"],
+        },
     }
 
 
@@ -960,56 +320,29 @@ def fetch_xml(
     *,
     tid: str | None = None,
 ) -> ET.Element | None:
-    """Fetch law XML, using cache if available.
+    """Fetch law XML via ``riigiteataja_common.fetch_xml`` (#466 / #296 / #389).
 
     Issue #165 fix 9: when ``tid`` is supplied, embed it in the cache
-    filename. That way, when Riigi Teataja publishes a new tervikteksti
-    edition for the same slug, the next run misses the cache and re-fetches
-    automatically. Legacy slug-only cache files are still consulted as a
-    fallback so the first upgrade does not trigger a full corpus refetch.
-
-    Issue #601: the cache is consulted via ``_read_cached_rt_root``, which
-    enforces the shared ``MIN_XML_BYTES`` floor (same value for download and
-    cache-accept, so a written file is always re-accepted) and rejects a
-    non-act/HTML-error root so it is never persisted as a "valid" cached act.
+    filename and fall back to the legacy slug-only file.
+    Issue #601: ``validate_root`` rejects HTML/error roots.
     """
-    primary_path = (
-        DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml"
-        if tid
-        else DATA_DIR / f"{cache_name}.xml"
+    primary = (
+        f"{cache_name}__tid{sanitize_id(tid)}" if tid else cache_name
     )
+    fallback = cache_name if tid else None
 
-    cached = _read_cached_rt_root(cache_name, tid)
-    if cached is not None:
-        return cached
+    def _remember(payload: bytes) -> None:
+        _CONTENT_HASHES[cache_name] = sha256_hex(payload)
 
-    full_url = BASE_URL + url if url.startswith("/") else url
-    try:
-        resp = allowed_get(full_url, timeout=60)
-        resp.raise_for_status()
-        resp.encoding = "utf-8"
-        xml_text = resp.text
-
-        # Issue #601: one floor for both the download and the cache-accept
-        # path so a sub-threshold response is neither cached nor re-trusted.
-        if len(xml_text) < MIN_XML_BYTES:
-            return None
-
-        try:
-            root = parse_xml(xml_text)
-        except ET.ParseError:
-            return None
-        # An HTML error page that parses as XML must not be persisted as a
-        # "valid" cached act (#601).
-        if not _is_trustworthy_xml_root(root):
-            return None
-
-        primary_path.write_text(xml_text, encoding="utf-8")
-        _CONTENT_HASHES[cache_name] = sha256_hex(xml_text)
-        return root
-    except Exception as e:
-        print(f"    Fetch error: {e}")
-        return None
+    return common_fetch_xml(
+        url,
+        primary,
+        cache_dir=DATA_DIR,
+        fallback_cache_name=fallback,
+        min_size=MIN_XML_BYTES,
+        validate_root=_is_trustworthy_xml_root,
+        on_bytes=_remember,
+    )
 
 
 def _load_registry() -> dict:
@@ -1136,54 +469,9 @@ class PrefixAllocator:
 # run; callers that need an isolated state (tests, library use) should
 # instantiate their own ``PrefixAllocator``.
 _default_allocator: PrefixAllocator = PrefixAllocator()
-
-
-# Backwards-compatible shim. Existing tests reach in via
-# ``generate_all_laws._used_prefixes.clear()`` to reset state between
-# cases. The real state now lives on ``_default_allocator``; the
-# module-level dict mirrors it so legacy ``.clear()`` calls keep
-# working without breaking unrelated test files.
-class _UsedPrefixesProxy(dict):
-    """Mutable dict-view of the default allocator's used_prefixes."""
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    def __contains__(self, key: object) -> bool:
-        return key in _default_allocator._used_prefixes
-
-    def __getitem__(self, key):
-        return _default_allocator._used_prefixes[key]
-
-    def __iter__(self):
-        return iter(_default_allocator._used_prefixes)
-
-    def __len__(self) -> int:
-        return len(_default_allocator._used_prefixes)
-
-    def get(self, key, default=None):
-        return _default_allocator._used_prefixes.get(key, default)
-
-    def items(self):
-        return _default_allocator._used_prefixes.items()
-
-    def keys(self):
-        return _default_allocator._used_prefixes.keys()
-
-    def values(self):
-        return _default_allocator._used_prefixes.values()
-
-    def __setitem__(self, key, value) -> None:
-        _default_allocator._used_prefixes[key] = value
-
-    def clear(self) -> None:
-        _default_allocator.reset()
-
-    def pop(self, key, *args):
-        return _default_allocator._used_prefixes.pop(key, *args)
-
-
-_used_prefixes: _UsedPrefixesProxy = _UsedPrefixesProxy()
+# Same dict as the default allocator so ``_used_prefixes.clear()`` in tests
+# still resets allocation state (#466: the proxy class is gone).
+_used_prefixes: dict[str, str] = _default_allocator._used_prefixes
 
 
 def _unique_prefix(
@@ -1227,11 +515,6 @@ def _stamp_content_hash(node: dict, slug: str) -> None:
     digest = _CONTENT_HASHES.get(slug)
     if digest:
         node["estleg:contentHash"] = digest
-
-
-def chapter_cluster_subject(cluster_id: str) -> dict:
-    """Issue #436: chapters *refer* to their topic cluster; they are not the same individual."""
-    return {"@id": cluster_id}
 
 
 def _jsonld_id_values(value: object) -> list[str]:
@@ -1369,15 +652,6 @@ def generate_law_jsonld(
     par_min = min(par_numbers) if par_numbers else "?"
     par_max = max(par_numbers) if par_numbers else "?"
 
-    # Check if law has osa (parts) structure
-    osad = []
-    for el in root.iter():
-        if ln(el.tag) == "osa":
-            nr = ct(el, "osaNr")
-            osa_title = ct(el, "osaPealkiri")
-            if nr:
-                osad.append({"nr": nr, "title": osa_title or ""})
-
     ontology_id = f"estleg:{prefix}_Map_2026"
     class_id = f"estleg:LegalProvision_{slug}"
 
@@ -1412,367 +686,34 @@ def generate_law_jsonld(
             "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
         },
     ]
-
-    # Issue #89/#253: Build hierarchy — Chapter and Division nodes.
-    # ``par_to_container`` / ``par_to_cluster`` are keyed by the PARAGRAPH
-    # ELEMENT IDENTITY (``id(par_el)``), not a collapsed int, so superscript
-    # paragraphs that share a base number (``§ 42`` vs ``§ 42¹``) and live in
-    # different chapters land in their own chapter/cluster rather than all
-    # colliding on the first int match (#253).
-    par_to_container: dict[int, str] = {}
-    par_to_cluster: dict[int, str] = {}
-    clusters = []
-    structural_id_counts: Counter[str] = Counter()
-    # Issue #375: chapters that own BOTH a Division and direct-child
-    # provisions — their direct provisions must be appended to the chapter's
-    # ``estleg:hasPart`` (resolved after provision IRIs are minted below).
-    chapters_with_divisions: list[tuple[dict, str]] = []
-    # Issue #166: walk peatykks at any depth, but mapping each paragrahv
-    # only to its IMMEDIATE enclosing peatykk/jagu. ``root.iter()`` on
-    # its own — combined with ``ch.iter()`` for paragrahvs below — would
-    # double-count any paragrahv that lives in a nested block.
-    # Issue #253: also carry each chapter's enclosing osaNr (if any) so the
-    # same ``peatykkNr`` in different osa does not collide in the flattened
-    # single-file path.
-    def _peatykks(parent: ET.Element, osa_nr: str | None = None) -> list[tuple[ET.Element, str | None]]:
-        out: list[tuple[ET.Element, str | None]] = []
-        for c in parent:
-            tag = ln(c.tag)
-            if tag == "peatykk":
-                out.append((c, osa_nr))
-            elif tag == "osa":
-                out.extend(_peatykks(c, ct(c, "osaNr") or osa_nr))
-            else:
-                out.extend(_peatykks(c, osa_nr))
-        return out
-
-    for ch, ch_osa_nr in _peatykks(root):
-        if ln(ch.tag) == "peatykk":
-            ch_nr = ct(ch, "peatykkNr") or ""
-            ch_title = ct(ch, "peatykkPealkiri") or ""
-            if ch_title:
-                # Issue #166: only paragrahvs that DIRECTLY belong to
-                # this peatykk (or one of its jagu children).
-                ch_pars = _walk_paragraphs_direct(ch)
-                ch_par_nrs = []
-                for p in ch_pars:
-                    nr = ct(p, "paragrahvNr")
-                    if nr:
-                        try:
-                            ch_par_nrs.append(int(re.sub(r"[^\d]", "", nr)))
-                        except ValueError:
-                            pass
-
-                # Issue #253: superscript-aware suffix (``6¹`` -> ``6_1``),
-                # osa-namespaced so a repeated peatykkNr across osa is distinct.
-                osa_segment = f"Osa{sanitize_id(ch_osa_nr)}_" if ch_osa_nr else ""
-                structural_suffix = (
-                    f"{osa_segment}{_chapter_id_suffix(ch, ch_nr, ch_title)}"
-                )
-                par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
-                cluster_id = _dedupe_structural_id(
-                    f"estleg:Cluster_{prefix}_{structural_suffix}",
-                    structural_id_counts,
-                    content=f"{par_range} {ch_title}",
-                )
-                chapter_id = _dedupe_structural_id(
-                    f"estleg:Chapter_{prefix}_{structural_suffix}",
-                    structural_id_counts,
-                    content=f"{par_range} {ch_title}",
-                )
-                clusters.append({
-                    "id": cluster_id,
-                    "label": f"{par_range} {ch_title}".strip(),
-                    "count": 0,
-                })
-
-                # Existing TopicCluster node (kept for backward compatibility)
-                graph.append({
-                    "@id": cluster_id,
-                    "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                    "rdfs:label": f"{par_range} {ch_title}".strip(),
-                    "skos:prefLabel": f"{par_range} {ch_title}".strip(),
-                    "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
-                })
-
-                # Issue #89: Chapter hierarchy node
-                chapter_node: dict = {
-                    "@id": chapter_id,
-                    "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                    "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
-                    # #569: chapterNumber is a plain xsd:string on purpose. It
-                    # is parsed from the free-text peatykkNr attribute and is
-                    # NOT guaranteed numeric (Roman numerals "I"/"II"/"III"
-                    # occur), so it must NOT be typed xsd:integer — that would
-                    # make the property mixed-datatype. Guarded by
-                    # scripts/check_numeric_identity_strings.py.
-                    "estleg:chapterNumber": ch_nr,
-                    # Issue #415: chapter -> act root link.
-                    "estleg:partOfAct": {"@id": ontology_id},
-                    #436: chapter refers to cluster; not owl:sameAs
-                    "dcterms:subject": chapter_cluster_subject(cluster_id),
-                }
-
-                # Issue #253: assign every paragraph DIRECTLY under this
-                # chapter (i.e. not inside a jagu) to the chapter's cluster
-                # and chapter container, keyed by element identity. Jagu
-                # paragraphs get the chapter's cluster but the division as
-                # their container (handled in the jagu loop below) — they
-                # used to be left clusterless, orphaning the chapter's
-                # cluster when ALL its paragraphs lived in divisions.
-                for p in ch_pars:
-                    par_to_cluster[id(p)] = cluster_id
-                    par_to_container[id(p)] = chapter_id
-
-                # Issue #89: Division nodes inside this chapter
-                division_ids = []
-                jagu_els = [c for c in ch if ln(c.tag) == "jagu"]
-                for jagu_el in jagu_els:
-                    j_nr = ct(jagu_el, "jaguNr") or ""
-                    j_title = ct(jagu_el, "jaguPealkiri") or ""
-                    if j_title or j_nr:
-                        div_id = _dedupe_structural_id(
-                            f"estleg:Division_{prefix}_{structural_suffix}_"
-                            f"{_division_id_suffix(jagu_el, j_nr, j_title)}",
-                            structural_id_counts,
-                            content=f"{j_nr} {j_title}",
-                        )
-                        division_ids.append(div_id)
-                        graph.append({
-                            "@id": div_id,
-                            "@type": ["owl:NamedIndividual", "estleg:Division"],
-                            "rdfs:label": f"{j_nr}. jagu – {j_title}".strip(" –"),
-                            "estleg:isPartOf": {"@id": chapter_id},
-                        })
-                        # Issue #166/#253: paragraphs that DIRECTLY belong to
-                        # this jagu inherit the chapter's cluster and the
-                        # division as their container.
-                        for jp in _walk_paragraphs_direct(jagu_el):
-                            par_to_cluster[id(jp)] = cluster_id
-                            par_to_container[id(jp)] = div_id
-                    else:
-                        # Issue #371 (gap 1): an UNNAMED <jagu> (no number and
-                        # no title) emits no Division node, but its paragraphs
-                        # are still skipped by ``_walk_paragraphs_direct(ch)``
-                        # (which stops at the jagu block). Without this branch
-                        # they would get neither a container nor a cluster.
-                        # Treat the nameless jagu as transparent: its
-                        # paragraphs belong directly to the chapter.
-                        for jp in _walk_paragraphs_direct(jagu_el):
-                            par_to_cluster[id(jp)] = cluster_id
-                            par_to_container[id(jp)] = chapter_id
-
-                if division_ids:
-                    chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
-                    # Issue #375: remember this chapter so its direct-child
-                    # provisions (those with isPartOf == chapter, i.e. not in a
-                    # division) can be appended to hasPart once their IRIs exist.
-                    chapters_with_divisions.append((chapter_node, chapter_id))
-
-                graph.append(chapter_node)
-
-    # Issue #371 (gap 2): in a structuredBody law WITH chapters, paragraphs
-    # that appear BEFORE the first <peatykk> (a law preamble) are never visited
-    # by the chapter loop above, so they end up with no container and no
-    # cluster. Give every still-unassigned paragraph a dedicated fallback
-    # Chapter + TopicCluster so it stays reachable via isPartOf / requestedCluster.
-    if clusters:
-        preamble_pars = [p for p in paragrahvid if id(p) not in par_to_container]
-        if preamble_pars:
-            preamble_label = "Sissejuhatavad sätted"
-            preamble_cluster_id = _dedupe_structural_id(
-                f"estleg:Cluster_{prefix}_Preamble",
-                structural_id_counts,
-                content=preamble_label,
-            )
-            preamble_chapter_id = _dedupe_structural_id(
-                f"estleg:Chapter_{prefix}_Preamble",
-                structural_id_counts,
-                content=preamble_label,
-            )
-            clusters.append(
-                {"id": preamble_cluster_id, "label": preamble_label, "count": 0}
-            )
-            graph.append({
-                "@id": preamble_cluster_id,
-                "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                "rdfs:label": preamble_label,
-                "skos:prefLabel": preamble_label,
-                "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
-            })
-            graph.append({
-                "@id": preamble_chapter_id,
-                "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                "rdfs:label": preamble_label,
-                "estleg:partOfAct": {"@id": ontology_id},  # Issue #415
-                #436: chapter refers to cluster; not owl:sameAs
-                "dcterms:subject": chapter_cluster_subject(preamble_cluster_id),
-            })
-            for p in preamble_pars:
-                par_to_container[id(p)] = preamble_chapter_id
-                par_to_cluster[id(p)] = preamble_cluster_id
-
-    # Issue #87: Create fallback cluster for laws without any peatükk chapters
-    if not clusters and paragrahvid:
-        _treaty_patterns = ("konventsiooni", "lepingu", "protokolli")
-        slug_lower = slug.lower()
-        if any(pat in slug_lower for pat in _treaty_patterns):
-            fallback_label = "Lepingu sätted"
-        else:
-            fallback_label = title
-        fallback_cluster_id = f"estleg:Cluster_{prefix}_default"
-        par_range = f"§{par_min}–{par_max}" if par_numbers else ""
-        clusters.append({
-            "id": fallback_cluster_id,
-            "label": f"{par_range} {fallback_label}".strip(),
-            "count": 0,
-        })
-        # Every paragraph maps to the single fallback cluster.
-        for p in paragrahvid:
-            par_to_cluster[id(p)] = fallback_cluster_id
-        graph.append({
-            "@id": fallback_cluster_id,
-            "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-            "rdfs:label": f"{par_range} {fallback_label}".strip(),
-            "skos:prefLabel": f"{par_range} {fallback_label}".strip(),
-            "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
-        })
-
-    # Issue #253: provision counts are derived from the identity-aware
-    # assignment so superscript paragraphs sharing a base number are counted
-    # once each (the old ``len(set(int))`` under-counted them).
-    cluster_counts: Counter[str] = Counter(par_to_cluster.values())
-    for cl in clusters:
-        count = cluster_counts.get(cl["id"], 0)
-        for node in graph:
-            if node.get("@id") == cl["id"]:
-                node["estleg:provisionCount"] = count
-                break
-
-    # Add per-law ConceptScheme node with hasTopConcept references
-    if clusters:
-        scheme_node = {
-            "@id": f"estleg:{prefix}_TopicScheme",
-            "@type": ["skos:ConceptScheme"],
-            "rdfs:label": f"{title} teemaskeem",
-            "skos:hasTopConcept": [{"@id": cl["id"]} for cl in clusters],
-        }
-        graph.insert(2, scheme_node)
-
-    # Add paragraph nodes
-    seen_ids: set[str] = set()
-    paragraph_suffix_counts: Counter[str] = Counter()
-    # Issue #375: paragraph element identity -> minted IRI, so the chapter
-    # hasPart post-pass can resolve direct-child provisions to their @ids.
-    par_iri_by_elem: dict[int, str] = {}
-    # Issue #132: every estleg:Subsection IRI emitted in this file —
-    # a collision (loigeNr/ylaIndeks/kuvatavNr clash) fails fast.
-    seen_subsection_ids: set[str] = set()
-    for p in paragrahvid:
-        p_nr = ct(p, "paragrahvNr") or "?"
-        p_title = ct(p, "paragrahvPealkiri") or ""
-        p_display = _sup_to_unicode(ct(p, "kuvatavNr")) or f"§ {p_nr}"
-        text = collect_text(p)
-        full_text = collect_full_text(p)
-
-        # Issue #156/#165 fix 2: build the IRI suffix from paragrahvNr
-        # plus any superscript index (ylaIndeks="N" or §X¹). This is
-        # order-independent so partial regenerations no longer drift
-        # IRIs based on insertion order.
-        raw_par_suffix = _paragraph_id_suffix(p)
-        par_suffix = _dedupe_paragraph_suffix(
-            raw_par_suffix, paragraph_suffix_counts
-        )
-        p_id = f"estleg:{prefix}_Par_{par_suffix}"
-
-        if p_id in seen_ids:
-            raise ValueError(
-                f"Duplicate paragraph IRI {p_id!r} produced for prefix {prefix!r} "
-                "after duplicate suffix disambiguation."
-            )
-        seen_ids.add(p_id)
-        par_iri_by_elem[id(p)] = p_id
-
-        # Issue #253: cluster/chapter assignment is by element identity, so a
-        # superscript paragraph (``§ 42¹``) lands in its own chapter rather
-        # than the first chapter whose collapsed int happened to match.
-        cluster_ref = par_to_cluster.get(id(p))
-
-        # Issue #92: Build label — prefer title, fall back to text excerpt
-        if p_title:
-            label = f"{p_display} {p_title}"
-        elif text:
-            excerpt = text[:80].rstrip()
-            if len(text) > 80:
-                excerpt = excerpt + "..."
-            label = f"{p_display} [{excerpt}]"
-        else:
-            label = p_display
-        summary = provision_summary(text, p_title, p_display)
-
-        node: dict = {
-            "@id": p_id,
-            "@type": ["owl:NamedIndividual", class_id],
-            "estleg:paragrahv": p_display,
-            "rdfs:label": label,
-            "estleg:sourceAct": title,
-            # Issue #415: structural IRI join from the provision up to its act
-            # root (sourceAct stays the literal title). 1-hop provision->act.
-            "estleg:partOfAct": {"@id": ontology_id},
-            "estleg:summary": summary,
-        }
-
-        # Issue #88: Add full legal text without truncation
-        if full_text:
-            node["estleg:legalText"] = full_text
-
-        if cluster_ref:
-            node["estleg:requestedCluster"] = {"@id": cluster_ref}
-
-        # Issue #89: Link provision to containing chapter or division
-        container_ref = par_to_container.get(id(p))
-        if container_ref:
-            node["estleg:isPartOf"] = {"@id": container_ref}
-
-        # Issue #132: emit estleg:Subsection nodes for each lõige. The
-        # provision keeps its full concatenated estleg:legalText (the sum
-        # of the subsections) for backward compatibility; the per-lõige
-        # text additionally lives on Subsection nodes — the level
-        # citations actually reference ("TsÜS § 14 lg 2").
-        subsection_nodes = build_subsections(
-            p,
-            p_id,
-            abbrev_prefix=prefix,
-            par_suffix=par_suffix,
-            paragraph_display=p_display,
-            seen_ids=seen_subsection_ids,
-        )
-        if subsection_nodes:
-            node["estleg:hasSubsection"] = [
-                {"@id": s["@id"]} for s in subsection_nodes
-            ]
-
-        graph.append(node)
-        graph.extend(subsection_nodes)
-
-    # Issue #375: a chapter that owns BOTH a Division and direct-child
-    # provisions previously listed only the Division @ids in hasPart, leaving
-    # its direct provisions reachable via isPartOf but absent from hasPart.
-    # Append those provision IRIs so the link is symmetric.
-    for chapter_node, chapter_id in chapters_with_divisions:
-        direct_iris = [
-            par_iri_by_elem[id(p)]
-            for p in paragrahvid
-            if par_to_container.get(id(p)) == chapter_id
-            and id(p) in par_iri_by_elem
-        ]
-        if direct_iris:
-            chapter_node.setdefault("estleg:hasPart", [])
-            chapter_node["estleg:hasPart"].extend(
-                {"@id": iri} for iri in direct_iris
-            )
-
+    _treaty_patterns = ("konventsiooni", "lepingu", "protokolli")
+    fallback_label = (
+        "Lepingu sätted"
+        if any(pat in slug.lower() for pat in _treaty_patterns)
+        else title
+    )
+    emit_hierarchy_and_provisions(
+        graph=graph,
+        chapter_root=root,
+        paragrahvid=paragrahvid,
+        prefix=prefix,
+        ontology_id=ontology_id,
+        class_id=class_id,
+        title=title,
+        slug=slug,
+        par_min=par_min,
+        par_max=par_max,
+        par_numbers=par_numbers,
+        scheme_id=f"estleg:{prefix}_TopicScheme",
+        descend_osa=True,
+        fallback_label=fallback_label,
+        provision_iri_prefix=f"estleg:{prefix}_Par_",
+        structural_ns=prefix,
+        subsection_builder=build_subsections,
+    )
     return {"@context": CONTEXT, "@graph": graph}
+
+
 
 
 def generate_law_stub_jsonld(
@@ -1908,355 +849,41 @@ def generate_multipart_law(
                 "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
             },
         ]
-
-        # Issue #89/#253: Build hierarchy — Chapter and Division nodes within
-        # this osa. Keyed by paragraph element identity (``id(par_el)``) so
-        # superscript paragraphs sharing a base number land in their own
-        # chapter/cluster (see the single-file path for the full rationale).
-        par_to_container: dict[int, str] = {}
-        par_to_cluster: dict[int, str] = {}
-        clusters = []
-        structural_id_counts: Counter[str] = Counter()
-        # Issue #375: chapters owning BOTH a Division and direct-child
-        # provisions, resolved into hasPart after provision IRIs are minted.
-        chapters_with_divisions: list[tuple[dict, str]] = []
-        part_concept_id = f"estleg:Cluster_{prefix}_{osa_nr}_Part"
-        scheme_id = f"estleg:{prefix}_Osa{osa_nr}_TopicScheme"
-        # Issue #166: walk peatykk children directly so paragrahvs that
-        # belong to a deeper nested chapter inside the same osa do not
-        # double-count up to the outer chapter.
-        def _osa_peatykks(parent: ET.Element) -> list[ET.Element]:
-            out: list[ET.Element] = []
-            for c in parent:
-                tag = ln(c.tag)
-                if tag == "peatykk":
-                    out.append(c)
-                elif tag == "osa":
-                    continue
-                else:
-                    out.extend(_osa_peatykks(c))
-            return out
-
-        for ch in _osa_peatykks(osa_el):
-            if ln(ch.tag) == "peatykk":
-                ch_nr = ct(ch, "peatykkNr") or ""
-                ch_title = ct(ch, "peatykkPealkiri") or ""
-                if ch_title:
-                    # Issue #166: only paragrahvs that are immediate
-                    # descendants of THIS chapter (or its jagu children).
-                    ch_pars = _walk_paragraphs_direct(ch)
-                    ch_par_nrs = set()
-                    for p in ch_pars:
-                        nr = ct(p, "paragrahvNr")
-                        if nr:
-                            try:
-                                ch_par_nrs.add(int(re.sub(r"[^\d]", "", nr)))
-                            except ValueError:
-                                pass
-                    # Issue #253: superscript-aware suffix (``6¹`` -> ``6_1``).
-                    structural_suffix = _chapter_id_suffix(ch, ch_nr, ch_title)
-                    par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
-                    cluster_id = _dedupe_structural_id(
-                        f"estleg:Cluster_{prefix}_{osa_nr}_{structural_suffix}",
-                        structural_id_counts,
-                        content=f"{par_range} {ch_title}",
-                    )
-                    chapter_id = _dedupe_structural_id(
-                        f"estleg:Chapter_{prefix}_{osa_nr}_{structural_suffix}",
-                        structural_id_counts,
-                        content=f"{par_range} {ch_title}",
-                    )
-                    clusters.append({"id": cluster_id, "label": f"{par_range} {ch_title}".strip(), "count": 0})
-
-                    # Existing TopicCluster node (kept for backward compatibility)
-                    graph.append({
-                        "@id": cluster_id,
-                        "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                        "rdfs:label": f"{par_range} {ch_title}".strip(),
-                        "skos:prefLabel": f"{par_range} {ch_title}".strip(),
-                        "skos:inScheme": {"@id": scheme_id},
-                        "skos:broader": {"@id": part_concept_id},
-                    })
-
-                    # Issue #89: Chapter hierarchy node
-                    chapter_node: dict = {
-                        "@id": chapter_id,
-                        "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                        "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
-                        # #569: chapterNumber stays a plain xsd:string (free-text
-                        # peatykkNr, may be a Roman numeral) — see the other
-                        # chapter_node emission site and
-                        # scripts/check_numeric_identity_strings.py.
-                        "estleg:chapterNumber": ch_nr,
-                        # Issue #415: chapter -> this osa's act root link.
-                        "estleg:partOfAct": {"@id": ontology_id},
-                        #436: chapter refers to cluster; not owl:sameAs
-                        "dcterms:subject": chapter_cluster_subject(cluster_id),
-                    }
-
-                    # Issue #253: identity-aware cluster/chapter assignment
-                    # for paragraphs directly under the chapter; jagu
-                    # paragraphs inherit the chapter cluster below.
-                    for p in ch_pars:
-                        par_to_cluster[id(p)] = cluster_id
-                        par_to_container[id(p)] = chapter_id
-
-                    # Issue #89: Division nodes inside this chapter
-                    division_ids = []
-                    jagu_els = [c for c in ch if ln(c.tag) == "jagu"]
-                    for jagu_el in jagu_els:
-                        j_nr = ct(jagu_el, "jaguNr") or ""
-                        j_title = ct(jagu_el, "jaguPealkiri") or ""
-                        if j_title or j_nr:
-                            div_id = _dedupe_structural_id(
-                                f"estleg:Division_{prefix}_{osa_nr}_{structural_suffix}_"
-                                f"{_division_id_suffix(jagu_el, j_nr, j_title)}",
-                                structural_id_counts,
-                                content=f"{j_nr} {j_title}",
-                            )
-                            division_ids.append(div_id)
-                            graph.append({
-                                "@id": div_id,
-                                "@type": ["owl:NamedIndividual", "estleg:Division"],
-                                "rdfs:label": f"{j_nr}. jagu – {j_title}".strip(" –"),
-                                "estleg:isPartOf": {"@id": chapter_id},
-                            })
-                            # Issue #166/#253: paragraphs that DIRECTLY
-                            # belong to this jagu inherit the chapter's
-                            # cluster and the division as their container.
-                            for jp in _walk_paragraphs_direct(jagu_el):
-                                par_to_cluster[id(jp)] = cluster_id
-                                par_to_container[id(jp)] = div_id
-                        else:
-                            # Issue #371 (gap 1): an UNNAMED <jagu> emits no
-                            # Division, yet its paragraphs are skipped by
-                            # ``_walk_paragraphs_direct(ch)``. Treat the
-                            # nameless jagu as transparent so its paragraphs
-                            # still get the chapter as their container/cluster.
-                            for jp in _walk_paragraphs_direct(jagu_el):
-                                par_to_cluster[id(jp)] = cluster_id
-                                par_to_container[id(jp)] = chapter_id
-
-                    if division_ids:
-                        chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
-                        # Issue #375: resolve direct-child provisions into
-                        # hasPart after their IRIs are minted (below).
-                        chapters_with_divisions.append((chapter_node, chapter_id))
-
-                    graph.append(chapter_node)
-
-        # Issue #371 (gap 2): paragraphs before the first <peatykk> in this osa
-        # (an osa preamble) are never visited by the chapter loop. When the osa
-        # otherwise has chapters, give every still-unassigned paragraph a
-        # dedicated fallback Chapter + TopicCluster (mirrors the single-file
-        # path) so it stays reachable via isPartOf / requestedCluster.
-        if clusters:
-            preamble_pars = [
-                p for p in paragrahvid if id(p) not in par_to_container
-            ]
-            if preamble_pars:
-                preamble_label = "Sissejuhatavad sätted"
-                preamble_cluster_id = _dedupe_structural_id(
-                    f"estleg:Cluster_{prefix}_{osa_nr}_Preamble",
-                    structural_id_counts,
-                    content=preamble_label,
-                )
-                preamble_chapter_id = _dedupe_structural_id(
-                    f"estleg:Chapter_{prefix}_{osa_nr}_Preamble",
-                    structural_id_counts,
-                    content=preamble_label,
-                )
-                clusters.append(
-                    {"id": preamble_cluster_id, "label": preamble_label, "count": 0}
-                )
-                graph.append({
-                    "@id": preamble_cluster_id,
-                    "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                    "rdfs:label": preamble_label,
-                    "skos:prefLabel": preamble_label,
-                    "skos:inScheme": {"@id": scheme_id},
-                    "skos:broader": {"@id": part_concept_id},
-                })
-                graph.append({
-                    "@id": preamble_chapter_id,
-                    "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                    "rdfs:label": preamble_label,
-                    "estleg:partOfAct": {"@id": ontology_id},  # Issue #415
-                    #436: chapter refers to cluster; not owl:sameAs
-                    "dcterms:subject": chapter_cluster_subject(preamble_cluster_id),
-                })
-                for p in preamble_pars:
-                    par_to_container[id(p)] = preamble_chapter_id
-                    par_to_cluster[id(p)] = preamble_cluster_id
-
-        # Issue #87: Fallback cluster for osa without peatükk chapters
-        if not clusters and paragrahvid:
-            fallback_label = f"{title} Osa {osa_nr}"
-            if osa_title:
-                fallback_label = f"{title} Osa {osa_nr} ({osa_title})"
-            fallback_cluster_id = f"estleg:Cluster_{prefix}_{osa_nr}_default"
-            osa_par_range = f"§{par_min}–{par_max}" if par_numbers else ""
-            clusters.append({
-                "id": fallback_cluster_id,
-                "label": f"{osa_par_range} {fallback_label}".strip(),
-                "count": 0,
-            })
-            # Every paragraph in this osa maps to the single fallback cluster.
-            for p in paragrahvid:
-                par_to_cluster[id(p)] = fallback_cluster_id
-            graph.append({
-                "@id": fallback_cluster_id,
-                "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                "rdfs:label": f"{osa_par_range} {fallback_label}".strip(),
-                "skos:prefLabel": f"{osa_par_range} {fallback_label}".strip(),
-                "skos:inScheme": {"@id": scheme_id},
-            })
-
-        # Issue #253: provision counts derived from identity-aware assignment.
-        cluster_counts: Counter[str] = Counter(par_to_cluster.values())
-        for cl in clusters:
-            count = cluster_counts.get(cl["id"], 0)
-            for node in graph:
-                if node.get("@id") == cl["id"]:
-                    node["estleg:provisionCount"] = count
-                    break
-
-        # Add per-osa ConceptScheme and part-level concept nodes
-        if clusters:
-            part_label = f"Osa {osa_nr}"
-            if osa_title:
-                part_label = f"Osa {osa_nr} ({osa_title})"
-
-            # Determine top concepts: part-level concept if we have chapter clusters,
-            # otherwise the fallback cluster is the direct top concept
-            has_chapter_clusters = any(
-                node.get("skos:broader") for node in graph
-                if isinstance(node.get("skos:broader"), dict)
-            )
-
-            if has_chapter_clusters:
-                # Insert part-level grouping concept
-                part_concept_node = {
-                    "@id": part_concept_id,
-                    "@type": ["owl:NamedIndividual", "skos:Concept"],
-                    "rdfs:label": part_label,
-                    "skos:prefLabel": part_label,
-                    "skos:inScheme": {"@id": scheme_id},
-                    "skos:narrower": [{"@id": cl["id"]} for cl in clusters],
-                }
-                graph.insert(2, part_concept_node)
-                top_concepts = [{"@id": part_concept_id}]
-            else:
-                # Fallback cluster is the direct top concept (no part-level needed)
-                top_concepts = [{"@id": cl["id"]} for cl in clusters]
-
-            scheme_node = {
-                "@id": scheme_id,
-                "@type": ["skos:ConceptScheme"],
-                "rdfs:label": f"{title} {part_label} teemaskeem",
-                "skos:hasTopConcept": top_concepts,
-            }
-            graph.insert(2, scheme_node)
-
-        seen_ids: set[str] = set()
-        paragraph_suffix_counts: Counter[str] = Counter()
-        # Issue #375: paragraph element identity -> minted IRI for the
-        # chapter hasPart post-pass.
-        par_iri_by_elem: dict[int, str] = {}
-        # Issue #132: Subsection IRIs emitted within this osa file.
-        seen_subsection_ids: set[str] = set()
-        for p in paragrahvid:
-            p_nr = ct(p, "paragrahvNr") or "?"
-            p_title = ct(p, "paragrahvPealkiri") or ""
-            p_display = _sup_to_unicode(ct(p, "kuvatavNr")) or f"§ {p_nr}"
-            text = collect_text(p)
-            full_text = collect_full_text(p)
-            # Issue #156/#165 fix 2: superscript-aware paragraph IRI suffix.
-            raw_par_suffix = _paragraph_id_suffix(p)
-            par_suffix = _dedupe_paragraph_suffix(
-                raw_par_suffix, paragraph_suffix_counts
-            )
-            p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{par_suffix}"
-            if p_id in seen_ids:
-                raise ValueError(
-                    f"Duplicate paragraph IRI {p_id!r} produced for prefix "
-                    f"{prefix!r} osa {osa_nr!r} after duplicate suffix "
-                    "disambiguation."
-                )
-            seen_ids.add(p_id)
-            par_iri_by_elem[id(p)] = p_id
-
-            # Issue #253: cluster assignment by element identity.
-            cluster_ref = par_to_cluster.get(id(p))
-
-            # Issue #92: Build label — prefer title, fall back to text excerpt
-            if p_title:
-                label = f"{p_display} {p_title}"
-            elif text:
-                excerpt = text[:80].rstrip()
-                if len(text) > 80:
-                    excerpt = excerpt + "..."
-                label = f"{p_display} [{excerpt}]"
-            else:
-                label = p_display
-            summary = provision_summary(text, p_title, p_display)
-
-            node: dict = {
-                "@id": p_id,
-                "@type": ["owl:NamedIndividual", class_id],
-                "estleg:paragrahv": p_display,
-                "rdfs:label": label,
-                "estleg:sourceAct": title,
-                # Issue #415: structural IRI join to this osa's act root.
-                "estleg:partOfAct": {"@id": ontology_id},
-                "estleg:summary": summary,
-            }
-            # Issue #88: Add full legal text without truncation
-            if full_text:
-                node["estleg:legalText"] = full_text
-            if cluster_ref:
-                node["estleg:requestedCluster"] = {"@id": cluster_ref}
-            # Issue #89: Link provision to containing chapter or division
-            container_ref = par_to_container.get(id(p))
-            if container_ref:
-                node["estleg:isPartOf"] = {"@id": container_ref}
-            # Issue #132: per-lõige estleg:Subsection nodes (osa-scoped IRIs).
-            subsection_nodes = build_subsections(
-                p,
-                p_id,
-                abbrev_prefix=prefix,
-                par_suffix=par_suffix,
-                paragraph_display=p_display,
-                osa_nr=str(osa_nr),
-                seen_ids=seen_subsection_ids,
-            )
-            if subsection_nodes:
-                node["estleg:hasSubsection"] = [
-                    {"@id": s["@id"]} for s in subsection_nodes
-                ]
-            graph.append(node)
-            graph.extend(subsection_nodes)
-
-        # Issue #375: append each chapter's direct-child provision IRIs to its
-        # hasPart so a chapter with both a Division and direct provisions links
-        # both (symmetric with isPartOf).
-        for chapter_node, chapter_id in chapters_with_divisions:
-            direct_iris = [
-                par_iri_by_elem[id(p)]
-                for p in paragrahvid
-                if par_to_container.get(id(p)) == chapter_id
-                and id(p) in par_iri_by_elem
-            ]
-            if direct_iris:
-                chapter_node.setdefault("estleg:hasPart", [])
-                chapter_node["estleg:hasPart"].extend(
-                    {"@id": iri} for iri in direct_iris
-                )
-
+        fallback_label = f"{title} Osa {osa_nr}"
+        if osa_title:
+            fallback_label = f"{title} Osa {osa_nr} ({osa_title})"
+        part_label = f"Osa {osa_nr}"
+        if osa_title:
+            part_label = f"Osa {osa_nr} ({osa_title})"
+        emit_hierarchy_and_provisions(
+            graph=graph,
+            chapter_root=osa_el,
+            paragrahvid=paragrahvid,
+            prefix=prefix,
+            ontology_id=ontology_id,
+            class_id=class_id,
+            title=title,
+            slug=slug,
+            par_min=par_min,
+            par_max=par_max,
+            par_numbers=par_numbers,
+            scheme_id=f"estleg:{prefix}_Osa{osa_nr}_TopicScheme",
+            descend_osa=False,
+            osa_nr=str(osa_nr),
+            part_concept_id=f"estleg:Cluster_{prefix}_{osa_nr}_Part",
+            cluster_has_broader=True,
+            fallback_label=fallback_label,
+            provision_iri_prefix=f"estleg:{prefix}_Osa{osa_nr}_Par_",
+            structural_ns=f"{prefix}_{osa_nr}",
+            part_label=part_label,
+            subsection_builder=build_subsections,
+        )
         filename = f"{slug}_osa{osa_nr}_peep.json"
         results.append((filename, {"@context": CONTEXT, "@graph": graph}))
 
     return results
+
+
 
 
 def _ontology_node(doc: dict) -> dict | None:
