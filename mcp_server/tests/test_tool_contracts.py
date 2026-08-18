@@ -1,6 +1,6 @@
 """Per-tool contract tests for the estleg_mcp server (ticket #495).
 
-Each of the 10 MCP tools advertises a documented return-field set in its
+Each of the 14 MCP tools advertises a documented return-field set in its
 docstring (the contract a lawmaker-facing client codes against). These tests
 boot the tools against the committed ``krr_outputs/`` corpus and assert, for
 every tool:

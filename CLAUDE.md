@@ -28,7 +28,7 @@ in `scripts/`. It is the data backend behind seadusloome.sixtyfour.ee.
 ## mcp_server/
 
 `mcp_server/` is **estleg-mcp**: a natural-language MCP query layer over this
-corpus (10 tools, each returning real riigiteataja.ee / riigikohus.ee /
+corpus (14 tools, each returning real riigiteataja.ee / riigikohus.ee /
 eelnoud.valitsus.ee / EUR-Lex citations), with a stdio transport for local IDE
 clients and a streamable-HTTP transport for a shared remote endpoint. See
 [mcp_server/README.md](mcp_server/README.md). Current status and next steps are

@@ -1,11 +1,13 @@
 # Estonian Legal Ontology Project
 
 ## Project Overview and Purpose
-This project provides a comprehensive, machine-readable ontology of Estonian and EU legislation using JSON-LD. It creates a semantic graph of **enacted laws** (from Riigi Teataja), **draft legislation** (from EIS), **Supreme Court decisions** (from RIK), and **EU legal acts** (from EUR-Lex), enabling advanced search, cross-referencing, and automated legal analysis.
+This project provides a comprehensive, machine-readable ontology of Estonian and EU legislation using JSON-LD. It creates a semantic graph of **enacted laws** (from Riigi Teataja), **domestic regulations (määrused)**, **draft legislation** (from EIS), **Supreme Court decisions** (from RIK), **EU legal acts** (from EUR-Lex), and **EU court decisions**, enabling advanced search, cross-referencing, and automated legal analysis.
 
-**Status: 615 enacted laws + 22,832 drafts + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** (as of March 7, 2026)
+Canonical headline counts live in the root [README.md](../README.md) and `metadata.jsonld` (`estleg:statistics`). Do not edit those two independently.
 
-## Enacted Laws (615 total)
+**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,116 JSON/JSON-LD files** | ontology **0.11.0** (2026-06-22)
+
+## Enacted Laws (1,122 total)
 
 All laws from [Riigi Teataja](https://www.riigiteataja.ee) have been mapped, including:
 
@@ -35,8 +37,18 @@ All laws from [Riigi Teataja](https://www.riigiteataja.ee) have been mapped, inc
 17. Karistusseadustik (KarS) - Penal Code
 18. Kriminaalmenetluse seadustik (KrMS) - Code of Criminal Procedure
 
-### + 577 more laws
+### + 1,104 more laws
 See `krr_outputs/INDEX.json` for the complete list.
+
+## Domestic regulations (määrused)
+
+State and municipal regulations sit under `krr_outputs/regulations/` and take
+part in the same `iter_peep_files()` enrichment passes as enacted laws.
+
+| Level | Path | Count |
+|-------|------|-------|
+| State (`estleg:NationalRegulation`) | `krr_outputs/regulations/riik/` | 3,812 |
+| Municipal (`estleg:MunicipalRegulation`) | `krr_outputs/regulations/kov/` | 11,059 |
 
 ## Draft Legislation (EIS)
 
@@ -76,6 +88,7 @@ The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`):
 
 ### Core Classes
 - `estleg:LegalProvision` — Enacted legal provisions (paragraphs, sections)
+- `estleg:DomesticRegulation` — Domestic määrus (state or municipal)
 - `estleg:TopicCluster` — Thematic groupings of provisions
 - `estleg:LegalConcept` — Legal concepts and definitions
 - `estleg:DraftLegislation` — Legislative drafts (eelnõud)
@@ -107,12 +120,12 @@ See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete documentation.
 
 | Case Type | Count |
 |-----------|-------|
-| Administrative (Haldusasi) | 9,561 |
-| Civil (Tsiviilasi) | 970 |
-| Criminal (Kriminaalasi) | 484 |
-| Constitutional Review | 336 |
-| Misdemeanor (Vaarteoasi) | 107 |
+| Civil (Tsiviilasi) | 4,745 |
+| Criminal (Kriminaalasi) | 3,422 |
+| Administrative (Haldusasi) | 2,392 |
+| Constitutional Review | 792 |
 | Other | 679 |
+| Misdemeanor (Vaarteoasi) | 107 |
 
 ## EU Legislation (EUR-Lex)
 
@@ -135,52 +148,43 @@ Each act includes CELEX number, Estonian title, document date, in-force status, 
 | AG Opinion | Kohtujuristi ettepanek | 9,952 |
 | Order | Kohtumaarus | 6,619 |
 | Judgment | Kohtuotsus | 5,641 |
+| Other | — | 61 |
 | Court Opinion | Kohtu arvamus | 17 |
 
 Courts: Court of Justice (17,720), General Court (4,036), Civil Service Tribunal (534).
 
 ## How to Use
 
-1. Download JSON-LD files from `krr_outputs/` (enacted), `krr_outputs/eelnoud/` (drafts), `krr_outputs/riigikohus/` (court), `krr_outputs/eurlex/` (EU)
+1. Download JSON-LD files from `krr_outputs/` (enacted), `krr_outputs/regulations/` (määrused), `krr_outputs/eelnoud/` (drafts), `krr_outputs/riigikohus/` (court), `krr_outputs/eurlex/` (EU), `krr_outputs/curia/` (EU court)
 2. Load into a graph database (GraphDB, Neo4j with RDF plugin, Apache Jena)
 3. Parse with RDF/JSON-LD libraries (Python: rdflib, JavaScript: jsonld.js)
 
 ## Repository Structure
 ```
 .
-├── krr_outputs/            # JSON-LD ontology files (700+ files)
+├── krr_outputs/            # JSON-LD corpus (~23k files)
 │   ├── *_peep.json         # Individual enacted law mappings
-│   ├── combined_ontology.jsonld  # All enacted laws combined
+│   ├── combined_ontology.jsonld  # Combined load surface (Git LFS)
 │   ├── INDEX.json          # Enacted law registry
 │   ├── eelnoud/            # Draft legislation
-│   │   ├── eelnoud_schema.json           # Schema definitions
-│   │   ├── eelnoud_*_peep.json           # Phase-grouped drafts
-│   │   ├── eelnoud_combined.jsonld       # All drafts combined
-│   │   └── EELNOUD_INDEX.json            # Draft registry
 │   ├── riigikohus/         # Supreme Court decisions
-│   │   ├── riigikohus_schema.json        # Schema definitions
-│   │   ├── riigikohus_YYYY_peep.json     # Per-year files (1993-2026)
-│   │   └── RIIGIKOHUS_INDEX.json         # Decision registry
 │   ├── eurlex/             # EU legislation
-│   │   ├── eurlex_schema.json            # Schema definitions
-│   │   ├── eurlex_*_peep.json            # Per-type EU acts
-│   │   ├── eurlex_combined.jsonld        # All EU acts combined
-│   │   └── EURLEX_INDEX.json             # EU legislation registry
 │   ├── curia/              # EU court decisions
-│   │   ├── curia_schema.json             # Schema definitions
-│   │   ├── curia_*_peep.json             # Per-type decisions
-│   │   ├── curia_combined.jsonld         # All EU decisions combined
-│   │   └── CURIA_INDEX.json              # EU court decision registry
+│   ├── regulations/        # State (riik/) + municipal (kov/) määrused
 │   ├── concepts/           # Legal concept cross-reference graph
 │   ├── institutions/       # Institutional competence mappings
 │   ├── sanctions/          # Penalty and sanction index
-│   └── amendments/         # Amendment chain data
+│   ├── amendments/         # Amendment chain data
+│   └── provision_versions/ # Point-in-time provision redactions
+├── data/                   # Registries (abbreviations, EHAK, migrations)
+├── mcp_server/             # estleg-mcp natural-language query layer
 ├── docs/                   # Documentation
 ├── shacl/                  # SHACL validation shapes
 ├── scripts/                # Generation and validation scripts
+├── tests/                  # Unit + corpus invariant tests
 ├── reviews/                # Law review request files
 ├── .github/workflows/      # CI pipeline
-└── README.md               # Main project readme
+└── README.md               # Main project readme (canonical counts)
 ```
 
 ## Repository
@@ -194,7 +198,11 @@ Please submit pull requests with improvements. Ensure all JSON-LD files pass val
 - Proper estleg: namespace usage
 
 ## License
-MIT License - See LICENSE file for details
+
+The MIT `LICENSE` covers repository **software** only (`scripts/`,
+`mcp_server/`, `tests/`). The legal-text corpus keeps its source rights;
+the project's compilation layer is offered as draft CC BY 4.0. See the
+top-level `NOTICE` and [DATA_RIGHTS.md](DATA_RIGHTS.md).
 
 ## Data Sources
 
@@ -207,4 +215,4 @@ MIT License - See LICENSE file for details
 | EUR-Lex / CURIA | https://eur-lex.europa.eu | EU court decisions | SPARQL |
 
 ---
-*Last updated: March 7, 2026 (615 laws + 22,832 drafts + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions)*
+*Last updated: 2026-08-18 to match `metadata.jsonld` / ontology 0.11.0 (2026-06-22). Court case-type split from `krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json`.*

@@ -11,6 +11,7 @@ correctness, validation gates, and project documentation.
 - `tests/` - unit and regression tests for generator behavior and validators.
 - `shacl/` - SHACL shapes used by local validation and downstream sync gates.
 - `krr_outputs/` - generated JSON-LD corpus and aggregate artifacts.
+- `mcp_server/` - estleg-mcp natural-language query layer (14 tools).
 - `docs/` - schema references, validation notes, and release documentation.
 - `.github/workflows/validate.yml` - CI validation entry point.
 
@@ -70,21 +71,22 @@ convention.
   amendment ids by substituting the law abbreviation for `base_slug`
   (`estleg:Amendment_<ABBREV>_t322297_1`) — track that as a follow-up rather
   than blocking on it.
-- **Registry coverage is ~601 of the ~608 laws in `krr_outputs/INDEX.json`.**
-  The handful not in `data/law_abbreviations.json` are entries whose
-  `owl:Ontology` node either has no `dc:source`/`dcterms:title` (so
-  `load_peep_prefixes` skips them even though the `@id` already carries a
-  short prefix — e.g. `estleg:KONKS_Map_2026`, `estleg:PANKR_Map_2026`,
-  `estleg:TLS_Map_2026`), or uses an ontology-`@id` shape outside the
-  `_Map_2026` / `_OsaN` patterns (`estleg:ARIS_Ontology_v1`,
+- **Registry coverage is 601 keys in `data/law_abbreviations.json` against
+  1,122 laws in `krr_outputs/INDEX.json`.** `load_peep_prefixes` currently
+  returns 1,141 root-peep slugs; 542 of those slugs are not in the registry
+  (the file was last generated against the pre-expansion INDEX). A smaller
+  set is skipped by the loader even though the `@id` already carries a short
+  prefix: no `dc:source`/`dcterms:title` (`estleg:KONKS_Map_2026`,
+  `estleg:PANKR_Map_2026`, `estleg:TLS_Map_2026`), or an ontology-`@id`
+  shape outside `_Map_2026` / `_OsaN` (`estleg:ARIS_Ontology_v1`,
   `estleg:KrMS_ProcedureMap_2026` — the latter is also flagged in
   `INDEX.json`'s `registry_exceptions`), plus two `*_owl.jsonld` artifacts
   (`karistusseadustik_eriosa_owl`, `tsus_osa7_138_169_owl`) that aren't
-  `*_peep.json` files. None of these need a corpus rename — they already use
-  compact prefixes — they're just absent from the registry file. Adding them
-  would mean broadening `load_peep_prefixes` (accept `rdfs:label` as a title
-  fallback; parse `_ProcedureMap_2026` / `*_Ontology_v1`; also scan
-  `*_owl.jsonld`) and regenerating the registry; treat that as a follow-up.
+  `*_peep.json` files. Those already use compact prefixes. Follow-up is
+  to broaden `load_peep_prefixes` (accept `rdfs:label` as a title fallback;
+  parse `_ProcedureMap_2026` / `*_Ontology_v1`; also scan `*_owl.jsonld`)
+  and regenerate the registry against the current INDEX — not a rename
+  blocker.
 - **When generating new nodes**, reuse the registry abbreviation for the law
   rather than re-slugifying the title, and keep the human-readable name in
   `rdfs:label`, not in the `@id`.

@@ -1,6 +1,6 @@
 # estleg-mcp — handoff / where this stands
 
-_Snapshot: 2026-06-15. Update or delete once the remote deploy is live._
+_Snapshot: 2026-08-18. Matches `main` (`estleg-mcp` 0.1.0) and the live remote._
 
 ## Goal
 
@@ -11,39 +11,47 @@ is the first of three wedges; the other two (not started) are folding these
 tools into a seadusloome "lawmaker cockpit", and mining the ontology for
 policy/political content (transposition gaps, conflicts, regulatory burden).
 
-## What's built (branch `feat/estleg-mcp-server`, PR #493)
+## What's built (on `main`)
+
+Shipped via PR [#493](https://github.com/henrikaavik/estonian-legal-ontology/pull/493)
+(merged 2026-06-16), then PR [#660](https://github.com/henrikaavik/estonian-legal-ontology/pull/660)
+(issue [#495](https://github.com/henrikaavik/estonian-legal-ontology/issues/495):
+tool-contract tests / OWL exclusion) and
+PR [#666](https://github.com/henrikaavik/estonian-legal-ontology/pull/666)
+(`#499` point-in-time history + `#500` regulations).
 
 - `estleg_mcp/data.py` — data-access layer over the per-file `*_peep.json`
   (never the LFS-only combined graph). Resolves laws by title / official
   abbreviation (KarS, VÕS, PS, ...) / slug, accent-insensitive.
-- `estleg_mcp/server.py` — FastMCP server, 10 tools: `search_laws`, `get_law`,
-  `get_provision`, `who_references` (impact), `references_of`,
+- `estleg_mcp/server.py` — FastMCP server, **14 tools**:
+  `search_laws`, `get_law`, `get_provision`, `who_references`, `references_of`,
   `drafts_affecting_law`, `court_decisions_for_law`, `sanctions_for_law`,
-  `competent_authority_for_law`, `transposition`.
+  `competent_authority_for_law`, `transposition`,
+  `provision_history`, `regulations_for_law`, `get_regulation`,
+  `regulations_by_issuer`.
+  `get_law` / `get_provision` accept optional `as_of` for a historical redaction.
 - Transports: **stdio** (local IDEs) and **streamable-HTTP** with an
-  `ESTLEG_TOKEN` bearer gate (remote).
+  `ESTLEG_TOKEN` bearer gate (remote). `/healthz` is unauthenticated.
 - `docker/` — Coolify-style image (python:3.13-slim + uv, mirrors Seadusloome);
   the entrypoint clones the corpus to a `/data` volume at boot (LFS skipped).
-- ruff clean; 24 data-layer tests pass; all 10 tools exercised over both the
-  stdio and streamable-HTTP protocols (including a 401 on a missing token).
+- Tests: `mcp_server/tests/` — data-layer unit tests, 14-tool contract tests,
+  and HTTP host/`/healthz` transport tests.
 
 ## Status
 
-- Registered locally as MCP server `estleg` at user scope (`~/.claude.json`) on
-  the Mac, so it already works in any local Claude Code session there.
-- Pushed as **PR #493** (`feat/estleg-mcp-server`); **not merged**.
+- On `main` as `mcp_server/` (install: `pip install -e mcp_server`).
+- Remote HTTP endpoint is live: `https://estleg.sixtyfour.ee/mcp`
+  (`GET /healthz` → `ok`).
+- Client config is in [README.md](README.md) (stdio and the remote `url` form).
 
 ## Next steps
 
-1. Review + merge PR #493.
-2. Deploy remote (host once for all devices): a new Coolify service on the same
-   Hostinger VPS as seadusloome.sixtyfour.ee. Base directory `mcp_server`,
-   Dockerfile `docker/Dockerfile`, persistent volume at `/data`, env
-   `ESTLEG_TOKEN=$(openssl rand -hex 32)`, domain e.g. `estleg.sixtyfour.ee`,
-   port `8000`, health path `/healthz`; point DNS at the VPS. (README →
-   "Remote deployment (HTTP, e.g. Coolify)".)
-3. Point Cursor (Mac + the Windows PC) and any other client at
-   `https://estleg.sixtyfour.ee/mcp` with the bearer token (config in README).
+1. Point remaining local clients (Cursor on Mac + Windows, Copilot) at
+   `https://estleg.sixtyfour.ee/mcp` with the bearer token (README →
+   "Connect a client to the remote endpoint").
+2. Keep the Coolify `/data` volume's corpus clone current with `main`
+   (entrypoint already `git fetch --depth 1` + `reset --hard origin/main`
+   on boot; redeploy after corpus releases).
 
 ## Known gaps / follow-ups
 
@@ -55,4 +63,4 @@ policy/political content (transposition gaps, conflicts, regulatory burden).
   `consolidated_as_of` (the consolidated-text date) for context.
 - Seadusloome already clones this ontology and runs a Jena/Fuseki SPARQL
   endpoint on the same box, so a future estleg could query Fuseki instead of
-  re-cloning the corpus, worth considering when the remote service is set up.
+  re-cloning the corpus.
