@@ -220,9 +220,7 @@ def is_stampable_law_node(types: list[str]) -> bool:
     """
     if "owl:Ontology" not in types:
         return False
-    if _REGULATION_TYPES.intersection(types):
-        return False
-    return True
+    return not _REGULATION_TYPES.intersection(types)
 
 
 def stamp_law_type(path: Path) -> bool:

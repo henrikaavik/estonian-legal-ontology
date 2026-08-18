@@ -467,8 +467,9 @@ def extract_citations_from_text(
     )
 
     # Pattern 1: Abbreviation + § + number(s)
+    # #350: \b so VTMS/HKMS do not match the shorter TMS/KMS keys.
     pat_abbrev = re.compile(
-        rf"({abbrevs})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
+        rf"\b({abbrevs})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
         re.UNICODE,
     )
     for m in pat_abbrev.finditer(text):

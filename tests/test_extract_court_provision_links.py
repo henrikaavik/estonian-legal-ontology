@@ -180,6 +180,17 @@ def test_extract_empty_text() -> None:
     assert extract_citations_from_text(None) == ([], [])
 
 
+def test_vtms_hkms_do_not_resolve_to_tms_kms() -> None:
+    """#350: no word boundary used to match TMS inside VTMS and KMS inside HKMS."""
+    state, _ = extract_citations_from_text("kohus kohaldas VTMS § 12")
+    assert [c["law_ref"] for c in state] != ["TMS"]
+    assert all(c["law_ref"] != "TMS" for c in state)
+    state, _ = extract_citations_from_text("viidatud HKMS § 3")
+    assert all(c["law_ref"] != "KMS" for c in state)
+    state, _ = extract_citations_from_text("TMS § 8")
+    assert any(c["law_ref"] == "TMS" and c["paragraphs"] == ["8"] for c in state)
+
+
 # ---------------------------------------------------------------------------
 # Group 2 — build_kov_act_index
 # ---------------------------------------------------------------------------
