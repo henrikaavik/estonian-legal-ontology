@@ -2487,32 +2487,54 @@ def validate_provision_version_encoding(krr_dir: Path = KRR_DIR):
         )
 
 
-def version_layer_lag(pv_doc: dict, kehtiv: str) -> str | None:
-    """Return max ``versionValidFrom`` when it is strictly before *kehtiv*.
+def _version_date(node: dict, key: str) -> str | None:
+    raw = node.get(key)
+    value = raw.get("@value") if isinstance(raw, dict) else raw
+    return value if isinstance(value, str) and value else None
 
-    #532: the committed version layer can trail the law-peep snapshot
-    (max validFrom 2026-05-22 vs kehtiv 2026-05-24). Returns that max
-    date when a lag is present; ``None`` when dates are equal/later, or
-    when the sidecar has no dated ProvisionVersion nodes to compare.
+
+def version_covers_date(node: dict, as_of: str) -> bool:
+    """True when a ProvisionVersion interval contains *as_of* (inclusive ends).
+
+    Absent ``versionValidTo`` means still in force. Matches the MCP
+    ``version_in_force_on`` contract so as-of queries and the #532 gate
+    agree.
+    """
+    valid_from = _version_date(node, "estleg:versionValidFrom")
+    if not valid_from or not as_of:
+        return False
+    if valid_from > as_of:
+        return False
+    valid_to = _version_date(node, "estleg:versionValidTo")
+    return not valid_to or as_of <= valid_to
+
+
+def version_layer_lag(pv_doc: dict, kehtiv: str) -> str | None:
+    """Return newest ``versionValidFrom`` when *no* version covers *kehtiv*.
+
+    #532: a current redaction that started before the peep snapshot
+    (e.g. validFrom 2026-05-22, open validTo, kehtiv 2026-05-24) still
+    answers as-of queries for the snapshot date. That is not a lag.
+    A lag is an actual coverage hole: every version ends before *kehtiv*
+    or starts after it.
     """
     if not isinstance(pv_doc, dict) or not kehtiv:
         return None
     newest: str | None = None
+    covers = False
     for node in pv_doc.get("@graph") or []:
         if not isinstance(node, dict):
             continue
         if "estleg:ProvisionVersion" not in node_types(node):
             continue
-        raw = node.get("estleg:versionValidFrom")
-        value = raw.get("@value") if isinstance(raw, dict) else raw
-        if isinstance(value, str) and value:
-            if newest is None or value > newest:
-                newest = value
-    if newest is None:
+        valid_from = _version_date(node, "estleg:versionValidFrom")
+        if valid_from and (newest is None or valid_from > newest):
+            newest = valid_from
+        if version_covers_date(node, kehtiv):
+            covers = True
+    if covers or newest is None:
         return None
-    if newest < kehtiv:
-        return newest
-    return None
+    return newest
 
 
 def _index_files_by_slug(krr_dir: Path) -> dict[str, list[str]]:
@@ -2576,11 +2598,12 @@ def _kehtiv_for_slug(
 
 
 def validate_version_layer_freshness(krr_dir: Path = KRR_DIR):
-    """#532 warning gate: sidecar max ``versionValidFrom`` must not trail peep kehtiv.
+    """#532: every sidecar must have a version interval that contains peep kehtiv.
 
-    Current corpus max is 2026-05-22 against peep kehtiv 2026-05-24 — emit a
-    **warning**, not an error, so CI stays green until the version layer is
-    regenerated. Does not invent missing 2026-05-23/24 redactions.
+    A current redaction that *started* before the snapshot date is fine
+    when ``versionValidTo`` is absent (still in force). Inventing
+    2026-05-23/24 redactions is not the fix. A sidecar whose latest
+    interval ends before kehtiv is a real hole and is an error.
     """
     print("\n--- Provision Version Freshness (#532) ---")
     pv_dir = krr_dir / "provision_versions"
@@ -2612,20 +2635,21 @@ def validate_version_layer_freshness(krr_dir: Path = KRR_DIR):
             sample = (path.name, newest, kehtiv)
     if lagging:
         first = (
-            f"{sample[0]} max={sample[1]} kehtiv={sample[2]}"
+            f"{sample[0]} newestFrom={sample[1]} kehtiv={sample[2]}"
             if sample
             else "n/a"
         )
-        warn(
-            f"#532: {lagging} provision_versions sidecar(s) lag peep kehtiv "
-            f"(max versionValidFrom < kehtiv) across {scanned} compared "
-            f"file(s). First: {first}. Warning only — regenerate the version "
-            f"layer in lockstep with the law snapshot; do not invent missing "
-            f"redactions."
+        error(
+            f"#532: {lagging} provision_versions sidecar(s) have no version "
+            f"covering peep kehtiv across {scanned} compared file(s). "
+            f"First: {first}."
         )
         print(f"  lagging sidecars: {lagging}")
     else:
-        print(f"  OK: {scanned} sidecar(s) at or after peep kehtiv")
+        print(
+            f"  OK: {scanned} sidecar(s) have a version interval covering "
+            f"peep kehtiv"
+        )
 
 
 def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Version-layer freshness is interval coverage (#532)
+
+- `validate_version_layer_freshness` errors only when no ProvisionVersion
+  interval contains peep `kehtiv`. An open-ended current redaction that
+  started before the snapshot (2026-05-22 vs kehtiv 2026-05-24) is not a
+  lag. As-of queries already use that contract.
+
 ### Catalog URLs pin a content SHA (#548)
 
 - `metadata.jsonld` and `void.ttl` no longer cite mutable `/main`.

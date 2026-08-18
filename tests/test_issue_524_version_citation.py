@@ -104,7 +104,8 @@ def test_pks_sidecar_rturl_when_redaction_id_present() -> None:
 
 
 def test_version_layer_lag_detects_behind_kehtiv() -> None:
-    behind = {
+    # Open-ended current redaction that started before kehtiv still covers it.
+    covering = {
         "@graph": [
             {
                 "@type": ["estleg:ProvisionVersion"],
@@ -119,10 +120,14 @@ def test_version_layer_lag_detects_behind_kehtiv() -> None:
                     "@value": "2026-05-01",
                     "@type": "xsd:date",
                 },
+                "estleg:versionValidTo": {
+                    "@value": "2026-05-21",
+                    "@type": "xsd:date",
+                },
             },
         ]
     }
-    assert validate_all.version_layer_lag(behind, "2026-05-24") == "2026-05-22"
+    assert validate_all.version_layer_lag(covering, "2026-05-24") is None
     current = {
         "@graph": [
             {
@@ -135,6 +140,34 @@ def test_version_layer_lag_detects_behind_kehtiv() -> None:
         ]
     }
     assert validate_all.version_layer_lag(current, "2026-05-24") is None
+    # Closed chain that ends before kehtiv is a real hole.
+    closed = {
+        "@graph": [
+            {
+                "@type": ["estleg:ProvisionVersion"],
+                "estleg:versionValidFrom": {
+                    "@value": "2026-05-01",
+                    "@type": "xsd:date",
+                },
+                "estleg:versionValidTo": {
+                    "@value": "2026-05-21",
+                    "@type": "xsd:date",
+                },
+            },
+            {
+                "@type": ["estleg:ProvisionVersion"],
+                "estleg:versionValidFrom": {
+                    "@value": "2026-05-22",
+                    "@type": "xsd:date",
+                },
+                "estleg:versionValidTo": {
+                    "@value": "2026-05-23",
+                    "@type": "xsd:date",
+                },
+            },
+        ]
+    }
+    assert validate_all.version_layer_lag(closed, "2026-05-24") == "2026-05-22"
 
 
 def test_backfill_version_sidecars_stamps_and_is_idempotent(tmp_path: Path) -> None:

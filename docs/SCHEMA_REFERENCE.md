@@ -810,7 +810,7 @@ was in force.
 |----------|--------|-------|-------------|-------------|
 | `estleg:versionOf` | ProvisionVersion | LegalProvision (IRI) | exactly 1 | The provision this version belongs to. Inverse of `estleg:hasVersion`. |
 | `estleg:versionValidFrom` | ProvisionVersion | `xsd:date` | exactly 1 | When this text became effective. |
-| `estleg:versionValidTo` | ProvisionVersion | `xsd:date` | 0–1 | When this text ceased to be in force. Absent ⇒ still current. |
+| `estleg:versionValidTo` | ProvisionVersion | `xsd:date` | 0–1 | Inclusive last in-force day. Absent ⇒ still current. An as-of query for the peep `kehtiv` date uses interval containment (`validFrom <= kehtiv` and no `validTo` or `kehtiv <= validTo`). A current redaction that started before the snapshot (e.g. 2026-05-22 vs kehtiv 2026-05-24) is not a lag (#532). |
 | `estleg:versionText` | ProvisionVersion | `xsd:string` | 1+ | The provision text at this redaction, verbatim. |
 | `estleg:versionRedactionId` | ProvisionVersion | `xsd:string` | 0–1 | The Riigi Teataja `terviktekstID` of the redaction that produced this text. |
 | `estleg:supersededByVersion` | ProvisionVersion | ProvisionVersion (IRI) | 0–1 | The chronologically next version of the same provision. Absent on the current version. |
