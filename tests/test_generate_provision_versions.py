@@ -1361,6 +1361,20 @@ def test_shacl_rejects_provision_version_missing_required_property(drop_prop: st
 # ---------------------------------------------------------------------------
 
 
+def test_version_node_is_self_citing_524() -> None:
+    """#524: a ProvisionVersion carries an RT URL and denormalised act/§."""
+    target = _make_target()
+    target.act_iri = "estleg:FIX_Map_2026"
+    nodes = synthesise_versions(target, _three_redaction_chain())
+    assert nodes
+    first = nodes[0]
+    assert first["estleg:rtUrl"] == "https://www.riigiteataja.ee/akt/111"
+    assert first["estleg:sourceAct"] == "Fikseeritud seadus"
+    assert first["estleg:provisionRef"] == "FIX § 1"
+    assert first["estleg:partOfAct"] == {"@id": "estleg:FIX_Map_2026"}
+    assert "estleg:paragrahv" not in first
+
+
 def test_main_processes_law_with_mocked_fetches(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     krr = tmp_path / "krr_outputs"
     krr.mkdir()

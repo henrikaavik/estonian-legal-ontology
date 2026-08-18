@@ -91,6 +91,13 @@ convention.
 - **When generating new nodes**, reuse the registry abbreviation for the law
   rather than re-slugifying the title, and keep the human-readable name in
   `rdfs:label`, not in the `@id`.
+- **`sanitize_id` lives only in `scripts/estleg_common.py`** (issue #449).
+  Default behaviour transliterates Estonian letters and maps a numeric
+  §-range (`1-94` / `1–94`) to `1_to_94` so it cannot collide with `194`.
+  Court/draft/EIS callers pass `replace_dash=True` (and court also
+  `replace_slash=True`, `canonicalize_ranges=False`, `unknown_char="_"`,
+  `max_len=80`). Do not add a new local `sanitize_id` — import the shared
+  one or a `functools.partial` of it.
 
 ## Validation Commands
 

@@ -40,6 +40,14 @@ self-describing and a consumer can pin/cite it:
 The `versionIRI` is `https://w3id.org/estleg/<version>` — each
 release is an independently dereferenceable IRI.
 
+A standalone VoID + DCAT descriptor is committed at
+`krr_outputs/void.ttl` (dataset IRI
+`https://w3id.org/estleg/dataset/estonian-legal-ontology`). It
+advertises `void:uriSpace`, an example resource, the GitHub-raw
+combined ontology dump, and linksets to EuroVoc, EUR-Lex/CELLAR, and
+Riigi Teataja. The compilation layer is offered under CC BY 4.0; a
+SPARQL endpoint is not claimed (that is #474).
+
 **When to bump:**
 
 - **MAJOR** — a breaking schema change (a removed/renamed property or class, an

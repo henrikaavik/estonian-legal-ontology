@@ -42,16 +42,6 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 
 NS = "https://w3id.org/estleg/"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 EUROVOC_URI_BASE = "http://eurovoc.europa.eu/"
 
@@ -524,8 +514,8 @@ def update_law_file_eurovoc(
     domains: list[tuple[str, str, str, str, int, list[str]]],
 ) -> bool:
     """
-    Add dcterms:subject with EuroVoc concept URIs to a law JSON-LD file.
-    Targets the owl:Ontology metadata node.
+    Add dcterms:subject and eli:is_about with EuroVoc concept URIs to a
+    law JSON-LD file (#446). Targets the owl:Ontology metadata node.
     Returns True if the file was modified.
     """
     try:
@@ -534,10 +524,13 @@ def update_law_file_eurovoc(
         print(f"    ERROR loading {filepath.name}: {e}")
         return False
 
-    # Ensure dcterms is in context
+    # Ensure dcterms / eli are in context
     ctx = data.get("@context", {})
     if "dcterms" not in ctx:
         ctx["dcterms"] = "http://purl.org/dc/terms/"
+        data["@context"] = ctx
+    if "eli" not in ctx:
+        ctx["eli"] = "http://data.europa.eu/eli/ontology#"
         data["@context"] = ctx
 
     graph = data.get("@graph", [])
@@ -585,6 +578,14 @@ def update_law_file_eurovoc(
 
     all_refs = existing_clean + new_refs
     target_node["dcterms:subject"] = all_refs
+    # #446: ELI's subject property sits alongside Dublin Core so an ELI
+    # client can follow is_about without knowing the estleg-specific
+    # dcterms:subject convention. Same EuroVoc IRIs, same order.
+    eurovoc_refs = [
+        ref for ref in all_refs
+        if isinstance(ref, dict) and str(ref.get("@id", "")).startswith(EUROVOC_URI_BASE)
+    ]
+    target_node["eli:is_about"] = eurovoc_refs
 
     save_json(filepath, data)
     return True
@@ -622,6 +623,25 @@ def clear_eurovoc_subjects_from_file(filepath: Path) -> bool:
                 del node["dcterms:subject"]
             else:
                 node["dcterms:subject"] = kept
+
+        about = node.get("eli:is_about")
+        if about is not None:
+            if isinstance(about, dict):
+                about = [about]
+            if isinstance(about, list):
+                kept_about = [
+                    ref for ref in about
+                    if not (
+                        isinstance(ref, dict)
+                        and str(ref.get("@id", "")).startswith(EUROVOC_URI_BASE)
+                    )
+                ]
+                if len(kept_about) != len(about):
+                    modified = True
+                    if not kept_about:
+                        del node["eli:is_about"]
+                    else:
+                        node["eli:is_about"] = kept_about
 
     if modified:
         save_json(filepath, data)

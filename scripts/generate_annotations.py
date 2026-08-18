@@ -83,6 +83,7 @@ from estleg_common import (  # noqa: E402
     CONTEXT,
     KNOWN_ABBREVIATIONS,
     KRR_DIR,
+    PINNED_RUN_TIMESTAMP,
     iter_peep_files,
     sanitize_id,
     slugify,
@@ -103,14 +104,6 @@ SIDECAR_PATH = ANNOTATIONS_DIR / "oiguskantsler_seisukohad.jsonld"
 COVERAGE_PATH = KRR_DIR / "reports" / "kov" / "extract_annotations_coverage.json"
 CACHE_DIR = KRR_DIR / ".cache" / "annotations"
 PDF_PROBE_REPORT_PATH = KRR_DIR / "reports" / "annotations_pdf_probe.json"
-
-# Pinned, deterministic ``run_timestamp`` for the git-tracked coverage report
-# (issue #295). The previous ``datetime.now(timezone.utc)`` value re-diffed the
-# tracked coverage file on every run (timestamp-only churn). ``CoverageReport``
-# requires a valid UTC ISO-8601 timestamp, so we pin a fixed sentinel rather
-# than emitting a live wall clock. The epoch makes "this is not a real run
-# clock" unmistakable; genuine run time lives in ``wall_time_seconds``.
-PINNED_RUN_TIMESTAMP = "1970-01-01T00:00:00+00:00"
 
 SEED_PATH = REPO_ROOT / "data" / "annotations" / "seed_annotations.json"
 

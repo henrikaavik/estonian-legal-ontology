@@ -20,11 +20,15 @@ import traceback
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from functools import partial
+
 from estleg_common import (
+    CONTEXT,
     BUILD_EVALUATION_DATE,
     iter_peep_files,
     jsonld_text,
     save_json,
+    sanitize_id as _shared_sanitize_id,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -42,16 +46,6 @@ CONCEPTS_DIR.mkdir(parents=True, exist_ok=True)
 
 NS = "https://w3id.org/estleg/"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 # Definition section titles to look for (case-insensitive matching)
 DEFINITION_TITLES = {
@@ -241,36 +235,7 @@ def collect_full_text(el: ET.Element) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    """Create a safe ID from a string."""
-    s = value.replace(" ", "_").replace("-", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s[:80] or "Unknown"
-
-
-def slugify(text: str) -> str:
-    """Convert Estonian text to a filename-safe slug."""
-    replacements = {
-        "ä": "a", "ö": "o", "ü": "u", "õ": "o",
-        "Ä": "A", "Ö": "O", "Ü": "U", "Õ": "O",
-        "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-    }
-    for old, new in replacements.items():
-        text = text.replace(old, new)
-    text = text.lower().strip()
-    text = re.sub(r"[^a-z0-9]+", "_", text)
-    text = text.strip("_")
-    return text[:80]
+sanitize_id = partial(_shared_sanitize_id, max_len=80, replace_dash=True)
 
 
 def edit_distance(a: str, b: str) -> int:

@@ -73,7 +73,7 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
-from estleg_common import CONTEXT, KRR_DIR, iter_peep_files  # noqa: E402
+from estleg_common import CONTEXT, KRR_DIR, iter_peep_files, parse_xml, parse_xml_file  # noqa: E402
 from generate_all_laws import _paragraph_id_suffix, collect_full_text  # noqa: E402
 from kov_pipeline_coverage import (  # noqa: E402
     CoverageReport,
@@ -134,6 +134,7 @@ class LawTarget:
     # par_suffix -> provision IRI (e.g. "1" -> "estleg:TULUMA_Par_1", "22_1" -> "...")
     provisions: dict[str, str]
     peep_files: list[Path]
+    act_iri: str | None = None  # owl:Ontology / act-root @id, for citation completeness (#524)
 
 
 # ---------------------------------------------------------------------------
@@ -160,15 +161,20 @@ def _peep_files_for_slug(slug: str, krr_dir: Path = KRR_DIR) -> list[Path]:
     return osa
 
 
-def _load_provision_map(peep_files: list[Path]) -> tuple[dict[str, str], str | None, str | None]:
-    """Scan peep files; return ``(par_suffix -> provision IRI, prefix, title)``.
+def _load_provision_map(
+    peep_files: list[Path],
+) -> tuple[dict[str, str], str | None, str | None, str | None]:
+    """Scan peep files; return ``(par_suffix -> provision IRI, prefix, title, act_iri)``.
 
     ``prefix`` is the common IRI prefix (the segment before ``_Par_``); ``title`` is
     the ``dc:source`` of the ontology node (the human-readable act name).
+    ``act_iri`` is the ontology/act-root ``@id`` used to denormalise
+    ``estleg:partOfAct`` onto each ProvisionVersion (#524).
     """
     provisions: dict[str, str] = {}
     prefix: str | None = None
     title: str | None = None
+    act_iri: str | None = None
     for path in peep_files:
         try:
             with open(path, "r", encoding="utf-8") as fh:
@@ -185,6 +191,7 @@ def _load_provision_map(peep_files: list[Path]) -> tuple[dict[str, str], str | N
             if not isinstance(iri, str):
                 continue
             if "owl:Ontology" in types and title is None:
+                act_iri = iri
                 src = node.get("dc:source")
                 if isinstance(src, str):
                     title = src
@@ -197,7 +204,7 @@ def _load_provision_map(peep_files: list[Path]) -> tuple[dict[str, str], str | N
                 provisions.setdefault(suffix, iri)
                 if prefix is None:
                     prefix = iri[: m.start()].removeprefix("estleg:")
-    return provisions, prefix, title
+    return provisions, prefix, title, act_iri
 
 
 def build_law_target(slug: str, krr_dir: Path = KRR_DIR) -> LawTarget | None:
@@ -205,7 +212,7 @@ def build_law_target(slug: str, krr_dir: Path = KRR_DIR) -> LawTarget | None:
     peep_files = _peep_files_for_slug(slug, krr_dir)
     if not peep_files:
         return None
-    provisions, prefix, title = _load_provision_map(peep_files)
+    provisions, prefix, title, act_iri = _load_provision_map(peep_files)
     if not provisions or not prefix or not title:
         return None
     return LawTarget(
@@ -214,6 +221,7 @@ def build_law_target(slug: str, krr_dir: Path = KRR_DIR) -> LawTarget | None:
         prefix=prefix,
         provisions=provisions,
         peep_files=peep_files,
+        act_iri=act_iri,
     )
 
 
@@ -229,7 +237,7 @@ def missing_law_target_error(slug: str, krr_dir: Path = KRR_DIR) -> str:
     peep_files = _peep_files_for_slug(slug, krr_dir)
     if not peep_files:
         return "no peep"
-    provisions, _prefix, _title = _load_provision_map(peep_files)
+    provisions, _prefix, _title, _act_iri = _load_provision_map(peep_files)
     if not provisions:
         return "no_numeric_provisions"
     return "ineligible_peep"
@@ -477,8 +485,8 @@ def fetch_redaction_xml(
     cache_path = _xml_cache_path(slug, redaction.global_id)
     if cache_path.exists() and cache_path.stat().st_size > 1000:
         try:
-            return ET.parse(str(cache_path)).getroot()
-        except ET.ParseError:
+            return parse_xml_file(cache_path)
+        except (ET.ParseError, ValueError):
             pass
     url = redaction.url
     full_url = BASE_URL + url if url.startswith("/") else url
@@ -494,7 +502,7 @@ def fetch_redaction_xml(
         if len(text) < 200:
             return None
         cache_path.write_text(text, encoding="utf-8")
-        return ET.fromstring(text)
+        return parse_xml(text)
     except Exception as exc:  # noqa: BLE001 — surface the API error, keep going
         print(f"    fetch error for {slug} g{redaction.global_id}: {exc}")
         return None
@@ -674,6 +682,16 @@ def synthesise_versions(
             }
             if redaction.global_id:
                 node["estleg:versionRedactionId"] = redaction.global_id
+                # #524: a version node is citation-complete on its own —
+                # RT redaction URL + denormalised act / § so a consumer
+                # does not have to join back to the peep.
+                node["estleg:rtUrl"] = (
+                    f"https://www.riigiteataja.ee/akt/{redaction.global_id}"
+                )
+            node["estleg:sourceAct"] = target.title
+            node["estleg:provisionRef"] = f"{target.prefix} § {suffix}"
+            if target.act_iri:
+                node["estleg:partOfAct"] = {"@id": target.act_iri}
             versions_here.append(node)
         if versions_here:
             per_provision[provision_iri] = versions_here

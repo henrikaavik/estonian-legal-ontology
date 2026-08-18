@@ -1119,6 +1119,23 @@ def write_release_manifest(manifest: dict) -> Path:
 # ===========================================================================
 
 
+def _missing_resume_writes(step: dict) -> list[str]:
+    """Return distinctive ``writes`` globs that do not exist (#376).
+
+    Peep-file patterns are ignored: the committed corpus always has
+    ``*_peep.json``, so they cannot detect a mid-clear crash. Report /
+    sidecar writes (``cross_references_report.json``, ``concepts/**``, …)
+    must be present before a --resume-from skip is treated as success.
+    """
+    missing: list[str] = []
+    for pattern in step.get("writes") or []:
+        if "peep" in pattern:
+            continue
+        if not any(KRR_DIR.glob(pattern)):
+            missing.append(pattern)
+    return missing
+
+
 def _print_banner(lines: list[str]) -> None:
     print("=" * 70)
     for line in lines:
@@ -1204,6 +1221,24 @@ def run_dag(
         for i, name in enumerate(topo, 1):
             step = by_name[name]
             if name in pre_resume:
+                missing_writes = _missing_resume_writes(step)
+                if missing_writes:
+                    print(
+                        f"\nERROR: --resume-from skipped {name} but "
+                        f"declared writes are missing: "
+                        f"{', '.join(missing_writes)} (#376). "
+                        "Re-run from a clean prior step or without "
+                        "--resume-from."
+                    )
+                    skipped.add(name)
+                    failed.add(name)
+                    ledger.append({
+                        "name": name,
+                        "script": step["script"],
+                        "status": "resume_precondition_failed",
+                        "missingWrites": missing_writes,
+                    })
+                    continue
                 skipped.add(name)
                 succeeded.add(name)  # don't block dependents
                 ledger.append({"name": name, "script": step["script"],
@@ -1285,9 +1320,21 @@ def run_dag(
     # whole corpus mid-flight); callers are warned at the call site.
     remaining = [n for n in topo if n not in pre_resume]
     for n in pre_resume:
+        step = by_name[n]
+        missing_writes = _missing_resume_writes(step)
+        if missing_writes:
+            skipped.add(n)
+            failed.add(n)
+            ledger.append({
+                "name": n,
+                "script": step["script"],
+                "status": "resume_precondition_failed",
+                "missingWrites": missing_writes,
+            })
+            continue
         skipped.add(n)
         succeeded.add(n)
-        ledger.append({"name": n, "script": by_name[n]["script"],
+        ledger.append({"name": n, "script": step["script"],
                        "status": "skipped_before_resume_point"})
     done: set[str] = set(succeeded)
     idx_by_name = {n: i for i, n in enumerate(topo, 1)}

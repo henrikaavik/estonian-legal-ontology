@@ -271,12 +271,46 @@ PUBLIC_LOAD_SUBDIRS: tuple[str, ...] = (
 
 PUBLIC_LOAD_JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
 
-_PUBLIC_NON_DATA_STEM_SUFFIXES: tuple[str, ...] = (
+# Canonical non-data stem suffixes (#452). Every load surface starts from
+# this list; named per-surface deltas live beside the classifier so a new
+# sidecar class is added once.
+NON_DATA_STEM_SUFFIXES: tuple[str, ...] = (
     "_index",
     "_report",
-    "_schema",
     "_summary",
+    "_review",
+    "_mapping",
+    "_classification",
+    "_coverage",
+    "_probe",
 )
+# Public / Seadusloome surface additionally drops ``*_schema`` files (T-Box
+# declarations, not instance data). validate_all keeps them so enum-ID
+# sources stay in the parity corpus (#270 / #452).
+PUBLIC_SURFACE_EXTRA_SUFFIXES: tuple[str, ...] = ("_schema",)
+_PUBLIC_NON_DATA_STEM_SUFFIXES: tuple[str, ...] = (
+    NON_DATA_STEM_SUFFIXES + PUBLIC_SURFACE_EXTRA_SUFFIXES
+)
+
+
+def is_non_data_file(
+    path: Path,
+    *,
+    extra_suffixes: tuple[str, ...] = (),
+) -> bool:
+    """Return True for operational-state or sidecar-report files.
+
+    Shared classifier for validate_all / public load / SHACL buckets (#452).
+    ``OPERATIONAL_STATE_FILES`` (and the derived-projection / integration
+    report dirs) are always excluded so every counter inherits #240.
+    """
+    if is_operational_state_file(path):
+        return True
+    stem = path.stem.lower()
+    if stem == "index" or stem.endswith("index"):
+        return True
+    suffixes = NON_DATA_STEM_SUFFIXES + extra_suffixes
+    return any(stem.endswith(suffix) for suffix in suffixes)
 
 
 def is_public_jsonld_data_file(path: Path) -> bool:
@@ -289,10 +323,7 @@ def is_public_jsonld_data_file(path: Path) -> bool:
     """
     if path.suffix.lower() not in PUBLIC_LOAD_JSONLD_SUFFIXES:
         return False
-    stem = path.stem.lower()
-    if stem == "index" or stem.endswith("index"):
-        return False
-    return not any(stem.endswith(suffix) for suffix in _PUBLIC_NON_DATA_STEM_SUFFIXES)
+    return not is_non_data_file(path, extra_suffixes=PUBLIC_SURFACE_EXTRA_SUFFIXES)
 
 
 def iter_public_load_files(
@@ -587,10 +618,17 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
     """
     return {
         "@id": ONTOLOGY_IRI,
-        "@type": ["owl:Ontology"],
+        "@type": ["owl:Ontology", "void:Dataset", "dcat:Dataset"],
         "rdfs:label": "Estonian Legal Ontology — combined graph",
+        "dcterms:title": {
+            "@value": "Estonian Legal Ontology",
+            "@language": "en",
+        },
+        "dcterms:publisher": {"@id": "https://github.com/henrikaavik"},
+        "dcterms:license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
         "owl:versionInfo": version,
         "owl:versionIRI": {"@id": f"{ONTOLOGY_IRI}/{version}"},
+        "void:uriSpace": NS,
     }
 
 CONTEXT: dict[str, str] = {
@@ -602,6 +640,10 @@ CONTEXT: dict[str, str] = {
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
 }
 
 # ---------------------------------------------------------------------------
@@ -945,6 +987,10 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 BUILD_EVALUATION_DATE: str = os.environ.get(
     "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
 )
+# Single pinned coverage-report timestamp (#295 / #465). Deterministic and
+# tied to the evaluation date so tracked sidecars do not churn on reruns
+# and do not look like 1970 data (#533).
+PINNED_RUN_TIMESTAMP: str = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 
 
 # ---------------------------------------------------------------------------
@@ -961,7 +1007,7 @@ BUILD_EVALUATION_DATE: str = os.environ.get(
 # mechanism that keeps local and CI file counts identical.
 #
 # The corpus count this exclusion yields is pinned by ``metadata.jsonld``
-# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 23116), which
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 23113), which
 # ``validate_metadata_catalog`` enforces — treat that file as the source of
 # truth rather than this prose. Any change here that moves that number means
 # the classifier was broadened or narrowed incorrectly.
@@ -978,7 +1024,7 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
 # known integration-report directory) so the pinned ``metadata.jsonld``
-# count (currently 23116) is unchanged: the only ``*.json`` currently living under
+# count (currently 23113) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from
@@ -1269,20 +1315,78 @@ _ESTONIAN_TRANSLITERATION: dict[str, str] = {
 _TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
 
 
-def sanitize_id(value: str) -> str:
-    """Create a safe ID component from a string."""
+def sanitize_id(
+    value: str,
+    *,
+    max_len: int | None = None,
+    replace_dash: bool = False,
+    replace_slash: bool = False,
+    canonicalize_ranges: bool = True,
+    collapse_underscores: bool = False,
+    unknown_char: str = "",
+) -> str:
+    """Create a safe ID component from a string (#449).
+
+    Default (laws / provisions): transliterate Estonian letters, map a
+    numeric §-range (ASCII hyphen or typographic dash) to ``_to_`` so
+    ``1-94`` / ``1–94`` stay distinct from ``194``, then drop leftover
+    non-ASCII. Callers that mint case-number or EIS-key IDs pass
+    ``replace_dash=True`` (and court decisions also ``replace_slash=True``,
+    ``canonicalize_ranges=False``, ``unknown_char="_"``, ``max_len=80``).
+    """
     s = value.replace(" ", "_")
-    # Issue #354/#600: canonicalise a §-range separator BEFORE the non-ASCII
-    # strip. A ``paragrahvNr`` like ``1–94`` (en-dash) would otherwise lose
-    # the dash and concatenate to ``194`` — indistinguishable from a real
-    # §194, minting one IRI for two distinct provisions. Map the dash to an
-    # explicit ``_to_`` so the range stays legible (``1_to_94``). Kept in
-    # sync with ``generate_all_laws.sanitize_id``.
-    s = re.sub(r"\s*[‐-―−]\s*", "_to_", s)
-    # Transliterate Estonian diacritics before stripping non-ASCII
+    if replace_slash:
+        s = s.replace("/", "_")
+    if replace_dash:
+        s = re.sub(r"[-‐-―−]", "_", s)
+    elif canonicalize_ranges:
+        # Issue #354/#449/#600: a ``paragrahvNr`` like ``1–94`` or ``1-94``
+        # must not collapse to ``194``. Map a numeric range separator to
+        # ``_to_`` before the non-ASCII strip.
+        s = re.sub(r"(\d+)\s*[‐-―−-]\s*(\d+)", r"\1_to_\2", s)
     s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
+    if unknown_char:
+        s = re.sub(r"[^0-9A-Za-z_]", unknown_char, s)
+    else:
+        s = re.sub(r"[^0-9A-Za-z_]", "", s)
+    if collapse_underscores:
+        s = re.sub(r"_+", "_", s).strip("_")
+    if max_len is not None:
+        s = s[:max_len]
     return s or "Unknown"
+
+
+_XML_MAX_BYTES = 50_000_000
+_XML_DTD_RE = re.compile(br"<!DOCTYPE|<!ENTITY", re.IGNORECASE)
+
+
+def parse_xml(
+    xml_text: str | bytes,
+    *,
+    max_bytes: int = _XML_MAX_BYTES,
+) -> ET.Element:
+    """Parse XML from a string/bytes without expanding a DTD (#356).
+
+    Rejects oversized payloads and any document that declares ``<!DOCTYPE``
+    or ``<!ENTITY`` in the first 64 KiB (XXE / billion-laughs). Call this
+    on every fetch-then-parse path instead of ``ET.fromstring``.
+    """
+    raw = xml_text.encode("utf-8") if isinstance(xml_text, str) else xml_text
+    if len(raw) > max_bytes:
+        raise ValueError(f"XML exceeds {max_bytes} byte cap")
+    if _XML_DTD_RE.search(raw[:65536]):
+        raise ValueError("XML DTD/entity declarations are not allowed")
+    return ET.fromstring(raw)
+
+
+def parse_xml_file(
+    path: str | Path,
+    *,
+    max_bytes: int = _XML_MAX_BYTES,
+) -> ET.Element:
+    """Read ``path`` and parse it with :func:`parse_xml` (#356)."""
+    data = Path(path).read_bytes()
+    return parse_xml(data, max_bytes=max_bytes)
 
 
 def slugify(text: str, max_len: int = 80) -> str:

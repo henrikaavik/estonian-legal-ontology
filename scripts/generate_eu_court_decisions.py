@@ -29,7 +29,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, save_json
+from estleg_common import CONTEXT, BUILD_EVALUATION_DATE, save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -47,16 +47,6 @@ NS = "https://w3id.org/estleg/"
 PAGE_SIZE = 5000
 RATE_DELAY = 1.0
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 # CELEX suffix → decision type classification
 # Format: 6YYYYXXNNNN where XX indicates type and court

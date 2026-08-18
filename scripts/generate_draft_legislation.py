@@ -17,12 +17,19 @@ from __future__ import annotations
 
 import re
 import sys
-import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from estleg_common import allowed_get, save_json  # noqa: E402
+from functools import partial
+
+from estleg_common import (  # noqa: E402
+    CONTEXT,
+    allowed_get,
+    parse_xml,
+    save_json,
+    sanitize_id as _shared_sanitize_id,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -76,34 +83,7 @@ MINISTRY_CODES = {
     "RIIGIKOGU": "Riigikogu",
 }
 
-# JSON-LD context (same as existing ontology files + new draft properties)
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
-
-
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    """Create a safe ID from a string."""
-    s = value.replace(" ", "_").replace("-", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s[:80] or "Unknown"
+sanitize_id = partial(_shared_sanitize_id, max_len=80, replace_dash=True)
 
 
 def parse_eis_number(title: str) -> tuple[str, str, str]:
@@ -236,7 +216,7 @@ def fetch_rss(url: str) -> list[dict]:
         print(f"  ERROR: {e}")
         return []
 
-    root = ET.fromstring(resp.text)
+    root = parse_xml(resp.text)
     items = []
 
     for item in root.iter("item"):

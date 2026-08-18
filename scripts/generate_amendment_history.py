@@ -46,14 +46,18 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
+from functools import partial
 from pathlib import Path
 
 from estleg_common import (
+    CONTEXT,
+    PINNED_RUN_TIMESTAMP,
     build_globalid_xml_lookup,
     iter_peep_files,
     jsonld_text,
     pair_peep_with_xml,
     save_json,
+    sanitize_id as _shared_sanitize_id,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -79,8 +83,6 @@ LAW_ABBREVIATIONS_PATH = REPO_ROOT / "data" / "law_abbreviations.json"
 # requires a valid UTC ISO-8601 timestamp, so we pin a fixed sentinel rather
 # than emitting a live wall clock. The epoch makes "this is not a real run
 # clock" unmistakable; genuine run time lives in ``wall_time_seconds``.
-PINNED_RUN_TIMESTAMP = "1970-01-01T00:00:00+00:00"
-
 NS = "https://w3id.org/estleg/"
 
 # Structural tails stripped from an ``estleg:amends`` target to recover the
@@ -92,16 +94,6 @@ _AMENDS_STEM_STRIP_RE = re.compile(
 )
 _COMPACT_PREFIX_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 
 def ln(tag: str) -> str:
@@ -117,21 +109,7 @@ def ct(el: ET.Element, name: str) -> str | None:
     return None
 
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    """Create a safe ID from a string."""
-    s = value.replace(" ", "_").replace("-", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s[:80] or "Unknown"
+sanitize_id = partial(_shared_sanitize_id, max_len=80, replace_dash=True)
 
 
 # Multipart-law parts share a slug stem and differ only by a trailing

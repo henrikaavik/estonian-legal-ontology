@@ -46,7 +46,10 @@ def test_combined_ontology_header_is_wellformed_and_inert():
     graph-closure gate (no NON-exempt ``estleg:`` object references to dangle)."""
     header = estleg_common.combined_ontology_header()
     assert header["@id"] == estleg_common.ONTOLOGY_IRI
-    assert header["@type"] == ["owl:Ontology"]
+    assert "owl:Ontology" in header["@type"]
+    assert "void:Dataset" in header["@type"]
+    assert "dcat:Dataset" in header["@type"]
+    assert header["dcterms:license"]["@id"].endswith("/by/4.0/")
     assert header["owl:versionInfo"] == estleg_common.ONTOLOGY_VERSION
     assert header["owl:versionIRI"]["@id"].endswith(estleg_common.ONTOLOGY_VERSION)
     # #516: under the w3id SLASH namespace the version IRI compacts to

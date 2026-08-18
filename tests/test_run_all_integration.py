@@ -1011,3 +1011,20 @@ class TestReleaseInterruptSafety:
             run_all_integration.main()
 
         restore_mock.assert_not_called()
+
+
+def test_resume_precondition_flags_missing_distinctive_writes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#376: --resume-from must not treat a missing report as success."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+    step = {
+        "name": "extract_cross_references.py",
+        "writes": ["*_peep.json", "cross_references_report.json"],
+    }
+    missing = run_all_integration._missing_resume_writes(step)
+    assert missing == ["cross_references_report.json"]
+    (krr / "cross_references_report.json").write_text("{}", encoding="utf-8")
+    assert run_all_integration._missing_resume_writes(step) == []

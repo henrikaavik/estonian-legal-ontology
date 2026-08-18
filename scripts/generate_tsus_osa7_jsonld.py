@@ -48,6 +48,7 @@ import requests
 # Reuse the KarS generator's pure identifier/label helpers (issue #567 asks to
 # reuse them where applicable). They are module-level and import-safe — the
 # network-touching ``main()`` is guarded by ``if __name__ == "__main__"``.
+from estleg_common import CONTEXT, parse_xml
 from generate_kars_eriosa_jsonld import (  # sibling script, resolved via sys.path
     _join_label,
     child_text,
@@ -73,17 +74,7 @@ OUT_DEFAULT = (
 # Curated layer (verbatim from the hand-built module — not in the RT XML)
 # ---------------------------------------------------------------------------
 
-# JSON-LD @context — key order matches the committed module exactly.
-CONTEXT: dict[str, str] = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
+# JSON-LD @context — imported from estleg_common (#465).
 
 ROOT_ID = "estleg:TsUS_Osa7_v1"
 ROOT_LABEL = "TsÜS Osa 7 ontoloogia"
@@ -650,7 +641,7 @@ def main(argv: list[str] | None = None) -> int:
             args.cache.parent.mkdir(parents=True, exist_ok=True)
             args.cache.write_text(xml_text, encoding="utf-8")
 
-    root = ET.fromstring(xml_text)
+    root = parse_xml(xml_text)
     osa = find_osa(root, TARGET_OSA)
     if osa is None:
         raise RuntimeError(f"Osa {TARGET_OSA} not found in {LAW_TITLE}")

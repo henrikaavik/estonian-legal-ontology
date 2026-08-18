@@ -149,6 +149,13 @@ Each tool takes a plain-language law reference (title, official abbreviation
 such as `KarS` / `VÕS` / `PKS`, or corpus slug). Lists are capped by `limit`
 where noted; long legal text is truncated to stay chat-sized. A query that
 matches nothing returns an empty list (or a `note`), never an error.
+Empty lists on `references_of`, `who_references`, `court_decisions_for_law`,
+and `competent_authority_for_law` are usually **domain sparsity**, not a
+tool bug: most of the ~1,100 statutes have never been cited by a Supreme
+Court judgment, never name a competent authority, and never cite another
+act. Inverse edges live on provision nodes and are also rolled up onto
+the act root (`estleg:references` / `referencedBy` / `interpretedBy` /
+`competentAuthority`, issue #508).
 
 | Tool | What it answers | Example question |
 |------|-----------------|------------------|

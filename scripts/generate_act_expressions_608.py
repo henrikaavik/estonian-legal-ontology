@@ -44,7 +44,7 @@ import argparse
 import json
 from pathlib import Path
 
-from estleg_common import KRR_DIR, NS, jsonld_text, save_json
+from estleg_common import CONTEXT, KRR_DIR, NS, jsonld_text, save_json  # noqa: F401
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -59,10 +59,7 @@ _LFS_POINTER_PREFIX = "version https://git-lfs.github.com/spec/v1"
 
 # The minimal context the combined artifact publishes (exactly four prefixes).
 OUTPUT_CONTEXT: dict[str, str] = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    key: CONTEXT[key] for key in ("estleg", "owl", "rdfs", "xsd")
 }
 
 # Skip reasons returned by :func:`build_for_sidecar`.

@@ -4267,9 +4267,12 @@ class TestSanitizeIdRangeCanonicalisation:
         assert generate_all_laws.sanitize_id("1−94") == "1_to_94"
 
     def test_ascii_hyphen_unchanged_behaviour(self):
-        # ASCII hyphen is NOT a §-range separator; preserve the prior
-        # strip-to-nothing behaviour so unrelated ids do not shift.
+        # Non-numeric ASCII hyphen is still stripped (#449 only
+        # canonicalises digit-dash-digit ranges).
         assert generate_all_laws.sanitize_id("a-b") == "ab"
+
+    def test_ascii_hyphen_numeric_range_becomes_to(self):
+        assert generate_all_laws.sanitize_id("1-94") == "1_to_94"
 
     def test_plain_number_unchanged(self):
         assert generate_all_laws.sanitize_id("194") == "194"

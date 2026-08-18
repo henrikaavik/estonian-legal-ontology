@@ -7,6 +7,8 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 
+from estleg_common import is_non_data_file
+
 REPO = Path(__file__).resolve().parents[1]
 KRR = REPO / "krr_outputs"
 SHAPES = REPO / "shacl" / "estonian_legal_shapes.ttl"
@@ -93,14 +95,14 @@ SIDECAR_DIRS = ("concepts", "sanctions", "amendments", "institutions", "provisio
 # Aggregate/report artifacts that sit alongside the shaped data but contain no
 # ``@graph`` — exclude them so pyshacl is not handed plain summary JSON
 # (e.g. ``concepts/concept_crossref_report.json``).
-_SIDECAR_NON_DATA_SUFFIXES = ("_report", "_summary", "_index", "_review")
+# Named alias of the shared classifier (#452). SHACL sidecars use the
+# canonical NON_DATA_STEM_SUFFIXES (no extra ``_schema`` drop — schema
+# files in sidecar dirs are rare and were historically included).
+_SIDECAR_NON_DATA_SUFFIXES = None  # replaced by estleg_common.is_non_data_file
 
 
 def _is_sidecar_data_file(path: Path) -> bool:
-    stem = path.stem.lower()
-    if stem.startswith("index") or stem.endswith("index"):
-        return False
-    return not any(stem.endswith(suffix) for suffix in _SIDECAR_NON_DATA_SUFFIXES)
+    return not is_non_data_file(path)
 
 
 def collect_sidecars(krr: Path = KRR) -> list[Path]:

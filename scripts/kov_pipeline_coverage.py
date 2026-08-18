@@ -19,7 +19,10 @@ from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE
+from estleg_common import (  # noqa: F401
+    BUILD_EVALUATION_DATE,
+    PINNED_RUN_TIMESTAMP,  # re-export for pipeline callers (#465)
+)
 
 _FAILURE_SAMPLE_CAP = 20
 
@@ -30,7 +33,7 @@ _FAILURE_SAMPLE_CAP = 20
 # a valid UTC ISO-8601 timestamp. #533: pin to BUILD_EVALUATION_DATE, not
 # the Unix epoch, so coverage sidecars do not look like 1970 data.
 
-PINNED_RUN_TIMESTAMP = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
+
 
 
 # RFC-3339 / ISO-8601 UTC timestamp regex. We accept either a `Z`

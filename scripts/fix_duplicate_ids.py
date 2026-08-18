@@ -28,7 +28,7 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, sanitize_id
 
 KRR_DIR = Path(__file__).resolve().parents[1] / "krr_outputs"
 
@@ -67,12 +67,6 @@ def _atomic_write_json(filepath: str | Path, doc: object) -> None:
             pass
         raise
 
-_ESTONIAN_TRANSLITERATION = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-
 # Single-integer osa extractor from a peep filename (#279). Matches ONLY a
 # single integer terminated by ``_`` or end-of-stem — i.e. ``..._osa11_peep``
 # yields ``11`` but range-form ``..._osa6-13_peep`` does NOT match, because
@@ -94,14 +88,6 @@ def _is_range_osa_file(fname: str) -> bool:
     policy in ``migrate_multipart_iri_scheme``.
     """
     return RANGE_OSA_RE.search(fname) is not None
-
-
-def sanitize_id(value: str) -> str:
-    s = value.replace(" ", "_")
-    for old, new in _ESTONIAN_TRANSLITERATION.items():
-        s = s.replace(old, new)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s or "Unknown"
 
 
 def detect_duplicates() -> dict[str, list[str]]:

@@ -57,16 +57,6 @@ HASVERSION_MIN_RESOLVED_FRACTION = 0.5
 
 NS = "https://w3id.org/estleg/"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 # ---------------------------------------------------------------------------
 # IRI prefix aliases
@@ -974,6 +964,107 @@ def require_cross_reference_report(*, krr_dir: Path | None = None) -> None:
         )
 
 
+_ACT_ROOT_AGGREGATE_PROPS: tuple[str, ...] = (
+    "estleg:references",
+    "estleg:referencedBy",
+    "estleg:interpretedBy",
+    "estleg:competentAuthority",
+)
+_ACT_ROOT_TYPES = frozenset(
+    {
+        "owl:Ontology",
+        "estleg:Act",
+        "estleg:Law",
+        "estleg:NationalRegulation",
+        "estleg:GovernmentRegulation",
+        "estleg:MinisterialRegulation",
+        "estleg:MunicipalRegulation",
+    }
+)
+
+
+def _iri_values(value: object) -> list[str]:
+    """Flatten a JSON-LD IRI slot (string, ``{@id}``, or list) to id strings."""
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value] if value else []
+    if isinstance(value, dict):
+        iri = value.get("@id")
+        return [iri] if isinstance(iri, str) and iri else []
+    if isinstance(value, list):
+        out: list[str] = []
+        for item in value:
+            out.extend(_iri_values(item))
+        return out
+    return []
+
+
+def materialize_act_root_aggregates(json_files: list[Path]) -> int:
+    """Union provision-level citation/authority edges onto each act root (#508).
+
+    Law-level tools otherwise have to scan every ``_Par_`` node (and fragment
+    across multipart osa files). After this pass the act-root node carries
+    the de-duplicated union of ``references`` / ``referencedBy`` /
+    ``interpretedBy`` / ``competentAuthority`` from provisions whose
+    ``estleg:partOfAct`` points at it. Existing act-root values are kept
+    and merged. Returns the number of files written.
+    """
+    updated = 0
+    for path in json_files:
+        try:
+            with open(path, encoding="utf-8") as handle:
+                doc = json.load(handle)
+        except (json.JSONDecodeError, OSError):
+            continue
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
+            continue
+        act_nodes: list[dict] = []
+        by_act: dict[str, dict[str, list[str]]] = {}
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if any(t in _ACT_ROOT_TYPES for t in types):
+                act_nodes.append(node)
+            part = node.get("estleg:partOfAct")
+            act_id = None
+            if isinstance(part, dict):
+                act_id = part.get("@id")
+            elif isinstance(part, str):
+                act_id = part
+            if not isinstance(act_id, str) or not act_id:
+                continue
+            bucket = by_act.setdefault(act_id, {p: [] for p in _ACT_ROOT_AGGREGATE_PROPS})
+            for prop in _ACT_ROOT_AGGREGATE_PROPS:
+                bucket[prop].extend(_iri_values(node.get(prop)))
+        changed = False
+        for act in act_nodes:
+            act_id = act.get("@id")
+            if not isinstance(act_id, str) or act_id not in by_act:
+                continue
+            for prop in _ACT_ROOT_AGGREGATE_PROPS:
+                merged: list[str] = []
+                seen: set[str] = set()
+                for iri in _iri_values(act.get(prop)) + by_act[act_id][prop]:
+                    if iri not in seen:
+                        seen.add(iri)
+                        merged.append(iri)
+                if not merged:
+                    continue
+                new_val = [{"@id": iri} for iri in merged]
+                if act.get(prop) != new_val:
+                    act[prop] = new_val
+                    changed = True
+        if changed:
+            save_json(path, doc)
+            updated += 1
+    return updated
+
+
 def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Generate Inverse References (referencedBy)")
@@ -1020,6 +1111,10 @@ def main() -> int:
     total_nodes_updated = sum(update_counts.values())
     print(f"\nUpdated {sum(update_counts.values())} nodes across "
           f"{len(update_counts)} files")
+
+    print("\n[3b] Materialising act-root aggregates (#508)...")
+    act_root_files = materialize_act_root_aggregates(list(iter_peep_files()))
+    print(f"  Act-root aggregates written to {act_root_files} files")
 
     # Target-side attribution: each (target_path, count) pair is one
     # peep file that received >=1 referencedBy triple in this pass.

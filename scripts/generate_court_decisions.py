@@ -44,16 +44,19 @@ import sys
 import time
 import urllib.parse
 from datetime import datetime
+from functools import partial
 from pathlib import Path
 
 import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
 from estleg_common import (
+    CONTEXT,
     BUILD_EVALUATION_DATE,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     allowed_get,
     save_json,
+    sanitize_id as _shared_sanitize_id,
 )
 
 try:  # Optional dep — falls back to regex parser when unavailable.
@@ -118,16 +121,6 @@ MIN_DECISION_TEXT_VALID_CHAR_RATIO = 0.30
 # *all* ~12k decisions — the multi-hour run; the cache makes it resumable.
 DEFAULT_FULL_TEXT_LIMIT = 50
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 # Case type classification based on case number prefix
 CASE_TYPE_MAP = {
@@ -148,21 +141,16 @@ DECISION_TYPES = {
 }
 
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    """Create a safe ID from a string."""
-    s = value.replace("/", "_").replace("-", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "_", s)
-    return s[:80] or "Unknown"
+# Court-decision IDs: slashes/dashes become ``_``, leftover non-ASCII
+# becomes ``_``, cap at 80 (#449).
+sanitize_id = partial(
+    _shared_sanitize_id,
+    max_len=80,
+    replace_dash=True,
+    replace_slash=True,
+    canonicalize_ranges=False,
+    unknown_char="_",
+)
 
 
 # ``\s`` does not match the byte-order mark (U+FEFF); strip it
@@ -452,6 +440,35 @@ def _parse_with_bs4(html_text: str) -> list[dict]:
     return decisions
 
 
+def _iter_tag_inner(html_text: str, tag: str) -> list[str]:
+    """Return inner HTML of each ``<tag ...>...</tag>`` via a linear scan (#356)."""
+    open_pat = f"<{tag}"
+    close_pat = f"</{tag}>"
+    lower = html_text.lower()
+    open_l = open_pat.lower()
+    close_l = close_pat.lower()
+    out: list[str] = []
+    pos = 0
+    while True:
+        start = lower.find(open_l, pos)
+        if start < 0:
+            break
+        # Require a tag boundary so ``<tr`` does not match ``<trace``.
+        after = start + len(open_l)
+        if after < len(html_text) and html_text[after] not in " \t\r\n/>":
+            pos = after
+            continue
+        gt = html_text.find(">", after)
+        if gt < 0:
+            break
+        end = lower.find(close_l, gt + 1)
+        if end < 0:
+            break
+        out.append(html_text[gt + 1 : end])
+        pos = end + len(close_l)
+    return out
+
+
 def _parse_with_regex(html_text: str) -> list[dict]:
     """Fallback path used when BeautifulSoup is unavailable.
 
@@ -460,9 +477,12 @@ def _parse_with_regex(html_text: str) -> list[dict]:
     drift instead of silently miscounting rows.
     """
     decisions: list[dict] = []
-    trs = re.findall(r"<tr[^>]*>(.*?)</tr>", html_text, re.DOTALL)
+    # Linear scan (#356): the previous greedy ``<tr[^>]*>(.*?)</tr>``
+    # fallback is O(n²) on unclosed ``<tr>`` (ReDoS). Walk the string
+    # once instead.
+    trs = _iter_tag_inner(html_text, "tr")
     for tr in trs:
-        tds = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.DOTALL)
+        tds = _iter_tag_inner(tr, "td")
         if not tds:
             continue
         if len(tds) != _EXPECTED_COLUMN_COUNT:

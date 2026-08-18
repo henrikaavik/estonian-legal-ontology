@@ -30,7 +30,11 @@ if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
 import estleg_common  # noqa: E402
-from estleg_common import act_deprecation, iter_krr_jsonld_files  # noqa: E402
+from estleg_common import (  # noqa: E402
+    act_deprecation,
+    is_non_data_file,
+    iter_krr_jsonld_files,
+)
 from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
 
 # #519: the combined builder forward-chains rdf:type over the subclass
@@ -88,6 +92,10 @@ PROVISION_PARITY_FIELDS = (
 # (which carry `'totalRegulations'` or no `'@graph'`) from the parity
 # corpus keeps `discover_validation_files()` honest without resorting
 # to brittle filename-prefix heuristics (#158).
+# Kept as a module-level name so existing tests of ``EXCLUDE_SUFFIXES``
+# still import something. Classification now lives in
+# ``estleg_common.is_non_data_file`` (#452); these filename suffixes
+# remain the validate_all surface (reports/mappings/indexes/etc.).
 EXCLUDE_SUFFIXES = (
     "_report.json",
     "_mapping.json",
@@ -95,6 +103,7 @@ EXCLUDE_SUFFIXES = (
     "_classification.json",
     "_coverage.json",
     "_probe.json",
+    "_review.json",
 )
 
 # Re-export alias of the single source of truth (#240). Kept as a
@@ -646,7 +655,7 @@ def discover_validation_files(krr_dir: Path = KRR_DIR) -> list[Path]:
     # Route through the shared enumerator so operational-state-file
     # exclusion can never drift between counters (#240).
     files = list(iter_krr_jsonld_files(krr_dir))
-    files = [f for f in files if not any(f.name.endswith(s) for s in EXCLUDE_SUFFIXES)]
+    files = [f for f in files if not is_non_data_file(f)]
     files = [f for f in files if not is_combined_artifact_file(f)]
     files = [f for f in files if not is_aggregate_index_file(f)]
     return files

@@ -901,3 +901,38 @@ class TestHasVersionResolutionDegraded:
 
         # No targets at all -> no signal, and no division by zero.
         assert mod.hasversion_resolution_degraded({}, []) is False
+
+
+def test_act_root_aggregates_union_provision_edges(tmp_path):
+    """#508: provision-level references roll up onto the act root."""
+    import generate_inverse_references as mod
+
+    path = tmp_path / "x_peep.json"
+    path.write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:X_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:Act"],
+                    },
+                    {
+                        "@id": "estleg:X_Par_1",
+                        "@type": ["estleg:LegalProvision"],
+                        "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
+                        "estleg:references": {"@id": "estleg:Y_Par_1"},
+                        "estleg:referencedBy": {"@id": "estleg:Z_Par_2"},
+                        "estleg:interpretedBy": {"@id": "estleg:RK_1"},
+                        "estleg:competentAuthority": {"@id": "estleg:Institution_mta"},
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert mod.materialize_act_root_aggregates([path]) == 1
+    root = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
+    assert root["estleg:references"] == [{"@id": "estleg:Y_Par_1"}]
+    assert root["estleg:referencedBy"] == [{"@id": "estleg:Z_Par_2"}]
+    assert root["estleg:interpretedBy"] == [{"@id": "estleg:RK_1"}]
+    assert root["estleg:competentAuthority"] == [{"@id": "estleg:Institution_mta"}]

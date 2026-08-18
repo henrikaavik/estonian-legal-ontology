@@ -4,6 +4,53 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Shared pipeline helpers (#449, #465, #376, #356, #452, #509)
+
+- One `sanitize_id` in `estleg_common` (numeric §-ranges become `_to_`;
+  Estonian letters transliterate). Generators import it or a `partial`.
+- One JSON-LD `@context` (now also `eli`/`void`/`dcat`/`prov`) and one
+  `PINNED_RUN_TIMESTAMP`.
+- Fetch-then-parse XML rejects DTD/entity payloads; the court HTML
+  fallback no longer uses a backtracking `<tr>` regex.
+- `--resume-from` fails if a skipped step's distinctive writes are missing.
+- Validators share `is_non_data_file` for sidecar reports.
+- SHACL accepts `rdf:langString` titles/labels/summaries (`sh:uniqueLang`
+  on labels).
+- `krr_outputs/void.ttl` is a standalone VoID/DCAT descriptor (#517
+  started; combined artifact not yet restamped).
+
+### Repo hygiene (#538, #539)
+
+- Dropped the stale 2.9 MB `docs/eesti-oigusontoloogia-ulevaade.pdf` blob
+  (older than the #378 HTML fix) and ignore `docs/*.pdf`. The HTML ülevaade
+  remains the published overview.
+- Untracked write-only regen artifacts with no production readers:
+  `krr_outputs/similarity/kov_similarity_index.json`,
+  `krr_outputs/concepts/concept_crossref_report.json`,
+  `data/uri_migration_report.json`, and
+  `krr_outputs/reports/multipart_iri_migration_report.json`.
+  `data/migration_state.json` stays tracked as the URI-migration sentinel.
+  Corpus `estleg:totalFiles` / top-level `estleg:fileCount` is now 23,113.
+
+### Review cohort on main (#483–#492)
+
+Already landed on main, previously missing from this changelog:
+
+- **#483** — Tier 0 semantic fixes: EuroVoc remap, similarity strip, proposed
+  amendments, KOV typing, harmonisation direction (#421–#425).
+- **#484** — Deprecate 37 legacy duplicate statute roots in place and re-point
+  inbound refs (#426).
+- **#485** — Unify Constitution provision IRIs and bridge legacy provisions to
+  the canonical family (#427).
+- **#486** — Connect act roots to their provisions via `estleg:partOfAct` (#415).
+- **#487** — Combined ontology as a self-contained graph plus closure gate (#416).
+- **#492** — Carry SHACL-required edges on shaped combined stubs and add the
+  combined-only gate (#488–#491).
+
+Later in-repo review work is also on main: court-citation word-boundary (#350),
+`NormType_Definition` (#461), T-Box / MCP / HTTP allow-list, and typed
+citations / fetched-text hashes / golden facts.
+
 ### Namespace migration (#516)
 
 - **Canonical IRI namespace changed to `https://w3id.org/estleg/`** (w3id.org

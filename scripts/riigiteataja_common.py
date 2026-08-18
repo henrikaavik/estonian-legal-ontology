@@ -36,6 +36,8 @@ from estleg_common import (  # noqa: F401  -- re-exports for public API
     _TRANSLIT_TABLE,
     allowed_get,
     iter_peep_files,
+    parse_xml,
+    parse_xml_file,
     sanitize_id,
     save_json,
     slugify,
@@ -302,8 +304,8 @@ def fetch_xml(
     # through to a fresh fetch, so a corrupt cache self-heals.
     if not refresh and cache_path.exists() and cache_path.stat().st_size >= min_size:
         try:
-            return ET.parse(str(cache_path)).getroot()
-        except ET.ParseError:
+            return parse_xml_file(cache_path)
+        except (ET.ParseError, ValueError):
             pass
 
     full_url = build_xml_url(url)
@@ -316,7 +318,7 @@ def fetch_xml(
         if len(xml_text) < min_size:
             return None
         cache_path.write_text(xml_text, encoding="utf-8")
-        return ET.fromstring(xml_text)
+        return parse_xml(xml_text)
     except Exception as e:
         print(f"    Fetch error: {e}")
         return None

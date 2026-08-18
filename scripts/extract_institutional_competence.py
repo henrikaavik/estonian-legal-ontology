@@ -19,11 +19,15 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from functools import partial
+
 from estleg_common import (
+    CONTEXT,
     BUILD_EVALUATION_DATE,
     iter_peep_files,
     jsonld_text,
     save_json,
+    sanitize_id as _shared_sanitize_id,
 )
 from extract_sanctions import _find_act_node
 from extract_cross_references import build_issuer_registry
@@ -74,16 +78,6 @@ def _id_ref(value: object) -> str | None:
 
 NS = "https://w3id.org/estleg/"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 
 # Issue #376: ``save_json`` is imported from ``estleg_common`` (tempfile +
@@ -104,21 +98,12 @@ def load_json(filepath: Path) -> dict | None:
         return None
 
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    s = value.replace(" ", "_").replace("-", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    s = re.sub(r"_+", "_", s).strip("_")
-    return s[:80] or "Unknown"
+sanitize_id = partial(
+    _shared_sanitize_id,
+    max_len=80,
+    replace_dash=True,
+    collapse_underscores=True,
+)
 
 
 # Map known abbreviations to canonical full-name suffixes (lowercase).

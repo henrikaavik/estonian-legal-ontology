@@ -1356,22 +1356,10 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     # build a degraded artifact from pointer stubs.
     _require_combined_build_sources(krr_dir)
 
-    combined_context = {
-        "estleg": NEW_NS,
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "dc": "http://purl.org/dc/elements/1.1/",
-        "dcterms": "http://purl.org/dc/terms/",
-        "skos": "http://www.w3.org/2004/02/skos/core#",
-        "schema": "http://schema.org/",
-        # #607(a): EU acts carry ``eli:id_local`` (kept on their closure stubs via
-        # STUB_KEEP_PROPS). Declare the ELI ontology prefix so that triple is a
-        # resolvable CURIE in the self-contained artifact rather than an
-        # undeclared-prefix term.
-        "eli": "http://data.europa.eu/eli/ontology#",
-    }
+    combined_context = dict(estleg_common.CONTEXT)
+    combined_context["estleg"] = NEW_NS
+    # schema.org is only used on the combined header, not on per-law peeps.
+    combined_context["schema"] = "http://schema.org/"
 
     # First-occurrence-ordered list of merged nodes, plus an index by @id so a
     # recurring @id MERGES into the existing node instead of being dropped

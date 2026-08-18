@@ -12,6 +12,8 @@ import xml.etree.ElementTree as ET
 
 import requests
 
+from estleg_common import CONTEXT, parse_xml, sanitize_id as _shared_sanitize_id
+
 SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
 # The historical ``/akt/<id>.xml`` path now serves the Riigi Teataja single-page
@@ -35,16 +37,9 @@ def build_context() -> dict[str, str]:
     namespace; conflating them breaks corpus-wide RDF joins on
     ``dc:source``/``dc:references`` (#308).
     """
-    return {
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "dc": "http://purl.org/dc/elements/1.1/",
-        "skos": "http://www.w3.org/2004/02/skos/core#",
-        "estleg": ESTLEG_BASE,
-        "dcterms": "http://purl.org/dc/terms/",
-    }
+    ctx = dict(CONTEXT)
+    ctx["estleg"] = ESTLEG_BASE
+    return ctx
 
 
 LEGAL_DEFINITIONS = [
@@ -107,14 +102,6 @@ def section_range(osa_el: ET.Element) -> tuple[int, int] | None:
     return min(numbers), max(numbers)
 
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
 # KarS often introduces interpolated paragraphs as "88¹", "88²", "88³"
 # (and so on, occasionally up to ⁹). The bare ``sanitize_identifier``
 # strips non-ASCII characters, so "88¹" silently becomes "88" which
@@ -151,12 +138,7 @@ def sanitize_identifier(value: str) -> str:
     ``ä¹`` lose the ¹ before mapping ä→a (the ä mapping replaces only
     the ä codepoint).
     """
-    s = _expand_superscripts(value)
-    s = s.translate(_TRANSLIT_TABLE)
-    # Keep ``_`` so the superscript-derived suffix survives. The
-    # original ``[^0-9A-Za-z]+`` pattern would have stripped them.
-    s = re.sub(r"[^0-9A-Za-z_]+", "", s)
-    return s or "Unknown"
+    return _shared_sanitize_id(_expand_superscripts(value))
 
 
 # Bare superscript glyph → digit (no leading underscore), used when
@@ -398,7 +380,7 @@ def main(argv: list[str] | None = None) -> None:
             args.cache.parent.mkdir(parents=True, exist_ok=True)
             args.cache.write_text(xml_text, encoding="utf-8")
 
-    root = ET.fromstring(xml_text)
+    root = parse_xml(xml_text)
 
     parsed_title = next((e.text.strip() for e in root.iter() if ln(e.tag) == "aktinimi" and e.text), "")
     title = parsed_title or LAW_TITLE

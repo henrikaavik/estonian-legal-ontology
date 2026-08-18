@@ -1,0 +1,63 @@
+# Standalone VoID + DCAT descriptor for the Estonian Legal Ontology (#517).
+# Self-contained: federation engines can load this file without
+# metadata.jsonld or combined_ontology.jsonld.
+#
+# dcterms:license is the compilation-layer offer (CC BY 4.0) covering
+# selection/arrangement, minted estleg: IRIs, TBox, and derived links.
+# Third-party legal texts retain their source rights; this file does not
+# license them. No SPARQL endpoint is advertised here (that is #474).
+
+@prefix void:    <http://rdfs.org/ns/void#> .
+@prefix dcat:    <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix estleg:  <https://w3id.org/estleg/> .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology>
+    a void:Dataset, dcat:Dataset ;
+    rdfs:label "Estonian Legal Ontology"@en ,
+               "Eesti oigusontoloogia"@et ;
+    dcterms:title "Estonian Legal Ontology"@en ,
+                  "Eesti oigusontoloogia"@et ;
+    dcterms:description "A machine-readable ontology of Estonian and EU law that maps enacted acts, regulations, drafts, and court decisions into a linked-data knowledge graph."@en ,
+                        "Masinloetav ontoloogia Eesti ja EL õigusest, mis kaardistab kehtivad aktid, määrused, eelnõud ja kohtulahendid lingitud andmete teadmusgraafi."@et ;
+    dcterms:publisher <https://github.com/henrikaavik> ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:rights "CC BY 4.0 applies to the original compilation layer (selection and arrangement, minted estleg: IRIs, TBox, and derived links). Third-party legal texts retain their source rights."@en ;
+    dcterms:issued "2026-02-23"^^xsd:date ;
+    dcterms:modified "2026-06-22"^^xsd:date ;
+    owl:versionInfo "0.11.0" ;
+    void:uriSpace "https://w3id.org/estleg/" ;
+    void:exampleResource estleg:KarS_Par_1 ;
+    void:dataDump <https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/combined_ontology.jsonld> ;
+    void:subset <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-eurovoc> ,
+                <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-cellar> ,
+                <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja> .
+
+<https://github.com/henrikaavik>
+    a foaf:Agent ;
+    foaf:name "Henrik Aavik" .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-eurovoc>
+    a void:Linkset ;
+    void:linkPredicate dcterms:subject ;
+    void:target <http://eurovoc.europa.eu/> ;
+    void:subjectsTarget <https://w3id.org/estleg/dataset/estonian-legal-ontology> ;
+    void:objectsTarget <http://eurovoc.europa.eu/> .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-cellar>
+    a void:Linkset ;
+    void:linkPredicate owl:sameAs ;
+    void:target <http://publications.europa.eu/resource/> ;
+    void:subjectsTarget <https://w3id.org/estleg/dataset/estonian-legal-ontology> ;
+    void:objectsTarget <http://publications.europa.eu/resource/> .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja>
+    a void:Linkset ;
+    void:linkPredicate dcterms:source ;
+    void:target <https://www.riigiteataja.ee/> ;
+    void:subjectsTarget <https://w3id.org/estleg/dataset/estonian-legal-ontology> ;
+    void:objectsTarget <https://www.riigiteataja.ee/> .

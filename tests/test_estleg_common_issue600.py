@@ -43,10 +43,9 @@ class TestSanitizeIdDashCollision:
         assert sanitize_id("3—5") == "3_to_5"
         assert sanitize_id("3−5") == "3_to_5"
 
-    def test_ascii_hyphen_is_not_canonicalised(self):
-        # The #354 fix deliberately scopes to typographic dashes; a plain
-        # ASCII hyphen is stripped (matches generate_all_laws.sanitize_id).
-        assert sanitize_id("3-5") == "35"
+    def test_ascii_hyphen_numeric_range_canonicalises_to_to(self):
+        # #449: an ASCII-hyphen §-range must not collapse to a bare number.
+        assert sanitize_id("3-5") == "3_to_5"
 
     def test_plain_value_is_unchanged(self):
         assert sanitize_id("194") == "194"

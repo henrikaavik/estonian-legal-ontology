@@ -96,3 +96,19 @@ class TestIssue393ProvisionVersionInterval:
         })
         assert ok, msg
         assert "LessThanConstraintComponent" not in msg
+
+    def test_optional_citation_properties_conform(self):
+        # Issue #524: rtUrl / sourceAct / partOfAct are optional on
+        # ProvisionVersion. Existing required fields stay unchanged.
+        node = _provision_version(valid_from="2020-01-02")
+        node["estleg:rtUrl"] = {
+            "@value": "https://www.riigiteataja.ee/akt/13231473",
+            "@type": "xsd:anyURI",
+        }
+        node["estleg:sourceAct"] = {
+            "@value": "Karistusseadustik",
+            "@language": "et",
+        }
+        node["estleg:partOfAct"] = {"@id": "estleg:TEST_Map_2026"}
+        ok, msg = _validate({"@context": CONTEXT, "@graph": [node]})
+        assert ok, msg

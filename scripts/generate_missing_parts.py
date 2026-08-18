@@ -29,7 +29,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from estleg_common import save_json as _atomic_save_json  # noqa: E402
+from estleg_common import CONTEXT, save_json as _atomic_save_json, sanitize_id  # noqa: E402
 from riigiteataja_common import (  # noqa: E402
     fetch_acts,
     fetch_xml,
@@ -50,15 +50,6 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 NS = "https://w3id.org/estleg/"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-}
 
 DEFAULT_VOS_OSA_NUMBERS = ("2", "6", "10")
 DEFAULT_KEHTIV = _date_cls.today().isoformat()
@@ -74,22 +65,6 @@ def child_text(el: ET.Element, name: str) -> str | None:
         if ln(c.tag) == name and c.text:
             return c.text.strip()
     return None
-
-
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    s = value.replace(" ", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s or "Unknown"
 
 
 # ``collect_text`` (and its marker-pruning helpers ``_iter_text_nodes`` /

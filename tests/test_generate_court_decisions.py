@@ -399,6 +399,13 @@ class TestParseHtmlTable:
         assert regex_rows[0]["object_id"] == "1 0"
 
 
+def test_regex_fallback_does_not_backtrack_on_unclosed_tr() -> None:
+    """#356: unclosed ``<tr>`` must not explode the fallback parser."""
+    html = "<table><tr><td>a</td><td>b</td></tr>" + ("<tr" * 4000)
+    inner = gcd._iter_tag_inner(html, "tr")
+    assert inner == ["<td>a</td><td>b</td>"]
+
+
 # ---------------------------------------------------------------------------
 # decision_to_node
 # ---------------------------------------------------------------------------

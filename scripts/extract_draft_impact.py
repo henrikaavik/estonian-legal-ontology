@@ -19,7 +19,15 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text, jsonld_texts, save_json
+from functools import partial
+
+from estleg_common import (
+    iter_peep_files,
+    jsonld_text,
+    jsonld_texts,
+    save_json,
+    sanitize_id as _shared_sanitize_id,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -27,16 +35,6 @@ EELNOUD_DIR = KRR_DIR / "eelnoud"
 
 NS = "https://w3id.org/estleg/"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 
 def load_json(filepath: Path) -> dict | None:
@@ -48,20 +46,7 @@ def load_json(filepath: Path) -> dict | None:
         return None
 
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    s = value.replace(" ", "_").replace("-", "_")
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s[:80] or "Unknown"
+sanitize_id = partial(_shared_sanitize_id, max_len=80, replace_dash=True)
 
 
 # ---------- act-node resolution (issue #289) ----------

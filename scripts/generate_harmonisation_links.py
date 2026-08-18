@@ -28,6 +28,7 @@ from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
+    CONTEXT,
     BUILD_EVALUATION_DATE,
     act_deprecation,
     iter_peep_files,
@@ -75,16 +76,6 @@ RATE_DELAY = 1.5  # seconds between SPARQL requests
 # value rather than refuse it — so it is NOT a substitute for this check.
 _CELEX_ALLOWED = re.compile(r"[0-9A-Za-z()/]+")
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/",
-}
 
 # Target countries: Baltic/Nordic neighbors. The keys are the ISO 3166-1
 # alpha-3 codes the Publications Office country vocabulary uses in

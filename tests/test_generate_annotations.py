@@ -15,6 +15,7 @@ from pathlib import Path
 
 import pytest
 
+import estleg_common
 import generate_annotations as ga
 from generate_annotations import (
     Opinion,
@@ -1461,7 +1462,7 @@ def test_coverage_run_timestamp_is_pinned(tmp_path: Path, monkeypatch: pytest.Mo
     cov_path = _run_seed_for_coverage(tmp_path, monkeypatch)
     cov = json.loads(cov_path.read_text(encoding="utf-8"))
     assert cov["run_timestamp"] == ga.PINNED_RUN_TIMESTAMP
-    assert ga.PINNED_RUN_TIMESTAMP == "1970-01-01T00:00:00+00:00"
+    assert ga.PINNED_RUN_TIMESTAMP == estleg_common.PINNED_RUN_TIMESTAMP
 
 
 def test_coverage_report_is_byte_stable_across_reruns(

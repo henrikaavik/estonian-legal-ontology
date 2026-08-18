@@ -25,7 +25,15 @@ from pathlib import Path
 
 import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
-from estleg_common import allowed_get, save_json, sha256_hex
+from estleg_common import (
+    CONTEXT,
+    allowed_get,
+    parse_xml,
+    save_json,
+    sanitize_id,
+    sha256_hex,
+    slugify,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -64,17 +72,6 @@ REGEN_STATE_SCHEMA_VERSION = 1
 # Argparse sentinel for bare ``--regen-state``; resolved after KRR_DIR is configured.
 DEFAULT_REGEN_STATE_SENTINEL = "__default_regen_state__"
 
-CONTEXT = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-}
-
 
 def ln(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
@@ -85,26 +82,6 @@ def ct(el: ET.Element, name: str) -> str | None:
         if ln(c.tag) == name and c.text:
             return c.text.strip()
     return None
-
-
-def slugify(text: str) -> str:
-    """Convert Estonian text to a filename-safe slug."""
-    # Transliterate Estonian chars
-    replacements = {
-        "ä": "a", "ö": "o", "ü": "u", "õ": "o",
-        "Ä": "A", "Ö": "O", "Ü": "U", "Õ": "O",
-        "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-    }
-    for old, new in replacements.items():
-        text = text.replace(old, new)
-    text = text.lower().strip()
-    text = re.sub(r"[^a-z0-9]+", "_", text)
-    text = text.strip("_")
-    # Issue #346: the 80-char truncation can land on an ``_`` (when char 81
-    # was the start of a word). Strip it so appending a standard suffix
-    # (``_Map_2026``, ``_Par_N``, ``_TopicScheme``) never yields a
-    # double-underscore IRI like ``…konventsiooni__Map_2026``.
-    return text[:80].rstrip("_")
 
 
 def build_law_slug_map(
@@ -192,28 +169,6 @@ def build_law_slug_map(
             slugs[title] = candidate
             reserved.add(candidate)
     return slugs
-
-
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
-
-
-def sanitize_id(value: str) -> str:
-    s = value.replace(" ", "_")
-    # Issue #354: canonicalise a §-range separator BEFORE the non-ASCII strip.
-    # A ``paragrahvNr`` like ``1–94`` (en-dash) would otherwise lose the dash
-    # and concatenate to ``194`` — indistinguishable from a real §194. Map the
-    # dash to an explicit ``_to_`` so the range stays legible (``1_to_94``)
-    # and the IRI suffix becomes ``Par_1_to_94``.
-    s = re.sub(r"\s*[‐-―−]\s*", "_to_", s)
-    # Transliterate Estonian diacritics before stripping non-ASCII
-    s = s.translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s or "Unknown"
 
 
 # Issue #255: amendment / publication / entry-into-force markers. Riigi
@@ -956,7 +911,7 @@ def fetch_xml(
             return None
 
         try:
-            root = ET.fromstring(xml_text)
+            root = parse_xml(xml_text)
         except ET.ParseError:
             return None
         # An HTML error page that parses as XML must not be persisted as a
