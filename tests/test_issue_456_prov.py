@@ -1,9 +1,7 @@
-"""Minimal dataset-level PROV-O layer (#456).
+"""PROV-O dataset activity + classifier assertionConfidence (#456).
 
-Law peeps are out of scope: do not rewrite them and do not require
-``prov:wasGeneratedBy`` or ``estleg:assertionConfidence`` on instance
-nodes. Combined ``combined_ontology.jsonld`` is also not rewritten;
-the header helper stamps future builds only.
+Scraped ``estleg:legalText`` is not stamped. The RT law generator must
+not write confidence. Classifier outputs on peeps do.
 """
 
 from __future__ import annotations
@@ -102,8 +100,45 @@ def test_schema_reference_documents_dataset_prov() -> None:
     assert "estleg:assertionConfidence" in text
 
 
-def test_no_peep_rewrite_required_for_minimal_prov() -> None:
-    """#456 is dataset-level; law generators must not be required to stamp peeps."""
+def test_law_generator_does_not_stamp_confidence() -> None:
+    """Scraped statutory text is not a classifier output (#456)."""
     source = GENERATE_ALL_LAWS.read_text(encoding="utf-8")
     assert "wasGeneratedBy" not in source
     assert "assertionConfidence" not in source
+
+
+def test_stamp_assertion_confidence_writes_typed_decimal() -> None:
+    node = {"estleg:normativeType": {"@id": "estleg:NormType_Obligation"}}
+    assert estleg_common.heuristic_confidence_for_node(node) == "0.70"
+    assert estleg_common.stamp_assertion_confidence(node, "0.70") is True
+    assert node["estleg:assertionConfidence"] == {
+        "@value": "0.70",
+        "@type": "xsd:decimal",
+    }
+    assert estleg_common.stamp_assertion_confidence(node, "0.70") is False
+
+
+def test_legal_text_only_node_has_no_heuristic_confidence() -> None:
+    node = {"estleg:legalText": "Tööandja peab pidama arvestust."}
+    assert estleg_common.heuristic_confidence_for_node(node) is None
+
+
+def test_committed_classified_peep_has_assertion_confidence() -> None:
+    doc = json.loads(
+        (REPO / "krr_outputs" / "abipolitseiniku_seadus_peep.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stamped = 0
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        if "estleg:targetGroup" not in node and "estleg:normativeType" not in node:
+            continue
+        conf = node.get("estleg:assertionConfidence")
+        assert isinstance(conf, dict), node.get("@id")
+        assert conf.get("@type") == "xsd:decimal"
+        value = float(conf["@value"])
+        assert 0 < value <= 1
+        stamped += 1
+    assert stamped > 0

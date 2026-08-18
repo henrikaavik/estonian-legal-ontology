@@ -16,7 +16,7 @@ Subcorpus `*_schema.json` files already tag `@et`/`@en` on their schema labels.
 
 ### Provenance (dataset-level)
 
-Issue #456 is implemented as a **dataset-level** PROV-O layer, not a per-assertion rewrite of law peeps. `krr_outputs/void.ttl` links the published dataset to `estleg:Activity_CorpusBuild_0_11_0` via `prov:wasGeneratedBy`. `estleg_common.combined_ontology_header()` emits the same edge on future combined builds. Classifier outputs (EuroVoc, deontic, `targetGroup`) SHOULD carry `estleg:assertionConfidence` (`xsd:decimal` in `[0, 1]`); scraped `estleg:legalText` does not. Instance nodes are not yet stamped — sidecar reports remain the run-level audit trail until a later overlay pass.
+Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confidence. `krr_outputs/void.ttl` links the published dataset to `estleg:Activity_CorpusBuild_0_11_0` via `prov:wasGeneratedBy`. `estleg_common.combined_ontology_header()` emits the same edge on combined builds. Keyword-derived assertions (deontic `normativeType`, `targetGroup`, EuroVoc `dcterms:subject`) carry `estleg:assertionConfidence` (`xsd:decimal` in `[0, 1]`). Scraped `estleg:legalText` does not. The RT law generator does not stamp confidence.
 
 ### Classes
 

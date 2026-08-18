@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Catalog URLs pin a content SHA (#548)
+
+- `metadata.jsonld` and `void.ttl` no longer cite mutable `/main`.
+  Download/access URLs use `DATASET_CONTENT_SHA`. The build manifest
+  records `contentSha` + `catalogModified`; `validate_all` rejects `/main`
+  catalog URLs. GitHub Release assets remain #473.
+
+### Classifier assertionConfidence (#456)
+
+- Keyword-derived `normativeType` / `targetGroup` / EuroVoc subjects on
+  peeps carry `estleg:assertionConfidence` (`xsd:decimal`). Scraped
+  `legalText` is not stamped.
+
 ### dutyHolder is a TargetGroup IRI (#460)
 
 - `estleg:dutyHolder` is no longer a free string. The deontic extractor

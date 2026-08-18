@@ -1218,6 +1218,42 @@ def report_file(krr_dir: Path, name: str) -> Path:
     return krr_dir / REPORTS_SUBDIR / name
 
 
+# Keyword-classifier confidence written onto peep nodes (#456).
+# Scraped ``estleg:legalText`` is never stamped. Values are xsd:decimal in [0, 1].
+DEONTIC_ASSERTION_CONFIDENCE = "0.70"
+TARGET_GROUP_ASSERTION_CONFIDENCE = "0.65"
+EUROVOC_ASSERTION_CONFIDENCE = "0.55"
+
+
+def emit_assertion_confidence(value: str) -> dict[str, str]:
+    """JSON-LD typed decimal for ``estleg:assertionConfidence``."""
+    return {"@value": value, "@type": "xsd:decimal"}
+
+
+def stamp_assertion_confidence(node: dict, value: str) -> bool:
+    """Set ``estleg:assertionConfidence`` if missing or different. Returns True if changed."""
+    typed = emit_assertion_confidence(value)
+    if node.get("estleg:assertionConfidence") == typed:
+        return False
+    node["estleg:assertionConfidence"] = typed
+    return True
+
+
+def heuristic_confidence_for_node(node: dict) -> str | None:
+    """Lowest applicable classifier confidence, or None if the node is source-only."""
+    scores: list[str] = []
+    if "estleg:normativeType" in node:
+        scores.append(DEONTIC_ASSERTION_CONFIDENCE)
+    if "estleg:targetGroup" in node:
+        scores.append(TARGET_GROUP_ASSERTION_CONFIDENCE)
+    subject = node.get("dcterms:subject")
+    if subject:
+        scores.append(EUROVOC_ASSERTION_CONFIDENCE)
+    if not scores:
+        return None
+    return min(scores)
+
+
 # ---------------------------------------------------------------------------
 # Declared build / evaluation date (#295).
 #

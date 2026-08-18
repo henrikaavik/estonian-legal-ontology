@@ -23,9 +23,11 @@ from estleg.classify_target_group import classify_text, emit_target_group
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     classifier_text,
+    heuristic_confidence_for_node,
     iter_peep_files,
     jsonld_text,
     save_json,  # #376: atomic tempfile+os.replace writer (replaces local non-atomic def)
+    stamp_assertion_confidence,
 )
 from estleg.kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
@@ -578,6 +580,10 @@ def main() -> None:
                     if is_kov:
                         _triples_kov += 1
                     total_duty_holders += 1
+                    modified = True
+
+                confidence = heuristic_confidence_for_node(node)
+                if confidence and stamp_assertion_confidence(node, confidence):
                     modified = True
 
             if modified:

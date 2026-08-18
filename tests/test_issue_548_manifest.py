@@ -37,3 +37,66 @@ def test_committed_manifest_exists_with_sha_and_pks_kehtiv() -> None:
 def test_release_md_mentions_dataset_build_manifest() -> None:
     text = RELEASE.read_text(encoding="utf-8")
     assert "dataset_build_manifest" in text
+
+
+def test_metadata_catalog_urls_are_not_mutable_main() -> None:
+    """#548: dcat/schema GitHub URLs must cite DATASET_CONTENT_SHA, not /main."""
+    meta = json.loads((REPO / "metadata.jsonld").read_text(encoding="utf-8"))
+    record = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    sha = wbm.DATASET_CONTENT_SHA
+    assert record["contentSha"] == sha
+    assert record["catalogModified"]
+    assert record["datasetVersion"] == "0.11.0"
+
+    urls: list[str] = []
+
+    def _walk(value: object) -> None:
+        if isinstance(value, dict):
+            ident = value.get("@id")
+            if isinstance(ident, str):
+                urls.append(ident)
+            for item in value.values():
+                _walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                _walk(item)
+
+    _walk(meta.get("dcat:distribution"))
+    _walk(meta.get("schema:distribution"))
+    github = [
+        url
+        for url in urls
+        if "github.com/henrikaavik/estonian-legal-ontology" in url
+    ]
+    assert github, "expected catalog GitHub URLs"
+    for url in github:
+        assert not wbm.is_mutable_main_url(url), url
+        assert sha in url, url
+
+
+def test_void_data_dump_is_content_sha_not_main() -> None:
+    text = (REPO / "krr_outputs" / "void.ttl").read_text(encoding="utf-8")
+    assert "/raw/main/" not in text
+    assert wbm.DATASET_CONTENT_SHA in text
+
+
+def test_validate_metadata_repro_pins_flags_main(tmp_path, monkeypatch) -> None:
+    from estleg import validate_all as va
+
+    va.reset()
+    monkeypatch.setattr(va, "REPO_ROOT", tmp_path)
+    doc = {
+        "owl:versionInfo": "0.11.0",
+        "dcat:distribution": [
+            {
+                "dcat:downloadURL": {
+                    "@id": (
+                        "https://github.com/henrikaavik/estonian-legal-ontology"
+                        "/raw/main/krr_outputs/combined_ontology.jsonld"
+                    )
+                }
+            }
+        ],
+    }
+    va.validate_metadata_repro_pins(doc)
+    assert any("mutable /main" in err for err in va.errors), va.errors

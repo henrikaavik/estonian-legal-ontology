@@ -19,9 +19,11 @@ from pathlib import Path
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     KRR_DIR,
+    heuristic_confidence_for_node,
     iter_peep_files,
     jsonld_text,
     save_json,
+    stamp_assertion_confidence,
 )
 
 TARGET_GROUP_ORDER: tuple[str, ...] = (
@@ -471,6 +473,9 @@ def classify_files(
             elif "estleg:targetGroup" in node:
                 node.pop("estleg:targetGroup", None)
                 changed = True
+            confidence = heuristic_confidence_for_node(node)
+            if confidence and stamp_assertion_confidence(node, confidence):
+                changed = True
 
         if changed:
             changed_files += 1
@@ -636,6 +641,47 @@ _DUTY_HOLDER_STRING_LINE_RE = re.compile(
 )
 
 
+def stamp_confidence_files(files: list[Path], *, write: bool = True) -> dict[str, int]:
+    """Stamp ``estleg:assertionConfidence`` on existing classifier outputs."""
+    stats = Counter()
+    markers = (
+        '"estleg:normativeType"',
+        '"estleg:targetGroup"',
+        '"dcterms:subject"',
+    )
+    for path in files:
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError:
+            stats["files_skipped"] += 1
+            continue
+        if not any(marker in text for marker in markers):
+            stats["files_skipped"] += 1
+            continue
+        try:
+            doc = json.loads(text)
+        except ValueError:
+            stats["files_skipped"] += 1
+            continue
+        if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+            stats["files_skipped"] += 1
+            continue
+        stats["files_scanned"] += 1
+        file_changed = False
+        for node in doc["@graph"]:
+            if not isinstance(node, dict):
+                continue
+            value = heuristic_confidence_for_node(node)
+            if value and stamp_assertion_confidence(node, value):
+                stats["nodes_changed"] += 1
+                file_changed = True
+        if file_changed:
+            stats["files_changed"] += 1
+            if write:
+                save_json(path, doc)
+    return stats
+
+
 def upgrade_duty_holder_files(files: list[Path], *, write: bool = True) -> dict[str, int]:
     """Remint or drop free-string ``estleg:dutyHolder`` values on peeps."""
     stats = Counter()
@@ -747,9 +793,21 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="map dutyHolder phrases to TargetGroup IRIs or drop unmapped junk (#460)",
     )
+    parser.add_argument(
+        "--stamp-confidence",
+        action="store_true",
+        help="write estleg:assertionConfidence on classifier outputs (#456)",
+    )
     args = parser.parse_args(argv)
 
     files = iter_peep_files(include_kov=not args.exclude_kov)
+    if args.stamp_confidence:
+        stats = stamp_confidence_files(files, write=not args.dry_run)
+        print("Estonian Legal Ontology - assertionConfidence stamp (#456)")
+        print(f"  Files scanned: {stats['files_scanned']}")
+        print(f"  Files changed: {stats['files_changed']}")
+        print(f"  Nodes changed: {stats['nodes_changed']}")
+        return 0
     if args.upgrade_duty_holders:
         stats = upgrade_duty_holder_files(files, write=not args.dry_run)
         print("Estonian Legal Ontology - dutyHolder IRI remint (#460)")

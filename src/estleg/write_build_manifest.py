@@ -29,6 +29,17 @@ from estleg.estleg_common import (
 
 DEFAULT_OUTPUT = KRR_DIR / "dataset_build_manifest.json"
 METADATA_PATH = REPO_ROOT / "metadata.jsonld"
+GITHUB_REPO = "https://github.com/henrikaavik/estonian-legal-ontology"
+# Immutable content pin for catalog download/access URLs (#548).
+# GitHub Release zip assets remain #473. This SHA is the last corpus remint
+# (dutyHolder IRI rewrite); later catalog-only commits do not move the pin.
+DATASET_CONTENT_SHA = "8f124d30d2864469fa3477ad99fea5930421d573"
+MUTABLE_MAIN_MARKERS = (
+    "/tree/main/",
+    "/raw/main/",
+    "/heads/main",
+    "/blob/main/",
+)
 
 # High-traffic sample (same acts as the #531 staleness canary).
 SAMPLE_PEEPS: tuple[str, ...] = (
@@ -143,6 +154,37 @@ def catalog_counts(metadata_path: Path = METADATA_PATH) -> dict[str, int]:
     return counts
 
 
+def github_raw_url(relpath: str, sha: str = DATASET_CONTENT_SHA) -> str:
+    """Immutable raw.githubusercontent-style GitHub URL for a repo path."""
+    return f"{GITHUB_REPO}/raw/{sha}/{relpath.lstrip('/')}"
+
+
+def github_tree_url(relpath: str, sha: str = DATASET_CONTENT_SHA) -> str:
+    return f"{GITHUB_REPO}/tree/{sha}/{relpath.lstrip('/')}"
+
+
+def github_archive_url(sha: str = DATASET_CONTENT_SHA) -> str:
+    return f"{GITHUB_REPO}/archive/{sha}.zip"
+
+
+def catalog_modified(metadata_path: Path = METADATA_PATH) -> str | None:
+    """``dcterms:modified`` date from ``metadata.jsonld``."""
+    if not metadata_path.is_file():
+        return None
+    with metadata_path.open(encoding="utf-8") as handle:
+        meta = json.load(handle)
+    if not isinstance(meta, dict):
+        return None
+    return _literal_value(meta.get("dcterms:modified"))
+
+
+def is_mutable_main_url(url: str) -> bool:
+    """True when a GitHub catalog URL still pins the moving ``main`` branch."""
+    if "github.com/henrikaavik/estonian-legal-ontology" not in url:
+        return False
+    return any(marker in url for marker in MUTABLE_MAIN_MARKERS)
+
+
 def generated_timestamp() -> str:
     """ISO-8601 stamp from ``PINNED_RUN_TIMESTAMP``, else UTC now."""
     if PINNED_RUN_TIMESTAMP:
@@ -159,8 +201,10 @@ def build_manifest(
     return {
         "datasetVersion": ONTOLOGY_VERSION,
         "gitSha": git_sha(repo),
+        "contentSha": DATASET_CONTENT_SHA,
         "generated": generated_timestamp(),
         "evaluationDate": BUILD_EVALUATION_DATE,
+        "catalogModified": catalog_modified(metadata_path),
         "kehtivBySample": sample_kehtiv(krr_dir),
         "counts": catalog_counts(metadata_path),
         "note": NOTE,

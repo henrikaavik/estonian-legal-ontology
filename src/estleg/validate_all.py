@@ -1270,6 +1270,89 @@ def validate_metadata_catalog(krr_dir: Path = KRR_DIR, *, allow_missing_index: b
         f"  Checked {len(actual)} advertised corpus statistics "
         f"and {checked_dist_keys} distribution count keys"
     )
+    validate_metadata_repro_pins(doc)
+
+
+def validate_metadata_repro_pins(doc: dict) -> None:
+    """#548: catalog GitHub URLs must not pin the moving ``main`` branch.
+
+    Immutable GitHub Release assets remain #473. This gate only asserts the
+    committed catalog cites a content SHA (``DATASET_CONTENT_SHA``) and
+    that ``dcterms:modified`` / ``owl:versionInfo`` match the build
+    manifest when that file is present.
+    """
+    from estleg.write_build_manifest import (
+        DATASET_CONTENT_SHA,
+        is_mutable_main_url,
+    )
+
+    urls: list[str] = []
+
+    def _walk(value: object) -> None:
+        if isinstance(value, dict):
+            ident = value.get("@id")
+            if isinstance(ident, str):
+                urls.append(ident)
+            for item in value.values():
+                _walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                _walk(item)
+
+    _walk(doc.get("dcat:distribution"))
+    _walk(doc.get("schema:distribution"))
+    mutable = [url for url in urls if is_mutable_main_url(url)]
+    if mutable:
+        error(
+            "metadata.jsonld: catalog GitHub URL still pins mutable /main "
+            f"({mutable[0]})"
+        )
+    github_urls = [
+        url
+        for url in urls
+        if "github.com/henrikaavik/estonian-legal-ontology" in url
+    ]
+    unpinned = [url for url in github_urls if DATASET_CONTENT_SHA not in url]
+    if unpinned:
+        error(
+            "metadata.jsonld: catalog GitHub URL is not pinned to "
+            f"DATASET_CONTENT_SHA ({unpinned[0]})"
+        )
+    if github_urls:
+        print(f"  Catalog GitHub URLs pinned to {DATASET_CONTENT_SHA[:12]}")
+
+    manifest_path = REPO_ROOT / "krr_outputs" / "dataset_build_manifest.json"
+    if not manifest_path.is_file():
+        return
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        error("dataset_build_manifest.json: unreadable")
+        return
+    if not isinstance(manifest, dict):
+        error("dataset_build_manifest.json: not an object")
+        return
+    version = doc.get("owl:versionInfo")
+    if version is None:
+        return
+    if version != manifest.get("datasetVersion"):
+        error(
+            f"metadata.jsonld: owl:versionInfo={version!r} != "
+            f"manifest datasetVersion={manifest.get('datasetVersion')!r}"
+        )
+    modified = doc.get("dcterms:modified")
+    if isinstance(modified, dict):
+        modified = modified.get("@value")
+    if manifest.get("catalogModified") and modified != manifest.get("catalogModified"):
+        error(
+            f"metadata.jsonld: dcterms:modified={modified!r} != "
+            f"manifest catalogModified={manifest.get('catalogModified')!r}"
+        )
+    if manifest.get("contentSha") and manifest.get("contentSha") != DATASET_CONTENT_SHA:
+        error(
+            "dataset_build_manifest.json: contentSha="
+            f"{manifest.get('contentSha')!r} != DATASET_CONTENT_SHA"
+        )
 
 
 # Issue #313: each subcorpus INDEX ledger advertises a scalar count
