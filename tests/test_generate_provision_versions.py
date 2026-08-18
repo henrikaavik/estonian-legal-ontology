@@ -24,6 +24,7 @@ from generate_provision_versions import (
     extract_provision_texts,
     fetch_current_redaction,
     fetch_redaction_chain,
+    missing_law_target_error,
     select_law_slugs,
     synthesise_versions,
     write_sidecar,
@@ -779,6 +780,86 @@ def test_build_law_target_reads_prefix_and_provisions_from_peep(tmp_path: Path):
         "2": "estleg:NAIDIS_Par_2",
         "5": "estleg:NAIDIS_Par_5",
     }
+
+
+def test_existing_peep_without_numeric_provisions_is_not_no_peep(tmp_path: Path):
+    """#430: a on-disk peep with no ``_Par_<n>`` IRIs is not ``"no peep"``."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    graph = [
+        {
+            "@id": "estleg:GENEVA_Map_2026",
+            "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+            "rdfs:label": "Genfi konventsioonide ratifitseerimise seadus",
+            "dc:source": "Genfi konventsioonide ratifitseerimise seadus",
+        },
+        {
+            "@id": "estleg:GENEVA_Art_1",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision_GENEVA"],
+            "estleg:paragrahv": "Artikkel 1.",
+        },
+    ]
+    (krr / "geneva_convention_peep.json").write_text(
+        json.dumps({"@context": {"estleg": gpv.CONTEXT["estleg"]}, "@graph": graph},
+                   ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    assert build_law_target("geneva_convention", krr_dir=krr) is None
+    assert missing_law_target_error("geneva_convention", krr_dir=krr) == (
+        "no_numeric_provisions"
+    )
+    assert missing_law_target_error("geneva_convention", krr_dir=krr) != "no peep"
+    # A genuinely missing peep still uses the reserved "no peep" code.
+    assert missing_law_target_error("puudub_seadus", krr_dir=krr) == "no peep"
+
+
+def test_main_existing_peep_without_par_nodes_is_not_labeled_no_peep(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """#430 end-to-end: report error for a treaty-shell peep is not ``no peep``."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    graph = [
+        {
+            "@id": "estleg:GENEVA_Map_2026",
+            "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+            "rdfs:label": "Genfi konventsioonide ratifitseerimise seadus",
+            "dc:source": "Genfi konventsioonide ratifitseerimise seadus",
+        },
+    ]
+    (krr / "geneva_convention_peep.json").write_text(
+        json.dumps({"@context": {"estleg": gpv.CONTEXT["estleg"]}, "@graph": graph},
+                   ensure_ascii=False),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(gpv, "KRR_DIR", krr)
+    monkeypatch.setattr(gpv, "VERSIONS_DIR", krr / "provision_versions")
+    monkeypatch.setattr(
+        gpv,
+        "COVERAGE_PATH",
+        krr / "reports" / "kov" / "extract_provision_versions_coverage.json",
+    )
+    monkeypatch.setattr(gpv, "iter_peep_files", lambda *a, **k: list(krr.glob("*_peep.json")))
+
+    def _boom(*a, **k):  # noqa: ANN001
+        raise AssertionError("ineligible peep must not hit the network")
+
+    monkeypatch.setattr(gpv.requests, "get", _boom)
+
+    assert gpv.main(["--law", "geneva_convention", "--no-sleep"]) == 0
+    law_report = json.loads(
+        (krr / "reports" / "provision_versions_report.json").read_text("utf-8")
+    )
+    assert law_report["rows"][0]["slug"] == "geneva_convention"
+    assert law_report["rows"][0]["error"] != "no peep"
+    assert law_report["rows"][0]["error"] == "no_numeric_provisions"
+    cov = json.loads(
+        (krr / "reports" / "kov" / "extract_provision_versions_coverage.json").read_text(
+            "utf-8"
+        )
+    )
+    assert cov["files_processed_kov"] == 0
 
 
 def test_build_law_target_merges_multipart_osa_peeps(tmp_path: Path):

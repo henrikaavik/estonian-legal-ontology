@@ -5,9 +5,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 from generate_draft_legislation import (
+    TITLE_KEY_LEN,
     classify_draft_type,
     detect_affected_laws,
     generate_draft_node,
+    sanitize_id,
 )
 
 
@@ -64,6 +66,122 @@ class TestClassifyDraftTypeIntentBeforeBill:
             "Riigi Teataja seaduse muutmise seadus"
         )
         assert type_id == "AmendmentBill", type_id
+
+    def test_draft_klim23_1259_in_publicconsultation_peep_is_draft_intent(self):
+        # Committed corpus was stale (#304): Draft_KLIM23_1259 was typed
+        # DraftType_Bill despite a VTK label. The peep must now match the
+        # classifier.
+        peep_path = (
+            Path(__file__).resolve().parent.parent
+            / "krr_outputs"
+            / "eelnoud"
+            / "eelnoud_publicconsultation_peep.json"
+        )
+        peep = json.loads(peep_path.read_text(encoding="utf-8"))
+        node = next(
+            n
+            for n in peep["@graph"]
+            if n.get("@id") == "estleg:Draft_KLIM23_1259"
+        )
+        assert node["estleg:draftType"] == {
+            "@id": "estleg:DraftType_DraftIntent"
+        }, node["estleg:draftType"]
+
+
+# --------------------------------------------------------------------- #
+# Issue #296 — title-only fallback @id and main() dedup must share one
+# TITLE_KEY_LEN (60). generate_draft_node used title[:40] while main()
+# used title[:60], so a title-only draft's @id slice did not match the
+# key that would collapse duplicates.
+# --------------------------------------------------------------------- #
+
+
+class TestTitleKeyLen:
+    @staticmethod
+    def _long_title() -> str:
+        # Distinct characters after index 40 so a 40-char slice would
+        # produce a different sanitized @id than the 60-char prefix.
+        return ("ABCDEFGHIJ" * 4) + ("KLMNOPQRST" * 2) + "UVWXYZ"
+
+    def test_title_only_draft_uses_same_prefix_as_dedup_key(self):
+        title = self._long_title()
+        assert len(title) > TITLE_KEY_LEN
+        assert TITLE_KEY_LEN == 60
+        node = generate_draft_node(
+            {
+                "title": title,
+                "link": "https://eelnoud.valitsus.ee/main/mount/docList/not-a-uuid",
+            },
+            phase_id="PublicConsultation",
+            eis_number="",
+            ministry_code="",
+            date_str="",
+        )
+        prefix = title[:TITLE_KEY_LEN]
+        assert node["@id"] == f"estleg:Draft_{sanitize_id(prefix)}"
+        # main() dedup_key = eis_number or uuid or title[:TITLE_KEY_LEN].
+        # With neither eis_number nor uuid, the key is this same prefix.
+        dedup_key = title[:TITLE_KEY_LEN]
+        assert dedup_key == prefix
+        assert sanitize_id(dedup_key) == node["@id"].removeprefix("estleg:Draft_")
+        # Prove the old 40-char fallback is gone.
+        assert node["@id"] != f"estleg:Draft_{sanitize_id(title[:40])}"
+
+    def test_main_dedups_title_only_drafts_on_same_sixty_char_prefix(
+        self, tmp_path, monkeypatch
+    ):
+        import generate_draft_legislation as mod
+
+        title_a = self._long_title()
+        title_b = title_a[:TITLE_KEY_LEN] + "OTHER_TAIL"
+        assert title_a[:TITLE_KEY_LEN] == title_b[:TITLE_KEY_LEN]
+        assert title_a != title_b
+
+        eelnoud = tmp_path / "eelnoud"
+        eelnoud.mkdir(parents=True, exist_ok=True)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+
+        items = [
+            {
+                "raw_title": title_a,
+                "title": title_a,
+                "link": "https://eelnoud.valitsus.ee/main/mount/docList/not-a-uuid-a",
+                "pub_date": "",
+            },
+            {
+                "raw_title": title_b,
+                "title": title_b,
+                "link": "https://eelnoud.valitsus.ee/main/mount/docList/not-a-uuid-b",
+                "pub_date": "",
+            },
+        ]
+        calls = {"n": 0}
+
+        def fake_fetch(_url):
+            calls["n"] += 1
+            return [dict(it) for it in items] if calls["n"] == 1 else []
+
+        monkeypatch.setattr(mod, "fetch_rss", fake_fetch)
+        mod.main()
+
+        index = json.loads(
+            (eelnoud / "EELNOUD_INDEX.json").read_text(encoding="utf-8")
+        )
+        assert index["total_drafts"] == 1
+        peep = json.loads(
+            (eelnoud / "eelnoud_publicconsultation_peep.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        draft_ids = [
+            n["@id"]
+            for n in peep["@graph"]
+            if isinstance(n.get("@id"), str) and n["@id"].startswith("estleg:Draft_")
+        ]
+        assert draft_ids == [
+            f"estleg:Draft_{sanitize_id(title_a[:TITLE_KEY_LEN])}"
+        ]
 
 
 # --------------------------------------------------------------------- #

@@ -154,22 +154,25 @@ estleg:ActExpressionShape
 # Full legal text is optional via `estleg:legalText` (populated for a
 # small subset — most provisions only need the summary for the topic map).
 #
-# This shape uses `sh:targetSubjectsOf estleg:paragrahv` instead of
-# `sh:targetClass estleg:LegalProvision`. That is deliberate: the
-# combined_ontology.jsonld graph contains ~50k per-law-typed instances
-# like `estleg:LegalProvision_KARIST_2` whose classes are
-# declared as `rdfs:subClassOf estleg:LegalProvision` (added in issue
-# #67), but many SHACL engines do not perform subclass inference by
-# default, so targeting the base class would still miss them.
-# Targeting "every node that has `estleg:paragrahv`" catches all
-# provision-like nodes regardless of engine capabilities or whether a
-# new per-law type is added later, and is self-consistent with how
-# consumers actually query the data. This also catches provisions of
-# domestic regulations (määrused) emitted by `generate_regulations.py`
-# under per-regulation classes like `estleg:Regulation_<terviktekstId>`,
-# which are also declared as `rdfs:subClassOf estleg:LegalProvision`.
+# This shape has two targets (SHACL allows both on one NodeShape):
+#   * `sh:targetSubjectsOf estleg:paragrahv` — still needed without RDFS
+#     inference. The combined_ontology.jsonld graph contains ~50k
+#     per-law-typed instances like `estleg:LegalProvision_KARIST_2`
+#     whose classes are declared as `rdfs:subClassOf estleg:LegalProvision`
+#     (issue #67). Many SHACL engines do not infer subclasses by default,
+#     so a class target alone would miss them. This also catches
+#     provisions of domestic regulations (määrused) emitted by
+#     `generate_regulations.py` under per-regulation classes like
+#     `estleg:Regulation_<terviktekstId>`, also `rdfs:subClassOf
+#     estleg:LegalProvision`.
+#   * `sh:targetClass estleg:LegalProvision` — so a node typed as
+#     LegalProvision that is missing `estleg:paragrahv` is still in
+#     scope (issue #450). `sh:targetSubjectsOf` alone is tautological
+#     for the required paragrahv property: nodes without the predicate
+#     never become focus nodes.
 estleg:LegalProvisionShape
     a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
     sh:targetSubjectsOf estleg:paragrahv ;
     sh:property [
         sh:path estleg:paragrahv ;
@@ -1880,8 +1883,12 @@ estleg:ProvisionVersionShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:date ;
+        # Issue #393: interval must be ordered when both ends are present.
+        # sh:lessThan is vacuously true if versionValidTo is absent, so
+        # open-ended current versions remain valid.
+        sh:lessThan estleg:versionValidTo ;
         sh:name "versionValidFrom" ;
-        sh:description "Date this provision text became effective." ;
+        sh:description "Date this provision text became effective. Must precede versionValidTo when both are present (#393)." ;
     ] ;
     sh:property [
         sh:path estleg:versionValidTo ;
@@ -1889,7 +1896,7 @@ estleg:ProvisionVersionShape
         sh:maxCount 1 ;
         sh:datatype xsd:date ;
         sh:name "versionValidTo" ;
-        sh:description "Date this provision text ceased to be in force. Absent ⇒ still current." ;
+        sh:description "Date this provision text ceased to be in force. Absent ⇒ still current. Not required; when present it must be later than versionValidFrom." ;
     ] ;
     sh:property [
         sh:path estleg:versionText ;

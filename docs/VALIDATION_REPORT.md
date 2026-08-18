@@ -12,7 +12,7 @@
 | Warnings | 0 |
 | Result | **PASSED** |
 
-The repository advertises 23,113 generated JSON/JSON-LD files. `validate_all.py`
+The repository advertises 23,116 generated JSON/JSON-LD files. `validate_all.py`
 excludes generated reports, indexes, manifests, and probe outputs that are not
 corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
 JSON-LD files.
@@ -84,7 +84,7 @@ and CI wiring. The public subdirectories are defined once in
 
 | Category | Files | Indexed records |
 |----------|-------|-----------------|
-| Enacted law peep files | 1,190 | 1,145 law index entries / 1,190 indexed files |
+| Enacted law peep files | 1,190 | 1,122 law index entries / 1,190 indexed files |
 | State regulations | 3,812 | 3,812 in current regulation index |
 | KOV regulations | 11,059 | 11,059 |
 | Draft legislation | 3 phase files | 22,832 drafts |

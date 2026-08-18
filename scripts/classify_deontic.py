@@ -375,8 +375,42 @@ def _leading_permission_over_condition(text: str) -> bool:
     return True
 
 
-def classify_provision(text: str) -> str | None:
-    """Return the dominant normative-type IRI, or None if nothing matched."""
+# #461: definition titles. Applied to heading / label / first line only —
+# a mid-text ``mõiste`` in the body must not skip an operative provision.
+_MOISTE_WORD_RE = re.compile(r"\bmõiste\b", re.IGNORECASE | re.UNICODE)
+_SECTION_MOISTE_HEADING_RE = re.compile(
+    r"^§?\s*\d+.*mõiste", re.IGNORECASE | re.UNICODE
+)
+
+
+def _is_definition_heading(heading: str) -> bool:
+    """True when *heading* is a definition title (whole-word ``mõiste``)."""
+    title = heading.splitlines()[0].strip() if heading else ""
+    if not title:
+        return False
+    if _MOISTE_WORD_RE.search(title):
+        return True
+    if _SECTION_MOISTE_HEADING_RE.search(title):
+        return True
+    if title.casefold().endswith("mõiste"):
+        return True
+    return False
+
+
+def classify_provision(text: str, heading: str | None = None) -> str | None:
+    """Return the dominant normative-type IRI, or None if nothing matched.
+
+    Definition headings are left unclassified so deontic verbs inside the
+    definition body cannot assign Permission/Obligation (#461).
+    """
+    # Skip BEFORE scoring. Prefer an explicit heading/label; otherwise only
+    # the first line of *text* (never the rest of the body).
+    candidate = heading.strip() if heading else ""
+    if not candidate and isinstance(text, str) and text:
+        candidate = text.splitlines()[0]
+    if _is_definition_heading(candidate):
+        return None
+
     scores: dict[str, int] = {}
     for norm_key, (iri, patterns) in NORM_TYPES.items():
         s = score_text(text, patterns)
@@ -493,7 +527,8 @@ def main() -> None:
 
                 total_provisions += 1
 
-                norm_iri = classify_provision(summary)
+                heading = jsonld_text(node.get("rdfs:label", ""))
+                norm_iri = classify_provision(summary, heading=heading)
                 if norm_iri:
                     node["estleg:normativeType"] = {"@id": norm_iri}
                     _triples += 1

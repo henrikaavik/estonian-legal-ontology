@@ -2612,3 +2612,134 @@ class TestCanonicalizeInstitutionLabel:
         import extract_institutional_competence as mod
 
         assert mod.canonicalize_institution_label("") == ""
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _node_types(node: dict) -> list[str]:
+    types = node.get("@type", [])
+    return types if isinstance(types, list) else [types]
+
+
+def _id_list(value) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, dict):
+        value = [value]
+    ids: list[str] = []
+    for item in value:
+        if isinstance(item, dict):
+            iri = item.get("@id")
+            if iri:
+                ids.append(iri)
+        elif isinstance(item, str):
+            ids.append(item)
+    return ids
+
+
+class TestIssue365HasCompetence:
+    """Issue #365: Institution → hasCompetence → Competence inbound edge."""
+
+    def test_controlled_vocabulary_declares_has_competence(self):
+        vocab = json.loads(
+            (REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld")
+            .read_text(encoding="utf-8")
+        )
+        by_id = {
+            n["@id"]: n for n in vocab.get("@graph", [])
+            if isinstance(n, dict) and n.get("@id")
+        }
+        node = by_id.get("estleg:hasCompetence")
+        assert node is not None, "estleg:hasCompetence missing from controlled_vocabulary"
+        assert "owl:ObjectProperty" in _node_types(node)
+        assert node.get("rdfs:domain", {}).get("@id") == "estleg:Institution"
+        assert node.get("rdfs:range", {}).get("@id") == "estleg:Competence"
+
+    def test_extractor_emits_has_competence_on_institution(
+        self, tmp_path, monkeypatch
+    ):
+        import extract_institutional_competence as mod
+
+        institutions_dir = tmp_path / "institutions"
+        institutions_dir.mkdir()
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+
+        state = mod._PipelineState()
+        for ctype, n_prov in (("supervision", 2), ("enforcement", 1)):
+            for idx in range(n_prov):
+                mod._record_provision_for_institution(
+                    state=state,
+                    inst_iri="estleg:Institution_andmekaitseinspektsioon",
+                    canon_name="Andmekaitse Inspektsioon",
+                    iri_suffix="andmekaitseinspektsioon",
+                    itype="agency",
+                    provision_iri=f"estleg:IKS_Par_{ctype}_{idx}",
+                    competence_type=ctype,
+                    law_name="estleg:IKS_Map_2026",
+                )
+
+        mod.write_institution_files(state)
+
+        doc = json.loads(
+            (institutions_dir / "institution_andmekaitseinspektsioon.json")
+            .read_text(encoding="utf-8")
+        )
+        inst = next(
+            n for n in doc["@graph"]
+            if "estleg:Institution" in _node_types(n)
+        )
+        competence_ids = [
+            n["@id"] for n in doc["@graph"]
+            if "estleg:Competence" in _node_types(n)
+        ]
+        assert competence_ids, "expected Competence nodes in extractor output"
+        assert _id_list(inst.get("estleg:hasCompetence")) == competence_ids
+
+    def test_institution_riigikogu_has_competence_inbound(self):
+        path = REPO_ROOT / "krr_outputs" / "institutions" / "institution_riigikogu.json"
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        inst = next(
+            n for n in doc["@graph"]
+            if "estleg:Institution" in _node_types(n)
+        )
+        competence_ids = [
+            n["@id"] for n in doc["@graph"]
+            if "estleg:Competence" in _node_types(n)
+        ]
+        assert competence_ids, "institution_riigikogu.json has no Competence nodes"
+        inbound = _id_list(inst.get("estleg:hasCompetence"))
+        assert inbound == competence_ids
+
+    def test_all_institution_files_have_inbound_has_competence(self):
+        inst_dir = REPO_ROOT / "krr_outputs" / "institutions"
+        files = sorted(inst_dir.glob("institution_*.json"))
+        assert files, "no institution_*.json files found"
+        missing: list[str] = []
+        competence_with_inbound = 0
+        for path in files:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+            inst = next(
+                (
+                    n for n in doc.get("@graph", [])
+                    if isinstance(n, dict) and "estleg:Institution" in _node_types(n)
+                ),
+                None,
+            )
+            assert inst is not None, f"{path.name} has no Institution node"
+            inbound = set(_id_list(inst.get("estleg:hasCompetence")))
+            for node in doc.get("@graph", []):
+                if not isinstance(node, dict):
+                    continue
+                if "estleg:Competence" not in _node_types(node):
+                    continue
+                cid = node.get("@id")
+                if cid in inbound:
+                    competence_with_inbound += 1
+                else:
+                    missing.append(f"{path.name}:{cid}")
+        assert not missing, (
+            f"{len(missing)} Competence nodes lack inbound hasCompetence: "
+            f"{missing[:8]}"
+        )
+        assert competence_with_inbound > 0

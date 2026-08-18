@@ -1217,3 +1217,76 @@ def test_law_matches_directive_subject_short_root_requires_word_anchor() -> None
     # A long root (>= _MIN_DOMAIN_ROOT_LEN) keeps the permissive plain-substring
     # behaviour, so the #388 railway rescue is unchanged.
     assert mod._law_matches_directive_subject("raudteeseadus", _RAILWAY_SUBJECT) is True
+
+
+# ---------------------------------------------------------------------------
+# #319 — do not queue a forward transposesDirective write when the law file
+# has no resolvable act-level IRI (same guard as the inverse transposedBy).
+# ---------------------------------------------------------------------------
+
+
+def test_unresolvable_law_file_is_not_queued_for_forward_link(tmp_path: Path) -> None:
+    """#319: collection must skip a law file that has no Act/Ontology target.
+
+    The old loop appended every matched filepath to ``law_file_directives``
+    and only None-guarded the inverse IRI map. A file whose
+    ``find_law_transposition_target`` result is None must not appear in the
+    forward map either, or ``update_law_file`` would write an unpaired
+    ``estleg:transposesDirective``.
+    """
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    good = "tubakaseadus_peep.json"
+    _write_json(
+        krr / good,
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {
+                    "@id": "estleg:TUBAKA_Map_2026",
+                    "@type": ["owl:Ontology", "estleg:Act"],
+                }
+            ],
+        },
+    )
+    # Empty graph: no Act/Ontology (or any) node, so the target finder
+    # returns None and get_law_transposition_target_iri is None.
+    bad = "orphan_peep.json"
+    _write_json(krr / bad, {"@context": mod.CONTEXT, "@graph": []})
+    assert mod.find_law_transposition_target(
+        json.loads((krr / bad).read_text(encoding="utf-8"))
+    ) is None
+    assert mod.get_law_transposition_target_iri(krr / bad) is None
+
+    law_file_directives: dict[str, list[str]] = {}
+    directive_celex_to_law_iris: dict[str, list[str]] = {}
+    missing_law_iris: list[dict] = []
+    directive_iri = "estleg:EU_32003L0033"
+
+    mod.collect_transposition_file_links(
+        [good, bad],
+        directive_iri=directive_iri,
+        directive_celex="32003L0033",
+        matched_law_name="tubakaseadus",
+        law_file_directives=law_file_directives,
+        directive_celex_to_law_iris=directive_celex_to_law_iris,
+        missing_law_iris=missing_law_iris,
+        krr_dir=krr,
+    )
+
+    good_path = str(krr / good)
+    bad_path = str(krr / bad)
+    # Resolvable file is queued for the forward write and the inverse.
+    assert law_file_directives == {good_path: [directive_iri]}
+    assert directive_celex_to_law_iris == {"32003L0033": ["estleg:TUBAKA_Map_2026"]}
+    # Unresolvable file must not be queued (the old unconditional append
+    # would have inserted ``bad_path`` here).
+    assert bad_path not in law_file_directives
+    assert missing_law_iris == [
+        {
+            "directive_celex": "32003L0033",
+            "law_file": bad,
+            "matched_law_name": "tubakaseadus",
+        }
+    ]

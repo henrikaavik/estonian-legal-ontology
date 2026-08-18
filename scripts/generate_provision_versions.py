@@ -217,6 +217,24 @@ def build_law_target(slug: str, krr_dir: Path = KRR_DIR) -> LawTarget | None:
     )
 
 
+def missing_law_target_error(slug: str, krr_dir: Path = KRR_DIR) -> str:
+    """Classify why :func:`build_law_target` returned ``None`` (#430).
+
+    ``"no peep"`` is reserved for a genuinely missing peep file. A peep that
+    exists but has no eligible ``_Par_<digits>`` provision IRIs (treaty shells,
+    article-numbered acts) is ``"no_numeric_provisions"``. Any other unusable
+    peep (numeric provisions present but missing prefix/title) is
+    ``"ineligible_peep"``.
+    """
+    peep_files = _peep_files_for_slug(slug, krr_dir)
+    if not peep_files:
+        return "no peep"
+    provisions, _prefix, _title = _load_provision_map(peep_files)
+    if not provisions:
+        return "no_numeric_provisions"
+    return "ineligible_peep"
+
+
 # ---------------------------------------------------------------------------
 # Riigi Teataja: redaction enumeration
 # ---------------------------------------------------------------------------
@@ -1321,12 +1339,13 @@ def main(argv: list[str] | None = None) -> int:
     for slug in slugs:
         target = build_law_target(slug, krr_dir=krr_dir)
         if target is None:
-            print(f"\n=== {slug}: no peep / no provisions found — skipping ===")
+            skip_error = missing_law_target_error(slug, krr_dir=krr_dir)
+            print(f"\n=== {slug}: {skip_error} — skipping ===")
             results.append(LawResult(
                 slug=slug, title=slug, redactions_total=0, redactions_fetched=0,
                 redactions_failed=0, provisions_in_law=0, provisions_versioned=0,
                 versions_emitted=0, sidecar_path=None,
-                max_redactions=max_redactions, error="no peep",
+                max_redactions=max_redactions, error=skip_error,
             ))
             continue
         result = process_law(

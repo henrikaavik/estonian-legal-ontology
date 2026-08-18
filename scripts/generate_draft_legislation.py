@@ -15,7 +15,6 @@ Generates:
 
 from __future__ import annotations
 
-import json
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -33,6 +32,12 @@ EELNOUD_DIR = KRR_DIR / "eelnoud"
 EELNOUD_DIR.mkdir(parents=True, exist_ok=True)
 
 NS = "https://w3id.org/estleg/"
+
+# Shared title-prefix length for title-only draft @id generation
+# (generate_draft_node fallback) and main() dedup keys. Using different
+# slices (40 vs 60) made two title-only drafts collide in one path and
+# not the other (issue #296).
+TITLE_KEY_LEN = 60
 
 # EIS RSS feed URLs
 RSS_FEEDS = {
@@ -469,7 +474,7 @@ def generate_draft_node(
     elif uuid:
         safe_id = uuid.replace("-", "")[:16]
     else:
-        safe_id = sanitize_id(item["title"][:40])
+        safe_id = sanitize_id(item["title"][:TITLE_KEY_LEN])
 
     node: dict = {
         "@id": f"estleg:Draft_{safe_id}",
@@ -548,7 +553,7 @@ def main():
             uuid = extract_uuid(item["link"])
 
             # Deduplicate by EIS number or UUID
-            dedup_key = eis_number or uuid or item["title"][:60]
+            dedup_key = eis_number or uuid or item["title"][:TITLE_KEY_LEN]
             if dedup_key in seen_ids:
                 continue
             seen_ids.add(dedup_key)

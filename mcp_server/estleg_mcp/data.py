@@ -33,6 +33,7 @@ Confirmed corpus predicate names (verified by inspecting real law files such as
 
 from __future__ import annotations
 
+import ast
 import json
 import os
 import re
@@ -451,19 +452,154 @@ def resolve_law(query: str) -> LawRecord | None:
     return None
 
 
+# One group: (query-side labels, haystack terms = labels + keywords).
+_EurovocGroup = tuple[tuple[str, ...], tuple[str, ...]]
+
+
+def _folded_terms(*values: Any) -> list[str]:
+    """Fold string values (and lists/tuples of them) into unique non-empty terms."""
+    out: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        items = value if isinstance(value, (list, tuple)) else _as_list(value)
+        for item in items:
+            if not isinstance(item, str):
+                continue
+            term = _fold(item.strip())
+            if term and term not in seen:
+                seen.add(term)
+                out.append(term)
+    return out
+
+
+@lru_cache(maxsize=1)
+def _eurovoc_keywords_by_id() -> dict[str, tuple[str, ...]]:
+    """Optional keyword lists from ``scripts/classify_eurovoc.EUROVOC_DOMAINS``.
+
+    ``data/eurovoc_domain_mapping.json`` stores verified EN/ET labels but not
+    the classifier's Estonian stems. When that module is present we read the
+    literal ``EUROVOC_DOMAINS`` table (no import) and key it by descriptor id
+    so a search for ``criminal law`` can also hit a title that only contains
+    ``karistus``. Missing file or a non-literal table yields ``{}``.
+    """
+    try:
+        path = corpus_root() / "scripts" / "classify_eurovoc.py"
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, OSError, SyntaxError):
+        return {}
+    raw: Any = None
+    for node in tree.body:
+        target = None
+        value = None
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            target, value = node.target.id, node.value
+        elif (
+            isinstance(node, ast.Assign)
+            and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Name)
+        ):
+            target, value = node.targets[0].id, node.value
+        if target == "EUROVOC_DOMAINS" and value is not None:
+            try:
+                raw = ast.literal_eval(value)
+            except (ValueError, TypeError):
+                return {}
+            break
+    if not isinstance(raw, dict):
+        return {}
+    out: dict[str, tuple[str, ...]] = {}
+    for code, spec in raw.items():
+        if not isinstance(spec, (list, tuple)) or len(spec) < 4:
+            continue
+        kws = [
+            kw
+            for kw in spec[3]
+            if isinstance(kw, str) and kw.strip() and not kw.startswith("r:")
+        ]
+        if kws:
+            out[str(code)] = tuple(kws)
+    return out
+
+
+@lru_cache(maxsize=1)
+def _eurovoc_expansion_groups() -> tuple[_EurovocGroup, ...]:
+    """Load EuroVoc synonym groups from ``data/eurovoc_domain_mapping.json``.
+
+    Each group is ``(labels, terms)`` with already-folded strings. ``labels``
+    are the English and Estonian domain labels used to recognise a query
+    phrase; ``terms`` are those labels plus any domain keywords (optional
+    ``keywords`` field on the mapping entry, else the classifier stems for
+    ``newId``). Returns ``()`` when the corpus or mapping is missing.
+    """
+    try:
+        doc = _load_json(corpus_root() / "data" / "eurovoc_domain_mapping.json")
+    except FileNotFoundError:
+        return ()
+    if not isinstance(doc, list):
+        return ()
+    kw_by_id = _eurovoc_keywords_by_id()
+    groups: list[_EurovocGroup] = []
+    for entry in doc:
+        if not isinstance(entry, dict):
+            continue
+        labels = tuple(_folded_terms(entry.get("labelEn"), entry.get("labelEt")))
+        extra = entry.get("keywords")
+        if extra is None:
+            mapped_kws = kw_by_id.get(str(entry.get("newId") or ""))
+        else:
+            mapped_kws = extra
+        terms = tuple(_folded_terms(*labels, mapped_kws))
+        if labels:
+            groups.append((labels, terms or labels))
+    return tuple(groups)
+
+
+def _eurovoc_query_parts(needle: str) -> tuple[list[tuple[str, ...]], list[str]]:
+    """Split a folded query into EuroVoc synonym-groups and leftover AND tokens.
+
+    A complete English or Estonian domain label (casefolded) is consumed as a
+    phrase, longest first, and replaced by its synonym group. Tokens that are
+    not a domain label stay required — token-AND is not widened into OR.
+    """
+    groups = _eurovoc_expansion_groups()
+    if not needle or not groups:
+        return [], []
+    leftover = f" {needle} "
+    matched: list[tuple[str, ...]] = []
+    pairs: list[tuple[str, tuple[str, ...]]] = []
+    seen: set[str] = set()
+    for labels, terms in groups:
+        for lab in labels:
+            if lab and lab not in seen:
+                seen.add(lab)
+                pairs.append((lab, terms))
+    pairs.sort(key=lambda p: len(p[0]), reverse=True)
+    for lab, terms in pairs:
+        wrapped = f" {lab} "
+        if wrapped in leftover:
+            matched.append(terms)
+            leftover = leftover.replace(wrapped, " ")
+    return matched, leftover.split()
+
+
 def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
     """Return laws whose title, abbreviation, or slug contains ``query``.
 
     Substring match is accent-insensitive and also covers the *conventional*
     human abbreviation (``KarS``, ``VÕS``, ``TLS``, ``PS``, ...), which the
     registry does not store -- so ``search_laws`` honours the same title/
-    abbreviation contract as ``resolve_law``. Results are sorted with exact
-    title/abbrev matches first, then by title. An empty ``query`` returns ``[]``.
+    abbreviation contract as ``resolve_law``. Multi-token queries are AND
+    (every token must hit). A token that is a EuroVoc domain label (English
+    or Estonian, from ``data/eurovoc_domain_mapping.json``) also matches if
+    the haystack contains the other-language label or a domain keyword.
+    Results are sorted with exact title/abbrev matches first, then by title.
+    An empty ``query`` returns ``[]``.
     """
     if not query or not query.strip():
         return []
     needle = _fold(query.strip())
     tokens = [t for t in needle.split() if t]
+    ev_groups, ev_leftover = _eurovoc_query_parts(needle)
     records = _records_by_slug()
     human = _slug_to_human_abbrev()
     scored: list[tuple[int, str, LawRecord]] = []
@@ -474,12 +610,16 @@ def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
         hay_slug = _fold(rec.name)
         hay_all = f"{hay_title} {hay_abbrev} {hay_human} {hay_slug}"
         token_hit = bool(tokens) and all(t in hay_all for t in tokens)
+        ev_hit = bool(ev_groups) and all(
+            any(term in hay_all for term in terms) for terms in ev_groups
+        ) and all(t in hay_all for t in ev_leftover)
         if (
             needle in hay_title
             or needle in hay_abbrev
             or (hay_human and needle in hay_human)
             or needle in hay_slug
             or token_hit
+            or ev_hit
         ):
             if needle in (hay_title, hay_abbrev, hay_human):
                 rank = 0

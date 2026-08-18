@@ -16,7 +16,6 @@ import json
 import os
 import re
 import sys
-import tempfile
 import time
 import xml.etree.ElementTree as ET
 import argparse
@@ -25,6 +24,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+from estleg_common import save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -2063,40 +2064,6 @@ def generate_multipart_law(
         results.append((filename, {"@context": CONTEXT, "@graph": graph}))
 
     return results
-
-
-def save_json(filepath: Path, doc: dict):
-    """Write a JSON-LD document atomically.
-
-    Issue #601: write to a sibling tempfile then ``os.replace`` so a crash
-    mid-``json.dump`` can never leave a half-written ``*_peep.json`` /
-    ``generation_manifest_laws.json`` on disk (whose loaders swallow
-    ``JSONDecodeError`` → empty slug map → IRI drift). Mirrors the atomic
-    ``estleg_common.save_json`` / ``save_regen_state`` writers; the tempfile
-    is best-effort unlinked if serialization fails so failed runs leave no
-    ``.tmp`` droppings.
-    """
-    filepath.parent.mkdir(parents=True, exist_ok=True)
-    tmp = tempfile.NamedTemporaryFile(
-        "w",
-        encoding="utf-8",
-        dir=filepath.parent,
-        prefix=f".{filepath.name}.",
-        suffix=".tmp",
-        delete=False,
-    )
-    tmp_name = tmp.name
-    try:
-        with tmp as f:
-            json.dump(doc, f, ensure_ascii=False, indent=2)
-            f.write("\n")
-        os.replace(tmp_name, filepath)
-    except BaseException:
-        try:
-            os.unlink(tmp_name)
-        except FileNotFoundError:
-            pass
-        raise
 
 
 def _ontology_node(doc: dict) -> dict | None:

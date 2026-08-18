@@ -591,6 +591,13 @@ def test_shacl_widened_range_validates() -> None:
                 "@id": "estleg:Some_Provision_Par_5",
                 "@type": ["estleg:LegalProvision"],
                 "rdfs:label": "Test provision",
+                # LegalProvisionShape now also targets sh:targetClass
+                # LegalProvision (#450), so a typed provision must carry
+                # paragrahv / summary / partOfAct — this fixture is about
+                # the widened interpretsLaw range, not those fields.
+                "estleg:paragrahv": "§ 5",
+                "estleg:summary": "Test provision summary",
+                "estleg:partOfAct": {"@id": "estleg:Reg_1024484_Map_2026"},
                 "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],
             },
             {

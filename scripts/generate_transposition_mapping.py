@@ -807,6 +807,45 @@ def get_law_transposition_target_iri(filepath: Path) -> str | None:
     return node_id if isinstance(node_id, str) and node_id else None
 
 
+def collect_transposition_file_links(
+    law_files: list[str],
+    *,
+    directive_iri: str,
+    directive_celex: str,
+    matched_law_name: str,
+    law_file_directives: dict[str, list[str]],
+    directive_celex_to_law_iris: dict[str, list[str]],
+    missing_law_iris: list[dict],
+    krr_dir: Path | None = None,
+) -> None:
+    """Record forward and inverse transposition links for one matched law.
+
+    A file is queued for ``estleg:transposesDirective`` only when its
+    act-level IRI resolves, so the inverse ``estleg:transposedBy`` write
+    stays paired (#319). ``law_iri`` is resolved once per file.
+    """
+    base = KRR_DIR if krr_dir is None else krr_dir
+    for law_file in law_files:
+        filepath = base / law_file
+        law_iri = get_law_transposition_target_iri(filepath)
+        if law_iri is None:
+            missing_law_iris.append({
+                "directive_celex": directive_celex,
+                "law_file": law_file,
+                "matched_law_name": matched_law_name,
+            })
+            continue
+        filepath_str = str(filepath)
+        if filepath_str not in law_file_directives:
+            law_file_directives[filepath_str] = []
+        if directive_iri not in law_file_directives[filepath_str]:
+            law_file_directives[filepath_str].append(directive_iri)
+        if directive_celex not in directive_celex_to_law_iris:
+            directive_celex_to_law_iris[directive_celex] = []
+        if law_iri not in directive_celex_to_law_iris[directive_celex]:
+            directive_celex_to_law_iris[directive_celex].append(law_iri)
+
+
 def update_law_file(filepath: Path, directive_ids: list[str]) -> bool:
     """
     Add estleg:transposesDirective to the act-level node in a law file.
@@ -1131,28 +1170,15 @@ def main():
             }
             matched_mappings.append(mapping_entry)
 
-            # Collect directives per law file
-            for law_file in law_match["files"]:
-                filepath = str(KRR_DIR / law_file)
-                if filepath not in law_file_directives:
-                    law_file_directives[filepath] = []
-                if directive_iri not in law_file_directives[filepath]:
-                    law_file_directives[filepath].append(directive_iri)
-
-            for law_file in law_match["files"]:
-                filepath = KRR_DIR / law_file
-                law_iri = get_law_transposition_target_iri(filepath)
-                if law_iri is None:
-                    missing_law_iris.append({
-                        "directive_celex": celex_dir,
-                        "law_file": law_file,
-                        "matched_law_name": law_match["name"],
-                    })
-                    continue
-                if celex_dir not in directive_celex_to_law_iris:
-                    directive_celex_to_law_iris[celex_dir] = []
-                if law_iri not in directive_celex_to_law_iris[celex_dir]:
-                    directive_celex_to_law_iris[celex_dir].append(law_iri)
+            collect_transposition_file_links(
+                law_match["files"],
+                directive_iri=directive_iri,
+                directive_celex=celex_dir,
+                matched_law_name=law_match["name"],
+                law_file_directives=law_file_directives,
+                directive_celex_to_law_iris=directive_celex_to_law_iris,
+                missing_law_iris=missing_law_iris,
+            )
 
     print(f"  Matched: {len(matched_mappings)}")
     print(f"  Unmatched: {len(unmatched_titles)}")

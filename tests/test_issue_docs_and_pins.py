@@ -84,6 +84,7 @@ def test_draft_and_court_generators_use_atomic_save_json():
     for rel in (
         "scripts/generate_draft_legislation.py",
         "scripts/generate_court_decisions.py",
+        "scripts/generate_all_laws.py",
     ):
         tree = ast.parse((REPO / rel).read_text(encoding="utf-8"))
         defs = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]

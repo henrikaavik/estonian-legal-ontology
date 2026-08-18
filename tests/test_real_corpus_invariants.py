@@ -219,6 +219,45 @@ def test_requested_cluster_values_are_estleg_curies():
     assert seen > 0
 
 
+def test_krms_par_provisions_have_requested_cluster():
+    """#364/#555: KrMS `_Par_` provisions carry the chapter TopicCluster.
+
+    Generator already assigns the CHAPTER cluster to jagu paragraphs
+    (``KRIMIN_2_Par_18`` isPartOf ``Division_KRIMIN_2_2_1`` → chapter 2);
+    the committed peep was stale. These facts fail before the #364 backfill.
+    """
+    doc = _load("kriminaalmenetluse_seadustik_peep.json")
+    by_id = {
+        n["@id"]: n
+        for n in doc.get("@graph", [])
+        if isinstance(n, dict) and isinstance(n.get("@id"), str)
+    }
+    par18 = by_id["estleg:KRIMIN_2_Par_18"]
+    assert "estleg:Cluster_KRIMIN_2_2" in _ref_ids(
+        par18.get("estleg:requestedCluster")
+    ), "KRIMIN_2_Par_18 lost the chapter-2 cluster (#364)"
+
+    missing = [
+        nid
+        for nid, node in by_id.items()
+        if "_Par_" in nid
+        and "_Lg_" not in nid
+        and not node.get("estleg:requestedCluster")
+    ]
+    assert not missing, (
+        f"{len(missing)} KrMS _Par_ nodes missing requestedCluster, e.g. {missing[:5]}"
+    )
+
+
+def test_pks_par_1_has_part_of_act():
+    """Published fact: PKS § 1 is joined to the act root via partOfAct."""
+    doc = _load("perekonnaseadus_peep.json")
+    node = next(n for n in doc.get("@graph", []) if n.get("@id") == "estleg:PKS_Par_1")
+    assert "estleg:PKS_Map_2026" in _ref_ids(node.get("estleg:partOfAct")), (
+        "PKS_Par_1 lost estleg:partOfAct to PKS_Map_2026"
+    )
+
+
 def test_vos_osa5_provisions_have_interpreted_by():
     """#300: VÕS osa5 uses _Par_ IRIs and carries court inverses (not LegalPart-only)."""
     doc = _load("volaoigusseadus_osa5_peep.json")

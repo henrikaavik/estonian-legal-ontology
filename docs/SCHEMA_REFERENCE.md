@@ -218,7 +218,7 @@ Classifies the type of court case.
 |------|----------|
 | `DecisionType_Judgment` | Kohtuotsus |
 | `DecisionType_Ruling` | Kohtumäärus |
-| `DecisionType_Resolution` | Kohtu resolutsioon |
+| `DecisionType_OrderRuling` | Kohtumäärus (määrusmenetlus) |
 
 ### Court Decision Properties
 
@@ -620,11 +620,14 @@ Represents a state institution with legal competences.
 | Property | Type | Description |
 |----------|------|-------------|
 | `estleg:competenceType` | `xsd:string` | Type: supervision, licensing, enforcement, regulation |
+| `estleg:hasCompetence` | `owl:ObjectProperty` | Institution → reified `estleg:Competence` node(s). Inverse of `estleg:institution` on Competence nodes. |
 
-Institution → provision competence links are not modelled with a `hasCompetence`
-property; they are reified as `estleg:Competence` nodes (see below) that carry
-`estleg:grantedBy` / `estleg:appliesToProvision`, and individual provisions point
-back to the institution via `estleg:competentAuthority`.
+Institution → Competence links use `estleg:hasCompetence` (inverse of
+`estleg:institution` on Competence nodes). Competence remains the reified
+aggregate (see below) that carries `estleg:grantedBy` /
+`estleg:appliesToProvision`; individual provisions point back to the institution
+via `estleg:competentAuthority`. There is no direct Institution → provision
+competence property.
 
 ### Competence (`estleg:Competence`)
 Reified institutional competence sidecar node generated under
@@ -933,6 +936,7 @@ SELECT ?text ?type ?source WHERE {
 ### Institutional Competence
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
+| `estleg:hasCompetence` | Institution | Competence (IRI) | Institution → its reified Competence aggregates. Inverse of `estleg:institution`. |
 | `estleg:competentAuthority` | LegalProvision | Institution or Issuer (IRI) | Responsible authority — `Institution_*` for state/general detections, `Issuer_*` for KOV-bound matches (see KOV subsection below) |
 | `estleg:competenceType` | Institution | `xsd:string` | Type: supervision, licensing, enforcement |
 | `estleg:grantedBy` | Competence | Act (IRI) | The act under which this competence is granted when a primary source act is derivable |

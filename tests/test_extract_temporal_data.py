@@ -1,8 +1,12 @@
 """Tests for extract_temporal_data — recursive XML discovery + globaalID pairing."""
 from __future__ import annotations
 
+import ast
+import inspect
 import json
 import sys
+from datetime import date as date_cls
+from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
@@ -147,6 +151,62 @@ class TestTemporalStatusEvaluationDate:
 
         assert determine_temporal_status(temporal, evaluation_date="2026-05-14") == "inForce"
         assert determine_temporal_status(temporal, evaluation_date="2026-05-15") == "repealed"
+
+    def test_default_evaluation_date_is_build_pin_not_wall_clock(self):
+        """#470: omitted evaluation_date uses BUILD_EVALUATION_DATE, not date.today()."""
+        from estleg_common import BUILD_EVALUATION_DATE
+        from extract_temporal_data import determine_temporal_status
+
+        pin = date_cls.fromisoformat(BUILD_EVALUATION_DATE)
+        after_pin = (pin + timedelta(days=1)).isoformat()
+        temporal = {"entry_into_force": after_pin}
+
+        assert determine_temporal_status(temporal) == "notYetEffective"
+        assert determine_temporal_status(temporal, evaluation_date=None) == "notYetEffective"
+        # Explicit pin matches the implicit default.
+        assert determine_temporal_status(
+            temporal, evaluation_date=BUILD_EVALUATION_DATE
+        ) == "notYetEffective"
+
+
+class TestNoDateTodayEvaluationFallback:
+    """#470: standalone runs must not default evaluation to wall-clock today()."""
+
+    def test_module_does_not_call_date_today(self):
+        import extract_temporal_data as mod
+
+        tree = ast.parse(inspect.getsource(mod))
+        today_calls = [
+            ast.unparse(node)
+            for node in ast.walk(tree)
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "today"
+            )
+        ]
+        assert today_calls == [], (
+            f"extract_temporal_data must not call date.today() for the "
+            f"evaluation/default date (#470); found {today_calls}"
+        )
+        status_src = inspect.getsource(mod.determine_temporal_status)
+        main_src = inspect.getsource(mod.main)
+        assert "BUILD_EVALUATION_DATE" in status_src
+        assert "BUILD_EVALUATION_DATE" in main_src
+        assert "date.today" not in status_src
+
+    def test_main_defaults_evaluation_date_to_build_pin(
+        self, tmp_path, monkeypatch
+    ):
+        from estleg_common import BUILD_EVALUATION_DATE
+
+        act, report = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01"},
+            evaluation_date=None,
+        )
+        assert report["evaluationDate"] == BUILD_EVALUATION_DATE
+        assert act.get("estleg:temporalStatus") == "inForce"
 
 
 class TestPairPeepWithXml:

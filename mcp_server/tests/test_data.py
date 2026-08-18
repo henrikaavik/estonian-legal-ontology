@@ -83,6 +83,13 @@ def test_search_law_records_substring() -> None:
     assert "karistusseadustik" in slugs
 
 
+def test_search_eurovoc_english_label_hits_estonian_keyword() -> None:
+    # #496: "criminal law" is a mapping labelEn; KarS's title only has the
+    # Estonian stem "karistus" (a domain keyword), not the English phrase.
+    slugs = {r.name for r in data.search_law_records("criminal law", limit=20)}
+    assert "karistusseadustik" in slugs
+
+
 def test_search_finds_human_abbreviations() -> None:
     # search_laws must honour the same conventional abbreviations resolve_law
     # supports (regression: these used to return [] / unrelated hits because

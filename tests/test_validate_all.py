@@ -2189,6 +2189,96 @@ def test_regen_pending_guards_never_error_on_missing_artifacts(tmp_path):
     assert len(validate_all.warnings) == 3, validate_all.warnings
 
 
+def _dupn_peep(path: Path, ids: list[str], *, extra_nodes: list[dict] | None = None) -> Path:
+    graph = [{"@id": nid} for nid in ids]
+    if extra_nodes:
+        graph.extend(extra_nodes)
+    write_json(path, {"@graph": graph})
+    return path
+
+
+def test_count_dupn_iris_on_tiny_file_list(tmp_path):
+    """#454: counter uses the supplied file list, not a full corpus walk."""
+    files = [
+        _dupn_peep(
+            tmp_path / "a_peep.json",
+            ["estleg:A_Par_1_Dup2", "estleg:A_Par_2", "estleg:A_Duplicate"],
+        ),
+        _dupn_peep(
+            tmp_path / "b_peep.json",
+            ["estleg:B_Cluster_1_Dup3", "estleg:B_Par_1_Dup2_Lg_1"],
+        ),
+        _dupn_peep(tmp_path / "c_peep.json", ["estleg:C_Par_1_Dup"]),
+    ]
+    assert validate_all.count_dupn_iris(files) == 3
+
+
+def test_count_dupn_iris_ignores_nested_reference_ids(tmp_path):
+    """#454: only graph-node @ids count; nested references do not."""
+    path = _dupn_peep(
+        tmp_path / "ref_peep.json",
+        ["estleg:Keep"],
+        extra_nodes=[
+            {
+                "@id": "estleg:AlsoKeep",
+                "estleg:references": {"@id": "estleg:OnlyRef_Dup2"},
+            }
+        ],
+    )
+    assert validate_all.count_dupn_iris([path]) == 0
+
+
+def test_validate_dupn_iri_baseline_errors_when_count_grows(tmp_path):
+    """#454: a synthetic new _DupN IRI above the pin fails the default gate."""
+    files = [
+        _dupn_peep(tmp_path / "a_peep.json", ["estleg:A_Par_1_Dup2"]),
+        _dupn_peep(tmp_path / "b_peep.json", ["estleg:B_Cluster_1_Dup3"]),
+    ]
+    count = validate_all.validate_dupn_iri_baseline(
+        tmp_path, files=files, baseline=1
+    )
+    assert count == 2
+    assert any(
+        "_DupN IRI count 2 exceeds pinned baseline 1" in err
+        for err in validate_all.errors
+    ), validate_all.errors
+    assert validate_all.warnings == []
+
+
+def test_validate_dupn_iri_baseline_allows_decrease(tmp_path):
+    """#454: remints may shrink the family; only growth is an error."""
+    files = [_dupn_peep(tmp_path / "a_peep.json", ["estleg:A_Par_1_Dup2"])]
+    count = validate_all.validate_dupn_iri_baseline(
+        tmp_path, files=files, baseline=10
+    )
+    assert count == 1
+    assert validate_all.errors == []
+    assert validate_all.warnings == []
+
+
+def test_validate_dupn_iri_baseline_skips_regulation_peeps(tmp_path):
+    """#454: default glob is root law peeps only, not regulations/."""
+    krr = tmp_path / "krr_outputs"
+    _dupn_peep(krr / "law_peep.json", ["estleg:L_Par_1_Dup2"])
+    _dupn_peep(
+        krr / "regulations" / "riik" / "reg_peep.json",
+        ["estleg:R_Par_1_Dup9", "estleg:R_Par_2_Dup10"],
+    )
+    count = validate_all.validate_dupn_iri_baseline(krr, baseline=1)
+    assert count == 1
+    assert validate_all.errors == []
+
+
+def test_dupn_iri_baseline_and_live_count_are_non_negative_ints():
+    """#454: pinned baseline and live root-peep count are ints >= 0."""
+    assert isinstance(validate_all.DUPN_IRI_BASELINE, int)
+    assert validate_all.DUPN_IRI_BASELINE >= 0
+    files = validate_all.root_law_peep_files()
+    count = validate_all.count_dupn_iris(files)
+    assert isinstance(count, int)
+    assert count >= 0
+
+
 class TestCiRegressionGuards:
     """Regression guards for the 3 CI failures fixed on regen/corpus-data:
     LFS-pointer count gates (#400 follow-up), combined graph-closure of the

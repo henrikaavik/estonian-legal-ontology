@@ -6,13 +6,16 @@ explains which fix it locks down.
 
 from __future__ import annotations
 
+import ast
 import copy
 import json
 import re
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 import pytest
 
+import estleg_common
 import generate_all_laws
 
 _SHAPES_PATH = (
@@ -1893,8 +1896,17 @@ class TestFetchXmlCacheThresholdAndValidation:
 
 
 class TestSaveJsonAtomic:
-    """#601 — the local save_json must write atomically (tempfile +
-    os.replace) so a crash mid-dump cannot leave a half-written file."""
+    """#601 / #464 / #376 — ``generate_all_laws.save_json`` is the atomic
+    ``estleg_common.save_json`` (tempfile + os.replace), not a local
+    ``FunctionDef`` that could truncate a peep mid-dump."""
+
+    def test_no_local_save_json_def_uses_estleg_common(self):
+        tree = ast.parse(
+            Path(generate_all_laws.__file__).read_text(encoding="utf-8")
+        )
+        defs = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]
+        assert "save_json" not in defs
+        assert generate_all_laws.save_json is estleg_common.save_json
 
     def test_save_json_roundtrips(self, tmp_path):
         out = tmp_path / "x_peep.json"
@@ -4637,6 +4649,26 @@ class TestChapterHasPartIncludesDirectProvisions:
         ), haspart
         assert f"estleg:{prefix}_Osa1_Par_141" in haspart, haspart
         assert f"estleg:{prefix}_Osa1_Par_142" not in haspart, haspart
+
+    def test_committed_ravimiseadus_chapter5_haspart_lists_direct_provisions(self):
+        """#375 data half — committed ravimiseadus_peep.json must list every
+        provision whose isPartOf is Chapter_RavS_5 in that chapter's hasPart."""
+        peep = generate_all_laws.KRR_DIR / "ravimiseadus_peep.json"
+        doc = json.loads(peep.read_text(encoding="utf-8"))
+        graph = doc["@graph"]
+        chapter_id = "estleg:Chapter_RavS_5"
+        chapter = next(n for n in graph if n.get("@id") == chapter_id)
+        haspart = {x["@id"] for x in chapter.get("estleg:hasPart", [])}
+        direct_provisions = []
+        for node in graph:
+            is_part_of = node.get("estleg:isPartOf")
+            if not (isinstance(is_part_of, dict) and is_part_of.get("@id") == chapter_id):
+                continue
+            types = node.get("@type") or []
+            if any("LegalProvision" in t for t in types):
+                direct_provisions.append(node["@id"])
+        missing = [iri for iri in direct_provisions if iri not in haspart]
+        assert not missing, missing
 
 
 # ---------------------------------------------------------------------------

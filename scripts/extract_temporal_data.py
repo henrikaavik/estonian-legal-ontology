@@ -22,6 +22,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from estleg_common import (
+    BUILD_EVALUATION_DATE,
     build_globalid_xml_lookup,
     iter_peep_files,
     pair_peep_with_xml,
@@ -342,7 +343,7 @@ def determine_temporal_status(temporal: dict, evaluation_date: str | None = None
     Rather than silently classifying such a law ``repealed`` we return
     ``unknown`` so the data-quality signal is preserved.
     """
-    today_iso = evaluation_date or date.today().isoformat()
+    today_iso = evaluation_date or BUILD_EVALUATION_DATE
     today = _coerce_iso_date(today_iso)
 
     # Distinguish "no data at all" from "in force": when none of the
@@ -545,7 +546,7 @@ def load_index_metadata() -> dict[str, dict]:
 
 
 def main(evaluation_date: str | None = None):
-    evaluation_date = evaluation_date or date.today().isoformat()
+    evaluation_date = evaluation_date or BUILD_EVALUATION_DATE
 
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Temporal Validity Data")
@@ -925,7 +926,10 @@ if __name__ == "__main__":
         "--evaluation-date",
         type=validate_evaluation_date,
         default=None,
-        help="Date used for temporalStatus evaluation (YYYY-MM-DD). Defaults to today's date.",
+        help=(
+            "Date used for temporalStatus evaluation (YYYY-MM-DD). "
+            f"Defaults to the pinned BUILD_EVALUATION_DATE ({BUILD_EVALUATION_DATE})."
+        ),
     )
     args = parser.parse_args()
     main(evaluation_date=args.evaluation_date)

@@ -65,10 +65,12 @@ release is an independently dereferenceable IRI.
 
 ## Current Release Snapshot
 
-The 2026-05-26 live-refresh series expanded the release surface to 1,145
-indexed enacted laws / 1,190 law files and 23,112 JSON/JSON-LD files overall.
-The sequential live jobs completed the full law corpus refresh, Riigikohus
-full-text ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
+The current release indexes 1,122 enacted laws (1,190 law files) and
+advertises 23,116 JSON/JSON-LD files overall, matching
+`krr_outputs/INDEX.json` (`total_laws`) and the root README /
+`metadata.jsonld` headline. Sequential live jobs in the 2026-05-26
+refresh completed the full law corpus refresh, Riigikohus full-text
+ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
 PDF-body annotation ingestion. Final local gates passed:
 
 - `python3 -m ruff check scripts/ tests/`

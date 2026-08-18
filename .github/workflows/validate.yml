@@ -34,6 +34,11 @@ on:
       - '.github/workflows/**'
       - 'docs/**'
       - 'README.md'
+  # Weekly committed-artifact drift check (#479). Re-runs the same
+  # validate/SHACL jobs against the tree on main; does not fetch
+  # Riigi Teataja or run generate_* ingest.
+  schedule:
+    - cron: "0 6 * * 1"
 
 jobs:
   # Fast docs-only check — markdownlint catches typos in seconds

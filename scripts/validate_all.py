@@ -2725,6 +2725,77 @@ def validate_amendment_duplicate_bloat(krr_dir: Path = KRR_DIR):
         )
 
 
+# Issue #454: historical `_DupN` collision-suffix IRIs on root law peeps
+# (generator / fix_duplicate_ids remints). Until content-derived IDs land
+# (Epic #407 / #448), pin the unique-@id count so a silent remint that
+# mints more suffixes fails the default gate. Decreases are allowed.
+# Measured 2026-08-18 on krr_outputs/*_peep.json only (not regulations).
+DUPN_ID_RE = re.compile(r"_Dup\d+")
+DUPN_IRI_BASELINE = 584
+
+
+def root_law_peep_files(krr_dir: Path = KRR_DIR) -> list[Path]:
+    """Return root-level law ``*_peep.json`` files (not regulations).
+
+    Non-recursive on purpose: ``krr_outputs/regulations/**`` is out of
+    scope for the #454 ceiling so the walk stays cheap. Operational
+    state files are excluded even though none currently match this glob.
+    """
+    return [
+        path
+        for path in sorted(krr_dir.glob("*_peep.json"))
+        if path.is_file() and path.name not in OPERATIONAL_STATE_FILES
+    ]
+
+
+def count_dupn_iris(files: list[Path]) -> int:
+    """Count unique graph-node ``@id`` values matching ``_DupN`` (#454)."""
+    found: set[str] = set()
+    for path in files:
+        doc = validate_json_syntax(path)
+        if not isinstance(doc, dict):
+            continue
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
+            continue
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if isinstance(nid, str) and DUPN_ID_RE.search(nid):
+                found.add(nid)
+    return len(found)
+
+
+def validate_dupn_iri_baseline(
+    krr_dir: Path = KRR_DIR,
+    *,
+    files: list[Path] | None = None,
+    baseline: int = DUPN_IRI_BASELINE,
+) -> int:
+    """Error if the `_DupN` IRI count on root law peeps grows (#454).
+
+    INDEX-style count baseline: growth is an ``error()`` so the default
+    gate fails. A remint that shrinks the family stays green.
+    """
+    print("\n--- _DupN IRI Baseline ---")
+    if files is None:
+        files = root_law_peep_files(krr_dir)
+    count = count_dupn_iris(files)
+    if count > baseline:
+        error(
+            f"_DupN IRI count {count} exceeds pinned baseline {baseline} "
+            f"on {len(files)} root law peep files — new collision suffixes "
+            f"must not grow"
+        )
+    else:
+        print(
+            f"  OK: {count} _DupN IRIs on {len(files)} root law peep files "
+            f"(baseline {baseline}, must not grow)"
+        )
+    return count
+
+
 def validate_id_uniqueness(all_ids: dict[str, list[str]]):
     print("\n--- @id Uniqueness ---")
     # Shared ontology class definitions are expected to appear in multiple files
@@ -2931,6 +3002,7 @@ def main(argv: list[str] | None = None):
     validate_tbox_inverse_parity()
     validate_eu_provenance_fields()
     validate_amendment_duplicate_bloat()
+    validate_dupn_iri_baseline(krr_dir)
     validate_metadata_catalog(krr_dir, allow_missing_index=allow_missing_index)
     validate_institution_duplicates(krr_dir)
     validate_institution_registry_consistency(krr_dir)

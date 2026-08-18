@@ -25,5 +25,5 @@ before v1.0; after v1.0 that is also MAJOR.
 
 ## Empty results
 
-MCP tools return `[]` or `{note: ...}` on a miss, never an exception and
-never a guessed citation.
+Unknown target → `{note}` / `[{note}]`; known target with zero hits → `[]`.
+Never an exception and never a guessed citation.

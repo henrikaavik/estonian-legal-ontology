@@ -45,6 +45,11 @@ def _law_not_found(query: str) -> dict[str, Any]:
     }
 
 
+def _law_not_found_list(query: str) -> list[dict[str, Any]]:
+    """List-tool miss: unknown target, same envelope as overflow note objects."""
+    return [{"note": f"law not found: {query}"}]
+
+
 # ---------------------------------------------------------------------------
 # 1. search_laws
 # ---------------------------------------------------------------------------
@@ -53,7 +58,9 @@ def search_laws(query: str, limit: int = 10) -> list[dict[str, Any]]:
     """Find Estonian laws by title, official abbreviation, or slug substring.
 
     Use this first when you are unsure of a law's exact name. Matching is
-    accent-insensitive. Each result carries the canonical riigiteataja.ee URL.
+    accent-insensitive and expands EuroVoc domain labels (English or Estonian)
+    so the other-language label or a domain keyword can also hit. Each result
+    carries the canonical riigiteataja.ee URL.
 
     Example question: "Which Estonian laws mention 'töölepingu' / employment?"
 
@@ -267,7 +274,7 @@ def _reference_items(
 ) -> list[dict[str, Any]]:
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
     act = data.act_node(graph)
     rt = data.rt_url(act)
@@ -323,8 +330,8 @@ def who_references(law: str, paragraph: str | None = None) -> list[dict[str, Any
     """Find what cites a law or section (incoming references = legal impact).
 
     This is the impact lens: which provisions point AT the target. Pass a
-    paragraph to scope to one §, or omit it for the whole law. Returns an empty
-    list when nothing references it.
+    paragraph to scope to one §, or omit it for the whole law. Unknown law
+    returns ``[{note}]``; a known law with no incoming references returns ``[]``.
 
     Example question: "Which provisions reference § 60 of the Penal Code (KarS)?"
 
@@ -341,8 +348,8 @@ def references_of(law: str, paragraph: str | None = None) -> list[dict[str, Any]
     """Find what a law or section cites (outgoing references).
 
     The outgoing lens: which other provisions the target points to. Pass a
-    paragraph to scope to one §, or omit it for the whole law. Returns an empty
-    list when it references nothing.
+    paragraph to scope to one §, or omit it for the whole law. Unknown law
+    returns ``[{note}]``; a known law that cites nothing returns ``[]``.
 
     Example question: "What does § 13 of the Penal Code (KarS) reference?"
 
@@ -360,7 +367,8 @@ def drafts_affecting_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
 
     The pending-legislation radar: which bills currently in the legislative
     pipeline propose to amend the target law. Each item links to the draft in
-    EIS (eelnoud.valitsus.ee). Returns an empty list when no drafts affect it.
+    EIS (eelnoud.valitsus.ee). Unknown law returns ``[{note}]``; a known law
+    with no drafts returns ``[]``.
 
     Example question: "What pending bills affect the Health Services Organisation
     Act (Tervishoiuteenuste korraldamise seadus)?"
@@ -369,7 +377,7 @@ def drafts_affecting_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
 
     # Collect draft IRIs from two link shapes, in node order, de-duplicated:
@@ -433,8 +441,8 @@ def court_decisions_for_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
     """Find Supreme Court (Riigikohus) decisions interpreting a law.
 
     The case-law lens: which Riigikohus decisions interpret provisions of the
-    target law. Each item links to the full decision on riigikohus.ee. Returns
-    an empty list when no decisions are linked.
+    target law. Each item links to the full decision on riigikohus.ee. Unknown
+    law returns ``[{note}]``; a known law with no linked decisions returns ``[]``.
 
     Example question: "Which Supreme Court cases interpret the Penal Code (KarS)?"
 
@@ -442,7 +450,7 @@ def court_decisions_for_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
 
     decision_iris: list[str] = []
@@ -480,8 +488,9 @@ def sanctions_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
 
     The enforcement-teeth lens: imprisonment, fines, and other penalties
     attached to the law's provisions, with the § that imposes each. Each item
-    carries the riigiteataja.ee URL of the act. Returns an empty list when the
-    law defines no sanctions. ``limit`` caps the list (KarS has hundreds).
+    carries the riigiteataja.ee URL of the act. Unknown law returns
+    ``[{note}]``; a known law that defines no sanctions returns ``[]``.
+    ``limit`` caps the list (KarS has hundreds).
 
     Example question: "What penalties does the Penal Code (KarS) define?"
 
@@ -489,7 +498,7 @@ def sanctions_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     if limit <= 0:
         return []
     rt = data.rt_url(data.act_node(data.load_law_graph(rec)))
@@ -525,7 +534,8 @@ def competent_authority_for_law(law: str) -> list[dict[str, Any]]:
 
     The who-is-in-charge lens: the institutions named as the competent
     authority on the law's provisions, with how many provisions each one
-    covers. Returns an empty list when no competence links exist.
+    covers. Unknown law returns ``[{note}]``; a known law with no competence
+    links returns ``[]``.
 
     Example question: "Which authority enforces the Personal Data Protection Act
     (Isikuandmete kaitse seadus)?"
@@ -534,7 +544,7 @@ def competent_authority_for_law(law: str) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
     counts: dict[str, int] = {}
     for node in data.provision_nodes(graph):
@@ -591,7 +601,8 @@ def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
     The version-history lens: every recorded redaction of a section, oldest
     first, with the date window each was in force and its text. Pair it with
     ``get_provision(as_of=...)`` to read any single past redaction in full.
-    Returns an empty list when the law/§ is unknown or has no recorded history.
+    Unknown law returns ``[{note}]``; a known law/§ with no recorded history
+    (or an unknown §) returns ``[]``.
 
     Example question: "How has § 13 of the Penal Code (KarS) changed over time?"
 
@@ -602,7 +613,7 @@ def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
     node = data.find_provision(graph, paragraph)
     if node is None:
@@ -672,8 +683,9 @@ def regulations_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     ``issuedUnder`` / ``implementsCitation`` points at the target law -- the
     secondary legislation enacted on its authority. Each row carries the
     regulation's riigiteataja.ee URL and the statutory citation text(s) it
-    implements. Capped by ``limit`` (a major enabling act has thousands); returns
-    an empty list when none are issued under it.
+    implements. Capped by ``limit`` (a major enabling act has thousands).
+    Unknown law returns ``[{note}]``; a known law with none issued under it
+    returns ``[]``.
 
     Example question: "Which regulations are issued under the Local Government
     Organisation Act (KOKS)?"
@@ -684,7 +696,7 @@ def regulations_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     rows = [_regulation_row(r) for r in data.regulations_for_law(rec.name)]
     return _capped(rows, limit)
 
@@ -804,10 +816,11 @@ def amendment_history(law: str, limit: int = 50) -> list[dict[str, Any]]:
     Example question: "What amendments has KarS already received?"
 
     Returns a list of {event_id, label, amendment_date, entry_into_force, amends}.
+    Unknown law returns ``[{note}]``; a known law with no events returns ``[]``.
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     return data.amendment_events(rec, limit=limit)
 
 

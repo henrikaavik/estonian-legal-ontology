@@ -221,9 +221,10 @@ def test_references_of_contract_fields() -> None:
     assert any(it["rt_url"].startswith(RT_PREFIX) for it in items)
 
 
-def test_reference_tools_unknown_law_returns_empty() -> None:
-    assert server.who_references("no-such-law-xyz") == []
-    assert server.references_of("no-such-law-xyz") == []
+def test_reference_tools_unknown_law_returns_note() -> None:
+    note = [{"note": "law not found: no-such-law-xyz"}]
+    assert server.who_references("no-such-law-xyz") == note
+    assert server.references_of("no-such-law-xyz") == note
 
 
 # ---------------------------------------------------------------------------
@@ -244,7 +245,9 @@ def test_drafts_affecting_law_contract_fields_and_citation() -> None:
 def test_drafts_affecting_law_limit_cap_and_empty() -> None:
     assert len(server.drafts_affecting_law("TLS", limit=3)) <= 3
     assert server.drafts_affecting_law("TLS", limit=0) == []
-    assert server.drafts_affecting_law("no-such-law-xyz") == []
+    assert server.drafts_affecting_law("no-such-law-xyz") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -269,7 +272,9 @@ def test_court_decisions_limit_cap_and_empty() -> None:
     # a short list that happens to fit.
     assert len(server.court_decisions_for_law(KARS, limit=3)) == 3
     assert server.court_decisions_for_law(KARS, limit=0) == []
-    assert server.court_decisions_for_law("no-such-law-xyz") == []
+    assert server.court_decisions_for_law("no-such-law-xyz") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -289,8 +294,10 @@ def test_sanctions_for_law_contract_fields_and_citation() -> None:
     assert any(it["penalty"] for it in items)
 
 
-def test_sanctions_for_law_unknown_returns_empty() -> None:
-    assert server.sanctions_for_law("no-such-law-xyz") == []
+def test_sanctions_for_law_unknown_returns_note() -> None:
+    assert server.sanctions_for_law("no-such-law-xyz") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
     assert server.sanctions_for_law(KARS, limit=0) == []
 
 
@@ -320,8 +327,10 @@ def test_competent_authority_contract_fields_and_ranking() -> None:
     assert counts == sorted(counts, reverse=True)
 
 
-def test_competent_authority_unknown_returns_empty() -> None:
-    assert server.competent_authority_for_law("no-such-law-xyz") == []
+def test_competent_authority_unknown_returns_note() -> None:
+    assert server.competent_authority_for_law("no-such-law-xyz") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -460,8 +469,11 @@ def test_provision_history_ordered_timeline_and_fields() -> None:
     assert sum(1 for h in hist if h["currently_in_force"]) <= 1
 
 
-def test_provision_history_unknown_returns_empty() -> None:
-    assert server.provision_history("no-such-law-xyz", "§ 1") == []
+def test_provision_history_unknown_returns_note_or_empty() -> None:
+    assert server.provision_history("no-such-law-xyz", "§ 1") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
+    # Known law, unknown § — empty success, not a not-found note.
     assert server.provision_history(KARS, "999999") == []
 
 
@@ -505,9 +517,11 @@ def test_regulations_for_law_limit_overflow_and_empty() -> None:
     overflow = [it for it in items if it.get("overflow")]
     assert overflow, "KOKS has more than 5 regulations, so the cap must overflow"
     assert overflow[0]["total_available"] > 5
-    # limit<=0 and unknown law follow the list-tool empty contract.
+    # limit<=0 on a known law is empty success; unknown law is a note.
     assert server.regulations_for_law(KOKS, limit=0) == []
-    assert server.regulations_for_law("no-such-law-xyz") == []
+    assert server.regulations_for_law("no-such-law-xyz") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -595,5 +609,7 @@ def test_amendment_history_fields_and_empty() -> None:
     assert items, "KarS has effected AmendmentEvents"
     for it in items:
         _assert_fields(it, AMENDMENT_FIELDS)
-    assert server.amendment_history("no-such-law-xyz") == []
+    assert server.amendment_history("no-such-law-xyz") == [
+        {"note": "law not found: no-such-law-xyz"}
+    ]
     assert server.amendment_history(KARS, limit=0) == []

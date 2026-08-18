@@ -1405,6 +1405,7 @@ def write_institution_files(state: _PipelineState) -> set[str]:
         for prov_iri, ctype, source_act_ref in provisions:
             by_competence[ctype].append((prov_iri, source_act_ref))
 
+        competence_iris: list[str] = []
         for ctype, entries in sorted(by_competence.items()):
             prov_iris = [prov_iri for prov_iri, _source_act_ref in entries]
             source_act_refs = [source_act_ref for _prov_iri, source_act_ref in entries]
@@ -1420,8 +1421,9 @@ def write_institution_files(state: _PipelineState) -> set[str]:
                         f"{_APPLIES_TO_PROVISION_CAP}; full count surfaced "
                         f"as estleg:appliesToProvisionCount"
                     )
+            competence_iri = f"{inst_iri}_competence_{ctype}"
             competence_node = {
-                "@id": f"{inst_iri}_competence_{ctype}",
+                "@id": competence_iri,
                 "@type": ["owl:NamedIndividual", "estleg:Competence"],
                 "rdfs:label": f"{info['name']} – {ctype}",
                 "estleg:competenceType": ctype,
@@ -1442,6 +1444,12 @@ def write_institution_files(state: _PipelineState) -> set[str]:
             if granted_by:
                 competence_node["estleg:grantedBy"] = {"@id": granted_by}
             graph.append(competence_node)
+            competence_iris.append(competence_iri)
+
+        if competence_iris:
+            inst_node["estleg:hasCompetence"] = [
+                {"@id": iri} for iri in competence_iris
+            ]
 
         doc = {"@context": CONTEXT, "@graph": graph}
         filename = f"institution_{info['iri_suffix']}.json"
