@@ -1126,6 +1126,17 @@ def _kehtiv_node(kehtiv: str | None) -> dict | None:
     return {"@value": kehtiv, "@type": "xsd:date"}
 
 
+def _stamp_terviktekst_id(node: dict, terviktekst_id: str | None) -> None:
+    """Stamp ``estleg:terviktekstId`` so tid-based staleness can fire (#341.1).
+
+    ``existing_law_is_stale`` compares this field to the current RT edition.
+    Without the stamp the branch is dead and missing-only never refreshes a
+    new terviktekst on an unchanged snapshot date.
+    """
+    if terviktekst_id:
+        node["estleg:terviktekstId"] = str(terviktekst_id)
+
+
 def _stamp_content_hash(node: dict, slug: str) -> None:
     """Attach ``estleg:contentHash`` from the last fetch/cache of *slug* (#558)."""
     digest = _CONTENT_HASHES.get(slug)
@@ -1141,6 +1152,7 @@ def generate_law_jsonld(
     rt_url: str = "",
     *,
     kehtiv: str | None = None,
+    terviktekst_id: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> dict:
     """Generate JSON-LD for a single law.
@@ -1149,6 +1161,8 @@ def generate_law_jsonld(
     as ``estleg:kehtiv`` (xsd:date), mirroring
     ``generate_regulations.build_regulation_jsonld`` so that
     ``missing-only`` re-runs can refresh stale snapshots.
+    ``terviktekst_id`` is stamped as ``estleg:terviktekstId`` whenever
+    ``kehtiv`` is set (#341.1).
     """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
 
@@ -1199,6 +1213,7 @@ def generate_law_jsonld(
     kehtiv_value = _kehtiv_node(kehtiv)
     if kehtiv_value is not None:
         ontology_node["estleg:kehtiv"] = kehtiv_value
+        _stamp_terviktekst_id(ontology_node, terviktekst_id)
     _stamp_content_hash(ontology_node, slug)
 
     graph: list[dict] = [
@@ -1573,6 +1588,7 @@ def generate_law_stub_jsonld(
     *,
     content_status: str = "noStructuredBody",
     kehtiv: str | None = None,
+    terviktekst_id: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> dict:
     """Generate an act-level representation for laws without paragraph nodes.
@@ -1580,6 +1596,8 @@ def generate_law_stub_jsonld(
     ``kehtiv`` (when supplied) is stamped as ``estleg:kehtiv`` (xsd:date)
     so missing-only re-runs can refresh stale stubs the same way they
     refresh structured law files.
+    ``terviktekst_id`` is stamped as ``estleg:terviktekstId`` whenever
+    ``kehtiv`` is set (#341.1).
     """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
     # Issue #165 fix 5: rt_url may be None (or empty) for laws missing a
@@ -1605,6 +1623,7 @@ def generate_law_stub_jsonld(
     kehtiv_value = _kehtiv_node(kehtiv)
     if kehtiv_value is not None:
         ontology_node["estleg:kehtiv"] = kehtiv_value
+        _stamp_terviktekst_id(ontology_node, terviktekst_id)
     _stamp_content_hash(ontology_node, slug)
     return {"@context": CONTEXT, "@graph": [ontology_node]}
 
@@ -1617,6 +1636,7 @@ def generate_multipart_law(
     rt_url: str = "",
     *,
     kehtiv: str | None = None,
+    terviktekst_id: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> list[tuple[str, dict]]:
     """Generate separate JSON-LD files for each osa (part) of a multi-part law.
@@ -1680,6 +1700,7 @@ def generate_multipart_law(
             osa_ontology_node["owl:sameAs"] = {"@id": rt_source_url}
         if kehtiv_value is not None:
             osa_ontology_node["estleg:kehtiv"] = kehtiv_value
+            _stamp_terviktekst_id(osa_ontology_node, terviktekst_id)
         _stamp_content_hash(osa_ontology_node, slug)
 
         graph: list[dict] = [
@@ -3045,7 +3066,8 @@ def main():
                 )
                 continue
             doc = generate_law_stub_jsonld(
-                title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
+                title, slug, root, abbreviation, rt_url=url,
+                kehtiv=args.kehtiv, terviktekst_id=info.get("tid"),
             )
             status = write_law_output(
                 out_path,
@@ -3082,7 +3104,8 @@ def main():
             subsection_count = 0
             try:
                 results = generate_multipart_law(
-                    title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
+                    title, slug, root, abbreviation, rt_url=url,
+                    kehtiv=args.kehtiv, terviktekst_id=info.get("tid"),
                 )
             except Exception as exc:  # noqa: BLE001
                 failed += 1
@@ -3174,7 +3197,8 @@ def main():
         else:
             # Single file
             doc = generate_law_jsonld(
-                title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
+                title, slug, root, abbreviation, rt_url=url,
+                kehtiv=args.kehtiv, terviktekst_id=info.get("tid"),
             )
             filename = f"{slug}_peep.json"
             out_path = KRR_DIR / filename

@@ -45,6 +45,18 @@ _ESTONIAN_TRANSLITERATION = {
 _TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
 
 ESTLEG_RE = re.compile(r"estleg:[A-Za-z0-9_]+")
+
+
+def target_iri_collisions(
+    rename_map: dict[str, str], all_iris: set[str]
+) -> set[str]:
+    """Return new IRIs that already name a distinct un-renamed node (#341.10).
+
+    Many-old→one-new collapses are a separate check. This catches a
+    generated ``new_iri`` that already identifies a corpus node which is
+    *not* in the rename keys — ``apply`` would silently merge them.
+    """
+    return (set(rename_map.values()) & all_iris) - set(rename_map.keys())
 # Permissive scanner used by the post-apply format check; tolerates Estonian
 # unicode characters that legitimately appear in rt_api abbreviations
 # (e.g. estleg:TsÜS_Par_70, estleg:Cluster_ÕÕS_4).
@@ -829,6 +841,23 @@ def dry_run_cmd(families: frozenset[str] | set[str] | None = None) -> None:
             collision_set.add(v)
         seen.add(v)
     collisions = sorted(collision_set)
+
+    # #341.10: a new IRI that already names a distinct un-renamed node.
+    plan_iris: set[str] = set()
+    for fp in get_all_scannable_files():
+        try:
+            plan_iris.update(ESTLEG_RE.findall(fp.read_text(encoding="utf-8")))
+        except (OSError, UnicodeDecodeError):
+            continue
+    target_hits = sorted(target_iri_collisions(rename_map, plan_iris))
+    if target_hits:
+        print(
+            f"ERROR: {len(target_hits)} new IRIs collide with existing "
+            "un-renamed corpus nodes (issue #341.10)"
+        )
+        for iri in target_hits[:20]:
+            print(f"  {iri}")
+        sys.exit(1)
 
     # Count per-file impact. The naive ``sum(content.count(old) for old in
     # rename_map)`` is O(files × renames) — fine when there were ~15k renames,

@@ -271,6 +271,15 @@ def _canonical_rename_map(
     return canonical, ambiguities
 
 
+def _target_collisions(
+    rename_map: dict[str, str], existing_iris: set[str]
+) -> set[str]:
+    """New IRIs that already name a distinct un-renamed node (#341.10)."""
+    from migrate_uris import target_iri_collisions
+
+    return target_iri_collisions(rename_map, existing_iris)
+
+
 def _build_substitution_pattern(old_iris: list[str]) -> re.Pattern[str] | None:
     """Compile a regex that matches any of ``old_iris`` as a quoted IRI.
 
@@ -378,6 +387,22 @@ def build_plan(
             per_file_maps[scope.osa_files[osa]] = mapping
 
     canonical_map, ambiguities = _canonical_rename_map(scopes)
+    existing_ids: set[str] = set()
+    for scope in scopes:
+        for path in scope.osa_files.values():
+            try:
+                doc = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                continue
+            for node in doc.get("@graph", []):
+                if isinstance(node, dict) and isinstance(node.get("@id"), str):
+                    existing_ids.add(node["@id"])
+    hits = _target_collisions(canonical_map, existing_ids)
+    if hits:
+        raise ValueError(
+            f"{len(hits)} new IRIs collide with existing un-renamed nodes "
+            f"(#341.10): {sorted(hits)[:5]}"
+        )
     return MigrationPlan(
         scopes=scopes,
         canonical_map=canonical_map,

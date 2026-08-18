@@ -1592,6 +1592,17 @@
       "rdfs:comment": "Human-readable explanation for an act node's estleg:contentStatus marker."
     },
     {
+      "@id": "estleg:changeType",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Change Type",
+      "rdfs:comment": "Type of change a draft proposes: amends, repeals, supplements, or enacts. SHACL-shaped as xsd:string; T-Box node added for issue #341.11.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:coversConcept",
       "@type": [
         "owl:ObjectProperty"
@@ -1614,6 +1625,23 @@
       ],
       "rdfs:label": "defineerib kanoonilise mõiste (Defines Concept)",
       "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the canonical estleg:Concept node for that term — the hub link that replaces the former O(k²) skos:exactMatch clique."
+    },
+    {
+      "@id": "estleg:definesTerm",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "defineerib mõiste (Defines Term)",
+      "rdfs:comment": "Links a LegalProvision to the provision-local estleg:LegalConcept it defines. Inverse of estleg:definedIn. SHACL-shaped and documented; T-Box node added for issue #341.11.",
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:LegalConcept"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:definedIn"
+      }
     },
     {
       "@id": "estleg:definitionCount",
@@ -2219,6 +2247,20 @@
       ],
       "rdfs:label": "Requested Cluster",
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+    },
+    {
+      "@id": "estleg:topicCluster",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Topic Cluster",
+      "rdfs:comment": "Links a LegalProvision to its topic-cluster subject node. SHACL-shaped and documented; T-Box node added for issue #341.11.",
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:TopicCluster"
+      }
     },
     {
       "@id": "estleg:rtReference",
