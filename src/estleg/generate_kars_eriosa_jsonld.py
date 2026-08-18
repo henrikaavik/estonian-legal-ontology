@@ -405,7 +405,7 @@ def main(argv: list[str] | None = None) -> None:
     graph: list[dict] = [
         {
             "@id": ontology_id,
-            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+            "@type": ["estleg:Act", "estleg:Law"],
             "rdfs:label": "KarS Eriosa ontoloogia",
             "dc:title": f"{title} – Eriosa",
             "dc:source": title,

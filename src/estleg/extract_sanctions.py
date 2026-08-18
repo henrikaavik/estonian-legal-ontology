@@ -176,12 +176,10 @@ def _find_act_node(doc: dict) -> dict | None:
     """Return the act node from a peep file's @graph, or None if no
     act node is present.
 
-    Match criteria: the node must be typed BOTH `estleg:Act` and
-    `owl:Ontology`. Some peep files contain auxiliary `owl:Ontology`
-    wrappers (concept-cluster manifests etc.) that aren't acts; the
-    `estleg:Act` constraint prevents misclassifying those as
-    sanction-bearing acts. Layer 1 generators stamp every real act
-    node with both types.
+    Match criteria: the node must be typed `estleg:Act`. Auxiliary
+    ``owl:Ontology`` graph headers (concept-cluster manifests, combined
+    dataset heads) are not acts and are ignored. #435 dropped
+    ``owl:Ontology`` from domain individuals.
 
     Callers must handle a None return \u2014 the per-file processing
     treats it as a malformed-input skip (logged to the coverage
@@ -191,7 +189,7 @@ def _find_act_node(doc: dict) -> dict | None:
         types = n.get("@type") or []
         if isinstance(types, str):
             types = [types]
-        if "estleg:Act" in types and "owl:Ontology" in types:
+        if "estleg:Act" in types:
             return n
     return None
 
@@ -1105,7 +1103,7 @@ def main() -> int:
             # carry sanctions.
             #
             # Malformed act peeps DO have provision nodes but no
-            # estleg:Act + owl:Ontology typing on their root node —
+            # estleg:Act typing on their root node —
             # that's a Layer 1 data bug worth surfacing in the
             # coverage report's failure_samples.
             #
@@ -1127,7 +1125,7 @@ def main() -> int:
                 )
                 _failures.append(
                     f"{filepath.name}: malformed peep — has provisions "
-                    f"but missing estleg:Act + owl:Ontology root node"
+                    f"but missing estleg:Act root node"
                 )
             # Either way, the file has no act to classify — skip extraction.
             continue

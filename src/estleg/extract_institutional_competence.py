@@ -1263,7 +1263,7 @@ def process_law_file(
         # municipalities_peep.json, etc.) have no provisions —
         # silently skip (no counter, no failure log).
         # Malformed act peeps DO have provisions but no
-        # estleg:Act + owl:Ontology root — that's a Layer 1
+        # estleg:Act root — that's a Layer 1
         # data bug worth surfacing.
         has_provisions = any(
             "estleg:paragrahv" in n
@@ -1276,7 +1276,7 @@ def process_law_file(
             )
             state.failures.append(
                 f"{filepath.name}: malformed peep — has provisions "
-                f"but missing estleg:Act + owl:Ontology root node"
+                f"but missing estleg:Act root node"
             )
         return
 

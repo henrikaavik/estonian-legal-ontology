@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Act roots are not owl:Ontology (#435)
+
+- Law and regulation individuals are typed `estleg:Act` / `estleg:Law` /
+  regulation classes only. `owl:Ontology` stays on dataset/graph headers.
+  Consumers find act roots via `estleg:Act`, not the dual type.
+
 ### Version-layer freshness is interval coverage (#532)
 
 - `validate_version_layer_freshness` errors only when no ProvisionVersion

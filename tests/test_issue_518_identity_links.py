@@ -156,7 +156,8 @@ def test_ps_act_sameas_constitution() -> None:
         and n.get("@id") == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
     )
     types = _types(node)
-    assert "estleg:Act" in types and "owl:Ontology" in types
+    assert "estleg:Act" in types
+    assert "owl:Ontology" not in types
     assert WIKIDATA_PS in _id_values(node.get("owl:sameAs"))
 
 

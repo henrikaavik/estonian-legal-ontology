@@ -27,6 +27,7 @@ import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
 from estleg.estleg_common import (
     CONTEXT,
+    act_root_node,
     sanitize_id,
     save_json,
     sha256_hex,
@@ -664,7 +665,7 @@ def generate_law_jsonld(
 
     ontology_node: dict = {
         "@id": ontology_id,
-        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "schema:Legislation"],
+        "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
         "rdfs:label": f"{title} teemakaardistus",
         "dc:source": title,
         "dcterms:title": title,
@@ -746,7 +747,7 @@ def generate_law_stub_jsonld(
         rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
     ontology_node: dict = {
         "@id": f"estleg:{prefix}_Map_2026",
-        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "schema:Legislation"],
+        "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
         "rdfs:label": f"{title} teemakaardistus",
         "dc:source": title,
         "dcterms:title": title,
@@ -828,7 +829,7 @@ def generate_multipart_law(
         # Issue #89: Mark file-level ontology node with estleg:Part type
         osa_ontology_node: dict = {
             "@id": ontology_id,
-            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part", "schema:Legislation"],
+            "@type": ["estleg:Act", "estleg:Law", "estleg:Part", "schema:Legislation"],
             "rdfs:label": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
             "dc:source": title,
             "dcterms:title": title,
@@ -889,16 +890,8 @@ def generate_multipart_law(
 
 
 def _ontology_node(doc: dict) -> dict | None:
-    """Return the first ``owl:Ontology`` node in a doc's ``@graph``."""
-    for node in doc.get("@graph", []):
-        if not isinstance(node, dict):
-            continue
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types:
-            return node
-    return None
+    """Return the act-root node in a doc's ``@graph`` (#435)."""
+    return act_root_node(doc)
 
 
 def _stored_literal(value: object) -> str | None:

@@ -227,7 +227,8 @@ class TestStructuredParsing:
 
         ontology = doc["@graph"][0]
         type_list = ontology["@type"]
-        assert "owl:Ontology" in type_list
+        assert "owl:Ontology" not in type_list
+        assert "estleg:Act" in type_list
         assert "estleg:NationalRegulation" in type_list
         assert "estleg:GovernmentRegulation" in type_list
 
@@ -390,9 +391,9 @@ class TestIsKovFlag:
         assert "estleg:NationalRegulation" not in type_list
         assert "estleg:GovernmentRegulation" not in type_list
         assert "estleg:MinisterialRegulation" not in type_list
-        # The act still carries the base act/ontology classes so the
-        # estleg:Act SHACL shape and MunicipalRegulationShape both apply.
-        assert "owl:Ontology" in type_list
+        # The act carries estleg:Act so LegalProvision/Act SHACL applies.
+        # owl:Ontology is reserved for graph headers (#435).
+        assert "owl:Ontology" not in type_list
         assert "estleg:Act" in type_list
 
     def test_kov_false_marks_national(self):

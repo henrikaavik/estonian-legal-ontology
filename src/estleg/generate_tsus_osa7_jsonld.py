@@ -484,7 +484,7 @@ def build_graph(osa: ET.Element) -> list[dict]:
     graph.append(
         {
             "@id": ROOT_ID,
-            "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+            "@type": ["estleg:Act", "estleg:Law"],
             "rdfs:label": ROOT_LABEL,
             "dc:title": f"{osa_title.capitalize()} (§{lo}-{hi})",
             "dcterms:subject": EUROVOC_SUBJECTS,

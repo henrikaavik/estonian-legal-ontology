@@ -95,7 +95,7 @@ def write_map_peep(krr_dir: Path, prefix: str) -> Path | None:
     parts = _osa_parts(krr_dir, prefix)
     node = {
         "@id": map_iri,
-        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "@type": ["estleg:Act", "estleg:Law"],
         "rdfs:label": f"{label} teemakaardistus",
         "dc:source": label,
         "dcterms:title": label,

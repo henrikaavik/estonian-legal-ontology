@@ -22,7 +22,11 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 from pathlib import Path
 
-from estleg.estleg_common import BUILD_EVALUATION_DATE
+from estleg.estleg_common import (
+    BUILD_EVALUATION_DATE,
+    act_root_node,
+    is_domain_individual,
+)
 from estleg.riigiteataja_common import (
     BASE_URL,
     CONTEXT,
@@ -529,7 +533,7 @@ def build_regulation_jsonld(
         annexes = extract_annexes(root, prefix)
 
     # ---- Build the act ontology node ------------------------------------
-    act_classes = ["owl:Ontology", "estleg:Act", *classify_issuer(issuer, is_kov)]
+    act_classes = ["estleg:Act", *classify_issuer(issuer, is_kov)]
     ontology_node: dict = {
         "@id": ontology_id,
         "@type": act_classes,
@@ -735,14 +739,7 @@ def regulation_files(out_dir: Path) -> list[Path]:
 
 def summarize_regulation_doc(doc: dict) -> dict:
     graph = doc.get("@graph", [])
-    ontology = next(
-        (
-            node for node in graph
-            if isinstance(node, dict)
-            and "owl:Ontology" in (node.get("@type") or [])
-        ),
-        {},
-    )
+    ontology = act_root_node({"@graph": graph}) or {}
     issuer = ontology.get("estleg:issuer") or "(unknown)"
     content_status = ontology.get("estleg:contentStatus")
     is_stub = content_status == "noStructuredBody"
@@ -877,16 +874,8 @@ def existing_doc_matches(path: Path, doc: dict) -> bool:
 
 
 def _ontology_node(doc: dict) -> dict | None:
-    """Return the first ``owl:Ontology`` node in a doc's @graph."""
-    for node in doc.get("@graph", []):
-        if not isinstance(node, dict):
-            continue
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if "owl:Ontology" in types:
-            return node
-    return None
+    """Return the act-root node in a doc's @graph (#435)."""
+    return act_root_node(doc)
 
 
 def existing_is_stale(
@@ -1006,7 +995,7 @@ def regulation_file_tid(
         types = node.get("@type") or []
         if isinstance(types, str):
             types = [types]
-        if "owl:Ontology" not in types:
+        if not is_domain_individual(node) and "owl:Ontology" not in types:
             continue
         tid = node.get("estleg:terviktekstId")
         if isinstance(tid, str) and tid:

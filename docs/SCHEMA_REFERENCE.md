@@ -1363,7 +1363,7 @@ captured separately on `Citation.citationTarget` — see
 ```json
 {
   "@id": "estleg:Reg_1014955_Map_2026",
-  "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
+  "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
   "estleg:issuedUnder": [
     {"@id": "estleg:KOKS_Map_2026"},
     {"@id": "estleg:RaamatPS_Map_2026"}

@@ -1191,6 +1191,65 @@ def discover_repo_root() -> Path:
 
 REPO_ROOT = discover_repo_root()
 KRR_DIR = REPO_ROOT / "krr_outputs"
+
+# Domain individuals that must not also be typed owl:Ontology (#435).
+# Dataset/graph headers may stay owl:Ontology when they are NOT these classes.
+DOMAIN_INDIVIDUAL_TYPES: frozenset[str] = frozenset(
+    {
+        "estleg:Act",
+        "estleg:Law",
+        "estleg:Part",
+        "estleg:DomesticRegulation",
+        "estleg:NationalRegulation",
+        "estleg:GovernmentRegulation",
+        "estleg:MinisterialRegulation",
+        "estleg:MunicipalRegulation",
+    }
+)
+
+
+def node_type_list(node: dict) -> list[str]:
+    raw = node.get("@type")
+    if isinstance(raw, str):
+        return [raw]
+    if isinstance(raw, list):
+        return [item for item in raw if isinstance(item, str)]
+    return []
+
+
+def is_domain_individual(node: dict) -> bool:
+    """True when the node is a law/regulation individual, not a graph header."""
+    return bool(DOMAIN_INDIVIDUAL_TYPES.intersection(node_type_list(node)))
+
+
+def act_root_node(doc: dict) -> dict | None:
+    """Return the act/regulation individual, else a bare ontology header."""
+    fallback = None
+    for node in doc.get("@graph") or []:
+        if not isinstance(node, dict):
+            continue
+        if is_domain_individual(node):
+            return node
+        if fallback is None and "owl:Ontology" in node_type_list(node):
+            fallback = node
+    return fallback
+
+
+def strip_ontology_from_domain_individual(node: dict) -> bool:
+    """Drop ``owl:Ontology`` from an Act/Law/regulation individual.
+
+    Returns True when the node changed. Graph-only ``owl:Ontology``
+    headers (no domain class) are left untouched.
+    """
+    types = node_type_list(node)
+    if "owl:Ontology" not in types:
+        return False
+    if not DOMAIN_INDIVIDUAL_TYPES.intersection(types):
+        return False
+    node["@type"] = [item for item in types if item != "owl:Ontology"]
+    return True
+
+
 # #471: report/index/mapping/classification sidecars live under reports/,
 # not at the krr_outputs/ root among peeps.
 REPORTS_SUBDIR = "reports"

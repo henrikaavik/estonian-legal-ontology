@@ -237,7 +237,8 @@ class TestBuildGraphIntegration:
 
     def test_ontology_header_type_and_title(self) -> None:
         root = self.by_id[gt.ROOT_ID]
-        assert root["@type"] == ["estleg:Act", "estleg:Law", "owl:Ontology"]
+        assert root["@type"] == ["estleg:Act", "estleg:Law"]
+        assert "owl:Ontology" not in root["@type"]
         # Range derives from the base section numbers present (138 … 145).
         assert root["dc:title"] == "Tsiviilõiguste teostamine (§138-145)"
         assert root["rdfs:label"] == "TsÜS Osa 7 ontoloogia"

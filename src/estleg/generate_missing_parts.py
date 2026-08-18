@@ -270,7 +270,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
     graph: list[dict] = [
         {
             "@id": ontology_id,
-            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+            "@type": ["estleg:Act", "estleg:Law"],
             "rdfs:label": f"VÕS Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
             "dc:source": "Võlaõigusseadus",
         },
@@ -463,7 +463,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         {
             # Snapshot-stable act IRI (no volatile §min–§max range) — #269c.
             "@id": "estleg:TsUS_Osa1",
-            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+            "@type": ["estleg:Act", "estleg:Law"],
             "rdfs:label": f"TsÜS Osa 1 (Üldsätted) §{par_min}–{par_max} kaardistus",
             "dc:source": "Tsiviilseadustiku üldosa seadus",
         },
