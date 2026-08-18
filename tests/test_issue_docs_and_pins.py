@@ -15,6 +15,7 @@ def test_architecture_doc_exists_and_names_surfaces():
     assert "Load surfaces" in text
     assert "combined_ontology.jsonld" in text
     assert "mcp_server" in text
+    assert "v1 residuals" in text
 
 
 def test_citation_cff_version_matches_ontology():

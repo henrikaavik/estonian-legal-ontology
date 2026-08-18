@@ -72,6 +72,15 @@ They are **not interchangeable**. MCP truncates legal text; combined
 cannot answer `as_of` provision text; SPARQL can join corpora MCP does
 not expose as tools.
 
+## v1 residuals (accepted, not blocking close)
+
+These remaining tickets are recorded as **accepted residuals** for 0.11.x:
+identity remint (`#444`/`#445`/`#447`), overlay extraction (`#463`),
+lower-court ingest (`#525`), Zenodo/DOI (`#473`), SPARQL compose (`#474`),
+and other `#406`–`#414` / `#494` children not shipped in this run.
+They are not silently dropped: they live here and in
+`eval/FITNESS_REPORT.md`. New work should not invent a sixth load surface.
+
 ## What not to change without a MAJOR version
 
 - Slash namespace and underscore local names.
