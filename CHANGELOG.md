@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Deontic layer on lõige (#515)
+
+- Classifiers attach `normativeType` / `targetGroup` / `hasSanction` to
+  `estleg:Subsection` from lõige `legalText`. Section-level roll-up stays.
+
+### Lõige IRIs, unresolved cites, punkt markers (#514)
+
+- Unnumbered lõiked mint `_Lg_<sibling-index>` instead of `_Lg_Unknown_N`.
+- Unresolved law citations become `estleg:Citation` nodes with
+  `citationText` / `citationSource` and no `citationTarget`.
+- Lõiked stamp `estleg:itemNumber` from RT `punktNr` or `p N` in text.
+
 ### Act roots are not sameAs dated RT XML (#447)
 
 - Law and regulation generators keep `dcterms:source` for the Riigi

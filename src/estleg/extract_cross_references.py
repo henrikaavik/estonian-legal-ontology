@@ -742,23 +742,32 @@ def build_citation_iri(source_act_iri: str, seq: int) -> str:
     """Build a SHACL-valid Citation IRI from the source act @id and a
     1-based sequence number. The 'estleg:' prefix is stripped from the
     source IRI before embedding."""
-    shortid = source_act_iri.removeprefix("estleg:")
+    shortid = source_act_iri.removeprefix("estleg:").replace("_Par_", "_P_")
     return f"estleg:Citation_{shortid}_{seq}"
 
 
 def build_citation_node(
     iri: str,
-    target_iri: str,
+    target_iri: str | None,
     citation_detail: str | None,
     citation_text: str | None,
+    *,
+    source_iri: str | None = None,
 ) -> dict:
     """Build a reified Citation node ready to insert into a peep file's
-    @graph. Optional fields are omitted when None."""
+    @graph. Optional fields are omitted when None.
+
+    Unresolved law citations (#514) omit ``citationTarget`` and keep
+    ``citationText`` plus ``citationSource``.
+    """
     node: dict = {
         "@id": iri,
         "@type": ["owl:NamedIndividual", "estleg:Citation"],
-        "estleg:citationTarget": {"@id": target_iri},
     }
+    if target_iri:
+        node["estleg:citationTarget"] = {"@id": target_iri}
+    if source_iri:
+        node["estleg:citationSource"] = {"@id": source_iri}
     if citation_detail:
         node["estleg:citationDetail"] = citation_detail
     if citation_text:
@@ -1140,6 +1149,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
             "paragraphs": paragraphs,
             "is_self_ref": False,
             "span_start": m.start(),
+            "citationText": m.group(0).strip(),
         })
 
     # Pattern 2: käesoleva seaduse/seadustiku/koodeksi § N (self-reference)
@@ -1151,6 +1161,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
             "paragraphs": paragraphs,
             "is_self_ref": True,
             "span_start": m.start(),
+            "citationText": m.group(0).strip(),
         })
 
     # Pattern 3: Full name in genitive form + § + number
@@ -1166,6 +1177,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
                     "paragraphs": paragraphs,
                     "is_self_ref": False,
                     "span_start": m.start(),
+                    "citationText": m.group(0).strip(),
                 })
 
     return citations
@@ -1896,9 +1908,25 @@ def _run_inlaw_citation_pass(
         "provisions_scanned": 0,
         "citations_found": 0,
         "citations_resolved": 0,
+        "citations_unresolved": 0,
         "provisions_with_refs": 0,
         "modified": False,
     }
+    kept = [
+        node
+        for node in graph
+        if not (
+            isinstance(node, dict)
+            and "estleg:Citation" in (node.get("@type") or [])
+            and "estleg:citationTarget" not in node
+        )
+    ]
+    if len(kept) != len(graph):
+        graph[:] = kept
+        stats["modified"] = True
+
+    new_citations: list[dict] = []
+    citation_seq = 0
     for node in graph:
         if not is_provision_node(node):
             continue
@@ -1919,30 +1947,47 @@ def _run_inlaw_citation_pass(
 
         all_refs: list[str] = []
         typed: dict[str, list[str]] = {p: [] for p in TYPED_REFERENCE_PROPS}
+        node_id = node.get("@id", "")
         for cit in citations:
             resolved = resolve_citation(
                 cit, self_prefix, abbrev_to_prefix, prefix_to_provisions
             )
             all_refs.extend(resolved)
             stats["citations_resolved"] += len(resolved)
+            if not resolved:
+                stats["citations_unresolved"] += max(1, len(cit.get("paragraphs") or []))
+                citation_seq += 1
+                if node_id:
+                    new_citations.append(
+                        build_citation_node(
+                            iri=build_citation_iri(str(node_id), citation_seq),
+                            target_iri=None,
+                            citation_detail=None
+                            if cit.get("is_self_ref")
+                            else cit.get("law_ref"),
+                            citation_text=cit.get("citationText"),
+                            source_iri=str(node_id),
+                        )
+                    )
             rel = classify_citation_relation(
                 text_to_scan, int(cit.get("span_start") or 0)
             )
             if rel in typed:
                 typed[rel].extend(resolved)
 
-        node_id = node.get("@id", "")
         all_refs = list(dict.fromkeys(r for r in all_refs if r != node_id))
 
-        if not all_refs:
-            continue
+        if all_refs:
+            node["estleg:references"] = [{"@id": r} for r in all_refs]
+            for prop, iris in typed.items():
+                uniq = list(dict.fromkeys(i for i in iris if i != node_id))
+                if uniq:
+                    node[prop] = [{"@id": i} for i in uniq]
+            stats["provisions_with_refs"] += 1
+            stats["modified"] = True
 
-        node["estleg:references"] = [{"@id": r} for r in all_refs]
-        for prop, iris in typed.items():
-            uniq = list(dict.fromkeys(i for i in iris if i != node_id))
-            if uniq:
-                node[prop] = [{"@id": i} for i in uniq]
-        stats["provisions_with_refs"] += 1
+    if new_citations:
+        graph.extend(new_citations)
         stats["modified"] = True
 
     return stats
@@ -2073,6 +2118,7 @@ def _merge_pass_stats(base: dict, *passes: dict) -> bool:
         "provisions_scanned",
         "citations_found",
         "citations_resolved",
+        "citations_unresolved",
         "provisions_with_refs",
     )
     modified = False
@@ -2297,6 +2343,16 @@ def _process_preamble_for_act(
         )
         if resolved is None:
             citations_unresolved += 1
+            citation_iri = build_citation_iri(source_act_iri, seq)
+            new_citation_nodes.append(
+                build_citation_node(
+                    iri=citation_iri,
+                    target_iri=None,
+                    citation_detail=cit.get("citationDetail") or cit.get("law_ref"),
+                    citation_text=cit.get("citationText"),
+                    source_iri=source_act_iri,
+                )
+            )
             continue
         citations_resolved += 1
         target_iri, enabling_act_iri = resolved

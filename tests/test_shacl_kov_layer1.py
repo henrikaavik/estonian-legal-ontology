@@ -214,14 +214,17 @@ class TestCitationShape:
         })
         assert ok, msg
 
-    def test_citation_missing_target_fails(self):
-        ok, _ = _validate({
+    def test_citation_missing_target_allowed_when_unresolved(self):
+        # #514: unresolved law citations keep citationText / citationSource
+        # and omit citationTarget.
+        ok, msg = _validate({
             "@context": CONTEXT,
             "@id": "estleg:Citation_1014955_Map_2026_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
-            "estleg:citationDetail": "lg 1",
+            "estleg:citationSource": {"@id": "estleg:Reg_1014955_Par_1"},
+            "estleg:citationText": "KarS § 9999",
         })
-        assert not ok
+        assert ok, msg
 
     def test_citation_iri_pattern_enforced(self):
         # Provide a valid citationTarget so the failure can ONLY be the

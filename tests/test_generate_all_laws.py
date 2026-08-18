@@ -3862,12 +3862,12 @@ class TestSubsectionEmission:
 
         subs = _subsection_nodes(doc["@graph"])
         assert [s["@id"] for s in subs] == [
-            "estleg:TUNKX_Par_2_Lg_Unknown_1",
-            "estleg:TUNKX_Par_2_Lg_Unknown_2",
+            "estleg:TUNKX_Par_2_Lg_1",
+            "estleg:TUNKX_Par_2_Lg_2",
         ]
         assert [s["estleg:subsectionNumber"] for s in subs] == [
-            "Unknown_1",
-            "Unknown_2",
+            "1",
+            "2",
         ]
 
     def test_multipart_subsection_ids_are_osa_scoped(self):

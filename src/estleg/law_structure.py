@@ -601,13 +601,17 @@ def build_subsections(
         par_label_base = cleaned or None
     subsection_nodes: list[dict] = []
     suffix_counts: Counter[str] = Counter()
-    for loige_el in _iter_loiked(par_el):
+    for index, loige_el in enumerate(_iter_loiked(par_el), start=1):
         display_nr, suffix = _loige_numbers(loige_el)
         body = _loige_body_text(loige_el)
         if not body:
             # Empty lõige (e.g. a repealed-marker placeholder) — no
             # citable text, so no Subsection node.
             continue
+        # #514: an unnumbered lõige is lõige <sibling-index>, not Lg_Unknown.
+        if suffix == "Unknown":
+            suffix = str(index)
+            display_nr = display_nr or suffix
         suffix = _dedupe_subsection_suffix(suffix, suffix_counts)
         osa_segment = f"_Osa{osa_nr}" if osa_nr else ""
         sub_id = f"estleg:{abbrev_prefix}{osa_segment}_Par_{par_suffix}_Lg_{suffix}"
@@ -633,8 +637,90 @@ def build_subsections(
         }
         if par_label_base and display_nr:
             node["rdfs:label"] = f"{par_label_base} lg {display_nr}"
+        items = _loige_item_numbers(loige_el, body)
+        if items:
+            node["estleg:itemNumber"] = items if len(items) > 1 else items[0]
         subsection_nodes.append(node)
     return subsection_nodes
+
+
+_PUNKT_NR_RE = re.compile(
+    r"\bp(?:unkt(?:is|i|id)?|)\s+(\d+)\b",
+    re.IGNORECASE,
+)
+_UNKNOWN_LG_IRI_RE = re.compile(r"^(estleg:.+_Lg_)Unknown_(\d+)$")
+
+
+def _loige_item_numbers(loige_el: ET.Element, body: str) -> list[str]:
+    """Punkt numbers from RT ``punktNr`` children, else from the lõige text (#514)."""
+    nums: list[str] = []
+    for child in loige_el.iter():
+        if ln(child.tag) == "punktNr" and child.text and child.text.strip().isdigit():
+            nums.append(child.text.strip())
+    if not nums:
+        nums = _PUNKT_NR_RE.findall(body or "")
+    return list(dict.fromkeys(nums))
+
+
+def rewrite_unknown_lg_iris(graph: list) -> int:
+    """Rewrite ``_Lg_Unknown_N`` IRIs to ``_Lg_N`` when the target is free (#514)."""
+    existing = {
+        node.get("@id")
+        for node in graph
+        if isinstance(node, dict) and isinstance(node.get("@id"), str)
+    }
+    mapping: dict[str, str] = {}
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        nid = node.get("@id")
+        if not isinstance(nid, str):
+            continue
+        match = _UNKNOWN_LG_IRI_RE.match(nid)
+        if not match:
+            continue
+        new_id = f"{match.group(1)}{match.group(2)}"
+        if new_id in existing:
+            alt = f"{new_id}_x2"
+            if alt in existing:
+                continue
+            new_id = alt
+        mapping[nid] = new_id
+        existing.add(new_id)
+    if not mapping:
+        return 0
+
+    def _rewrite(value: object) -> object:
+        if isinstance(value, str):
+            return mapping.get(value, value)
+        if isinstance(value, dict):
+            return {key: _rewrite(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [_rewrite(item) for item in value]
+        return value
+
+    for index, node in enumerate(graph):
+        graph[index] = _rewrite(node)
+    return len(mapping)
+
+
+def stamp_item_numbers_from_text(node: dict) -> bool:
+    """Add ``estleg:itemNumber`` from lõige ``legalText`` when absent (#514)."""
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:Subsection" not in types:
+        return False
+    if node.get("estleg:itemNumber"):
+        return False
+    text = node.get("estleg:legalText") or ""
+    if not isinstance(text, str):
+        return False
+    items = list(dict.fromkeys(_PUNKT_NR_RE.findall(text)))
+    if not items:
+        return False
+    node["estleg:itemNumber"] = items if len(items) > 1 else items[0]
+    return True
 
 
 def _iter_peatykks(

@@ -41,7 +41,8 @@ def test_provisions_of_and_sanctions_of(abipol_graph: Graph) -> None:
     provisions = provisions_of(abipol_graph)
     sanctions = sanctions_of(abipol_graph)
     assert any("ABIPOL_Par_" in iri for iri in provisions)
-    assert len(sanctions) == 2
+    assert len(sanctions) >= 2
+    assert any("ABIPOL_Par_43" in iri and "_Lg_" not in iri for iri in sanctions)
     assert all("Sanction" in iri for iri in sanctions)
 
 

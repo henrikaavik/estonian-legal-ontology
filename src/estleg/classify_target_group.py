@@ -440,7 +440,12 @@ def classify_files(
 
         changed = False
         for node in doc["@graph"]:
-            if not isinstance(node, dict) or "estleg:paragrahv" not in node:
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:paragrahv" not in node and "estleg:Subsection" not in types:
                 continue
             counts["provisions_scanned"] += 1
             old_iris = normalize_target_group_value(node.get("estleg:targetGroup"))
