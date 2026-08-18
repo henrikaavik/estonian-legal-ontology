@@ -2,11 +2,12 @@
 
 ``estleg_common.allowed_get`` must refuse any host outside the official
 legal-source set and default ``allow_redirects`` to False so a 30x cannot
-bounce a fetch off-host. Content hashing of fetched bodies is the #558
-remainder and is not covered here.
+bounce a fetch off-host. Fetched bodies are hashed with
+``sha256_hex`` and stored as ``estleg:contentHash`` (#558).
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -118,3 +119,38 @@ def test_allow_redirects_true_rejects_off_host_location(
             "https://www.riigiteataja.ee/old",
             allow_redirects=True,
         )
+
+
+def test_sha256_hex_is_stable() -> None:
+    from estleg_common import sha256_hex
+
+    assert sha256_hex("abc") == sha256_hex(b"abc")
+    assert len(sha256_hex("abc")) == 64
+    assert sha256_hex("abc") != sha256_hex("abd")
+
+
+def test_record_fetch_hash_writes_manifest(tmp_path: Path) -> None:
+    from estleg_common import record_fetch_hash, sha256_hex
+
+    dest = tmp_path / "fetch_content_hashes.json"
+    digest = sha256_hex("body")
+    record_fetch_hash("demo", digest, source="https://www.riigiteataja.ee/x", nbytes=4, path=dest)
+    payload = json.loads(dest.read_text(encoding="utf-8"))
+    assert payload["demo"]["sha256"] == digest
+    assert payload["demo"]["bytes"] == 4
+
+
+def test_committed_kars_content_hash_matches_cached_xml() -> None:
+    """#558: published KarS act node carries sha256 of the cached RT XML."""
+    import json
+    from pathlib import Path
+
+    from estleg_common import sha256_hex
+
+    repo = Path(__file__).resolve().parents[1]
+    xml = (repo / "data" / "riigiteataja" / "karistusseadustik.xml").read_bytes()
+    peep = json.loads(
+        (repo / "krr_outputs" / "karistusseadustik_osa1_peep.json").read_text()
+    )
+    root = next(n for n in peep["@graph"] if n.get("@id") == "estleg:KARIST_2_Osa1_1_87")
+    assert root.get("estleg:contentHash") == sha256_hex(xml)

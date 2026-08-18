@@ -2354,3 +2354,69 @@ class TestIssue602SharedMonthTable:
             assert m is not None, month
             assert m.group("month") == month
             assert cr._ET_MONTHS[m.group("month")] == num
+
+
+def test_classify_citation_relation_repeal() -> None:
+    import extract_cross_references as cr
+
+    text = (
+        "otsus tunnistatakse kehtetuks vastavalt käesoleva seaduse § 10 lõikele 1"
+    )
+    start = text.index("käesoleva seaduse")
+    assert cr.classify_citation_relation(text, start) == "estleg:repeals"
+
+
+def test_classify_citation_relation_legal_basis() -> None:
+    import extract_cross_references as cr
+
+    text = "Määrus kehtestatakse kohaliku omavalitsuse korralduse seaduse § 22 alusel."
+    start = text.index("seaduse")
+    assert cr.classify_citation_relation(text, start) == "estleg:isLegalBasisFor"
+
+
+def test_classify_citation_relation_plain_mention_is_untyped() -> None:
+    import extract_cross_references as cr
+
+    text = "Menetlus toimub käesoleva seaduse § 5 kohaselt."
+    start = text.index("käesoleva")
+    assert cr.classify_citation_relation(text, start) is None
+
+
+def test_inlaw_pass_emits_repeals_subproperty() -> None:
+    """#513: shipped in-law pass writes estleg:repeals, not only references."""
+    import extract_cross_references as cr
+
+    text = (
+        "Kui otsus tunnistatakse kehtetuks vastavalt käesoleva seaduse § 10 "
+        "lõikele 1, esitab loomeliit andmed."
+    )
+    graph = [
+        {
+            "@id": "estleg:LOOVIS_Map_2026",
+            "@type": ["owl:Ontology", "estleg:Act"],
+        },
+        {
+            "@id": "estleg:LOOVIS_Par_10",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:paragrahv": "§ 10.",
+            "estleg:summary": "Tunnustamise otsus.",
+        },
+        {
+            "@id": "estleg:LOOVIS_Par_15",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:paragrahv": "§ 15.",
+            "estleg:summary": text,
+            "estleg:legalText": text,
+        },
+    ]
+    stats = cr._run_inlaw_citation_pass(
+        graph,
+        self_prefix="LOOVIS",
+        abbrev_to_prefix={},
+        prefix_to_provisions={"LOOVIS": {"10": "estleg:LOOVIS_Par_10"}},
+        xml_par_texts={},
+    )
+    assert stats["modified"] is True
+    node = next(n for n in graph if n["@id"] == "estleg:LOOVIS_Par_15")
+    assert {"@id": "estleg:LOOVIS_Par_10"} in node["estleg:references"]
+    assert {"@id": "estleg:LOOVIS_Par_10"} in node["estleg:repeals"]

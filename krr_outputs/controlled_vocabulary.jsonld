@@ -3803,6 +3803,64 @@
       "rdfs:range": {
         "@id": "estleg:ReferenceType"
       }
+    },
+    {
+      "@id": "estleg:repeals",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:subPropertyOf": {
+        "@id": "estleg:references"
+      },
+      "rdfs:label": "tunnistab kehtetuks (repeals)",
+      "rdfs:comment": "The citing provision repeals the cited target (tunnistatakse kehtetuks). rdfs:subPropertyOf estleg:references so untyped queries still see the edge (#513)."
+    },
+    {
+      "@id": "estleg:isLegalBasisFor",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:subPropertyOf": {
+        "@id": "estleg:references"
+      },
+      "rdfs:label": "on õiguslikuks aluseks (is legal basis for)",
+      "rdfs:comment": "The cited target is the enabling legal basis (kehtestatakse … alusel) of the citing provision (#513)."
+    },
+    {
+      "@id": "estleg:exceptionTo",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:subPropertyOf": {
+        "@id": "estleg:references"
+      },
+      "rdfs:label": "on erand (exception to)",
+      "rdfs:comment": "The citing provision is an exception to the cited general rule (#513)."
+    },
+    {
+      "@id": "estleg:derogatesFrom",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:subPropertyOf": {
+        "@id": "estleg:references"
+      },
+      "rdfs:label": "kaldub kõrvale (derogates from)",
+      "rdfs:comment": "The citing provision derogates from the cited target (#513)."
+    },
+    {
+      "@id": "estleg:contentHash",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:label": "content hash (sha256)",
+      "rdfs:comment": "Hex SHA-256 of the fetched Riigi Teataja / EIS / EUR-Lex body used to generate this act, so consumers can verify byte-integrity (issue #558)."
     }
   ]
 }

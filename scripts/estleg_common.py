@@ -8,6 +8,7 @@ extract_court_provision_links.py so they stay in sync.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -1374,8 +1375,9 @@ def allowed_get(url: str, **kwargs):
     sets ``allow_redirects=True``, each hop's ``Location`` is re-checked
     against the same allow-list.
 
-    The #558 remainder (persist ``sha256`` of each fetched body as
-    ``estleg:contentHash`` on the per-act manifest) is not implemented here.
+    Fetched bodies are hashed with :func:`sha256_hex`. Callers persist
+    the digest as ``estleg:contentHash`` on the act node / fetch manifest
+    (issue #558).
     """
     assert_allowed_http_url(url)
     kwargs.setdefault("allow_redirects", False)
@@ -1387,3 +1389,44 @@ def allowed_get(url: str, **kwargs):
         ]
         kwargs["hooks"] = hooks
     return requests.get(url, **kwargs)
+
+
+def sha256_hex(data: bytes | str) -> str:
+    """Return the hex SHA-256 of *data* (UTF-8 if *data* is ``str``)."""
+    if isinstance(data, str):
+        data = data.encode("utf-8")
+    return hashlib.sha256(data).hexdigest()
+
+
+FETCH_HASH_FILENAME = "fetch_content_hashes.json"
+
+
+def record_fetch_hash(
+    key: str,
+    digest: str,
+    *,
+    source: str = "",
+    nbytes: int = 0,
+    path: Path | None = None,
+) -> Path:
+    """Merge one ``estleg:contentHash`` row into the fetch-hash manifest (#558)."""
+    dest = path if path is not None else KRR_DIR / FETCH_HASH_FILENAME
+    payload: dict = {}
+    if dest.is_file():
+        try:
+            loaded = json.loads(dest.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                payload = loaded
+        except json.JSONDecodeError:
+            payload = {}
+    payload[key] = {
+        "sha256": digest,
+        "bytes": nbytes,
+        "source": source,
+    }
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return dest

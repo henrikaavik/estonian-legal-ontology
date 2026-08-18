@@ -1097,6 +1097,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
             "law_ref": abbrev,
             "paragraphs": paragraphs,
             "is_self_ref": False,
+            "span_start": m.start(),
         })
 
     # Pattern 2: käesoleva seaduse/seadustiku/koodeksi § N (self-reference)
@@ -1107,6 +1108,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
             "law_ref": "__SELF__",
             "paragraphs": paragraphs,
             "is_self_ref": True,
+            "span_start": m.start(),
         })
 
     # Pattern 3: Full name in genitive form + § + number
@@ -1121,9 +1123,53 @@ def extract_citations_from_text(text: str) -> list[dict]:
                     "law_ref": abbrev,
                     "paragraphs": paragraphs,
                     "is_self_ref": False,
+                    "span_start": m.start(),
                 })
 
     return citations
+
+
+# #513: typed reference family. Untyped estleg:references stays the
+# super-property so existing queries still work; these are emitted as
+# extra edges when the Estonian verb governing the citation is clear.
+TYPED_REFERENCE_PROPS = (
+    "estleg:repeals",
+    "estleg:isLegalBasisFor",
+    "estleg:exceptionTo",
+    "estleg:derogatesFrom",
+)
+_REL_REPEAL = re.compile(
+    r"tunnistata(?:kse|da|tud)\s+kehtetuks|kehtetuks\s+tunnistata",
+    re.IGNORECASE,
+)
+_REL_DEROG = re.compile(r"kõrvale\s+kald|derogats", re.IGNORECASE)
+_REL_EXCEPTION = re.compile(r"\berand(?:ina|iks|it)?\b", re.IGNORECASE)
+_REL_BASIS = re.compile(r"\balusel\b", re.IGNORECASE)
+
+
+def classify_citation_relation(text: str, match_start: int, window: int = 120) -> str | None:
+    """Return a typed sub-property of ``estleg:references``, or None.
+
+    Looks at the text immediately before (and a short tail after) the
+    citation span for the governing verb (#513):
+    ``tunnistatakse kehtetuks`` → ``estleg:repeals``;
+    ``alusel`` → ``estleg:isLegalBasisFor``;
+    ``erandina`` → ``estleg:exceptionTo``;
+    ``kõrvale kaldudes`` → ``estleg:derogatesFrom``.
+    """
+    if not text or match_start < 0:
+        return None
+    left = text[max(0, match_start - window) : match_start]
+    right = text[match_start : match_start + 40]
+    if _REL_REPEAL.search(left):
+        return "estleg:repeals"
+    if _REL_DEROG.search(left):
+        return "estleg:derogatesFrom"
+    if _REL_EXCEPTION.search(left):
+        return "estleg:exceptionTo"
+    if _REL_BASIS.search(left) or _REL_BASIS.search(right):
+        return "estleg:isLegalBasisFor"
+    return None
 
 
 # ----------------------------------------------------------------------
@@ -1830,12 +1876,18 @@ def _run_inlaw_citation_pass(
         stats["citations_found"] += sum(len(c["paragraphs"]) for c in citations)
 
         all_refs: list[str] = []
+        typed: dict[str, list[str]] = {p: [] for p in TYPED_REFERENCE_PROPS}
         for cit in citations:
             resolved = resolve_citation(
                 cit, self_prefix, abbrev_to_prefix, prefix_to_provisions
             )
             all_refs.extend(resolved)
             stats["citations_resolved"] += len(resolved)
+            rel = classify_citation_relation(
+                text_to_scan, int(cit.get("span_start") or 0)
+            )
+            if rel in typed:
+                typed[rel].extend(resolved)
 
         node_id = node.get("@id", "")
         all_refs = list(dict.fromkeys(r for r in all_refs if r != node_id))
@@ -1844,6 +1896,10 @@ def _run_inlaw_citation_pass(
             continue
 
         node["estleg:references"] = [{"@id": r} for r in all_refs]
+        for prop, iris in typed.items():
+            uniq = list(dict.fromkeys(i for i in iris if i != node_id))
+            if uniq:
+                node[prop] = [{"@id": i} for i in uniq]
         stats["provisions_with_refs"] += 1
         stats["modified"] = True
 

@@ -25,7 +25,7 @@ from pathlib import Path
 
 import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
-from estleg_common import allowed_get, save_json
+from estleg_common import allowed_get, save_json, sha256_hex
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -36,6 +36,8 @@ SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
 NS = "https://w3id.org/estleg/"
 DEFAULT_KEHTIV = "2026-05-01"
+# #558: sha256 of the last fetched/cached RT XML, keyed by cache_name/slug.
+_CONTENT_HASHES: dict[str, str] = {}
 
 # Issue #601: ONE shared minimum-size threshold for the on-disk XML cache,
 # applied to BOTH the fresh-download floor and the cache-accept floor.
@@ -907,6 +909,7 @@ def _read_cached_rt_root(cache_name: str, tid: str | None) -> ET.Element | None:
         except ET.ParseError:
             continue
         if _is_trustworthy_xml_root(root):
+            _CONTENT_HASHES[cache_name] = sha256_hex(cache_path.read_bytes())
             return root
     return None
 
@@ -962,6 +965,7 @@ def fetch_xml(
             return None
 
         primary_path.write_text(xml_text, encoding="utf-8")
+        _CONTENT_HASHES[cache_name] = sha256_hex(xml_text)
         return root
     except Exception as e:
         print(f"    Fetch error: {e}")
@@ -1167,6 +1171,13 @@ def _kehtiv_node(kehtiv: str | None) -> dict | None:
     return {"@value": kehtiv, "@type": "xsd:date"}
 
 
+def _stamp_content_hash(node: dict, slug: str) -> None:
+    """Attach ``estleg:contentHash`` from the last fetch/cache of *slug* (#558)."""
+    digest = _CONTENT_HASHES.get(slug)
+    if digest:
+        node["estleg:contentHash"] = digest
+
+
 def generate_law_jsonld(
     title: str,
     slug: str,
@@ -1233,6 +1244,7 @@ def generate_law_jsonld(
     kehtiv_value = _kehtiv_node(kehtiv)
     if kehtiv_value is not None:
         ontology_node["estleg:kehtiv"] = kehtiv_value
+    _stamp_content_hash(ontology_node, slug)
 
     graph: list[dict] = [
         ontology_node,
@@ -1638,6 +1650,7 @@ def generate_law_stub_jsonld(
     kehtiv_value = _kehtiv_node(kehtiv)
     if kehtiv_value is not None:
         ontology_node["estleg:kehtiv"] = kehtiv_value
+    _stamp_content_hash(ontology_node, slug)
     return {"@context": CONTEXT, "@graph": [ontology_node]}
 
 
@@ -1712,6 +1725,7 @@ def generate_multipart_law(
             osa_ontology_node["owl:sameAs"] = {"@id": rt_source_url}
         if kehtiv_value is not None:
             osa_ontology_node["estleg:kehtiv"] = kehtiv_value
+        _stamp_content_hash(osa_ontology_node, slug)
 
         graph: list[dict] = [
             osa_ontology_node,
