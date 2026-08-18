@@ -24,6 +24,61 @@ def test_context_drops_unused_rdf_and_schema_prefixes():
     assert 'combined_context["schema"]' not in text
 
 
+def test_strip_unused_rdf_context_line():
+    raw = (
+        '{\n  "@context": {\n    "owl": "http://www.w3.org/2002/07/owl#",\n'
+        '    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",\n'
+        '    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"\n  }\n}\n'
+    )
+    out = estleg_common.strip_unused_jsonld_context_prefixes(raw)
+    assert "1999/02/22-rdf-syntax-ns" not in out
+    assert "owl" in out and "rdfs" in out
+    assert out == estleg_common.strip_unused_jsonld_context_prefixes(out)
+
+
+def test_dedupe_court_decision_graph_keeps_short_id():
+    graph = [
+        {"@id": "estleg:Header", "@type": ["owl:Ontology"]},
+        {
+            "@id": "estleg:RK_3_3_1_30_96_206088835",
+            "@type": ["estleg:CourtDecision"],
+            "estleg:caseNumber": "3-3-1-30-96",
+            "estleg:decisionDate": {"@value": "1996-12-02"},
+            "estleg:decisionType": {"@id": "estleg:DecisionType_Ruling"},
+        },
+        {
+            "@id": "estleg:RK_3_3_1_30_96",
+            "@type": ["estleg:CourtDecision"],
+            "estleg:caseNumber": "3-3-1-30-96",
+            "estleg:decisionDate": {"@value": "1996-12-02"},
+            "estleg:decisionType": {"@id": "estleg:DecisionType_Ruling"},
+        },
+    ]
+    new_graph, remap = gcd.dedupe_court_decision_graph(graph)
+    ids = [n["@id"] for n in new_graph]
+    assert ids == ["estleg:Header", "estleg:RK_3_3_1_30_96"]
+    assert remap == {
+        "estleg:RK_3_3_1_30_96_206088835": "estleg:RK_3_3_1_30_96"
+    }
+
+
+def test_rewrite_id_refs_collapses_duplicate_list_items():
+    remap = {"estleg:RK_dup": "estleg:RK_keep"}
+    doc = {
+        "estleg:interpretedBy": [
+            {"@id": "estleg:RK_keep"},
+            {"@id": "estleg:RK_dup"},
+            {"@id": "estleg:RK_other"},
+        ]
+    }
+    assert gcd.rewrite_id_refs(doc, remap) is True
+    assert doc["estleg:interpretedBy"] == [
+        {"@id": "estleg:RK_keep"},
+        {"@id": "estleg:RK_other"},
+    ]
+    assert gcd.rewrite_id_refs(doc, remap) is False
+
+
 def test_mint_ecli_official_example():
     # e-justice.europa.eu EE: case 1-16-2798/84 → ECLI:EE:RK:2016:1.16.2798.84
     assert gcd.mint_riigikohus_ecli("1-16-2798/84", "2016-11-02") == (
@@ -112,28 +167,34 @@ def test_eurovoc_stale_descriptor_ids_are_gone():
     assert EUROVOC_DOMAINS["538"][0] == "fundamental-rights"
 
 
-def test_no_true_duplicate_rk_content_keys_in_2020():
-    path = (
+def test_no_true_duplicate_rk_content_keys_in_any_year():
+    rk = (
         Path(__file__).resolve().parent.parent
         / "krr_outputs"
         / "riigikohus"
-        / "riigikohus_2020_peep.json"
     )
-    graph = json.loads(path.read_text(encoding="utf-8"))["@graph"]
-    keys: list[tuple[str, str, str]] = []
-    for node in graph:
-        if not isinstance(node, dict):
+    leftovers: list[str] = []
+    for path in sorted(rk.glob("riigikohus_*_peep.json")):
+        graph = json.loads(path.read_text(encoding="utf-8"))["@graph"]
+        _, remap = gcd.dedupe_court_decision_graph(graph)
+        if remap:
+            leftovers.append(f"{path.name}:{len(remap)}")
+    assert leftovers == [], leftovers
+
+
+def test_committed_jsonld_has_no_unused_rdf_context_line():
+    root = Path(__file__).resolve().parent.parent / "krr_outputs"
+    needle = estleg_common.UNUSED_RDF_CONTEXT_LINE.strip()
+    offenders: list[str] = []
+    for path in root.rglob("*"):
+        if not path.is_file() or path.suffix not in {".json", ".jsonld"}:
             continue
-        types = node.get("@type")
-        tlist = types if isinstance(types, list) else [types]
-        if "estleg:CourtDecision" not in tlist:
+        try:
+            head = path.read_text(encoding="utf-8", errors="ignore")[:4000]
+        except OSError:
             continue
-        case = node.get("estleg:caseNumber") or ""
-        date = node.get("estleg:decisionDate")
-        if isinstance(date, dict):
-            date = date.get("@value") or ""
-        dtype = node.get("estleg:decisionType")
-        if isinstance(dtype, dict):
-            dtype = dtype.get("@id") or ""
-        keys.append((case, str(date), str(dtype)))
-    assert len(keys) == len(set(keys))
+        if needle in head:
+            offenders.append(str(path.relative_to(root)))
+            if len(offenders) >= 10:
+                break
+    assert offenders == [], offenders[:10]

@@ -783,6 +783,122 @@ def _decision_content_key(dec: dict) -> tuple[str, str, str]:
     )
 
 
+def court_decision_content_key_from_node(
+    node: dict,
+) -> tuple[str, str, str] | None:
+    """Same fingerprint as ``_decision_content_key``, read from a JSON-LD node."""
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:CourtDecision" not in types:
+        return None
+    case = node.get("estleg:caseNumber") or ""
+    if not isinstance(case, str):
+        case = ""
+    date = node.get("estleg:decisionDate")
+    if isinstance(date, dict):
+        date = date.get("@value") or ""
+    if not isinstance(date, str):
+        date = ""
+    dtype = node.get("estleg:decisionType")
+    if isinstance(dtype, dict):
+        dtype = dtype.get("@id") or ""
+    if not isinstance(dtype, str):
+        dtype = ""
+    return (case.strip(), date.strip(), dtype.strip())
+
+
+def choose_canonical_decision(nodes: list[dict]) -> dict:
+    """Keep the shortest @id (no extra rikObjectId suffix), then lexical min."""
+    return min(nodes, key=lambda n: (len(str(n.get("@id") or "")), str(n.get("@id") or "")))
+
+
+def dedupe_court_decision_graph(
+    graph: list,
+) -> tuple[list, dict[str, str]]:
+    """Drop true-duplicate CourtDecision nodes (#392).
+
+    Returns ``(new_graph, remap)`` where ``remap`` maps each dropped
+    ``@id`` onto the kept canonical ``@id``.
+    """
+    groups: dict[tuple[str, str, str], list[dict]] = {}
+    passthrough: list[dict] = []
+    for node in graph:
+        if not isinstance(node, dict):
+            passthrough.append(node)
+            continue
+        key = court_decision_content_key_from_node(node)
+        if key is None:
+            passthrough.append(node)
+            continue
+        groups.setdefault(key, []).append(node)
+
+    remap: dict[str, str] = {}
+    kept: list[dict] = []
+    for nodes in groups.values():
+        if len(nodes) == 1:
+            kept.append(nodes[0])
+            continue
+        winner = choose_canonical_decision(nodes)
+        kept.append(winner)
+        win_id = winner.get("@id")
+        if not isinstance(win_id, str):
+            continue
+        for node in nodes:
+            nid = node.get("@id")
+            if isinstance(nid, str) and nid != win_id:
+                remap[nid] = win_id
+    # Preserve original graph order: passthrough + kept, first-seen.
+    kept_ids = {n.get("@id") for n in kept}
+    new_graph = []
+    for node in graph:
+        if not isinstance(node, dict):
+            new_graph.append(node)
+            continue
+        nid = node.get("@id")
+        if court_decision_content_key_from_node(node) is None:
+            new_graph.append(node)
+            continue
+        if nid in kept_ids:
+            new_graph.append(node)
+            kept_ids.discard(nid)
+    return new_graph, remap
+
+
+def rewrite_id_refs(value: object, remap: dict[str, str]) -> bool:
+    """Rewrite ``@id`` refs in place. Dedupes list-of-IRI-objects. Returns changed."""
+    changed = False
+    if isinstance(value, dict):
+        iri = value.get("@id")
+        if isinstance(iri, str) and iri in remap:
+            value["@id"] = remap[iri]
+            changed = True
+        for item in value.values():
+            if rewrite_id_refs(item, remap):
+                changed = True
+    elif isinstance(value, list):
+        for item in value:
+            if rewrite_id_refs(item, remap):
+                changed = True
+        # Collapse duplicate {"@id": X} siblings after remap.
+        seen: set[str] = set()
+        new_list: list = []
+        list_changed = False
+        for item in value:
+            if isinstance(item, dict):
+                iri = item.get("@id")
+                if isinstance(iri, str) and len(item) == 1:
+                    if iri in seen:
+                        list_changed = True
+                        continue
+                    seen.add(iri)
+            new_list.append(item)
+        if list_changed:
+            value[:] = new_list
+            changed = True
+    return changed
+
+
 def decision_to_node(
     dec: dict,
     year: int,

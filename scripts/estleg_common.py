@@ -639,6 +639,23 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
         "void:uriSpace": NS,
     }
 
+# Unused in instance JSON-LD: rdf:type is ``@type``; rdf:langString is a
+# SHACL/Turtle datatype, not a JSON-LD term. Ticket #392.
+UNUSED_RDF_CONTEXT_LINE = '    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",\n'
+# schema.org is used in metadata.jsonld but not in combined_ontology.jsonld.
+UNUSED_SCHEMA_CONTEXT_LINE = '    "schema": "http://schema.org/",\n'
+
+
+def strip_unused_jsonld_context_prefixes(
+    text: str, *, drop_schema: bool = False
+) -> str:
+    """Remove unused ``rdf:`` (and optionally ``schema:``) @context lines."""
+    out = text.replace(UNUSED_RDF_CONTEXT_LINE, "")
+    if drop_schema:
+        out = out.replace(UNUSED_SCHEMA_CONTEXT_LINE, "")
+    return out
+
+
 CONTEXT: dict[str, str] = {
     "estleg": NS,
     "owl": "http://www.w3.org/2002/07/owl#",
