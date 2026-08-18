@@ -91,7 +91,7 @@ def _ensure_preamble(graph: list[dict], prefix: str, act_iri: str) -> tuple[str,
                 "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                 "rdfs:label": "Sissejuhatavad sätted",
                 "estleg:partOfAct": _ref(act_iri),
-                "owl:sameAs": _ref(cluster_id),
+                "dcterms:subject": _ref(cluster_id),  #436: chapter refers to cluster
             }
         )
     if cluster_id not in by_id:

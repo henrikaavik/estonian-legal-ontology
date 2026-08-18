@@ -247,7 +247,8 @@ STEPS: list[dict] = [
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "eurovoc_classification.json"],
+                   "eurovoc_classification.json",
+                   "eurovoc_concept_scheme.jsonld"],
     },
     {
         "name": "extract_temporal_data.py",

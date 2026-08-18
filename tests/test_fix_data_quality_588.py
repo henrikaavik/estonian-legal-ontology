@@ -46,7 +46,7 @@ def _curia_node() -> dict:
         "estleg:celexNumber": "62016TT0624",
         "estleg:euCourtDecisionType": {"@id": "estleg:EUDecType_Other"},
         "estleg:euCourt": {"@id": "estleg:EUCourt_CourtOfJustice"},
-        "estleg:curiaLink": {
+        "estleg:eurLexLink": {
             "@value": "https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:62016TT0624",
             "@type": "xsd:anyURI",
         },
@@ -79,8 +79,8 @@ def test_curia_fix_rewrites_celex_in_all_link_fields() -> None:
     fix_curia_doc(doc)
     node = doc["@graph"][0]
 
-    assert "62016TT0624" not in node["estleg:curiaLink"]["@value"]
-    assert node["estleg:curiaLink"]["@value"].endswith("CELEX:62016TO0624")
+    assert "62016TT0624" not in node["estleg:eurLexLink"]["@value"]
+    assert node["estleg:eurLexLink"]["@value"].endswith("CELEX:62016TO0624")
     assert node["owl:sameAs"]["@id"].endswith("/celex/62016TO0624")
     assert node["dcterms:source"]["@id"].endswith("/celex/62016TO0624")
 

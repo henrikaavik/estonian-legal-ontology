@@ -792,6 +792,20 @@ estleg:CourtDecisionShape
         sh:description "Link to the full decision on riigikohus.ee" ;
     ] ;
     sh:property [
+        sh:path estleg:rikosUrl ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "rikosUrl" ;
+        sh:description "Direct rikos.rik.ee document URL derived from rikObjectId (#442)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:chamber ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "chamber" ;
+        sh:description "Optional Riigikohus chamber extracted from the decision header (#442)." ;
+    ] ;
+    sh:property [
         sh:path estleg:ecliIdentifier ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
@@ -1126,11 +1140,11 @@ estleg:EUCourtDecisionShape
         sh:description "ECLI identifier (e.g., ECLI:EU:C:2016:758)" ;
     ] ;
     sh:property [
-        sh:path estleg:curiaLink ;
+        sh:path estleg:eurLexLink ;
         sh:maxCount 1 ;
         sh:datatype xsd:anyURI ;
-        sh:name "curiaLink" ;
-        sh:description "Link to the decision in EUR-Lex" ;
+        sh:name "eurLexLink" ;
+        sh:description "EUR-Lex ET TXT URL for the decision (#441; formerly misnamed curiaLink)" ;
     ] ;
     sh:property [
         sh:path estleg:documentDate ;
@@ -1336,6 +1350,20 @@ estleg:ChapterShape
         sh:datatype xsd:string ;
         sh:name "chapterNumber" ;
         sh:description "The chapter number as a display string (e.g. '1'). Optional — a few chapters carry only a label." ;
+    ] ;
+    sh:property [
+        sh:path dcterms:subject ;
+        sh:nodeKind sh:IRI ;
+        sh:name "subject" ;
+        sh:description "Optional TopicCluster this chapter corresponds to (#436). Not owl:sameAs — structure is not identity-equal to the subject node." ;
+    ] ;
+    sh:property [
+        sh:path owl:sameAs ;
+        sh:not [
+            sh:class estleg:TopicCluster
+        ] ;
+        sh:name "sameAs" ;
+        sh:description "A Chapter must not owl:sameAs a TopicCluster (#436). Use dcterms:subject to point at the cluster." ;
     ] .
 
 # Shape for Division (jagu) instances.

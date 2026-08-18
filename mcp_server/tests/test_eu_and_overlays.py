@@ -24,7 +24,7 @@ _FIXTURE: list[dict] = [
         "rdfs:label": "Judgment mentioning 32000L0060 (Water Framework).",
         "estleg:celexNumber": "62000CJ0001",
         "estleg:ecliIdentifier": "ECLI:EU:C:2001:1",
-        "estleg:curiaLink": {
+        "estleg:eurLexLink": {
             "@value": "https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:62000CJ0001"
         },
         "owl:sameAs": {"@id": "http://publications.europa.eu/resource/celex/62000CJ0001"},

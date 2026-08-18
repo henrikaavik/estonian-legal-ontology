@@ -9,6 +9,7 @@ trail lives in data/eurovoc_domain_mapping.json.
 
 Generates:
   - krr_outputs/eurovoc_classification.json    (report of all classifications)
+  - krr_outputs/eurovoc_concept_scheme.jsonld  (SKOS ConceptScheme + Concepts, #544)
   - Updates existing law JSON-LD files with dcterms:subject
 """
 
@@ -25,6 +26,7 @@ from pathlib import Path
 from estleg_common import (
     AGGREGATE_REGISTRY_PREFIXES,
     BUILD_EVALUATION_DATE,
+    CONTEXT,
     iter_peep_files,
     jsonld_text,
     save_json as _save_json,
@@ -44,6 +46,8 @@ NS = "https://w3id.org/estleg/"
 
 
 EUROVOC_URI_BASE = "http://eurovoc.europa.eu/"
+EUROVOC_SKOS_SCHEME_ID = "estleg:EuroVocDomainScheme"
+EUROVOC_SKOS_FILENAME = "eurovoc_concept_scheme.jsonld"
 
 # EuroVoc domain mapping: descriptor id → (slug, label_et, label_en, [keywords])
 # Keywords are Estonian stems/substrings matched against law text after the
@@ -377,6 +381,53 @@ def load_json(filepath: Path) -> dict:
     """Load a JSON file."""
     with open(filepath, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def _eurovoc_domain_sort_key(code: str) -> tuple[int, int | str]:
+    """Numeric descriptor ids first (by int), then leftover string ids."""
+    if code.isdigit():
+        return (0, int(code))
+    return (1, code)
+
+
+def build_eurovoc_skos_graph() -> dict:
+    """SKOS ConceptScheme + Concept nodes for every EuroVoc domain we mint (#544)."""
+    codes = sorted(EUROVOC_DOMAINS, key=_eurovoc_domain_sort_key)
+    concepts: list[dict] = []
+    top_concepts: list[dict] = []
+    for code in codes:
+        _slug, label_et, label_en, _keywords = EUROVOC_DOMAINS[code]
+        concept_id = f"{EUROVOC_URI_BASE}{code}"
+        top_concepts.append({"@id": concept_id})
+        concepts.append({
+            "@id": concept_id,
+            "@type": ["skos:Concept"],
+            "skos:prefLabel": [
+                {"@value": label_et, "@language": "et"},
+                {"@value": label_en, "@language": "en"},
+            ],
+            "skos:inScheme": {"@id": EUROVOC_SKOS_SCHEME_ID},
+        })
+    scheme = {
+        "@id": EUROVOC_SKOS_SCHEME_ID,
+        "@type": ["skos:ConceptScheme"],
+        "rdfs:label": [
+            {"@value": "EuroVoc valdkonnaskeem", "@language": "et"},
+            {"@value": "EuroVoc domain scheme", "@language": "en"},
+        ],
+        "skos:hasTopConcept": top_concepts,
+    }
+    return {"@context": dict(CONTEXT), "@graph": [scheme, *concepts]}
+
+
+def write_eurovoc_skos_graph(path: Path | None = None) -> Path:
+    """Write the EuroVoc SKOS ConceptScheme graph (#544).
+
+    Default destination is ``krr_outputs/eurovoc_concept_scheme.jsonld``.
+    """
+    dest = Path(path) if path is not None else KRR_DIR / EUROVOC_SKOS_FILENAME
+    save_json(dest, build_eurovoc_skos_graph())
+    return dest
 
 
 def read_act_metadata_from_peep(path: Path) -> dict | None:
@@ -722,7 +773,20 @@ def main(argv: list[str] | None = None):
         default=None,
         help="Optional RNG seed for --emit-sample (for reproducible samples).",
     )
+    parser.add_argument(
+        "--write-skos-only",
+        action="store_true",
+        help=(
+            "Write krr_outputs/eurovoc_concept_scheme.jsonld and exit "
+            "without classifying acts."
+        ),
+    )
     args = parser.parse_args(argv)
+
+    skos_path = write_eurovoc_skos_graph()
+    print(f"Wrote EuroVoc SKOS graph: {_display_path(skos_path)}")
+    if args.write_skos_only:
+        return
 
     print("=" * 60)
     print("Classify Estonian laws with EuroVoc subject taxonomy")

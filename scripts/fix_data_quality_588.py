@@ -17,8 +17,9 @@ already-emitted node, mirroring what the (already-fixed) generators would emit:
      * ``estleg:celexNumber``           ``62016TT0624`` -> ``62016TO0624``
      * ``estleg:euCourt``               ``EUCourt_CourtOfJustice`` -> ``EUCourt_GeneralCourt``
      * ``estleg:euCourtDecisionType``   ``EUDecType_Other`` -> ``EUDecType_Order``
-     * the SAME bad CELEX token embedded in ``estleg:curiaLink`` (``@value``),
-       ``owl:sameAs`` (``@id``) and ``dcterms:source`` (``@id``) is rewritten
+     * the SAME bad CELEX token embedded in ``estleg:eurLexLink`` (``@value``;
+       legacy ``estleg:curiaLink``), ``owl:sameAs`` (``@id``) and
+       ``dcterms:source`` (``@id``) is rewritten
        too, so the node stays internally consistent — otherwise
        ``celexNumber`` would contradict its own ``owl:sameAs`` identity claim
        and the CELLAR/EUR-Lex links would resolve to a non-existent CELEX.
@@ -89,7 +90,12 @@ CURIA_TYPE_WRONG = "estleg:EUDecType_Other"
 CURIA_TYPE_RIGHT = "estleg:EUDecType_Order"
 # Fields whose @value / @id embed the CELEX token and so must be rewritten in
 # lock-step with celexNumber to keep the node internally consistent.
-CURIA_CELEX_BEARING_FIELDS = ("estleg:curiaLink", "owl:sameAs", "dcterms:source")
+CURIA_CELEX_BEARING_FIELDS = (
+    "estleg:eurLexLink",
+    "estleg:curiaLink",
+    "owl:sameAs",
+    "dcterms:source",
+)
 
 # --- Item 2: 5 EP "Texts Adopted" -------------------------------------------
 EURLEX_FILE = KRR_DIR / "eurlex" / "eurlex_regulations_peep.json"
@@ -301,7 +307,7 @@ def main(argv: list[str] | None = None) -> int:
                 f"  {verb}: celexNumber={res['celexNumber']} "
                 f"euCourt={res['euCourt']} "
                 f"euCourtDecisionType={res['euCourtDecisionType']} "
-                f"celex_in_links(curiaLink/sameAs/source)={res['celex_in_links']}"
+                f"celex_in_links(eurLexLink/sameAs/source)={res['celex_in_links']}"
             )
             if n and not dry_run:
                 save_json(CURIA_FILE, doc)

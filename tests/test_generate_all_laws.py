@@ -926,7 +926,7 @@ class TestNestedChapterAttribution:
         # (the division is only their isPartOf container).
         chapter = next(n for n in doc["@graph"]
                        if n.get("@id", "").startswith("estleg:Chapter_TNXX_"))
-        cluster_id = chapter["owl:sameAs"]["@id"]
+        cluster_id = chapter["dcterms:subject"]["@id"]
         assert par5["estleg:requestedCluster"]["@id"] == cluster_id
         assert par7["estleg:requestedCluster"]["@id"] == cluster_id
 

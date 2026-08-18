@@ -188,7 +188,7 @@ the act root (`estleg:references` / `referencedBy` / `interpretedBy` /
 - **Court decision** — the decision's `estleg:decisionLink` (riigikohus.ee).
 - **Draft** — the draft's EIS link (eelnoud.valitsus.ee).
 - **EU** — CELEX → `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:<celex>`.
-- **CURIA** — the decision's `estleg:curiaLink` (EUR-Lex ET TXT), else the same CELEX URL.
+- **CURIA** — the decision's `estleg:eurLexLink` (EUR-Lex ET TXT; falls back to `estleg:curiaLink`), else the same CELEX URL.
 
 ### Overlay coverage (#540)
 

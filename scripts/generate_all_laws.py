@@ -1229,6 +1229,108 @@ def _stamp_content_hash(node: dict, slug: str) -> None:
         node["estleg:contentHash"] = digest
 
 
+def chapter_cluster_subject(cluster_id: str) -> dict:
+    """Issue #436: chapters *refer* to their topic cluster; they are not the same individual."""
+    return {"@id": cluster_id}
+
+
+def _jsonld_id_values(value: object) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        iri = value.get("@id")
+        return [iri] if isinstance(iri, str) else []
+    if isinstance(value, list):
+        iris: list[str] = []
+        for item in value:
+            iris.extend(_jsonld_id_values(item))
+        return iris
+    return []
+
+
+def _is_cluster_iri(iri: str) -> bool:
+    return iri.startswith("estleg:Cluster_")
+
+
+def _compact_id_refs(iris: list[str]) -> dict | list[dict]:
+    refs = [{"@id": iri} for iri in iris]
+    if len(refs) == 1:
+        return refs[0]
+    return refs
+
+
+def _node_type_tokens(node: dict) -> list[str]:
+    raw = node.get("@type", [])
+    if isinstance(raw, str):
+        return [raw]
+    if isinstance(raw, list):
+        return [t for t in raw if isinstance(t, str)]
+    return []
+
+
+def retarget_chapter_cluster_identity(node: dict) -> bool:
+    """Move Chapter→Cluster ``owl:sameAs`` onto ``dcterms:subject`` (#436)."""
+    if not isinstance(node, dict):
+        return False
+    if "estleg:Chapter" not in _node_type_tokens(node):
+        return False
+    if "owl:sameAs" not in node:
+        return False
+
+    same_as_iris = _jsonld_id_values(node.get("owl:sameAs"))
+    cluster_ids = [iri for iri in same_as_iris if _is_cluster_iri(iri)]
+    remaining = [iri for iri in same_as_iris if not _is_cluster_iri(iri)]
+    if not cluster_ids:
+        return False
+
+    subject_ids = _jsonld_id_values(node.get("dcterms:subject"))
+    seen = set(subject_ids)
+    for cid in cluster_ids:
+        if cid not in seen:
+            subject_ids.append(cid)
+            seen.add(cid)
+
+    subject_val = (
+        chapter_cluster_subject(subject_ids[0])
+        if len(subject_ids) == 1
+        else _compact_id_refs(subject_ids)
+    )
+    remaining_val = _compact_id_refs(remaining) if remaining else None
+
+    rebuilt: dict = {}
+    placed = False
+    for key, value in node.items():
+        if key == "owl:sameAs":
+            rebuilt["dcterms:subject"] = subject_val
+            if remaining_val is not None:
+                rebuilt["owl:sameAs"] = remaining_val
+            placed = True
+            continue
+        if key == "dcterms:subject":
+            continue
+        rebuilt[key] = value
+
+    if not placed:
+        after: dict = {}
+        inserted = False
+        for key, value in rebuilt.items():
+            after[key] = value
+            if key == "estleg:partOfAct":
+                after["dcterms:subject"] = subject_val
+                if remaining_val is not None:
+                    after["owl:sameAs"] = remaining_val
+                inserted = True
+        if not inserted:
+            after["dcterms:subject"] = subject_val
+            if remaining_val is not None:
+                after["owl:sameAs"] = remaining_val
+        rebuilt = after
+
+    node.clear()
+    node.update(rebuilt)
+    return True
+
+
 def generate_law_jsonld(
     title: str,
     slug: str,
@@ -1407,7 +1509,8 @@ def generate_law_jsonld(
                     "estleg:chapterNumber": ch_nr,
                     # Issue #415: chapter -> act root link.
                     "estleg:partOfAct": {"@id": ontology_id},
-                    "owl:sameAs": {"@id": cluster_id},
+                    #436: chapter refers to cluster; not owl:sameAs
+                    "dcterms:subject": chapter_cluster_subject(cluster_id),
                 }
 
                 # Issue #253: assign every paragraph DIRECTLY under this
@@ -1502,7 +1605,8 @@ def generate_law_jsonld(
                 "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                 "rdfs:label": preamble_label,
                 "estleg:partOfAct": {"@id": ontology_id},  # Issue #415
-                "owl:sameAs": {"@id": preamble_cluster_id},
+                #436: chapter refers to cluster; not owl:sameAs
+                "dcterms:subject": chapter_cluster_subject(preamble_cluster_id),
             })
             for p in preamble_pars:
                 par_to_container[id(p)] = preamble_chapter_id
@@ -1886,7 +1990,8 @@ def generate_multipart_law(
                         "estleg:chapterNumber": ch_nr,
                         # Issue #415: chapter -> this osa's act root link.
                         "estleg:partOfAct": {"@id": ontology_id},
-                        "owl:sameAs": {"@id": cluster_id},
+                        #436: chapter refers to cluster; not owl:sameAs
+                        "dcterms:subject": chapter_cluster_subject(cluster_id),
                     }
 
                     # Issue #253: identity-aware cluster/chapter assignment
@@ -1977,7 +2082,8 @@ def generate_multipart_law(
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                     "rdfs:label": preamble_label,
                     "estleg:partOfAct": {"@id": ontology_id},  # Issue #415
-                    "owl:sameAs": {"@id": preamble_cluster_id},
+                    #436: chapter refers to cluster; not owl:sameAs
+                    "dcterms:subject": chapter_cluster_subject(preamble_cluster_id),
                 })
                 for p in preamble_pars:
                     par_to_container[id(p)] = preamble_chapter_id

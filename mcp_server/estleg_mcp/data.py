@@ -1965,10 +1965,11 @@ def _node_mentions_celex(node: Node, celex: str) -> bool:
 
 
 def _curia_or_eurlex_url(node: Node) -> str:
-    """Prefer ``estleg:curiaLink``, else the EUR-Lex URL for the decision CELEX."""
-    link = _text(node.get("estleg:curiaLink")) or _id_of(node.get("estleg:curiaLink"))
-    if link:
-        return link
+    """Prefer ``estleg:eurLexLink``, then legacy ``estleg:curiaLink``, else CELEX URL."""
+    for field in ("estleg:eurLexLink", "estleg:curiaLink"):
+        link = _text(node.get(field)) or _id_of(node.get(field))
+        if link:
+            return link
     own = _text(node.get("estleg:celexNumber"))
     return eurlex_url(own) if own else ""
 

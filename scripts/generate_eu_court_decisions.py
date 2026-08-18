@@ -23,15 +23,17 @@ Generates:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 import time
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote
 
 from estleg_common import (
-    CONTEXT,
     BUILD_EVALUATION_DATE,
+    CONTEXT,
     save_json,
     stamp_combined_dataset_head,
 )
@@ -112,6 +114,40 @@ CELEX_COURT_MAP = {
     "FJ": "CivilServiceTribunal",
     "FO": "CivilServiceTribunal",
 }
+
+# CELEX type-code → case-number court letter (C/T/F). #441
+CELEX_CASE_LETTER = {
+    "CJ": "C",
+    "CO": "C",
+    "CV": "C",
+    "CC": "C",
+    "CA": "C",
+    "CN": "C",
+    "CP": "C",
+    "CB": "C",
+    "CD": "C",
+    "CS": "C",
+    "CT": "C",
+    "TJ": "T",
+    "TO": "T",
+    "TA": "T",
+    "TT": "T",
+    "TC": "T",
+    "FJ": "F",
+    "FO": "F",
+}
+
+CELLAR_CELEX_PSI = "http://publications.europa.eu/resource/celex/"
+CELLAR_ECLI_PSI = "http://publications.europa.eu/resource/ecli/"
+
+CURIA_IDENTITY_FILES = (
+    CURIA_DIR / "curia_judgments_peep.json",
+    CURIA_DIR / "curia_orders_peep.json",
+    CURIA_DIR / "curia_ag_opinions_peep.json",
+    CURIA_DIR / "curia_court_opinions_peep.json",
+    CURIA_DIR / "curia_other_peep.json",
+    CURIA_DIR / "curia_combined.jsonld",
+)
 
 UNKNOWN_CELEX_CODES: set[str] = set()
 
@@ -237,6 +273,171 @@ def extract_case_numbers(title: str) -> list[str]:
     """
     # ``dict.fromkeys`` de-duplicates while preserving first-seen order.
     return list(dict.fromkeys(re.findall(r"[CTFPE]-\d+/\d+", title)))
+
+
+def cellar_celex_iri(celex: str) -> str:
+    """CELLAR CELEX PSI for a case-law work."""
+    return f"{CELLAR_CELEX_PSI}{celex}"
+
+
+def cellar_ecli_iri(ecli: str) -> str:
+    """CELLAR ECLI PSI; colons (and other reserved chars) are percent-encoded."""
+    return f"{CELLAR_ECLI_PSI}{quote(ecli, safe='')}"
+
+
+def derive_case_number_from_celex(celex: str) -> str | None:
+    """Derive a ``C-n/yy`` / ``T-n/yy`` / ``F-n/yy`` case number from CELEX.
+
+    Accepts the case-law shape ``6YYYYXXNNNN`` and the EFTA twin ``EYYYYXXNNNN``.
+    ``XX`` is mapped through :data:`CELEX_CASE_LETTER`; ``NNNN`` is the integer
+    case number and the year is the last two digits of ``YYYY``. Suffixes such
+    as ``(01)`` are ignored. Returns ``None`` when the token is not that shape
+    or ``XX`` is unmapped.
+    """
+    if not isinstance(celex, str) or not celex:
+        return None
+    match = re.match(r"[6E](\d{4})([A-Z]{2})(\d{4})", celex)
+    if not match:
+        return None
+    year, code, number = match.group(1), match.group(2), match.group(3)
+    letter = CELEX_CASE_LETTER.get(code)
+    if not letter:
+        return None
+    return f"{letter}-{int(number)}/{year[2:]}"
+
+
+def _node_types(node: dict) -> list[str]:
+    raw = node.get("@type", [])
+    return [raw] if isinstance(raw, str) else list(raw or [])
+
+
+def _sameas_iris(value: object) -> list[str]:
+    if value is None:
+        return []
+    items = value if isinstance(value, list) else [value]
+    iris: list[str] = []
+    for item in items:
+        if isinstance(item, dict):
+            iri = item.get("@id")
+            if isinstance(iri, str) and iri:
+                iris.append(iri)
+        elif isinstance(item, str) and item:
+            iris.append(item)
+    return iris
+
+
+def _has_eu_case_number(node: dict) -> bool:
+    value = node.get("estleg:euCaseNumber")
+    if value is None:
+        return False
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return isinstance(inner, str) and bool(inner.strip())
+    if isinstance(value, list):
+        return any(
+            (isinstance(item, str) and item.strip())
+            or (
+                isinstance(item, dict)
+                and isinstance(item.get("@value"), str)
+                and item["@value"].strip()
+            )
+            for item in value
+        )
+    return False
+
+
+def _celex_of(node: dict) -> str:
+    value = node.get("estleg:celexNumber")
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return inner if isinstance(inner, str) else ""
+    return ""
+
+
+def _ecli_of(node: dict) -> str:
+    value = node.get("estleg:ecliIdentifier")
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return inner if isinstance(inner, str) else ""
+    return ""
+
+
+def retarget_curia_identity(node: dict) -> bool:
+    """Idempotent rewrite of one ``EUCourtDecision`` node's #441 identity.
+
+    Ensures ``owl:sameAs`` is a list of the CELLAR CELEX PSI plus the encoded
+    ECLI PSI (when ``ecliIdentifier`` is present), renames ``estleg:curiaLink``
+    to ``estleg:eurLexLink``, and fills a missing ``euCaseNumber`` from CELEX.
+    Returns ``True`` iff the node changed. Non-decision nodes are left alone.
+    """
+    if not isinstance(node, dict) or "estleg:EUCourtDecision" not in _node_types(node):
+        return False
+
+    changed = False
+    celex = _celex_of(node)
+    ecli = _ecli_of(node)
+
+    wanted: list[str] = []
+    if celex:
+        wanted.append(cellar_celex_iri(celex))
+    if ecli:
+        wanted.append(cellar_ecli_iri(ecli))
+    if wanted:
+        existing = _sameas_iris(node.get("owl:sameAs"))
+        extras = [iri for iri in existing if iri not in wanted]
+        new_sameas = [{"@id": iri} for iri in wanted + extras]
+        if node.get("owl:sameAs") != new_sameas:
+            node["owl:sameAs"] = new_sameas
+            changed = True
+
+    if "estleg:curiaLink" in node:
+        renamed: dict = {}
+        already = node.get("estleg:eurLexLink")
+        for key, value in node.items():
+            if key == "estleg:curiaLink":
+                if already is None:
+                    renamed["estleg:eurLexLink"] = value
+                continue
+            renamed[key] = value
+        node.clear()
+        node.update(renamed)
+        changed = True
+
+    if not _has_eu_case_number(node) and celex:
+        derived = derive_case_number_from_celex(celex)
+        if derived:
+            node["estleg:euCaseNumber"] = derived
+            changed = True
+
+    return changed
+
+
+def rewrite_curia_identity_files(
+    paths: tuple[Path, ...] | None = None,
+) -> dict[str, int]:
+    """Apply :func:`retarget_curia_identity` to the committed CURIA artifacts."""
+    counts: dict[str, int] = {}
+    for path in paths or CURIA_IDENTITY_FILES:
+        if not path.is_file():
+            counts[path.name] = 0
+            continue
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        graph = doc.get("@graph")
+        changed = 0
+        if isinstance(graph, list):
+            for node in graph:
+                if isinstance(node, dict) and retarget_curia_identity(node):
+                    changed += 1
+        if changed:
+            save_json(path, doc)
+        counts[path.name] = changed
+    return counts
 
 
 def clean_title(title: str) -> str:
@@ -447,7 +648,9 @@ def generate_schema_nodes() -> list[dict]:
             "@id": "estleg:ecliIdentifier",
             "@type": ["owl:DatatypeProperty"],
             "rdfs:label": {"@value": "ECLI identifikaator", "@language": "et"},
-            "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
+            # #442: no rdfs:domain — the same property is used on
+            # estleg:CourtDecision (Riigikohus). A domain of EUCourtDecision
+            # would entail every RK decision is an EU court decision.
             "rdfs:range": {"@id": "xsd:string"},
             "rdfs:comment": {"@value": "European Case Law Identifier (e.g., ECLI:EU:C:2016:758).", "@language": "en"},
         },
@@ -460,12 +663,15 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:comment": {"@value": "Case number (e.g., C-438/14).", "@language": "en"},
         },
         {
-            "@id": "estleg:curiaLink",
+            "@id": "estleg:eurLexLink",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "CURIA link",
+            "rdfs:label": "EUR-Lex link",
             "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
             "rdfs:range": {"@id": "xsd:anyURI"},
-            "rdfs:comment": {"@value": "Link to the decision in EUR-Lex (Estonian version).", "@language": "en"},
+            "rdfs:comment": {
+                "@value": "EUR-Lex ET TXT URL for the decision (https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:<celex>).",
+                "@language": "en",
+            },
         },
     ])
 
@@ -490,28 +696,32 @@ def decision_to_node(item: dict) -> dict:
         "estleg:euCourt": {"@id": f"estleg:EUCourt_{court_id}"},
     }
 
-    # EUR-Lex link (Estonian)
+    # EUR-Lex ET TXT link (shared property name with the legislation corpus)
     eurlex_link = f"https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:{item['celex']}"
-    node["estleg:curiaLink"] = {"@value": eurlex_link, "@type": "xsd:anyURI"}
+    node["estleg:eurLexLink"] = {"@value": eurlex_link, "@type": "xsd:anyURI"}
 
-    # Canonical source URI (CELEX-based)
-    node["dcterms:source"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
+    node["dcterms:source"] = {"@id": cellar_celex_iri(item["celex"])}
 
-    # owl:sameAs link to EUR-Lex resource URI
-    node["owl:sameAs"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
-
-    # ECLI
+    # CELLAR CELEX PSI always; ECLI PSI when the work has an identifier (#441).
+    same_as: list[dict] = [{"@id": cellar_celex_iri(item["celex"])}]
     if item.get("ecli"):
         node["estleg:ecliIdentifier"] = item["ecli"]
+        same_as.append({"@id": cellar_ecli_iri(item["ecli"])})
+    node["owl:sameAs"] = same_as
 
     # Case number(s). Joined cases (#606) may carry several, so emit them all;
     # a single case stays a one-element list (JSON-LD-equivalent to the prior
     # scalar). NOTE (deferred): the SHACL ``EUCourtDecisionShape`` still pins
     # ``estleg:euCaseNumber`` to ``sh:maxCount 1``; a multi-valued list needs a
     # follow-up maxCount relaxation before the corpus is regenerated (no regen
-    # happens here, so nothing breaks today).
+    # happens here, so nothing breaks today). When the title has no C/T/F/P/E
+    # token, derive one from the CELEX so court opinions are not left blank.
     if case_numbers:
         node["estleg:euCaseNumber"] = case_numbers
+    else:
+        derived = derive_case_number_from_celex(item["celex"])
+        if derived:
+            node["estleg:euCaseNumber"] = [derived]
 
     # Date — validate before emitting an ``xsd:date`` literal. CELLAR has
     # served malformed/partial dates; an unchecked value breaks downstream

@@ -20,7 +20,7 @@ Notes
 -----
 * ``owl:sameAs`` / ``dcterms:source`` point at the CELEX *resource* PURL
   (CELLAR-resolvable, content-negotiable) — NOT the human eur-lex.europa.eu URL,
-  which is emitted separately as ``estleg:eurLexLink`` / ``estleg:curiaLink`` and
+  which is emitted separately as ``estleg:eurLexLink`` (legacy ``estleg:curiaLink``) and
   is already present. ``validate_all.validate_source_provenance`` requires
   ``dcterms:source`` to be an IRI object ``{"@id": ...}`` (a hard error), which the
   template satisfies. #610: for legislation, the resolvable ELI canonical URI is

@@ -601,14 +601,29 @@ def generate_schema_nodes() -> list[dict]:
             "estleg:caseTypeCode": code,
         })
 
-    # Decision type individuals
+    # Decision type individuals. Skip Resolution (#344): unused in the
+    # corpus. OrderRuling is retained as deprecated for compatibility.
     for label_et, (type_id, _) in DECISION_TYPES.items():
-        nodes.append({
+        if type_id == "Resolution":
+            continue
+        node = {
             "@id": f"estleg:DecisionType_{type_id}",
             "@type": ["owl:NamedIndividual", "estleg:DecisionType"],
             "rdfs:label": {"@value": label_et, "@language": "et"},
             "skos:prefLabel": {"@value": type_id, "@language": "en"},
-        })
+        }
+        if type_id == "OrderRuling":
+            node["owl:deprecated"] = True
+            node["rdfs:comment"] = {
+                "@value": (
+                    "Deprecated (issue #344): declared but never used in "
+                    "the corpus — kohtumäärus decisions use "
+                    "estleg:DecisionType_Ruling instead. Retained for "
+                    "backward compatibility; do not emit new references."
+                ),
+                "@language": "en",
+            }
+        nodes.append(node)
 
     # Object properties
     nodes.extend([
@@ -669,6 +684,34 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": "RIK objekti ID",
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "xsd:string"},
+        },
+        {
+            "@id": "estleg:rikosUrl",
+            "@type": ["owl:DatatypeProperty"],
+            "rdfs:label": "RIKOS URL",
+            "rdfs:domain": {"@id": "estleg:CourtDecision"},
+            "rdfs:range": {"@id": "xsd:anyURI"},
+            "rdfs:comment": {
+                "@value": (
+                    "Direct rikos.rik.ee document URL derived from "
+                    "rikObjectId (https://rikos.rik.ee/Lahend/Index?id={id})."
+                ),
+                "@language": "en",
+            },
+        },
+        {
+            "@id": "estleg:chamber",
+            "@type": ["owl:DatatypeProperty"],
+            "rdfs:label": {"@value": "kolleegium", "@language": "et"},
+            "rdfs:domain": {"@id": "estleg:CourtDecision"},
+            "rdfs:range": {"@id": "xsd:string"},
+            "rdfs:comment": {
+                "@value": (
+                    "Deciding chamber extracted from the legalText header "
+                    "(e.g. Halduskolleegium, Kriminaalkolleegium, Erikogu)."
+                ),
+                "@language": "en",
+            },
         },
         {
             "@id": "estleg:decisionLink",
@@ -739,6 +782,84 @@ def mint_riigikohus_ecli(
     if not ordinal:
         return None
     return f"ECLI:EE:RK:{parsed.year}:{ordinal}"
+
+
+# Direct rikos.rik.ee document URL (#442). Search-result ``decisionLink``
+# stays on riigikohus.ee; this is the object-id document page.
+_RIKOS_DOCUMENT_URL = "https://rikos.rik.ee/Lahend/Index?id={oid}"
+# Chamber names sit in the document head; later body text cites other
+# chambers / "üldkogule" and must not be read as the deciding bench.
+_CHAMBER_HEADER_CHARS = 400
+# Most-specific first so constitutional review is not shadowed. ``koll?e+gium``
+# tolerates OCR ``kollegium`` / ``koleegium`` / extra ``e`` seen in legacy text.
+_CHAMBER_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (
+        "Põhiseaduslikkuse järelevalve kolleegium",
+        re.compile(
+            r"p[õo]hiseaduslikkuse\s+j[äa]relevalve\s+koll?e+gium",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "Kriminaalkolleegium",
+        re.compile(r"kriminaal(?:kohtu)?koll?e+gium", re.IGNORECASE),
+    ),
+    (
+        "Tsiviilkolleegium",
+        re.compile(r"tsiviil(?:kohtu)?koll?e+gium", re.IGNORECASE),
+    ),
+    (
+        "Halduskolleegium",
+        re.compile(r"haldus(?:kohtu)?koll?e+gium", re.IGNORECASE),
+    ),
+    (
+        "Erikogu",
+        re.compile(r"\berikogu\b", re.IGNORECASE),
+    ),
+    (
+        "Üldkogu",
+        re.compile(r"\b[üu]ldkogu\b", re.IGNORECASE),
+    ),
+]
+
+
+def rikos_url_from_object_id(oid: str) -> str:
+    """Return the direct rikos.rik.ee document URL for a RIK object id."""
+    return _RIKOS_DOCUMENT_URL.format(oid=(oid or "").strip())
+
+
+def extract_chamber(legal_text: str) -> str | None:
+    """Return the deciding-chamber label from a legalText header, or None.
+
+    Only the document head is searched so body cross-references (another
+    chamber, ``üldkogule`` in a resolutsioon) cannot win. When several
+    chamber tokens appear in the header, the leftmost match is kept —
+    that is the deciding bench on regular RK title pages.
+    """
+    if not legal_text or not isinstance(legal_text, str):
+        return None
+    header = legal_text[:_CHAMBER_HEADER_CHARS]
+    hits: list[tuple[int, str]] = []
+    for label, rx in _CHAMBER_PATTERNS:
+        match = rx.search(header)
+        if match:
+            hits.append((match.start(), label))
+    if not hits:
+        return None
+    hits.sort(key=lambda item: item[0])
+    return hits[0][1]
+
+
+def _unwrap_literal(value: object) -> str:
+    """Plain string from a JSON-LD literal (string or ``{@value}``)."""
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return inner if isinstance(inner, str) else ""
+    return value if isinstance(value, str) else ""
+
+
+def _typed_any_uri(url: str) -> dict:
+    return {"@value": url, "@type": "xsd:anyURI"}
 
 
 def _build_node_id(dec: dict) -> str | None:
@@ -998,9 +1119,20 @@ def decision_to_node(
         node["estleg:decisionLink"] = {"@value": riigikohus_link, "@type": "xsd:anyURI"}
         node["dcterms:source"] = {"@id": dec["link"]}
 
-    # RIK object ID
+    # RIK object ID + direct rikos document URL (#442).
     if dec.get("object_id"):
         node["estleg:rikObjectId"] = dec["object_id"]
+        node["estleg:rikosUrl"] = _typed_any_uri(
+            rikos_url_from_object_id(dec["object_id"])
+        )
+
+    legal_text = dec.get("legal_text") or dec.get("legalText") or ""
+    if isinstance(legal_text, dict):
+        legal_text = legal_text.get("@value") or ""
+    if isinstance(legal_text, str):
+        chamber = extract_chamber(legal_text)
+        if chamber:
+            node["estleg:chamber"] = chamber
 
     # Referenced laws
     refs = detect_referenced_laws(dec.get("summary") or "")
@@ -1032,6 +1164,70 @@ def backfill_ecli_on_node(node: dict) -> bool:
         return False
     node["estleg:ecliIdentifier"] = ecli
     return True
+
+
+def backfill_rk_identity(node: dict) -> bool:
+    """Stamp ``estleg:rikosUrl`` + ``estleg:chamber`` on a CourtDecision.
+
+    Idempotent: already-correct values are left untouched. Chamber is
+    filled only when the node already carries ``estleg:legalText``.
+    """
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:CourtDecision" not in types:
+        return False
+    changed = False
+
+    oid = _unwrap_literal(node.get("estleg:rikObjectId"))
+    if oid:
+        url = rikos_url_from_object_id(oid)
+        existing = node.get("estleg:rikosUrl")
+        existing_url = _unwrap_literal(existing)
+        if existing_url != url:
+            node["estleg:rikosUrl"] = _typed_any_uri(url)
+            changed = True
+
+    if not _unwrap_literal(node.get("estleg:chamber")):
+        chamber = extract_chamber(_unwrap_literal(node.get("estleg:legalText")))
+        if chamber:
+            node["estleg:chamber"] = chamber
+            changed = True
+    return changed
+
+
+def backfill_rk_identity_files(rk_dir: Path | None = None) -> dict[str, int]:
+    """One-shot rewrite of ``riigikohus_*_peep.json`` via ``save_json``."""
+    target = rk_dir if rk_dir is not None else RK_DIR
+    stats = {"files": 0, "files_changed": 0, "nodes_changed": 0, "nodes": 0}
+    for path in sorted(target.glob("riigikohus_*_peep.json")):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.warning("backfill_rk_identity: skip %s: %s", path.name, exc)
+            continue
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
+            continue
+        stats["files"] += 1
+        file_changed = False
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:CourtDecision" not in types:
+                continue
+            stats["nodes"] += 1
+            if backfill_rk_identity(node):
+                stats["nodes_changed"] += 1
+                file_changed = True
+        if file_changed:
+            save_json(path, doc)
+            stats["files_changed"] += 1
+    return stats
 
 
 # ---------------------------------------------------------------------------
@@ -1351,6 +1547,7 @@ def enrich_full_text(limit: int = DEFAULT_FULL_TEXT_LIMIT, *, use_cache: bool = 
                 # xsd:string`` on ``estleg:legalText`` would reject a
                 # ``rdf:langString``.
                 node["estleg:legalText"] = text
+                backfill_rk_identity(node)
                 succeeded += 1
                 modified = True
             else:

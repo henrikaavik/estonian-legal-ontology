@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Chapter / CURIA / EuroVoc identity (#436, #441, #544, #442 remainder)
+
+- Chapters point at their TopicCluster with `dcterms:subject` instead of
+  `owl:sameAs` (3,021 chapters / 351 law peeps; combined rewritten).
+- CURIA decisions `owl:sameAs` both CELLAR PSIs (CELEX + percent-encoded
+  ECLI); missing `euCaseNumber` is derived from CELEX; `curiaLink` is
+  renamed `eurLexLink`.
+- EuroVoc descriptors ship as `krr_outputs/eurovoc_concept_scheme.jsonld`
+  (43 SKOS concepts + one ConceptScheme). Corpus file count is 23,114.
+- Riigikohus nodes carry `rikosUrl` and header-derived `chamber`. Official
+  rikos ECLI scrape remains #442.
+
 ### IRI hygiene (#346, #354)
 
 - Migrated leftover `estleg:…__…` @ids (slugify 80-char cut) to a single
