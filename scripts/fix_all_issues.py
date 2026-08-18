@@ -606,7 +606,7 @@ def _fix_intra_file_duplicates_in_doc(doc: dict) -> bool:
     # ambiguous (which copy?), and the safest interpretation is that
     # it points at the kept head, which retains the original @id. The
     # test for this behaviour is
-    # `test_fix_intra_file_duplicates_rewrites_internal_references`.
+    # `test_fix_intra_file_duplicates_preserves_head_references`.
     for idx, new_id in rename_map.items():
         node = doc["@graph"][idx]
         old_id = node["@id"]

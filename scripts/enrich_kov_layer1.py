@@ -337,6 +337,8 @@ def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
 
     act_node = act_nodes[0]
     act_iri = act_node.get("@id")
+    if not isinstance(act_iri, str) or not act_iri:
+        raise ValueError(f"{path}: MunicipalRegulation node has no @id")
     # Prefer dc:source over rdfs:label: the canonical KOV peep shape
     # has rdfs:label with the document-type suffix appended (e.g.
     # "Tallinna jäätmehoolduseeskiri (määrus)") while dc:source

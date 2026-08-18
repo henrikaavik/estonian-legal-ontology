@@ -255,7 +255,7 @@ def _kc(municipality="Viimsi ", body="Vallavolikogu", date="13.10.2009", num="22
 
 def test_resolver_strict_match() -> None:
     idx = {("viimsi vallavolikogu", 2009, "22"): "estleg:Reg_1024484_Map_2026"}
-    iri, reason = resolve_kov_citation(_kc(), idx, set(), {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), idx, set(), {"viimsi vallavolikogu"})
     assert iri == "estleg:Reg_1024484_Map_2026"
     assert reason is None
 
@@ -263,7 +263,7 @@ def test_resolver_strict_match() -> None:
 def test_resolver_year_plus_one_alternate() -> None:
     # Index has 2010 entry; query year 2009 resolves via +1 alternate.
     idx = {("tallinna linnavalitsus", 2010, "75"): "estleg:Reg_1014396_Map_2026"}
-    iri, reason = resolve_kov_citation(
+    iri, reason, _issuer = resolve_kov_citation(
         _kc(municipality="Tallinna ", body="Linnavalitsus", date="14.05.2009", num="75"),
         idx, set(), {"tallinna linnavalitsus"},
     )
@@ -273,7 +273,7 @@ def test_resolver_year_plus_one_alternate() -> None:
 
 def test_resolver_ambiguous_primary_short_circuits() -> None:
     collisions = {("viimsi vallavolikogu", 2009, "22")}
-    iri, reason = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
     assert iri is None
     assert reason == "ambiguous_key"
 
@@ -281,20 +281,20 @@ def test_resolver_ambiguous_primary_short_circuits() -> None:
 def test_resolver_ambiguous_alternate_short_circuits() -> None:
     # Primary 2009 missing; alternate 2010 collision-tracked.
     collisions = {("viimsi vallavolikogu", 2010, "22")}
-    iri, reason = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
     assert iri is None
     assert reason == "ambiguous_key"
 
 
 def test_resolver_unmatched() -> None:
-    iri, reason = resolve_kov_citation(_kc(), {}, set(), {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, set(), {"viimsi vallavolikogu"})
     assert iri is None
     assert reason == "issuer_year_num_unmatched"
 
 
 def test_resolver_unknown_issuer_short_circuits() -> None:
     # Issuer NOT in known_issuer_norms → unknown_issuer, no index lookup.
-    iri, reason = resolve_kov_citation(_kc(), {}, set(), set())
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, set(), set())
     assert iri is None
     assert reason == "unknown_issuer"
 
@@ -972,13 +972,16 @@ class TestIssue172PatKovActLeftAnchor:
             "raw_text": "Pärnu Maakohtu Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15",
         }
         idx = {("tallinna linnavolikogu", 2020, "15"): "estleg:Reg_TLN_15_Map_2026"}
-        iri, reason = resolve_kov_citation(
+        iri, reason, _issuer = resolve_kov_citation(
             match, idx, set(), {"tallinna linnavolikogu"},
         )
         assert iri == "estleg:Reg_TLN_15_Map_2026", (
             f"trim should have recovered the runaway municipality; "
             f"got iri={iri}, reason={reason}"
         )
+        # #389: the returned issuer is the post-trim form, not the
+        # overcaptured "parnu maakohtu tallinna linnavolikogu".
+        assert _issuer == "tallinna linnavolikogu"
 
 
 # ---------------------------------------------------------------------------

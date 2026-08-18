@@ -21,9 +21,11 @@ from generate_provision_versions import (
     Redaction,
     build_law_target,
     build_provision_backlinks,
+    decode_rt_xml_bytes,
     extract_provision_texts,
     fetch_current_redaction,
     fetch_redaction_chain,
+    fetch_redaction_xml,
     missing_law_target_error,
     select_law_slugs,
     synthesise_versions,
@@ -1359,6 +1361,67 @@ def test_shacl_rejects_provision_version_missing_required_property(drop_prop: st
 # ---------------------------------------------------------------------------
 # End-to-end (mock fetches): process_law writes a sidecar + coverage report
 # ---------------------------------------------------------------------------
+
+
+def test_synthesise_repairs_fffd_in_version_text() -> None:
+    """#355: versionText is repaired when a redaction still carries U+FFFD."""
+    target = _make_target(par_suffixes=("1",))
+    chain = [
+        (
+            Redaction("111", "2010-01-01", None, "/akt/111.xml"),
+            {"1": "hoida v\ufffd\ufffdi ladustada."},
+        ),
+    ]
+    nodes = synthesise_versions(target, chain)
+    assert nodes[0]["estleg:versionText"] == "hoida või ladustada."
+    assert "\ufffd" not in nodes[0]["estleg:versionText"]
+
+
+def test_fetch_redaction_xml_decodes_windows_1257(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Fetch must use decode_rt_xml_bytes, not a forced UTF-8 ``resp.text``."""
+    xml = (
+        '<?xml version="1.0" encoding="windows-1257"?>'
+        "<akt><metaandmed><pealkiri>Fikseeritud seadus ajalooline redaktsioon</pealkiri>"
+        "</metaandmed><paragrahv><paragrahvNr>1</paragrahvNr>"
+        "<paragrahvPealkiri>Üldsätted käesoleva seaduse tähenduses</paragrahvPealkiri>"
+        "<loige><loigeNr>1</loigeNr>"
+        "<lauseOsa>Käesoleva seaduse tähenduses on või määrus kohaldatav.</lauseOsa>"
+        "</loige></paragrahv></akt>"
+    )
+    data = xml.encode("windows-1257")
+    assert "\ufffd" in data.decode("utf-8", errors="replace")
+
+    class _Resp:
+        content = data
+        encoding = "ISO-8859-1"
+        apparent_encoding = "ISO-8859-1"
+
+        def raise_for_status(self) -> None:
+            return None
+
+        @property
+        def text(self) -> str:
+            # Old generator path: forced UTF-8. Must not be used.
+            return self.content.decode("utf-8", errors="replace")
+
+    monkeypatch.setattr(gpv, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(gpv.requests, "get", lambda *a, **k: _Resp())
+    redaction = Redaction("999", "2010-01-01", None, "/akt/999.xml")
+    root = fetch_redaction_xml("fixture_law", redaction, sleep=0.0)
+    assert root is not None
+    texts = extract_provision_texts(root)
+    assert any("või" in t for t in texts.values())
+    assert all("\ufffd" not in t for t in texts.values())
+    # Cached copy is UTF-8 of the correctly decoded text.
+    cached = next(tmp_path.joinpath("provision_versions").glob("*.xml")).read_text(
+        encoding="utf-8"
+    )
+    assert "või" in cached
+    assert "\ufffd" not in cached
+    # The shipped decoder, called on the same bytes, matches the fetch result.
+    assert "või määrus" in decode_rt_xml_bytes(data)
 
 
 def test_version_node_is_self_citing_524() -> None:

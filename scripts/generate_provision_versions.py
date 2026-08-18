@@ -73,7 +73,14 @@ SCRIPTS_DIR = REPO_ROOT / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
-from estleg_common import CONTEXT, KRR_DIR, iter_peep_files, parse_xml, parse_xml_file  # noqa: E402
+from estleg_common import (  # noqa: E402
+    CONTEXT,
+    KRR_DIR,
+    iter_peep_files,
+    parse_xml,
+    parse_xml_file,
+    save_json,
+)
 from generate_all_laws import _paragraph_id_suffix, collect_full_text  # noqa: E402
 from kov_pipeline_coverage import (  # noqa: E402
     CoverageReport,
@@ -96,6 +103,30 @@ DEFAULT_LIMIT = 2
 DEFAULT_MAX_REDACTIONS = 12
 FETCH_SLEEP_SECONDS = 0.3
 LAW_REPORT_SCHEMA_VERSION = 1
+
+# U+FFFD — emitted when a byte cannot be decoded. Pre-2010 RT XML is often
+# windows-1257 / iso-8859-13; forcing UTF-8 replaces each high byte.
+FFFD = "\ufffd"
+_RT_FALLBACK_ENCODINGS = ("windows-1257", "iso-8859-13", "latin-1")
+_XML_ENCODING_DECL_RE = re.compile(br"""encoding\s*=\s*['"]([A-Za-z0-9._-]+)['"]""", re.I)
+_XML_ENCODING_DECL_TEXT_RE = re.compile(r"""encoding\s*=\s*['"][^'"]+['"]""", re.I)
+# UTF-8 Estonian / § / en-dash misread as latin-1 or windows-1257.
+_UTF8_MOJIBAKE = (
+    "Ãµ",
+    "Ã¤",
+    "Ã¶",
+    "Ã¼",
+    "Ã•",
+    "Ã„",
+    "Ã–",
+    "Ãœ",
+    "Å¡",
+    "Å¾",
+    "Å ",
+    "Â§",
+    "â€“",
+    "â€”",
+)
 
 # A curated default selection of heavily-amended laws (slug form) used when neither
 # ``--law`` nor an explicit list is given; ``--limit N`` takes the first N that have a
@@ -470,6 +501,510 @@ def _xml_cache_path(slug: str, global_id: str) -> Path:
     return cache_dir / f"{slug}__g{safe}.xml"
 
 
+# ---------------------------------------------------------------------------
+# Encoding (#355) — decode RT XML without forcing UTF-8; repair committed FFFD
+# ---------------------------------------------------------------------------
+
+
+def _xml_declared_encoding(data: bytes) -> str | None:
+    """Return the ``encoding=`` value from a leading XML declaration, if any."""
+    match = _XML_ENCODING_DECL_RE.search(data[:200])
+    return match.group(1).decode("ascii", errors="replace") if match else None
+
+
+def _force_utf8_xml_declaration(text: str) -> str:
+    """Rewrite a leading XML encoding declaration to UTF-8.
+
+    After we have decoded the payload to ``str``, :func:`parse_xml` re-encodes
+    as UTF-8. Leaving ``encoding="windows-1257"`` in the declaration would make
+    ElementTree re-decode those UTF-8 bytes as Baltic and recreate mojibake.
+    """
+    stripped = text.lstrip()
+    if not stripped.startswith("<?xml"):
+        return text
+    return _XML_ENCODING_DECL_TEXT_RE.sub('encoding="UTF-8"', text, count=1)
+
+
+def _decode_score(text: str) -> int:
+    """Lower is better. Penalise U+FFFD, ``ï¿½``, and UTF-8-as-latin-1 mojibake."""
+    score = text.count(FFFD) * 100
+    # U+FFFD's UTF-8 bytes (EF BF BD) read as a single-byte encoding.
+    score += text.count("ï¿½") * 200
+    score += text.count("ļæ½") * 200  # EF BF BD read as windows-1257
+    for pat in _UTF8_MOJIBAKE:
+        score += text.count(pat) * 20
+    # š/ž in windows-1257 become Icelandic ð/þ when forced through latin-1.
+    for ch in "ðþÐÞ":
+        score += text.count(ch) * 5
+    return score
+
+
+def decode_rt_xml_bytes(
+    data: bytes,
+    *,
+    declared_encoding: str | None = None,
+    apparent_encoding: str | None = None,
+) -> str:
+    """Decode Riigi Teataja XML bytes without forcing UTF-8 (#355).
+
+    Preference order: HTTP Content-Type charset (``declared_encoding``),
+    requests' ``apparent_encoding``, the XML declaration, then UTF-8. If the
+    preferred decode still contains U+FFFD (or loses to a cleaner fallback),
+    try ``windows-1257``, ``iso-8859-13``, and ``latin-1`` and keep the
+    candidate with the fewest replacement characters / mojibake markers.
+
+    Tests call this helper on raw Baltic bytes — do not wrap it in a mock.
+    """
+    # Already-corrupted UTF-8 (U+FFFD stored as EF BF BD). A single-byte
+    # encoding would turn that into ï¿½ / ļæ½ and "win" the FFFD count;
+    # keep UTF-8 so strip_or_repair_fffd_in_version_text can see the pairs.
+    if b"\xef\xbf\xbd" in data:
+        return data.decode("utf-8", errors="replace")
+
+    encodings: list[str] = []
+    seen: set[str] = set()
+    for enc in (
+        declared_encoding,
+        apparent_encoding,
+        _xml_declared_encoding(data),
+        "utf-8",
+        *_RT_FALLBACK_ENCODINGS,
+    ):
+        if not enc:
+            continue
+        key = enc.lower().replace("_", "-")
+        if key in seen:
+            continue
+        seen.add(key)
+        encodings.append(enc)
+
+    best: tuple[int, int, str] | None = None
+    for rank, enc in enumerate(encodings):
+        try:
+            text = data.decode(enc, errors="replace")
+        except LookupError:
+            continue
+        item = (_decode_score(text), rank, text)
+        if best is None or item < best:
+            best = item
+    if best is None:
+        return data.decode("utf-8", errors="replace")
+    return best[2]
+
+
+# Pair of U+FFFD = one 2-byte UTF-8 Estonian letter (õ/ä/ö/ü/š/ž) or §.
+# A lone U+FFFD is almost always š/Š. A triple between tokens is an en-dash
+# (U+2013 = E2 80 93). Recover those; leftover U+FFFD is dropped so committed
+# files can reach zero (a hole is worse than a recovered letter, but better
+# than leaving the replacement character for full-text search).
+_FFFD_RUN_INSERTIONS: dict[int, tuple[str, ...]] = {
+    1: tuple("šžõäöüŠŽÕÄÖÜ"),
+    2: tuple("õäöüšžÕÄÖÜŠŽ§"),
+    3: ("–", "—") + tuple("õäöüšžÕÄÖÜ"),
+    4: tuple(a + b for a in "õäöü" for b in "õäöü"),
+}
+
+# Exact recovered forms from the committed #355 sidecar residue (lowercase).
+# Used to pick among substitutions; stems below cover future FFFD text.
+_FFFD_WORD_FORMS = frozenset(
+    """
+    aastaväärtus aktsionäride alamsüsteemi andmebüroole duši edasimüügi
+    eelhääletamist eesõigus elektritöö elektritööd elektritööle emaettevõtja
+    eraõigusliku erisöödamaterjali ettenähtud ettenäitamist ettevõte
+    ettevõtjana ettevõtlusega ettevõtte füüsiliste haldusülesannet
+    häireplaani häirimata hävimise hääletada hääletamissedeli
+    hääletamistulemuste hääletavate hääli häälte hüvitamispäeval hüvitatakse
+    hüvitise hüvitiste jäetud jälitustoiminguga jäljend järelevalve
+    järelevalvemenetluses järelevalvesüsteem järgi järgmisi järgmiste
+    järjekorra jätmise jätta jääkide jäätmetele jäätmevaldajate jõu
+    jõust jõustumiseni jõustunud kaadrikaitseväelaste kaitseväes
+    kaitseväeteenistuskohustuse kasutusõiguse kaubamärki kindlaksmääramise
+    kooskõlas kuumäära käesolev käesoleva käesolevas käesolevast
+    käesolevat käibemaksumäär käigus käive käsitleva kätte
+    kättetoimetamise kõigi kõikide kümme küsimusi läbi läbivaatamise
+    lähevad lähisugulane lähiümbrus lõigete lõigetes lõike lõikes
+    lõpuni lõpus lühinumbri maaparandusbüroode maaparandustööde maksuvõla
+    masinatööde miinimumpäevamäära mittenõustumise märgistamisel määrab
+    määral määramise määramisel määranud määras määrata määratakse
+    määratud määruse määrusega määruskaebuse määruste mõne möödub
+    möödumisest möödumist müügil näidatud nõude nõuete nõuetega
+    nõuetekohase nõuetele nõukogu nõusolekul nõustunud pakendijäätmete
+    peatükis peatükk prokuröri pädeva pädevate päeva päeval päevast
+    pärandvara pärast päästa põhistab põhivara põhjendust põhjusel
+    põllumajandussaaduste pööramine raammääratlusele režiimis riigilõivu
+    sihtmäärangud sätestata sätestatud sätestatut sõidukikaardi
+    sõjaväeatašeedega sõlmimisega sõlmitakse sõlmitud sõltumata sööta
+    sügavamal sündmuse sündmuskoha süsteemi süü süüdistatav süüdistatava
+    süütamine tagasivõetud tarbijaühenduste telefonivõrgule
+    telekommunikatsioonivõrgu tolliväärtuse turuväärtusest tähtaegu tähtpäevaks
+    tähtpäevast täiendava täiendavate täita täitedokument täitma täitmise
+    täitmiseks täpset tõestatud tõsteseadmetööde töö töökoht tööohutuse
+    tööpäeva tööpäeval töörõhuga töötajaid töötatakse töötervishoiu
+    töövõimetus töövõtu tööülesannete tühistab tühistada
+    tüübikinnitustunnistuse tšeki vahistamismääruse vähemalt vähendatakse
+    välisesinduses välisesindustes välisriigi välisriigis väljaandes
+    väljaandja väljalaske väljaõppe väärkasutamine väärteo väärteoasi
+    väärteoasja väärteomenetlust väärteomenetlusõiguse väärtpabereid
+    väärtpaberibörsil väärtpaberiga väärtpaberikontole väärtpaberiturul väärtuse
+    võetakse võetud või võib võimalda võimalik võlausaldajate võlgade
+    võrdväärsetel võrguettevõtja võrguettevõtjal võtab võõrandaja võõrandatud
+    § §-des §-le ärakirju äriregistris äriühingu õigsuse õigsust
+    õigus õiguse õiguserikkumiste õiguskaitset õigusnorme õigust õiguste
+    õigustloova õppepraktika ööpäevaks ühe ühendusesisest ühes
+    ühingulepingu üksnes üksus üle ülejäänud ülekande- ülekuulamise
+    ülemmäär ülesandeid ülevõtmiskomisjoni ürituste šahtisuudmele šveitsi
+    """.split()
+)
+
+# Longest-first stems so a future FFFD word still prefers the right letter.
+_FFFD_STEMS = tuple(
+    sorted(
+        (
+            "käesolev",
+            "sätesta",
+            "riigilõiv",
+            "lõiget",
+            "lõike",
+            "väärtpaber",
+            "väärteomenetlus",
+            "väärteo",
+            "väärkasut",
+            "väärt",
+            "vähemalt",
+            "välis",
+            "välja",
+            "võlausaldaja",
+            "võrguettevõt",
+            "võõrand",
+            "võimal",
+            "võrd",
+            "võlg",
+            "võrk",
+            "võrg",
+            "võet",
+            "võta",
+            "võib",
+            "või",
+            "ettenäht",
+            "ettenäit",
+            "ettevõt",
+            "haldusülesand",
+            "häälet",
+            "hüvitis",
+            "hüvita",
+            "häire",
+            "häiri",
+            "hääl",
+            "järelevalve",
+            "järjekorr",
+            "jäätme",
+            "jälitus",
+            "jõustum",
+            "jõust",
+            "kaitseväe",
+            "kasutusõig",
+            "kindlaksmäär",
+            "kooskõlas",
+            "käsitl",
+            "käigus",
+            "kättetoimetamise",
+            "kätte",
+            "kõigi",
+            "kõik",
+            "kümme",
+            "küsim",
+            "läbivaatamise",
+            "lähisugulane",
+            "lähiümbrus",
+            "lühinumbri",
+            "lõpuni",
+            "määruskaebuse",
+            "määr",
+            "mõne",
+            "möödu",
+            "nõuet",
+            "nõukogu",
+            "nõusolek",
+            "nõustu",
+            "peatük",
+            "prokurör",
+            "pädev",
+            "tähtpäev",
+            "täiend",
+            "täitedokument",
+            "täit",
+            "tühist",
+            "tõesta",
+            "tööülesand",
+            "töövõimetus",
+            "töötervishoiu",
+            "pärast",
+            "põhjus",
+            "põhjend",
+            "põhista",
+            "pärand",
+            "raammääratlus",
+            "režiim",
+            "sõiduk",
+            "sõlmi",
+            "sündmus",
+            "süsteem",
+            "süütamine",
+            "süüdistatav",
+            "tagasivõet",
+            "tarbijaühend",
+            "tolliväärt",
+            "ülesand",
+            "ülevõtmis",
+            "ühendus",
+            "ühing",
+            "üksnes",
+            "üksus",
+            "ülekuulamise",
+            "ülemmäär",
+            "üritust",
+            "õigustloova",
+            "õiguserikkumiste",
+            "õiguskaitse",
+            "õigusnorme",
+            "õigus",
+            "õigs",
+            "õppe",
+            "ärakirj",
+            "äriühing",
+            "äriregistr",
+            "šaht",
+            "šveits",
+            "tšek",
+            "duš",
+        ),
+        key=len,
+        reverse=True,
+    )
+)
+
+_LETTER_PRIOR = {
+    "õ": 6,
+    "ä": 5,
+    "ü": 4,
+    "ö": 3,
+    "š": 2,
+    "ž": 1,
+    "§": 7,
+    "–": 8,
+    "—": 7,
+    "Õ": 6,
+    "Ä": 5,
+    "Ü": 4,
+    "Ö": 3,
+    "Š": 2,
+    "Ž": 1,
+}
+
+
+def _is_word_char(ch: str) -> bool:
+    return ch.isalnum() or ch in "-§ÕÄÖÜŠŽõäöüšž"
+
+
+def _fffd_insertions(run: int) -> tuple[str, ...]:
+    return _FFFD_RUN_INSERTIONS.get(run, ("",))
+
+
+def _generate_fffd_candidates(token: str) -> list[str]:
+    """Replace each FFFD run in ``token`` with Estonian-letter / § / dash options."""
+    parts: list[tuple[str | None, int]] = []
+    i = 0
+    while i < len(token):
+        if token[i] == FFFD:
+            j = i
+            while j < len(token) and token[j] == FFFD:
+                j += 1
+            parts.append((None, j - i))
+            i = j
+        else:
+            j = i
+            while j < len(token) and token[j] != FFFD:
+                j += 1
+            parts.append((token[i:j], 0))
+            i = j
+    cands = [""]
+    for lit, run in parts:
+        if lit is not None:
+            cands = [c + lit for c in cands]
+        else:
+            inserts = _fffd_insertions(run)
+            cands = [c + ins for c in cands for ins in inserts]
+    return cands
+
+
+def _score_fffd_candidate(cand: str) -> tuple[int, int, int]:
+    core = cand.lower()
+    key = core.rstrip("-")
+    if core in _FFFD_WORD_FORMS or key in _FFFD_WORD_FORMS:
+        return (3, len(core), sum(_LETTER_PRIOR.get(ch, 0) for ch in cand))
+    best_stem = 0
+    for stem in _FFFD_STEMS:
+        if stem in core:
+            best_stem = len(stem)
+            break  # stems are longest-first
+    if best_stem:
+        return (2, best_stem, sum(_LETTER_PRIOR.get(ch, 0) for ch in cand))
+    return (0, 0, sum(_LETTER_PRIOR.get(ch, 0) for ch in cand))
+
+
+def _apply_case(token: str, replacement: str, *, at_sentence_start: bool) -> str:
+    """Keep Šveitsi capitalised; otherwise prefer the source token's case."""
+    if replacement.lower() == "šveitsi":
+        return "Šveitsi"
+    if token and token[0].isupper() and replacement:
+        return replacement[0].upper() + replacement[1:]
+    if at_sentence_start and replacement and replacement[0].islower():
+        if replacement[0] in "õäöüšž":
+            return replacement[0].upper() + replacement[1:]
+    return replacement
+
+
+def strip_or_repair_fffd_in_version_text(text: str) -> str:
+    """Repair U+FFFD runs in a ProvisionVersion text, or drop them (#355).
+
+    Pre-2010 Riigi Teataja XML was often windows-1257. Forcing a UTF-8 decode
+    replaced each byte of a 2-byte UTF-8 Estonian letter with U+FFFD, so the
+    common surviving pattern is a PAIR (``v\\ufffd\\ufffdi`` → ``või``). A lone
+    U+FFFD is almost always š/Š; a triple between tokens is an en-dash
+    (U+2013). We try those recoveries against a legal-Estonian word/stem list.
+    Leftover U+FFFD is dropped — a hole is worse than a recovered letter, but
+    better than leaving the replacement character in the committed corpus.
+    """
+    if FFFD not in text:
+        return text
+
+    out: list[str] = []
+    i = 0
+    n = len(text)
+    while i < n:
+        if text[i] != FFFD:
+            out.append(text[i])
+            i += 1
+            continue
+        j = i
+        while j < n and text[j] == FFFD:
+            j += 1
+        run = j - i
+        left = text[i - 1] if i else ""
+        right = text[j] if j < n else ""
+
+        # Structural recoveries that are not Estonian letters.
+        if run == 3 and (not left or not _is_word_char(left)) and (
+            not right or not _is_word_char(right)
+        ):
+            out.append("–")
+            i = j
+            continue
+        if run == 2 and left.isdigit() and right.isdigit():
+            out.append("–")
+            i = j
+            continue
+        if run == 2 and (not left or not _is_word_char(left)) and (
+            right.isdigit() or right == "-"
+        ):
+            out.append("§")
+            i = j
+            continue
+        if run == 2 and (not left or not _is_word_char(left)) and (
+            not right or not _is_word_char(right)
+        ):
+            out.append("§")
+            i = j
+            continue
+
+        a, b = i, j
+        while a > 0 and _is_word_char(text[a - 1]):
+            a -= 1
+        while b < n and _is_word_char(text[b]):
+            b += 1
+        token = text[a:b]
+        prefix = text[a:i]
+        # Already-emitted prefix of this token lives in ``out``.
+        if prefix:
+            del out[-len(prefix) :]
+        cands = _generate_fffd_candidates(token)
+        if not cands:
+            i = j
+            continue
+        best = max(cands, key=_score_fffd_candidate)
+        at_start = a == 0 or (a >= 2 and text[a - 2 : a] in (". ", ".\n")) or (
+            a >= 1 and text[a - 1] in ".!?"
+        )
+        out.append(_apply_case(token, best, at_sentence_start=at_start))
+        i = b
+    return "".join(out).replace(FFFD, "")
+
+
+def _repair_json_strings(value: object) -> object:
+    """Recursively repair U+FFFD in JSON-LD strings (versionText / labels)."""
+    if isinstance(value, str):
+        return strip_or_repair_fffd_in_version_text(value) if FFFD in value else value
+    if isinstance(value, dict):
+        return {k: _repair_json_strings(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_repair_json_strings(v) for v in value]
+    return value
+
+
+def cleanup_committed_provision_version_fffd(
+    versions_dir: Path = VERSIONS_DIR,
+) -> dict[str, int]:
+    """Rewrite committed ``provision_versions/*.jsonld`` that still contain U+FFFD.
+
+    Atomic via :func:`estleg_common.save_json`. Returns counts of files / nodes
+    / string fields rewritten so a caller (or ``--cleanup-fffd``) can log them.
+    """
+    stats = {"files": 0, "nodes": 0, "fields": 0}
+    if not versions_dir.is_dir():
+        return stats
+    for path in sorted(versions_dir.glob("*.jsonld")):
+        try:
+            raw = path.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if FFFD not in raw:
+            continue
+        try:
+            doc = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(doc, dict):
+            continue
+        changed_nodes = 0
+        changed_fields = 0
+        graph = doc.get("@graph")
+        if isinstance(graph, list):
+            new_graph = []
+            for node in graph:
+                if not isinstance(node, dict):
+                    new_graph.append(node)
+                    continue
+                if FFFD not in json.dumps(node, ensure_ascii=False):
+                    new_graph.append(node)
+                    continue
+                repaired = _repair_json_strings(node)
+                if repaired != node:
+                    changed_nodes += 1
+                    for key, old in node.items():
+                        if repaired.get(key) != old:  # type: ignore[union-attr]
+                            changed_fields += 1
+                new_graph.append(repaired)
+            doc["@graph"] = new_graph
+        else:
+            doc = _repair_json_strings(doc)  # type: ignore[assignment]
+            changed_nodes = 1
+        save_json(path, doc)
+        stats["files"] += 1
+        stats["nodes"] += changed_nodes
+        stats["fields"] += changed_fields
+    return stats
+
+
 def fetch_redaction_xml(
     slug: str,
     redaction: Redaction,
@@ -497,8 +1032,15 @@ def fetch_redaction_xml(
             time.sleep(sleep)
         resp = requests.get(full_url, timeout=timeout)
         resp.raise_for_status()
-        resp.encoding = "utf-8"
-        text = resp.text
+        # #355: do not force resp.encoding = "utf-8". Pre-2010 RT XML is
+        # often windows-1257 / iso-8859-13; a forced UTF-8 decode replaces
+        # each Baltic high byte with U+FFFD (või → v��i).
+        text = decode_rt_xml_bytes(
+            resp.content,
+            declared_encoding=resp.encoding,
+            apparent_encoding=getattr(resp, "apparent_encoding", None),
+        )
+        text = _force_utf8_xml_declaration(text)
         if len(text) < 200:
             return None
         cache_path.write_text(text, encoding="utf-8")
@@ -674,7 +1216,7 @@ def synthesise_versions(
                 "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
                 "estleg:versionOf": {"@id": provision_iri},
                 "estleg:versionValidFrom": _xsd_date(redaction.valid_from),
-                "estleg:versionText": text,
+                "estleg:versionText": strip_or_repair_fffd_in_version_text(text),
                 "rdfs:label": {
                     "@value": f"{provision_iri.removeprefix('estleg:')} (redaktsioon {redaction.global_id})",
                     "@language": "et",
@@ -1306,6 +1848,14 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
             "report schema, redaction cap, and unchanged current redaction."
         ),
     )
+    parser.add_argument(
+        "--cleanup-fffd",
+        action="store_true",
+        help=(
+            "Rewrite committed provision_versions/*.jsonld, repairing U+FFFD "
+            "in versionText / labels (#355). Does not fetch."
+        ),
+    )
     args = parser.parse_args(argv)
     if args.max_redactions is not None and args.max_redactions < 0:
         parser.error("--max-redactions must be non-negative (0 = unbounded)")
@@ -1321,6 +1871,13 @@ def effective_max_redactions(args: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
+    if args.cleanup_fffd:
+        stats = cleanup_committed_provision_version_fffd(VERSIONS_DIR)
+        print(
+            f"U+FFFD cleanup: {stats['files']} file(s), "
+            f"{stats['nodes']} node(s), {stats['fields']} field(s)"
+        )
+        return 0
     start_perf = time.perf_counter()
     today = args.today or date.today().isoformat()
     fetch_sleep = 0.0 if args.no_sleep else FETCH_SLEEP_SECONDS

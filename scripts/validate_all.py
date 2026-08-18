@@ -1818,7 +1818,7 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     print("\n--- Combined Graph Closure (#416) ---")
     combined_path = krr_dir / "combined_ontology.jsonld"
     if not combined_path.exists():
-        warn("combined_ontology.jsonld: not found")
+        error("combined_ontology.jsonld: not found")
         return
     if _is_lfs_pointer(combined_path):
         warn("combined_ontology.jsonld: un-materialised LFS pointer — skipping closure")
@@ -2248,6 +2248,60 @@ def validate_provision_version_monotonicity(krr_dir: Path = KRR_DIR):
         )
     else:
         print(f"  OK: all {total} version transitions (via supersededByVersion) monotone")
+
+
+def validate_provision_version_encoding(krr_dir: Path = KRR_DIR):
+    """#355 release gate: ProvisionVersion versionText must not contain U+FFFD.
+
+    Historic pre-2010 RT XML was often windows-1257; a forced UTF-8 decode
+    wrote U+FFFD pairs into ``estleg:versionText`` (``või`` → ``v\\ufffd\\ufffdi``).
+    After the decoder + committed-file cleanup this must stay at zero.
+    """
+    print("\n--- Provision Version Encoding (#355) ---")
+    pv_dir = krr_dir / "provision_versions"
+    if not pv_dir.is_dir():
+        warn("provision_versions/: not found — skipping U+FFFD encoding gate")
+        return
+
+    fffd = "\ufffd"
+    files_hit = nodes_hit = fields_hit = scanned = 0
+    sample: tuple[str, str] | None = None
+    for path in sorted(pv_dir.glob("*.jsonld")):
+        if _is_lfs_pointer(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        scanned += 1
+        file_hit = False
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            if "ProvisionVersion" not in str(node.get("@type", "")):
+                continue
+            text = node.get("estleg:versionText")
+            if not isinstance(text, str) or fffd not in text:
+                continue
+            file_hit = True
+            nodes_hit += 1
+            fields_hit += text.count(fffd)
+            sample = sample or (path.name, str(node.get("@id")))
+        if file_hit:
+            files_hit += 1
+    if nodes_hit:
+        error(
+            f"#355: {fields_hit} U+FFFD replacement char(s) in "
+            f"{nodes_hit} ProvisionVersion versionText value(s) across "
+            f"{files_hit} provision_versions file(s) (scanned {scanned}). "
+            f"Re-decode RT XML without forcing UTF-8 and rerun "
+            f"generate_provision_versions --cleanup-fffd. First: {sample}"
+        )
+    else:
+        print(
+            f"  OK: {scanned} provision_versions files free of U+FFFD in versionText"
+        )
 
 
 def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
@@ -2995,6 +3049,7 @@ def main(argv: list[str] | None = None):
     validate_combined_ontology(krr_dir)
     validate_combined_graph_closure(krr_dir)
     validate_provision_version_monotonicity(krr_dir)
+    validate_provision_version_encoding(krr_dir)
     validate_provision_text_quality(krr_dir)
     validate_harmonisation_symmetry(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)

@@ -77,6 +77,17 @@ EELNOUD_DIR = KRR_DIR / "eelnoud"
 # the long ``<base_slug>`` segment.
 LAW_ABBREVIATIONS_PATH = REPO_ROOT / "data" / "law_abbreviations.json"
 
+
+def _draft_publication_sort_key(draft: dict) -> str:
+    """Sort key for draft-derived proposed amendments (#404).
+
+    Only a string publication_date is comparable; lists/objects/None
+    sort last via a high sentinel so a future JSON-LD shape cannot
+    TypeError the chain builder.
+    """
+    value = draft.get("publication_date")
+    return value if isinstance(value, str) else "9999-99-99"
+
 # Pinned, deterministic ``run_timestamp`` for the git-tracked coverage report
 # (issue #295). The previous ``datetime.now(timezone.utc)`` value re-diffed the
 # tracked coverage file on every run (timestamp-only churn). ``CoverageReport``
@@ -1422,9 +1433,7 @@ def main() -> int:
         # so sorting by publication_date fixes chain order (issue #387: 119
         # chains were non-monotonic) WITHOUT disturbing any @id. Undated drafts
         # sort last via a high sentinel.
-        drafts_sorted = sorted(
-            drafts, key=lambda d: d.get("publication_date") or "9999-99-99"
-        )
+        drafts_sorted = sorted(drafts, key=_draft_publication_sort_key)
         proposed_nodes: list[dict] = []
         for da in drafts_sorted:
             draft_id = da["draft_id"]

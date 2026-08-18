@@ -2632,6 +2632,33 @@ def test_provision_version_monotonicity_flags_missing_validto(tmp_path):
     assert any("missing-validTo" in e for e in validate_all.errors), validate_all.errors
 
 
+def test_provision_version_encoding_flags_fffd(tmp_path):
+    # #355 gate: U+FFFD in ProvisionVersion versionText must fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        {
+            "@id": "estleg:X_Par_1_v1",
+            "@type": ["estleg:ProvisionVersion"],
+            "estleg:versionText": "v\ufffd\ufffdi",
+        },
+    ]})
+    validate_all.validate_provision_version_encoding(krr)
+    assert any("#355" in e and "U+FFFD" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_version_encoding_passes_clean(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        {
+            "@id": "estleg:X_Par_1_v1",
+            "@type": ["estleg:ProvisionVersion"],
+            "estleg:versionText": "või",
+        },
+    ]})
+    validate_all.validate_provision_version_encoding(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_provision_version_monotonicity_passes_on_exclusive_end(tmp_path):
     # Exclusive end (validTo = day before successor validFrom) → monotone, passes;
     # the successor is the open-ended current version.

@@ -17,6 +17,7 @@ Generates:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 import time
@@ -662,6 +663,63 @@ def count_emitted_by_doc_type(nodes: Iterable[dict]) -> dict[str, dict[str, int]
     return counts
 
 
+def rebuild_eurlex_combined_from_peeps(eurlex_dir: Path = EURLEX_DIR) -> dict:
+    """Rebuild ``eurlex_combined.jsonld`` from the current peeps (#417).
+
+    The SPARQL generator writes combined from fetched rows *before*
+    transposition enrichment. Consumers that load only combined then miss
+    every ``transposedBy`` / ``transpositionDeadline`` edge. This pass
+    concatenates instance nodes from ``eurlex_*_peep.json`` so combined
+    stays a complete view of the peeps.
+    """
+    header = {
+        "@id": "estleg:EURlex_Combined_Map_2026",
+        "@type": ["owl:Ontology"],
+        "rdfs:label": {
+            "@value": "EL õigusaktid – kõik liigid (Combined)",
+            "@language": "et",
+        },
+        "dc:description": {
+            "@value": "Kõik Euroopa Liidu õigusaktid eesti keeles EUR-Lexist.",
+            "@language": "et",
+        },
+        "dc:source": "EUR-Lex – eur-lex.europa.eu",
+        "owl:imports": {"@id": "estleg:EURlex_Schema_2026"},
+    }
+    graph: list[dict] = [header]
+    seen = {header["@id"]}
+    for path in sorted(eurlex_dir.glob("*_peep.json")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if not isinstance(nid, str) or nid in seen:
+                continue
+            types = node.get("@type", [])
+            if isinstance(types, str):
+                types = [types]
+            if "owl:Ontology" in types:
+                continue
+            seen.add(nid)
+            graph.append(node)
+    combined_doc = {"@context": CONTEXT, "@graph": graph}
+    stamp_combined_dataset_head(
+        combined_doc,
+        label="Estonian Legal Ontology — EUR-Lex combined",
+    )
+    dest = eurlex_dir / "eurlex_combined.jsonld"
+    save_json(dest, combined_doc)
+    return {
+        "path": dest,
+        "nodes": len(graph),
+        "files": len(list(eurlex_dir.glob("*_peep.json"))),
+    }
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -672,11 +730,26 @@ def parse_args() -> argparse.Namespace:
             "the index) if a SPARQL pagination request fails after retries."
         ),
     )
+    parser.add_argument(
+        "--rebuild-combined-from-peeps",
+        action="store_true",
+        help=(
+            "Skip SPARQL fetch; rebuild eurlex_combined.jsonld from current "
+            "peeps so transposition edges are not dropped (#417)."
+        ),
+    )
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+    if args.rebuild_combined_from_peeps:
+        stats = rebuild_eurlex_combined_from_peeps()
+        print(
+            f"Rebuilt {stats['path']} from peeps: "
+            f"{stats['nodes']} nodes, {stats['files']} peep files"
+        )
+        return
     print("=" * 60)
     print("Fetching EU legislation from EUR-Lex SPARQL endpoint")
     print(f"Endpoint: {SPARQL_ENDPOINT}")

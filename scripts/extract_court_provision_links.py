@@ -629,15 +629,18 @@ def resolve_kov_citation(
     kov_index: dict[tuple[str, int, str], str],
     kov_collision_keys: set[tuple[str, int, str]],
     known_issuer_norms: set[str],
-) -> tuple[str | None, str | None]:
+) -> tuple[str | None, str | None, str]:
     """Resolve a single KOV citation match to an Act IRI.
 
-    Returns ``(act_iri, None)`` on success, or ``(None, reason)`` where
-    ``reason`` is one of:
+    Returns ``(act_iri, None, issuer_norm)`` on success, or
+    ``(None, reason, issuer_norm)`` where ``reason`` is one of:
 
     - ``"unknown_issuer"`` — issuer string not in known_issuer_norms (defensive).
     - ``"ambiguous_key"`` — primary or +1 alternate key in kov_collision_keys.
     - ``"issuer_year_num_unmatched"`` — issuer is known but no peep matches.
+
+    ``issuer_norm`` is the post-trim form actually used for lookup (#389)
+    so failure logs do not blame an overcaptured municipality string.
 
     Issue #172 Finding 4: when the municipality string captured by
     PAT_KOV_ACT overcaptures (e.g. "Pärnu Maakohtu Tallinna" preceding
@@ -660,16 +663,16 @@ def resolve_kov_citation(
         if retry_norm in known_issuer_norms:
             issuer_norm = retry_norm
         else:
-            return None, "unknown_issuer"
+            return None, "unknown_issuer", issuer_norm
     primary_year = expand_two_digit_year(match["date"])
     num = match["num"]
     for year in (primary_year, primary_year + 1):
         key = (issuer_norm, year, num)
         if key in kov_collision_keys:
-            return None, "ambiguous_key"
+            return None, "ambiguous_key", issuer_norm
         if key in kov_index:
-            return kov_index[key], None
-    return None, "issuer_year_num_unmatched"
+            return kov_index[key], None, issuer_norm
+    return None, "issuer_year_num_unmatched", issuer_norm
 
 
 def process_court_files(
@@ -803,11 +806,8 @@ def process_court_files(
             # KOV act resolver (new).
             kov_iris: list[str] = []
             for kc in kov_citations:
-                iri, reason = resolve_kov_citation(
+                iri, reason, issuer_norm_for_log = resolve_kov_citation(
                     kc, kov_index, kov_collision_keys, known_issuer_norms,
-                )
-                issuer_norm_for_log = normalize_issuer_name(
-                    f"{kc['municipality'].strip()} {BODY_CANON[kc['body'].lower()]}"
                 )
                 # Issue #172 Finding 2: pass counters so a malformed
                 # date bumps the ``date_parse_failed`` bucket exactly

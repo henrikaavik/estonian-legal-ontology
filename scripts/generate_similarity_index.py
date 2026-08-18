@@ -520,7 +520,7 @@ def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None, i
     excluded_for_keyword_floor = 0
     for node in doc.get("@graph", []):
         node_id = node.get("@id", "")
-        if not node_id or not node_id.startswith("estleg:"):
+        if not isinstance(node_id, str) or not node_id.startswith("estleg:"):
             continue
 
         types = node_types(node)

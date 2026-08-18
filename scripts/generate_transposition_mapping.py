@@ -27,6 +27,7 @@ from estleg_common import (
     BUILD_EVALUATION_DATE,
     act_deprecation,
     iter_peep_files,
+    jsonld_text,
     save_json as _save_json,
 )
 from eurlex_common import (
@@ -363,7 +364,7 @@ def build_law_index(index_data: dict) -> dict[str, dict]:
             if act_deprecation(data)[0]:
                 continue
             for node in data.get("@graph", []):
-                sa = node.get("estleg:sourceAct", "")
+                sa = jsonld_text(node.get("estleg:sourceAct", ""))
                 if sa:
                     source_act = sa
                     break
@@ -1274,6 +1275,16 @@ def main():
     print(f"  {report_path.relative_to(REPO_ROOT)}")
     print(f"  {schema_path.relative_to(REPO_ROOT)}")
     print("=" * 60)
+
+    # #417: combined is the consumer entry point; rebuild it from the
+    # now-enriched peeps so transposedBy / transpositionDeadline survive.
+    from generate_eu_legislation import rebuild_eurlex_combined_from_peeps
+
+    combined_stats = rebuild_eurlex_combined_from_peeps(EURLEX_DIR)
+    print(
+        f"  Rebuilt eurlex_combined.jsonld from peeps "
+        f"({combined_stats['nodes']} nodes)"
+    )
 
     if was_partial:
         # ``--allow-partial`` was set (otherwise the run would have raised
