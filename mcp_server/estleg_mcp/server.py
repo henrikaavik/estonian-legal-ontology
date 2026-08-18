@@ -165,7 +165,10 @@ def _law_as_of(
 # ---------------------------------------------------------------------------
 @mcp.tool()
 def get_provision(
-    law: str, paragraph: str, as_of: str | None = None
+    law: str,
+    paragraph: str,
+    as_of: str | None = None,
+    full_text: bool = False,
 ) -> dict[str, Any]:
     """Read a single section (§) of an Estonian law, optionally as of a past date.
 
@@ -208,9 +211,8 @@ def get_provision(
         "rt_url": data.rt_url(data.act_node(graph)),
     }
     if as_of is None:
-        result["legal_text"] = _truncate(
-            data.clean_display(data._text(node.get("estleg:legalText")))
-        )
+        raw = data.clean_display(data._text(node.get("estleg:legalText")))
+        result["legal_text"] = raw if full_text else _truncate(raw)
         return result
     return _provision_as_of(rec, node, result, as_of)
 

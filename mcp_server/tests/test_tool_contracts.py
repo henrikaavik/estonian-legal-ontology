@@ -184,6 +184,12 @@ def test_get_provision_truncates_long_text() -> None:
     assert len(prov["legal_text"]) <= server._MAX_LEGAL_TEXT
 
 
+def test_get_provision_full_text_flag_skips_cap() -> None:
+    capped = server.get_provision(KARS, "§ 13")
+    full = server.get_provision(KARS, "§ 13", full_text=True)
+    assert len(full["legal_text"]) >= len(capped["legal_text"])
+
+
 def test_get_provision_missing_paragraph_returns_note() -> None:
     # Missing § in a real law -> a note, not an exception.
     assert "note" in server.get_provision(KARS, "999999")
