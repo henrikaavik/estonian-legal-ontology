@@ -854,6 +854,55 @@ def test_main_existing_peep_without_par_nodes_is_not_labeled_no_peep(
     assert law_report["rows"][0]["slug"] == "geneva_convention"
     assert law_report["rows"][0]["error"] != "no peep"
     assert law_report["rows"][0]["error"] == "no_numeric_provisions"
+
+
+def test_reclassify_report_rewrites_stale_no_peep(tmp_path: Path) -> None:
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "geneva_convention_peep.json").write_text(
+        json.dumps({
+            "@context": {"estleg": gpv.CONTEXT["estleg"]},
+            "@graph": [{
+                "@id": "estleg:GENEVA_Map_2026",
+                "@type": ["estleg:Act", "owl:Ontology"],
+            }],
+        }),
+        encoding="utf-8",
+    )
+    report = {
+        "rows": [
+            {"slug": "geneva_convention", "error": "no peep", "warnings": ["no peep"]},
+            {"slug": "puudub_seadus", "error": "no peep", "warnings": ["no peep"]},
+            {"slug": "ok_law", "error": None},
+        ]
+    }
+    gpv.reclassify_report_missing_peep_rows(report, krr_dir=krr)
+    by_slug = {r["slug"]: r for r in report["rows"]}
+    assert by_slug["geneva_convention"]["error"] == "no_numeric_provisions"
+    assert by_slug["puudub_seadus"]["error"] == "no peep"
+    assert by_slug["ok_law"]["error"] is None
+
+
+def test_committed_version_report_no_peep_rows_have_no_peep_file() -> None:
+    """#430: committed report must not label an existing peep as ``no peep``."""
+    path = (
+        gpv.REPO_ROOT / "krr_outputs" / "reports" / "provision_versions_report.json"
+    )
+    if not path.is_file():
+        pytest.skip("provision_versions_report.json not committed")
+    report = json.loads(path.read_text(encoding="utf-8"))
+    krr = gpv.REPO_ROOT / "krr_outputs"
+    stale = []
+    for row in report.get("rows") or []:
+        if row.get("error") != "no peep":
+            continue
+        slug = row.get("slug") or ""
+        if gpv._peep_files_for_slug(slug, krr):
+            stale.append(slug)
+    assert stale == [], (
+        f"{len(stale)} report rows still say 'no peep' but a peep exists: "
+        f"{stale[:8]}"
+    )
     cov = json.loads(
         (krr / "reports" / "kov" / "extract_provision_versions_coverage.json").read_text(
             "utf-8"

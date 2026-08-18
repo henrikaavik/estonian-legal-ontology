@@ -179,6 +179,7 @@ NORM_TYPES = {
     "permission": ("estleg:NormType_Permission", PERMISSION_PATTERNS),
     "prohibition": ("estleg:NormType_Prohibition", PROHIBITION_PATTERNS),
 }
+NORM_TYPE_DEFINITION = "estleg:NormType_Definition"
 NORM_TIE_PRIORITY = {
     "prohibition": 4,
     "obligation": 3,
@@ -375,12 +376,22 @@ def _leading_permission_over_condition(text: str) -> bool:
     return True
 
 
-# #461: definition titles. Applied to heading / label / first line only —
-# a mid-text ``mõiste`` in the body must not skip an operative provision.
+# #461: definition titles / drafting formulas. Applied to heading / label /
+# first line only — a mid-text ``mõiste`` in an operative body must not
+# steal the deontic label.
 _MOISTE_WORD_RE = re.compile(r"\bmõiste\b", re.IGNORECASE | re.UNICODE)
 _SECTION_MOISTE_HEADING_RE = re.compile(
     r"^§?\s*\d+.*mõiste", re.IGNORECASE | re.UNICODE
 )
+# Ticket #461 named these as the definition pre-filter (X on Y is too
+# broad for mixed §§; ``tähendab`` / ``mõistetakse`` are the legal
+# definition verbs).
+# First-line-only verbs. ``mõiste`` stays heading-only so a mid-text
+# mention in an operative first line does not become Definition.
+DEFINITION_PATTERNS: list[re.Pattern[str]] = [
+    re.compile(r"\btähendab\b", re.IGNORECASE | re.UNICODE),
+    re.compile(r"\bmõistetakse\b", re.IGNORECASE | re.UNICODE),
+]
 
 
 def _is_definition_heading(heading: str) -> bool:
@@ -397,19 +408,30 @@ def _is_definition_heading(heading: str) -> bool:
     return False
 
 
+def _is_definition_text(text: str) -> bool:
+    """True when the first line uses a definition verb (#461)."""
+    first = text.splitlines()[0].strip() if text else ""
+    if not first:
+        return False
+    return any(pat.search(first) for pat in DEFINITION_PATTERNS)
+
+
 def classify_provision(text: str, heading: str | None = None) -> str | None:
     """Return the dominant normative-type IRI, or None if nothing matched.
 
-    Definition headings are left unclassified so deontic verbs inside the
-    definition body cannot assign Permission/Obligation (#461).
+    Definition headings and first-line definition verbs are tagged
+    ``estleg:NormType_Definition`` so deontic verbs inside the definition
+    body cannot assign Permission/Obligation (#461).
     """
-    # Skip BEFORE scoring. Prefer an explicit heading/label; otherwise only
-    # the first line of *text* (never the rest of the body).
+    # Classify as Definition BEFORE scoring. Prefer an explicit heading;
+    # otherwise only the first line of *text* (never the rest of the body).
     candidate = heading.strip() if heading else ""
     if not candidate and isinstance(text, str) and text:
         candidate = text.splitlines()[0]
-    if _is_definition_heading(candidate):
-        return None
+    if _is_definition_heading(candidate) or (
+        isinstance(text, str) and _is_definition_text(text)
+    ):
+        return NORM_TYPE_DEFINITION
 
     scores: dict[str, int] = {}
     for norm_key, (iri, patterns) in NORM_TYPES.items():

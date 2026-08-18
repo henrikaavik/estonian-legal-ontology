@@ -521,10 +521,13 @@ _HMS_95_BODY = (
 _HMS_95_ID = "estleg:haldusmenetluse_seadus_Par_95"
 
 
-def test_definition_heading_with_voib_is_unclassified() -> None:
+def test_definition_heading_with_voib_is_definition() -> None:
     # HMS §95 is a definition ("Halduslepingu mõiste"); "võib sõlmida" in
     # the body is illustrative, not a grant of permission.
-    assert classify_provision(_HMS_95_BODY, heading=_HMS_95_HEADING) is None
+    assert (
+        classify_provision(_HMS_95_BODY, heading=_HMS_95_HEADING)
+        == "estleg:NormType_Definition"
+    )
 
 
 def test_non_definition_permission_still_classifies() -> None:
@@ -549,9 +552,29 @@ def test_midtext_moiste_without_definition_heading_still_classifies() -> None:
     )
 
 
-def test_hms_par_95_peep_has_no_normative_type() -> None:
+def test_hms_par_95_peep_is_definition() -> None:
     peep = REPO_ROOT / "krr_outputs" / "haldusmenetluse_seadus_peep.json"
     doc = json.loads(peep.read_text(encoding="utf-8"))
     node = next(n for n in doc["@graph"] if n.get("@id") == _HMS_95_ID)
-    assert "estleg:normativeType" not in node
+    assert node.get("estleg:normativeType") == {"@id": "estleg:NormType_Definition"}
     assert "estleg:dutyHolder" not in node
+
+
+def test_tahendab_first_line_is_definition() -> None:
+    assert (
+        classify_provision(
+            "Käesolevas seaduses tähendab luba kirjalikku haldusakti.",
+            heading="§ 2. Luba",
+        )
+        == "estleg:NormType_Definition"
+    )
+
+
+def test_cv_declares_norm_type_definition() -> None:
+    cv = json.loads(
+        (REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld").read_text(
+            encoding="utf-8"
+        )
+    )
+    ids = {n.get("@id") for n in cv.get("@graph", []) if isinstance(n, dict)}
+    assert "estleg:NormType_Definition" in ids

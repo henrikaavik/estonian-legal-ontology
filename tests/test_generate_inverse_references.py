@@ -29,6 +29,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 
@@ -815,6 +817,45 @@ class TestHasVersionRoundTrip:
         p1 = next(n for n in peep["@graph"]
                   if n.get("@id") == "estleg:STALE_Par_1")
         assert "estleg:hasVersion" not in p1
+
+
+def test_require_cross_reference_report_fails_when_index_present_and_report_missing(
+    tmp_path, monkeypatch
+):
+    """#470: production tree (has INDEX.json) without the forward-ref report."""
+    import generate_inverse_references as mod
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "INDEX.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    with pytest.raises(SystemExit, match="cross_references_report"):
+        mod.require_cross_reference_report()
+
+
+def test_require_cross_reference_report_fails_on_zero_citations(tmp_path):
+    import generate_inverse_references as mod
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "cross_references_report.json").write_text(
+        json.dumps({"summary": {"total_citations_found": 0}}),
+        encoding="utf-8",
+    )
+    with pytest.raises(SystemExit, match="zero citations"):
+        mod.require_cross_reference_report(krr_dir=krr)
+
+
+def test_require_cross_reference_report_accepts_populated_report(tmp_path):
+    import generate_inverse_references as mod
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "cross_references_report.json").write_text(
+        json.dumps({"summary": {"total_citations_found": 12}}),
+        encoding="utf-8",
+    )
+    mod.require_cross_reference_report(krr_dir=krr)
 
 
 # ---------------------------------------------------------------------------

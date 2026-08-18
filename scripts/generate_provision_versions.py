@@ -235,6 +235,28 @@ def missing_law_target_error(slug: str, krr_dir: Path = KRR_DIR) -> str:
     return "ineligible_peep"
 
 
+def reclassify_report_missing_peep_rows(
+    report: dict, *, krr_dir: Path = KRR_DIR
+) -> dict:
+    """Rewrite stale ``error: "no peep"`` rows (#430).
+
+    The June 2026 report labelled every ``build_law_target is None`` skip
+    as ``no peep``, including treaty shells whose peep files exist. Re-run
+    :func:`missing_law_target_error` on those rows so the committed report
+    matches the generator.
+    """
+    for row in report.get("rows") or []:
+        if not isinstance(row, dict) or row.get("error") != "no peep":
+            continue
+        slug = row.get("slug") or ""
+        new_error = missing_law_target_error(slug, krr_dir=krr_dir)
+        if new_error == "no peep":
+            continue
+        row["error"] = new_error
+        row["warnings"] = [new_error]
+    return report
+
+
 # ---------------------------------------------------------------------------
 # Riigi Teataja: redaction enumeration
 # ---------------------------------------------------------------------------

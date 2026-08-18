@@ -36,6 +36,7 @@ from kov_pipeline_coverage import (
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+CROSS_REFERENCES_REPORT = "cross_references_report.json"
 # ProvisionVersion sidecars (estleg:versionOf source). These live OUTSIDE
 # iter_peep_files() (they are *.jsonld, not *_peep.json), so the version
 # inverse pass scans them explicitly. See materialize_has_version().
@@ -934,10 +935,50 @@ def verify_symmetry() -> list[dict]:
     return mismatches
 
 
+def require_cross_reference_report(*, krr_dir: Path | None = None) -> None:
+    """Fail fast when extract_cross_references has not been run (#470).
+
+    ``generate_inverse_references`` reads ``estleg:references`` off peeps.
+    Those triples are written by ``extract_cross_references.py``. A
+    standalone run against a corpus that still has INDEX.json (the
+    production tree) but no ``cross_references_report.json`` used to
+    silently emit an empty inverse graph. Unit tests monkeypatch
+    ``KRR_DIR`` to a tmp tree without INDEX — they are not gated.
+    """
+    krr_dir = krr_dir if krr_dir is not None else KRR_DIR
+    report_path = krr_dir / CROSS_REFERENCES_REPORT
+    if report_path.is_file():
+        try:
+            doc = json.loads(report_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            raise SystemExit(
+                f"FATAL: unreadable {report_path.name}: {exc}"
+            ) from exc
+        found = 0
+        if isinstance(doc, dict):
+            summary = doc.get("summary") or {}
+            if isinstance(summary, dict):
+                found = int(summary.get("total_citations_found") or 0)
+        if found <= 0:
+            raise SystemExit(
+                "FATAL: cross_references_report.json has zero citations — "
+                "run extract_cross_references.py before "
+                "generate_inverse_references.py (#470)"
+            )
+        return
+    if (krr_dir / "INDEX.json").is_file():
+        raise SystemExit(
+            "FATAL: missing krr_outputs/cross_references_report.json — "
+            "run extract_cross_references.py before "
+            "generate_inverse_references.py (#470)"
+        )
+
+
 def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Generate Inverse References (referencedBy)")
     print("=" * 70)
+    require_cross_reference_report()
 
     # ---------- coverage instrumentation ----------
     _start = time.perf_counter()

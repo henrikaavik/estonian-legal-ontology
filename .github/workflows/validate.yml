@@ -141,6 +141,49 @@ jobs:
         # krr_outputs/INDEX.json from inside the repo checkout.
         run: python3 -m pytest -q mcp_server
 
+  # #479: exercise the integration DAG wiring without running SHACL /
+  # Seadusloome (those live in json-validation). --dry-run never hits
+  # the network.
+  integration-dry-run:
+    name: Integration DAG dry-run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Dry-run release validate-only
+        run: python3 scripts/run_all_integration.py --dry-run --release --validate-only
+
+  # #479: import the ingest generators and exercise the RT-XML canary
+  # plus a focused generate_all_laws slice. No live Riigi Teataja fetch.
+  generator-smoke:
+    name: Generator smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Generator import + fixture smoke
+        run: python3 -m pytest -q tests/test_rt_schema_canary.py tests/test_generate_all_laws.py --tb=line
+
   json-validation:
     runs-on: ubuntu-latest
     steps:
