@@ -48,7 +48,12 @@ from pathlib import Path
 
 import requests
 
-from estleg_common import BUILD_EVALUATION_DATE, FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    FULLNAME_GENITIVE,
+    KNOWN_ABBREVIATIONS,
+    save_json,
+)
 
 try:  # Optional dep — falls back to regex parser when unavailable.
     from bs4 import BeautifulSoup  # type: ignore[import-not-found]
@@ -810,12 +815,6 @@ def decision_to_node(
         node["estleg:referencedLaw"] = refs
 
     return node
-
-
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 # ---------------------------------------------------------------------------

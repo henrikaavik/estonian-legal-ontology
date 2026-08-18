@@ -47,6 +47,48 @@ def test_temporal_status_shape_has_closed_enum():
     assert "sh:path estleg:temporalStatus" in text
 
 
+def test_harmonised_with_domain_is_act_not_provision():
+    """#335: estleg:harmonisedWith rdfs:domain is Act."""
+    import json
+
+    cv = json.loads((REPO / "krr_outputs" / "controlled_vocabulary.jsonld").read_text())
+    for n in cv.get("@graph", []):
+        if n.get("@id") == "estleg:harmonisedWith":
+            assert n.get("rdfs:domain", {}).get("@id") == "estleg:Act"
+            return
+    raise AssertionError("harmonisedWith missing from CV")
+
+
+def test_casetype_individuals_live_in_controlled_vocabulary():
+    """#270: CaseType enums are on the consumer CV load surface."""
+    import json
+
+    cv = json.loads((REPO / "krr_outputs" / "controlled_vocabulary.jsonld").read_text())
+    ids = {n.get("@id") for n in cv.get("@graph", []) if isinstance(n, dict)}
+    for iri in (
+        "estleg:CaseType_Criminal",
+        "estleg:CaseType_Civil",
+        "estleg:CaseType_Administrative",
+        "estleg:CaseType_Misdemeanor",
+        "estleg:CaseType_ConstitutionalReview",
+        "estleg:CaseType_Other",
+    ):
+        assert iri in ids, iri
+
+
+def test_draft_and_court_generators_use_atomic_save_json():
+    """#464: generators must not shadow save_json with a non-atomic open/dump."""
+    import ast
+
+    for rel in (
+        "scripts/generate_draft_legislation.py",
+        "scripts/generate_court_decisions.py",
+    ):
+        tree = ast.parse((REPO / rel).read_text(encoding="utf-8"))
+        defs = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]
+        assert "save_json" not in defs, rel
+
+
 def test_scripts_inventory_readme_exists():
     text = (REPO / "scripts" / "README.md").read_text(encoding="utf-8")
     assert "live-DAG" in text

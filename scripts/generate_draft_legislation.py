@@ -24,6 +24,9 @@ from pathlib import Path
 
 import requests
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from estleg_common import save_json  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 EELNOUD_DIR = KRR_DIR / "eelnoud"
@@ -525,12 +528,6 @@ def generate_draft_node(
         node["estleg:affectedLawName"] = affected_laws
 
     return node
-
-
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def main():
