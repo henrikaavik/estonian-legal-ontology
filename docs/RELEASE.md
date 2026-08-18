@@ -52,6 +52,20 @@ head (`dcterms:title` / `publisher` / `license`) so a consumer who
 loads only the graph still sees the compilation-layer CC BY 4.0 offer.
 A SPARQL endpoint is not claimed (that is #474).
 
+### Refresh SLA
+
+Corpus target is **monthly Riigi Teataja consolidation**. `estleg:kehtiv`
+on each act is the snapshot date the committed text is valid as of (not
+`temporalStatus`, not `BUILD_EVALUATION_DATE`). `metadata.jsonld`
+`dcterms:accrualPeriodicity` is
+[`http://purl.org/cld/freq/monthly`](http://purl.org/cld/freq/monthly).
+The content-staleness canary is `python3 scripts/check_rt_staleness.py`
+(offline; compares committed `estleg:kehtiv` on PKS / KarS osa 1 / PS
+against `BUILD_EVALUATION_DATE` with a 45-day lag budget). `--fetch`
+(GET live RT akt XML) is operator-run and is not used in CI. Inter-release
+IRI deltas are published as `krr_outputs/changes-<version>.jsonld` and
+linked from `metadata.jsonld` as a `dcat:distribution`.
+
 **When to bump:**
 
 - **MAJOR** — a breaking schema change (a removed/renamed property or class, an

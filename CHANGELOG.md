@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Release delta + refresh SLA (#549, #531)
+
+- `krr_outputs/changes-0.11.0.jsonld` is the first published IRI delta
+  (INDEX `deprecated_laws` vs live INDEX laws), linked from
+  `metadata.jsonld` as a `dcat:distribution` (#549).
+- Refresh SLA is monthly RT consolidation. `check_rt_staleness.py` is
+  the offline content-staleness canary on the Monday CI cron; `--fetch`
+  is operator-run. `dcterms:accrualPeriodicity` is monthly (#531).
+
 ### Getting started, ELI-DL, concepts, INDEX gaps (#542, #443, #458, #556, #518)
 
 - `examples/quickstart.py` plus a three-command README 5-minute start that

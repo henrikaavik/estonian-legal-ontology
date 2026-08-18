@@ -185,8 +185,11 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "eli:LegalResourceSubdivision"
+      },
       "rdfs:label": "Legal Provision",
-      "rdfs:comment": "Reusable base class for law and regulation provision nodes."
+      "rdfs:comment": "Reusable base class for law and regulation provision nodes. In FRBR/ELI terms a provision is a LegalResourceSubdivision of the act Work (eli:LegalResourceSubdivision) (#440)."
     },
     {
       "@id": "estleg:NormativeType",
@@ -1680,8 +1683,11 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "eli:date_entry_in_force"
+      },
       "rdfs:label": "Entry Into Force",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Date the act or amendment entered into force. rdfs:subPropertyOf eli:date_entry_in_force (#440)."
     },
     {
       "@id": "estleg:euCourtCode",
@@ -2024,7 +2030,7 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Kehtiv",
-      "rdfs:comment": "Riigi Teataja snapshot date stamped on generated act nodes."
+      "rdfs:comment": "Riigi Teataja snapshot date stamped on generated act nodes — the --kehtiv consolidation date of the committed text, not eli:date_publication (#440, #432)."
     },
     {
       "@id": "estleg:lastAmendmentDate",
@@ -2245,8 +2251,11 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "eli:date_no_longer_in_force"
+      },
       "rdfs:label": "Repeal Date",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Date the act ceased to be in force. rdfs:subPropertyOf eli:date_no_longer_in_force (#440)."
     },
     {
       "@id": "estleg:requestedCluster",
@@ -2710,8 +2719,11 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "eli:LegalExpression"
+      },
       "rdfs:label": "Provision Version",
-      "rdfs:comment": "A redaction-specific version of an estleg:LegalProvision's text. Each ProvisionVersion captures the text a provision carried during one Riigi Teataja consolidated-text redaction (terviktekst), together with the validity interval over which that text was in force. Defined for issue #131; population from historical Riigi Teataja redactions is tracked separately (see the follow-up data-completeness issue)."
+      "rdfs:comment": "A redaction-specific version of an estleg:LegalProvision's text. Each ProvisionVersion captures the text a provision carried during one Riigi Teataja consolidated-text redaction (terviktekst), together with the validity interval over which that text was in force. Defined for issue #131; population from historical Riigi Teataja redactions is tracked separately (see the follow-up data-completeness issue). In FRBR/ELI terms this is the Expression of the provision Work (eli:LegalExpression) (#440)."
     },
     {
       "@id": "estleg:versionOf",

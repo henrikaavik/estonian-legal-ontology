@@ -5,7 +5,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid.
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,114 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,115 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. `validate_all.py` currently validates
@@ -54,6 +54,67 @@ The corpus is published as two nested load surfaces — pick the one your query 
 - **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
 
 A SPARQL example that joins onto a court/EU/KOV/version body needs the full surface; one that stays within laws + overlays works on combined alone.
+
+### RDF serializations
+
+JSON-LD is the source format. Triplestore bulk loaders (Jena `tdbloader`,
+Blazegraph DataLoader, Virtuoso, GraphDB) prefer N-Triples or named-graph
+N-Quads.
+
+**Measured load budget** (`combined_ontology.jsonld`, rdflib, ticket #541):
+2,247,778 triples, 44.4 s, peak RSS 3,089 MB (~12.4× the ~250 MB file).
+The combined file is a single top-level `@graph` array (not
+line-streamable), so JSON-LD load is all-or-nothing.
+
+Prefer `.nt` / N-Quads for bulk load. Generate with
+`scripts/serialize_corpus.py`:
+
+```bash
+python3 scripts/serialize_corpus.py \
+  --input krr_outputs/abipolitseiniku_seadus_peep.json \
+  --format nt \
+  --output krr_outputs/exports/abipolitseiniku_seadus.nt
+```
+
+A small committed proof dump is
+`krr_outputs/exports/abipolitseiniku_seadus.nt`. `combined.{ttl,nt,nq}`
+are **generate-on-demand** — do not LFS-commit them (265 MB JSON-LD
+expands further; parse RSS is ~3 GB):
+
+```bash
+python3 scripts/serialize_corpus.py \
+  --input krr_outputs/combined_ontology.jsonld \
+  --format nq \
+  --output krr_outputs/exports/combined_ontology.nq
+```
+
+N-Quads wrap triples in a named graph
+(`https://w3id.org/estleg/graph/combined` for combined, or
+`https://w3id.org/estleg/graph/<filename-stem>` otherwise).
+
+### Tabular export
+
+A star-schema projection for pandas/R lives in
+[`krr_outputs/exports/`](krr_outputs/exports/) (`laws.csv`,
+`provisions.csv`, `citations.csv`, `sanctions.csv`,
+`court_decisions.csv`). The committed CSVs are a small real sample —
+one enacted act, its sanctions sidecar, and one Riigikohus year —
+flattened from those peeps, not from `combined_ontology.jsonld`.
+
+```bash
+# regenerate the committed sample (default globs)
+python3 scripts/serialize_tabular.py --out krr_outputs/exports
+
+# fuller dump (all enacted-law peeps + sanction sidecars + all Riigikohus years)
+python3 scripts/serialize_tabular.py --out /tmp/estleg-tabular \
+  --laws-glob '*_peep.json' \
+  --sanctions-glob 'sanctions/sanctions_*.json' \
+  --court-glob 'riigikohus/riigikohus_*_peep.json'
+```
+
+CSV is always written (stdlib `csv`). Parquet is written when `pyarrow`
+is importable; otherwise the exporter prints a one-line note and
+continues. Do not commit a full-corpus dump.
 
 ### Load a single file with Python (rdflib)
 
@@ -173,6 +234,14 @@ graph by `owl:versionIRI` (`https://w3id.org/estleg/0.11.0`), not an undated
 clone of `main`. A Zenodo DOI is tracked as #473 and is not yet minted.
 Consumer contract: [`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+### Refresh SLA
+
+Corpus target is monthly Riigi Teataja consolidation.
+`estleg:kehtiv` is the snapshot date the committed act text is valid as of.
+`dcterms:accrualPeriodicity` is monthly. The content-staleness canary is
+`python3 scripts/check_rt_staleness.py` (offline; `--fetch` is operator-run).
+Inter-release IRI deltas ship as `krr_outputs/changes-0.11.0.jsonld`.
 
 ### Vocabulary cheat-sheet
 
@@ -491,7 +560,7 @@ python3 scripts/generate_similarity_index.py
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (23,114 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (23,115 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry

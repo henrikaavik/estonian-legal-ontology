@@ -784,6 +784,47 @@ def mint_riigikohus_ecli(
     return f"ECLI:EE:RK:{parsed.year}:{ordinal}"
 
 
+# Official e-Justice ECLI resolver (Council conclusions / e-justice portal):
+# https://e-justice.europa.eu/ecli/ECLI:NL:HR:2016:764 — colons stay unencoded.
+_EJUSTICE_ECLI_RESOLVER = "https://e-justice.europa.eu/ecli/"
+
+
+def ecli_see_also_iri(ecli: str) -> str:
+    """European e-Justice resolver IRI for a minted ECLI (#518)."""
+    return f"{_EJUSTICE_ECLI_RESOLVER}{(ecli or '').strip()}"
+
+
+def _jsonld_id_values(value: object) -> list[str]:
+    items = value if isinstance(value, list) else ([] if value is None else [value])
+    iris: list[str] = []
+    for item in items:
+        if isinstance(item, dict):
+            iri = item.get("@id")
+            if isinstance(iri, str):
+                iris.append(iri)
+        elif isinstance(item, str):
+            iris.append(item)
+    return iris
+
+
+def _ensure_ecli_see_also(node: dict, ecli: str) -> bool:
+    """Add ``rdfs:seeAlso`` to the e-Justice resolver; idempotent."""
+    iri = ecli_see_also_iri(ecli)
+    if not iri[len(_EJUSTICE_ECLI_RESOLVER) :]:
+        return False
+    existing = node.get("rdfs:seeAlso")
+    if iri in _jsonld_id_values(existing):
+        return False
+    new_item = {"@id": iri}
+    if existing is None:
+        node["rdfs:seeAlso"] = new_item
+    elif isinstance(existing, list):
+        existing.append(new_item)
+    else:
+        node["rdfs:seeAlso"] = [existing, new_item]
+    return True
+
+
 # Direct rikos.rik.ee document URL (#442). Search-result ``decisionLink``
 # stays on riigikohus.ee; this is the object-id document page.
 _RIKOS_DOCUMENT_URL = "https://rikos.rik.ee/Lahend/Index?id={oid}"
@@ -1100,6 +1141,7 @@ def decision_to_node(
     ecli = mint_riigikohus_ecli(dec["case_nr"], parsed_date)
     if ecli:
         node["estleg:ecliIdentifier"] = ecli
+        _ensure_ecli_see_also(node, ecli)
 
     # Summary
     if dec.get("summary"):
@@ -1163,7 +1205,23 @@ def backfill_ecli_on_node(node: dict) -> bool:
     if not ecli:
         return False
     node["estleg:ecliIdentifier"] = ecli
+    _ensure_ecli_see_also(node, ecli)
     return True
+
+
+def backfill_ecli_see_also(node: dict) -> bool:
+    """Stamp e-Justice ``rdfs:seeAlso`` on a node that already has an ECLI."""
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:CourtDecision" not in types:
+        return False
+    ecli = node.get("estleg:ecliIdentifier")
+    if isinstance(ecli, dict):
+        ecli = ecli.get("@value")
+    if not isinstance(ecli, str) or not ecli.strip():
+        return False
+    return _ensure_ecli_see_also(node, ecli)
 
 
 def backfill_rk_identity(node: dict) -> bool:

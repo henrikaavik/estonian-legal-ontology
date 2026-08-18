@@ -255,7 +255,7 @@
     }
   ],
   "dcterms:accrualPeriodicity": {
-    "@id": "http://publications.europa.eu/resource/authority/frequency/IRREG"
+    "@id": "http://purl.org/cld/freq/monthly"
   },
   "dcterms:source": [
     {
@@ -343,7 +343,7 @@
       },
       "dcterms:description": "All JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, cross-border harmonisation links, practitioner annotations, controlled vocabularies, reports, and indexes. File count is the validated estleg:fileCount below.",
       "dcterms:rights": "DRAFT mixed/layered rights — spans all sources; see the dataset-level dcterms:rights, the top-level NOTICE, and docs/DATA_RIGHTS.md. Third-party texts retain source terms; the compilation layer is offered under CC BY 4.0. Contains personal data in the court subcorpora (see docs/DATA_PROTECTION.md). Verify upstream terms before redistribution.",
-      "estleg:fileCount": 23114
+      "estleg:fileCount": 23115
     },
     {
       "@type": "dcat:Distribution",
@@ -448,6 +448,21 @@
       "dcterms:description": "Local-government (kohaliku omavalitsuse, KOV) municipal regulations as JSON-LD — one file each under krr_outputs/regulations/kov/, plus REGULATIONS_KOV_INDEX.json. Regulation count is the validated estleg:municipalRegulationCount in the estleg:statistics block.",
       "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Municipal regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
       "estleg:municipalRegulationCount": 11059
+    },
+    {
+      "@type": "dcat:Distribution",
+      "dcterms:title": "Inter-release change record 0.11.0",
+      "dcat:mediaType": "application/ld+json",
+      "dcat:accessURL": {
+        "@id": "krr_outputs/changes-0.11.0.jsonld"
+      },
+      "dcat:downloadURL": {
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/changes-0.11.0.jsonld"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
+      },
+      "dcterms:description": "Machine-readable IRI delta for 0.11.0: INDEX deprecated_laws (removed/replaced) versus live INDEX laws. Listed IRIs are capped at 50; added/removed counts are complete."
     }
   ],
   "estleg:statistics": {
@@ -459,7 +474,7 @@
     "estleg:courtDecisionCount": 12137,
     "estleg:euLegislationCount": 33242,
     "estleg:euCourtDecisionCount": 22290,
-    "estleg:totalFiles": 23114,
+    "estleg:totalFiles": 23115,
     "estleg:semanticNodeCount": 170000,
     "estleg:integrationLayerCount": 15,
     "estleg:courtDecisionYearRange": "1993-2026",
@@ -767,6 +782,42 @@
       "rdfs:comment": "Sanction enforcement level: 'state' or 'municipality'. Derived in Layer 2c from the parent act's type.",
       "rdfs:range": {
         "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:ReleaseDelta",
+      "@type": "owl:Class",
+      "rdfs:label": "ReleaseDelta",
+      "rdfs:comment": "Machine-readable inter-release IRI delta (added/removed act IRIs and counts). Issue #549."
+    },
+    {
+      "@id": "estleg:added",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "added",
+      "rdfs:comment": "IRI added between compared snapshots. Listed sample may be capped; see estleg:addedCount."
+    },
+    {
+      "@id": "estleg:removed",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "removed",
+      "rdfs:comment": "IRI removed between compared snapshots. Listed sample may be capped; see estleg:removedCount."
+    },
+    {
+      "@id": "estleg:addedCount",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "addedCount",
+      "rdfs:comment": "Full count of IRIs added between compared snapshots.",
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:removedCount",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "removedCount",
+      "rdfs:comment": "Full count of IRIs removed between compared snapshots.",
+      "rdfs:range": {
+        "@id": "xsd:integer"
       }
     },
     {

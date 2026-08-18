@@ -34,9 +34,10 @@ on:
       - '.github/workflows/**'
       - 'docs/**'
       - 'README.md'
-  # Weekly committed-artifact drift check (#479). Re-runs the same
-  # validate/SHACL jobs against the tree on main; does not fetch
-  # Riigi Teataja or run generate_* ingest.
+  # Weekly committed-artifact drift check (#479) and RT content-
+  # staleness canary (#531). Re-runs the same validate/SHACL jobs
+  # against the tree on main; does not fetch Riigi Teataja or run
+  # generate_* ingest. ``check_rt_staleness.py --fetch`` is operator-run.
   schedule:
     - cron: "0 6 * * 1"
 
@@ -183,6 +184,28 @@ jobs:
 
       - name: Generator import + fixture smoke
         run: python3 -m pytest -q tests/test_rt_schema_canary.py tests/test_generate_all_laws.py --tb=line
+
+  # #531: Monday cron also fires this job. Default mode is offline
+  # (committed estleg:kehtiv vs BUILD_EVALUATION_DATE + SLA_MAX_LAG_DAYS).
+  # ``--fetch`` (GET live RT akt XML) is operator-run, not used in CI.
+  rt-staleness:
+    name: RT content-staleness canary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Check committed kehtiv vs SLA
+        run: python3 scripts/check_rt_staleness.py
 
   json-validation:
     runs-on: ubuntu-latest

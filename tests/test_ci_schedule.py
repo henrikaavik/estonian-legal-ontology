@@ -30,3 +30,4 @@ def test_validate_yml_has_integration_dry_run_and_generator_smoke() -> None:
     assert "generator-smoke:" in text
     assert "tests/test_rt_schema_canary.py" in text
     assert "tests/test_generate_all_laws.py" in text
+    assert "check_rt_staleness.py" in text

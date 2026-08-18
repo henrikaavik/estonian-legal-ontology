@@ -16,6 +16,8 @@
 3. **LegalConcept (`estleg:LegalConcept`)**
    - Represents a defined legal concept or term used within the legislation.
 
+> **ELI 1.5 (issue #440).** Estonia has no registered ELI URI template, so instance IRIs stay under `estleg:`. The T-Box maps `estleg:Act` ⊑ `eli:LegalResource`, `estleg:LegalProvision` ⊑ `eli:LegalResourceSubdivision`, and `estleg:ActExpression` / `estleg:ProvisionVersion` ⊑ `eli:LegalExpression`. Dates: `estleg:entryIntoForce` ⊑ `eli:date_entry_in_force`, `estleg:repealDate` ⊑ `eli:date_no_longer_in_force`. `kehtiv` is a snapshot date, not `eli:date_publication`; `temporalStatus` is not mapped to `eli:in_force`.
+
 #### Draft Legislation Classes (EIS)
 4. **DraftLegislation (`estleg:DraftLegislation`)**
    - Represents a legislative draft (eelnõu) that is in the legislative process but not yet enacted.
@@ -39,7 +41,7 @@
 * `estleg:references`: Defines cross-references to other legal provisions or laws. Typed sub-properties (`estleg:repeals`, `estleg:isLegalBasisFor`, `estleg:exceptionTo`, `estleg:derogatesFrom`) are emitted when the Estonian verb governing the citation is clear (issue #513); untyped `references` remains so existing queries still work.
 * `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
 * `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge. The predicate is used in instance data and declared in `metadata.jsonld`, but it is **not** yet a node in `controlled_vocabulary.jsonld`, so issue #439 does **not** invent an `owl:FunctionalProperty` axiom for it.
-* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed) and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
+* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed), **not** `eli:date_publication`, and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
 
 #### Draft Legislation Properties
