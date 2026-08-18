@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### IRI hygiene (#346, #354)
+
+- Migrated leftover `estleg:…__…` @ids (slugify 80-char cut) to a single
+  underscore; combined + peeps now have 0 double-underscore compact IRIs.
+- Concatenated §-range IDs such as `TsK_Par_194` (`§ 1–94`) are now
+  `TsK_Par_1_to_94`. Title-only Division IDs no longer keep a trailing `_`
+  (collision with AutÕS jagu 2¹ uses a numbered fallback).
+- Whitespace `requestedCluster` @ids were already gone; a corpus test
+  keeps them gone.
+
 ### Date guards, T-Box, citation, in-band VoID (#352, #359, #446, #508, #517, #547)
 
 - `parse_date` / EUR-Lex ISO dates reject years outside 1900–2100; 17
