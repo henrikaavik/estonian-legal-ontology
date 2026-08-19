@@ -248,6 +248,10 @@ Classifies the type of court case.
 * `estleg:decisionDate`: Date of the decision — `xsd:date`
 * `estleg:decisionLink`: URL to full decision on riigikohus.ee — `xsd:anyURI`
 * `estleg:rikObjectId`: Internal RIK database object ID — `xsd:string`
+* `estleg:rikosUrl`: Direct rikos.rik.ee document URL from `rikObjectId` — `xsd:anyURI`
+* `estleg:ecliIdentifier`: Official Estonian ECLI (`ECLI:EE:RK:YYYY:` + case number with `-`/`/` as `.`). e-Justice documents this ordinal as the case number (`1-16-2798/84` → `ECLI:EE:RK:2016:1.16.2798.84`). Assigned from H2 2016; **pre-2016 Riigikohus decisions have no official ECLI** (structural gap, not a scrape miss).
+* `estleg:chamber`: Deciding chamber from the `legalText` header — `xsd:string`
+* `estleg:judge`: Panel member names from the header (presiding first) — `xsd:string` (repeatable)
 * `estleg:referencedLaw`: Law abbreviation referenced in the decision — `xsd:string`
 * `estleg:interpretsLaw`: Object property linking to a `LegalProvision` (state-law provision) OR a `MunicipalRegulation` / `Act` (KOV act-level citation) interpreted by this decision — `owl:ObjectProperty`. Range is `owl:unionOf (LegalProvision Act)` since Layer 2c PR #3.
 

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -374,7 +379,27 @@
         "@id": "xsd:string"
       },
       "rdfs:comment": {
-        "@value": "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). Assigned from H2 2016; derived from case number + decision year.",
+        "@value": "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). Assigned from H2 2016; derived from case number + decision year. Pre-H2-2016 Riigikohus decisions have no official ECLI.",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:judge",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": {
+        "@value": "kohtunik",
+        "@language": "et"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": {
+        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
         "@language": "en"
       }
     },

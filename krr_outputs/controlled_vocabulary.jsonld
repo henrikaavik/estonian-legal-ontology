@@ -2434,7 +2434,33 @@
         }
       ],
       "rdfs:comment": {
-        "@value": "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). Assigned from H2 2016; derived from case number + decision year.",
+        "@value": "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). Assigned from H2 2016; derived from case number + decision year. Pre-H2-2016 Riigikohus decisions have no official ECLI.",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:judge",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtunik",
+          "@language": "et"
+        },
+        {
+          "@value": "judge",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
         "@language": "en"
       },
       "rdfs:domain": {

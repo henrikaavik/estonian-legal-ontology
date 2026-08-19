@@ -515,6 +515,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:chamber": ("estleg:CourtDecision", "xsd:string"),
     "estleg:decisionLink": ("estleg:CourtDecision", "xsd:anyURI"),
     "estleg:ecliIdentifier": ("owl:Thing", "xsd:string"),
+    "estleg:judge": ("estleg:CourtDecision", "xsd:string"),
     "estleg:referencedLaw": ("estleg:CourtDecision", "xsd:string"),
     "estleg:euDocumentType": (
         "estleg:EULegislation",

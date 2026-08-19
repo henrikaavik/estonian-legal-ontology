@@ -731,7 +731,22 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:comment": {
                 "@value": (
                     "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). "
-                    "Assigned from H2 2016; derived from case number + decision year."
+                    "Assigned from H2 2016; derived from case number + decision year. "
+                    "Pre-H2-2016 Riigikohus decisions have no official ECLI."
+                ),
+                "@language": "en",
+            },
+        },
+        {
+            "@id": "estleg:judge",
+            "@type": ["owl:DatatypeProperty"],
+            "rdfs:label": {"@value": "kohtunik", "@language": "et"},
+            "rdfs:domain": {"@id": "estleg:CourtDecision"},
+            "rdfs:range": {"@id": "xsd:string"},
+            "rdfs:comment": {
+                "@value": (
+                    "Panel member extracted from the legalText header "
+                    "(presiding judge first, then liikmed)."
                 ),
                 "@language": "en",
             },
@@ -789,11 +804,25 @@ def mint_riigikohus_ecli(
 # Official e-Justice ECLI resolver (Council conclusions / e-justice portal):
 # https://e-justice.europa.eu/ecli/ECLI:NL:HR:2016:764 — colons stay unencoded.
 _EJUSTICE_ECLI_RESOLVER = "https://e-justice.europa.eu/ecli/"
+# Riigi Teataja kohtulahendid ECLI landing page (#442).
+_RT_ECLI_RESOLVER = "https://www.riigiteataja.ee/kohtulahendid/ecli/"
 
 
 def ecli_see_also_iri(ecli: str) -> str:
     """European e-Justice resolver IRI for a minted ECLI (#518)."""
     return f"{_EJUSTICE_ECLI_RESOLVER}{(ecli or '').strip()}"
+
+
+def rt_ecli_iri(ecli: str) -> str:
+    """Riigi Teataja ECLI landing IRI (#442)."""
+    return f"{_RT_ECLI_RESOLVER}{(ecli or '').strip()}"
+
+
+def ecli_resolver_iris(ecli: str) -> list[str]:
+    value = (ecli or "").strip()
+    if not value:
+        return []
+    return [ecli_see_also_iri(value), rt_ecli_iri(value)]
 
 
 def _jsonld_id_values(value: object) -> list[str]:
@@ -810,20 +839,20 @@ def _jsonld_id_values(value: object) -> list[str]:
 
 
 def _ensure_ecli_see_also(node: dict, ecli: str) -> bool:
-    """Add ``rdfs:seeAlso`` to the e-Justice resolver; idempotent."""
-    iri = ecli_see_also_iri(ecli)
-    if not iri[len(_EJUSTICE_ECLI_RESOLVER) :]:
+    """Add resolver ``rdfs:seeAlso`` IRIs; idempotent."""
+    missing = [
+        iri for iri in ecli_resolver_iris(ecli) if iri not in _jsonld_id_values(node.get("rdfs:seeAlso"))
+    ]
+    if not missing:
         return False
     existing = node.get("rdfs:seeAlso")
-    if iri in _jsonld_id_values(existing):
-        return False
-    new_item = {"@id": iri}
+    new_items = [{"@id": iri} for iri in missing]
     if existing is None:
-        node["rdfs:seeAlso"] = new_item
+        node["rdfs:seeAlso"] = new_items[0] if len(new_items) == 1 else new_items
     elif isinstance(existing, list):
-        existing.append(new_item)
+        existing.extend(new_items)
     else:
-        node["rdfs:seeAlso"] = [existing, new_item]
+        node["rdfs:seeAlso"] = [existing, *new_items]
     return True
 
 
@@ -891,6 +920,57 @@ def extract_chamber(legal_text: str) -> str | None:
         return None
     hits.sort(key=lambda item: item[0])
     return hits[0][1]
+
+
+_JUDGE_SPLIT_RE = re.compile(r"\s*(?:,|;| ning | ja )\s*")
+_JUDGE_ROLE_RE = re.compile(
+    r"^(?:eesistuja|liige|liikmed|kohtukoosseis)\s+", re.IGNORECASE
+)
+_JUDGE_STOP_RE = re.compile(
+    r"\s+(?:Kohtuasi|Menetlus|Vaidlustatud|RESOLUTSIOON|Asja läbivaatamine)\b"
+)
+_KOOSSEIS_MODERN_RE = re.compile(
+    r"Kohtukoosseis\s+Eesistuja\s+(.+)",
+    re.IGNORECASE | re.DOTALL,
+)
+_KOOSSEIS_LEGACY_RE = re.compile(
+    r"koosseisus:?\s*(.+?)\s+vaatas\b",
+    re.IGNORECASE | re.DOTALL,
+)
+
+
+def _split_judge_names(blob: str) -> list[str]:
+    blob = _JUDGE_STOP_RE.split(blob, maxsplit=1)[0]
+    names: list[str] = []
+    for part in _JUDGE_SPLIT_RE.split(blob):
+        part = re.sub(r"\s+", " ", part).strip(" .,:;")
+        part = _JUDGE_ROLE_RE.sub("", part).strip(" .,:;")
+        if len(part) >= 2 and not part.lower().startswith("kohtu"):
+            names.append(part)
+    # Dedup while preserving order (header sometimes repeats the presiding judge).
+    seen: set[str] = set()
+    out: list[str] = []
+    for name in names:
+        key = name.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(name)
+    return out
+
+
+def extract_judges(legal_text: str) -> list[str]:
+    """Return panel names from the legalText header (presiding first)."""
+    if not legal_text or not isinstance(legal_text, str):
+        return []
+    header = legal_text[:900]
+    match = _KOOSSEIS_MODERN_RE.search(header)
+    if match:
+        return _split_judge_names(match.group(1))
+    match = _KOOSSEIS_LEGACY_RE.search(header)
+    if match:
+        return _split_judge_names(match.group(1))
+    return []
 
 
 def _unwrap_literal(value: object) -> str:
@@ -1177,6 +1257,9 @@ def decision_to_node(
         chamber = extract_chamber(legal_text)
         if chamber:
             node["estleg:chamber"] = chamber
+        judges = extract_judges(legal_text)
+        if judges:
+            node["estleg:judge"] = judges
 
     # Referenced laws
     refs = detect_referenced_laws(dec.get("summary") or "")
@@ -1227,10 +1310,9 @@ def backfill_ecli_see_also(node: dict) -> bool:
 
 
 def backfill_rk_identity(node: dict) -> bool:
-    """Stamp ``estleg:rikosUrl`` + ``estleg:chamber`` on a CourtDecision.
+    """Stamp rikosUrl, chamber, judges, ECLI, and resolver seeAlso.
 
-    Idempotent: already-correct values are left untouched. Chamber is
-    filled only when the node already carries ``estleg:legalText``.
+    Idempotent: already-correct values are left untouched.
     """
     types = node.get("@type") or []
     if isinstance(types, str):
@@ -1248,11 +1330,21 @@ def backfill_rk_identity(node: dict) -> bool:
             node["estleg:rikosUrl"] = _typed_any_uri(url)
             changed = True
 
+    legal_text = _unwrap_literal(node.get("estleg:legalText"))
     if not _unwrap_literal(node.get("estleg:chamber")):
-        chamber = extract_chamber(_unwrap_literal(node.get("estleg:legalText")))
+        chamber = extract_chamber(legal_text)
         if chamber:
             node["estleg:chamber"] = chamber
             changed = True
+    if not node.get("estleg:judge"):
+        judges = extract_judges(legal_text)
+        if judges:
+            node["estleg:judge"] = judges
+            changed = True
+    if backfill_ecli_on_node(node):
+        changed = True
+    if backfill_ecli_see_also(node):
+        changed = True
     return changed
 
 
