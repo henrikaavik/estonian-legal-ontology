@@ -61,6 +61,7 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 * `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed), **not** `eli:date_publication`, and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
 * `estleg:officialEnglishText`: Optional IRI of the official English Riigi Teataja consolidation (`https://www.riigiteataja.ee/en/eli/{tolkeSeosId}`). `owl:ObjectProperty`, `rdfs:subPropertyOf rdfs:seeAlso`, domain `Act` (issue #510). Derived from the RT public metadata field `tolkeSeosId` — **not** from the current Estonian `/akt/{id}.xml` globaalID, which is a different consolidation. Acts with no published English translation omit the property. The Estonian XML stays on `dcterms:source`.
 * `estleg:isRatificationShell`: `xsd:boolean` on treaty/accession *statutes*. These nodes are the Estonian ratifying act (often a one-section shell), **not** the treaty body. RT publishes treaty texts under the separate *välislepingud* register, which this corpus does not ingest (issue #528). `INDEX.json` `stubKind=treaty` is the same distinction for catalog consumers.
+* `estleg:courtLevel` / `estleg:courtKind` / `estleg:courtName`: First- and second-instance decisions (`maakohus`, `halduskohus`, `ringkonnakohus`) live under `krr_outputs/kohtud/` (issue #525). `courtLevel` is `firstInstance` or `appeal`; `courtKind` is `county`, `administrative`, or `circuit`. Riigikohus stays in `krr_outputs/riigikohus/`. The RT search API is `POST /api/v1/kohtuteave/otsing/kohtulahendid`. IDs are `estleg:Kohtuasi_<objektId>`.
 * `estleg:governs`: Inverse of `estleg:competentAuthority`, materialized on Institution nodes at combined-build time from act-level authority edges (issue #520). Use this for "which statutes does authority X enforce".
 * `estleg:transposedBy`: Inverse of `estleg:transposesDirective`, materialized on EU directive nodes so "which national law transposes directive X" does not require a full scan (issue #520). Combined also re-asserts dropped forwards `estleg:issuedUnder` (from `implementedBy`) and `estleg:interpretsLaw` (from `interpretedBy`). `estleg:hasVersion` / `estleg:versionOf` stay on the separate `provision_versions/` load surface (#561).
 * `estleg:partOfAct` on subsections: the combined builder walks `parentProvision` / `isPartOf` and asserts a direct `partOfAct` from every lõige to its act root (issue #520). `estleg:isPartOf` is an `owl:TransitiveProperty`.
@@ -227,7 +228,7 @@ SELECT ?draft ?title ?initiator WHERE {
 ## Court Decision Classes
 
 ### CourtDecision (`estleg:CourtDecision`)
-Represents a Supreme Court (Riigikohus) decision. Source: [rikos.rik.ee](https://rikos.rik.ee)
+An Estonian court decision. Riigikohus (Supreme Court) lives under `krr_outputs/riigikohus/` (source: [rikos.rik.ee](https://rikos.rik.ee)). First- and second-instance decisions — maakohus, halduskohus, ringkonnakohus — live under `krr_outputs/kohtud/` (source: [Riigi Teataja kohtulahendid](https://www.riigiteataja.ee/kohtulahendid/), issue #525).
 
 ### CaseType (`estleg:CaseType`)
 Classifies the type of court case.
@@ -255,7 +256,11 @@ Classifies the type of court case.
 * `estleg:caseType`: Links to CaseType individual — `owl:ObjectProperty`
 * `estleg:decisionType`: Links to DecisionType individual — `owl:ObjectProperty`
 * `estleg:decisionDate`: Date of the decision — `xsd:date`
-* `estleg:decisionLink`: URL to full decision on riigikohus.ee — `xsd:anyURI`
+* `estleg:decisionLink`: URL to the decision (riigikohus.ee or riigiteataja.ee/kohtulahendid/{objektId}) — `xsd:anyURI`
+* `estleg:courtName`: Issuing court as published by Riigi Teataja (`toiminguEsitajaAsutus`) — `xsd:string`
+* `estleg:courtLevel`: `firstInstance` | `appeal` | `supreme` — `xsd:string`
+* `estleg:courtKind`: `county` | `administrative` | `circuit` | `supreme` — `xsd:string`
+* `estleg:rtObjektId`: Riigi Teataja kohtulahendid `objektId` (stable key for lower-court nodes) — `xsd:string`
 * `estleg:rikObjectId`: Internal RIK database object ID — `xsd:string`
 * `estleg:rikosUrl`: Direct rikos.rik.ee document URL from `rikObjectId` — `xsd:anyURI`
 * `estleg:ecliIdentifier`: Official Estonian ECLI (`ECLI:EE:RK:YYYY:` + case number with `-`/`/` as `.`). e-Justice documents this ordinal as the case number (`1-16-2798/84` → `ECLI:EE:RK:2016:1.16.2798.84`). Assigned from H2 2016; **pre-2016 Riigikohus decisions have no official ECLI** (structural gap, not a scrape miss).

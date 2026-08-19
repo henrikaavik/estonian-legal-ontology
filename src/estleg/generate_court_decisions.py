@@ -574,8 +574,8 @@ def generate_schema_nodes() -> list[dict]:
             "@id": "estleg:CourtDecision",
             "@type": ["owl:Class"],
             "rdfs:label": {"@value": "Kohtulahend (Court Decision)", "@language": "et"},
-            "rdfs:comment": {"@value": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.", "@language": "et"},
-            "dc:description": {"@value": "A Supreme Court (Riigikohus) decision, including judgments, rulings, and resolutions.", "@language": "en"},
+            "rdfs:comment": {"@value": "Eesti kohtulahend – Riigikohus või esimese/teise astme kohus.", "@language": "et"},
+            "dc:description": {"@value": "An Estonian court decision (Riigikohus or first/second instance).", "@language": "en"},
         },
         # CaseType class
         {

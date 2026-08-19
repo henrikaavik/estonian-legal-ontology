@@ -837,7 +837,35 @@ estleg:CourtDecisionShape
         sh:maxCount 1 ;
         sh:datatype xsd:anyURI ;
         sh:name "decisionLink" ;
-        sh:description "Link to the full decision on riigikohus.ee" ;
+        sh:description "Link to the full decision on riigikohus.ee or riigiteataja.ee" ;
+    ] ;
+    sh:property [
+        sh:path estleg:courtName ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "courtName" ;
+        sh:description "Issuing court name for first/second-instance decisions (#525)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:courtLevel ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "firstInstance" "appeal" "supreme" ) ;
+        sh:name "courtLevel" ;
+    ] ;
+    sh:property [
+        sh:path estleg:courtKind ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "county" "administrative" "circuit" "supreme" ) ;
+        sh:name "courtKind" ;
+    ] ;
+    sh:property [
+        sh:path estleg:rtObjektId ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "rtObjektId" ;
+        sh:description "Riigi Teataja kohtulahendid objektId (#525)." ;
     ] ;
     sh:property [
         sh:path estleg:rikosUrl ;

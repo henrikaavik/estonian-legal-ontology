@@ -234,11 +234,11 @@
         }
       ],
       "rdfs:comment": {
-        "@value": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.",
+        "@value": "Eesti kohtulahend – Riigikohus või esimese/teise astme kohus (maakohus, halduskohus, ringkonnakohus).",
         "@language": "et"
       },
       "dc:description": {
-        "@value": "A Supreme Court (Riigikohus) decision, including judgments, rulings, and resolutions.",
+        "@value": "An Estonian court decision. Riigikohus lives under krr_outputs/riigikohus/; maakohus, halduskohus and ringkonnakohus under krr_outputs/kohtud/ (#525).",
         "@language": "en"
       }
     },
@@ -1730,6 +1730,75 @@
         "@value": "Deciding chamber extracted from the legalText header (e.g. Halduskolleegium, Kriminaalkolleegium, Erikogu).",
         "@language": "en"
       },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:courtKind",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtu liik",
+          "@language": "et"
+        },
+        {
+          "@value": "court kind",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "county | administrative | circuit | supreme. First- and second-instance ingest uses county/administrative/circuit (#525).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:courtLevel",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtuaste",
+          "@language": "et"
+        },
+        {
+          "@value": "court level",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "firstInstance | appeal | supreme (#525).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:courtName",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtu nimi",
+          "@language": "et"
+        },
+        {
+          "@value": "court name",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Issuing court as published by Riigi Teataja (toiminguEsitajaAsutus).",
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -5355,6 +5424,29 @@
       "rdfs:comment": "Riigi Teataja reference string on an AmendmentEvent.",
       "rdfs:domain": {
         "@id": "estleg:AmendmentEvent"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:rtObjektId",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "RT objektId",
+          "@language": "et"
+        },
+        {
+          "@value": "RT object id",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Riigi Teataja kohtulahendid objektId used as the stable key for first/second-instance decisions (#525).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
         "@id": "xsd:string"

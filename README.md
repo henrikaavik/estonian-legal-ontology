@@ -5,7 +5,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid.
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,116 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,117 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. `validate_all.py` currently validates
@@ -64,7 +64,7 @@ Producer modules live in `src/estleg/`; `scripts/` keeps one-release shims.
 The corpus is published as two nested load surfaces — pick the one your query needs:
 
 - **Combined-only surface** — `krr_outputs/combined_ontology.jsonld` loaded alone. A self-contained graph (zero dangling `estleg:` references): all enacted-law nodes, the fully-merged enrichment overlays (sanctions, legal concepts, institutions, annotations, amendments), and the curated TBox. Every cross-corpus entity it references — court decisions, EU acts, drafts, municipal (KOV) regulations, the EHAK municipality registry, and per-provision version history — is present as a **resolvable stub** (label + identifier + the SHACL-required structural edges), *not* its full body. Best for law-centric queries and a quick, single-file load.
-- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
+- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `kohtud/`, `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
 
 A SPARQL example that joins onto a court/EU/KOV/version body needs the full surface; one that stays within laws + overlays works on combined alone.
 
@@ -519,6 +519,7 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 | **Riigi Teataja** | https://www.riigiteataja.ee | Domestic regulations (XML API) | `scripts/generate_regulations.py` |
 | **EIS** | https://eelnoud.valitsus.ee | Draft legislation (RSS feeds) | `scripts/generate_draft_legislation.py` |
 | **RIK / Riigikohus** | https://rikos.rik.ee | Supreme Court decisions (HTML search) | `scripts/generate_court_decisions.py` |
+| **RT kohtulahendid** | https://www.riigiteataja.ee/kohtulahendid/ | First/second-instance decisions (maakohus, halduskohus, ringkonnakohus) | `scripts/generate_lower_court_decisions.py` |
 | **EUR-Lex** | https://eur-lex.europa.eu | EU legislation (SPARQL) | `scripts/generate_eu_legislation.py` |
 | **EUR-Lex / CURIA** | https://eur-lex.europa.eu | EU court decisions (SPARQL) | `scripts/generate_eu_court_decisions.py` |
 
@@ -537,9 +538,14 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 - Review: `GET https://eelnoud.valitsus.ee/main/mount/rss/home/review.rss`
 - Submission: `GET https://eelnoud.valitsus.ee/main/mount/rss/home/submission.rss`
 
-**RIK** (court decisions):
+**RIK** (Supreme Court decisions):
 - Search: `GET https://rikos.rik.ee/?aasta=YYYY&pageSize=100&lk=N`
 - Individual: `https://www.riigikohus.ee/et/lahendid/?asjaNr=CASE_NR`
+
+**Riigi Teataja kohtulahendid** (first/second instance):
+- Search: `POST https://www.riigiteataja.ee/api/v1/kohtuteave/otsing/kohtulahendid`
+- Individual: `https://www.riigiteataja.ee/kohtulahendid/{objektId}`
+- Operator ingest: `python3 -m estleg.generate_lower_court_decisions --fetch --year 2026 --limit 50 --apply`
 
 **EUR-Lex** (EU legislation):
 - SPARQL endpoint: `https://publications.europa.eu/webapi/rdf/sparql` (open, no auth)
@@ -607,7 +613,7 @@ python3 scripts/generate_similarity_index.py
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (23,116 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (23,117 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry
@@ -628,6 +634,9 @@ python3 scripts/generate_similarity_index.py
 │   │   ├── riigikohus_schema.json        # Schema definitions
 │   │   ├── riigikohus_YYYY_peep.json     # Per-year decisions (1993-2026)
 │   │   └── RIIGIKOHUS_INDEX.json         # Court decision registry
+│   ├── kohtud/               # First/second-instance decisions (#525)
+│   │   ├── kohtud_sample_peep.json       # Scoped sample (maakohus / halduskohus / ringkonnakohus)
+│   │   └── KOHTUD_INDEX.json             # Lower-court ingest index
 │   ├── eurlex/               # EU legislation
 │   │   ├── eurlex_schema.json            # Schema definitions
 │   │   ├── eurlex_regulations_peep.json  # EU regulations
@@ -729,7 +738,7 @@ The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`) with 28 co
 - **`estleg:Annex`** -- Regulation annexes (lisad)
 
 **Court Decisions:**
-- **`estleg:CourtDecision`** -- Supreme Court decisions (judgments, rulings)
+- **`estleg:CourtDecision`** -- Estonian court decisions (Riigikohus + first/second instance)
 - **`estleg:CaseType`** -- Criminal, Civil, Administrative, Constitutional Review, Misdemeanor
 - **`estleg:DecisionType`** -- Judgment, Ruling, Resolution
 

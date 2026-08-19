@@ -100,7 +100,7 @@ URLs) are #473 and are not produced by this in-repo record.
 ## Current Release Snapshot
 
 The current release indexes 1,122 enacted laws (1,190 law files) and
-advertises 23,116 JSON/JSON-LD files overall, matching
+advertises 23,117 JSON/JSON-LD files overall, matching
 `krr_outputs/INDEX.json` (`total_laws`) and the root README /
 `metadata.jsonld` headline. Sequential live jobs in the 2026-05-26
 refresh completed the full law corpus refresh, Riigikohus full-text

@@ -12,7 +12,7 @@
 | Warnings | 0 |
 | Result | **PASSED** |
 
-The repository advertises 23,116 generated JSON/JSON-LD files. `validate_all.py`
+The repository advertises 23,117 generated JSON/JSON-LD files. `validate_all.py`
 excludes generated reports, indexes, manifests, and probe outputs that are not
 corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
 JSON-LD files.
@@ -51,7 +51,7 @@ inside the combined file. `scripts/validate_seadusloome_sync.py` validates
 combined file alone; see "Seadusloome Zero-Warning Gate" below for its load set
 and CI wiring. The public subdirectories are defined once in
 `scripts/estleg_common.py` as `PUBLIC_LOAD_SUBDIRS`: `eelnoud`, `riigikohus`,
-`curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`,
+`kohtud`, `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`,
 `provision_versions`, `annotations`, `harmonisation`, and `regulations`.
 
 > **These semantic fields are not optional noise.** `estleg:partOfAct`, the KOV
