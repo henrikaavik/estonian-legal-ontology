@@ -174,7 +174,7 @@ class LawTarget:
 # ---------------------------------------------------------------------------
 
 
-_PROVISION_TYPE_RE = re.compile(r"^estleg:LegalProvision_")
+_PROVISION_TYPE_RE = re.compile(r"^estleg:LegalProvision(_|$)")
 _PAR_IRI_RE = re.compile(r"_Par_(?P<suffix>[0-9]+(?:_[0-9]+)?)$")
 # versionOf IRI → human citation: prefix, optional _OsaN, _Par_N, optional _LgN.
 _PROVISION_REF_RE = re.compile(

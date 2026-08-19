@@ -318,8 +318,8 @@ Regulation issued by a local government council or government (KOV). `rdfs:subCl
 ### Annex (`estleg:Annex`)
 Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
 
-### Per-Regulation Provision Classes (`estleg:Regulation_<terviktekstId>`)
-For each regulation, the generator emits one provision class named `estleg:Regulation_<terviktekstId>` (e.g. `estleg:Regulation_160748`) that is declared as `rdfs:subClassOf estleg:LegalProvision`. Provision instances of that regulation carry both the per-regulation class and `estleg:paragrahv`, so they are validated by the existing `LegalProvisionShape`.
+### Provision typing (issue #434)
+Law and regulation provisions are typed `estleg:LegalProvision` directly. KOV provisions also carry `estleg:KovProvision`. Per-document classes (`estleg:LegalProvision_<slug>`, `estleg:Regulation_<terviktekstId>`) are no longer minted — membership is `estleg:partOfAct` / `estleg:sourceAct`.
 
 ### Domestic Regulation Properties
 

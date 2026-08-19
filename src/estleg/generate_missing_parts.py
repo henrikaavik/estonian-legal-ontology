@@ -221,12 +221,10 @@ def extract_paragrahvid(parent: ET.Element) -> list[ET.Element]:
 def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | None:
     """Generate JSON-LD for a VÕS part.
 
-    Issue #175: each part gets its own LegalProvision class IRI
-    (``estleg:LegalProvision_VOS_osa<N>``) — the earlier hardcoded
-    ``Osa7`` literal was a copy-paste typo. Paragraph IRIs are
-    namespaced per part (``estleg:VOS_Osa<N>_Par_<n>``) so two parts
-    that happen to renumber paragraphs can never collide on the same
-    @id.
+    Issue #175 / #434: paragraph IRIs are namespaced per part
+    (``estleg:VOS_Osa<N>_Par_<n>``) so two parts that happen to
+    renumber paragraphs can never collide on the same @id. Provisions
+    are typed ``estleg:LegalProvision`` directly (no per-part class).
     """
     osa = find_osa(root, osa_nr)
     if osa is None:
@@ -265,7 +263,6 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
     # a redaction inserts/removes a paragraph (#269c). The range stays in
     # the human-readable label below.
     ontology_id = f"estleg:{prefix}_Osa{osa_safe}"
-    class_iri = f"estleg:LegalProvision_VOS_osa{osa_safe}"
 
     graph: list[dict] = [
         {
@@ -273,11 +270,6 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "@type": ["estleg:Act", "estleg:Law"],
             "rdfs:label": f"VÕS Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
             "dc:source": "Võlaõigusseadus",
-        },
-        {
-            "@id": class_iri,
-            "@type": ["owl:Class"],
-            "rdfs:label": "Õigusnorm (paragrahv)",
         },
     ]
 
@@ -371,7 +363,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "@id": p_id,
             "@type": [
                 "owl:NamedIndividual",
-                class_iri,
+                "estleg:LegalProvision",
             ],
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
@@ -468,11 +460,6 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             "dc:source": "Tsiviilseadustiku üldosa seadus",
         },
         {
-            "@id": "estleg:LegalProvision_TsUS_osa1",
-            "@type": ["owl:Class"],
-            "rdfs:label": "Õigusnorm (paragrahv)",
-        },
-        {
             "@id": "estleg:Cluster_TsUS_Uldsatted",
             "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
             "rdfs:label": "Üldsätted (tsiviilõiguse aluspõhimõtted)",
@@ -497,7 +484,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             "@id": p_id,
             "@type": [
                 "owl:NamedIndividual",
-                "estleg:LegalProvision_TsUS_osa1",
+                "estleg:LegalProvision",
             ],
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,

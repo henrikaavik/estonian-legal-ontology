@@ -195,10 +195,10 @@ class TestStructuredParsing:
         root = _parse(STRUCTURED_FIXTURE)
         doc, stats = build_regulation_jsonld(STRUCTURED_TITLE, {}, root, is_kov=False)
 
-        # Fixture has 2 paragraphs => N+2 = 4 nodes (1 ontology + 1 class + 2 provisions)
+        # Fixture has 2 paragraphs => 3 nodes (1 ontology + 2 provisions; no per-file class)
         assert stats["paragraphs"] == 2
         assert stats["annexes"] == 0
-        assert len(doc["@graph"]) == 4
+        assert len(doc["@graph"]) == 3
 
     def test_provision_node_shape(self):
         root = _parse(STRUCTURED_FIXTURE)
@@ -215,7 +215,7 @@ class TestStructuredParsing:
 
             type_list = prov["@type"]
             assert "owl:NamedIndividual" in type_list
-            assert "estleg:Regulation_160748" in type_list
+            assert "estleg:LegalProvision" in type_list
 
     def test_provision_summary_falls_back_to_label_or_source_title(self):
         assert provision_summary("§ 1.", "§ 1. Reguleerimisala", "Testmäärus", "") == "§ 1. Reguleerimisala"
@@ -1473,15 +1473,21 @@ class TestMissingPartsCli:
             classes = [
                 n for n in doc["@graph"]
                 if "owl:Class" in (n.get("@type") or [])
+                and str(n.get("@id", "")).startswith("estleg:LegalProvision_")
             ]
-            assert classes, f"no class node in {path.name}"
-            for c in classes:
-                # The class IRI must NOT contain the literal Osa7 typo.
-                assert "Osa7" not in c["@id"], c
-                # Expected pattern: estleg:LegalProvision_VOS_osa<N>
-                assert c["@id"] == (
-                    f"estleg:LegalProvision_VOS_osa{osa_nr}"
-                ), c
+            assert classes == [], f"per-document class survived in {path.name}: {classes}"
+            provisions = [
+                n for n in doc["@graph"]
+                if isinstance(n, dict) and "estleg:paragrahv" in n
+            ]
+            assert provisions, f"no provisions in {path.name}"
+            for node in provisions:
+                types = node.get("@type") or []
+                assert "estleg:LegalProvision" in types, node
+                assert not any(
+                    isinstance(item, str) and item.startswith("estleg:LegalProvision_")
+                    for item in types
+                ), node
 
     def test_paragraph_iri_namespaced_per_part(self, tmp_path):
         from estleg import generate_missing_parts as mod

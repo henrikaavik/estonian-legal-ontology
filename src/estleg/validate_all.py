@@ -491,6 +491,39 @@ def validate_act_xml_sameas(filepath: Path, doc: dict):
                 )
 
 
+def validate_per_document_classes(filepath: Path, doc: dict):
+    """Reject mechanically minted per-file provision classes (#434)."""
+    if "@graph" not in doc:
+        return
+    from estleg.remint_per_document_classes import (
+        CANONICAL_PROVISION_TYPE,
+        is_per_doc_class_id,
+        is_per_doc_class_node,
+        node_types,
+    )
+
+    for node in doc["@graph"]:
+        if not isinstance(node, dict):
+            continue
+        if is_per_doc_class_node(node):
+            error(
+                f"{filepath.name}: per-document class {node.get('@id')} "
+                "must not be minted (#434)"
+            )
+            continue
+        types = node_types(node)
+        if any(is_per_doc_class_id(item) for item in types):
+            error(
+                f"{filepath.name}: {node.get('@id')} still typed with a "
+                "per-document class (#434)"
+            )
+        if "estleg:paragrahv" in node and CANONICAL_PROVISION_TYPE not in types:
+            error(
+                f"{filepath.name}: provision {node.get('@id')} lacks "
+                f"{CANONICAL_PROVISION_TYPE} (#434)"
+            )
+
+
 def validate_source_provenance(filepath: Path, doc: dict):
     if "@graph" not in doc:
         return
@@ -3571,6 +3604,7 @@ def main(argv: list[str] | None = None):
         validate_dc_source(filepath, doc)
         validate_source_provenance(filepath, doc)
         validate_act_xml_sameas(filepath, doc)
+        validate_per_document_classes(filepath, doc)
         validate_xsd_dates(filepath, doc)
         validate_affected_law_names(filepath, doc)
         internal_refs.extend(collect_internal_refs(filepath, doc))

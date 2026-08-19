@@ -656,7 +656,6 @@ def generate_law_jsonld(
     par_max = max(par_numbers) if par_numbers else "?"
 
     ontology_id = f"estleg:{prefix}_Map_2026"
-    class_id = f"estleg:LegalProvision_{slug}"
 
     # Construct Riigi Teataja source URL
     rt_source_url = ""
@@ -679,15 +678,7 @@ def generate_law_jsonld(
         _stamp_terviktekst_id(ontology_node, terviktekst_id)
     _stamp_content_hash(ontology_node, slug)
 
-    graph: list[dict] = [
-        ontology_node,
-        {
-            "@id": class_id,
-            "@type": ["owl:Class"],
-            "rdfs:label": "Õigusnorm (paragrahv)",
-            "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
-        },
-    ]
+    graph: list[dict] = [ontology_node]
     _treaty_patterns = ("konventsiooni", "lepingu", "protokolli")
     fallback_label = (
         "Lepingu sätted"
@@ -700,7 +691,7 @@ def generate_law_jsonld(
         paragrahvid=paragrahvid,
         prefix=prefix,
         ontology_id=ontology_id,
-        class_id=class_id,
+        class_id="estleg:LegalProvision",
         title=title,
         slug=slug,
         par_min=par_min,
@@ -822,7 +813,6 @@ def generate_multipart_law(
         # on the old IRI (merge_existing_enrichments). The §-range lives only in
         # ``rdfs:label`` now; the @id is keyed on the stable osa number alone.
         ontology_id = f"estleg:{prefix}_Osa{sanitize_id(osa_nr)}"
-        class_id = f"estleg:LegalProvision_{slug}_osa{osa_nr}"
 
         # Issue #89: Mark file-level ontology node with estleg:Part type
         osa_ontology_node: dict = {
@@ -840,15 +830,7 @@ def generate_multipart_law(
             _stamp_terviktekst_id(osa_ontology_node, terviktekst_id)
         _stamp_content_hash(osa_ontology_node, slug)
 
-        graph: list[dict] = [
-            osa_ontology_node,
-            {
-                "@id": class_id,
-                "@type": ["owl:Class"],
-                "rdfs:label": "Õigusnorm (paragrahv)",
-                "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
-            },
-        ]
+        graph: list[dict] = [osa_ontology_node]
         fallback_label = f"{title} Osa {osa_nr}"
         if osa_title:
             fallback_label = f"{title} Osa {osa_nr} ({osa_title})"
@@ -861,7 +843,7 @@ def generate_multipart_law(
             paragrahvid=paragrahvid,
             prefix=prefix,
             ontology_id=ontology_id,
-            class_id=class_id,
+            class_id="estleg:LegalProvision",
             title=title,
             slug=slug,
             par_min=par_min,

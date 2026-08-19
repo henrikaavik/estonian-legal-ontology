@@ -239,12 +239,11 @@ print(f"Total triples: {len(g)}")
 
 The most powerful way to query this dataset is loading files into a semantic graph database (Apache Jena, Blazegraph, Oxigraph, etc.) and using SPARQL.
 
-> **Which graph to query.** Parent-class membership such as `?x a estleg:LegalProvision`
-> or `?x a estleg:Act` is materialised in the shipped `krr_outputs/combined_ontology.jsonld`,
-> where a build-time type rollup (issue #519) stamps every instance with its entailed
-> superclasses. A single `*_peep.json` only carries the **leaf** type
-> (`estleg:LegalProvision_<law>`), so a bare `a estleg:LegalProvision` query against one peep
-> returns nothing — query the combined graph for those. Types stamped directly on instances
+> **Which graph to query.** Provisions are typed `estleg:LegalProvision` on the
+> instance (issue #434), so `?x a estleg:LegalProvision` works on a single peep
+> and on `combined_ontology.jsonld` without RDFS inference. Act-class rollup
+> (`?x a estleg:Act`) is still materialised at combined-build time (issue #519)
+> for the `*Regulation` / `Law` hierarchy. Types stamped directly on instances
 > (`estleg:CourtDecision`, `estleg:Sanction`, `estleg:Institution`, `estleg:EULegislation`,
 > the `*Regulation` act classes, and `estleg:Act` on act roots) match without the combined
 > graph, but each lives in its own subdirectory — load that subcorpus. Several examples below

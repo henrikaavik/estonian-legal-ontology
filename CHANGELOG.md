@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Per-document provision classes removed (#434)
+
+- Generators type provisions as `estleg:LegalProvision` (KOV also
+  `estleg:KovProvision`) and no longer mint `LegalProvision_<slug>` /
+  `Regulation_<id>` classes.
+- `remint_per_document_classes` rewrites committed peeps + combined.
+
 ### Canonical T-Box in controlled_vocabulary.jsonld (#433)
 
 - CV is the default-graph schema: class hierarchy, ≥95% domain+range,

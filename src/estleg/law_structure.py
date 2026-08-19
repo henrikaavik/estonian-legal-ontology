@@ -758,7 +758,7 @@ def emit_hierarchy_and_provisions(
     paragrahvid: list[ET.Element],
     prefix: str,
     ontology_id: str,
-    class_id: str,
+    class_id: str = "estleg:LegalProvision",
     title: str,
     slug: str,
     par_min: object,

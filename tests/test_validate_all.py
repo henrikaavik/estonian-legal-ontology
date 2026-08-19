@@ -37,7 +37,7 @@ def act_doc(*, provisions: bool = True) -> dict:
         graph.append(
             {
                 "@id": "estleg:Act_1_Par_1",
-                "@type": ["owl:NamedIndividual", "estleg:LegalProvision_Act1"],
+                "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
                 "estleg:paragrahv": "§ 1.",
             }
         )

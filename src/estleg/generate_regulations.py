@@ -488,7 +488,7 @@ def build_regulation_jsonld(
         raise ValueError(f"Regulation has no terviktekstID: {title}")
 
     prefix = f"Reg_{tid}"
-    class_id = f"estleg:Regulation_{tid}"
+    provision_type = "estleg:LegalProvision"
     ontology_id = f"estleg:{prefix}_Map_2026"
 
     rt_source_url = ""
@@ -521,11 +521,11 @@ def build_regulation_jsonld(
         )
     else:
         # Provisions: try structured first, fall back to HTMLKonteiner
-        provisions = collect_structured_paragraphs(root, prefix, title, class_id, ontology_id)
+        provisions = collect_structured_paragraphs(root, prefix, title, provision_type, ontology_id)
         parse_mode = "structured"
         preamble_html = ""
         if not provisions:
-            preamble_html, provisions = collect_html_paragraphs(root, prefix, title, class_id, ontology_id)
+            preamble_html, provisions = collect_html_paragraphs(root, prefix, title, provision_type, ontology_id)
             parse_mode = "html_fallback" if provisions else "no_paragraphs"
 
         # Preamble: prefer structured `<preambul>`, fall back to HTML preamble
@@ -602,15 +602,7 @@ def build_regulation_jsonld(
                 "provision content suppressed (issue #374)."
             )
 
-    graph: list[dict] = [
-        ontology_node,
-        {
-            "@id": class_id,
-            "@type": ["owl:Class"],
-            "rdfs:label": "Õigusnorm (paragrahv)",
-            "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
-        },
-    ]
+    graph: list[dict] = [ontology_node]
     graph.extend(annexes)
     graph.extend(provisions)
 

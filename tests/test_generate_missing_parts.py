@@ -157,7 +157,7 @@ def test_tsus_osa1_flat_marker_falls_through_to_section_scan() -> None:
     provisions = [
         n
         for n in doc["@graph"]
-        if "estleg:LegalProvision_TsUS_osa1" in (n.get("@type") or [])
+        if "estleg:LegalProvision" in (n.get("@type") or []) and "estleg:paragrahv" in n
     ]
     assert len(provisions) == 2, (
         "flat Osa1 marker must fall through to the §§-scan and emit "
@@ -440,7 +440,7 @@ def test_tsus_requested_cluster_is_iri_reference_not_bare_string() -> None:
     provisions = [
         n
         for n in doc["@graph"]
-        if "estleg:LegalProvision_TsUS_osa1" in (n.get("@type") or [])
+        if "estleg:LegalProvision" in (n.get("@type") or []) and "estleg:paragrahv" in n
     ]
     assert provisions, "expected at least one TsÜS Osa1 provision"
     for provision in provisions:
