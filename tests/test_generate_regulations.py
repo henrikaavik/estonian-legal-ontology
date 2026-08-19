@@ -522,7 +522,7 @@ class TestRegulationIndex:
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": f"estleg:Reg_{idx}_Map_2026",
+                        "@id": f"estleg:Reg_{idx}_Map",
                         "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                         "estleg:issuer": "Vabariigi Valitsus",
                     },
@@ -592,7 +592,7 @@ class TestRegulationIndex:
         current = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_1_Map_2026",
+                    "@id": "estleg:Reg_1_Map",
                     "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                     "estleg:terviktekstId": "1",
                 }
@@ -601,7 +601,7 @@ class TestRegulationIndex:
         removed = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_2_Map_2026",
+                    "@id": "estleg:Reg_2_Map",
                     "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                     "estleg:terviktekstId": "2",
                 }
@@ -622,7 +622,7 @@ class TestRegulationIndex:
         (out_dir / "full_reg_t100_peep.json").write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
-                {"@id": "estleg:Reg_100_Map_2026",
+                {"@id": "estleg:Reg_100_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                  "estleg:issuer": "Vabariigi Valitsus"},
                 {"@id": "estleg:Reg_100_Par_1",
@@ -634,7 +634,7 @@ class TestRegulationIndex:
         (out_dir / "stub_reg_t200_peep.json").write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
-                {"@id": "estleg:Reg_200_Map_2026",
+                {"@id": "estleg:Reg_200_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                  "estleg:issuer": "Sotsiaalminister",
                  "estleg:contentStatus": "noStructuredBody",
@@ -731,7 +731,7 @@ class TestRepealedBeforeSnapshotGenerator:
         )
         # No provision content is emitted for void law text.
         assert _provisions(doc["@graph"]) == []
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_900_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_900_Map")
         assert ont is not None
         assert ont["estleg:temporalStatus"] == "repealed"
         assert ont["estleg:contentStatus"] == "repealedBeforeSnapshot"
@@ -748,7 +748,7 @@ class TestRepealedBeforeSnapshotGenerator:
             "Aktiivne määrus", {}, root, is_kov=False, kehtiv="2026-05-01"
         )
         assert len(_provisions(doc["@graph"])) == 1
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_800_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_800_Map")
         assert "estleg:temporalStatus" not in ont
         assert ont["estleg:parseMode"] == "structured"
         assert stats["repealed_before_snapshot"] == 0
@@ -761,7 +761,7 @@ class TestRepealedBeforeSnapshotGenerator:
             "Lõppev määrus", {}, root, is_kov=False, kehtiv="2026-05-01"
         )
         assert _provisions(doc["@graph"]) == []
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_810_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_810_Map")
         assert ont["estleg:temporalStatus"] == "repealed"
         assert ont.get("estleg:contentStatus") != "repealedBeforeSnapshot"
         assert stats["repealed"] == 1
@@ -782,7 +782,7 @@ class TestRepealedBeforeSnapshotGenerator:
             evaluation_date="2026-05-01",
         )
         assert _provisions(doc["@graph"]) == []
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_162619_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_162619_Map")
         assert ont is not None
         assert ont["estleg:temporalStatus"] == "repealed"
         assert ont.get("estleg:contentStatus") != "repealedBeforeSnapshot"
@@ -802,7 +802,7 @@ class TestRepealedBeforeSnapshotGenerator:
             evaluation_date="2026-06-01",
         )
         assert _provisions(doc["@graph"]) == []
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_162620_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_162620_Map")
         assert ont["estleg:temporalStatus"] == "repealed"
         assert stats["repealed"] == 1
 
@@ -817,7 +817,7 @@ class TestRepealedBeforeSnapshotGenerator:
             evaluation_date="2026-06-01",
         )
         assert len(_provisions(doc["@graph"])) == 1
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_830_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_830_Map")
         assert "estleg:temporalStatus" not in ont
         assert "estleg:legalText" in _provisions(doc["@graph"])[0]
         assert stats["repealed"] == 0
@@ -961,7 +961,7 @@ class TestStripRepealedProvisionBodies:
 
     def _repealed_doc(self, *, repeal: str, kehtiv: str | None = None) -> dict:
         act: dict = {
-            "@id": "estleg:Reg_1_Map_2026",
+            "@id": "estleg:Reg_1_Map",
             "@type": ["owl:Ontology", "estleg:Act"],
             "estleg:temporalStatus": "repealed",
             "estleg:repealDate": {"@value": repeal, "@type": "xsd:date"},
@@ -1138,7 +1138,7 @@ class TestExistingIsStale:
 
     def _write_stub(self, path: Path, *, tid: str, kehtiv: str | None) -> None:
         ontology = {
-            "@id": f"estleg:Reg_{tid}_Map_2026",
+            "@id": f"estleg:Reg_{tid}_Map",
             "@type": ["owl:Ontology", "estleg:NationalRegulation"],
             "estleg:terviktekstId": tid,
         }
@@ -1204,7 +1204,7 @@ class TestExistingIsStale:
             json.dumps({
                 "@graph": [
                     {
-                        "@id": "estleg:Reg_100_Map_2026",
+                        "@id": "estleg:Reg_100_Map",
                         "@type": ["owl:Ontology"],
                         "estleg:terviktekstId": "100",
                         "estleg:kehtiv": {
@@ -1218,7 +1218,7 @@ class TestExistingIsStale:
         new_doc = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_100_Map_2026",
+                    "@id": "estleg:Reg_100_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "100",
                     "estleg:kehtiv": {
@@ -1243,7 +1243,7 @@ class TestExistingIsStale:
         fresh_doc = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_100_Map_2026",
+                    "@id": "estleg:Reg_100_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "100",
                     "estleg:kehtiv": {
@@ -1277,7 +1277,7 @@ class TestDocCacheThreaded:
         cached_doc = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_X_Map_2026",
+                    "@id": "estleg:Reg_X_Map",
                     "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                     "estleg:issuer": "Vabariigi Valitsus",
                 },
@@ -1306,7 +1306,7 @@ class TestDocCacheThreaded:
         cached = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_X_Map_2026",
+                    "@id": "estleg:Reg_X_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "1234",
                 }
@@ -1322,7 +1322,7 @@ class TestDocCacheThreaded:
         cached = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_X_Map_2026",
+                    "@id": "estleg:Reg_X_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "abc",
                 }

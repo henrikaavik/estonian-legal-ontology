@@ -25,14 +25,14 @@ from estleg import fix_similarity_perfect_edges_581 as fix
 # ---------------------------------------------------------------------------
 
 # Empty-body acts (no _Par_ summary/legalText): these score a boilerplate 1.0.
-_EMPTY_A = "estleg:Reg_1001_Map_2026"
-_EMPTY_B = "estleg:Reg_1002_Map_2026"
+_EMPTY_A = "estleg:Reg_1001_Map"
+_EMPTY_B = "estleg:Reg_1002_Map"
 # Text-bearing acts: a 1.0 between them is a legitimate edge (real shared text).
-_TEXT_A = "estleg:Reg_2001_Map_2026"
-_TEXT_B = "estleg:Reg_2002_Map_2026"
+_TEXT_A = "estleg:Reg_2001_Map"
+_TEXT_B = "estleg:Reg_2002_Map"
 # Empty-body acts that only score 0.5 — kept (not a perfect dup).
-_SUB_A = "estleg:Reg_3001_Map_2026"
-_SUB_B = "estleg:Reg_3002_Map_2026"
+_SUB_A = "estleg:Reg_3001_Map"
+_SUB_B = "estleg:Reg_3002_Map"
 
 
 def _bare(iri: str) -> str:

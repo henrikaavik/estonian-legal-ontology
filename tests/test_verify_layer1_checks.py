@@ -46,7 +46,7 @@ def test_check_laws_passes_when_stampable_roots_carry_law_and_act(
     _write_peep(
         krr / "alks_peep.json",
         {
-            "@id": "estleg:AlkS_Map_2026",
+            "@id": "estleg:AlkS_Map",
             "@type": ["owl:Ontology", "estleg:Law", "estleg:Act"],
         },
     )
@@ -68,7 +68,7 @@ def test_check_laws_fails_when_stampable_root_missing_law_type(
     krr = _stage(tmp_path)
     _write_peep(
         krr / "alks_peep.json",
-        {"@id": "estleg:AlkS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"]},
+        {"@id": "estleg:AlkS_Map", "@type": ["owl:Ontology", "estleg:Act"]},
     )
     (krr / "INDEX.json").write_text(
         json.dumps({"laws": [{"name": "alks", "files": ["alks_peep.json"]}]}),
@@ -87,7 +87,7 @@ def test_check_laws_skips_regulation_roots(tmp_path: Path, monkeypatch: pytest.M
     _write_peep(
         krr / "reg_peep.json",
         {
-            "@id": "estleg:Reg_1_Map_2026",
+            "@id": "estleg:Reg_1_Map",
             "@type": ["owl:Ontology", "estleg:NationalRegulation"],
         },
     )
@@ -122,7 +122,7 @@ def test_check_state_regulations_requires_act_on_regulation_root(
     _write_peep(
         riik / "ok_t1_peep.json",
         {
-            "@id": "estleg:Reg_1_Map_2026",
+            "@id": "estleg:Reg_1_Map",
             "@type": ["owl:Ontology", "estleg:NationalRegulation", "estleg:Act"],
         },
     )
@@ -136,7 +136,7 @@ def test_check_state_regulations_requires_act_on_regulation_root(
     _write_peep(
         riik / "bad_t2_peep.json",
         {
-            "@id": "estleg:Reg_2_Map_2026",
+            "@id": "estleg:Reg_2_Map",
             "@type": ["owl:Ontology", "estleg:MinisterialRegulation"],
         },
     )

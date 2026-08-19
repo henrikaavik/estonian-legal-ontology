@@ -55,7 +55,7 @@ def _provision_with_bare_version_stub() -> dict:
         "@type": "estleg:LegalProvision",
         "estleg:paragrahv": "TEST § 1",
         "estleg:summary": "Fixture provision whose hasVersion target is an untyped stub.",
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         "estleg:hasVersion": {"@id": "estleg:VersionStub"},
     }
 

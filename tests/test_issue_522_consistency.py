@@ -114,8 +114,8 @@ def test_checker_flags_two_partofact_iris() -> None:
                 "@id": "estleg:X_Par_1",
                 "@type": "estleg:LegalProvision",
                 "estleg:partOfAct": [
-                    {"@id": "estleg:A_Map_2026"},
-                    {"@id": "estleg:B_Map_2026"},
+                    {"@id": "estleg:A_Map"},
+                    {"@id": "estleg:B_Map"},
                 ],
             }
         ]
@@ -125,14 +125,14 @@ def test_checker_flags_two_partofact_iris() -> None:
     hit = violations[0]
     assert hit.kind == checker.KIND_PARTOFACT_NOT_FUNCTIONAL
     assert hit.node_id == "estleg:X_Par_1"
-    assert set(hit.values) == {"estleg:A_Map_2026", "estleg:B_Map_2026"}
+    assert set(hit.values) == {"estleg:A_Map", "estleg:B_Map"}
 
 
 def test_checker_flags_temporalstatus_inforce_and_repealed() -> None:
     doc = {
         "@graph": [
             {
-                "@id": "estleg:X_Map_2026",
+                "@id": "estleg:X_Map",
                 "@type": "estleg:Act",
                 "estleg:temporalStatus": ["inForce", "repealed"],
             }
@@ -142,7 +142,7 @@ def test_checker_flags_temporalstatus_inforce_and_repealed() -> None:
     assert len(violations) == 1
     hit = violations[0]
     assert hit.kind == checker.KIND_TEMPORAL_CONFLICT
-    assert hit.node_id == "estleg:X_Map_2026"
+    assert hit.node_id == "estleg:X_Map"
     assert checker.TOKEN_IN_FORCE in hit.values
     assert checker.TOKEN_REPEALED in hit.values
 
@@ -154,12 +154,12 @@ def test_checker_accepts_clean_fixture_and_duplicate_same_act() -> None:
                 "@id": "estleg:X_Par_1",
                 "@type": "estleg:LegalProvision",
                 "estleg:partOfAct": [
-                    {"@id": "estleg:X_Map_2026"},
-                    {"@id": "https://w3id.org/estleg/X_Map_2026"},
+                    {"@id": "estleg:X_Map"},
+                    {"@id": "https://w3id.org/estleg/X_Map"},
                 ],
             },
             {
-                "@id": "estleg:X_Map_2026",
+                "@id": "estleg:X_Map",
                 "@type": "estleg:Act",
                 "estleg:temporalStatus": {"@value": "inForce", "@type": "xsd:string"},
             },
@@ -186,7 +186,7 @@ def test_checker_cli_and_sample_peeps_on_fixture(tmp_path: Path) -> None:
                     {
                         "@id": "estleg:PKS_Par_1",
                         "@type": "estleg:LegalProvision",
-                        "estleg:partOfAct": {"@id": "estleg:PKS_Map_2026"},
+                        "estleg:partOfAct": {"@id": "estleg:PKS_Map"},
                     }
                 ]
             }
@@ -202,8 +202,8 @@ def test_checker_cli_and_sample_peeps_on_fixture(tmp_path: Path) -> None:
                         "@id": "estleg:Y_Par_1",
                         "@type": "estleg:LegalProvision",
                         "estleg:partOfAct": [
-                            {"@id": "estleg:A_Map_2026"},
-                            {"@id": "estleg:B_Map_2026"},
+                            {"@id": "estleg:A_Map"},
+                            {"@id": "estleg:B_Map"},
                         ],
                     }
                 ]

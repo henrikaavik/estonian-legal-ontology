@@ -10,10 +10,10 @@ from estleg.generate_draft_legislation import classify_draft_type
 
 def test_resolve_enacted_as_only_for_enacts():
     lookup = {"karistusseadustik": {"name": "karistusseadustik", "files": ["k.json"], "slug": "karistusseadustik"}}
-    iri_map = {"k.json": "estleg:KARIST_2_Map_2026"}
+    iri_map = {"k.json": "estleg:KARIST_2_Map"}
     assert resolve_enacted_as("Karistusseadustik", "amends", lookup, iri_map) is None
     assert resolve_enacted_as("Karistusseadustik", "enacts", lookup, iri_map) == (
-        "estleg:KARIST_2_Map_2026"
+        "estleg:KARIST_2_Map"
     )
 
 
@@ -25,10 +25,10 @@ def test_resolve_enacted_as_strips_eelnou_noise():
             "slug": "isikuandmete_kaitse_seadus",
         }
     }
-    iri_map = {"i.json": "estleg:IAKS_Map_2026"}
+    iri_map = {"i.json": "estleg:IAKS_Map"}
     assert resolve_enacted_as(
         "Isikuandmete kaitse seaduse eelnõu", "enacts", lookup, iri_map
-    ) == "estleg:IAKS_Map_2026"
+    ) == "estleg:IAKS_Map"
 
 
 def test_terminal_phases_live_in_controlled_vocabulary():

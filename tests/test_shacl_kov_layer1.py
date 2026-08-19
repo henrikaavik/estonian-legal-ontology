@@ -161,7 +161,7 @@ class TestEndToEndEnrichedKovGraph:
                 },
                 # MunicipalRegulation (act node, directly typed as Act)
                 {
-                    "@id": "estleg:Reg_1014955_Map_2026",
+                    "@id": "estleg:Reg_1014955_Map",
                     "@type": [
                         "owl:Ontology",
                         "estleg:Act",
@@ -191,7 +191,7 @@ class TestEndToEndEnrichedKovGraph:
                     "estleg:enactedByMunicipality": {
                         "@id": "estleg:Municipality_EHAK_0784"
                     },
-                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map_2026"},
+                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map"},
                 },
             ],
         })
@@ -206,7 +206,7 @@ class TestCitationShape:
         # SHACL (avoiding subclass-inference brittleness).
         ok, msg = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationTarget": {"@id": "estleg:Reg_1014955_Par_42"},
             "estleg:citationDetail": "lg 1",
@@ -219,7 +219,7 @@ class TestCitationShape:
         # and omit citationTarget.
         ok, msg = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationSource": {"@id": "estleg:Reg_1014955_Par_1"},
             "estleg:citationText": "KarS § 9999",
@@ -241,7 +241,7 @@ class TestCitationShape:
         # citationTarget as a literal (not an IRI) must fail nodeKind.
         ok, _ = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationTarget": "literal-not-iri",
         })

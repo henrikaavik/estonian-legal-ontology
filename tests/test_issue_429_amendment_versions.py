@@ -41,7 +41,7 @@ def test_link_events_to_matching_version_dates() -> None:
                 "@id": "estleg:Amendment_X_old",
                 "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
                 "estleg:entryIntoForce": {"@value": "2020-01-01", "@type": "xsd:date"},
-                "estleg:amends": {"@id": "estleg:X_Map_2026"},
+                "estleg:amends": {"@id": "estleg:X_Map"},
             },
         ]
     }
@@ -60,7 +60,7 @@ def test_link_events_to_matching_version_dates() -> None:
     assert derived["estleg:resultedInVersion"] == [{"@id": "estleg:X_Par_1_v2"}]
     peep = {
         "@graph": [
-            {"@id": "estleg:X_Map_2026", "@type": ["estleg:Act", "estleg:Law"]}
+            {"@id": "estleg:X_Map", "@type": ["estleg:Act", "estleg:Law"]}
         ]
     }
     assert stamp_last_amendment_from_versions(peep, by_date) is True
@@ -112,7 +112,7 @@ def test_validate_last_amendment_matches_versions(tmp_path: Path) -> None:
     peep = {
         "@graph": [
             {
-                "@id": "estleg:X_Map_2026",
+                "@id": "estleg:X_Map",
                 "@type": ["estleg:Act", "estleg:Law"],
                 "estleg:lastAmendmentDate": {
                     "@value": "2010-01-01",

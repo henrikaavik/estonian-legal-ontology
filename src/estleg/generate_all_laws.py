@@ -819,7 +819,9 @@ def generate_multipart_law(
         # Issue #89: Mark file-level ontology node with estleg:Part type
         osa_ontology_node: dict = {
             "@id": ontology_id,
-            "@type": ["estleg:Act", "estleg:Law", "estleg:Part", "schema:Legislation"],
+            "@type": ["estleg:Part", "schema:Legislation"],
+            "estleg:isPartOf": {"@id": mint_act_iri(prefix)},
+            "estleg:partOfAct": {"@id": mint_act_iri(prefix)},
             "rdfs:label": et_literal(
                 f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus"
             ),
@@ -863,6 +865,7 @@ def generate_multipart_law(
             structural_ns=f"{prefix}_{osa_nr}",
             part_label=part_label,
             subsection_builder=build_subsections,
+            act_iri=mint_act_iri(prefix),
         )
         filename = f"{slug}_osa{osa_nr}_peep.json"
         results.append((filename, {"@context": CONTEXT, "@graph": graph}))

@@ -65,7 +65,7 @@ MUNICIPALITY = {
 def _incomplete_municipal_stub() -> dict:
     """The pre-#488 shape: a typed MunicipalRegulation stub stripped of edges."""
     return {
-        "@id": "estleg:Reg_1001517_Map_2026",
+        "@id": "estleg:Reg_1001517_Map",
         "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
         "rdfs:label": "Kaugküttepiirkonna määramine Saku vallas (määrus)",
         "estleg:isStubNode": True,
@@ -75,7 +75,7 @@ def _incomplete_municipal_stub() -> dict:
 def _complete_municipal_stub() -> dict:
     """The post-#488 shape: the same stub carrying its required edges."""
     return {
-        "@id": "estleg:Reg_1001517_Map_2026",
+        "@id": "estleg:Reg_1001517_Map",
         "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
         "rdfs:label": "Kaugküttepiirkonna määramine Saku vallas (määrus)",
         "estleg:documentType": "määrus",
@@ -106,7 +106,7 @@ def test_gate_fails_on_incomplete_shaped_stub(tmp_path):
     for row in summary["groups"]:
         assert "estleg:MunicipalRegulation" in row["focus_type"], row
         assert row["is_stub"] is True, row
-        assert row["examples"] == ["https://w3id.org/estleg/Reg_1001517_Map_2026"]
+        assert row["examples"] == ["https://w3id.org/estleg/Reg_1001517_Map"]
 
 
 def test_gate_passes_on_complete_shaped_stub(tmp_path):

@@ -58,7 +58,7 @@ class TestCorrectCourt:
         assert fix.correct_court(node_e) is False
 
     def test_non_decision_node_skipped(self):
-        header = {"@id": "estleg:CURIA_Other_Map_2026", "@type": ["owl:Ontology"]}
+        header = {"@id": "estleg:CURIA_Other_Map", "@type": ["owl:Ontology"]}
         assert fix.correct_court(header) is False
 
     def test_missing_celex_skipped(self):
@@ -89,7 +89,7 @@ class TestProcessPeep:
         self._write(
             peep,
             [
-                {"@id": "estleg:CURIA_Other_Map_2026", "@type": ["owl:Ontology"]},
+                {"@id": "estleg:CURIA_Other_Map", "@type": ["owl:Ontology"]},
                 _decision("82015EE1202(01)"),
                 _decision("E2014J0018"),
                 _decision("62016CJ0123"),  # untouched

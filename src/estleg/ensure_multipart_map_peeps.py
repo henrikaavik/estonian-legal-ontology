@@ -13,43 +13,49 @@ import re
 import sys
 from pathlib import Path
 
-from estleg.estleg_common import CONTEXT, KRR_DIR, save_json
+from estleg.estleg_common import CONTEXT, KRR_DIR, mint_act_iri, save_json
 
 # prefix on the per-osa act IRI → (map_iri, map_filename, index_name, label)
 MULTIPART_MAPS: dict[str, tuple[str, str, str, str]] = {
     "KARIST_2": (
-        "estleg:KARIST_2_Map_2026",
+        mint_act_iri("KARIST_2"),
         "karistusseadustik_map_peep.json",
         "karistusseadustik",
         "Karistusseadustik",
     ),
     "volaoigusseadus": (
-        "estleg:volaoigusseadus_Map_2026",
+        mint_act_iri("volaoigusseadus"),
         "volaoigusseadus_map_peep.json",
         "volaoigusseadus",
         "Võlaõigusseadus",
     ),
     "VOS": (
-        "estleg:volaoigusseadus_Map_2026",
+        mint_act_iri("volaoigusseadus"),
         "volaoigusseadus_map_peep.json",
         "volaoigusseadus",
         "Võlaõigusseadus",
     ),
     "AOS": (
-        "estleg:AOS_Map_2026",
+        mint_act_iri("AOS"),
         "asjaoigusseadus_map_peep.json",
         "asjaoigusseadus",
         "Asjaõigusseadus",
     ),
     "TsÜS": (
-        "estleg:TsÜS_Map_2026",
+        mint_act_iri("TsÜS"),
+        "tsiviilseadustiku_uldosa_seadus_map_peep.json",
+        "tsiviilseadustiku_uldosa_seadus",
+        "Tsiviilseadustiku üldosa seadus",
+    ),
+    "TsUS": (
+        mint_act_iri("TsUS"),
         "tsiviilseadustiku_uldosa_seadus_map_peep.json",
         "tsiviilseadustiku_uldosa_seadus",
         "Tsiviilseadustiku üldosa seadus",
     ),
     "tsiviilkohtumenetluse_seadustik": (
-        "estleg:TsMS_Map_2026",
-        "tsiviilkohtumenetluse_peep.json",
+        mint_act_iri("TsMS"),
+        "tsiviilkohtumenetluse_seadustik_map_peep.json",
         "tsiviilkohtumenetluse_seadustik",
         "Tsiviilkohtumenetluse seadustik",
     ),
@@ -90,8 +96,6 @@ def write_map_peep(krr_dir: Path, prefix: str) -> Path | None:
         return None
     map_iri, filename, _index_name, label = spec
     dest = krr_dir / filename
-    if dest.name == "tsiviilkohtumenetluse_peep.json" and dest.is_file():
-        return dest
     parts = _osa_parts(krr_dir, prefix)
     node = {
         "@id": map_iri,
@@ -197,17 +201,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--krr-dir", type=Path, default=KRR_DIR)
     args = parser.parse_args(argv)
     written = []
-    for prefix in ("KARIST_2", "volaoigusseadus", "AOS", "TsÜS"):
+    for prefix in (
+        "KARIST_2",
+        "volaoigusseadus",
+        "AOS",
+        "TsUS",
+        "tsiviilkohtumenetluse_seadustik",
+    ):
         path = write_map_peep(args.krr_dir, prefix)
         if path:
             written.append(path.name)
             spec = MULTIPART_MAPS[prefix]
             prepend_index_files(args.krr_dir / "INDEX.json", spec[2], spec[1])
-    prepend_index_files(
-        args.krr_dir / "INDEX.json",
-        "tsiviilkohtumenetluse_seadustik",
-        "tsiviilkohtumenetluse_peep.json",
-    )
     print("map peeps:", written)
     ann = args.krr_dir / "annotations" / "oiguskantsler_seisukohad.jsonld"
     if ann.is_file():

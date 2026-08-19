@@ -121,7 +121,7 @@ def test_update_law_file_eurovoc_writes_bare_iri_subjects(tmp_path: Path) -> Non
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": "estleg:X_Map_2026",
+                        "@id": "estleg:X_Map",
                         "@type": ["owl:Ontology"],
                         "rdfs:label": "X",
                     }

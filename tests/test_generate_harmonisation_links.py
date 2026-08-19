@@ -60,8 +60,8 @@ def _harmonised_ids(directive_doc: dict) -> list[str]:
 
 def test_build_directive_node_lists_all_transposing_laws():
     estonian_laws = [
-        {"name": "Veeseadus", "iri": "estleg:VEE_Map_2026"},
-        {"name": "Keskkonnavastutuse seadus", "iri": "estleg:KEHVS_Map_2026"},
+        {"name": "Veeseadus", "iri": "estleg:VEE_Map"},
+        {"name": "Keskkonnavastutuse seadus", "iri": "estleg:KEHVS_Map"},
     ]
     doc = harmonisation.build_directive_node(
         celex_dir="32000L0060",
@@ -71,8 +71,8 @@ def test_build_directive_node_lists_all_transposing_laws():
         other_measures=[],
     )
     assert _harmonised_ids(doc) == [
-        "estleg:VEE_Map_2026",
-        "estleg:KEHVS_Map_2026",
+        "estleg:VEE_Map",
+        "estleg:KEHVS_Map",
     ]
 
 
@@ -81,15 +81,15 @@ def test_build_directive_node_single_law_unchanged():
         celex_dir="32016L0680",
         directive_iri="estleg:EU_32016L0680",
         estonian_law_name="Some Act",
-        estonian_laws=[{"name": "Some Act", "iri": "estleg:SA_Map_2026"}],
+        estonian_laws=[{"name": "Some Act", "iri": "estleg:SA_Map"}],
         other_measures=[],
     )
-    assert _harmonised_ids(doc) == ["estleg:SA_Map_2026"]
+    assert _harmonised_ids(doc) == ["estleg:SA_Map"]
 
 
 def test_build_directive_node_skips_laws_without_iri():
     estonian_laws = [
-        {"name": "Resolved Act", "iri": "estleg:RA_Map_2026"},
+        {"name": "Resolved Act", "iri": "estleg:RA_Map"},
         {"name": "Unresolved Act"},  # no 'iri' key — must be dropped
         {"name": "Unresolved Act 2", "iri": None},  # None IRI — must be dropped
     ]
@@ -100,14 +100,14 @@ def test_build_directive_node_skips_laws_without_iri():
         estonian_laws=estonian_laws,
         other_measures=[],
     )
-    assert _harmonised_ids(doc) == ["estleg:RA_Map_2026"]
+    assert _harmonised_ids(doc) == ["estleg:RA_Map"]
 
 
 def test_build_directive_node_dedupes_repeated_iris():
     estonian_laws = [
-        {"name": "Act A", "iri": "estleg:A_Map_2026"},
-        {"name": "Act A (dup mapping)", "iri": "estleg:A_Map_2026"},
-        {"name": "Act B", "iri": "estleg:B_Map_2026"},
+        {"name": "Act A", "iri": "estleg:A_Map"},
+        {"name": "Act A (dup mapping)", "iri": "estleg:A_Map"},
+        {"name": "Act B", "iri": "estleg:B_Map"},
     ]
     doc = harmonisation.build_directive_node(
         celex_dir="32003L0098",
@@ -116,7 +116,7 @@ def test_build_directive_node_dedupes_repeated_iris():
         estonian_laws=estonian_laws,
         other_measures=[],
     )
-    assert _harmonised_ids(doc) == ["estleg:A_Map_2026", "estleg:B_Map_2026"]
+    assert _harmonised_ids(doc) == ["estleg:A_Map", "estleg:B_Map"]
 
 
 # ---------------------------------------------------------------------------
@@ -177,11 +177,11 @@ def test_aggregate_node_uses_harmonises_not_harmonised_with():
         celex_dir="32000L0060",
         directive_iri="estleg:EU_32000L0060",
         estonian_law_name="Veeseadus",
-        estonian_laws=[{"name": "Veeseadus", "iri": "estleg:VEE_Map_2026"}],
+        estonian_laws=[{"name": "Veeseadus", "iri": "estleg:VEE_Map"}],
         other_measures=[],
     )
     aggregate = doc["@graph"][0]
-    assert aggregate["estleg:harmonises"] == [{"@id": "estleg:VEE_Map_2026"}]
+    assert aggregate["estleg:harmonises"] == [{"@id": "estleg:VEE_Map"}]
     assert "estleg:harmonisedWith" not in aggregate
 
 
@@ -200,7 +200,7 @@ def test_per_country_measure_nodes_have_no_back_edge():
         celex_dir="32000L0060",
         directive_iri="estleg:EU_32000L0060",
         estonian_law_name="Veeseadus",
-        estonian_laws=[{"name": "Veeseadus", "iri": "estleg:VEE_Map_2026"}],
+        estonian_laws=[{"name": "Veeseadus", "iri": "estleg:VEE_Map"}],
         other_measures=other,
     )
     measure_nodes = [
@@ -273,7 +273,7 @@ def _write_law_peep(tmp_path: Path, ontology_node: dict) -> Path:
 def test_update_law_file_adds_harmonised_with_to_ontology_node(tmp_path):
     path = _write_law_peep(
         tmp_path,
-        {"@id": "estleg:SomeAct_Map_2026", "@type": ["owl:Ontology", "estleg:Act"]},
+        {"@id": "estleg:SomeAct_Map", "@type": ["owl:Ontology", "estleg:Act"]},
     )
     changed = harmonisation.update_law_file_harmonisation(
         path, ["estleg:Harmonisation_31990L0314", "estleg:Harmonisation_31993L0013"]
@@ -291,7 +291,7 @@ def test_update_law_file_adds_harmonised_with_to_ontology_node(tmp_path):
 def test_update_law_file_is_idempotent(tmp_path):
     path = _write_law_peep(
         tmp_path,
-        {"@id": "estleg:SomeAct_Map_2026", "@type": ["owl:Ontology"]},
+        {"@id": "estleg:SomeAct_Map", "@type": ["owl:Ontology"]},
     )
     ids = ["estleg:Harmonisation_31990L0314"]
     assert harmonisation.update_law_file_harmonisation(path, ids) is True
@@ -309,7 +309,7 @@ def test_update_law_file_merges_with_existing_refs(tmp_path):
     path = _write_law_peep(
         tmp_path,
         {
-            "@id": "estleg:SomeAct_Map_2026",
+            "@id": "estleg:SomeAct_Map",
             "@type": ["owl:Ontology"],
             "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_31990L0314"}],
         },

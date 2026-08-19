@@ -141,17 +141,17 @@ lists 7–8 removed targets but the actual deletion set between `main` and
 `45a6bea59` in `krr_outputs/eelnoud/eelnoud_combined.jsonld` is 10. Two
 discrepancies:
 
-- `estleg:TKS_Map_2026` — had 7 references; fix has 0, plus 6 `TarbKS_Map_2026`
+- `estleg:TKS_Map` — had 7 references; fix has 0, plus 6 `TarbKS_Map`
   adds. One duplicate-array entry on draft "Ülikooliseaduse ja Tartu Ülikooli
-  seaduse muutmise seadus" (which had `amendsLaw: [TKS_Map_2026, TKS_Map_2026]`)
+  seaduse muutmise seadus" (which had `amendsLaw: [TKS_Map, TKS_Map]`)
   was stripped without replacement. The target now resolves as
-  `TarbKS_Map_2026`.
-- `estleg:TS_Map_2026` → `TõS_Map_2026` was a clean 1→0 / 0→1 rename, not a
+  `TarbKS_Map`.
+- `estleg:TS_Map` → `TõS_Map` was a clean 1→0 / 0→1 rename, not a
   dead-reference removal.
 
-Action: either add a row for `TKS_Map_2026` and a separate "Renamed targets"
-sub-table for the `TKS_Map_2026 → TarbKS_Map_2026` and `TS_Map_2026 →
-TõS_Map_2026` rewrites, or rewrite the prose to clarify that the table is
+Action: either add a row for `TKS_Map` and a separate "Renamed targets"
+sub-table for the `TKS_Map → TarbKS_Map` and `TS_Map →
+TõS_Map` rewrites, or rewrite the prose to clarify that the table is
 deletions-only and that array-de-duplication and renames happened separately.
 
 ### 1.5 Validate Phase 1

@@ -46,10 +46,10 @@ def test_canonical_candidates_kars():
 
 
 def test_canonical_candidates_tsus_tries_both_spellings():
-    # Õ spelling is preferred (first), ASCII is the fallback candidate.
+    # ASCII first (#445); legacy Õ spelling is the fallback.
     assert L.canonical_candidates("TsUS_Par_138") == [
-        "TsÜS_Osa7_Par_138",
         "TsUS_Osa7_Par_138",
+        "TsÜS_Osa7_Par_138",
     ]
 
 
@@ -64,10 +64,10 @@ def test_map_to_canonical_kars():
     assert L.map_to_canonical("KarS_Par_88", canonical) == "KARIST_2_Osa2_Par_88"
 
 
-def test_map_to_canonical_tsus_prefers_o_tilde_spelling():
-    # When both spellings are present in the corpus, the Õ form wins.
+def test_map_to_canonical_tsus_prefers_ascii_spelling():
+    # When both spellings are present, the ASCII form wins (#445).
     canonical = {"TsÜS_Osa7_Par_138", "TsUS_Osa7_Par_138"}
-    assert L.map_to_canonical("TsUS_Par_138", canonical) == "TsÜS_Osa7_Par_138"
+    assert L.map_to_canonical("TsUS_Par_138", canonical) == "TsUS_Osa7_Par_138"
 
 
 def test_map_to_canonical_tsus_ascii_fallback():
@@ -139,18 +139,18 @@ def test_link_module_is_idempotent(tmp_path):
     doc = _module_doc([f"{L.NS}TsUS_Par_138"])
     path = tmp_path / "mod.jsonld"
     path.write_text(json.dumps(doc), encoding="utf-8")
-    canonical = {"TsÜS_Osa7_Par_138"}
+    canonical = {"TsUS_Osa7_Par_138"}
 
     out, first = L.link_module(path, canonical)
     assert first["sameas_added"] == 1
-    assert out["@graph"][0]["owl:sameAs"] == {"@id": "estleg:TsÜS_Osa7_Par_138"}
+    assert out["@graph"][0]["owl:sameAs"] == {"@id": "estleg:TsUS_Osa7_Par_138"}
 
     # Persist and re-run: a no-op diff.
     path.write_text(json.dumps(out), encoding="utf-8")
     out2, second = L.link_module(path, canonical)
     assert second["sameas_added"] == 0
     assert second["already_linked"] == 1
-    assert out2["@graph"][0]["owl:sameAs"] == {"@id": "estleg:TsÜS_Osa7_Par_138"}
+    assert out2["@graph"][0]["owl:sameAs"] == {"@id": "estleg:TsUS_Osa7_Par_138"}
 
 
 def test_link_module_skips_lfs_pointer(tmp_path):

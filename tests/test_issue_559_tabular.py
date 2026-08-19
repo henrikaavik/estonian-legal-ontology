@@ -26,7 +26,7 @@ FIXTURE_GRAPH = {
     },
     "@graph": [
         {
-            "@id": "estleg:FOO_Map_2026",
+            "@id": "estleg:FOO_Map",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "dcterms:title": "Foo seadus",
             "estleg:temporalStatus": "inForce",
@@ -37,7 +37,7 @@ FIXTURE_GRAPH = {
             "@id": "estleg:FOO_Par_1",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision_foo"],
             "estleg:paragrahv": "§ 1.",
-            "estleg:partOfAct": {"@id": "estleg:FOO_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:FOO_Map"},
             "estleg:legalText": "Hello world " + ("x" * 2100),
             "estleg:inForce": True,
             "estleg:references": [{"@id": "estleg:FOO_Par_2"}],
@@ -82,7 +82,7 @@ def test_row_builders_on_fixture_graph() -> None:
     decision = FIXTURE_GRAPH["@graph"][4]
 
     law_row = st.law_row(law, slug="foo_seadus", abbreviation="FOO")
-    assert law_row["iri"] == "estleg:FOO_Map_2026"
+    assert law_row["iri"] == "estleg:FOO_Map"
     assert law_row["slug"] == "foo_seadus"
     assert law_row["title"] == "Foo seadus"
     assert law_row["abbreviation"] == "FOO"
@@ -91,7 +91,7 @@ def test_row_builders_on_fixture_graph() -> None:
 
     provision_row = st.provision_row(provision)
     assert provision_row["iri"] == "estleg:FOO_Par_1"
-    assert provision_row["act"] == "estleg:FOO_Map_2026"
+    assert provision_row["act"] == "estleg:FOO_Map"
     assert provision_row["paragrahv"] == "§ 1."
     assert provision_row["subsection"] == ""
     assert len(provision_row["legalText"]) == st.LEGAL_TEXT_MAX
@@ -104,7 +104,7 @@ def test_row_builders_on_fixture_graph() -> None:
     cites = st.citation_rows(law)
     assert cites == [
         {
-            "source": "estleg:FOO_Map_2026",
+            "source": "estleg:FOO_Map",
             "target": "estleg:BAR_Par_1",
             "predicate": "estleg:references",
         }
@@ -146,7 +146,7 @@ def test_write_tables_on_fixture_graph(tmp_path: Path) -> None:
     assert list(provisions[0]) == list(st.PROVISION_COLUMNS)
     by_iri = {row["iri"]: row for row in provisions}
     assert by_iri["estleg:FOO_Par_1"]["in_force"] == "true"
-    assert by_iri["estleg:FOO_Par_1_Lg_1"]["act"] == "estleg:FOO_Map_2026"
+    assert by_iri["estleg:FOO_Par_1_Lg_1"]["act"] == "estleg:FOO_Map"
     assert by_iri["estleg:FOO_Par_1_Lg_1"]["paragrahv"] == "§ 1."
     assert len(by_iri["estleg:FOO_Par_1"]["legalText"]) == st.LEGAL_TEXT_MAX
 
@@ -208,7 +208,7 @@ def test_serialize_on_staged_subset(tmp_path: Path) -> None:
     (krr / "sanctions").mkdir(parents=True)
     (krr / "riigikohus").mkdir()
     (krr / "abipolitseiniku_seadus_peep.json").write_text(
-        '{"@graph":[{"@id":"estleg:FOO_Map_2026",'
+        '{"@graph":[{"@id":"estleg:FOO_Map",'
         '"@type":["estleg:Law"],"dcterms:title":"Foo",'
         '"estleg:references":{"@id":"estleg:BAR_Par_1"}}]}',
         encoding="utf-8",
@@ -239,7 +239,7 @@ def test_serialize_on_staged_subset(tmp_path: Path) -> None:
     assert counts["sanctions"] == 1
     assert counts["court_decisions"] == 1
     laws = _read_csv(out / "laws.csv")
-    assert laws[0]["iri"] == "estleg:FOO_Map_2026"
+    assert laws[0]["iri"] == "estleg:FOO_Map"
     assert laws[0]["abbreviation"] == "FOO"
     assert all(row["iri"] != "estleg:SHOULD_NOT_LOAD" for row in laws)
 

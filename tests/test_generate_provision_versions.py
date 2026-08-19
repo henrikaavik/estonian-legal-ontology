@@ -752,7 +752,7 @@ def test_fetch_current_redaction_tiebreak_is_deterministic(monkeypatch: pytest.M
 
 def _write_peep(krr: Path, slug: str, prefix: str, par_suffixes: list[str], *, title: str) -> None:
     graph = [
-        {"@id": f"estleg:{prefix}_Map_2026", "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+        {"@id": f"estleg:{prefix}_Map", "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
          "rdfs:label": f"{title} kaardistus", "dc:source": title},
         {"@id": f"estleg:LegalProvision_{prefix}", "@type": ["owl:Class"]},
     ]
@@ -790,7 +790,7 @@ def test_existing_peep_without_numeric_provisions_is_not_no_peep(tmp_path: Path)
     krr.mkdir()
     graph = [
         {
-            "@id": "estleg:GENEVA_Map_2026",
+            "@id": "estleg:GENEVA_Map",
             "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
             "rdfs:label": "Genfi konventsioonide ratifitseerimise seadus",
             "dc:source": "Genfi konventsioonide ratifitseerimise seadus",
@@ -824,7 +824,7 @@ def test_main_existing_peep_without_par_nodes_is_not_labeled_no_peep(
     krr.mkdir()
     graph = [
         {
-            "@id": "estleg:GENEVA_Map_2026",
+            "@id": "estleg:GENEVA_Map",
             "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
             "rdfs:label": "Genfi konventsioonide ratifitseerimise seadus",
             "dc:source": "Genfi konventsioonide ratifitseerimise seadus",
@@ -865,7 +865,7 @@ def test_reclassify_report_rewrites_stale_no_peep(tmp_path: Path) -> None:
         json.dumps({
             "@context": {"estleg": gpv.CONTEXT["estleg"]},
             "@graph": [{
-                "@id": "estleg:GENEVA_Map_2026",
+                "@id": "estleg:GENEVA_Map",
                 "@type": ["estleg:Act", "owl:Ontology"],
             }],
         }),
@@ -1427,14 +1427,14 @@ def test_fetch_redaction_xml_decodes_windows_1257(
 def test_version_node_is_self_citing_524() -> None:
     """#524: a ProvisionVersion carries an RT URL and denormalised act/§."""
     target = _make_target()
-    target.act_iri = "estleg:FIX_Map_2026"
+    target.act_iri = "estleg:FIX_Map"
     nodes = synthesise_versions(target, _three_redaction_chain())
     assert nodes
     first = nodes[0]
     assert first["estleg:rtUrl"] == "https://www.riigiteataja.ee/akt/111"
     assert first["estleg:sourceAct"] == "Fikseeritud seadus"
     assert first["estleg:provisionRef"] == "FIX § 1"
-    assert first["estleg:partOfAct"] == {"@id": "estleg:FIX_Map_2026"}
+    assert first["estleg:partOfAct"] == {"@id": "estleg:FIX_Map"}
     assert "estleg:paragrahv" not in first
 
 

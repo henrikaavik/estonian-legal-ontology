@@ -16,7 +16,7 @@ from estleg import backfill_kov_regulation_typing as bkt
 def _root(extra_types: list[str]) -> dict:
     """A KOV act root node with the given extra @type entries."""
     return {
-        "@id": "estleg:Reg_999_Map_2026",
+        "@id": "estleg:Reg_999_Map",
         "@type": ["owl:Ontology", *extra_types, "estleg:MunicipalRegulation", "estleg:Act"],
         "rdfs:label": "Test KOV reg (määrus)",
         "estleg:documentType": "määrus",
@@ -81,7 +81,7 @@ class TestBackfillNode:
 
     def test_does_not_touch_state_regulation_root(self):
         # A genuine state regulation root keeps its NationalRegulation type.
-        state = {"@id": "estleg:Reg_1_Map_2026",
+        state = {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:NationalRegulation",
                            "estleg:GovernmentRegulation"]}
         assert bkt.backfill_node(state) is False

@@ -50,7 +50,7 @@ def test_inverse_pairs_cover_transposition_authority_and_skip_versions() -> None
 def test_plan_inverses_adds_transposed_by_governs_and_partofact() -> None:
     nodes = [
         {
-            "@id": "estleg:PKS_Map_2026",
+            "@id": "estleg:PKS_Map",
             "@type": ["estleg:Law", "estleg:Act"],
             "estleg:transposesDirective": {"@id": "estleg:EU_32000L0060"},
             "estleg:competentAuthority": {"@id": "estleg:Institution_justiitsministeerium"},
@@ -58,7 +58,7 @@ def test_plan_inverses_adds_transposed_by_governs_and_partofact() -> None:
         {
             "@id": "estleg:PKS_Par_1",
             "@type": ["estleg:LegalProvision"],
-            "estleg:partOfAct": {"@id": "estleg:PKS_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:PKS_Map"},
             "estleg:hasSubsection": [{"@id": "estleg:PKS_Par_1_Lg_1"}],
         },
         {
@@ -86,12 +86,12 @@ def test_plan_inverses_adds_transposed_by_governs_and_partofact() -> None:
             "@type": ["estleg:CourtDecision"],
         },
         {
-            "@id": "estleg:PKS_Map_2026",
+            "@id": "estleg:PKS_Map",
             "@type": ["estleg:Law", "estleg:Act"],
-            "estleg:implementedBy": [{"@id": "estleg:Reg_1_Map_2026"}],
+            "estleg:implementedBy": [{"@id": "estleg:Reg_1_Map"}],
         },
         {
-            "@id": "estleg:Reg_1_Map_2026",
+            "@id": "estleg:Reg_1_Map",
             "@type": ["estleg:NationalRegulation", "estleg:Act"],
         },
     ]
@@ -106,24 +106,24 @@ def test_plan_inverses_adds_transposed_by_governs_and_partofact() -> None:
     graph = list(by_id.values())
     planned = plan_inverse_updates(graph)
     assert planned["estleg:EU_32000L0060"]["estleg:transposedBy"] == [
-        {"@id": "estleg:PKS_Map_2026"}
+        {"@id": "estleg:PKS_Map"}
     ]
     assert planned["estleg:Institution_justiitsministeerium"]["estleg:governs"] == [
-        {"@id": "estleg:PKS_Map_2026"}
+        {"@id": "estleg:PKS_Map"}
     ]
     assert planned["estleg:PKS_Par_1_Lg_1"]["estleg:partOfAct"] == {
-        "@id": "estleg:PKS_Map_2026"
+        "@id": "estleg:PKS_Map"
     }
     assert planned["estleg:RK_2016_1"]["estleg:interpretsLaw"] == [
         {"@id": "estleg:PKS_Par_1"}
     ]
-    assert planned["estleg:Reg_1_Map_2026"]["estleg:issuedUnder"] == [
-        {"@id": "estleg:PKS_Map_2026"}
+    assert planned["estleg:Reg_1_Map"]["estleg:issuedUnder"] == [
+        {"@id": "estleg:PKS_Map"}
     ]
     stats = materialize_combined_edges(graph)
     assert stats["nodes_updated"] >= 4
     lg = next(n for n in graph if n["@id"] == "estleg:PKS_Par_1_Lg_1")
-    assert lg["estleg:partOfAct"]["@id"] == "estleg:PKS_Map_2026"
+    assert lg["estleg:partOfAct"]["@id"] == "estleg:PKS_Map"
     # Idempotent.
     assert materialize_combined_edges(graph)["nodes_updated"] == 0
 
@@ -131,13 +131,13 @@ def test_plan_inverses_adds_transposed_by_governs_and_partofact() -> None:
 def test_analytical_overlay_flags_and_reified_similarity() -> None:
     nodes = [
         {
-            "@id": "estleg:PKS_Map_2026",
+            "@id": "estleg:PKS_Map",
             "@type": ["estleg:Law", "estleg:Act"],
             "estleg:competentAuthority": {"@id": "estleg:Institution_x"},
             "estleg:referencedBy": [{"@id": "estleg:VOS_Par_1"}],
         },
         {
-            "@id": "estleg:TMS_Map_2026",
+            "@id": "estleg:TMS_Map",
             "@type": ["estleg:Law", "estleg:Act"],
         },
         {
@@ -158,15 +158,15 @@ def test_analytical_overlay_flags_and_reified_similarity() -> None:
             "@id": "estleg:EU_32016L0679",
             "@type": ["estleg:EULegislation"],
             "estleg:inForce": {"@value": "true", "@type": "xsd:boolean"},
-            "estleg:transposedBy": [{"@id": "estleg:IKS_Map_2026"}],
+            "estleg:transposedBy": [{"@id": "estleg:IKS_Map"}],
         },
     ]
     planned = plan_analytical_updates(nodes)
-    assert planned["estleg:TMS_Map_2026"]["estleg:hasNoCompetentAuthority"]["@value"] == (
+    assert planned["estleg:TMS_Map"]["estleg:hasNoCompetentAuthority"]["@value"] == (
         "true"
     )
-    assert planned["estleg:TMS_Map_2026"]["estleg:competentAuthorityCount"] == 0
-    assert "estleg:hasNoCompetentAuthority" not in planned["estleg:PKS_Map_2026"]
+    assert planned["estleg:TMS_Map"]["estleg:competentAuthorityCount"] == 0
+    assert "estleg:hasNoCompetentAuthority" not in planned["estleg:PKS_Map"]
     assert planned["estleg:PKS_Par_1"]["estleg:inboundCitationCount"] == 2
     assert planned["estleg:PKS_Par_1"]["estleg:interpretationCount"] == 1
     assert planned["estleg:EU_32000L0060"]["estleg:hasNoTransposition"]["@value"] == (
@@ -208,7 +208,7 @@ def test_combined_builder_hooks_520_521(tmp_path: Path) -> None:
     peep = {
         "@graph": [
             {
-                "@id": "estleg:PKS_Map_2026",
+                "@id": "estleg:PKS_Map",
                 "@type": ["estleg:Law", "estleg:Act"],
                 "rdfs:label": "Perekonnaseadus",
                 "estleg:transposesDirective": {"@id": "estleg:EU_32000L0060"},
@@ -220,7 +220,7 @@ def test_combined_builder_hooks_520_521(tmp_path: Path) -> None:
                 "@id": "estleg:PKS_Par_1",
                 "@type": ["estleg:LegalProvision"],
                 "estleg:paragrahv": "§ 1.",
-                "estleg:partOfAct": {"@id": "estleg:PKS_Map_2026"},
+                "estleg:partOfAct": {"@id": "estleg:PKS_Map"},
                 "estleg:hasSubsection": [{"@id": "estleg:PKS_Par_1_Lg_1"}],
             },
             {
@@ -274,13 +274,13 @@ def test_combined_builder_hooks_520_521(tmp_path: Path) -> None:
     )
     by_id = {n["@id"]: n for n in combined["@graph"] if isinstance(n, dict)}
     assert by_id["estleg:EU_32000L0060"]["estleg:transposedBy"][0]["@id"] == (
-        "estleg:PKS_Map_2026"
+        "estleg:PKS_Map"
     )
     assert by_id["estleg:Institution_justiitsministeerium"]["estleg:governs"][0][
         "@id"
-    ] == "estleg:PKS_Map_2026"
+    ] == "estleg:PKS_Map"
     assert by_id["estleg:PKS_Par_1_Lg_1"]["estleg:partOfAct"]["@id"] == (
-        "estleg:PKS_Map_2026"
+        "estleg:PKS_Map"
     )
     assert "estleg:hasNoTransposition" not in by_id["estleg:EU_32000L0060"]
     assert by_id["estleg:EU_31999L0031"]["estleg:hasNoTransposition"]["@value"] == (

@@ -20,7 +20,7 @@ def test_municipality_status_rules():
 
 def test_stamp_act_from_issuer_map():
     act = {
-        "@id": "estleg:Reg_1_Map_2026",
+        "@id": "estleg:Reg_1_Map",
         "estleg:enactedBy": {"@id": "estleg:Issuer_abja_vallavolikogu"},
     }
     assert stamp_kov_act_municipality_status(

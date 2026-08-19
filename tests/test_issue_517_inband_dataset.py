@@ -119,7 +119,7 @@ def test_stamp_upgrades_existing_ontology_head() -> None:
         "@context": dict(estleg_common.CONTEXT),
         "@graph": [
             {
-                "@id": "estleg:EURlex_Combined_Map_2026",
+                "@id": "estleg:EURlex_Combined_Map",
                 "@type": ["owl:Ontology"],
                 "rdfs:label": "keep-me-unless-relabelled",
                 "dc:source": "EUR-Lex",
@@ -131,7 +131,7 @@ def test_stamp_upgrades_existing_ontology_head() -> None:
         doc, label="Estonian Legal Ontology — EUR-Lex combined"
     )
     head = doc["@graph"][0]
-    assert head["@id"] == "estleg:EURlex_Combined_Map_2026"
+    assert head["@id"] == "estleg:EURlex_Combined_Map"
     assert "void:Dataset" in head["@type"]
     assert "dcat:Dataset" in head["@type"]
     assert head["dcterms:license"]["@id"].endswith("/by/4.0/")

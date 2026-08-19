@@ -774,13 +774,16 @@ def emit_hierarchy_and_provisions(
     structural_ns: str,
     part_label: str | None = None,
     subsection_builder=None,
+    act_iri: str | None = None,
 ) -> None:
     """Emit chapters, divisions, clusters, provisions, and subsections (#466).
 
     ``provision_iri_prefix`` is the IRI stem before the paragraph suffix
     (``estleg:ABBR_Par_`` or ``estleg:ABBR_Osa2_Par_``).
     ``structural_ns`` is the chapter/cluster infix (``ABBR`` or ``ABBR_2``).
+    ``act_iri`` is the work-IRI ``partOfAct`` target (defaults to ``ontology_id``).
     """
+    act_target = act_iri or ontology_id
     par_to_container: dict[int, str] = {}
     par_to_cluster: dict[int, str] = {}
     clusters: list[dict] = []
@@ -840,7 +843,7 @@ def emit_hierarchy_and_provisions(
             "@type": ["owl:NamedIndividual", "estleg:Chapter"],
             "rdfs:label": et_literal(f"{ch_nr}. peatükk – {ch_title}".strip(" –")),
             "estleg:chapterNumber": ch_nr,
-            "estleg:partOfAct": {"@id": ontology_id},
+            "estleg:partOfAct": {"@id": act_target},
             "dcterms:subject": chapter_cluster_subject(cluster_id),
         }
         for paragraph in ch_pars:
@@ -917,7 +920,7 @@ def emit_hierarchy_and_provisions(
                     "@id": preamble_chapter_id,
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                     "rdfs:label": et_literal(preamble_label),
-                    "estleg:partOfAct": {"@id": ontology_id},
+                    "estleg:partOfAct": {"@id": act_target},
                     "dcterms:subject": chapter_cluster_subject(preamble_cluster_id),
                 }
             )
@@ -1028,7 +1031,7 @@ def emit_hierarchy_and_provisions(
             "estleg:paragrahv": p_display,
             "rdfs:label": et_literal(label),
             "estleg:sourceAct": title,
-            "estleg:partOfAct": {"@id": ontology_id},
+            "estleg:partOfAct": {"@id": act_target},
             "estleg:summary": et_literal(provision_summary(text, p_title, p_display)),
         }
         if full_text:

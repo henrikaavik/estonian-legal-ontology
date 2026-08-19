@@ -41,7 +41,7 @@ def test_law_target_iri_uses_real_ontology_node(tmp_path: Path) -> None:
             "@context": mod.CONTEXT,
             "@graph": [
                 {
-                    "@id": "estleg:AS_Map_2026",
+                    "@id": "estleg:AS_Map",
                     "@type": ["owl:Ontology", "estleg:Act"],
                 },
                 {
@@ -52,7 +52,7 @@ def test_law_target_iri_uses_real_ontology_node(tmp_path: Path) -> None:
         },
     )
 
-    assert mod.get_law_transposition_target_iri(law_path) == "estleg:AS_Map_2026"
+    assert mod.get_law_transposition_target_iri(law_path) == "estleg:AS_Map"
 
 
 def test_build_law_index_filters_missing_files_from_stale_index(
@@ -168,13 +168,13 @@ def test_inverse_transposed_by_links_to_real_law_node(
     monkeypatch.setattr(mod, "EURLEX_DIR", eurlex_dir)
 
     updated = mod.update_directive_file(
-        {"32000L0001": ["estleg:AS_Map_2026"]}
+        {"32000L0001": ["estleg:AS_Map"]}
     )
 
     assert updated == 1
     doc = json.loads(directives_path.read_text(encoding="utf-8"))
     assert doc["@graph"][0]["estleg:transposedBy"] == [
-        {"@id": "estleg:AS_Map_2026"}
+        {"@id": "estleg:AS_Map"}
     ]
 
 
@@ -438,7 +438,7 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:TUBAKA_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:TUBAKA_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Tubakaseadus"},
             ],
         },
@@ -492,7 +492,7 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
     # The directive node got estleg:transposedBy + estleg:transpositionDeadline.
     dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
     dir_node = dir_doc["@graph"][0]
-    assert {"@id": "estleg:TUBAKA_Map_2026"} in dir_node["estleg:transposedBy"]
+    assert {"@id": "estleg:TUBAKA_Map"} in dir_node["estleg:transposedBy"]
     assert dir_node["estleg:transpositionDeadline"] == {"@value": "2004-07-31", "@type": "xsd:date"}
 
     # validate_all's gate accepts the populated report (no error recorded).
@@ -728,7 +728,7 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:LIIKLUS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:LIIKLUS_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Liiklusseadus"},
             ],
         },
@@ -739,7 +739,7 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:RAUDTEE_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:RAUDTEE_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Raudteeseadus"},
             ],
         },
@@ -785,7 +785,7 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
     # The directive node is transposedBy BOTH law nodes.
     dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
     transposed_by = {ref["@id"] for ref in dir_doc["@graph"][0]["estleg:transposedBy"]}
-    assert transposed_by == {"estleg:LIIKLUS_Map_2026", "estleg:RAUDTEE_Map_2026"}
+    assert transposed_by == {"estleg:LIIKLUS_Map", "estleg:RAUDTEE_Map"}
 
     # Report records both law-directive pairs.
     report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
@@ -1063,7 +1063,7 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:RAUDTEE_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:RAUDTEE_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Raudteeseadus"},
             ],
         },
@@ -1074,7 +1074,7 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:RIIGIL_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:RIIGIL_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Riigilõivuseadus"},
             ],
         },
@@ -1125,7 +1125,7 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
     # Directive is transposedBy ONLY the railway law node.
     dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
     transposed_by = {ref["@id"] for ref in dir_doc["@graph"][0].get("estleg:transposedBy", [])}
-    assert transposed_by == {"estleg:RAUDTEE_Map_2026"}
+    assert transposed_by == {"estleg:RAUDTEE_Map"}
 
     # The report records only the railway pairing.
     report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
@@ -1242,7 +1242,7 @@ def test_unresolvable_law_file_is_not_queued_for_forward_link(tmp_path: Path) ->
             "@context": mod.CONTEXT,
             "@graph": [
                 {
-                    "@id": "estleg:TUBAKA_Map_2026",
+                    "@id": "estleg:TUBAKA_Map",
                     "@type": ["owl:Ontology", "estleg:Act"],
                 }
             ],
@@ -1277,7 +1277,7 @@ def test_unresolvable_law_file_is_not_queued_for_forward_link(tmp_path: Path) ->
     bad_path = str(krr / bad)
     # Resolvable file is queued for the forward write and the inverse.
     assert law_file_directives == {good_path: [directive_iri]}
-    assert directive_celex_to_law_iris == {"32003L0033": ["estleg:TUBAKA_Map_2026"]}
+    assert directive_celex_to_law_iris == {"32003L0033": ["estleg:TUBAKA_Map"]}
     # Unresolvable file must not be queued (the old unconditional append
     # would have inserted ``bad_path`` here).
     assert bad_path not in law_file_directives

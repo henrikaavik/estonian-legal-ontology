@@ -1956,7 +1956,7 @@ class TestStructuralStalenessGuard:
             json.dumps(
                 {
                     "@graph": [
-                        {"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"]},
+                        {"@id": "estleg:X_Map", "@type": ["owl:Ontology"]},
                         {
                             "@id": "estleg:X_Par_1",
                             "@type": ["estleg:LegalProvision"],
@@ -1975,7 +1975,7 @@ class TestStructuralStalenessGuard:
                 {
                     "@graph": [
                         {
-                            "@id": "estleg:X_Map_2026",
+                            "@id": "estleg:X_Map",
                             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                             "estleg:contentStatus": "noStructuredBody",
                         }
@@ -2242,7 +2242,7 @@ class TestKehtivStamping:
 class TestExistingLawIsStale:
     def _stub_doc(self, *, tid="100", kehtiv="2026-05-01"):
         ont = {
-            "@id": "estleg:X_Map_2026",
+            "@id": "estleg:X_Map",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "estleg:terviktekstId": tid,
         }
@@ -2282,7 +2282,7 @@ class TestExistingLawIsStale:
 class TestWriteLawOutput:
     def test_missing_only_skips_fresh(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        doc = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+        doc = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"],
                            "estleg:terviktekstId": "100",
                            "estleg:kehtiv": {"@value": "2026-05-01", "@type": "xsd:date"}}]}
         p.write_text(json.dumps(doc), encoding="utf-8")
@@ -2293,10 +2293,10 @@ class TestWriteLawOutput:
 
     def test_missing_only_refreshes_stale(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        stale = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+        stale = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"],
                              "estleg:terviktekstId": "100",
                              "estleg:kehtiv": {"@value": "2024-01-01", "@type": "xsd:date"}}]}
-        fresh = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+        fresh = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"],
                              "estleg:terviktekstId": "100",
                              "estleg:kehtiv": {"@value": "2026-05-01", "@type": "xsd:date"}}]}
         p.write_text(json.dumps(stale), encoding="utf-8")
@@ -2308,7 +2308,7 @@ class TestWriteLawOutput:
 
     def test_missing_only_new_file(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        doc = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"]}]}
+        doc = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"]}]}
         status = generate_all_laws.write_law_output(p, doc, mode="missing-only")
         assert status == "newlyGenerated"
         assert p.exists()
@@ -2351,7 +2351,7 @@ class TestEnrichmentPreservation:
         existing = {
             "@graph": [
                 {
-                    "@id": "estleg:X_Map_2026",
+                    "@id": "estleg:X_Map",
                     "@type": ["owl:Ontology"],
                     "rdfs:label": "stale label",
                     "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/1"}],
@@ -2366,7 +2366,7 @@ class TestEnrichmentPreservation:
         fresh = {
             "@graph": [
                 {
-                    "@id": "estleg:X_Map_2026",
+                    "@id": "estleg:X_Map",
                     "@type": ["owl:Ontology"],
                     "rdfs:label": "fresh label",
                     "estleg:contentStatus": "structuredBody",
@@ -4086,7 +4086,7 @@ class TestSubsectionShaclConformance:
             "@id": "estleg:X_Par_14",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
             "estleg:paragrahv": "§ 14",
-            "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:X_Map"},
             "estleg:summary": "Teovõime.",
             "estleg:legalText": "(2) Lõike kaks tekst.",
             "estleg:hasSubsection": [{"@id": "estleg:X_Par_14_Lg_2"}],
@@ -4099,7 +4099,7 @@ class TestSubsectionShaclConformance:
             "@id": "estleg:X_Par_15",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
             "estleg:paragrahv": "§ 15",
-            "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:X_Map"},
             "estleg:summary": "Üks lause.",
             "estleg:legalText": "Üks lause vaid.",
         }
@@ -4250,7 +4250,7 @@ class TestSlugifyTrailingUnderscore:
 
     def test_no_double_underscore_when_suffix_appended(self):
         slug = generate_all_laws.slugify("x" * 79 + " more text here")
-        iri = f"estleg:{slug}_Map_2026"
+        iri = f"estleg:{slug}_Map"
         assert "__" not in iri, iri
 
     def test_short_slug_unaffected(self):

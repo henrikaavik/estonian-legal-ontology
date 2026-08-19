@@ -12,7 +12,7 @@ def test_stable_osa_iri_strips_par_range():
     assert stable_osa_iri("estleg:volaoigusseadus_Osa2_208_270") == (
         "estleg:volaoigusseadus_Osa2"
     )
-    assert stable_osa_iri("estleg:TsÜS_Osa7_138_169") == "estleg:TsÜS_Osa7"
+    assert stable_osa_iri("estleg:TsUS_Osa7_138_169") == "estleg:TsUS_Osa7"
     assert stable_osa_iri("estleg:KARIST_2_Osa1") is None
     assert stable_osa_iri("estleg:KARIST_2_Par_1") is None
 

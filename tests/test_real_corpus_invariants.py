@@ -253,8 +253,8 @@ def test_pks_par_1_has_part_of_act():
     """Published fact: PKS § 1 is joined to the act root via partOfAct."""
     doc = _load("perekonnaseadus_peep.json")
     node = next(n for n in doc.get("@graph", []) if n.get("@id") == "estleg:PKS_Par_1")
-    assert "estleg:PKS_Map_2026" in _ref_ids(node.get("estleg:partOfAct")), (
-        "PKS_Par_1 lost estleg:partOfAct to PKS_Map_2026"
+    assert "estleg:PKS_Map" in _ref_ids(node.get("estleg:partOfAct")), (
+        "PKS_Par_1 lost estleg:partOfAct to PKS_Map"
     )
 
 
@@ -288,7 +288,7 @@ def test_transposition_inverse_on_directive_and_law():
 
 
 def test_kars_osa1_root_is_in_force():
-    """Published fact (#555): KarS osa 1 act root is KARIST_2_Osa1, in force."""
+    """Published fact (#555/#445): KarS osa 1 is a Part under KARIST_2_Map."""
     doc = _load("karistusseadustik_osa1_peep.json")
     node = next(
         n for n in doc.get("@graph", []) if n.get("@id") == "estleg:KARIST_2_Osa1"
@@ -296,7 +296,9 @@ def test_kars_osa1_root_is_in_force():
     types = node.get("@type")
     if isinstance(types, str):
         types = [types]
-    assert "estleg:Act" in (types or []), "KARIST_2_Osa1 lost its Act type"
+    assert "estleg:Part" in (types or []), "KARIST_2_Osa1 lost its Part type"
+    assert "estleg:Act" not in (types or []), "KarS osa is no longer a second Act root"
+    assert node.get("estleg:isPartOf", {}).get("@id") == "estleg:KARIST_2_Map"
     assert node.get("estleg:temporalStatus") == "inForce", (
         "KarS osa1 root is no longer temporalStatus=inForce"
     )

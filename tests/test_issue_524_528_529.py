@@ -55,7 +55,7 @@ def test_cv_has_new_528_529_terms() -> None:
 def test_treaty_slug_and_shell_stamp() -> None:
     assert is_treaty_slug("cotonou_lepingu_muutmislepingu_ratifitseerimise_seadus")
     assert not is_treaty_slug("perekonnaseadus")
-    node: dict = {"@id": "estleg:X_Map_2026"}
+    node: dict = {"@id": "estleg:X_Map"}
     assert stamp_ratification_shell(node) is True
     assert node["estleg:isRatificationShell"]["@value"] == "true"
     assert "välisleping" in node["estleg:contentStatusReason"]
@@ -79,7 +79,7 @@ def test_retarget_act_kind_drops_law() -> None:
     doc = {
         "@graph": [
             {
-                "@id": "estleg:X_Map_2026",
+                "@id": "estleg:X_Map",
                 "@type": ["estleg:Act", "estleg:Law"],
             }
         ]

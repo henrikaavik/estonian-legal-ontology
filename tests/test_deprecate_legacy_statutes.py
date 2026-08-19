@@ -6,8 +6,8 @@ files on disk, and re-points every *exact-match* inbound reference to the legacy
 ``rootIri`` across the rest of the corpus to the canonical ``replacedByIri``.
 
 The contract that matters most here is **exact string equality, never
-substring**: a short legacy IRI (``estleg:PS_Map_2026``) must never corrupt a
-longer IRI that merely shares it as a prefix (``estleg:PSJKS_Map_2026``). The
+substring**: a short legacy IRI (``estleg:PS_Map``) must never corrupt a
+longer IRI that merely shares it as a prefix (``estleg:PSJKS_Map``). The
 migration must also be deterministic and idempotent, leave the legacy files'
 internal self-references intact, and never touch ``keep`` files.
 """
@@ -102,18 +102,18 @@ class TestBuildRepointMap:
 # ---------------------------------------------------------------------------
 class TestMarkDeprecatedRoot:
     def test_sets_bare_boolean_and_isreplacedby_object(self):
-        doc = _legacy_doc("estleg:ALKS_Map_2026")
-        assert dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026") is True
+        doc = _legacy_doc("estleg:ALKS_Map")
+        assert dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map") is True
         root = doc["@graph"][0]
         # owl:deprecated is a BARE boolean literal (house style), not a value object.
         assert root["owl:deprecated"] is True
         assert not isinstance(root["owl:deprecated"], dict)
         # dcterms:isReplacedBy is an @id reference object.
-        assert root["dcterms:isReplacedBy"] == {"@id": "estleg:AS_Map_2026"}
+        assert root["dcterms:isReplacedBy"] == {"@id": "estleg:AS_Map"}
 
     def test_predicates_placed_immediately_after_type(self):
-        doc = _legacy_doc("estleg:ALKS_Map_2026")
-        dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026")
+        doc = _legacy_doc("estleg:ALKS_Map")
+        dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map")
         keys = list(doc["@graph"][0].keys())
         type_idx = keys.index("@type")
         # Deterministic slot: the two new predicates sit right after @type.
@@ -124,36 +124,36 @@ class TestMarkDeprecatedRoot:
         assert "estleg:temporalStatus" in keys
 
     def test_lands_on_correct_root_node_only(self):
-        doc = _legacy_doc("estleg:ALKS_Map_2026")
-        dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026")
+        doc = _legacy_doc("estleg:ALKS_Map")
+        dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map")
         provision = doc["@graph"][1]
         # The provision node must not be marked.
         assert "owl:deprecated" not in provision
         assert "dcterms:isReplacedBy" not in provision
 
     def test_unknown_root_iri_is_noop(self):
-        doc = _legacy_doc("estleg:ALKS_Map_2026")
-        assert dls.mark_deprecated_root(doc, "estleg:NOT_PRESENT", "estleg:AS_Map_2026") is False
+        doc = _legacy_doc("estleg:ALKS_Map")
+        assert dls.mark_deprecated_root(doc, "estleg:NOT_PRESENT", "estleg:AS_Map") is False
         assert "owl:deprecated" not in doc["@graph"][0]
 
     def test_idempotent_second_mark_is_noop(self):
-        doc = _legacy_doc("estleg:ALKS_Map_2026")
-        assert dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026") is True
+        doc = _legacy_doc("estleg:ALKS_Map")
+        assert dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map") is True
         # Second call: already marked -> no change.
-        assert dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026") is False
+        assert dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map") is False
 
     def test_adds_missing_owl_and_dcterms_context(self):
         # Context lacking owl/dcterms must get them added (matching canonical IRIs).
         ctx = {"estleg": ESTLEG, "rdfs": "http://www.w3.org/2000/01/rdf-schema#"}
-        doc = _legacy_doc("estleg:ALKS_Map_2026", with_context=ctx)
-        dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026")
+        doc = _legacy_doc("estleg:ALKS_Map", with_context=ctx)
+        dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map")
         assert doc["@context"]["owl"] == "http://www.w3.org/2002/07/owl#"
         assert doc["@context"]["dcterms"] == "http://purl.org/dc/terms/"
 
     def test_existing_context_prefix_not_clobbered(self):
-        doc = _legacy_doc("estleg:ALKS_Map_2026")
+        doc = _legacy_doc("estleg:ALKS_Map")
         before_owl = doc["@context"]["owl"]
-        dls.mark_deprecated_root(doc, "estleg:ALKS_Map_2026", "estleg:AS_Map_2026")
+        dls.mark_deprecated_root(doc, "estleg:ALKS_Map", "estleg:AS_Map")
         assert doc["@context"]["owl"] == before_owl
 
 
@@ -166,7 +166,7 @@ def _canonical_doc(*par_iris: str) -> dict:
         "@context": _context(),
         "@graph": [
             {
-                "@id": "estleg:eesti_vabariigi_pohiseadus_Map_2026",
+                "@id": "estleg:eesti_vabariigi_pohiseadus_Map",
                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             },
             *(
@@ -182,7 +182,7 @@ def _canonical_doc(*par_iris: str) -> dict:
 
 class TestBridgeLegacyProvisions:
     def test_unique_suffix_match_gains_sameas_after_type(self):
-        legacy = _legacy_doc("estleg:PS_Map_2026")  # has PS_Map_2026_Par_1
+        legacy = _legacy_doc("estleg:PS_Map")  # has PS_Map_Par_1
         canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
         assert dls.bridge_legacy_provisions(legacy, canonical) == 1
         provision = legacy["@graph"][1]
@@ -194,21 +194,21 @@ class TestBridgeLegacyProvisions:
         assert keys[keys.index("@type") + 1] == "owl:sameAs"
 
     def test_root_node_never_bridged(self):
-        legacy = _legacy_doc("estleg:PS_Map_2026")
+        legacy = _legacy_doc("estleg:PS_Map")
         canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
         dls.bridge_legacy_provisions(legacy, canonical)
         assert "owl:sameAs" not in legacy["@graph"][0]
 
     def test_unmatched_suffix_skipped(self):
         # Thematic pseudo-provision: no canonical counterpart, no bridge.
-        legacy = _legacy_doc("estleg:POLS_Map_2026")
+        legacy = _legacy_doc("estleg:POLS_Map")
         legacy["@graph"][1]["@id"] = "estleg:POLS_Par_AvalikuKorraMoiste"
         canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
         assert dls.bridge_legacy_provisions(legacy, canonical) == 0
         assert "owl:sameAs" not in legacy["@graph"][1]
 
     def test_ambiguous_canonical_suffix_skipped(self):
-        legacy = _legacy_doc("estleg:PS_Map_2026")
+        legacy = _legacy_doc("estleg:PS_Map")
         canonical = _canonical_doc(
             "estleg:eesti_vabariigi_pohiseadus_Par_1",
             "estleg:eesti_vabariigi_pohiseadus_osa2_Par_1",  # same suffix "1"
@@ -217,14 +217,14 @@ class TestBridgeLegacyProvisions:
         assert "owl:sameAs" not in legacy["@graph"][1]
 
     def test_existing_sameas_never_retouched(self):
-        legacy = _legacy_doc("estleg:PS_Map_2026")
+        legacy = _legacy_doc("estleg:PS_Map")
         legacy["@graph"][1]["owl:sameAs"] = {"@id": "estleg:PreExisting"}
         canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
         assert dls.bridge_legacy_provisions(legacy, canonical) == 0
         assert legacy["@graph"][1]["owl:sameAs"] == {"@id": "estleg:PreExisting"}
 
     def test_idempotent_second_bridge_is_noop(self):
-        legacy = _legacy_doc("estleg:PS_Map_2026")
+        legacy = _legacy_doc("estleg:PS_Map")
         canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
         assert dls.bridge_legacy_provisions(legacy, canonical) == 1
         snapshot = json.dumps(legacy, ensure_ascii=False, sort_keys=False)
@@ -233,7 +233,7 @@ class TestBridgeLegacyProvisions:
 
     def test_ensures_owl_context_prefix_when_bridging(self):
         ctx = {"estleg": ESTLEG, "rdfs": "http://www.w3.org/2000/01/rdf-schema#"}
-        legacy = _legacy_doc("estleg:PS_Map_2026", with_context=ctx)
+        legacy = _legacy_doc("estleg:PS_Map", with_context=ctx)
         canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
         assert dls.bridge_legacy_provisions(legacy, canonical) == 1
         assert legacy["@context"]["owl"] == "http://www.w3.org/2002/07/owl#"
@@ -243,47 +243,47 @@ class TestBridgeLegacyProvisions:
 # repoint_value — exact-match recursion + substring safety
 # ---------------------------------------------------------------------------
 class TestRepointValue:
-    MAP = {"estleg:PS_Map_2026": "estleg:eesti_vabariigi_pohiseadus_Map_2026"}
+    MAP = {"estleg:PS_Map": "estleg:eesti_vabariigi_pohiseadus_Map"}
 
     def test_replaces_exact_id_dict_ref(self):
-        value = {"estleg:cites": {"@id": "estleg:PS_Map_2026"}}
+        value = {"estleg:cites": {"@id": "estleg:PS_Map"}}
         new, count = dls.repoint_value(value, self.MAP)
         assert count == 1
-        assert new["estleg:cites"]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        assert new["estleg:cites"]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map"
 
     def test_replaces_exact_ref_in_list(self):
         value = {
             "estleg:references": [
-                {"@id": "estleg:PS_Map_2026"},
+                {"@id": "estleg:PS_Map"},
                 {"@id": "estleg:UNRELATED"},
-                "estleg:PS_Map_2026",  # plain string occurrence too
+                "estleg:PS_Map",  # plain string occurrence too
             ]
         }
         new, count = dls.repoint_value(value, self.MAP)
         assert count == 2
-        assert new["estleg:references"][0]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        assert new["estleg:references"][0]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map"
         assert new["estleg:references"][1]["@id"] == "estleg:UNRELATED"
-        assert new["estleg:references"][2] == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        assert new["estleg:references"][2] == "estleg:eesti_vabariigi_pohiseadus_Map"
 
     def test_no_substring_corruption_of_longer_iri(self):
-        # estleg:PS_Map_2026 is a PREFIX of estleg:PSJKS_Map_2026; the longer
+        # estleg:PS_Map is a PREFIX of estleg:PSJKS_Map; the longer
         # IRI must survive untouched (the whole point of exact-equality).
         value = {
-            "estleg:a": {"@id": "estleg:PSJKS_Map_2026"},
-            "estleg:b": "estleg:PS_Map_2026_extra",
-            "estleg:c": "prefix-estleg:PS_Map_2026",
+            "estleg:a": {"@id": "estleg:PSJKS_Map"},
+            "estleg:b": "estleg:PS_Map_extra",
+            "estleg:c": "prefix-estleg:PS_Map",
         }
         new, count = dls.repoint_value(value, self.MAP)
         assert count == 0
-        assert new["estleg:a"]["@id"] == "estleg:PSJKS_Map_2026"
-        assert new["estleg:b"] == "estleg:PS_Map_2026_extra"
-        assert new["estleg:c"] == "prefix-estleg:PS_Map_2026"
+        assert new["estleg:a"]["@id"] == "estleg:PSJKS_Map"
+        assert new["estleg:b"] == "estleg:PS_Map_extra"
+        assert new["estleg:c"] == "prefix-estleg:PS_Map"
 
     def test_deeply_nested_refs_are_reached(self):
-        value = {"a": {"b": [{"c": {"@id": "estleg:PS_Map_2026"}}]}}
+        value = {"a": {"b": [{"c": {"@id": "estleg:PS_Map"}}]}}
         new, count = dls.repoint_value(value, self.MAP)
         assert count == 1
-        assert new["a"]["b"][0]["c"]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        assert new["a"]["b"][0]["c"]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map"
 
     def test_non_matching_string_untouched(self):
         value = "estleg:SomethingElse"
@@ -299,8 +299,8 @@ class TestEndToEnd:
         """Mini corpus + decisions file.
 
         Legacy cohort:
-          * alks (estleg:ALKS_Map_2026)  -> canonical estleg:AS_Map_2026
-          * ps   (estleg:PS_Map_2026)    -> canonical estleg:eesti_..._Map_2026
+          * alks (estleg:ALKS_Map)  -> canonical estleg:AS_Map
+          * ps   (estleg:PS_Map)    -> canonical estleg:eesti_..._Map
 
         Plus a longer-IRI peep (PSJKS) that shares PS's IRI as a prefix and a
         ``keep`` peep that references the legacy roots from OUTSIDE the cohort.
@@ -309,14 +309,14 @@ class TestEndToEnd:
         krr.mkdir(parents=True)
 
         # --- legacy peep files (in the deprecation cohort) ---
-        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map_2026"))
-        _write(krr / "pohiseadus_peep.json", _legacy_doc("estleg:PS_Map_2026"))
+        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map"))
+        _write(krr / "pohiseadus_peep.json", _legacy_doc("estleg:PS_Map"))
 
-        # --- PSJKS: a DIFFERENT act whose IRI shares PS_Map_2026 as a prefix ---
+        # --- PSJKS: a DIFFERENT act whose IRI shares PS_Map as a prefix ---
         # Not in the cohort; its root @id must survive the re-point untouched.
         _write(
             krr / "pohiseaduslikkuse_jarelevalve_peep.json",
-            _legacy_doc("estleg:PSJKS_Map_2026"),
+            _legacy_doc("estleg:PSJKS_Map"),
         )
 
         # --- canonical peep for the PS decision (the #427 sameAs bridge
@@ -335,15 +335,15 @@ class TestEndToEnd:
                 "@context": _context(),
                 "@graph": [
                     {
-                        "@id": "estleg:KEEP_Map_2026",
+                        "@id": "estleg:KEEP_Map",
                         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                         "rdfs:label": "A kept statute",
                         "estleg:relatedAct": [
-                            {"@id": "estleg:ALKS_Map_2026"},
-                            {"@id": "estleg:PS_Map_2026"},
-                            {"@id": "estleg:PSJKS_Map_2026"},  # longer IRI: must NOT change
+                            {"@id": "estleg:ALKS_Map"},
+                            {"@id": "estleg:PS_Map"},
+                            {"@id": "estleg:PSJKS_Map"},  # longer IRI: must NOT change
                         ],
-                        "estleg:note": "estleg:PS_Map_2026",  # plain string ref too
+                        "estleg:note": "estleg:PS_Map",  # plain string ref too
                     }
                 ],
             },
@@ -352,11 +352,11 @@ class TestEndToEnd:
         # --- excluded aggregates that must never be re-pointed ---
         _write(
             krr / "INDEX.json",
-            {"@graph": [{"@id": "estleg:PS_Map_2026"}]},
+            {"@graph": [{"@id": "estleg:PS_Map"}]},
         )
         _write(
             krr / "combined_ontology.jsonld",
-            {"@graph": [{"@id": "estleg:PS_Map_2026"}]},
+            {"@graph": [{"@id": "estleg:PS_Map"}]},
         )
 
         decisions = tmp_path / "legacy_statute_decisions.json"
@@ -366,15 +366,15 @@ class TestEndToEnd:
                     [
                         {
                             "file": "alkoholi_seadus_peep.json",
-                            "rootIri": "estleg:ALKS_Map_2026",
+                            "rootIri": "estleg:ALKS_Map",
                             "replacedByFile": "alkoholiseadus_peep.json",
-                            "replacedByIri": "estleg:AS_Map_2026",
+                            "replacedByIri": "estleg:AS_Map",
                         },
                         {
                             "file": "pohiseadus_peep.json",
-                            "rootIri": "estleg:PS_Map_2026",
+                            "rootIri": "estleg:PS_Map",
                             "replacedByFile": "eesti_vabariigi_pohiseadus_peep.json",
-                            "replacedByIri": "estleg:eesti_vabariigi_pohiseadus_Map_2026",
+                            "replacedByIri": "estleg:eesti_vabariigi_pohiseadus_Map",
                         },
                     ]
                 ),
@@ -393,7 +393,7 @@ class TestEndToEnd:
         alks = json.loads((krr / "alkoholi_seadus_peep.json").read_text(encoding="utf-8"))
         root = alks["@graph"][0]
         assert root["owl:deprecated"] is True
-        assert root["dcterms:isReplacedBy"] == {"@id": "estleg:AS_Map_2026"}
+        assert root["dcterms:isReplacedBy"] == {"@id": "estleg:AS_Map"}
 
     # --- re-point replaces exact-match refs in OTHER files (dict + list) ---
     def test_repoint_rewrites_external_citations(self, tmp_path):
@@ -403,10 +403,10 @@ class TestEndToEnd:
         keep = json.loads((krr / "citing_keep_peep.json").read_text(encoding="utf-8"))
         related = keep["@graph"][0]["estleg:relatedAct"]
         # ALKS + PS re-pointed to their canonical IRIs.
-        assert related[0]["@id"] == "estleg:AS_Map_2026"
-        assert related[1]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        assert related[0]["@id"] == "estleg:AS_Map"
+        assert related[1]["@id"] == "estleg:eesti_vabariigi_pohiseadus_Map"
         # plain string ref re-pointed too.
-        assert keep["@graph"][0]["estleg:note"] == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        assert keep["@graph"][0]["estleg:note"] == "estleg:eesti_vabariigi_pohiseadus_Map"
 
     # --- NO substring corruption: longer IRI sharing the prefix survives ---
     def test_longer_iri_survives_repoint(self, tmp_path):
@@ -415,15 +415,15 @@ class TestEndToEnd:
 
         keep = json.loads((krr / "citing_keep_peep.json").read_text(encoding="utf-8"))
         related = keep["@graph"][0]["estleg:relatedAct"]
-        # estleg:PSJKS_Map_2026 must be byte-identical (not corrupted to
-        # estleg:eesti_..._Map_2026JKS_Map_2026 or similar).
-        assert related[2]["@id"] == "estleg:PSJKS_Map_2026"
+        # estleg:PSJKS_Map must be byte-identical (not corrupted to
+        # estleg:eesti_..._MapJKS_Map or similar).
+        assert related[2]["@id"] == "estleg:PSJKS_Map"
 
         # And the PSJKS peep file's own root @id is untouched.
         psjks = json.loads(
             (krr / "pohiseaduslikkuse_jarelevalve_peep.json").read_text(encoding="utf-8")
         )
-        assert psjks["@graph"][0]["@id"] == "estleg:PSJKS_Map_2026"
+        assert psjks["@graph"][0]["@id"] == "estleg:PSJKS_Map"
 
     # --- legacy file itself is NOT re-pointed (internal self-refs stay) ---
     def test_legacy_file_self_references_preserved(self, tmp_path):
@@ -433,10 +433,10 @@ class TestEndToEnd:
         ps = json.loads((krr / "pohiseadus_peep.json").read_text(encoding="utf-8"))
         root, provision = ps["@graph"][0], ps["@graph"][1]
         # Root @id stays as the legacy IRI (file kept on disk, only deprecated).
-        assert root["@id"] == "estleg:PS_Map_2026"
+        assert root["@id"] == "estleg:PS_Map"
         # Provision's partOf back-edge still points at the legacy root, NOT the
         # canonical — the legacy file is excluded from the re-point walk.
-        assert provision["estleg:partOf"] == {"@id": "estleg:PS_Map_2026"}
+        assert provision["estleg:partOf"] == {"@id": "estleg:PS_Map"}
 
     # --- excluded aggregates (INDEX / combined) are never re-pointed ---
     def test_index_and_combined_excluded(self, tmp_path):
@@ -456,7 +456,7 @@ class TestEndToEnd:
         krr, decisions = self._build_corpus(tmp_path)
         # A keep file that references NO legacy root.
         clean = krr / "clean_keep_peep.json"
-        _write(clean, _legacy_doc("estleg:CLEAN_Map_2026"))
+        _write(clean, _legacy_doc("estleg:CLEAN_Map"))
         before = clean.read_text(encoding="utf-8")
         dls.run(decisions, krr, dry_run=False)
         assert clean.read_text(encoding="utf-8") == before
@@ -517,7 +517,7 @@ class TestEndToEnd:
             "@id": "estleg:eesti_vabariigi_pohiseadus_Par_1"
         }
         # Internal self-reference still intact alongside the bridge.
-        assert provision["estleg:partOf"] == {"@id": "estleg:PS_Map_2026"}
+        assert provision["estleg:partOf"] == {"@id": "estleg:PS_Map"}
         # Direction is legacy → canonical only: canonical file byte-identical.
         assert canonical_path.read_text(encoding="utf-8") == canonical_before
 
@@ -529,16 +529,16 @@ class TestMainCli:
     def test_main_runs_and_reports(self, tmp_path, capsys):
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True)
-        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map_2026"))
+        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map"))
         _write(
             krr / "citing_keep_peep.json",
             {
                 "@context": _context(),
                 "@graph": [
                     {
-                        "@id": "estleg:KEEP_Map_2026",
+                        "@id": "estleg:KEEP_Map",
                         "@type": ["owl:Ontology", "estleg:Act"],
-                        "estleg:relatedAct": {"@id": "estleg:ALKS_Map_2026"},
+                        "estleg:relatedAct": {"@id": "estleg:ALKS_Map"},
                     }
                 ],
             },
@@ -550,9 +550,9 @@ class TestMainCli:
                     [
                         {
                             "file": "alkoholi_seadus_peep.json",
-                            "rootIri": "estleg:ALKS_Map_2026",
+                            "rootIri": "estleg:ALKS_Map",
                             "replacedByFile": "alkoholiseadus_peep.json",
-                            "replacedByIri": "estleg:AS_Map_2026",
+                            "replacedByIri": "estleg:AS_Map",
                         }
                     ]
                 )
@@ -583,7 +583,7 @@ class TestMainCli:
     def test_main_dry_run_flag(self, tmp_path, capsys):
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True)
-        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map_2026"))
+        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map"))
         before = (krr / "alkoholi_seadus_peep.json").read_text(encoding="utf-8")
         decisions = tmp_path / "legacy_statute_decisions.json"
         decisions.write_text(
@@ -592,9 +592,9 @@ class TestMainCli:
                     [
                         {
                             "file": "alkoholi_seadus_peep.json",
-                            "rootIri": "estleg:ALKS_Map_2026",
+                            "rootIri": "estleg:ALKS_Map",
                             "replacedByFile": "alkoholiseadus_peep.json",
-                            "replacedByIri": "estleg:AS_Map_2026",
+                            "replacedByIri": "estleg:AS_Map",
                         }
                     ]
                 )
@@ -618,7 +618,7 @@ class TestVerifyDecisionsApplied:
     def _setup(self, tmp_path: Path) -> tuple[Path, Path]:
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True)
-        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map_2026"))
+        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map"))
         decisions = tmp_path / "decisions.json"
         _write(
             decisions,
@@ -626,9 +626,9 @@ class TestVerifyDecisionsApplied:
                 [
                     {
                         "file": "alkoholi_seadus_peep.json",
-                        "rootIri": "estleg:ALKS_Map_2026",
+                        "rootIri": "estleg:ALKS_Map",
                         "replacedByFile": "alkoholiseadus_peep.json",
-                        "replacedByIri": "estleg:AS_Map_2026",
+                        "replacedByIri": "estleg:AS_Map",
                     }
                 ]
             ),

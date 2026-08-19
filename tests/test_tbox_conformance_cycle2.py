@@ -224,7 +224,7 @@ def test_structural_class_declared_in_vocabulary(cls):
 
 _ACT_VALID = {
     "@context": CONTEXT,
-    "@id": "estleg:TESTACT_Map_2026",
+    "@id": "estleg:TESTACT_Map",
     "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
     "rdfs:label": "Test Act (testseadus)",
 }
@@ -260,7 +260,7 @@ class TestActLabelRequirement:
                     "@id": "estleg:Harmonisation_TEST",
                     "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
                     "rdfs:label": "Harmonisation: TEST",
-                    "estleg:harmonises": {"@id": "estleg:SOMEACT_Map_2026"},
+                    "estleg:harmonises": {"@id": "estleg:SOMEACT_Map"},
                 }
             ],
         }

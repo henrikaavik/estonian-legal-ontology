@@ -13,10 +13,10 @@ def test_prefer_act_iri_map_beats_osa():
     assert prefer_act_iri(
         [
             "estleg:tsiviilkohtumenetluse_seadustik_Osa10",
-            "estleg:TsMS_Map_2026",
+            "estleg:TsMS_Map",
             "estleg:tsiviilkohtumenetluse_seadustik_Osa1",
         ]
-    ) == "estleg:TsMS_Map_2026"
+    ) == "estleg:TsMS_Map"
 
 
 def test_prefer_act_iri_lowest_osa_when_no_map():
@@ -30,9 +30,9 @@ def test_prefer_act_iri_lowest_osa_when_no_map():
 
 
 def test_map_iri_for_osa_known_prefixes():
-    assert map_iri_for_osa("estleg:KARIST_2_Osa1") == "estleg:KARIST_2_Map_2026"
-    assert map_iri_for_osa("estleg:AOS_Osa1") == "estleg:AOS_Map_2026"
-    assert map_iri_for_osa("estleg:PKS_Map_2026") is None
+    assert map_iri_for_osa("estleg:KARIST_2_Osa1") == "estleg:KARIST_2_Map"
+    assert map_iri_for_osa("estleg:AOS_Osa1") == "estleg:AOS_Map"
+    assert map_iri_for_osa("estleg:PKS_Map") is None
     assert map_iri_for_osa("estleg:KARIST_2_Par_1") is None
 
 
@@ -71,7 +71,7 @@ def test_kars_map_peep_exists_and_is_index_first():
             encoding="utf-8"
         )
     )
-    assert peep["@graph"][0]["@id"] == "estleg:KARIST_2_Map_2026"
+    assert peep["@graph"][0]["@id"] == "estleg:KARIST_2_Map"
     index = json.loads((repo / "krr_outputs" / "INDEX.json").read_text(encoding="utf-8"))
     kars = next(law for law in index["laws"] if law["name"] == "karistusseadustik")
     assert kars["files"][0] == "karistusseadustik_map_peep.json"

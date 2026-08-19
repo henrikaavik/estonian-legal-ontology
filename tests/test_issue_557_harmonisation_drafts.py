@@ -67,11 +67,11 @@ def test_harmonisation_stub_keeps_ee_edges() -> None:
         "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
         "rdfs:label": "Harmonisation: 32012L0043",
         "estleg:sharedDirective": {"@id": "estleg:EU_32012L0043"},
-        "estleg:harmonises": [{"@id": "estleg:BIOTSI_Map_2026"}],
+        "estleg:harmonises": [{"@id": "estleg:BIOTSI_Map"}],
         "estleg:memberStateCode": "EST",
     }
     stub = _make_closure_stub(source)
-    assert stub["estleg:harmonises"] == [{"@id": "estleg:BIOTSI_Map_2026"}]
+    assert stub["estleg:harmonises"] == [{"@id": "estleg:BIOTSI_Map"}]
     assert stub["estleg:sharedDirective"] == {"@id": "estleg:EU_32012L0043"}
     # Comparative member-state code is not a required EE edge; still stripped.
     assert "estleg:memberStateCode" not in stub
@@ -80,7 +80,7 @@ def test_harmonisation_stub_keeps_ee_edges() -> None:
 def test_apply_ee_edges_is_idempotent() -> None:
     node = {"@id": "estleg:Harmonisation_X"}
     payload = {
-        "estleg:harmonises": [{"@id": "estleg:VOS_Map_2026"}],
+        "estleg:harmonises": [{"@id": "estleg:VOS_Map"}],
         "estleg:sharedDirective": {"@id": "estleg:EU_32000L0060"},
     }
     assert apply_ee_edges_to_node(node, payload) is True
@@ -157,5 +157,5 @@ def test_combined_harmonisation_stub_has_ee_edge() -> None:
             break
         idx = found + len(needle)
     assert "estleg:harmonises" in window
-    assert "estleg:BIOTSI_Map_2026" in window
+    assert "estleg:BIOTSI_Map" in window
     assert "estleg:sharedDirective" in window

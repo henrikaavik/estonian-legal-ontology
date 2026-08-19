@@ -37,7 +37,7 @@ A new file `data/law_abbreviations.json` is the single source of truth:
 
 **Resolution order:**
 1. RT API `lyhend` field (official) — ~270 laws
-2. Existing short prefix from current `_Map_2026` IRI — catches already-working 272
+2. Existing short prefix from current `_Map` IRI — catches already-working 272
 3. Auto-derive from title initials + year/disambiguator — remaining ~360
 4. Manual override (edit the JSON)
 
@@ -56,7 +56,7 @@ All IRIs follow: `estleg:{Abbrev}_{NodeType}_{Id}`
 
 | Node Type | Pattern | Example |
 |-----------|---------|---------|
-| Ontology root | `{Abbrev}_Map_2026` | `estleg:PKS_Map_2026` |
+| Ontology root | `{Abbrev}_Map` | `estleg:PKS_Map` |
 | Provision class | `LegalProvision_{Abbrev}` | `estleg:LegalProvision_PKS` |
 | Paragraph | `{Abbrev}_Par_{N}` | `estleg:PKS_Par_12` |
 | Topic cluster | `Cluster_{Abbrev}_{Label}` | `estleg:Cluster_PKS_Abielu` |

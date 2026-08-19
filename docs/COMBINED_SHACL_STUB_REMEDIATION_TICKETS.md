@@ -64,10 +64,10 @@ strip these edges from shaped nodes merely to preserve leaf-stub behavior.
 - `combined_ontology.jsonld` no longer contains `estleg:isStubNode` nodes with
   shaped types that are missing required fields.
 - The cited examples are complete in the combined artifact:
-  - `estleg:Reg_1001517_Map_2026`
+  - `estleg:Reg_1001517_Map`
   - `estleg:Reg_1001519_Par_16`
-  - `estleg:Reg_1001524_Map_2026`
-  - `estleg:Reg_1000010_Map_2026`
+  - `estleg:Reg_1001524_Map`
+  - `estleg:Reg_1000010_Map`
   - `estleg:AmendmentLink_Draft_HTM13_1561_VKT`
 - Combined graph closure still passes: every internal `estleg:` object target
   introduced by the fix resolves inside `combined_ontology.jsonld`.

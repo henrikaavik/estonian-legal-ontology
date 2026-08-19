@@ -33,7 +33,7 @@ import pytest
 
 class TestActLevelIndex:
     def test_act_level_iri_resolves_in_iri_to_file(self, tmp_path, monkeypatch):
-        """A KOV body-text ref that resolves to estleg:Reg_X_Map_2026
+        """A KOV body-text ref that resolves to estleg:Reg_X_Map
         (an act-level IRI) must be writable as referencedBy on that
         target file. collect_all_references must index act-level
         nodes for this to work."""
@@ -109,13 +109,13 @@ class TestImplementedByBodyTextExclusion:
             "@graph": [
                 {"@id": "estleg:Reg_A_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
-                 "estleg:issuedUnder": [{"@id": "estleg:Y_Map_2026"}]},
+                 "estleg:issuedUnder": [{"@id": "estleg:Y_Map"}]},
                 {"@id": "estleg:Reg_A_Par_1",
                  "@type": ["owl:NamedIndividual"],
                  "estleg:paragrahv": "§ 1",
                  # Body-text references to X — must NOT contribute
                  # to implementedBy on X.
-                 "estleg:references": [{"@id": "estleg:X_Map_2026_Par_5"}]}
+                 "estleg:references": [{"@id": "estleg:X_Map_Par_5"}]}
             ],
         }), encoding="utf-8")
 
@@ -124,9 +124,9 @@ class TestImplementedByBodyTextExclusion:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:X_Map_2026",
+                {"@id": "estleg:X_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
-                {"@id": "estleg:X_Map_2026_Par_5",
+                {"@id": "estleg:X_Map_Par_5",
                  "@type": ["owl:NamedIndividual"],
                  "estleg:paragrahv": "§ 5"}
             ],
@@ -137,7 +137,7 @@ class TestImplementedByBodyTextExclusion:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Y_Map_2026",
+                {"@id": "estleg:Y_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]}
             ],
         }), encoding="utf-8")
@@ -152,7 +152,7 @@ class TestImplementedByBodyTextExclusion:
         with open(krr / "x_peep.json", "r", encoding="utf-8") as fh:
             x_doc = json.load(fh)
         x_par_5 = next(n for n in x_doc["@graph"]
-                       if n.get("@id") == "estleg:X_Map_2026_Par_5")
+                       if n.get("@id") == "estleg:X_Map_Par_5")
         # Body-text reference produces referencedBy — that's the
         # existing inverse, unchanged
         assert "estleg:referencedBy" in x_par_5
@@ -191,7 +191,7 @@ class TestImplementedByIdempotency:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Stale_Map_2026",
+                {"@id": "estleg:Stale_Map",
                  "@type": ["owl:Ontology", "estleg:Law"],
                  "estleg:implementedBy": [
                      {"@id": "estleg:Reg_GhostSource_Map_2025"}
@@ -208,7 +208,7 @@ class TestImplementedByIdempotency:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_Live_Map_2026",
+                {"@id": "estleg:Reg_Live_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]}
             ],
         }), encoding="utf-8")
@@ -318,7 +318,7 @@ class TestAliasAmbiguousRefused:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_X_Map_2026",
+                {"@id": "estleg:Reg_X_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
                 {"@id": "estleg:Reg_X_Par_1",
                  "@type": ["owl:NamedIndividual"],
@@ -542,7 +542,7 @@ def _write_versions_corpus(krr):
         "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
-            {"@id": "estleg:DEMO_Map_2026",
+            {"@id": "estleg:DEMO_Map",
              "@type": ["owl:Ontology", "estleg:Law"]},
             {"@id": "estleg:DEMO_Par_1",
              "@type": ["owl:NamedIndividual"],
@@ -793,7 +793,7 @@ class TestHasVersionRoundTrip:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:STALE_Map_2026",
+                {"@id": "estleg:STALE_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
                 {"@id": "estleg:STALE_Par_1",
                  "@type": ["owl:NamedIndividual"],
@@ -912,13 +912,13 @@ def test_act_root_aggregates_union_provision_edges(tmp_path):
             {
                 "@graph": [
                     {
-                        "@id": "estleg:X_Map_2026",
+                        "@id": "estleg:X_Map",
                         "@type": ["owl:Ontology", "estleg:Act"],
                     },
                     {
                         "@id": "estleg:X_Par_1",
                         "@type": ["estleg:LegalProvision"],
-                        "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
+                        "estleg:partOfAct": {"@id": "estleg:X_Map"},
                         "estleg:references": {"@id": "estleg:Y_Par_1"},
                         "estleg:referencedBy": {"@id": "estleg:Z_Par_2"},
                         "estleg:interpretedBy": {"@id": "estleg:RK_1"},

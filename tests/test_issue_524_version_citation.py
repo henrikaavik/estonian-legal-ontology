@@ -47,15 +47,15 @@ def test_stamp_version_citation_is_idempotent() -> None:
         "estleg:versionRedactionId": "22303",
     }
     assert stamp_version_citation(
-        node, act_title="Perekonnaseadus", act_iri="estleg:PKS_Map_2026"
+        node, act_title="Perekonnaseadus", act_iri="estleg:PKS_Map"
     ) is True
     assert node["estleg:rtUrl"] == "https://www.riigiteataja.ee/akt/22303"
     assert node["estleg:sourceAct"] == "Perekonnaseadus"
     assert node["estleg:provisionRef"] == "PKS § 1"
-    assert node["estleg:partOfAct"] == {"@id": "estleg:PKS_Map_2026"}
+    assert node["estleg:partOfAct"] == {"@id": "estleg:PKS_Map"}
     snapshot = json.loads(json.dumps(node))
     assert stamp_version_citation(
-        node, act_title="Perekonnaseadus", act_iri="estleg:PKS_Map_2026"
+        node, act_title="Perekonnaseadus", act_iri="estleg:PKS_Map"
     ) is False
     assert node == snapshot
 
@@ -179,7 +179,7 @@ def test_backfill_version_sidecars_stamps_and_is_idempotent(tmp_path: Path) -> N
             {
                 "@graph": [
                     {
-                        "@id": "estleg:FIX_Map_2026",
+                        "@id": "estleg:FIX_Map",
                         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                         "dc:source": "Fikseeritud seadus",
                     }
@@ -213,7 +213,7 @@ def test_backfill_version_sidecars_stamps_and_is_idempotent(tmp_path: Path) -> N
     assert node["estleg:rtUrl"] == "https://www.riigiteataja.ee/akt/111"
     assert node["estleg:sourceAct"] == "Fikseeritud seadus"
     assert node["estleg:provisionRef"] == "FIX § 1"
-    assert node["estleg:partOfAct"] == {"@id": "estleg:FIX_Map_2026"}
+    assert node["estleg:partOfAct"] == {"@id": "estleg:FIX_Map"}
     again = backfill_version_sidecars(pv, krr)
     assert again["files"] == 0
     assert again["nodes"] == 0
@@ -227,7 +227,7 @@ def test_synthesise_versions_still_self_citing() -> None:
         prefix="FIX",
         provisions={"1": "estleg:FIX_Par_1"},
         peep_files=[],
-        act_iri="estleg:FIX_Map_2026",
+        act_iri="estleg:FIX_Map",
     )
     redaction = gpv.Redaction("111", "2010-01-01", None, "/akt/111.xml")
     nodes = gpv.synthesise_versions(target, [(redaction, {"1": "Algtekst."})])

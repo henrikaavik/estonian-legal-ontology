@@ -97,7 +97,7 @@ def test_validate_errors_on_new_empty_non_treaty(tmp_path):
     peep = {
         "@graph": [
             {
-                "@id": "estleg:NEW_Map_2026",
+                "@id": "estleg:NEW_Map",
                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             }
         ]

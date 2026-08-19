@@ -91,8 +91,8 @@ def canonical_candidates(module_fragment: str) -> list[str]:
     """Ordered canonical-fragment candidates for a module Section fragment.
 
     * KarS module: ``KarS_Par_<N>`` -> ``KARIST_2_Osa2_Par_<N>``
-    * TsÜS module: ``TsUS_Par_<N>`` -> ``TsÜS_Osa7_Par_<N>`` (Õ spelling first),
-      with an ASCII ``TsUS_Osa7_Par_<N>`` fallback.
+    * TsÜS module: ``TsUS_Par_<N>`` -> ASCII ``TsUS_Osa7_Par_<N>`` first
+      (#445), with a legacy ``TsÜS_Osa7_Par_<N>`` fallback.
 
     Returns ``[]`` for any fragment that does not follow the regular
     ``<Prefix>_Par_<N>`` shape (e.g. the modules' irregular ``Par<N>_<M>``
@@ -105,7 +105,7 @@ def canonical_candidates(module_fragment: str) -> list[str]:
     m = _TSUS_RE.match(module_fragment)
     if m:
         n = m.group(1)
-        return [f"TsÜS_Osa7_Par_{n}", f"TsUS_Osa7_Par_{n}"]
+        return [f"TsUS_Osa7_Par_{n}", f"TsÜS_Osa7_Par_{n}"]
     return []
 
 

@@ -15,8 +15,8 @@ from estleg.migrate_malformed_iris import (
 
 def test_collapse_double_underscore() -> None:
     assert (
-        collapse_underscores("estleg:1992_aasta_rahvusvahelise_konventsiooni__Map_2026")
-        == "estleg:1992_aasta_rahvusvahelise_konventsiooni_Map_2026"
+        collapse_underscores("estleg:1992_aasta_rahvusvahelise_konventsiooni__Map")
+        == "estleg:1992_aasta_rahvusvahelise_konventsiooni_Map"
     )
     assert collapse_underscores("estleg:KarS_Par_1") == "estleg:KarS_Par_1"
 
@@ -61,14 +61,14 @@ def test_trailing_div_numbered_fallback_on_collision() -> None:
 
 
 def test_rewrite_walks_nested_refs() -> None:
-    remap = {"estleg:FOO__Map_2026": "estleg:FOO_Map_2026"}
+    remap = {"estleg:FOO__Map": "estleg:FOO_Map"}
     doc = {
-        "@id": "estleg:FOO__Map_2026",
-        "estleg:partOfAct": {"@id": "estleg:FOO__Map_2026"},
+        "@id": "estleg:FOO__Map",
+        "estleg:partOfAct": {"@id": "estleg:FOO__Map"},
     }
     out = rewrite_value(doc, remap)
-    assert out["@id"] == "estleg:FOO_Map_2026"
-    assert out["estleg:partOfAct"]["@id"] == "estleg:FOO_Map_2026"
+    assert out["@id"] == "estleg:FOO_Map"
+    assert out["estleg:partOfAct"]["@id"] == "estleg:FOO_Map"
 
 
 def test_slugify_still_rstrips_after_cut() -> None:

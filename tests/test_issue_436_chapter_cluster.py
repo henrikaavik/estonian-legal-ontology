@@ -77,7 +77,7 @@ def test_retarget_moves_cluster_sameas_on_chapter_only():
     chapter = {
         "@id": "estleg:Chapter_ABIPOL_1",
         "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-        "estleg:partOfAct": {"@id": "estleg:ABIPOL_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:ABIPOL_Map"},
         "owl:sameAs": {"@id": "estleg:Cluster_ABIPOL_1"},
     }
     assert retarget_chapter_cluster_identity(chapter) is True
@@ -87,7 +87,7 @@ def test_retarget_moves_cluster_sameas_on_chapter_only():
     assert keys[keys.index("estleg:partOfAct") + 1] == "dcterms:subject"
 
     act = {
-        "@id": "estleg:ABIPOL_Map_2026",
+        "@id": "estleg:ABIPOL_Map",
         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
         "owl:sameAs": {"@id": "https://www.riigiteataja.ee/akt/106072023009.xml"},
     }

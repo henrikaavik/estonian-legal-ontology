@@ -53,7 +53,7 @@ NOTE = (
     "This manifest records the committed tree."
 )
 
-_ONTOLOGY_OR_ACT_TYPES = frozenset({"owl:Ontology", "estleg:Act"})
+_ONTOLOGY_OR_ACT_TYPES = frozenset({"owl:Ontology", "estleg:Act", "estleg:Part"})
 
 
 def git_sha(repo: Path | None = None) -> str:

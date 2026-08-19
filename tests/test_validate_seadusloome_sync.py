@@ -283,7 +283,7 @@ def test_graph_closure_fails_on_unresolved_public_reference(tmp_path, capsys):
             {
                 "@id": "estleg:Draft_X",
                 "@type": ["owl:NamedIndividual"],
-                "estleg:amendsLaw": {"@id": "estleg:Missing_Map_2026"},
+                "estleg:amendsLaw": {"@id": "estleg:Missing_Map"},
             }
         ],
     )
@@ -293,20 +293,20 @@ def test_graph_closure_fails_on_unresolved_public_reference(tmp_path, capsys):
     assert code == 1, output
     assert "GRAPH CLOSURE FAILURES" in output
     assert "estleg:amendsLaw: 1" in output
-    assert "estleg:Missing_Map_2026" in output
+    assert "estleg:Missing_Map" in output
 
 
 def test_graph_closure_passes_when_target_is_loaded_from_sidecar(tmp_path, capsys):
     krr = tmp_path / "krr_outputs"
     _seed_seadusloome_subdirs(krr)
-    _write_sidecar_target(krr, "estleg:Target_Map_2026")
+    _write_sidecar_target(krr, "estleg:Target_Map")
     _write_combined(
         krr,
         [
             {
                 "@id": "estleg:Draft_X",
                 "@type": ["owl:NamedIndividual"],
-                "estleg:amendsLaw": {"@id": "estleg:Target_Map_2026"},
+                "estleg:amendsLaw": {"@id": "estleg:Target_Map"},
                 "estleg:decisionType": {"@id": "estleg:DecisionType_Judgment"},
             }
         ],

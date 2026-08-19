@@ -23,7 +23,7 @@ def test_build_regulation_target_reads_regulation_provisions() -> None:
     assert target is not None
     assert target.prefix.startswith("Reg_")
     assert any(iri.endswith("_Par_3") for iri in target.provisions.values())
-    assert target.act_iri == "estleg:Reg_1055293_Map_2026"
+    assert target.act_iri == "estleg:Reg_1055293_Map"
 
 
 def test_snapshot_sidecar_emits_current_provision_version(tmp_path: Path) -> None:

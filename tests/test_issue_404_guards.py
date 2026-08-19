@@ -17,7 +17,7 @@ def test_similarity_skips_non_string_node_id(tmp_path: Path):
             {
                 "@graph": [
                     {
-                        "@id": "estleg:Reg_1_Map_2026",
+                        "@id": "estleg:Reg_1_Map",
                         "@type": ["estleg:MunicipalRegulation", "estleg:Act"],
                     },
                     {"@id": ["not", "a", "string"], "estleg:summary": "x"},

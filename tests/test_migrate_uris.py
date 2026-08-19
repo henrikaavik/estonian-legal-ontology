@@ -124,9 +124,9 @@ class TestBuildRenameMap:
 
     def test_long_prefix_renamed(self, sample_registry, tmp_path):
         f = tmp_path / "test.json"
-        f.write_text('{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"}')
+        f.write_text('{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map"}')
         rename_map = build_rename_map(sample_registry, scan_paths=[f])
-        assert rename_map["estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"] == "estleg:ATKE_Map_2026"
+        assert rename_map["estleg:Alkoholi_tubaka_ktuse_ja_Map"] == "estleg:ATKE_Map"
 
     def test_cluster_prefix_renamed(self, sample_registry, tmp_path):
         f = tmp_path / "test.json"
@@ -243,9 +243,9 @@ def _seed_amendments_dir(amendments_dir: Path) -> None:
                 {"@id": "estleg:AmendmentChain_aadressiandmete_susteem_t1052132",
                  "@type": ["owl:Ontology"]},
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_1",
-                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map_2026"}},
+                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map"}},
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_10",
-                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map_2026"}},
+                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map"}},
             ]
         }), encoding="utf-8")
     (amendments_dir / "amendments_abieluvararegistri_seadus.json").write_text(
@@ -254,7 +254,7 @@ def _seed_amendments_dir(amendments_dir: Path) -> None:
                 {"@id": "estleg:AmendmentChain_abieluvararegistri_seadus",
                  "@type": ["owl:Ontology"]},
                 {"@id": "estleg:AmendmentLink_Draft_JDM16_0008_abieluvararegistri_seadus",
-                 "estleg:amends": {"@id": "estleg:AVRS_Map_2026"},
+                 "estleg:amends": {"@id": "estleg:AVRS_Map"},
                  "estleg:amendingDraft": {"@id": "estleg:Draft_JDM16_0008"}},
             ]
         }), encoding="utf-8")
@@ -264,14 +264,14 @@ class TestStemFromAmendsTarget:
     @pytest.mark.parametrize(
         "amends_iri, expected",
         [
-            ("estleg:Reg_1052132_Map_2026", "Reg_1052132"),
-            ("estleg:AVRS_Map_2026", "AVRS"),
+            ("estleg:Reg_1052132_Map", "Reg_1052132"),
+            ("estleg:AVRS_Map", "AVRS"),
             ("estleg:KARIST_2_Osa2_88_451", "KARIST_2"),
-            ("estleg:STS2004_2006_2_Map_2026", "STS2004_2006_2"),
+            ("estleg:STS2004_2006_2_Map", "STS2004_2006_2"),
             ("estleg:VOS_Par_271", "VOS"),
             # Not an estleg: IRI / nothing compact-looking → None.
             ("http://example.org/foo", None),
-            ("estleg:_Map_2026", None),
+            ("estleg:_Map", None),
         ],
     )
     def test_recovers_compact_stem(self, amends_iri, expected):
@@ -303,7 +303,7 @@ class TestBuildAmendmentPrefixMap:
                 {"@id": "estleg:AmendmentChain_xyz", "@type": ["owl:Ontology"]},
                 {"@id": "estleg:Amendment_xyz_1",
                  "estleg:amends": {
-                     "@id": "estleg:a_very_long_slug_that_is_longer_Map_2026"}},
+                     "@id": "estleg:a_very_long_slug_that_is_longer_Map"}},
             ]}), encoding="utf-8")
         prefix_map, skipped = build_amendment_prefix_map({}, amendments_dir=amd)
         assert "xyz" not in prefix_map
@@ -408,7 +408,7 @@ class TestAmendmentInBuildRenameMap:
         # A peep file that references the (still-long) Amendment ids.
         peep = tmp_path / "aadressiandmete_susteem_t1052132_peep.json"
         peep.write_text(json.dumps({"@graph": [
-            {"@id": "estleg:Reg_1052132_Map_2026", "estleg:amendedBy": [
+            {"@id": "estleg:Reg_1052132_Map", "estleg:amendedBy": [
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_1"},
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_10"},
             ]},
@@ -445,7 +445,7 @@ class TestAmendmentInBuildRenameMap:
         amd.mkdir()
         f = tmp_path / "x.json"
         f.write_text(
-            '{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"}', encoding="utf-8"
+            '{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map"}', encoding="utf-8"
         )
         rename_map = build_rename_map(
             {"alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus": {
@@ -465,8 +465,8 @@ class TestAmendmentInBuildRenameMap:
             amendments_dir=amd,
             families=None,
         )
-        assert rename_map_legacy["estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"] == \
-            "estleg:ATKE_Map_2026"
+        assert rename_map_legacy["estleg:Alkoholi_tubaka_ktuse_ja_Map"] == \
+            "estleg:ATKE_Map"
 
     def test_sanctions_long_slug_iri_shortened(self, tmp_path: Path):
         amd = tmp_path / "amendments"
@@ -865,16 +865,16 @@ class TestVerifyMigration:
         """Real-world rt_api abbrevs (TsÜS, ÕÕS, …) must validate."""
         krr_dir = isolated_paths / "krr_outputs"
         (krr_dir / "ok.json").write_text(
-            '{"@id": "estleg:TsÜS_Par_70"} {"@id": "estleg:Cluster_ÕÕS_4"}',
+            '{"@id": "estleg:TsUS_Par_70"} {"@id": "estleg:Cluster_OOS_4"}',
             encoding="utf-8",
         )
-        rename_map = {"estleg:OLD_Par_1": "estleg:TsÜS_Par_70"}
+        rename_map = {"estleg:OLD_Par_1": "estleg:TsUS_Par_70"}
         ok, issues = verify_migration(rename_map)
         assert ok is True, issues
 
     def test_format_pattern_smoke(self) -> None:
         assert NEW_IRI_FORMAT_RE.match("estleg:PKS_Par_1")
-        assert NEW_IRI_FORMAT_RE.match("estleg:TsÜS_Par_70")
+        assert NEW_IRI_FORMAT_RE.match("estleg:TsUS_Par_70")
         assert NEW_IRI_FORMAT_RE.match("estleg:Cluster_ATKE_Aktsiis")
         assert not NEW_IRI_FORMAT_RE.match("estleg:_LeadingUnderscore")
         assert not NEW_IRI_FORMAT_RE.match("estleg:1_LeadingDigit")

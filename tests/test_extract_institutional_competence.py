@@ -493,7 +493,7 @@ class TestExtractCompetenceWithIssuerBinding:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:KOKS_Map_2026",
+                {"@id": "estleg:KOKS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:KOKS_Par_22",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -683,7 +683,7 @@ class TestAuthorityRefDeduplication:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:State_Map_2026",
+                {"@id": "estleg:State_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:State_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -779,7 +779,7 @@ class TestCompetenceIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Stale_Map_2026",
+                {"@id": "estleg:Stale_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Stale_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -875,7 +875,7 @@ class TestCompetenceIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Boring_Map_2026",
+                {"@id": "estleg:Boring_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Boring_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -945,7 +945,7 @@ class TestStaleInstitutionFileDeletion:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Boring_Map_2026",
+                {"@id": "estleg:Boring_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Boring_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -991,7 +991,7 @@ class TestStaleInstitutionFileDeletion:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Active_Map_2026",
+                {"@id": "estleg:Active_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Active_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1033,7 +1033,7 @@ class TestStaleInstitutionFileDeletion:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:OK_Map_2026",
+                {"@id": "estleg:OK_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:OK_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1115,7 +1115,7 @@ class TestCompetenceCoverageReport:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:State_Map_2026",
+                {"@id": "estleg:State_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:State_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1217,7 +1217,7 @@ class TestCompetenceCoverageReport:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:KOKS_Map_2026",
+                {"@id": "estleg:KOKS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:KOKS_Par_22",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1830,7 +1830,7 @@ class TestIssue170TruncationAware:
         # that's well above the 50-cap, so truncation fires.
         peep = krr / "big_peep.json"
         graph = [
-            {"@id": "estleg:Big_Map_2026",
+            {"@id": "estleg:Big_Map",
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
         ]
         for i in range(60):
@@ -1896,22 +1896,22 @@ class TestIssue215CompetenceBackfill:
 
         # Strict plurality (2 vs 1) → return the plurality act.
         assert _select_granted_by([
-            "estleg:LAW_A_Map_2026",
-            "estleg:LAW_A_Map_2026",
-            "estleg:LAW_B_Map_2026",
-        ]) == "estleg:LAW_A_Map_2026"
+            "estleg:LAW_A_Map",
+            "estleg:LAW_A_Map",
+            "estleg:LAW_B_Map",
+        ]) == "estleg:LAW_A_Map"
         # Issue #274: a 1-1 tie has no majority → abstain (was: arbitrary
-        # sort-order winner "estleg:LAW_A_Map_2026").
+        # sort-order winner "estleg:LAW_A_Map").
         assert _select_granted_by([
-            "estleg:LAW_B_Map_2026",
-            "estleg:LAW_A_Map_2026",
+            "estleg:LAW_B_Map",
+            "estleg:LAW_A_Map",
         ]) is None
         # All-singleton broad spread → abstain.
         assert _select_granted_by([
-            "estleg:LAW_A_Map_2026",
-            "estleg:LAW_B_Map_2026",
-            "estleg:LAW_C_Map_2026",
-            "estleg:LAW_D_Map_2026",
+            "estleg:LAW_A_Map",
+            "estleg:LAW_B_Map",
+            "estleg:LAW_C_Map",
+            "estleg:LAW_D_Map",
         ]) is None
 
     def test_write_institution_files_emits_granted_by_and_competence_area(
@@ -1933,7 +1933,7 @@ class TestIssue215CompetenceBackfill:
                 itype="agency",
                 provision_iri=f"estleg:IKS_Par_{idx}",
                 competence_type="supervision",
-                law_name="estleg:IKS_Map_2026",
+                law_name="estleg:IKS_Map",
             )
         mod._record_provision_for_institution(
             state=state,
@@ -1943,7 +1943,7 @@ class TestIssue215CompetenceBackfill:
             itype="agency",
             provision_iri="estleg:OTHER_Par_1",
             competence_type="supervision",
-            law_name="estleg:OTHER_Map_2026",
+            law_name="estleg:OTHER_Map",
         )
 
         mod.write_institution_files(state)
@@ -1956,7 +1956,7 @@ class TestIssue215CompetenceBackfill:
             node for node in doc["@graph"]
             if "estleg:Competence" in node.get("@type", [])
         )
-        assert competence["estleg:grantedBy"] == {"@id": "estleg:IKS_Map_2026"}
+        assert competence["estleg:grantedBy"] == {"@id": "estleg:IKS_Map"}
         assert competence["estleg:competenceArea"] == "data_protection"
 
 
@@ -1998,7 +1998,7 @@ class TestIssue170CanonicalValidation:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Weird_Map_2026",
+                {"@id": "estleg:Weird_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Weird_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -2052,7 +2052,7 @@ class TestIssue170CanonicalValidation:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Fresh_Map_2026",
+                {"@id": "estleg:Fresh_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Fresh_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -2685,7 +2685,7 @@ class TestIssue365HasCompetence:
                     itype="agency",
                     provision_iri=f"estleg:IKS_Par_{ctype}_{idx}",
                     competence_type=ctype,
-                    law_name="estleg:IKS_Map_2026",
+                    law_name="estleg:IKS_Map",
                 )
 
         mod.write_institution_files(state)

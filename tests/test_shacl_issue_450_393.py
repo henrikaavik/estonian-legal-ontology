@@ -72,7 +72,7 @@ class TestIssue450LegalProvisionTargetClass:
             "@id": "estleg:TEST_Par_1",
             "@type": "estleg:LegalProvision",
             "estleg:summary": "Typed provision that never received a section reference.",
-            "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         })
         assert not ok, msg
         assert "MinCountConstraintComponent" in msg
@@ -109,6 +109,6 @@ class TestIssue393ProvisionVersionInterval:
             "@value": "Karistusseadustik",
             "@language": "et",
         }
-        node["estleg:partOfAct"] = {"@id": "estleg:TEST_Map_2026"}
+        node["estleg:partOfAct"] = {"@id": "estleg:TEST_Map"}
         ok, msg = _validate({"@context": CONTEXT, "@graph": [node]})
         assert ok, msg

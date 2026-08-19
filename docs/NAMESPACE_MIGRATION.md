@@ -98,7 +98,7 @@ value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
   extracts the local name with `act_iri.rsplit("#", 1)[1]` under an
   `if "#" in act_iri` guard. On a slash IRI it **falls through that guard to the
   final `return act_iri`** and returns the WHOLE IRI (NOT an `IndexError`) →
-  malformed compact IDs like `estleg:https://w3id.org/estleg/VKVS_Map_2026_Expr_…`.
+  malformed compact IDs like `estleg:https://w3id.org/estleg/VKVS_Map_Expr_…`.
   Make it separator-agnostic (e.g. split on the final `#` **or** `/`, or strip the
   `NS` prefix) and update its docstring + add a unit test for the slash form.
 - Sweep result (`split('#')`/`rsplit('#')` across `scripts/` + `tests/`): only

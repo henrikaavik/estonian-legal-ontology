@@ -25,13 +25,13 @@ def test_rebuild_copies_transposition_edges(tmp_path: Path):
             {
                 "@graph": [
                     {
-                        "@id": "estleg:EURlex_Directives_Map_2026",
+                        "@id": "estleg:EURlex_Directives_Map",
                         "@type": ["owl:Ontology"],
                     },
                     {
                         "@id": "estleg:EU_32000L0060",
                         "@type": ["estleg:EULegislation"],
-                        "estleg:transposedBy": {"@id": "estleg:VES_Map_2026"},
+                        "estleg:transposedBy": {"@id": "estleg:VES_Map"},
                         "estleg:transpositionDeadline": {
                             "@value": "2003-12-22",
                             "@type": "xsd:date",
@@ -47,8 +47,8 @@ def test_rebuild_copies_transposition_edges(tmp_path: Path):
     graph = doc["@graph"]
     ids = {n.get("@id") for n in graph if isinstance(n, dict)}
     assert "estleg:EU_32000L0060" in ids
-    assert "estleg:EURlex_Directives_Map_2026" not in ids
-    assert "estleg:EURlex_Combined_Map_2026" in ids
+    assert "estleg:EURlex_Directives_Map" not in ids
+    assert "estleg:EURlex_Combined_Map" in ids
     assert _count_pred(graph, "estleg:transposedBy") == 1
     assert _count_pred(graph, "estleg:transpositionDeadline") == 1
 

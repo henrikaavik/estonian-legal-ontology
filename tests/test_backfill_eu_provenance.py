@@ -56,7 +56,7 @@ class TestBackfillNode:
 
     def test_skips_non_eu_node_and_node_without_celex(self):
         # An ontology/map header node (no celex) must be left untouched.
-        header = {"@id": "estleg:EURlex_Regulations_Map_2026",
+        header = {"@id": "estleg:EURlex_Regulations_Map",
                   "@type": ["owl:Ontology"]}
         assert bep.backfill_node(header) is False
         assert "dcterms:source" not in header

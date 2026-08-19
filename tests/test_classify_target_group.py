@@ -160,7 +160,7 @@ def test_classify_files_writes_target_groups_and_report(tmp_path):
                     "owl": "http://www.w3.org/2002/07/owl#",
                 },
                 "@graph": [
-                    {"@id": "estleg:TEST_Map_2026", "@type": ["owl:Ontology", "estleg:Act"]},
+                    {"@id": "estleg:TEST_Map", "@type": ["owl:Ontology", "estleg:Act"]},
                     {
                         "@id": "estleg:TEST_Par_1",
                         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],

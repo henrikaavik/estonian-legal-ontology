@@ -44,7 +44,7 @@ class TestClassifyEnforcementLevel:
     def test_law_returns_state(self):
         from estleg.extract_sanctions import _classify_enforcement_level
         act = {
-            "@id": "estleg:KOKS_Map_2026",
+            "@id": "estleg:KOKS_Map",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
         }
         assert _classify_enforcement_level(act) == "state"
@@ -119,7 +119,7 @@ class TestSanctionExtractionWithEnforcementStamp:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:AS_Map_2026",
+                {"@id": "estleg:AS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Alkoholiseadus"},
                 {"@id": "estleg:AS_Par_42",
@@ -206,7 +206,7 @@ class TestSanctionExtractionWithEnforcementStamp:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:AmS_Map_2026",
+                {"@id": "estleg:AmS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:AmS_Par_5",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -250,7 +250,7 @@ class TestSanctionExtractionWithEnforcementStamp:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:KARIST_Map_2026",
+                {"@id": "estleg:KARIST_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:KARIST_Par_113",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -313,7 +313,7 @@ class TestSanctionsIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Stale_Map_2026",
+                {"@id": "estleg:Stale_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Stale_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -415,7 +415,7 @@ class TestSanctionsIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Boring_Map_2026",
+                {"@id": "estleg:Boring_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Boring_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -459,7 +459,7 @@ class TestSanctionsIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:LostSanc_Map_2026",
+                {"@id": "estleg:LostSanc_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Lost sanctions law"},
                 {"@id": "estleg:LostSanc_Par_1",
@@ -557,7 +557,7 @@ class TestSanctionsCoverageReport:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:AS_Map_2026",
+                {"@id": "estleg:AS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:AS_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -884,7 +884,7 @@ class TestSanctionIRICounterDeterministic:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Det_Map_2026",
+                {"@id": "estleg:Det_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Det_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -942,7 +942,7 @@ class TestPecuniaryStatutoryDefaultFlag:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Pecu_Map_2026",
+                {"@id": "estleg:Pecu_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Pecu_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1337,7 +1337,7 @@ class TestStructuredPenaltyEndToEnd:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:SF_Map_2026",
+                {"@id": "estleg:SF_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:SF_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1397,7 +1397,7 @@ class TestStructuredPenaltyEndToEnd:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:LIFE_Map_2026",
+                {"@id": "estleg:LIFE_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:LIFE_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1450,7 +1450,7 @@ class TestStructuredPenaltyEndToEnd:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:RNG_Map_2026",
+                {"@id": "estleg:RNG_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:RNG_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1507,7 +1507,7 @@ class TestStructuredPenaltyEndToEnd:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:PS_Map_2026",
+                {"@id": "estleg:PS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:PS_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -2196,7 +2196,7 @@ class TestSeverityIndexMonetaryExposure:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:BF_Map_2026",
+                {"@id": "estleg:BF_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:BF_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -2247,7 +2247,7 @@ class TestSeverityIndexMonetaryExposure:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:IO_Map_2026",
+                {"@id": "estleg:IO_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:IO_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],

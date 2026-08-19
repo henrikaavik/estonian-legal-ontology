@@ -453,7 +453,7 @@ def test_count_emitted_skips_non_legislation_nodes() -> None:
     """Nodes without an estleg:euDocumentType (e.g. the owl:Ontology header
     node prepended to every graph) are not counted (#398)."""
     header = {
-        "@id": "estleg:EURlex_Combined_Map_2026",
+        "@id": "estleg:EURlex_Combined_Map",
         "@type": ["owl:Ontology"],
     }
     reg = mod.legislation_to_node(

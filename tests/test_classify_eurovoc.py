@@ -21,7 +21,7 @@ class TestReadActMetadataFromPeep:
         meta = _read_act_metadata(FIXTURE)
         assert meta["title"] == "Test KOV act"
         assert meta["source"] == "Test KOV act"
-        assert meta["@id"] == "estleg:Reg_9999_Map_2026"
+        assert meta["@id"] == "estleg:Reg_9999_Map"
 
     def test_returns_none_for_provision_only_file(self, tmp_path):
         # A file with no act-typed node should return None, not crash.
@@ -46,7 +46,7 @@ class TestReadActMetadataFromPeep:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Municipalities_Map_2026",
+                {"@id": "estleg:Municipalities_Map",
                  "@type": ["owl:Ontology"],
                  "rdfs:label": "Estonian Municipalities (current EHAK)"},
                 {"@id": "estleg:Municipality_EHAK_0784",
@@ -153,7 +153,7 @@ def test_read_act_metadata_unwraps_value_object_label(tmp_path):
         "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
-            {"@id": "estleg:Act_1_Map_2026",
+            {"@id": "estleg:Act_1_Map",
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
              "rdfs:label": {"@value": "Mingi seadus", "@language": "et"}},
         ],
@@ -309,7 +309,7 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
                      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
                      "dcterms": "http://purl.org/dc/terms/"},
         "@graph": [
-            {"@id": "estleg:Sample_1_Map_2026",
+            {"@id": "estleg:Sample_1_Map",
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
              "rdfs:label": {"@value": "Autoriõiguse seadus",
                             "@language": "et"}},
@@ -341,7 +341,7 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
     assert doc["sample_size"] == doc["population_size"] == 1
     assert doc["random_seed"] == 1
     (row,) = doc["samples"]
-    assert row["act"] == "estleg:Sample_1_Map_2026"
+    assert row["act"] == "estleg:Sample_1_Map"
     assert isinstance(row["assigned_subjects"], list)
     assert all("eurovoc_uri" in s and "code" in s for s in row["assigned_subjects"])
     assert isinstance(row["matched_keywords"], dict)
@@ -382,7 +382,7 @@ def _write_act_peep(path: Path, *, act_id: str, title: str, summary: str) -> Pat
             {"@id": act_id,
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
              "rdfs:label": {"@value": title, "@language": "et"}},
-            {"@id": act_id.replace("_Map_2026", "_Par_1"),
+            {"@id": act_id.replace("_Map", "_Par_1"),
              "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
              "estleg:summary": {"@value": summary, "@language": "et"}},
         ],
@@ -399,7 +399,7 @@ def test_unclassified_files_are_processed_not_skipped(tmp_path, monkeypatch):
 
     classified = _write_act_peep(
         krr / "classified_peep.json",
-        act_id="estleg:Classified_1_Map_2026",
+        act_id="estleg:Classified_1_Map",
         title="Autoriõiguse seadus",
         summary=(
             "Arst suunab patsiendi haiglasse ravimite saamiseks "
@@ -408,7 +408,7 @@ def test_unclassified_files_are_processed_not_skipped(tmp_path, monkeypatch):
     )
     unclassified = _write_act_peep(
         krr / "unclassified_peep.json",
-        act_id="estleg:Bland_1_Map_2026",
+        act_id="estleg:Bland_1_Map",
         title="Zzzq",
         summary="Zzzq.",
     )

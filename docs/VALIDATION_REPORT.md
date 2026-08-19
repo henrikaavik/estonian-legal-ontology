@@ -12,7 +12,7 @@
 | Warnings | 0 |
 | Result | **PASSED** |
 
-The repository advertises 23,117 generated JSON/JSON-LD files. `validate_all.py`
+The repository advertises 23,118 generated JSON/JSON-LD files. `validate_all.py`
 excludes generated reports, indexes, manifests, and probe outputs that are not
 corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
 JSON-LD files.
@@ -200,20 +200,20 @@ were not treated as successful resolutions:
 | Removed target | Root cause |
 |----------------|------------|
 | `estleg:Vlaigusseadus_Osa10_1005_1067` | Draft law-name resolver lost the leading `Võ` during slug generation; should resolve to the VõS corpus node family. |
-| `estleg:hinenud_Rahvaste_Organisatsio_Map_2026` | Draft law-name resolver lost the leading `Ü` and truncated the treaty title; no such map node is emitted. |
-| `estleg:Eesti_Vabariigi_valitsuse_ja_A_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Eesti_Vabariigi_valitsuse_ja_L_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Eesti_Vabariigi_ja_Euroopa_Inv_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Isikuandmete_automatiseeritud__Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Maailma_Terviseorganisatsiooni_Map_2026` | Treaty `_Map_2026` target was inferred from a title that no current generator materialises as an act-map node. |
-| `estleg:Merinuete_korral_vastutuse_pi_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:hinenud_Rahvaste_Organisatsio_Map` | Draft law-name resolver lost the leading `Ü` and truncated the treaty title; no such map node is emitted. |
+| `estleg:Eesti_Vabariigi_valitsuse_ja_A_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Eesti_Vabariigi_valitsuse_ja_L_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Eesti_Vabariigi_ja_Euroopa_Inv_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Isikuandmete_automatiseeritud__Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Maailma_Terviseorganisatsiooni_Map` | Treaty `_Map` target was inferred from a title that no current generator materialises as an act-map node. |
+| `estleg:Merinuete_korral_vastutuse_pi_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
 
 Successful target rewrites in the same diff:
 
 | Removed target | Replacement target | Notes |
 |----------------|--------------------|-------|
-| `estleg:TKS_Map_2026` | `estleg:TarbKS_Map_2026` | Six references were rewritten to the emitted TarbKS map node. One duplicate-array entry on the draft "Ülikooliseaduse ja Tartu Ülikooli seaduse muutmise seadus" was removed without replacement because the array contained `TKS_Map_2026` twice. |
-| `estleg:TS_Map_2026` | `estleg:TõS_Map_2026` | Clean 1-to-1 rename to the emitted target. |
+| `estleg:TKS_Map` | `estleg:TarbKS_Map` | Six references were rewritten to the emitted TarbKS map node. One duplicate-array entry on the draft "Ülikooliseaduse ja Tartu Ülikooli seaduse muutmise seadus" was removed without replacement because the array contained `TKS_Map` twice. |
+| `estleg:TS_Map` | `estleg:ToS_Map` | Clean 1-to-1 rename to the emitted target. |
 
 Before the draft-impact enrichment is rerun against live data, fix the
 resolver path used by `scripts/extract_draft_impact.py` and

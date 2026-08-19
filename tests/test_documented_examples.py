@@ -276,7 +276,7 @@ SPARQL_SPECS: dict[str, tuple[_SparqlSpec, ...]] = {
             ),
         ),
         _SparqlSpec(
-            marker="estleg:annotates       estleg:KOKS_Map_2026",
+            marker="estleg:annotates       estleg:KOKS_Map",
             name="annotations about a legal entity",
             files=("annotations/oiguskantsler_seisukohad.jsonld",),
         ),

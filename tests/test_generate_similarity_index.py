@@ -816,7 +816,7 @@ def _kov_act_doc(
     optional ``estleg:issuedUnder`` enabling-act links; child provisions use
     ``Reg_<id>_Par_<n>`` ids with ``estleg:summary`` + ``estleg:legalText``.
     """
-    act_id = f"estleg:Reg_{reg_id}_Map_2026"
+    act_id = f"estleg:Reg_{reg_id}_Map"
     act_node = {
         "@id": act_id,
         "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
@@ -1034,7 +1034,7 @@ def test_two_municipalities_same_type_share_bucket_and_pair(tmp_path, monkeypatc
     assert bucket["regulationCount"] == 2
     # Symmetric: both acts list the other as a peer.
     sources = {p["source"] for p in bucket["pairs"]}
-    assert sources == {"estleg:Reg_1001_Map_2026", "estleg:Reg_1002_Map_2026"}
+    assert sources == {"estleg:Reg_1001_Map", "estleg:Reg_1002_Map"}
     peer = bucket["pairs"][0]["peers"][0]
     assert peer["score"] >= similarity.KOV_SIMILARITY_THRESHOLD
 
@@ -1063,11 +1063,11 @@ def test_inflected_and_nominative_type_acts_share_bucket_and_pair(tmp_path, monk
     bucket = summary["buckets"]["kooli pohimaarus"]
     assert bucket["regulationCount"] == 2
     sources = {p["source"] for p in bucket["pairs"]}
-    assert sources == {"estleg:Reg_18001_Map_2026", "estleg:Reg_18002_Map_2026"}
+    assert sources == {"estleg:Reg_18001_Map", "estleg:Reg_18002_Map"}
     # Both acts carry the SAME normalized bucket label.
     for path, act_id in (
-        (files[0], "estleg:Reg_18001_Map_2026"),
-        (files[1], "estleg:Reg_18002_Map_2026"),
+        (files[0], "estleg:Reg_18001_Map"),
+        (files[1], "estleg:Reg_18002_Map"),
     ):
         node = _act_node(path, act_id)
         assert node["estleg:regulationTypeBucket"] == "kooli pohimaarus"
@@ -1091,8 +1091,8 @@ def test_no_cross_bucket_pairs(tmp_path, monkeypatch):
     assert summary["comparedBuckets"] == 0
     assert summary["totalPairs"] == 0
     for act_id, path in (
-        ("estleg:Reg_2001_Map_2026", files[0]),
-        ("estleg:Reg_2002_Map_2026", files[1]),
+        ("estleg:Reg_2001_Map", files[0]),
+        ("estleg:Reg_2002_Map", files[1]),
     ):
         node = _act_node(path, act_id)
         assert "estleg:similarAct" not in node
@@ -1112,11 +1112,11 @@ def test_singleton_and_uncategorized_get_bucket_but_no_pairs(tmp_path, monkeypat
     assert summary["totalPairs"] == 0
     assert summary["uncategorizedCount"] == 1
 
-    s_node = _act_node(singleton, "estleg:Reg_3001_Map_2026")
+    s_node = _act_node(singleton, "estleg:Reg_3001_Map")
     assert s_node["estleg:regulationTypeBucket"] == "pohimaarus"
     assert "estleg:similarAct" not in s_node
 
-    u_node = _act_node(uncategorized, "estleg:Reg_3002_Map_2026")
+    u_node = _act_node(uncategorized, "estleg:Reg_3002_Map")
     assert u_node["estleg:regulationTypeBucket"] == similarity.UNCATEGORIZED_BUCKET
     assert "estleg:similarAct" not in u_node
 
@@ -1189,10 +1189,10 @@ def test_output_ids_are_act_iris_not_provisions(tmp_path, monkeypatch):
     for bucket in summary["buckets"].values():
         for pair in bucket["pairs"]:
             assert "_Par_" not in pair["source"]
-            assert pair["source"].endswith("_Map_2026")
+            assert pair["source"].endswith("_Map")
             for peer in pair["peers"]:
                 assert "_Par_" not in peer["target"]
-                assert peer["target"].endswith("_Map_2026")
+                assert peer["target"].endswith("_Map")
 
     # Reified Similarity nodes in the source peep also use act IRIs.
     doc = json.loads(files[0].read_text(encoding="utf-8"))
@@ -1220,7 +1220,7 @@ def test_reified_similarity_node_schema(tmp_path, monkeypatch):
     similarity.run_kov_similarity_pass()
 
     doc = json.loads(files[0].read_text(encoding="utf-8"))
-    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_7001_Map_2026")
+    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_7001_Map")
     # similarAct is a list of IRI references into the same graph.
     refs = act["estleg:similarAct"]
     assert isinstance(refs, list) and refs
@@ -1229,7 +1229,7 @@ def test_reified_similarity_node_schema(tmp_path, monkeypatch):
 
     node = next(n for n in doc["@graph"] if n.get("@id") == ref_id)
     assert node["@type"] == ["owl:NamedIndividual", "estleg:Similarity"]
-    assert node["estleg:similarTarget"] == {"@id": "estleg:Reg_7002_Map_2026"}
+    assert node["estleg:similarTarget"] == {"@id": "estleg:Reg_7002_Map"}
     assert node["estleg:similarityScore"]["@type"] == "xsd:decimal"
     assert float(node["estleg:similarityScore"]["@value"]) >= similarity.KOV_SIMILARITY_THRESHOLD
     assert node["estleg:similarityModel"] == "tfidf-cosine"
@@ -1238,12 +1238,12 @@ def test_reified_similarity_node_schema(tmp_path, monkeypatch):
 def test_kov_similarity_link_value_builder():
     """The reified-node builder produces the documented shape."""
     value = similarity.kov_similarity_link_value(
-        "Reg_1_Map_2026", "Reg_2_Map_2026", 0.873123
+        "Reg_1_Map", "Reg_2_Map", 0.873123
     )
     assert value == {
-        "@id": "estleg:Similarity_Reg_1_Map_2026_Reg_2_Map_2026",
+        "@id": "estleg:Similarity_Reg_1_Map_Reg_2_Map",
         "@type": ["owl:NamedIndividual", "estleg:Similarity"],
-        "estleg:similarTarget": {"@id": "estleg:Reg_2_Map_2026"},
+        "estleg:similarTarget": {"@id": "estleg:Reg_2_Map"},
         "estleg:similarityScore": {"@value": "0.873", "@type": "xsd:decimal"},
         "estleg:similarityModel": "tfidf-cosine",
     }
@@ -1270,7 +1270,7 @@ def test_top_k_bound_respected(tmp_path, monkeypatch):
         assert len(pair["peers"]) <= 3
     # The reified back-links are likewise capped.
     doc = json.loads(files[0].read_text(encoding="utf-8"))
-    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_8000_Map_2026")
+    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_8000_Map")
     assert len(act["estleg:similarAct"]) <= 3
 
 
@@ -1333,7 +1333,7 @@ def test_intra_bucket_pairs_are_symmetric_after_top_k_cap(tmp_path, monkeypatch)
 
     backlink_edges = set()
     id_by_file = {
-        files[i]: f"estleg:Reg_1900{i + 1}_Map_2026" for i in range(4)
+        files[i]: f"estleg:Reg_1900{i + 1}_Map" for i in range(4)
     }
     for path, act_id in id_by_file.items():
         for tgt in _similar_act_targets(path, act_id):
@@ -1385,29 +1385,29 @@ def test_cross_layer_via_issued_under(tmp_path, monkeypatch):
     krr.mkdir(parents=True, exist_ok=True)
     state = krr / "jaatmeseadus_peep.json"
     state.write_text(
-        json.dumps(_state_act_doc("JAATS_Map_2026", [_WASTE_TEXT])),
+        json.dumps(_state_act_doc("JAATS_Map", [_WASTE_TEXT])),
         encoding="utf-8",
     )
     kov = _write_kov(
         krr, "o_vv", "10001",
         _kov_act_doc("10001", "jaatmehoolduseeskiri", [_WASTE_TEXT],
-                     issued_under=["estleg:JAATS_Map_2026"]),
+                     issued_under=["estleg:JAATS_Map"]),
     )
     _wire_kov(monkeypatch, krr, [state, kov])
 
     summary = similarity.run_kov_similarity_pass()
 
     assert summary["crossLayerPairs"] >= 1
-    node = _act_node(kov, "estleg:Reg_10001_Map_2026")
+    node = _act_node(kov, "estleg:Reg_10001_Map")
     targets = {r["@id"] for r in node["estleg:similarAct"]}
-    assert "estleg:Similarity_Reg_10001_Map_2026_JAATS_Map_2026" in targets
+    assert "estleg:Similarity_Reg_10001_Map_JAATS_Map" in targets
     # The cross-layer Similarity node points at the state act IRI.
     doc = json.loads(kov.read_text(encoding="utf-8"))
     cl = next(
         n for n in doc["@graph"]
-        if n.get("@id") == "estleg:Similarity_Reg_10001_Map_2026_JAATS_Map_2026"
+        if n.get("@id") == "estleg:Similarity_Reg_10001_Map_JAATS_Map"
     )
-    assert cl["estleg:similarTarget"] == {"@id": "estleg:JAATS_Map_2026"}
+    assert cl["estleg:similarTarget"] == {"@id": "estleg:JAATS_Map"}
 
 
 def test_cross_layer_skips_kov_to_kov_issued_under(tmp_path, monkeypatch):
@@ -1419,7 +1419,7 @@ def test_cross_layer_skips_kov_to_kov_issued_under(tmp_path, monkeypatch):
     dependent = _write_kov(
         krr, "q_vv", "11002",
         _kov_act_doc("11002", "kasutamise eeskiri", [_WASTE_TEXT],
-                     issued_under=["estleg:Reg_11001_Map_2026"]),
+                     issued_under=["estleg:Reg_11001_Map"]),
     )
     _wire_kov(monkeypatch, krr, [enabling, dependent])
 
@@ -1428,7 +1428,7 @@ def test_cross_layer_skips_kov_to_kov_issued_under(tmp_path, monkeypatch):
     # KOV->KOV issuedUnder is skipped; different buckets => no pairs at all.
     assert summary["crossLayerPairs"] == 0
     assert summary["totalPairs"] == 0
-    dep_node = _act_node(dependent, "estleg:Reg_11002_Map_2026")
+    dep_node = _act_node(dependent, "estleg:Reg_11002_Map")
     assert "estleg:similarAct" not in dep_node
 
 
@@ -1486,7 +1486,7 @@ def test_kov_rerun_does_not_duplicate_backlinks(tmp_path, monkeypatch):
     similarity.run_kov_similarity_pass()
 
     doc = json.loads(files[0].read_text(encoding="utf-8"))
-    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_13001_Map_2026")
+    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_13001_Map")
     # Exactly one peer, one ref, one reified node — no accumulation.
     assert len(act["estleg:similarAct"]) == 1
     sim_nodes = [
@@ -1497,7 +1497,7 @@ def test_kov_rerun_does_not_duplicate_backlinks(tmp_path, monkeypatch):
     sim_ids = [n["@id"] for n in sim_nodes]
     assert len(sim_ids) == len(set(sim_ids))
     # The act node still appears exactly once.
-    act_nodes = [n for n in doc["@graph"] if n["@id"] == "estleg:Reg_13001_Map_2026"]
+    act_nodes = [n for n in doc["@graph"] if n["@id"] == "estleg:Reg_13001_Map"]
     assert len(act_nodes) == 1
 
 
@@ -1551,7 +1551,7 @@ def test_no_kov_flag_skips_kov_pass(tmp_path, monkeypatch):
     # No consolidated KOV index file.
     assert not (krr / "similarity" / "kov_similarity_index.json").exists()
     # No KOV back-links stamped onto act nodes.
-    node = _act_node(files[0], "estleg:Reg_15001_Map_2026")
+    node = _act_node(files[0], "estleg:Reg_15001_Map")
     assert "estleg:regulationTypeBucket" not in node
     assert "estleg:similarAct" not in node
 
@@ -1612,7 +1612,7 @@ def test_no_kov_clears_existing_kov_output(tmp_path, monkeypatch):
     # Default run generates KOV output.
     similarity.main([])
     assert (krr / "similarity" / "kov_similarity_index.json").exists()
-    node = _act_node(files[0], "estleg:Reg_17001_Map_2026")
+    node = _act_node(files[0], "estleg:Reg_17001_Map")
     assert "estleg:regulationTypeBucket" in node
     assert "estleg:similarAct" in node
     doc = json.loads(files[0].read_text(encoding="utf-8"))
@@ -1623,7 +1623,7 @@ def test_no_kov_clears_existing_kov_output(tmp_path, monkeypatch):
     # --no-kov clears all of it.
     similarity.main(["--no-kov"])
     assert not (krr / "similarity" / "kov_similarity_index.json").exists()
-    node = _act_node(files[0], "estleg:Reg_17001_Map_2026")
+    node = _act_node(files[0], "estleg:Reg_17001_Map")
     assert "estleg:regulationTypeBucket" not in node
     assert "estleg:similarAct" not in node
     doc = json.loads(files[0].read_text(encoding="utf-8"))
@@ -1645,7 +1645,7 @@ def test_cross_layer_pairs_count_is_post_cap(tmp_path, monkeypatch):
     # KOV act is a candidate (>=0.3) yet below the identical intra peers (1.0).
     state = krr / "jaatmeseadus_peep.json"
     state.write_text(
-        json.dumps(_state_act_doc("JAATS_Map_2026", [_WASTE_TEXT + " reovesi"])),
+        json.dumps(_state_act_doc("JAATS_Map", [_WASTE_TEXT + " reovesi"])),
         encoding="utf-8",
     )
     files = [state]
@@ -1655,7 +1655,7 @@ def test_cross_layer_pairs_count_is_post_cap(tmp_path, monkeypatch):
         files.append(_write_kov(
             krr, f"c{n}_vv", f"3000{n}",
             _kov_act_doc(f"3000{n}", "jaatmehoolduseeskiri", [_WASTE_TEXT],
-                         issued_under=["estleg:JAATS_Map_2026"] if n == 1 else None),
+                         issued_under=["estleg:JAATS_Map"] if n == 1 else None),
         ))
     _wire_kov(monkeypatch, krr, files)
 
@@ -1664,7 +1664,7 @@ def test_cross_layer_pairs_count_is_post_cap(tmp_path, monkeypatch):
 
     # act 30001 is capped at top-K=2 intra peers; its cross-layer candidate
     # is evicted, so no cross-layer (non-Reg target) peer is emitted anywhere.
-    node = _act_node(files[1], "estleg:Reg_30001_Map_2026")
+    node = _act_node(files[1], "estleg:Reg_30001_Map")
     assert len(node.get("estleg:similarAct", [])) == 2
     emitted_cross = sum(
         1
@@ -1709,8 +1709,8 @@ def test_load_kov_acts_skips_repealed_act(tmp_path):
     acts = similarity._load_kov_acts([repealed, active])
 
     loaded_iris = {act["iri"] for act in acts}
-    assert "estleg:Reg_10001_Map_2026" not in loaded_iris
-    assert "estleg:Reg_10002_Map_2026" in loaded_iris
+    assert "estleg:Reg_10001_Map" not in loaded_iris
+    assert "estleg:Reg_10002_Map" in loaded_iris
 
 
 def test_load_kov_acts_keeps_act_without_temporal_status(tmp_path):
@@ -1723,7 +1723,7 @@ def test_load_kov_acts_keeps_act_without_temporal_status(tmp_path):
 
     acts = similarity._load_kov_acts([active])
 
-    assert {act["iri"] for act in acts} == {"estleg:Reg_10003_Map_2026"}
+    assert {act["iri"] for act in acts} == {"estleg:Reg_10003_Map"}
 
 
 def test_build_corpus_act_index_seeds_preloaded_acts_and_skips_kov_scan(
@@ -1740,7 +1740,7 @@ def test_build_corpus_act_index_seeds_preloaded_acts_and_skips_kov_scan(
     krr.mkdir(parents=True, exist_ok=True)
     law_path = krr / "jaatmeseadus_peep.json"
     law_path.write_text(
-        json.dumps(_state_act_doc("JAATS_Map_2026", [_WASTE_TEXT])),
+        json.dumps(_state_act_doc("JAATS_Map", [_WASTE_TEXT])),
         encoding="utf-8",
     )
     kov_path = _write_kov(
@@ -1764,8 +1764,8 @@ def test_build_corpus_act_index_seeds_preloaded_acts_and_skips_kov_scan(
     index = similarity._build_corpus_act_index(preloaded_acts=preloaded)
 
     assert seen_include_kov == [False]
-    assert index["estleg:Reg_38601_Map_2026"] == kov_path
-    assert index["estleg:JAATS_Map_2026"] == law_path
+    assert index["estleg:Reg_38601_Map"] == kov_path
+    assert index["estleg:JAATS_Map"] == law_path
 
 
 # ===========================================================================
@@ -1789,7 +1789,7 @@ def _empty_body_kov_doc(
     (``estleg:annexText``) to exercise the annex-indexing half of the fix;
     ``annex_label`` is the ordinal label that must NOT be indexed.
     """
-    act_id = f"estleg:Reg_{reg_id}_Map_2026"
+    act_id = f"estleg:Reg_{reg_id}_Map"
     annex_id = f"estleg:Reg_{reg_id}_Annex_1"
     act_node = {
         "@id": act_id,
@@ -1871,14 +1871,14 @@ def test_load_kov_acts_records_has_provision_text_flag(tmp_path):
         _kov_act_doc("55011", "jaatmehoolduseeskiri", [_WASTE_TEXT]),
     )
     acts = {a["iri"]: a for a in similarity._load_kov_acts([empty, filled])}
-    assert acts["estleg:Reg_55010_Map_2026"]["has_provision_text"] is False
-    assert acts["estleg:Reg_55011_Map_2026"]["has_provision_text"] is True
+    assert acts["estleg:Reg_55010_Map"]["has_provision_text"] is False
+    assert acts["estleg:Reg_55011_Map"]["has_provision_text"] is True
 
 
 def test_intra_bucket_drops_perfect_edge_between_empty_body_acts():
     """Two empty-body acts with identical vectors form NO intra-bucket edge (#581)."""
-    a = "estleg:Reg_55020_Map_2026"
-    b = "estleg:Reg_55021_Map_2026"
+    a = "estleg:Reg_55020_Map"
+    b = "estleg:Reg_55021_Map"
     members = [
         {"iri": a, "has_provision_text": False},
         {"iri": b, "has_provision_text": False},
@@ -1892,8 +1892,8 @@ def test_intra_bucket_drops_perfect_edge_between_empty_body_acts():
 
 def test_intra_bucket_keeps_perfect_edge_when_endpoints_have_text():
     """A perfect 1.0 between text-bearing acts is a real edge — kept (#581)."""
-    a = "estleg:Reg_55030_Map_2026"
-    b = "estleg:Reg_55031_Map_2026"
+    a = "estleg:Reg_55030_Map"
+    b = "estleg:Reg_55031_Map"
     members = [
         {"iri": a, "has_provision_text": True},
         {"iri": b, "has_provision_text": True},
@@ -1908,8 +1908,8 @@ def test_intra_bucket_keeps_perfect_edge_when_endpoints_have_text():
 
 def test_intra_bucket_keeps_sub_perfect_edge_between_empty_body_acts():
     """Empty-body acts scoring < 1.0 keep their edge (only perfect dups drop, #581)."""
-    a = "estleg:Reg_55040_Map_2026"
-    b = "estleg:Reg_55041_Map_2026"
+    a = "estleg:Reg_55040_Map"
+    b = "estleg:Reg_55041_Map"
     members = [
         {"iri": a, "has_provision_text": False},
         {"iri": b, "has_provision_text": False},
@@ -1942,8 +1942,8 @@ def test_two_empty_body_acts_produce_no_perfect_pair_end_to_end(tmp_path, monkey
     assert summary["totalPairs"] == 0
     # And neither act node gets an estleg:similarAct back-link.
     for path, act_id in (
-        (files[0], "estleg:Reg_55050_Map_2026"),
-        (files[1], "estleg:Reg_55051_Map_2026"),
+        (files[0], "estleg:Reg_55050_Map"),
+        (files[1], "estleg:Reg_55051_Map"),
     ):
         node = _act_node(path, act_id)
         assert "estleg:similarAct" not in node

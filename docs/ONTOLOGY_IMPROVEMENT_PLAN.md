@@ -23,7 +23,7 @@ zero interval gaps/overlaps, working point-in-time queries for 742 laws.
 
 But **engineering rigor exceeds ontological rigor**. The system validates *form* exhaustively while
 several layers are semantically wrong (fabricated EuroVoc IRIs, mis-attached similarity scores,
-draft amendments asserted as effected), identity is unstable by construction (`_Map_2026` IRIs,
+draft amendments asserted as effected), identity is unstable by construction (`_Map` IRIs,
 duplicate statutes, `_DupN` patches), the act⇄provision graph is disconnected, the T-Box is
 fragmented across 7+ files, and the project has never been released (no tag, no DOI, no endpoint;
 consumption = 2.4 GB clone). The corpus reads like a per-law topic-mapping project that grew into a
@@ -73,7 +73,7 @@ knowledge graph without revisiting its founding modeling decisions.
   (#419). 926 prefix-less relative IRIs on `requestedCluster` parse into `file:///` junk (#420).
 
 ### 3.3 Identity & IRIs — Epic #407
-- `_Map_2026` year-suffixed act IRIs minted by f-strings in 10+ scripts, reverse-parsed by 5
+- `_Map` year-suffixed act IRIs minted by f-strings in 10+ scripts, reverse-parsed by 5
   independent regexes — no central mint/parse function (#444); four naming generations, order-
   dependent collision counters (`KARIST` = Criminal Records Act, `KARIST_2` = Penal Code), § ranges
   embedded in multipart root IRIs (#445).

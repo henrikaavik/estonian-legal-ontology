@@ -61,7 +61,7 @@ def _peep_text(slug: str, source: str, par_nr: str = "2") -> str:
             "owl": "http://www.w3.org/2002/07/owl#",
         },
         "@graph": [
-            {"@id": f"estleg:{slug}_Map_2026",
+            {"@id": f"estleg:{slug}_Map",
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
              "dc:source": source},
             {"@id": f"estleg:{slug}_Par_{par_nr}",
@@ -392,7 +392,7 @@ class TestIssue171ConceptIdDisambiguation:
                     "owl": "http://www.w3.org/2002/07/owl#",
                 },
                 "@graph": [
-                    {"@id": f"estleg:{slug}_Map_2026",
+                    {"@id": f"estleg:{slug}_Map",
                      "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                      "dc:source": f"Test law {suffix}"},
                     {"@id": f"estleg:{slug}_Par_2",
@@ -642,7 +642,7 @@ class TestIssue171TripleCounting:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:law_x_Map_2026",
+                {"@id": "estleg:law_x_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "dc:source": "Test law X"},
                 {"@id": "estleg:law_x_Par_2",

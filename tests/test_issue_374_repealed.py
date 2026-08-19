@@ -86,7 +86,7 @@ def test_strip_helper_is_idempotent_on_already_tombstoned_doc() -> None:
     doc = {
         "@graph": [
             {
-                "@id": "estleg:Reg_9_Map_2026",
+                "@id": "estleg:Reg_9_Map",
                 "@type": ["owl:Ontology", "estleg:Act"],
                 "estleg:temporalStatus": "repealed",
                 "estleg:repealDate": {"@value": "2026-05-04", "@type": "xsd:date"},

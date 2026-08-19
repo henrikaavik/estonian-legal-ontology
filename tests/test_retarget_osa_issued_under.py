@@ -41,7 +41,7 @@ def test_pattern_matches_malformed(ref, base):
 @pytest.mark.parametrize(
     "ref",
     [
-        "estleg:TsMS_Map_2026",  # well-formed act root
+        "estleg:TsMS_Map",  # well-formed act root
         "estleg:foo_Par_5",  # provision
         "estleg:foo_Osa1",  # missing the _start_end range
         "estleg:foo_Osa1_5",  # only one numeric segment
@@ -53,11 +53,11 @@ def test_pattern_ignores_wellformed(ref):
 
 
 def test_resolve_target_gated_on_existence():
-    roots = {"estleg:TsMS_Map_2026"}  # only TsMS act root present
+    roots = {"estleg:TsMS_Map"}  # only TsMS act root present
     # known base WITH act root -> resolves
     assert (
         resolve_target("estleg:tsiviilkohtumenetluse_seadustik_Osa10_362_474", roots)
-        == "estleg:TsMS_Map_2026"
+        == "estleg:TsMS_Map"
     )
     # known base WITHOUT act root -> None (left in place)
     assert resolve_target("estleg:volaoigusseadus_Osa1_1_207", roots) is None
@@ -65,7 +65,7 @@ def test_resolve_target_gated_on_existence():
     # unknown base -> None
     assert resolve_target("estleg:somethingelse_Osa1_1_9", roots) is None
     # well-formed -> None
-    assert resolve_target("estleg:TsMS_Map_2026", roots) is None
+    assert resolve_target("estleg:TsMS_Map", roots) is None
 
 
 def test_shortcode_table_has_expected_entries():
@@ -85,15 +85,15 @@ def test_discover_act_roots(tmp_path: Path):
         json.dumps(
             {
                 "@graph": [
-                    {"@id": "estleg:TsMS_Map_2026", "@type": ["estleg:Act", "estleg:Law"]},
-                    # a Part node -> excluded even though it ends _Map_2026
+                    {"@id": "estleg:TsMS_Map", "@type": ["estleg:Act", "estleg:Law"]},
+                    # a Part node -> excluded even though it ends _Map
                     {
-                        "@id": "estleg:Foo_Osa1_Map_2026",
+                        "@id": "estleg:Foo_Osa1_Map",
                         "@type": ["estleg:Part", "estleg:Act"],
                     },
                     # non-act type -> excluded
-                    {"@id": "estleg:Bar_Map_2026", "@type": ["skos:Concept"]},
-                    # provision -> excluded (not _Map_2026)
+                    {"@id": "estleg:Bar_Map", "@type": ["skos:Concept"]},
+                    # provision -> excluded (not _Map)
                     {"@id": "estleg:TsMS_Par_5", "@type": ["estleg:LegalProvision"]},
                 ]
             }
@@ -101,7 +101,7 @@ def test_discover_act_roots(tmp_path: Path):
         encoding="utf-8",
     )
     roots = discover_act_roots([p])
-    assert roots == {"estleg:TsMS_Map_2026"}
+    assert roots == {"estleg:TsMS_Map"}
 
 
 # ── retarget_doc + idempotency ─────────────────────────────────────────────
@@ -111,7 +111,7 @@ def _doc_with_issued_under(refs: list[str]) -> dict:
     return {
         "@graph": [
             {
-                "@id": "estleg:Reg_1_Map_2026",
+                "@id": "estleg:Reg_1_Map",
                 ISSUED_UNDER_KEY: [{"@id": r} for r in refs],
             }
         ]
@@ -119,10 +119,10 @@ def _doc_with_issued_under(refs: list[str]) -> dict:
 
 
 def test_retarget_doc_rewrites_only_resolvable():
-    roots = {"estleg:TsMS_Map_2026"}
+    roots = {"estleg:TsMS_Map"}
     doc = _doc_with_issued_under(
         [
-            "estleg:NotS_Map_2026",  # well-formed, untouched
+            "estleg:NotS_Map",  # well-formed, untouched
             "estleg:tsiviilkohtumenetluse_seadustik_Osa10_362_474",  # -> TsMS
             "estleg:volaoigusseadus_Osa1_1_207",  # unresolved, left
         ]
@@ -132,15 +132,15 @@ def test_retarget_doc_rewrites_only_resolvable():
     assert changed == 1
     ids = [x["@id"] for x in doc["@graph"][0][ISSUED_UNDER_KEY]]
     assert ids == [
-        "estleg:NotS_Map_2026",
-        "estleg:TsMS_Map_2026",
+        "estleg:NotS_Map",
+        "estleg:TsMS_Map",
         "estleg:volaoigusseadus_Osa1_1_207",
     ]
     assert unresolved == {"estleg:volaoigusseadus_Osa1_1_207": 1}
 
 
 def test_retarget_doc_idempotent():
-    roots = {"estleg:TsMS_Map_2026"}
+    roots = {"estleg:TsMS_Map"}
     doc = _doc_with_issued_under(
         ["estleg:tsiviilkohtumenetluse_seadustik_Osa10_362_474"]
     )
@@ -151,11 +151,11 @@ def test_retarget_doc_idempotent():
 
 def test_retarget_doc_scalar_value_shape():
     """issuedUnder may be a single object (not a list)."""
-    roots = {"estleg:TsMS_Map_2026"}
+    roots = {"estleg:TsMS_Map"}
     doc = {
         "@graph": [
             {
-                "@id": "estleg:Reg_2_Map_2026",
+                "@id": "estleg:Reg_2_Map",
                 ISSUED_UNDER_KEY: {
                     "@id": "estleg:tsiviilkohtumenetluse_seadustik_Osa10_362_474"
                 },
@@ -163,4 +163,4 @@ def test_retarget_doc_scalar_value_shape():
         ]
     }
     assert retarget_doc(doc, roots, {}) == 1
-    assert doc["@graph"][0][ISSUED_UNDER_KEY]["@id"] == "estleg:TsMS_Map_2026"
+    assert doc["@graph"][0][ISSUED_UNDER_KEY]["@id"] == "estleg:TsMS_Map"

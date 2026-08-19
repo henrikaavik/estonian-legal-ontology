@@ -47,8 +47,8 @@ def test_strip_xml_normalises_rt_url():
 
 
 def test_derive_abbrev_from_act_id():
-    assert grp.derive_abbrev("estleg:AS_Map_2026") == "AS"
-    assert grp.derive_abbrev("estleg:AÕS_Osa1_1_94") == "AÕS"
+    assert grp.derive_abbrev("estleg:AS_Map") == "AS"
+    assert grp.derive_abbrev("estleg:AOS_Osa1_1_94") == "AOS"
     assert grp.derive_abbrev("estleg:KrMS_ProcedureMap_2026") == "KrMS"
     assert grp.derive_abbrev(None) is None
 
@@ -130,7 +130,7 @@ def _build_corpus(krr: Path) -> None:
             "@context": {"estleg": grp.NS},
             "@graph": [
                 {
-                    "@id": "estleg:TL_Map_2026",
+                    "@id": "estleg:TL_Map",
                     "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     "dcterms:title": {"@value": "Testseadus", "@language": "et"},
                     "dc:source": "Testseadus",
@@ -306,7 +306,7 @@ def _build_multipart_corpus(krr: Path) -> None:
         {
             "@context": {"estleg": grp.NS},
             "@graph": [
-                _act_root("ML_Map_2026", "Multiseadus", "111"),
+                _act_root("ML_Map", "Multiseadus", "111"),
                 _provision("ML_Par_1", "§ 1."),
             ],
         },
@@ -316,7 +316,7 @@ def _build_multipart_corpus(krr: Path) -> None:
         {
             "@context": {"estleg": grp.NS},
             "@graph": [
-                _act_root("ML_Map_2026", "Multiseadus", "111"),
+                _act_root("ML_Map", "Multiseadus", "111"),
                 _provision("ML_Par_2", "§ 2."),
             ],
         },

@@ -23,12 +23,12 @@ def test_act_root_helpers_prefer_domain_individual() -> None:
     doc = {
         "@graph": [
             {"@id": "estleg:Header", "@type": ["owl:Ontology"]},
-            {"@id": "estleg:X_Map_2026", "@type": ["estleg:Act", "estleg:Law"]},
+            {"@id": "estleg:X_Map", "@type": ["estleg:Act", "estleg:Law"]},
         ]
     }
     root = act_root_node(doc)
     assert root is not None
-    assert root["@id"] == "estleg:X_Map_2026"
+    assert root["@id"] == "estleg:X_Map"
     assert is_graph_header(doc["@graph"][0])
     assert not is_graph_header(root)
 
@@ -50,12 +50,12 @@ def test_find_act_node_does_not_require_owl_ontology() -> None:
     doc = {
         "@graph": [
             {"@id": "estleg:Header", "@type": ["owl:Ontology"]},
-            {"@id": "estleg:X_Map_2026", "@type": ["estleg:Act", "estleg:Law"]},
+            {"@id": "estleg:X_Map", "@type": ["estleg:Act", "estleg:Law"]},
         ]
     }
     found = _find_act_node(doc)
     assert found is not None
-    assert found["@id"] == "estleg:X_Map_2026"
+    assert found["@id"] == "estleg:X_Map"
 
 
 def test_generate_law_root_is_not_owl_ontology() -> None:

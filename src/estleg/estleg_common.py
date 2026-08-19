@@ -619,13 +619,14 @@ NS = "https://w3id.org/estleg/"
 # Act-root IRI mint / parse (#444)
 # ---------------------------------------------------------------------------
 # Every act/regulation (and the handful of subcorpus-map wrappers) uses
-# ``estleg:<prefix>_Map_<year>``. The year is a snapshot stamp, not the
-# act's enactment year. One minter + one reverse-parser so a scheme change
-# (#445) is a single-file edit.
+# ``estleg:<prefix>_Map``. The snapshot year is NOT part of the work IRI
+# (#445); it lives on ``estleg:kehtiv`` / ActExpression. ``MAP_IRI_YEAR``
+# is the year the pre-v2 corpus stamped and is still stripped by the parser.
 MAP_IRI_YEAR = 2026
-MAP_IRI_SUFFIX = f"_Map_{MAP_IRI_YEAR}"
+MAP_IRI_SUFFIX = "_Map"
 MAP_IRI_TOKEN_RE = re.compile(r"_Map_\d{4}")
-MAP_IRI_RE = re.compile(r"_Map_\d{4}$")
+MAP_IRI_RE = re.compile(r"_Map(?:_\d{4})?$")
+_ESTONIAN_TRANSLIT = str.maketrans("äöüõšžÄÖÜÕŠŽ", "aouoszAOUOSZ")
 _ACT_IRI_SUFFIX_PATTERNS: tuple[re.Pattern[str], ...] = (
     MAP_IRI_RE,
     re.compile(r"_Map$"),
@@ -648,20 +649,34 @@ def compact_iri_local(iri: str) -> str:
     return ""
 
 
+def ascii_iri_key(local: str) -> str:
+    """Transliterate Estonian letters in an IRI local name (Ä→A, Õ→O, …)."""
+    return local.translate(_ESTONIAN_TRANSLIT)
+
+
 def mint_act_iri(prefix: str, *, year: int | None = None) -> str:
-    """Mint ``estleg:<prefix>_Map_<year>``. ``prefix`` may already be compact."""
+    """Mint ``estleg:<prefix>_Map``. ``prefix`` may already be compact.
+
+    ``year`` is accepted for call-site compatibility and ignored: the
+    snapshot stamp is not part of the work IRI (#445).
+    """
+    _ = year
     local = compact_iri_local(prefix) if prefix.startswith(("estleg:", "http")) else prefix
     local = local.strip().removeprefix("estleg:").strip("_")
-    stamp = year if year is not None else MAP_IRI_YEAR
-    return f"estleg:{local}_Map_{stamp}"
+    local = MAP_IRI_TOKEN_RE.sub("", local)
+    local = re.sub(r"_(?:Procedure|Substantive)Map$", "", local)
+    if local.endswith("_Map"):
+        local = local[: -len("_Map")]
+    local = ascii_iri_key(local).strip("_")
+    return f"estleg:{local}_Map"
 
 
 def is_map_iri(iri: str) -> bool:
-    """True when ``iri`` is an act/map root (``_Map_<year>`` or ProcedureMap)."""
+    """True when ``iri`` is an act/map root (``_Map`` / ``_Map_<year>``)."""
     local = compact_iri_local(iri) or iri
     return bool(
         MAP_IRI_RE.search(local)
-        or re.search(r"_(?:Procedure|Substantive)Map_\d{4}$", local)
+        or re.search(r"_(?:Procedure|Substantive)Map(?:_\d{4})?$", local)
     )
 
 
@@ -1549,7 +1564,7 @@ PINNED_RUN_TIMESTAMP: str = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 # mechanism that keeps local and CI file counts identical.
 #
 # The corpus count this exclusion yields is pinned by ``metadata.jsonld``
-# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 23117), which
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 23118), which
 # ``validate_metadata_catalog`` enforces — treat that file as the source of
 # truth rather than this prose. Any change here that moves that number means
 # the classifier was broadened or narrowed incorrectly.
@@ -1566,7 +1581,7 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
 # known integration-report directory) so the pinned ``metadata.jsonld``
-# count (currently 23117) is unchanged: the only ``*.json`` currently living under
+# count (currently 23118) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from

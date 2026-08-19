@@ -344,7 +344,7 @@ class TestGeneratedDraftValueObjects:
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": "estleg:RTS_Map_2026",
+                        "@id": "estleg:RTS_Map",
                         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     }
                 ],
@@ -416,7 +416,7 @@ class TestGeneratedDraftValueObjects:
         enriched = json.loads(combined.read_text(encoding="utf-8"))
         draft = enriched["@graph"][0]
         assert draft["estleg:changeType"] == "amends"
-        assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map_2026"}
+        assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map"}
 
         report = json.loads((krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8"))
         assert report["pending_changes_by_ministry"] == {
@@ -580,7 +580,7 @@ class TestAmendsLawDedup:
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": "estleg:RTS_Map_2026",
+                        "@id": "estleg:RTS_Map",
                         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     }
                 ],
@@ -636,7 +636,7 @@ class TestAmendsLawDedup:
         draft = enriched["@graph"][0]
         amends = draft["estleg:amendsLaw"]
         # Single object (deduped), NOT a 2-element list of identical IRIs.
-        assert amends == {"@id": "estleg:RTS_Map_2026"}, amends
+        assert amends == {"@id": "estleg:RTS_Map"}, amends
 
         # The act node's inverse link is deduped to a single draft ref.
         law_doc = json.loads(law_file.read_text(encoding="utf-8"))

@@ -27,7 +27,7 @@ def test_classify_annotation_type_from_title() -> None:
 
 
 def test_provision_iris_prefer_cited_sections() -> None:
-    acts = ["estleg:VOS_Map_2026"]
+    acts = ["estleg:VOS_Map"]
     known = {"estleg:VOS_Par_40", "estleg:VOS_Par_41"}
     assert provision_iris_for_acts(acts, "Võlaõigusseaduse § 40 tõlgendamine", known) == [
         "estleg:VOS_Par_40"

@@ -301,7 +301,7 @@ def test_legal_provision_with_version_links_conforms():
         "@id": "estleg:LegalProvision_TEST_1",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 1",
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         "estleg:summary": "Test provision used in the schema-model test.",
         "estleg:hasVersion": [
             {"@id": "estleg:LegalProvision_TEST_1_v1"},
@@ -318,7 +318,7 @@ def test_legal_provision_without_version_links_still_conforms():
         "@id": "estleg:LegalProvision_TEST_2",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 2",
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         "estleg:summary": "Provision with no version history populated.",
     })
     assert ok, msg
@@ -345,7 +345,7 @@ def test_legal_provision_accepts_target_group_enum_values(target_group):
         "@id": f"estleg:LegalProvision_TARGET_{target_group.rsplit('_', 1)[-1]}",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 10",
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         "estleg:summary": "Provision with a classified target group.",
         "estleg:targetGroup": {"@id": target_group},
     })
@@ -358,7 +358,7 @@ def test_legal_provision_accepts_multiple_target_groups():
         "@id": "estleg:LegalProvision_TARGET_MULTI",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 11",
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         "estleg:summary": "Provision affecting several target groups.",
         "estleg:targetGroup": [
             {"@id": "estleg:TargetGroup_Citizen"},
@@ -375,7 +375,7 @@ def test_legal_provision_rejects_unknown_target_group():
         "@id": "estleg:LegalProvision_TARGET_BAD",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 12",
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         "estleg:summary": "Provision with an invalid target group.",
         "estleg:targetGroup": "aliens",
     })
@@ -395,7 +395,7 @@ def _competence_graph(extra: dict | None = None, remove: str | None = None) -> d
         "estleg:competenceType": "general",
         "estleg:appliesToProvision": {"@id": "estleg:TEST_Par_1"},
         "estleg:appliesToProvisionCount": {"@value": "1", "@type": "xsd:integer"},
-        "estleg:grantedBy": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:grantedBy": {"@id": "estleg:TEST_Map"},
         "estleg:competenceArea": "general_government",
     }
     if extra:
@@ -431,15 +431,15 @@ def test_competence_shape_rejects_unknown_competence_type():
 
 
 def test_competence_shape_rejects_literal_granted_by():
-    ok, _ = _validate(_competence_graph({"estleg:grantedBy": "estleg:TEST_Map_2026"}))
+    ok, _ = _validate(_competence_graph({"estleg:grantedBy": "estleg:TEST_Map"}))
     assert not ok
 
 
 def test_competence_shape_rejects_multiple_granted_by_values():
     ok, _ = _validate(_competence_graph({
         "estleg:grantedBy": [
-            {"@id": "estleg:TEST_Map_2026"},
-            {"@id": "estleg:OTHER_Map_2026"},
+            {"@id": "estleg:TEST_Map"},
+            {"@id": "estleg:OTHER_Map"},
         ],
     }))
     assert not ok

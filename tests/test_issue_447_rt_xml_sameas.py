@@ -105,7 +105,7 @@ def test_validate_rejects_act_xml_sameas_and_keeps_cellar() -> None:
     bad = {
         "@graph": [
             {
-                "@id": "estleg:X_Map_2026",
+                "@id": "estleg:X_Map",
                 "@type": ["estleg:Act", "estleg:Law"],
                 "owl:sameAs": {"@id": RT_XML},
             }
@@ -148,7 +148,7 @@ def test_ps_keeps_wikidata_sameas_not_rt_xml() -> None:
     node = next(
         n
         for n in doc["@graph"]
-        if n.get("@id") == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        if n.get("@id") == "estleg:eesti_vabariigi_pohiseadus_Map"
     )
     sameas = jsonld_id_values(node.get("owl:sameAs"))
     assert WIKIDATA in sameas

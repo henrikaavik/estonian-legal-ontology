@@ -24,7 +24,7 @@ FIXTURE = {
     },
     "@graph": [
         {
-            "@id": "estleg:ABIPOL_Map_2026",
+            "@id": "estleg:ABIPOL_Map",
             "@type": "estleg:Act",
             "rdfs:label": "Abipolitseiniku seadus",
         }
@@ -61,7 +61,7 @@ def test_nq_graph_iri_derived_from_filename(tmp_path: Path) -> None:
     source.write_text(
         '{"@context":{"estleg":"https://w3id.org/estleg/","rdfs":'
         '"http://www.w3.org/2000/01/rdf-schema#"},'
-        '"@graph":[{"@id":"estleg:ABIPOL_Map_2026","@type":"estleg:Act",'
+        '"@graph":[{"@id":"estleg:ABIPOL_Map","@type":"estleg:Act",'
         '"rdfs:label":"Abipolitseiniku seadus"}]}',
         encoding="utf-8",
     )

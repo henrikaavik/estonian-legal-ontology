@@ -121,10 +121,10 @@ Plan:
    explicit work tracks:
    - fix resolver/slug bugs that produce malformed targets such as
      `estleg:Vlaigusseadus_Osa10_1005_1067` and
-     `estleg:hinenud_Rahvaste_Organisatsio_Map_2026`;
-   - delete or regenerate dead `_Map_2026` references whose target act-map
-     nodes are never emitted, such as `estleg:TKS_Map_2026` and
-     `estleg:Maailma_Terviseorganisatsiooni_Map_2026`.
+     `estleg:hinenud_Rahvaste_Organisatsio_Map`;
+   - delete or regenerate dead `_Map` references whose target act-map
+     nodes are never emitted, such as `estleg:TKS_Map` and
+     `estleg:Maailma_Terviseorganisatsiooni_Map`.
 6. Keep the residual `44` fix under #217, not #218. It is a public graph
    closure/name-resolution problem; #218 should stay focused on bare namespace
    act-node migration.
@@ -173,7 +173,7 @@ Plan:
    provision range: `<ABBREV>_Osa<N>_<minPar>_<maxPar>`, using the registry
    abbreviation and the minimum/maximum `estleg:paragrahv` values in that
    part. Single-section parts still repeat the range, for example
-   `estleg:TsÜS_Osa8_170_170`.
+   `estleg:TsUS_Osa8_170_170`.
 3. Rewrite references to the old bare namespace act node where any exist.
    Before and after the migration, run:
    `rg '"@id": "https://data.riik.ee/ontology/estleg#"' krr_outputs/`

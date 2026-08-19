@@ -113,7 +113,7 @@ class TestEnrichKovActFile:
         with open(temp_act, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         act = next(n for n in doc["@graph"]
-                   if n["@id"] == "estleg:Reg_1014955_Map_2026")
+                   if n["@id"] == "estleg:Reg_1014955_Map")
         assert act["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
         assert act["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
         assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
@@ -133,7 +133,7 @@ class TestEnrichKovActFile:
             assert "estleg:KovProvision" in p["@type"]
             assert p["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
             assert p["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
-            assert p["estleg:partOfAct"] == {"@id": "estleg:Reg_1014955_Map_2026"}
+            assert p["estleg:partOfAct"] == {"@id": "estleg:Reg_1014955_Map"}
 
     def test_idempotent(self, temp_act, issuer):
         from estleg.enrich_kov_layer1 import enrich_kov_act_file
@@ -153,7 +153,7 @@ class TestEnrichKovActFile:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:NotAnAct_Map_2026",
+                {"@id": "estleg:NotAnAct_Map",
                  "@type": ["owl:Ontology"],
                  "rdfs:label": "garbage"}
             ],
@@ -171,9 +171,9 @@ class TestEnrichKovActFile:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
-                {"@id": "estleg:Reg_2_Map_2026",
+                {"@id": "estleg:Reg_2_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
             ],
         }), encoding="utf-8")
@@ -238,7 +238,7 @@ class TestStampActType:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1009410_Map_2026",
+                {"@id": "estleg:Reg_1009410_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                  "rdfs:label": "test"}
             ],
@@ -256,7 +256,7 @@ class TestStampActType:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:GovernmentRegulation"]}
             ],
         }), encoding="utf-8")
@@ -312,7 +312,7 @@ class TestOrchestratorEndToEnd:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1009410_Map_2026",
+                {"@id": "estleg:Reg_1009410_Map",
                  "@type": ["owl:Ontology", "estleg:GovernmentRegulation"],
                  "rdfs:label": "Test government regulation"}
             ],
@@ -337,7 +337,7 @@ class TestOrchestratorEndToEnd:
         # KOV act enriched
         kov_doc = json.load(open(kov_dir / "act_peep.json", encoding="utf-8"))
         act = next(n for n in kov_doc["@graph"]
-                   if n["@id"] == "estleg:Reg_1014955_Map_2026")
+                   if n["@id"] == "estleg:Reg_1014955_Map")
         assert "estleg:enactedBy" in act
         assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
 
@@ -368,7 +368,7 @@ class TestStampLawTypeApplicability:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AlkS_Map_2026",
+                {"@id": "estleg:AlkS_Map",
                  "@type": ["owl:Ontology"],
                  "rdfs:label": "Alkoholiseadus"}
             ],
@@ -402,7 +402,7 @@ class TestStampLawTypeApplicability:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"]}
             ],
         }), encoding="utf-8")
@@ -443,7 +443,7 @@ class TestStampLawTypeIdempotentNoMtimeChurn:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AlkS_Map_2026",
+                {"@id": "estleg:AlkS_Map",
                  "@type": ["owl:Ontology"]},
             ],
         }), encoding="utf-8")
@@ -515,7 +515,7 @@ class TestStampActTypeRaisesOnKovInput:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
             ],
         }), encoding="utf-8")
@@ -715,9 +715,9 @@ class TestVerifyLayer1:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
-                {"@id": "estleg:Reg_2_Map_2026",
+                {"@id": "estleg:Reg_2_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
             ],
         }), encoding="utf-8")
@@ -746,7 +746,7 @@ class TestVerifyLayer1:
                  "estleg:paragrahv": "§ 1",
                  "estleg:enactedBy": {"@id": "estleg:Issuer_x"},
                  "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0001"},
-                 "estleg:partOfAct": {"@id": "estleg:Reg_x_Map_2026"}},
+                 "estleg:partOfAct": {"@id": "estleg:Reg_x_Map"}},
             ],
         }), encoding="utf-8")
         self._patch_paths(monkeypatch, tmp_path)
@@ -772,7 +772,7 @@ class TestVerifyLayer1:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_x_Map_2026",
+                {"@id": "estleg:Reg_x_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation",
                            "estleg:Act", *extra_types],
                  "estleg:enactedBy": {"@id": "estleg:Issuer_x"},

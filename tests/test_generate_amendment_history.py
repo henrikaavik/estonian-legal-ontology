@@ -112,7 +112,7 @@ class TestAmendmentHistoryDiscovery:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_X_Map_2026",
+                {"@id": "estleg:Reg_X_Map",
                  "@type": ["owl:Ontology", "estleg:Act",
                            "estleg:MunicipalRegulation"],
                  "rdfs:label": "Test KOV act",
@@ -745,7 +745,7 @@ class TestShortPrefixForBaseSlug:
         # disagree with the act's numeric id).
         assert short_prefix_for_base_slug(
             "jarva_maakonna_looduse_uksikobjektide_kaitse_alla_votmine_t1049276",
-            "estleg:Reg_1056294_Map_2026",
+            "estleg:Reg_1056294_Map",
             {},
         ) == "Reg_1056294"
 
@@ -755,7 +755,7 @@ class TestShortPrefixForBaseSlug:
         # No registry entry and the ontology IRI yields no *shorter* stem →
         # keep the (sanitised) slug rather than crash.
         assert short_prefix_for_base_slug(
-            "kutseseadus", "estleg:Kutseseadus_Map_2026", {}
+            "kutseseadus", "estleg:Kutseseadus_Map", {}
         ) == sanitize_id("kutseseadus")
         # …and a totally absent ontology IRI also falls back gracefully.
         assert short_prefix_for_base_slug("some_long_slug", "", {}) == sanitize_id(
@@ -852,7 +852,7 @@ class TestAmendmentChainCleanup:
                 {
                     "@graph": [
                         {
-                            "@id": "estleg:UNP_Map_2026",
+                            "@id": "estleg:UNP_Map",
                             "@type": ["owl:Ontology", "estleg:Act"],
                             "dc:source": "Unpaired law",
                         }
@@ -892,7 +892,7 @@ class TestAmendmentChainCleanup:
             json.dumps({
                 "@graph": [
                     {
-                        "@id": "estleg:PAIR_Map_2026",
+                        "@id": "estleg:PAIR_Map",
                         "@type": ["owl:Ontology", "estleg:Act"],
                         "dc:source": "Paired law",
                     }
@@ -940,7 +940,7 @@ class TestAmendmentChainCleanup:
             json.dumps({
                 "@graph": [
                     {
-                        "@id": "estleg:PAIR_Map_2026",
+                        "@id": "estleg:PAIR_Map",
                         "@type": ["owl:Ontology", "estleg:Act"],
                         "dc:source": "Paired law",
                     }

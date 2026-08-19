@@ -213,7 +213,7 @@ class TestPairPeepWithXml:
         peep.write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
-                {"@id": "estleg:Reg_9999_Map_2026",
+                {"@id": "estleg:Reg_9999_Map",
                  "estleg:globalId": "999",
                  "@type": ["estleg:MunicipalRegulation"]}
             ],
@@ -261,7 +261,7 @@ class TestPairPeepWithXml:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AlkS_Map_2026",
+                {"@id": "estleg:AlkS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Alkoholiseadus"}
                 # NO estleg:globalId — matches real law peep shape
@@ -296,7 +296,7 @@ class TestPairPeepWithXml:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AOS_Osa3_Map_2026",
+                {"@id": "estleg:AOS_Osa3_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]}
             ],
         }), encoding="utf-8")
@@ -339,7 +339,7 @@ class TestMainUsesGlobalIdLookup:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_X_Map_2026",
+                {"@id": "estleg:Reg_X_Map",
                  "@type": ["owl:Ontology", "estleg:Act",
                            "estleg:MunicipalRegulation"],
                  "rdfs:label": "Test KOV act",
@@ -639,7 +639,7 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:GhostLaw_Map_2026",
+                {"@id": "estleg:GhostLaw_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Ghost Law"},
             ],
@@ -695,7 +695,7 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:OldLaw_Map_2026",
+                {"@id": "estleg:OldLaw_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Old Law"},
             ],
@@ -850,7 +850,7 @@ class TestActLevelPlacement:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Demo_Map_2026",
+                {"@id": "estleg:Demo_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Demo Law"},
                 {"@id": "estleg:Demo_Par_1",
@@ -981,7 +981,7 @@ def _run_main_over_single_peep(tmp_path, monkeypatch, temporal_kehtivus,
             "owl": "http://www.w3.org/2002/07/owl#",
         },
         "@graph": [
-            {"@id": "estleg:GuardLaw_Map_2026",
+            {"@id": "estleg:GuardLaw_Map",
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
              "rdfs:label": "Guard Law"},
         ],
@@ -1152,7 +1152,7 @@ class TestReportDeterminism:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:StableLaw_Map_2026",
+                {"@id": "estleg:StableLaw_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Stable Law"},
             ],
@@ -1215,7 +1215,7 @@ class TestSinglePassClearAndEnrich:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:SP_Map_2026",
+                {"@id": "estleg:SP_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Single Pass Law",
                  # Stale temporal data from a prior run.

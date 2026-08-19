@@ -84,7 +84,7 @@ def test_freshness_gate_errors_on_coverage_hole(tmp_path, monkeypatch) -> None:
             {
                 "@graph": [
                     {
-                        "@id": "estleg:HOLE_Map_2026",
+                        "@id": "estleg:HOLE_Map",
                         "@type": ["owl:Ontology", "estleg:Act"],
                         "estleg:kehtiv": {"@value": "2026-05-24", "@type": "xsd:date"},
                     }

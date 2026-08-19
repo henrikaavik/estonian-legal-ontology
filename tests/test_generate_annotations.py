@@ -63,8 +63,8 @@ def _write_peep(krr: Path, slug: str, ont_iri: str, *, title: str) -> None:
 def _fixture_corpus(krr: Path) -> None:
     """Two laws an opinion can cite, plus one it can't (no peep) — wired into ``krr``."""
     krr.mkdir(parents=True, exist_ok=True)
-    _write_peep(krr, "tsiviilseadustiku_uldosa_seadus", "estleg:TSYS_Map_2026", title="Tsiviilseadustiku üldosa seadus")
-    _write_peep(krr, "vorulaoigusseadus", "estleg:VOS_Map_2026", title="Võlaõigusseadus")
+    _write_peep(krr, "tsiviilseadustiku_uldosa_seadus", "estleg:TSYS_Map", title="Tsiviilseadustiku üldosa seadus")
+    _write_peep(krr, "vorulaoigusseadus", "estleg:VOS_Map", title="Võlaõigusseadus")
 
 
 def _seed_file(tmp_path: Path, opinions: list[dict]) -> Path:
@@ -123,12 +123,12 @@ class TestLawIndex:
         _fixture_corpus(krr)
         idx = build_law_index(krr)
         # Nominative dc:source title resolves.
-        assert idx.resolve("Võlaõigusseadus") == "estleg:VOS_Map_2026"
-        assert idx.resolve("Tsiviilseadustiku üldosa seadus") == "estleg:TSYS_Map_2026"
+        assert idx.resolve("Võlaõigusseadus") == "estleg:VOS_Map"
+        assert idx.resolve("Tsiviilseadustiku üldosa seadus") == "estleg:TSYS_Map"
         # Genitive form (as titles cite laws) also resolves.
-        assert idx.resolve("võlaõigusseaduse") == "estleg:VOS_Map_2026"
+        assert idx.resolve("võlaõigusseaduse") == "estleg:VOS_Map"
         # Diacritics + parenthetical suffix tolerated.
-        assert idx.resolve("VÕLAÕIGUSSEADUS") == "estleg:VOS_Map_2026"
+        assert idx.resolve("VÕLAÕIGUSSEADUS") == "estleg:VOS_Map"
         # A law not in the corpus does not resolve.
         assert idx.resolve("Mingi olematu seadus") is None
 
@@ -137,12 +137,12 @@ class TestLawIndex:
         _fixture_corpus(krr)
         idx = build_law_index(krr)
         # The genitive name occurs in the title -> the act IRI is found.
-        assert idx.find_in_title("Võlaõigusseaduse § 40 tõlgendamine") == ["estleg:VOS_Map_2026"]
+        assert idx.find_in_title("Võlaõigusseaduse § 40 tõlgendamine") == ["estleg:VOS_Map"]
         # No law name in the title -> nothing.
         assert idx.find_in_title("Politsei tegevuse vaidlustamine") == []
         # Both laws named -> both, in first-occurrence order, no duplicates.
         found = idx.find_in_title("Tsiviilseadustiku üldosa seaduse ja võlaõigusseaduse koostoime")
-        assert found == ["estleg:TSYS_Map_2026", "estleg:VOS_Map_2026"]
+        assert found == ["estleg:TSYS_Map", "estleg:VOS_Map"]
 
     def test_find_in_title_substring_base_act_not_leaked(self, tmp_path: Path):
         # A longer act whose title CONTAINS a shorter base act's name as a substring
@@ -153,30 +153,30 @@ class TestLawIndex:
         # second match — the raw ``in`` substring scan previously emitted both.
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
-        _write_peep(krr, "karistusseadustik", "estleg:KARIST_Map_2026", title="Karistusseadustik")
+        _write_peep(krr, "karistusseadustik", "estleg:KARIST_Map", title="Karistusseadustik")
         _write_peep(
-            krr, "karistusseadustiku_rakendamise_seadus", "estleg:KARISTrak_Map_2026",
+            krr, "karistusseadustiku_rakendamise_seadus", "estleg:KARISTrak_Map",
             title="Karistusseadustiku rakendamise seadus",
         )
-        _write_peep(krr, "asjaoigusseadus", "estleg:AOS_Map_2026", title="Asjaõigusseadus")
+        _write_peep(krr, "asjaoigusseadus", "estleg:AOS_Map", title="Asjaõigusseadus")
         _write_peep(
-            krr, "asjaoigusseaduse_rakendamise_seadus", "estleg:AOSrak_Map_2026",
+            krr, "asjaoigusseaduse_rakendamise_seadus", "estleg:AOSrak_Map",
             title="Asjaõigusseaduse rakendamise seadus",
         )
         idx = build_law_index(krr)
 
         # The longer act's own title must NOT leak the shorter base act (the #598 bug).
         assert idx.find_in_title("Karistusseadustiku rakendamise seaduse muutmine") == [
-            "estleg:KARISTrak_Map_2026"
+            "estleg:KARISTrak_Map"
         ]
         assert idx.find_in_title("Asjaõigusseaduse rakendamise seadus") == [
-            "estleg:AOSrak_Map_2026"
+            "estleg:AOSrak_Map"
         ]
         # The shorter base act STILL matches on its own whole-token title (no regression).
         assert idx.find_in_title("Karistusseadustiku § 12 tõlgendamine") == [
-            "estleg:KARIST_Map_2026"
+            "estleg:KARIST_Map"
         ]
-        assert idx.find_in_title("Asjaõigusseaduse § 5 kohaldamine") == ["estleg:AOS_Map_2026"]
+        assert idx.find_in_title("Asjaõigusseaduse § 5 kohaldamine") == ["estleg:AOS_Map"]
 
     def test_find_in_body_matches_standalone_tokens(self, tmp_path: Path):
         # Body evidence is a leftmost-longest, word-bounded token scan over the FULL text:
@@ -188,37 +188,37 @@ class TestLawIndex:
         idx = build_law_index(krr)
         # § form is still a genuine occurrence -> accepted.
         assert idx.find_in_body("Käsitletakse võlaõigusseaduse § 40 kohaldamist.") == [
-            "estleg:VOS_Map_2026"
+            "estleg:VOS_Map"
         ]
         # Bare-name genitive reference with NO § -> still accepted (the genitive variant is a
         # registered standalone token).
         assert idx.find_in_body("vastavalt võlaõigusseadusele tuleb hüvitada kahju.") == [
-            "estleg:VOS_Map_2026"
+            "estleg:VOS_Map"
         ]
         # Bare nominative mention with NO § -> accepted (standalone whole token).
         assert idx.find_in_body(
             "Õiguskantsler arutles, kuidas võlaõigusseadus kaitseb tarbijat."
-        ) == ["estleg:VOS_Map_2026"]
+        ) == ["estleg:VOS_Map"]
         # Both laws named -> both, in first-occurrence order, no duplicates.
         assert idx.find_in_body(
             "tsiviilseadustiku üldosa seaduse § 1 ja võlaõigusseaduse § 40 koostoime"
-        ) == ["estleg:TSYS_Map_2026", "estleg:VOS_Map_2026"]
+        ) == ["estleg:TSYS_Map", "estleg:VOS_Map"]
 
     def test_no_spurious_substring_match_from_short_abbreviation(self, tmp_path: Path):
         # A short token like "EKS" must not substring-match inside "ülaindEKSiga": only full
         # law names are title-scan keys (regression — see the #199 implementation note).
         krr = tmp_path / "krr_outputs"
         _fixture_corpus(krr)
-        _write_peep(krr, "elektroonilise_side_seadus", "estleg:ESS_Map_2026", title="Elektroonilise side seadus")
+        _write_peep(krr, "elektroonilise_side_seadus", "estleg:ESS_Map", title="Elektroonilise side seadus")
         idx = build_law_index(krr)
         assert idx.find_in_title("Karistusseadustiku § 381 ülaindeksiga 1 põhiseaduspärasus") == []
 
     def test_unmapped_law_abbrev_falls_back_to_iri_prefix(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
-        _write_peep(krr, "testiseadus", "estleg:TEST_Map_2026", title="Testiseadus")
+        _write_peep(krr, "testiseadus", "estleg:TEST_Map", title="Testiseadus")
         idx = build_law_index(krr)
-        assert idx.abbrev("estleg:TEST_Map_2026") == "TEST"
+        assert idx.abbrev("estleg:TEST_Map") == "TEST"
 
     def test_multi_osa_law_without_map_binds_to_lowest_osa_node(self, tmp_path: Path):
         # A multipart law with NO whole-law _Map_ peep — only per-osa nodes that share one
@@ -257,9 +257,9 @@ class TestLawIndex:
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
         _write_peep(krr, "mingiseadus_osa1", "estleg:MS_Osa1_1_50", title="Mingiseadus")
-        _write_peep(krr, "mingiseadus_map", "estleg:MS_Map_2026", title="Mingiseadus")
+        _write_peep(krr, "mingiseadus_map", "estleg:MS_Map", title="Mingiseadus")
         idx = build_law_index(krr)
-        assert idx.resolve("Mingiseadus") == "estleg:MS_Map_2026"
+        assert idx.resolve("Mingiseadus") == "estleg:MS_Map"
 
     def test_norm_name_strips_all_parentheticals_not_just_trailing(self):
         # The "(Riigi Teataja)" provenance parenthetical must never leak into the lookup
@@ -289,18 +289,18 @@ class TestLawIndex:
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
         _write_peep(
-            krr, "tulu_kaibemaksuseadus", "estleg:TKMS_Map_2026",
+            krr, "tulu_kaibemaksuseadus", "estleg:TKMS_Map",
             title="Tulumaksuseadus + Käibemaksuseadus",
         )
         idx = build_law_index(krr)
         # Either half resolves via the name index.
-        assert idx.resolve("Tulumaksuseadus") == "estleg:TKMS_Map_2026"
-        assert idx.resolve("Käibemaksuseadus") == "estleg:TKMS_Map_2026"
+        assert idx.resolve("Tulumaksuseadus") == "estleg:TKMS_Map"
+        assert idx.resolve("Käibemaksuseadus") == "estleg:TKMS_Map"
         assert "tulumaksuseadus" in idx.by_name
         assert "kaibemaksuseadus" in idx.by_name
         # And each half is independently scannable (genitive-aware) in a title.
-        assert idx.find_in_title("Tulumaksuseaduse § 1 tõlgendamine") == ["estleg:TKMS_Map_2026"]
-        assert idx.find_in_title("Käibemaksuseaduse muutmine") == ["estleg:TKMS_Map_2026"]
+        assert idx.find_in_title("Tulumaksuseaduse § 1 tõlgendamine") == ["estleg:TKMS_Map"]
+        assert idx.find_in_title("Käibemaksuseaduse muutmine") == ["estleg:TKMS_Map"]
 
 
 # ---------------------------------------------------------------------------
@@ -490,12 +490,12 @@ class TestBuildAnnotations:
         )
         res = build_annotations_for_opinion(op, idx)
         assert res.unresolved_names == []
-        assert set(res.resolved_iris) == {"estleg:VOS_Map_2026", "estleg:TSYS_Map_2026"}
+        assert set(res.resolved_iris) == {"estleg:VOS_Map", "estleg:TSYS_Map"}
         # #459: one node per document, multiple annotates targets.
         assert len(res.annotations) == 1
         node = res.annotations[0]
         annotated = {item["@id"] for item in node["estleg:annotates"]}
-        assert annotated == {"estleg:VOS_Map_2026", "estleg:TSYS_Map_2026"}
+        assert annotated == {"estleg:VOS_Map", "estleg:TSYS_Map"}
         assert node["@type"] == ["owl:NamedIndividual", "estleg:Annotation"]
         assert node["@id"].startswith("estleg:Annotation_OK_vos")
         assert isinstance(node["estleg:annotationText"], str) and node["estleg:annotationText"].strip()
@@ -507,8 +507,8 @@ class TestBuildAnnotations:
     def test_multi_law_opinion_disambiguates_reused_abbrev_suffixes(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
-        _write_peep(krr, "esimene_seadus", "estleg:SAME_Map_2026", title="Esimene seadus")
-        _write_peep(krr, "teine_seadus", "estleg:SAME_2_Map_2026", title="Teine seadus")
+        _write_peep(krr, "esimene_seadus", "estleg:SAME_Map", title="Esimene seadus")
+        _write_peep(krr, "teine_seadus", "estleg:SAME_2_Map", title="Teine seadus")
         idx = build_law_index(krr)
         op = Opinion(
             "same-prefix-laws",
@@ -521,8 +521,8 @@ class TestBuildAnnotations:
         res = build_annotations_for_opinion(op, idx)
         assert len(res.annotations) == 1
         assert {item["@id"] for item in res.annotations[0]["estleg:annotates"]} == {
-            "estleg:SAME_Map_2026",
-            "estleg:SAME_2_Map_2026",
+            "estleg:SAME_Map",
+            "estleg:SAME_2_Map",
         }
 
     def test_multi_law_abbrev_hash_collision_gets_disambig_suffix(
@@ -534,8 +534,8 @@ class TestBuildAnnotations:
         # produce identical abbrev hashes.
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
-        _write_peep(krr, "esimene_seadus", "estleg:SAME_Map_2026", title="Esimene seadus")
-        _write_peep(krr, "teine_seadus", "estleg:SAME_2_Map_2026", title="Teine seadus")
+        _write_peep(krr, "esimene_seadus", "estleg:SAME_Map", title="Esimene seadus")
+        _write_peep(krr, "teine_seadus", "estleg:SAME_2_Map", title="Teine seadus")
         idx = build_law_index(krr)
         monkeypatch.setattr(ga, "_short_hash", lambda value, *, length=8: "deadbe")
         op = Opinion(
@@ -559,7 +559,7 @@ class TestBuildAnnotations:
         res = build_annotations_for_opinion(op, idx)
         assert len(res.annotations) == 1
         assert res.annotations[0]["@id"] == "estleg:Annotation_OK_vos40"
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
 
     def test_unresolvable_law_is_skipped_and_recorded(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
@@ -581,7 +581,7 @@ class TestBuildAnnotations:
                      (), "", tags=("Raha ja vara",))
         res = build_annotations_for_opinion(op, idx)
         assert len(res.annotations) == 1
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
         # The annotationText surfaces the topic tags when there is no PDF-body summary.
         assert "Raha ja vara" in res.annotations[0]["estleg:annotationText"]
 
@@ -609,7 +609,7 @@ class TestBuildAnnotations:
         )
         res = build_annotations_for_opinion(op, idx)
         assert len(res.annotations) == 1
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
         assert "võlaõigusseaduse § 40" in res.annotations[0]["estleg:annotationText"]
 
     def test_genuine_bare_name_body_reference_is_annotated(self, tmp_path: Path):
@@ -629,9 +629,9 @@ class TestBuildAnnotations:
             "Õiguskantsler leidis, et vastavalt võlaõigusseadusele tuleb kahju hüvitada.",
         )
         res = build_annotations_for_opinion(op, idx)
-        assert res.resolved_iris == ["estleg:VOS_Map_2026"]
+        assert res.resolved_iris == ["estleg:VOS_Map"]
         assert len(res.annotations) == 1
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
 
     def test_body_citation_with_section_is_accepted(self, tmp_path: Path):
         # A body law-name hit followed by a § section reference is a genuine occurrence -> it
@@ -649,7 +649,7 @@ class TestBuildAnnotations:
         )
         res = build_annotations_for_opinion(op, idx)
         assert len(res.annotations) == 1
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
 
     def test_substring_law_name_not_double_annotated(self, tmp_path: Path):
         # When the body names ONLY a longer law whose title contains a shorter law's title as
@@ -658,9 +658,9 @@ class TestBuildAnnotations:
         # substring law is never separately matched.
         krr = tmp_path / "krr_outputs"
         krr.mkdir(parents=True, exist_ok=True)
-        _write_peep(krr, "ravimiseadus", "estleg:RAVIM_Map_2026", title="Ravimiseadus")
+        _write_peep(krr, "ravimiseadus", "estleg:RAVIM_Map", title="Ravimiseadus")
         _write_peep(
-            krr, "veterinaarravimiseadus", "estleg:VETRAVIM_Map_2026",
+            krr, "veterinaarravimiseadus", "estleg:VETRAVIM_Map",
             title="Veterinaarravimiseadus",
         )
         idx = build_law_index(krr)
@@ -673,10 +673,10 @@ class TestBuildAnnotations:
             "Õiguskantsler hindas, kas vastavalt veterinaarravimiseadusele on nõuded täidetud.",
         )
         res = build_annotations_for_opinion(op, idx)
-        assert res.resolved_iris == ["estleg:VETRAVIM_Map_2026"]
-        assert "estleg:RAVIM_Map_2026" not in res.resolved_iris
+        assert res.resolved_iris == ["estleg:VETRAVIM_Map"]
+        assert "estleg:RAVIM_Map" not in res.resolved_iris
         assert len(res.annotations) == 1
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VETRAVIM_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VETRAVIM_Map"}
 
     def test_law_name_embedded_in_word_not_matched(self, tmp_path: Path):
         # A law name embedded inside a larger token (no word boundary on either side) is NOT a
@@ -717,9 +717,9 @@ class TestBuildAnnotations:
             "Küsimus on olemuselt tsiviilseadustiku üldosa seaduslikust regulatsioonist.",
         )
         res = build_annotations_for_opinion(op, idx)
-        assert res.resolved_iris == ["estleg:VOS_Map_2026"]
+        assert res.resolved_iris == ["estleg:VOS_Map"]
         assert len(res.annotations) == 1
-        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
 
     def test_annotates_targets_resolve_to_corpus_nodes(self, tmp_path: Path):
         # Every estleg:annotates target must be a real node @id somewhere in the fixture corpus.
@@ -748,7 +748,7 @@ def test_write_sidecar_shape_and_context(tmp_path: Path):
     out_path = tmp_path / "annotations" / "oiguskantsler_seisukohad.jsonld"
     nodes = [
         {"@id": "estleg:Annotation_OK_x", "@type": ["owl:NamedIndividual", "estleg:Annotation"],
-         "estleg:annotates": {"@id": "estleg:VOS_Map_2026"}, "estleg:annotationText": "tekst",
+         "estleg:annotates": {"@id": "estleg:VOS_Map"}, "estleg:annotationText": "tekst",
          "estleg:annotationType": "interpretation", "estleg:annotationSource": "Õiguskantsler"},
     ]
     written = write_sidecar(nodes, out_path=out_path)
@@ -773,7 +773,7 @@ def _well_formed_annotation() -> dict:
     return {
         "@id": "estleg:Annotation_OK_vos40",
         "@type": ["owl:NamedIndividual", "estleg:Annotation"],
-        "estleg:annotates": {"@id": "estleg:VOS_Map_2026"},
+        "estleg:annotates": {"@id": "estleg:VOS_Map"},
         "estleg:annotationText": "Õiguskantsler selgitas tahteavalduse tõlgendamise põhimõtteid.",
         "estleg:annotationType": "interpretation",
         "estleg:annotationSource": "Õiguskantsler",
@@ -807,7 +807,7 @@ def test_shacl_rejects_annotation_type_outside_enum():
 
 def test_shacl_rejects_literal_annotates():
     node = _well_formed_annotation()
-    node["estleg:annotates"] = "estleg:VOS_Map_2026"  # a literal string, not an IRI object
+    node["estleg:annotates"] = "estleg:VOS_Map"  # a literal string, not an IRI object
     graph_json = {"@context": dict(ga.CONTEXT), "@graph": [node]}
     conforms, _ = _shacl_conforms(graph_json)
     assert not conforms
@@ -816,8 +816,8 @@ def test_shacl_rejects_literal_annotates():
 def test_shacl_accepts_multiple_annotates():
     node = _well_formed_annotation()
     node["estleg:annotates"] = [
-        {"@id": "estleg:VOS_Map_2026"},
-        {"@id": "estleg:TSYS_Map_2026"},
+        {"@id": "estleg:VOS_Map"},
+        {"@id": "estleg:TSYS_Map"},
     ]
     graph_json = {"@context": dict(ga.CONTEXT), "@graph": [node]}
     conforms, msg = _shacl_conforms(graph_json)
@@ -855,7 +855,7 @@ def test_run_with_seed_writes_sidecar_and_coverage(tmp_path: Path):
     # vos-40: 1 node ; vos-tsys: 1 node (two annotates) ; olematu: 0.
     assert len(ann_nodes) == 2
     targets = {iri for n in ann_nodes for iri in ga.annotates_iris(n)}
-    assert targets == {"estleg:VOS_Map_2026", "estleg:TSYS_Map_2026"}
+    assert targets == {"estleg:VOS_Map", "estleg:TSYS_Map"}
     # Every annotates target is a real corpus node @id.
     corpus_ids = set()
     for peep in krr.glob("*_peep.json"):
@@ -929,7 +929,7 @@ def test_run_scrape_with_mocked_listing(tmp_path: Path, monkeypatch: pytest.Monk
     ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
     # Only the "Võlaõigusseaduse § 40 tõlgendamine" opinion resolves a law from its title.
     assert len(ann_nodes) == 1
-    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
     assert ann_nodes[0]["estleg:annotationDate"] == {"@value": "2024-03-15", "@type": "xsd:date"}
     cov = json.loads(cov_path.read_text(encoding="utf-8"))
     assert cov["files_processed"] == 2 and cov["files_with_output"] == 1 and cov["triples_emitted"] == 1
@@ -958,7 +958,7 @@ def test_run_scrape_no_pdf_body_skips_extraction(tmp_path: Path, monkeypatch: py
     ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
     # Title-resolved annotation still present (only the § 40 opinion resolves from its title).
     assert len(ann_nodes) == 1
-    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
 
 
 def test_run_scrape_pdf_body_on_invokes_extraction(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -1150,7 +1150,7 @@ def test_run_scrape_allow_partial_proceeds_when_pdfminer_unavailable(
     doc = json.loads(out_path.read_text(encoding="utf-8"))
     ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
     assert len(ann_nodes) == 1
-    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
     # The degraded-body extraction is still recorded for the operator.
     cov = json.loads(cov_path.read_text(encoding="utf-8"))
     assert cov["skip_reasons"].get("pdf_text_extraction_unavailable") == 1
@@ -1354,7 +1354,7 @@ def test_full_pdf_text_scanned_beyond_50k(tmp_path: Path):
     assert "volaoigusseadusele" in ga._norm_name(normalized)
 
     # And find_in_body resolves the beyond-cap bare-name reference from the full scanned text.
-    assert idx.find_in_body(normalized) == ["estleg:VOS_Map_2026"]
+    assert idx.find_in_body(normalized) == ["estleg:VOS_Map"]
 
 
 def test_scrape_opinion_resolves_law_cited_after_cap(tmp_path: Path):
@@ -1378,9 +1378,9 @@ def test_scrape_opinion_resolves_law_cited_after_cap(tmp_path: Path):
     )
     assert stats["usable_text_layers"] == 1
     res = build_annotations_for_opinion(enriched[0], idx)
-    assert res.resolved_iris == ["estleg:VOS_Map_2026"]
+    assert res.resolved_iris == ["estleg:VOS_Map"]
     assert len(res.annotations) == 1
-    assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+    assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
 
 
 def test_pdf_text_layer_probe_skips_non_pdf_urls():

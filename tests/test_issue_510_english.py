@@ -97,7 +97,7 @@ def test_english_eli_from_meta_requires_band() -> None:
 
 
 def test_attach_official_english_is_idempotent() -> None:
-    node: dict = {"@id": "estleg:PS_Map_2026"}
+    node: dict = {"@id": "estleg:PS_Map"}
     assert attach_official_english(node, "523042025002") is True
     assert node["estleg:officialEnglishText"] == {
         "@id": "https://www.riigiteataja.ee/en/eli/523042025002"

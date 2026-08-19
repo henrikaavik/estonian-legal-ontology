@@ -68,7 +68,7 @@ class TestBuildHistoricalMunicipalityDoc:
         assert doc["@context"]["estleg"] == "https://w3id.org/estleg/"
         graph = doc["@graph"]
         # First node is the owl:Ontology header.
-        assert graph[0]["@id"] == "estleg:HistoricalMunicipalities_Map_2026"
+        assert graph[0]["@id"] == "estleg:HistoricalMunicipalities_Map"
         assert "owl:Ontology" in graph[0]["@type"]
 
     def test_node_has_required_fields(self):

@@ -150,10 +150,10 @@ def test_retarget_curia_identity_is_idempotent() -> None:
 
 
 def test_retarget_skips_non_decision_nodes() -> None:
-    header = {"@id": "estleg:CURIA_Court_Opinions_Map_2026", "@type": ["owl:Ontology"]}
+    header = {"@id": "estleg:CURIA_Court_Opinions_Map", "@type": ["owl:Ontology"]}
     assert mod.retarget_curia_identity(header) is False
     assert header == {
-        "@id": "estleg:CURIA_Court_Opinions_Map_2026",
+        "@id": "estleg:CURIA_Court_Opinions_Map",
         "@type": ["owl:Ontology"],
     }
 

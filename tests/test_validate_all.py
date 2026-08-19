@@ -589,7 +589,7 @@ def _full_peep(krr: Path, slug: str) -> None:
         krr / f"{slug}_peep.json",
         {
             "@graph": [
-                {"@id": f"estleg:X_{slug}_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                {"@id": f"estleg:X_{slug}_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "dc:source": slug, "estleg:contentStatus": "structuredBody"},
                 {"@id": f"estleg:X_{slug}_Par_1", "@type": ["owl:NamedIndividual"], "estleg:paragrahv": "§ 1."},
             ]
@@ -598,7 +598,7 @@ def _full_peep(krr: Path, slug: str) -> None:
 
 
 def _stub_peep(krr: Path, slug: str, *, content_status: str | None = "noStructuredBody") -> None:
-    ont: dict = {"@id": f"estleg:X_{slug}_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+    ont: dict = {"@id": f"estleg:X_{slug}_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "dc:source": slug}
     if content_status is not None:
         ont["estleg:contentStatus"] = content_status
@@ -742,11 +742,11 @@ def test_act_coverage_reconciliation_accepts_multipart_osa_files(tmp_path):
     krr = tmp_path / "krr_outputs"
     # Multipart law: two osa peep files, one manifest entry.
     write_json(krr / "big_law_osa1_peep.json", {"@graph": [
-        {"@id": "estleg:BIG_Osa1_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+        {"@id": "estleg:BIG_Osa1_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
          "dc:source": "big_law", "estleg:contentStatus": "structuredBody"},
     ]})
     write_json(krr / "big_law_osa2_peep.json", {"@graph": [
-        {"@id": "estleg:BIG_Osa2_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+        {"@id": "estleg:BIG_Osa2_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
          "dc:source": "big_law", "estleg:contentStatus": "structuredBody"},
     ]})
     _laws_manifest(krr, [{"title": "Big Law", "slug": "big_law", "status": "full"}])
@@ -806,7 +806,7 @@ def test_validate_subcorpus_combined_detects_missing_peep_id(tmp_path):
     # The eurlex combined drops that ID entirely.
     write_json(
         krr / "eurlex" / "eurlex_combined.jsonld",
-        {"@graph": [{"@id": "estleg:EURlex_Combined_Map_2026", "@type": ["owl:Ontology"]}]},
+        {"@graph": [{"@id": "estleg:EURlex_Combined_Map", "@type": ["owl:Ontology"]}]},
     )
 
     validate_all.validate_subcorpus_combined_ontologies(krr)
@@ -1065,7 +1065,7 @@ def test_validate_temporal_property_targets_accepts_act_node(tmp_path):
     doc = {
         "@graph": [
             {
-                "@id": "estleg:AlkS_Map_2026",
+                "@id": "estleg:AlkS_Map",
                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                 "estleg:temporalStatus": "inForce",
                 "estleg:entryIntoForce": {"@value": "2003-07-19", "@type": "xsd:date"},
@@ -2406,7 +2406,7 @@ def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, P
             },
             "@graph": [
                 {
-                    "@id": "estleg:ALKS_Map_2026",
+                    "@id": "estleg:ALKS_Map",
                     "@type": ["owl:Ontology", "estleg:Act"],
                     "rdfs:label": "Legacy stub",
                 }
@@ -2420,9 +2420,9 @@ def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, P
                 "deprecations": [
                     {
                         "file": "alkoholi_seadus_peep.json",
-                        "rootIri": "estleg:ALKS_Map_2026",
+                        "rootIri": "estleg:ALKS_Map",
                         "replacedByFile": "alkoholiseadus_peep.json",
-                        "replacedByIri": "estleg:AS_Map_2026",
+                        "replacedByIri": "estleg:AS_Map",
                     }
                 ]
             }
@@ -2833,11 +2833,11 @@ def test_validate_combined_graph_closure_allows_resolved_shaped_stub_edge(tmp_pa
         "@id": "estleg:Reg_1_Par_1",
         "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
         "rdfs:label": "§ 1",
-        "estleg:partOfAct": {"@id": "estleg:Reg_1_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:Reg_1_Map"},
         estleg_common.STUB_NODE_MARKER: True,
     }
     parent_act = {
-        "@id": "estleg:Reg_1_Map_2026",
+        "@id": "estleg:Reg_1_Map",
         "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
         "rdfs:label": "Määrus",
         estleg_common.STUB_NODE_MARKER: True,
@@ -2865,7 +2865,7 @@ def test_validate_combined_graph_closure_flags_unresolved_shaped_stub_edge(tmp_p
         "@id": "estleg:Reg_2_Par_1",
         "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
         "rdfs:label": "§ 1",
-        "estleg:partOfAct": {"@id": "estleg:Reg_2_Map_2026"},  # absent
+        "estleg:partOfAct": {"@id": "estleg:Reg_2_Map"},  # absent
         estleg_common.STUB_NODE_MARKER: True,
     }
     _write_combined(

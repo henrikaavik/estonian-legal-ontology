@@ -35,7 +35,7 @@ def _validate(graph_json: dict) -> tuple[bool, str]:
 def test_act_bilingual_labels_conform():
     ok, msg = _validate({
         "@context": CONTEXT,
-        "@id": "estleg:KARIST_Map_2026",
+        "@id": "estleg:KARIST_Map",
         "@type": ["estleg:Act", "owl:Ontology"],
         "rdfs:label": [
             {"@value": "Karistusseadustik", "@language": "et"},
@@ -55,7 +55,7 @@ def test_legal_provision_langstring_summary_conforms():
             "@value": "Karistusseadustiku üldosa kohaldamisala.",
             "@language": "et",
         },
-        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
     })
     assert ok, msg
 
@@ -63,7 +63,7 @@ def test_legal_provision_langstring_summary_conforms():
 def test_duplicate_et_labels_fail_unique_lang():
     ok, msg = _validate({
         "@context": CONTEXT,
-        "@id": "estleg:KARIST_Map_2026",
+        "@id": "estleg:KARIST_Map",
         "@type": ["estleg:Act", "owl:Ontology"],
         "rdfs:label": [
             {"@value": "Karistusseadustik", "@language": "et"},
@@ -77,7 +77,7 @@ def test_duplicate_et_labels_fail_unique_lang():
 def test_bare_string_label_still_conforms():
     ok, msg = _validate({
         "@context": CONTEXT,
-        "@id": "estleg:KARIST_Map_2026",
+        "@id": "estleg:KARIST_Map",
         "@type": ["estleg:Act", "owl:Ontology"],
         "rdfs:label": "Karistusseadustik",
     })

@@ -347,7 +347,7 @@ def test_source_provenance_output_passes_validate_all_validators():
     validate_all.reset()
 
     node = {
-        "@id": "estleg:Test_Map_2026",
+        "@id": "estleg:Test_Map",
         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
         "rdfs:label": {"@value": "Test", "@language": "et"},
     }

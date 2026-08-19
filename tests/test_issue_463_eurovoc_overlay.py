@@ -27,8 +27,8 @@ def test_design_doc_and_combined_merges_eurovoc_subdir() -> None:
 
 
 def test_overlay_node_is_subjects_only() -> None:
-    node = overlay_node_for_act("estleg:PKS_Map_2026", DOMAINS)
-    assert node["@id"] == "estleg:PKS_Map_2026"
+    node = overlay_node_for_act("estleg:PKS_Map", DOMAINS)
+    assert node["@id"] == "estleg:PKS_Map"
     assert node["dcterms:subject"] == [{"@id": "http://eurovoc.europa.eu/527"}]
     assert node["eli:is_about"] == node["dcterms:subject"]
     assert "rdfs:label" not in node
@@ -47,7 +47,7 @@ def test_classify_main_writes_overlay_not_peep(tmp_path: Path, monkeypatch) -> N
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": "estleg:PKS_Map_2026",
+                        "@id": "estleg:PKS_Map",
                         "@type": ["estleg:Act", "estleg:Law"],
                         "rdfs:label": "Perekonnaseadus",
                     },
@@ -68,7 +68,7 @@ def test_classify_main_writes_overlay_not_peep(tmp_path: Path, monkeypatch) -> N
     overlay = json.loads(
         (krr / "eurovoc" / "eurovoc_overlay.jsonld").read_text(encoding="utf-8")
     )
-    acts = [n for n in overlay["@graph"] if n.get("@id") == "estleg:PKS_Map_2026"]
+    acts = [n for n in overlay["@graph"] if n.get("@id") == "estleg:PKS_Map"]
     assert acts
     assert acts[0]["dcterms:subject"]
     peep_doc = json.loads(peep.read_text(encoding="utf-8"))
@@ -81,7 +81,7 @@ def test_combined_keeps_overlay_after_peep_regen(tmp_path: Path) -> None:
     peep = {
         "@graph": [
             {
-                "@id": "estleg:PKS_Map_2026",
+                "@id": "estleg:PKS_Map",
                 "@type": ["estleg:Law", "estleg:Act"],
                 "rdfs:label": "Perekonnaseadus",
             }
@@ -91,7 +91,7 @@ def test_combined_keeps_overlay_after_peep_regen(tmp_path: Path) -> None:
         json.dumps(peep, ensure_ascii=False), encoding="utf-8"
     )
     write_eurovoc_overlay(
-        [overlay_node_for_act("estleg:PKS_Map_2026", DOMAINS)],
+        [overlay_node_for_act("estleg:PKS_Map", DOMAINS)],
         dest=tmp_path / "eurovoc" / "eurovoc_overlay.jsonld",
     )
     (tmp_path / "controlled_vocabulary.jsonld").write_text(
@@ -103,6 +103,6 @@ def test_combined_keeps_overlay_after_peep_regen(tmp_path: Path) -> None:
         (tmp_path / "combined_ontology.jsonld").read_text(encoding="utf-8")
     )
     by_id = {n["@id"]: n for n in combined["@graph"] if isinstance(n, dict)}
-    assert by_id["estleg:PKS_Map_2026"]["dcterms:subject"] == [
+    assert by_id["estleg:PKS_Map"]["dcterms:subject"] == [
         {"@id": "http://eurovoc.europa.eu/527"}
     ]

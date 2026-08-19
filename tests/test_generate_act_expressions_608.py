@@ -48,18 +48,18 @@ def _write(path: Path, doc: dict) -> None:
 # Pure helpers
 # ---------------------------------------------------------------------------
 def test_act_local_fragment_compact():
-    assert G.act_local_fragment("estleg:VKVS_Map_2026") == "VKVS_Map_2026"
+    assert G.act_local_fragment("estleg:VKVS_Map") == "VKVS_Map"
 
 
 def test_act_local_fragment_expanded():
-    iri = "https://w3id.org/estleg/VKVS_Map_2026"
-    assert G.act_local_fragment(iri) == "VKVS_Map_2026"
+    iri = "https://w3id.org/estleg/VKVS_Map"
+    assert G.act_local_fragment(iri) == "VKVS_Map"
 
 
 def test_act_local_fragment_expanded_slash():
     # The w3id slash namespace has no '#'; the local name is the final segment.
-    iri = "https://w3id.org/estleg/VKVS_Map_2026"
-    assert G.act_local_fragment(iri) == "VKVS_Map_2026"
+    iri = "https://w3id.org/estleg/VKVS_Map"
+    assert G.act_local_fragment(iri) == "VKVS_Map"
 
 
 def test_date_digits():
@@ -70,14 +70,14 @@ def test_date_digits():
 def test_expression_iri_canonical_example():
     # The headline example from the spec.
     assert (
-        G.expression_iri("estleg:VKVS_Map_2026", "2005-03-09")
-        == "estleg:VKVS_Map_2026_Expr_20050309"
+        G.expression_iri("estleg:VKVS_Map", "2005-03-09")
+        == "estleg:VKVS_Map_Expr_20050309"
     )
 
 
 def test_expression_iri_from_expanded_act_iri():
-    iri = "https://w3id.org/estleg/VKVS_Map_2026"
-    assert G.expression_iri(iri, "2005-03-09") == "estleg:VKVS_Map_2026_Expr_20050309"
+    iri = "https://w3id.org/estleg/VKVS_Map"
+    assert G.expression_iri(iri, "2005-03-09") == "estleg:VKVS_Map_Expr_20050309"
 
 
 def test_expression_label_with_act_label():
@@ -101,12 +101,12 @@ def test_expression_label_falls_back_to_slug():
 
 def test_build_expression_node_shape():
     node = G.build_expression_node(
-        "estleg:VKVS_Map_2026", "Väetiseseadus", "vaetiseseadus", "2005-03-09"
+        "estleg:VKVS_Map", "Väetiseseadus", "vaetiseseadus", "2005-03-09"
     )
     assert node == {
-        "@id": "estleg:VKVS_Map_2026_Expr_20050309",
+        "@id": "estleg:VKVS_Map_Expr_20050309",
         "@type": ["owl:NamedIndividual", "estleg:ActExpression"],
-        "estleg:expressionOf": {"@id": "estleg:VKVS_Map_2026"},
+        "estleg:expressionOf": {"@id": "estleg:VKVS_Map"},
         "estleg:consolidationDate": {"@value": "2005-03-09", "@type": "xsd:date"},
         "rdfs:label": "Väetiseseadus (seisuga 2005-03-09)",
     }
@@ -131,15 +131,15 @@ def test_distinct_consolidation_dates_ignores_non_provisionversion_nodes():
 
 
 def test_find_act_root_returns_iri_and_label():
-    doc = _peep_doc("estleg:VKVS_Map_2026", label="Väetiseseadus teemakaardistus")
-    assert G.find_act_root(doc) == ("estleg:VKVS_Map_2026", "Väetiseseadus teemakaardistus")
+    doc = _peep_doc("estleg:VKVS_Map", label="Väetiseseadus teemakaardistus")
+    assert G.find_act_root(doc) == ("estleg:VKVS_Map", "Väetiseseadus teemakaardistus")
 
 
 def test_find_act_root_handles_language_tagged_label():
     doc = _peep_doc(
-        "estleg:VKVS_Map_2026", label={"@value": "Väetiseseadus", "@language": "et"}
+        "estleg:VKVS_Map", label={"@value": "Väetiseseadus", "@language": "et"}
     )
-    assert G.find_act_root(doc) == ("estleg:VKVS_Map_2026", "Väetiseseadus")
+    assert G.find_act_root(doc) == ("estleg:VKVS_Map", "Väetiseseadus")
 
 
 def test_find_act_root_none_when_no_act_node():
@@ -161,28 +161,28 @@ def test_build_for_sidecar_produces_expected_dicts(tmp_path):
             _pv("estleg:VKVS_Par_1_v2", "2002-06-01"),
         ),
     )
-    _write(peep, _peep_doc("estleg:VKVS_Map_2026", label="Väetiseseadus"))
+    _write(peep, _peep_doc("estleg:VKVS_Map", label="Väetiseseadus"))
 
     nodes, reason = G.build_for_sidecar(sidecar, peep)
 
     assert reason is None
     assert nodes == [
         {
-            "@id": "estleg:VKVS_Map_2026_Expr_20020601",
+            "@id": "estleg:VKVS_Map_Expr_20020601",
             "@type": ["owl:NamedIndividual", "estleg:ActExpression"],
-            "estleg:expressionOf": {"@id": "estleg:VKVS_Map_2026"},
+            "estleg:expressionOf": {"@id": "estleg:VKVS_Map"},
             "estleg:consolidationDate": {"@value": "2002-06-01", "@type": "xsd:date"},
             "rdfs:label": "Väetiseseadus (seisuga 2002-06-01)",
             # #608 phase 2: the older expression is superseded by the next.
-            "estleg:supersededByExpression": {"@id": "estleg:VKVS_Map_2026_Expr_20050309"},
+            "estleg:supersededByExpression": {"@id": "estleg:VKVS_Map_Expr_20050309"},
         },
         {
-            "@id": "estleg:VKVS_Map_2026_Expr_20050309",
+            "@id": "estleg:VKVS_Map_Expr_20050309",
             "@type": ["owl:NamedIndividual", "estleg:ActExpression"],
-            "estleg:expressionOf": {"@id": "estleg:VKVS_Map_2026"},
+            "estleg:expressionOf": {"@id": "estleg:VKVS_Map"},
             "estleg:consolidationDate": {"@value": "2005-03-09", "@type": "xsd:date"},
             "rdfs:label": "Väetiseseadus (seisuga 2005-03-09)",
-            "estleg:supersedesExpression": {"@id": "estleg:VKVS_Map_2026_Expr_20020601"},
+            "estleg:supersedesExpression": {"@id": "estleg:VKVS_Map_Expr_20020601"},
         },
     ]
 
@@ -191,7 +191,7 @@ def test_expression_chain_links_consecutive_consolidations():
     # 3 dates -> 2 forward + 2 backward links; head has no supersededBy, tail no
     # supersedes. dates passed sorted ascending.
     nodes = G.build_act_expression_nodes(
-        "estleg:X_Map_2026", "X", "x", ["2001-01-01", "2002-01-01", "2003-01-01"]
+        "estleg:X_Map", "X", "x", ["2001-01-01", "2002-01-01", "2003-01-01"]
     )
     ids = [n["@id"] for n in nodes]
     assert "estleg:supersededByExpression" not in nodes[-1]  # current consolidation
@@ -203,7 +203,7 @@ def test_expression_chain_links_consecutive_consolidations():
 
 
 def test_single_consolidation_has_no_chain():
-    nodes = G.build_act_expression_nodes("estleg:X_Map_2026", "X", "x", ["2001-01-01"])
+    nodes = G.build_act_expression_nodes("estleg:X_Map", "X", "x", ["2001-01-01"])
     assert len(nodes) == 1
     assert "estleg:supersededByExpression" not in nodes[0]
     assert "estleg:supersedesExpression" not in nodes[0]
@@ -214,7 +214,7 @@ def test_build_for_sidecar_label_falls_back_to_slug(tmp_path):
     sidecar = tmp_path / "provision_versions" / f"{slug}.jsonld"
     peep = tmp_path / f"{slug}_peep.json"
     _write(sidecar, _version_doc(_pv("estleg:VKVS_Par_1_v1", "2005-03-09")))
-    _write(peep, _peep_doc("estleg:VKVS_Map_2026"))  # no rdfs:label
+    _write(peep, _peep_doc("estleg:VKVS_Map"))  # no rdfs:label
 
     nodes, reason = G.build_for_sidecar(sidecar, peep)
 
@@ -255,7 +255,7 @@ def test_build_for_sidecar_skip_when_sidecar_is_lfs_pointer(tmp_path):
         "oid sha256:deadbeef\nsize 123\n",
         encoding="utf-8",
     )
-    _write(peep, _peep_doc("estleg:VKVS_Map_2026", label="Väetiseseadus"))
+    _write(peep, _peep_doc("estleg:VKVS_Map", label="Väetiseseadus"))
 
     nodes, reason = G.build_for_sidecar(sidecar, peep)
     assert nodes == []
@@ -316,14 +316,14 @@ def test_collect_all_expressions_over_tmp_corpus(tmp_path, monkeypatch):
             _pv("estleg:A_Par_1_v2", "2002-06-01"),
         ),
     )
-    _write(krr / "act_a_peep.json", _peep_doc("estleg:A_Map_2026", label="Act A"))
+    _write(krr / "act_a_peep.json", _peep_doc("estleg:A_Map", label="Act A"))
 
     # Act B: one date.
     _write(
         krr / "provision_versions" / "act_b.jsonld",
         _version_doc(_pv("estleg:B_Par_1_v1", "2010-01-01")),
     )
-    _write(krr / "act_b_peep.json", _peep_doc("estleg:B_Map_2026", label="Act B"))
+    _write(krr / "act_b_peep.json", _peep_doc("estleg:B_Map", label="Act B"))
 
     # Act C: sidecar present but peep missing -> skipped (no act root).
     _write(
@@ -342,9 +342,9 @@ def test_collect_all_expressions_over_tmp_corpus(tmp_path, monkeypatch):
 
     ids = sorted(node["@id"] for node in nodes)
     assert ids == [
-        "estleg:A_Map_2026_Expr_20020601",
-        "estleg:A_Map_2026_Expr_20050309",
-        "estleg:B_Map_2026_Expr_20100101",
+        "estleg:A_Map_Expr_20020601",
+        "estleg:A_Map_Expr_20050309",
+        "estleg:B_Map_Expr_20100101",
     ]
 
 
@@ -358,7 +358,7 @@ def test_collect_all_expressions_is_deterministic(tmp_path, monkeypatch):
             _pv("estleg:A_Par_2_v1", "2002-06-01"),
         ),
     )
-    _write(krr / "act_a_peep.json", _peep_doc("estleg:A_Map_2026", label="Act A"))
+    _write(krr / "act_a_peep.json", _peep_doc("estleg:A_Map", label="Act A"))
 
     nodes1, stats1 = G.collect_all_expressions()
     nodes2, stats2 = G.collect_all_expressions()

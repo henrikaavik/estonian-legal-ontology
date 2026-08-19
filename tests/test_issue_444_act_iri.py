@@ -46,10 +46,12 @@ def test_round_trip_multi_segment_and_collision_prefixes() -> None:
     assert MAP_IRI_YEAR == 2026
     for prefix in ROUND_TRIP_PREFIXES:
         minted = mint_act_iri(prefix)
-        assert minted == f"estleg:{prefix}_Map_{MAP_IRI_YEAR}"
+        assert minted == f"estleg:{prefix}_Map"
         assert act_prefix_from_iri(minted) == prefix
         assert is_map_iri(minted)
         assert _prefix_from_act_iri(minted) == prefix
+        assert mint_act_iri(prefix, year=MAP_IRI_YEAR) == minted
+        assert mint_act_iri(prefix, year=2027) == minted
 
 
 def test_parser_handles_osa_procedure_and_provision_tails() -> None:
@@ -57,8 +59,8 @@ def test_parser_handles_osa_procedure_and_provision_tails() -> None:
     assert act_prefix_from_iri("estleg:KOKS_Par_22") == "KOKS"
     assert act_prefix_from_iri("estleg:KOKS_Par_1_Lg_2") == "KOKS"
     assert act_prefix_from_iri("estleg:KrMS_ProcedureMap_2026") == "KrMS"
-    assert act_prefix_from_iri("https://w3id.org/estleg/PKS_Map_2026") == "PKS"
-    assert act_prefix_from_iri("estleg:AVRS_Map_2026") == "AVRS"
+    assert act_prefix_from_iri("https://w3id.org/estleg/PKS_Map") == "PKS"
+    assert act_prefix_from_iri("estleg:AVRS_Map") == "AVRS"
 
 
 def test_minters_import_shared_helper() -> None:
@@ -74,7 +76,7 @@ def test_minters_import_shared_helper() -> None:
 
 
 def test_no_local_map_year_fstring_mints() -> None:
-    """Generators must not embed ``_Map_2026`` in f-strings (#444 DoD)."""
+    """Generators must not embed ``_Map`` in f-strings (#444 DoD)."""
     banned = []
     for path in MINTERS:
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
@@ -82,7 +84,7 @@ def test_no_local_map_year_fstring_mints() -> None:
             if not isinstance(node, ast.JoinedStr):
                 continue
             blob = ast.unparse(node)
-            if "_Map_2026" in blob or "_Map_{" in blob:
+            if "_Map" in blob or "_Map_{" in blob:
                 banned.append(f"{path.name}:{node.lineno}:{blob}")
     assert banned == []
 

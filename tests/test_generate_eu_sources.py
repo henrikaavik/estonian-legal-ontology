@@ -213,12 +213,12 @@ def test_harmonisation_resolves_real_law_iri(tmp_path, monkeypatch):
     law = krr / "law_peep.json"
     law.parent.mkdir(parents=True, exist_ok=True)
     law.write_text(
-        '{"@graph": [{"@id": "estleg:AS_Map_2026", "@type": ["owl:Ontology"]}]}',
+        '{"@graph": [{"@id": "estleg:AS_Map", "@type": ["owl:Ontology"]}]}',
         encoding="utf-8",
     )
     monkeypatch.setattr(harmonisation, "KRR_DIR", krr)
 
-    assert harmonisation.get_law_harmonisation_target_iri("law_peep.json") == "estleg:AS_Map_2026"
+    assert harmonisation.get_law_harmonisation_target_iri("law_peep.json") == "estleg:AS_Map"
 
 
 # ---------------------------------------------------------------------------

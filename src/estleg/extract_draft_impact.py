@@ -470,13 +470,15 @@ def resolve_law_name(
 def prefer_act_iri(iris: list[str]) -> str | None:
     """Pick the whole-act IRI from a multipart law's candidate act nodes (#379).
 
-    A ``_Map_`` IRI wins. Otherwise the lowest numeric ``_OsaN`` wins so
-    lexicographic ``osa10 < osa1`` cannot steal the link.
+    A ``_Map`` / ``_Map_<year>`` IRI wins. Otherwise the lowest numeric
+    ``_OsaN`` wins so lexicographic ``osa10 < osa1`` cannot steal the link.
     """
+    from estleg.estleg_common import is_map_iri
+
     present = [iri for iri in iris if isinstance(iri, str) and iri]
     if not present:
         return None
-    maps = [iri for iri in present if "_Map_" in iri]
+    maps = [iri for iri in present if is_map_iri(iri)]
     if maps:
         return sorted(maps)[0]
 

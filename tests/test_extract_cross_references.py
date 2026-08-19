@@ -89,7 +89,7 @@ class TestCanonicalLookups:
         are prefix→act_iri AND act_iri→prefix. The reverse map is
         essential for Task 5's resolver, which needs to derive a prefix
         from an act IRI without splitting on '_' (34 corpus acts have
-        prefixes containing underscores, e.g. 'KARIST_2_Map_2026')."""
+        prefixes containing underscores, e.g. 'KARIST_2_Map')."""
         from estleg import estleg_common
         from estleg import extract_cross_references as ecr
         from estleg.extract_cross_references import build_provision_index
@@ -101,7 +101,7 @@ class TestCanonicalLookups:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AS_Map_2026",
+                {"@id": "estleg:AS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Alkoholiseadus",
                  "estleg:sourceAct": "Alkoholiseadus"},
@@ -135,11 +135,11 @@ class TestCanonicalLookups:
          prefix_to_act_iri, act_iri_to_prefix) = result
 
         # Prefix → act IRI
-        assert prefix_to_act_iri.get("AS") == "estleg:AS_Map_2026"
+        assert prefix_to_act_iri.get("AS") == "estleg:AS_Map"
         assert prefix_to_act_iri.get("KARIST_2") == "estleg:KARIST_2_Osa1_1_87"
 
         # Reverse direction — exact mirror of prefix_to_act_iri
-        assert act_iri_to_prefix.get("estleg:AS_Map_2026") == "AS"
+        assert act_iri_to_prefix.get("estleg:AS_Map") == "AS"
         # The reverse lookup MUST resolve to the multi-segment prefix,
         # not 'KARIST', because provisions are keyed under 'KARIST_2'.
         assert act_iri_to_prefix.get("estleg:KARIST_2_Osa1_1_87") == "KARIST_2"
@@ -159,9 +159,9 @@ class TestCanonicalLookups:
                          "owl": "http://www.w3.org/2002/07/owl#",
                          "dcterms": "http://purl.org/dc/terms/"},
             "@graph": [
-                {"@id": "estleg:PGS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:PGS_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "owl:deprecated": True,
-                 "dcterms:isReplacedBy": {"@id": "estleg:POHIKO_Map_2026"}},
+                 "dcterms:isReplacedBy": {"@id": "estleg:POHIKO_Map"}},
                 {"@id": "estleg:PGS_Par_27",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
                  "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus",
@@ -172,7 +172,7 @@ class TestCanonicalLookups:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:POHIKO_Map_2026",
+                {"@id": "estleg:POHIKO_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus"},
                 {"@id": "estleg:POHIKO_Par_27",
@@ -201,8 +201,8 @@ class TestCanonicalLookups:
             "Karistusseadustik": "KARIST",
         }
         prefix_to_act_iri = {
-            "AS": "estleg:AS_Map_2026",
-            "KARIST": "estleg:KARIST_2_Map_2026",
+            "AS": "estleg:AS_Map",
+            "KARIST": "estleg:KARIST_2_Map",
         }
         # FULLNAME_GENITIVE has e.g. "karistusseadustiku" → "KarS"
         # KNOWN_ABBREVIATIONS would map "KarS" → "Karistusseadustik"
@@ -215,7 +215,7 @@ class TestCanonicalLookups:
         # The lookup contains lowercased keys so it can be queried
         # case-insensitively against parser output.
         assert "karistusseadustiku" in result
-        assert result["karistusseadustiku"] == "estleg:KARIST_2_Map_2026"
+        assert result["karistusseadustiku"] == "estleg:KARIST_2_Map"
 
     def test_state_regulation_lookup_reads_adoption_from_xml(self, tmp_path):
         """The corpus has zero estleg:adoptionDate — adoption_date is
@@ -416,15 +416,15 @@ class TestCitationNodeBuilder:
     def test_iri_pattern_matches_shacl(self):
         from estleg.extract_cross_references import build_citation_iri
         # Use a corpus-shaped IRI as input — Reg_<id>_Map_<year>
-        iri = build_citation_iri("estleg:Reg_1014955_Map_2026", seq=1)
-        assert iri == "estleg:Citation_Reg_1014955_Map_2026_1"
+        iri = build_citation_iri("estleg:Reg_1014955_Map", seq=1)
+        assert iri == "estleg:Citation_Reg_1014955_Map_1"
         import re
         assert re.match(r"^estleg:Citation_[A-Za-z0-9_]+_[0-9]+$", iri)
 
     def test_citation_node_with_full_detail(self):
         from estleg.extract_cross_references import build_citation_node
         node = build_citation_node(
-            iri="estleg:Citation_Reg_1014955_Map_2026_1",
+            iri="estleg:Citation_Reg_1014955_Map_1",
             # Corpus shape for provisions is <prefix>_Par_<n> (NOT
             # <prefix>_Map_<year>_Par_<n>). The act IRI carries the
             # _Map_<year> suffix; provisions reuse the bare prefix.
@@ -432,7 +432,7 @@ class TestCitationNodeBuilder:
             citation_detail="lg 1 p 34",
             citation_text="kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34",
         )
-        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_2026_1"
+        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_1"
         assert "estleg:Citation" in node["@type"]
         assert "owl:NamedIndividual" in node["@type"]
         assert node["estleg:citationTarget"] == {"@id": "estleg:KOKS_Par_22"}
@@ -442,7 +442,7 @@ class TestCitationNodeBuilder:
     def test_citation_node_omits_optional_when_none(self):
         from estleg.extract_cross_references import build_citation_node
         node = build_citation_node(
-            iri="estleg:Citation_Reg_X_Map_2026_1",
+            iri="estleg:Citation_Reg_X_Map_1",
             target_iri="estleg:Reg_Y_Map_2020",  # act-level when no §
             citation_detail=None,
             citation_text=None,
@@ -460,8 +460,8 @@ class TestResolvePreambleCitation:
         #   provision IRIs: <prefix>_Par_<n>  (NO _Map_<year> in the middle)
         return {
             "genitive_to_act_iri": {
-                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map_2026",
-                "alkoholiseaduse": "estleg:AS_Map_2026",
+                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map",
+                "alkoholiseaduse": "estleg:AS_Map",
                 "karistusseadustiku": "estleg:KARIST_2_Osa1_1_87",
             },
             "prefix_to_provisions": {
@@ -471,8 +471,8 @@ class TestResolvePreambleCitation:
                 "KARIST_2": {"1": "estleg:KARIST_2_Par_1"},
             },
             "act_iri_to_prefix": {
-                "estleg:KOKS_Map_2026": "KOKS",
-                "estleg:AS_Map_2026": "AS",
+                "estleg:KOKS_Map": "KOKS",
+                "estleg:AS_Map": "AS",
                 # Multi-segment prefix — the case the v2 plan got wrong.
                 "estleg:KARIST_2_Osa1_1_87": "KARIST_2",
             },
@@ -502,7 +502,7 @@ class TestResolvePreambleCitation:
         # Provision-level for citation target — corpus shape is <prefix>_Par_<n>
         assert target_iri == "estleg:KOKS_Par_22"
         # Act-level for issuedUnder — this is the key Layer 2b semantic
-        assert enabling_act_iri == "estleg:KOKS_Map_2026"
+        assert enabling_act_iri == "estleg:KOKS_Map"
 
     def test_law_without_paragraph(self, lookups):
         """When citation has no §, both target and enabling_act are act-level."""
@@ -515,7 +515,7 @@ class TestResolvePreambleCitation:
             "citationText": "alkoholiseaduse",
         }
         result = resolve_preamble_citation(cit, **lookups)
-        assert result == ("estleg:AS_Map_2026", "estleg:AS_Map_2026")
+        assert result == ("estleg:AS_Map", "estleg:AS_Map")
 
     def test_law_with_multipart_prefix_resolves_via_reverse_map(self, lookups):
         """Reverse map (act_iri_to_prefix) MUST be consulted for the
@@ -940,7 +940,7 @@ class TestPreamblePassIdempotency:
                         "Plain text with no citations.",
                     # Prior-pass output the new run must clear:
                     "estleg:issuedUnder": [
-                        {"@id": "estleg:KOKS_Map_2026"}
+                        {"@id": "estleg:KOKS_Map"}
                     ],
                     "estleg:implementsCitation": [
                         {"@id": "estleg:Citation_Reg_TLN_Test_Map_2024_1"}
@@ -1062,8 +1062,8 @@ class TestIsProvisionNodeHelper:
 
         # Non-provisions — owl:Ontology act nodes, citation nodes,
         # malformed inputs, missing @id.
-        ({"@id": "estleg:KOKS_Map_2026"}, False),
-        ({"@id": "estleg:Citation_KOKS_Map_2026_1"}, False),
+        ({"@id": "estleg:KOKS_Map"}, False),
+        ({"@id": "estleg:Citation_KOKS_Map_1"}, False),
         ({"@id": ""}, False),
         ({}, False),
         # Defensive: non-string @id and non-dict input.
@@ -1092,7 +1092,7 @@ class TestRunInlawCitationPass:
         # multi-segment corpus prefix; the citation '§ 121' must
         # resolve via the registry.
         graph = [
-            {"@id": "estleg:KARIST_2_Map_2026",
+            {"@id": "estleg:KARIST_2_Map",
              "@type": ["owl:Ontology"]},
             {"@id": "estleg:KARIST_2_Par_1",
              "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1279,7 +1279,7 @@ class TestSelfReferencePrefix:
         from estleg.extract_cross_references import _derive_self_prefix
 
         graph = [
-            {"@id": "estleg:KOKS_Map_2026",
+            {"@id": "estleg:KOKS_Map",
              "@type": ["owl:Ontology"]},
             {"@id": "estleg:KOKS_Par_22",
              "@type": ["owl:NamedIndividual"]},
@@ -1317,7 +1317,7 @@ class TestSelfReferencePrefix:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:KARIST_2_Map_2026",
+                {"@id": "estleg:KARIST_2_Map",
                  "@type": ["owl:Ontology", "estleg:Act"]},
                 {"@id": "estleg:KARIST_2_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1334,7 +1334,7 @@ class TestSelfReferencePrefix:
                 "99": "estleg:KARIST_2_Par_99",
             },
         }
-        act_iri_to_prefix = {"estleg:KARIST_2_Map_2026": "KARIST_2"}
+        act_iri_to_prefix = {"estleg:KARIST_2_Map": "KARIST_2"}
 
         stats = process_law_file(
             peep,
@@ -1925,7 +1925,7 @@ class TestPerProvisionPrefixKeying:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:ERIIGI_DI_Map_2026",
+                {"@id": "estleg:ERIIGI_DI_Map",
                  "@type": ["owl:Ontology"],
                  "estleg:sourceAct": "Erigi seadus"},
                 {"@id": "estleg:ERIIGI_DI_Par_20",
@@ -2170,9 +2170,9 @@ class TestCorpusTitleFallback:
         from estleg.extract_cross_references import build_law_title_to_iri
 
         source_act_to_prefix = {"Kaitseliidu seadus": ["KAITSE"]}
-        prefix_to_act_iri = {"KAITSE": "estleg:KAITSE_Map_2026"}
+        prefix_to_act_iri = {"KAITSE": "estleg:KAITSE_Map"}
         out = build_law_title_to_iri(source_act_to_prefix, prefix_to_act_iri)
-        assert out == {"kaitseliidu seadus": "estleg:KAITSE_Map_2026"}
+        assert out == {"kaitseliidu seadus": "estleg:KAITSE_Map"}
 
     def test_build_law_title_to_iri_handles_multi_osa_list(self):
         from estleg.extract_cross_references import build_law_title_to_iri
@@ -2214,9 +2214,9 @@ class TestCorpusTitleFallback:
             act_iri_to_prefix={},
             state_reg_lookup={},
             kov_act_lookup={},
-            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map_2026"},
+            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map"},
         )
-        assert result == ("estleg:KAITSE_Map_2026", "estleg:KAITSE_Map_2026")
+        assert result == ("estleg:KAITSE_Map", "estleg:KAITSE_Map")
 
     def test_genitive_chain_still_preferred_over_title_fallback(self):
         """When the genitive IS in the primary chain, that wins — the
@@ -2323,7 +2323,7 @@ class TestIssuedUnderSelfReferenceGuard:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:SELF_Map_2026",
+                {"@id": "estleg:SELF_Map",
                  "@type": ["owl:Ontology"],
                  "estleg:preambleText":
                      "Määrus kehtestatakse iseenda seaduse § 5 alusel."},
@@ -2337,14 +2337,14 @@ class TestIssuedUnderSelfReferenceGuard:
             peep, doc,
             genitive_to_act_iri={},
             prefix_to_provisions={"SELF": {"5": "estleg:SELF_Par_5"}},
-            act_iri_to_prefix={"estleg:SELF_Map_2026": "SELF"},
+            act_iri_to_prefix={"estleg:SELF_Map": "SELF"},
             state_reg_lookup={},
             kov_act_lookup={},
             # Title fallback resolves the genitive to the SAME act.
-            law_title_to_iri={"iseenda seadus": "estleg:SELF_Map_2026"},
+            law_title_to_iri={"iseenda seadus": "estleg:SELF_Map"},
         )
         act = next(n for n in doc["@graph"]
-                   if n["@id"] == "estleg:SELF_Map_2026")
+                   if n["@id"] == "estleg:SELF_Map")
         # Self issuedUnder suppressed …
         assert "estleg:issuedUnder" not in act
         # … but the provision-level self-citation node IS emitted.
@@ -2360,7 +2360,7 @@ class TestIssuedUnderSelfReferenceGuard:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:REG_Map_2026",
+                {"@id": "estleg:REG_Map",
                  "@type": ["owl:Ontology"],
                  # A § is required for the parser to emit a law-genitive
                  # citation; the enabling act differs from this reg.
@@ -2377,11 +2377,11 @@ class TestIssuedUnderSelfReferenceGuard:
             act_iri_to_prefix={},
             state_reg_lookup={},
             kov_act_lookup={},
-            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map_2026"},
+            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map"},
         )
         act = next(n for n in doc["@graph"]
-                   if n["@id"] == "estleg:REG_Map_2026")
-        assert act["estleg:issuedUnder"] == [{"@id": "estleg:KAITSE_Map_2026"}]
+                   if n["@id"] == "estleg:REG_Map")
+        assert act["estleg:issuedUnder"] == [{"@id": "estleg:KAITSE_Map"}]
 
 
 class TestAbbreviationMappingReport:
@@ -2507,7 +2507,7 @@ def test_inlaw_pass_emits_repeals_subproperty() -> None:
     )
     graph = [
         {
-            "@id": "estleg:LOOVIS_Map_2026",
+            "@id": "estleg:LOOVIS_Map",
             "@type": ["owl:Ontology", "estleg:Act"],
         },
         {

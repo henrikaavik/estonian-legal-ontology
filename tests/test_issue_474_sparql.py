@@ -42,7 +42,7 @@ EXPECTED_GRAPHS = {
 
 def test_retarget_nquad_line_rewrites_existing_graph() -> None:
     line = (
-        "<https://w3id.org/estleg/ABIPOL_Map_2026> "
+        "<https://w3id.org/estleg/ABIPOL_Map> "
         "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> "
         "<https://w3id.org/estleg/Act> "
         "<https://w3id.org/estleg/graph/combined> .\n"
@@ -55,7 +55,7 @@ def test_retarget_nquad_line_rewrites_existing_graph() -> None:
 
 def test_retarget_nquad_line_appends_graph_to_ntriples() -> None:
     line = (
-        "<https://w3id.org/estleg/ABIPOL_Map_2026> "
+        "<https://w3id.org/estleg/ABIPOL_Map> "
         "<http://www.w3.org/2000/01/rdf-schema#label> "
         '"Abipolitseiniku seadus" .\n'
     )
@@ -86,7 +86,7 @@ def test_write_sample_dump_has_seven_named_graphs(tmp_path: Path) -> None:
     dataset = Dataset()
     dataset.parse(data=raw, format="nquads")
     assert set(named_graph_iris(dataset)) == EXPECTED_GRAPHS
-    assert any("ABIPOL_Map_2026" in line for line in raw.splitlines())
+    assert any("ABIPOL_Map" in line for line in raw.splitlines())
 
 
 def test_write_full_dump_retargets_nq_and_skips_missing(tmp_path: Path) -> None:
@@ -94,7 +94,7 @@ def test_write_full_dump_retargets_nq_and_skips_missing(tmp_path: Path) -> None:
     krr.mkdir()
     nq = krr / "combined_ontology.nq"
     nq.write_text(
-        "<https://w3id.org/estleg/ABIPOL_Map_2026> "
+        "<https://w3id.org/estleg/ABIPOL_Map> "
         "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> "
         "<https://w3id.org/estleg/Act> "
         "<https://w3id.org/estleg/graph/combined> .\n",

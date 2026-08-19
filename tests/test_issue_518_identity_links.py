@@ -153,7 +153,7 @@ def test_ps_act_sameas_constitution() -> None:
         n
         for n in doc.get("@graph", [])
         if isinstance(n, dict)
-        and n.get("@id") == "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        and n.get("@id") == "estleg:eesti_vabariigi_pohiseadus_Map"
     )
     types = _types(node)
     assert "estleg:Act" in types

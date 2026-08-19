@@ -420,7 +420,7 @@ every consumer for no semantic gain. The overload is therefore a
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_160748_Map_2026",
+      "@id": "estleg:Reg_160748_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:NationalRegulation",
@@ -853,14 +853,14 @@ Version sidecar node:
 
 ```json
 {
-  "@id": "estleg:LegalProvision_TsÜS_40_v1",
+  "@id": "estleg:LegalProvision_TsUS_40_v1",
   "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
-  "estleg:versionOf": {"@id": "estleg:LegalProvision_TsÜS_40"},
+  "estleg:versionOf": {"@id": "estleg:LegalProvision_TsUS_40"},
   "estleg:versionValidFrom": {"@type": "xsd:date", "@value": "2011-07-01"},
   "estleg:versionValidTo": {"@type": "xsd:date", "@value": "2018-12-31"},
   "estleg:versionText": "§ 40. Tehing on toiming või omavahel seotud toimingute kogum, milles sisaldub kindla õigusliku tagajärje kaasatoomisele suunatud tahteavaldus.",
   "estleg:versionRedactionId": "13335775",
-  "estleg:supersededByVersion": {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
+  "estleg:supersededByVersion": {"@id": "estleg:LegalProvision_TsUS_40_v2"}
 }
 ```
 
@@ -870,7 +870,7 @@ node through `estleg:versionOf`.
 
 ```json
 {
-  "@id": "estleg:LegalProvision_TsÜS_40",
+  "@id": "estleg:LegalProvision_TsUS_40",
   "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
   "estleg:paragrahv": "TsÜS § 40",
   "estleg:summary": "Defines what counts as a transaction (tehing)."
@@ -951,9 +951,9 @@ SHACL: `estleg:AnnotationShape` (`sh:targetClass estleg:Annotation`) requires
 
 ```json
 {
-  "@id": "estleg:Annotation_OK_2020_TsÜS_40",
+  "@id": "estleg:Annotation_OK_2020_TsUS_40",
   "@type": ["owl:NamedIndividual", "estleg:Annotation"],
-  "estleg:annotates": {"@id": "estleg:LegalProvision_TsÜS_40"},
+  "estleg:annotates": {"@id": "estleg:LegalProvision_TsUS_40"},
   "estleg:annotationText": "Õiguskantsler on rõhutanud, et tahteavalduse tuvastamisel tuleb arvestada poolte tegelikku tahet, mitte üksnes sõnastust.",
   "estleg:annotationType": "interpretation",
   "estleg:annotationSource": "Õiguskantsler",
@@ -973,7 +973,7 @@ omavalitsuse korralduse seadus (KOKS) act node:
 PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?text ?type ?source WHERE {
-  ?ann estleg:annotates       estleg:KOKS_Map_2026 ;
+  ?ann estleg:annotates       estleg:KOKS_Map ;
        estleg:annotationText  ?text ;
        estleg:annotationType  ?type .
   OPTIONAL { ?ann estleg:annotationSource ?source . }
@@ -1377,18 +1377,18 @@ MinisterialRegulation, MunicipalRegulation)
 
 Identifies the ACT under whose authority this act was issued. For
 municipal regulations, the most common targets are KOKS
-(`estleg:KOKS_Map_2026`), state-regulation acts, or other KOV acts.
+(`estleg:KOKS_Map`), state-regulation acts, or other KOV acts.
 Provision-level granularity (e.g. "issued under § 22 lg 1 p 34") is
 captured separately on `Citation.citationTarget` — see
 `estleg:implementsCitation` below.
 
 ```json
 {
-  "@id": "estleg:Reg_1014955_Map_2026",
+  "@id": "estleg:Reg_1014955_Map",
   "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
   "estleg:issuedUnder": [
-    {"@id": "estleg:KOKS_Map_2026"},
-    {"@id": "estleg:RaamatPS_Map_2026"}
+    {"@id": "estleg:KOKS_Map"},
+    {"@id": "estleg:RaamatPS_Map"}
   ]
 }
 ```
@@ -1421,7 +1421,7 @@ on the source act.
 
 ```json
 {
-  "@id": "estleg:Citation_Reg_1014955_Map_2026_1",
+  "@id": "estleg:Citation_Reg_1014955_Map_1",
   "@type": ["owl:NamedIndividual", "estleg:Citation"],
   "estleg:citationTarget": {"@id": "estleg:KOKS_Par_22"},
   "estleg:citationDetail": "lg 1 p 34",
@@ -1445,7 +1445,7 @@ me as their enabling authority" view.
 {
   "@id": "estleg:KOKS_Par_22",
   "estleg:implementedBy": [
-    {"@id": "estleg:Reg_1014955_Map_2026"},
+    {"@id": "estleg:Reg_1014955_Map"},
     {"@id": "estleg:Reg_2034567_Map_2024"}
   ],
   "estleg:implementedByCount": 2

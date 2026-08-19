@@ -2086,11 +2086,11 @@ SUBCORPUS_COMBINED_TARGETS: tuple[SubcorpusCombinedSpec, ...] = (
         combined_path_rel="eurlex/eurlex_combined.jsonld",
         schema_files=("eurlex/eurlex_schema.json",),
         expected_missing=(
-            "estleg:EURlex_Decisions_Map_2026",
-            "estleg:EURlex_Directives_Map_2026",
-            "estleg:EURlex_Regulations_Map_2026",
+            "estleg:EURlex_Decisions_Map",
+            "estleg:EURlex_Directives_Map",
+            "estleg:EURlex_Regulations_Map",
         ),
-        expected_extras=("estleg:EURlex_Combined_Map_2026",),
+        expected_extras=("estleg:EURlex_Combined_Map",),
     ),
     SubcorpusCombinedSpec(
         name="curia",
@@ -2098,13 +2098,13 @@ SUBCORPUS_COMBINED_TARGETS: tuple[SubcorpusCombinedSpec, ...] = (
         combined_path_rel="curia/curia_combined.jsonld",
         schema_files=("curia/curia_schema.json",),
         expected_missing=(
-            "estleg:CURIA_Ag_Opinions_Map_2026",
-            "estleg:CURIA_Court_Opinions_Map_2026",
-            "estleg:CURIA_Judgments_Map_2026",
-            "estleg:CURIA_Orders_Map_2026",
-            "estleg:CURIA_Other_Map_2026",
+            "estleg:CURIA_Ag_Opinions_Map",
+            "estleg:CURIA_Court_Opinions_Map",
+            "estleg:CURIA_Judgments_Map",
+            "estleg:CURIA_Orders_Map",
+            "estleg:CURIA_Other_Map",
         ),
-        expected_extras=("estleg:CURIA_Combined_Map_2026",),
+        expected_extras=("estleg:CURIA_Combined_Map",),
     ),
     SubcorpusCombinedSpec(
         name="eelnoud",
@@ -2112,11 +2112,11 @@ SUBCORPUS_COMBINED_TARGETS: tuple[SubcorpusCombinedSpec, ...] = (
         combined_path_rel="eelnoud/eelnoud_combined.jsonld",
         schema_files=("eelnoud/eelnoud_schema.json",),
         expected_missing=(
-            "estleg:Eelnoud_PublicConsultation_Map_2026",
-            "estleg:Eelnoud_Submission_Map_2026",
-            "estleg:Eelnoud_Review_Map_2026",
+            "estleg:Eelnoud_PublicConsultation_Map",
+            "estleg:Eelnoud_Submission_Map",
+            "estleg:Eelnoud_Review_Map",
         ),
-        expected_extras=("estleg:Eelnoud_Combined_Map_2026",),
+        expected_extras=("estleg:Eelnoud_Combined_Map",),
     ),
 )
 

@@ -10,7 +10,7 @@ from estleg.extract_draft_impact import resolve_law_name, year_compatible_law_ma
 
 REPO = Path(__file__).resolve().parents[1]
 EELNOUD = REPO / "krr_outputs" / "eelnoud" / "eelnoud_combined.jsonld"
-BUDGET_2026 = "estleg:2026_aasta_riigieelarve_seadus_Map_2026"
+BUDGET_2026 = "estleg:2026_aasta_riigieelarve_seadus_Map"
 
 
 def _lookup() -> dict[str, dict]:
@@ -81,17 +81,17 @@ def test_year_compatible_helper_rejects_conflicting_years():
     # Underscore-delimited IRI years must count (``2026_aasta``).
     assert year_compatible_law_match(
         "2016. aasta riigieelarve seaduse muutmise seadus",
-        "estleg:2026_aasta_riigieelarve_seadus_Map_2026",
+        "estleg:2026_aasta_riigieelarve_seadus_Map",
     ) is False
-    # The ``_Map_2026`` snapshot stamp on a yearless act is not a year conflict.
+    # The ``_Map`` snapshot stamp on a yearless act is not a year conflict.
     assert year_compatible_law_match(
         "2016. aasta riigieelarve seaduse muutmise seadus",
-        "estleg:REELS_Map_2026",
+        "estleg:REELS_Map",
     ) is True
     # Treaty founding years are identity, not vintage — do not reject.
     assert year_compatible_law_match(
         "Troopilise puidu 2006. aasta lepingu ratifitseerimise seadus",
-        "estleg:2006_aasta_rahvusvaheline_troopilise_pui_Map_2026",
+        "estleg:2006_aasta_rahvusvaheline_troopilise_pui_Map",
     ) is True
 
 

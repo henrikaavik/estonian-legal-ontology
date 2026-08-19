@@ -10,33 +10,33 @@ from estleg.backfill_orphan_is_part_of import _is_provision, _types, backfill_gr
 def test_preamble_orphans_get_preamble_chapter():
     graph = [
         {
-            "@id": "estleg:REÕS_Map_2026",
+            "@id": "estleg:REOS_Map",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "estleg:contentStatus": "structuredBody",
         },
         {
-            "@id": "estleg:Chapter_REÕS_1",
+            "@id": "estleg:Chapter_REOS_1",
             "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-            "estleg:hasPart": [{"@id": "estleg:REÕS_Par_30"}],
+            "estleg:hasPart": [{"@id": "estleg:REOS_Par_30"}],
         },
-        {"@id": "estleg:REÕS_Par_1", "@type": ["owl:NamedIndividual", "estleg:LegalProvision_x"]},
+        {"@id": "estleg:REOS_Par_1", "@type": ["owl:NamedIndividual", "estleg:LegalProvision_x"]},
         {
-            "@id": "estleg:REÕS_Par_30",
+            "@id": "estleg:REOS_Par_30",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision_x"],
-            "estleg:isPartOf": {"@id": "estleg:Chapter_REÕS_1"},
+            "estleg:isPartOf": {"@id": "estleg:Chapter_REOS_1"},
         },
     ]
     assert backfill_graph(graph) == 1
-    p1 = next(n for n in graph if n["@id"] == "estleg:REÕS_Par_1")
-    assert p1["estleg:isPartOf"]["@id"] == "estleg:Chapter_REÕS_Preamble"
-    chapter = next(n for n in graph if n["@id"] == "estleg:Chapter_REÕS_Preamble")
-    assert {"@id": "estleg:REÕS_Par_1"} in chapter["estleg:hasPart"]
+    p1 = next(n for n in graph if n["@id"] == "estleg:REOS_Par_1")
+    assert p1["estleg:isPartOf"]["@id"] == "estleg:Chapter_REOS_Preamble"
+    chapter = next(n for n in graph if n["@id"] == "estleg:Chapter_REOS_Preamble")
+    assert {"@id": "estleg:REOS_Par_1"} in chapter["estleg:hasPart"]
 
 
 def test_unnamed_jagu_orphan_inherits_previous_chapter():
     graph = [
         {
-            "@id": "estleg:ES_Map_2026",
+            "@id": "estleg:ES_Map",
             "@type": ["estleg:Act"],
             "estleg:contentStatus": "structuredBody",
         },
