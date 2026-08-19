@@ -19,7 +19,7 @@ import json
 import sys
 from pathlib import Path
 
-from estleg.estleg_common import KRR_DIR, jsonld_text, save_json
+from estleg.estleg_common import KRR_DIR, act_root_node, jsonld_text, save_json
 
 LEGAL_TEXT_KEY = "estleg:legalText"
 SUMMARY_KEY = "estleg:summary"
@@ -75,6 +75,12 @@ TREATY_SLUG_TOKENS: tuple[str, ...] = (
 # becomes 0; empty/treaty counts are unchanged by that copy).
 EMPTY_SUBSTANTIVE_BASELINE = 2
 
+RATIFICATION_SHELL_TRUE = {"@value": "true", "@type": "xsd:boolean"}
+RATIFICATION_SHELL_REASON = (
+    "Ratification/accession act only — the treaty body (välisleping) "
+    "is not ingested (#528)."
+)
+
 
 def is_treaty_slug(name: str) -> bool:
     """True when ``name`` looks like a treaty / ratification / instrument slug."""
@@ -84,6 +90,24 @@ def is_treaty_slug(name: str) -> bool:
     if any(token in slug for token in TREATY_SLUG_TOKENS):
         return True
     return slug.endswith("_rat") or "_rat_" in slug
+
+
+def stamp_ratification_shell(node: dict) -> bool:
+    """Mark an act root as a ratification shell (#528). Returns True if changed."""
+    changed = False
+    if node.get("estleg:isRatificationShell") != RATIFICATION_SHELL_TRUE:
+        node["estleg:isRatificationShell"] = dict(RATIFICATION_SHELL_TRUE)
+        changed = True
+    reason = node.get("estleg:contentStatusReason")
+    if isinstance(reason, dict):
+        reason = reason.get("@value")
+    if not reason:
+        node["estleg:contentStatusReason"] = RATIFICATION_SHELL_REASON
+        changed = True
+    elif isinstance(reason, str) and "välisleping" not in reason and "#528" not in reason:
+        node["estleg:contentStatusReason"] = f"{reason.rstrip('.')} {RATIFICATION_SHELL_REASON}"
+        changed = True
+    return changed
 
 
 def _node_types(node: dict) -> list[str]:
@@ -306,6 +330,39 @@ def backfill_legal_text(index, krr_dir) -> tuple[int, int]:
     return files_changed, nodes_changed
 
 
+def stamp_ratification_shells(index, krr_dir) -> tuple[int, int]:
+    """Stamp ``isRatificationShell`` on treaty INDEX peeps (#528)."""
+    krr = Path(krr_dir)
+    files_changed = 0
+    nodes_changed = 0
+    seen: set[Path] = set()
+    for entry in iter_index_laws(index):
+        name = entry.get("name") if isinstance(entry, dict) else None
+        if not is_treaty_slug(str(name or "")) and entry.get("stubKind") != "treaty":
+            continue
+        files = entry.get("files") if isinstance(entry, dict) else None
+        if not isinstance(files, list):
+            continue
+        for file_name in files:
+            if not isinstance(file_name, str):
+                continue
+            path = krr / file_name
+            if path in seen or not path.is_file():
+                continue
+            seen.add(path)
+            doc = _load_json(path)
+            if not isinstance(doc, dict):
+                continue
+            root = act_root_node(doc)
+            if root is None:
+                continue
+            if stamp_ratification_shell(root):
+                save_json(path, doc)
+                files_changed += 1
+                nodes_changed += 1
+    return files_changed, nodes_changed
+
+
 def stamp_index(index_path: Path, krr_dir: Path | None = None) -> dict:
     """Rewrite INDEX.json coverage fields in place. Preserves other keys."""
     index_path = Path(index_path)
@@ -342,6 +399,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Stamp provisionCount / legalTextCount / stubKind onto INDEX.json",
     )
+    parser.add_argument(
+        "--stamp-shells",
+        action="store_true",
+        help="Stamp estleg:isRatificationShell on treaty INDEX peeps (#528)",
+    )
     args = parser.parse_args(argv)
 
     krr_dir = Path(args.krr_dir)
@@ -361,6 +423,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.stamp_index:
         index = stamp_index(index_path, krr_dir)
         print(f"stamped {index_path}")
+
+    if args.stamp_shells:
+        files_changed, nodes_changed = stamp_ratification_shells(index, krr_dir)
+        print(f"ratification shells: files={files_changed} nodes={nodes_changed}")
 
     after = classification_counts(index, krr_dir)
     _print_counts("after", after)

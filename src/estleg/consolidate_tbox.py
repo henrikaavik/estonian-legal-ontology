@@ -357,6 +357,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:competentAuthority": ("owl:Thing", "rdfs:Resource"),
     "estleg:contentStatus": ("estleg:Act", "xsd:string"),
     "estleg:contentStatusReason": ("estleg:Act", "xsd:string"),
+    "estleg:isRatificationShell": ("estleg:Act", "xsd:boolean"),
     "estleg:changeType": ("estleg:ProposedAmendment", "xsd:string"),
     "estleg:definedIn": ("estleg:LegalConcept", "rdfs:Resource"),
     "estleg:definesConcept": ("estleg:LegalProvision", "estleg:LegalConcept"),

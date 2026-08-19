@@ -778,6 +778,26 @@
       "rdfs:comment": "Multipart act part node used for large laws split into osa files."
     },
     {
+      "@id": "estleg:ParliamentaryResolution",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:label": [
+        {
+          "@value": "Riigikogu otsus",
+          "@language": "et"
+        },
+        {
+          "@value": "Parliamentary resolution",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "A Riigikogu otsus (parliamentary resolution). Not a seadus. Ingested from RT dokument=otsus (#529)."
+    },
+    {
       "@id": "estleg:ProcedureStage",
       "@type": [
         "owl:Class"
@@ -793,6 +813,26 @@
         }
       ],
       "rdfs:comment": "A procedural-stage node (e.g. a stage of criminal procedure under KrMS). Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
+    },
+    {
+      "@id": "estleg:PresidentialDecree",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:label": [
+        {
+          "@value": "Vabariigi Presidendi seadlus",
+          "@language": "et"
+        },
+        {
+          "@value": "Presidential decree",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "A presidential or historically equivalent seadlus. Not a seadus. Ingested from RT dokument=seadlus (algtekst; consolidations are not published) (#529)."
     },
     {
       "@id": "estleg:ProposedAmendment",
@@ -3862,6 +3902,32 @@
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
+      }
+    },
+    {
+      "@id": "estleg:isRatificationShell",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "on ratifitseerimiskest",
+          "@language": "et"
+        },
+        {
+          "@value": "is ratification shell",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "True when this Act is the Estonian ratification/accession statute, not the treaty body (välisleping). Treaty articles are not ingested; see INDEX stubKind=treaty (#528).",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {

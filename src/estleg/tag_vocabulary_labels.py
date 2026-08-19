@@ -46,6 +46,9 @@ ET_BY_LOCAL: dict[str, str] = {
     "NationalRegulation": "Riigi määrus",
     "NormativeType": "Normatiivne liik",
     "Part": "Osa",
+    "ParliamentaryResolution": "Riigikogu otsus",
+    "PresidentialDecree": "Vabariigi Presidendi seadlus",
+    "isRatificationShell": "on ratifitseerimiskest",
     "ProcedureStage": "Menetlusetapp",
     "ProposedAmendment": "Kavandatud muudatus",
     "ProvisionVersion": "Sätte redaktsioon",
@@ -250,6 +253,9 @@ ET_BY_LOCAL: dict[str, str] = {
 
 EN_BY_LOCAL: dict[str, str] = {
     "officialEnglishText": "official English text",
+    "isRatificationShell": "is ratification shell",
+    "ParliamentaryResolution": "Parliamentary resolution",
+    "PresidentialDecree": "Presidential decree",
     "estoniaRelevant": "Estonia-relevant",
     "CaseType_Administrative": "Administrative case",
     "CaseType_Civil": "Civil case",
