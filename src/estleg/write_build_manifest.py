@@ -32,8 +32,8 @@ METADATA_PATH = REPO_ROOT / "metadata.jsonld"
 GITHUB_REPO = "https://github.com/henrikaavik/estonian-legal-ontology"
 # Immutable content pin for catalog download/access URLs (#548).
 # GitHub Release zip assets remain #473. This SHA is the last corpus remint
-# (dutyHolder IRI rewrite); later catalog-only commits do not move the pin.
-DATASET_CONTENT_SHA = "8f124d30d2864469fa3477ad99fea5930421d573"
+# (#445 act-IRI remint); later catalog-only commits do not move the pin.
+DATASET_CONTENT_SHA = "2676a1f81b4f3a583825239656dc7665b9e3294b"
 MUTABLE_MAIN_MARKERS = (
     "/tree/main/",
     "/raw/main/",
