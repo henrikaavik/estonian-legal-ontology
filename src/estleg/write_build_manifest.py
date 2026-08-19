@@ -167,6 +167,21 @@ def github_archive_url(sha: str = DATASET_CONTENT_SHA) -> str:
     return f"{GITHUB_REPO}/archive/{sha}.zip"
 
 
+def github_release_asset_url(
+    filename: str, version: str = ONTOLOGY_VERSION
+) -> str:
+    """Immutable GitHub Release download URL for a tagged asset (#473)."""
+    return f"{GITHUB_REPO}/releases/download/v{version}/{filename.lstrip('/')}"
+
+
+def is_release_asset_url(url: str, version: str = ONTOLOGY_VERSION) -> bool:
+    """True when a GitHub catalog URL is a tagged release-asset download."""
+    return (
+        "github.com/henrikaavik/estonian-legal-ontology" in url
+        and f"/releases/download/v{version}/" in url
+    )
+
+
 def catalog_modified(metadata_path: Path = METADATA_PATH) -> str | None:
     """``dcterms:modified`` date from ``metadata.jsonld``."""
     if not metadata_path.is_file():

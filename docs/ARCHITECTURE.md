@@ -5,6 +5,19 @@ It names the load surfaces, the write vs derived artifacts, and the
 query paths. It does not replace `AGENTS.md` (working conventions) or
 `docs/SCHEMA_REFERENCE.md` (T-Box / SPARQL).
 
+## Code / data distribution (#480)
+
+**Decision: release-asset-first (option b).** Combined JSON-LD, the
+eurlex/curia/eelnoud combined files, SHACL, INDEX, and the controlled
+vocabulary ship as GitHub Release assets (`v1.0.0`). That is the
+consumer download path (`#473`). The git tree still carries the same
+files via Git LFS so CI and `estleg_client.load_law` keep working.
+Dropping regenerable LFS blobs from git is a follow-up after consumers
+move to the release. Option (a) (separate data repo) and option (c)
+(`git lfs migrate` history rewrite) are deferred: a rewrite invalidates
+existing clones, and a second remote is not required once the release
+exists.
+
 ## Identity
 
 - **Namespace:** `https://w3id.org/estleg/` (slash). Compact CURIE

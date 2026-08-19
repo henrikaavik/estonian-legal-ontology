@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from estleg import write_build_manifest as wbm
+from estleg.estleg_common import ONTOLOGY_VERSION
 
 REPO = Path(__file__).resolve().parent.parent
 MANIFEST = REPO / "krr_outputs" / "dataset_build_manifest.json"
@@ -20,7 +21,7 @@ SAMPLE_KEYS = {
 
 def test_build_manifest_returns_version_and_sample_keys() -> None:
     manifest = wbm.build_manifest()
-    assert manifest["datasetVersion"] == "0.11.0"
+    assert manifest["datasetVersion"] == ONTOLOGY_VERSION
     assert SAMPLE_KEYS <= set(manifest["kehtivBySample"])
 
 
@@ -46,7 +47,7 @@ def test_metadata_catalog_urls_are_not_mutable_main() -> None:
     sha = wbm.DATASET_CONTENT_SHA
     assert record["contentSha"] == sha
     assert record["catalogModified"]
-    assert record["datasetVersion"] == "0.11.0"
+    assert record["datasetVersion"] == ONTOLOGY_VERSION
 
     urls: list[str] = []
 
@@ -69,15 +70,24 @@ def test_metadata_catalog_urls_are_not_mutable_main() -> None:
         if "github.com/henrikaavik/estonian-legal-ontology" in url
     ]
     assert github, "expected catalog GitHub URLs"
+    release_prefix = (
+        "https://github.com/henrikaavik/estonian-legal-ontology"
+        f"/releases/download/v{ONTOLOGY_VERSION}/"
+    )
+    flagship = wbm.github_release_asset_url("combined_ontology.jsonld.gz")
+    assert flagship in github, flagship
     for url in github:
         assert not wbm.is_mutable_main_url(url), url
-        assert sha in url, url
+        assert sha in url or url.startswith(release_prefix), url
 
 
 def test_void_data_dump_is_content_sha_not_main() -> None:
     text = (REPO / "krr_outputs" / "void.ttl").read_text(encoding="utf-8")
     assert "/raw/main/" not in text
-    assert wbm.DATASET_CONTENT_SHA in text
+    assert (
+        wbm.DATASET_CONTENT_SHA in text
+        or f"/releases/download/v{ONTOLOGY_VERSION}/" in text
+    )
 
 
 def test_validate_metadata_repro_pins_flags_main(tmp_path, monkeypatch) -> None:
@@ -86,7 +96,7 @@ def test_validate_metadata_repro_pins_flags_main(tmp_path, monkeypatch) -> None:
     va.reset()
     monkeypatch.setattr(va, "REPO_ROOT", tmp_path)
     doc = {
-        "owl:versionInfo": "0.11.0",
+        "owl:versionInfo": ONTOLOGY_VERSION,
         "dcat:distribution": [
             {
                 "dcat:downloadURL": {

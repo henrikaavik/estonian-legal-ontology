@@ -712,7 +712,7 @@ def act_prefix_from_iri(iri: str) -> str | None:
 # ``tests/test_ontology_version.py`` fails CI if they diverge. Bump this (and
 # pyproject, and cut a CHANGELOG section + git tag) on every release so consumers
 # can pin/cite a version.
-ONTOLOGY_VERSION = "0.11.0"
+ONTOLOGY_VERSION = "1.0.0"
 # The ontology IRI (the namespace ``NS`` without its trailing separator, ``#``
 # for the legacy hash form or ``/`` for the slash form); ``versionIRI`` is this
 # plus the version, so each release is independently dereferenceable.

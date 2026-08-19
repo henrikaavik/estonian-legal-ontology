@@ -127,9 +127,9 @@ python3 -m estleg.serialize_named_graphs --write
 ESTLEG_DUMP=./krr_outputs/estleg_all.nq.gz docker compose up
 ```
 
-`estleg_all.nq.gz` is a generated release asset (not Git LFS) — attach it
-to the v1.0.0 GitHub release (#473). Until that tag exists, generate it
-locally from the combined JSON-LD / N-Quads sources.
+`estleg_all.nq.gz` is a generated release asset (not Git LFS). Generate it
+locally from the combined JSON-LD / N-Quads sources if you need a dump
+newer than the tagged GitHub Release.
 
 ```sparql
 SELECT ?g (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } } GROUP BY ?g
@@ -258,24 +258,29 @@ for s, p, o in g.triples((None, ESTLEG.interpretsLaw, None)):
 
 ### How to cite
 
-Aavik, Henrik. (2026). *Estonian Legal Ontology* (Version 0.11.0) [Data set].
-https://w3id.org/estleg/0.11.0
+Aavik, Henrik. (2026). *Estonian Legal Ontology* (Version 1.0.0) [Data set].
+https://w3id.org/estleg/1.0.0
 
 ```bibtex
 @misc{aavik_estonian_legal_ontology_2026,
   author  = {Aavik, Henrik},
   title   = {Estonian Legal Ontology},
   year    = {2026},
-  version = {0.11.0},
-  url     = {https://w3id.org/estleg/0.11.0},
+  version = {1.0.0},
+  url     = {https://w3id.org/estleg/1.0.0},
   note    = {Dataset}
 }
 ```
 
+**Primary consumption path:** download the tagged GitHub Release
+[`v1.0.0`](https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v1.0.0)
+(`combined_ontology.jsonld.gz` and the other combined artifacts). Cloning
+the 2.4 GB git tree is for contributors, not for loading the graph.
+
 See [`CITATION.cff`](CITATION.cff) for the machine-readable record. Pin the
-graph by `owl:versionIRI` (`https://w3id.org/estleg/0.11.0`), not an undated
-clone of `main`. A Zenodo DOI is tracked as #473 and is not yet minted.
-Consumer contract: [`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
+graph by `owl:versionIRI` (`https://w3id.org/estleg/1.0.0`), not an undated
+clone of `main`. A Zenodo DOI is not yet minted. Consumer contract:
+[`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ### Refresh SLA

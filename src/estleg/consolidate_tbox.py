@@ -27,7 +27,7 @@ UNRESOLVED_PATH = KRR_DIR / "unresolved_references.jsonld"
 COMBINED_PATH = KRR_DIR / "combined_ontology.jsonld"
 
 VOCABULARY_IRI = "https://w3id.org/estleg/vocabulary"
-ONTOLOGY_VERSION = "0.11.0"
+ONTOLOGY_VERSION = "1.0.0"
 
 JUNK_TERMS = frozenset(
     {

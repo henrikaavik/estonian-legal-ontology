@@ -19,7 +19,7 @@ Subcorpus `*_schema.json` files also tag `@et`/`@en` on their schema labels.
 
 ### Provenance (dataset-level)
 
-Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confidence. `krr_outputs/void.ttl` links the published dataset to `estleg:Activity_CorpusBuild_0_11_0` via `prov:wasGeneratedBy`. `estleg_common.combined_ontology_header()` emits the same edge on combined builds. Keyword-derived assertions (deontic `normativeType`, `targetGroup`, EuroVoc `dcterms:subject`) carry `estleg:assertionConfidence` (`xsd:decimal` in `[0, 1]`). Scraped `estleg:legalText` does not. The RT law generator does not stamp confidence.
+Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confidence. `krr_outputs/void.ttl` links the published dataset to `estleg:Activity_CorpusBuild_1_0_0` via `prov:wasGeneratedBy`. `estleg_common.combined_ontology_header()` emits the same edge on combined builds. Keyword-derived assertions (deontic `normativeType`, `targetGroup`, EuroVoc `dcterms:subject`) carry `estleg:assertionConfidence` (`xsd:decimal` in `[0, 1]`). Scraped `estleg:legalText` does not. The RT law generator does not stamp confidence.
 
 ### Classes
 

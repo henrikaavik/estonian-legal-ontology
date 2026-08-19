@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-08-19
+
+First public GitHub Release. Combined JSON-LD and the eurlex/curia/eelnoud
+combined files ship as immutable release assets (`#473` / `#548`). Catalog
+`dcat:downloadURL`s for those single-file dumps point at
+`/releases/download/v1.0.0/`. Act work-IRIs are yearless ASCII (`#445`).
+Lower-court ingest sample (`#525`). MIT is software-only; data rights are
+layered (`#545` / `#546`). A Zenodo DOI is not minted in this cut.
+
 ### Language-tag policy (#437)
 
 - Every CV `rdfs:label` is bilingual `@et` + `@en`.
@@ -80,9 +89,10 @@ All notable changes to this project will be documented in this file.
 ### Catalog URLs pin a content SHA (#548)
 
 - `metadata.jsonld` and `void.ttl` no longer cite mutable `/main`.
-  Download/access URLs use `DATASET_CONTENT_SHA`. The build manifest
-  records `contentSha` + `catalogModified`; `validate_all` rejects `/main`
-  catalog URLs. GitHub Release assets remain #473.
+  Tree/archive URLs pin `DATASET_CONTENT_SHA`; combined-file download
+  URLs use `/releases/download/v1.0.0/`. The build manifest records
+  `contentSha` + `catalogModified`; `validate_all` rejects `/main`
+  catalog URLs.
 
 ### Classifier assertionConfidence (#456)
 

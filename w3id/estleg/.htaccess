@@ -13,10 +13,13 @@
 Options +FollowSymLinks
 RewriteEngine on
 
+# Version IRI (https://w3id.org/estleg/1.0.0) → tagged GitHub Release.
+RewriteRule ^1\.0\.0/?$ https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v1.0.0 [R=302,L]
+
 # (Future) content negotiation to the machine-readable graph:
 #   RewriteCond %{HTTP_ACCEPT} text/turtle [OR]
 #   RewriteCond %{HTTP_ACCEPT} application/ld\+json
-#   RewriteRule ^(.*)$ https://raw.githubusercontent.com/henrikaavik/estonian-legal-ontology/main/krr_outputs/combined_ontology.jsonld [R=303,L]
+#   RewriteRule ^(.*)$ https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/combined_ontology.jsonld.gz [R=303,L]
 
 # Interim: send every IRI under this namespace to the project repository.
 RewriteRule ^(.*)$ https://github.com/henrikaavik/estonian-legal-ontology [R=302,L]

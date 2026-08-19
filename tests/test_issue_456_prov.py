@@ -20,7 +20,10 @@ VOCAB = REPO / "krr_outputs" / "controlled_vocabulary.jsonld"
 GENERATE_ALL_LAWS = REPO / "src" / "estleg" / "generate_all_laws.py"
 
 DATASET = URIRef("https://w3id.org/estleg/dataset/estonian-legal-ontology")
-ACTIVITY = URIRef("https://w3id.org/estleg/Activity_CorpusBuild_0_11_0")
+ACTIVITY = URIRef(
+    "https://w3id.org/estleg/Activity_CorpusBuild_"
+    + estleg_common.ONTOLOGY_VERSION.replace(".", "_")
+)
 
 
 def _void() -> Graph:
@@ -57,7 +60,7 @@ def test_void_declares_prov_activity() -> None:
     graph = _void()
     assert (ACTIVITY, RDF.type, PROV.Activity) in graph
     labels = {str(value) for value in graph.objects(ACTIVITY, RDFS.label)}
-    assert any("0.11.0" in label for label in labels)
+    assert any(estleg_common.ONTOLOGY_VERSION in label for label in labels)
     started = list(graph.objects(ACTIVITY, PROV.startedAtTime))
     assert started
     assert any(estleg_common.PINNED_RUN_TIMESTAMP[:10] in str(value) for value in started)
@@ -88,7 +91,10 @@ def test_cv_declares_assertion_confidence() -> None:
 def test_combined_ontology_header_emits_was_generated_by() -> None:
     header = estleg_common.combined_ontology_header()
     assert header["prov:wasGeneratedBy"] == {
-        "@id": "estleg:Activity_CorpusBuild_0_11_0"
+        "@id": (
+            "estleg:Activity_CorpusBuild_"
+            + estleg_common.ONTOLOGY_VERSION.replace(".", "_")
+        )
     }
     assert "prov:wasGeneratedBy" in estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
 

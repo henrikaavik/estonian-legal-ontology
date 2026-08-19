@@ -1327,14 +1327,16 @@ def validate_metadata_catalog(krr_dir: Path = KRR_DIR, *, allow_missing_index: b
 def validate_metadata_repro_pins(doc: dict) -> None:
     """#548: catalog GitHub URLs must not pin the moving ``main`` branch.
 
-    Immutable GitHub Release assets remain #473. This gate only asserts the
-    committed catalog cites a content SHA (``DATASET_CONTENT_SHA``) and
-    that ``dcterms:modified`` / ``owl:versionInfo`` match the build
-    manifest when that file is present.
+    Immutable GitHub Release assets are the other #473/#548 pin. This
+    gate asserts the committed catalog cites a content SHA
+    (``DATASET_CONTENT_SHA``) or a tagged ``/releases/download/v<ver>/``
+    URL, and that ``dcterms:modified`` / ``owl:versionInfo`` match the
+    build manifest when that file is present.
     """
     from estleg.write_build_manifest import (
         DATASET_CONTENT_SHA,
         is_mutable_main_url,
+        is_release_asset_url,
     )
 
     urls: list[str] = []
@@ -1363,14 +1365,22 @@ def validate_metadata_repro_pins(doc: dict) -> None:
         for url in urls
         if "github.com/henrikaavik/estonian-legal-ontology" in url
     ]
-    unpinned = [url for url in github_urls if DATASET_CONTENT_SHA not in url]
+    unpinned = [
+        url
+        for url in github_urls
+        if DATASET_CONTENT_SHA not in url and not is_release_asset_url(url)
+    ]
     if unpinned:
         error(
             "metadata.jsonld: catalog GitHub URL is not pinned to "
-            f"DATASET_CONTENT_SHA ({unpinned[0]})"
+            f"DATASET_CONTENT_SHA or /releases/download/v{estleg_common.ONTOLOGY_VERSION}/ "
+            f"({unpinned[0]})"
         )
     if github_urls:
-        print(f"  Catalog GitHub URLs pinned to {DATASET_CONTENT_SHA[:12]}")
+        print(
+            f"  Catalog GitHub URLs pinned to {DATASET_CONTENT_SHA[:12]} "
+            "or a tagged release asset"
+        )
 
     manifest_path = REPO_ROOT / "krr_outputs" / "dataset_build_manifest.json"
     if not manifest_path.is_file():
