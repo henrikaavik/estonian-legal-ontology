@@ -226,7 +226,7 @@ def _build_graph_from_fake_xml(xml_text: str) -> list[dict]:
                 graph.append(
                     {
                         "@id": p_id,
-                        "@type": ["estleg:Section", "owl:NamedIndividual"],
+                        "@type": ["estleg:Section", "estleg:LegalProvision", "owl:NamedIndividual"],
                         "rdfs:label": label,
                         "estleg:sectionNumber": p_nr,
                     }

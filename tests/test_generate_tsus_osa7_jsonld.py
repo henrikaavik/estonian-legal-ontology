@@ -244,8 +244,23 @@ class TestBuildGraphIntegration:
         assert root["rdfs:label"] == "TsÜS Osa 7 ontoloogia"
 
     def test_curated_tbox_and_concepts_present(self) -> None:
-        for frag, _ in gt.CLASS_DECLS:
-            assert self.by_id[f"{NS}{frag}"]["@type"] == ["owl:Class"]
+        # #438: structural classes live in the CV, not this module.
+        assert gt.CLASS_DECLS == []
+        class_frags = {
+            str(node.get("@id", "")).rsplit("/", 1)[-1]
+            for node in self.graph
+            if "owl:Class" in (
+                node.get("@type") if isinstance(node.get("@type"), list) else [node.get("@type")]
+            )
+        }
+        assert not class_frags & {
+            "LegalPart",
+            "Chapter",
+            "Division",
+            "Section",
+            "Provision",
+            "LegalConcept",
+        }
         for frag, _, _, _ in gt.PROPERTY_DECLS:
             assert self.by_id[f"{NS}{frag}"]["@type"] == ["owl:ObjectProperty"]
         # #377: these three must not RDFS-type stubs under inference=rdfs.
@@ -272,6 +287,7 @@ class TestBuildGraphIntegration:
             f"{NS}Par138_Lg1",
             f"{NS}Par138_Lg2",
         ]
+        assert "estleg:LegalProvision" in sec["@type"]
 
     def test_superscript_section_id_and_label(self) -> None:
         sec = self.by_id[f"{NS}Par145_1"]
@@ -305,6 +321,7 @@ class TestBuildGraphIntegration:
 
     def test_part_and_division_structure(self) -> None:
         part = self.by_id[f"{NS}Part7"]
+        assert "estleg:LegalPart" in part["@type"]
         assert part["rdfs:label"] == "TsÜS 7. osa – Tsiviilõiguste teostamine"
         assert part["estleg:hasChapter"] == [
             {"@id": f"{NS}TsUS_Chapter_9"},

@@ -411,12 +411,6 @@ def main(argv: list[str] | None = None) -> None:
             "dc:source": title,
             "dcterms:source": {"@id": xml_url},
         },
-        {"@id": "estleg:LegalPart", "@type": ["owl:Class"], "rdfs:label": "Seaduse osa"},
-        {"@id": "estleg:Chapter", "@type": ["owl:Class"], "rdfs:label": "Peatükk"},
-        {"@id": "estleg:Division", "@type": ["owl:Class"], "rdfs:label": "Jagu"},
-        {"@id": "estleg:Subdivision", "@type": ["owl:Class"], "rdfs:label": "Jaotis"},
-        {"@id": "estleg:Section", "@type": ["owl:Class"], "rdfs:label": "Paragrahv"},
-        {"@id": "estleg:LegalConcept", "@type": ["owl:Class"], "rdfs:label": "Õigusmõiste"},
     ]
     if par_range is not None:
         graph[0]["dcterms:extent"] = f"§{par_range[0]}-§{par_range[1]}"
@@ -467,7 +461,7 @@ def main(argv: list[str] | None = None) -> None:
             label = kuvatav_nr or f"§ {p_nr}"
         return p_id, {
             "@id": p_id,
-            "@type": ["estleg:Section", "owl:NamedIndividual"],
+            "@type": ["estleg:Section", "estleg:LegalProvision", "owl:NamedIndividual"],
             "rdfs:label": label,
             "estleg:sectionNumber": p_nr,
             "estleg:legalText": collect_loige_preview(paragraph_el),

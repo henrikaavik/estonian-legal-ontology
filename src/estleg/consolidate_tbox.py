@@ -39,6 +39,21 @@ JUNK_TERMS = frozenset(
     }
 )
 
+# #438: module Section individuals must answer LegalProvision queries.
+# LegalPart stays distinct from multipart-file Part (#566).
+CLASS_ALIGNMENT_AXIOMS: dict[str, dict[str, Any]] = {
+    "estleg:Section": {"rdfs:subClassOf": {"@id": "estleg:LegalProvision"}},
+}
+
+
+def apply_class_alignment(node: dict) -> None:
+    """Stamp Section⊑LegalProvision on a CV class node."""
+    nid = node.get("@id")
+    extra = CLASS_ALIGNMENT_AXIOMS.get(nid) if isinstance(nid, str) else None
+    if extra:
+        node.update(extra)
+
+
 # #377: these three mint types under SHACL inference=rdfs if axiomatised.
 FORBIDDEN_NO_AXIOM = frozenset(
     {
@@ -782,6 +797,7 @@ def build_consolidated_graph(
     for node in index.values():
         apply_comment(node)
         apply_domain_range(node)
+        apply_class_alignment(node)
 
     classes: list[dict] = []
     props: list[dict] = []

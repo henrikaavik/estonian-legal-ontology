@@ -95,18 +95,9 @@ EUROVOC_SUBJECTS: list[dict] = [
      "skos:prefLabel": "judicial cooperation"},
 ]
 
-# owl:Class TBox (LegalPart … LegalConcept). NB: ``Provision`` is declared as the
-# range of ``hasProvision`` even though individuals are typed ``LegalProvision`` —
-# this faithfully mirrors the committed module (the TBox-completeness half of
-# #567 is a separate, deferred concern and is intentionally not "fixed" here).
-CLASS_DECLS: list[tuple[str, str]] = [
-    ("LegalPart", "Seaduse osa"),
-    ("Chapter", "Peatükk"),
-    ("Division", "Jagu"),
-    ("Section", "Paragrahv"),
-    ("Provision", "Lõige/punkt"),
-    ("LegalConcept", "Õigusmõiste"),
-]
+# Structural classes live in controlled_vocabulary.jsonld (#438). Modules
+# must not re-declare LegalPart/Provision/Section/….
+CLASS_DECLS: list[tuple[str, str]] = []
 
 # owl:ObjectProperty TBox: fragment -> (label, domain-fragment, range-fragment).
 # hasSection / hasProvision / coversConcept deliberately omit domain and
@@ -454,7 +445,7 @@ def build_section(
 
     section_node: dict = {
         "@id": f"{NS}{section_local_id}",
-        "@type": ["estleg:Section", "owl:NamedIndividual"],
+        "@type": ["estleg:Section", "estleg:LegalProvision", "owl:NamedIndividual"],
         "estleg:sectionNumber": par_nr,
         "rdfs:label": label,
         "estleg:hasProvision": refs,
