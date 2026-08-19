@@ -18,6 +18,8 @@ import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 
+from estleg.estleg_common import act_prefix_from_iri
+
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -99,13 +101,6 @@ _AMEND_SUFFIX_RE = re.compile(r"^(?:\d+|[0-9a-f]{10})(?:_\d+)+$|^(?:\d+|[0-9a-f]
 # meaningfully shorter than the slug it replaces. ``Reg_<digits>`` (the
 # regulation IRI stem) and the rt_api/auto abbreviations all match this.
 _COMPACT_PREFIX_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
-# Suffixes stripped from an ``estleg:amends`` target to recover the compact
-# stem the amendment IRIs should adopt: ``_Map_<year>`` (or bare ``_Map``) and
-# the per-provision ``_Osa<N>...`` / ``_Par_<N>...`` tails.
-_AMENDS_STEM_STRIP_RE = re.compile(
-    r"_(?:Map_\d+|Map|Osa\d+(?:_.*)?|Par_?\d+(?:_.*)?|Chapter\d+(?:_.*)?"
-    r"|Division\d+(?:_.*)?|TopicScheme\d+(?:_.*)?)$"
-)
 # Hard ceiling on how long a recovered "compact" stem may be before we give up
 # and skip the IRI — a stem longer than this is no improvement over the slug.
 _AMEND_STEM_MAX_LEN = 24
@@ -260,13 +255,7 @@ def load_peep_prefixes() -> dict[str, dict]:
             iri = node.get("@id", "")
             if not iri.startswith("estleg:"):
                 continue
-            local = iri[7:]
-            if "_Map_2026" in local:
-                prefix = local.split("_Map_2026")[0]
-            else:
-                m = re.match(r"(.+?)_Osa\d+", local)
-                if m:
-                    prefix = m.group(1)
+            prefix = act_prefix_from_iri(iri)
             title = node.get("dc:source") or node.get("dcterms:title", "")
             break
         if prefix and title:
@@ -314,14 +303,7 @@ def _stem_from_amends_target(amends_iri: str) -> str | None:
     """
     if not amends_iri.startswith("estleg:"):
         return None
-    local = amends_iri[len("estleg:"):]
-    # Strip the well-known structural tails. One pass is enough in practice
-    # (``_Map_2026`` etc. only appear once), but loop defensively in case a
-    # future IRI nests them.
-    prev = None
-    while prev != local:
-        prev = local
-        local = _AMENDS_STEM_STRIP_RE.sub("", local)
+    local = act_prefix_from_iri(amends_iri)
     if not local or not _COMPACT_PREFIX_RE.match(local):
         return None
     return local

@@ -24,6 +24,7 @@ from pathlib import Path
 from estleg.estleg_common import (
     CONTEXT,
     allowed_get,
+    mint_act_iri,
     parse_xml,
     save_json,
     stamp_combined_dataset_head,
@@ -633,7 +634,7 @@ def main():
 
         graph: list[dict] = [
             {
-                "@id": f"estleg:Eelnoud_{phase_id}_Map_2026",
+                "@id": mint_act_iri(f"Eelnoud_{phase_id}"),
                 "@type": ["owl:Ontology"],
                 "rdfs:label": {"@value": f"EIS eelnõud – {feed_info['label_et']}", "@language": "et"},
                 "dc:description": {"@value": f"Eelnõud, mis on hetkel etapis: {feed_info['label_et']}", "@language": "et"},
@@ -653,7 +654,7 @@ def main():
     print("\n--- Generating combined drafts file ---")
     combined_graph: list[dict] = [
         {
-            "@id": "estleg:Eelnoud_Combined_Map_2026",
+            "@id": mint_act_iri("Eelnoud_Combined"),
             "@type": ["owl:Ontology"],
             "rdfs:label": {"@value": "EIS eelnõud – kõik etapid (Combined)", "@language": "et"},
             "dc:description": {"@value": "Kõik EIS eelnõud kõigist menetlusetappidest.", "@language": "et"},

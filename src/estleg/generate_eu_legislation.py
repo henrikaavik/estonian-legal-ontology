@@ -28,6 +28,7 @@ from pathlib import Path
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
+    mint_act_iri,
     save_json,
     stamp_combined_dataset_head,
     title_langstrings,
@@ -892,7 +893,7 @@ def rebuild_eurlex_combined_from_peeps(eurlex_dir: Path = EURLEX_DIR) -> dict:
     stays a complete view of the peeps.
     """
     header = {
-        "@id": "estleg:EURlex_Combined_Map_2026",
+        "@id": mint_act_iri("EURlex_Combined"),
         "@type": ["owl:Ontology"],
         "rdfs:label": {
             "@value": "EL õigusaktid – kõik liigid (Combined)",
@@ -1072,7 +1073,7 @@ def main():
         # Generate per-type file
         graph: list[dict] = [
             {
-                "@id": f"estleg:EURlex_{doc_info['type_id']}s_Map_2026",
+                "@id": mint_act_iri(f"EURlex_{doc_info['type_id']}s"),
                 "@type": ["owl:Ontology"],
                 "rdfs:label": {"@value": f"EL {doc_info['label_et'].lower()} – kõik ({len(items)})", "@language": "et"},
                 "dc:description": {"@value": f"Euroopa Liidu {doc_info['label_et'].lower()} eesti keeles EUR-Lexist.", "@language": "et"},
@@ -1101,7 +1102,7 @@ def main():
     # break downstream reasoning when both files are loaded together.
     combined_graph: list[dict] = [
         {
-            "@id": "estleg:EURlex_Combined_Map_2026",
+            "@id": mint_act_iri("EURlex_Combined"),
             "@type": ["owl:Ontology"],
             "rdfs:label": {"@value": "EL õigusaktid – kõik liigid (Combined)", "@language": "et"},
             "dc:description": {"@value": "Kõik Euroopa Liidu õigusaktid eesti keeles EUR-Lexist.", "@language": "et"},

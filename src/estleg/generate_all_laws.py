@@ -29,6 +29,7 @@ from estleg.estleg_common import (
     CONTEXT,
     act_root_node,
     et_literal,
+    mint_act_iri,
     sanitize_id,
     save_json,
     sha256_hex,
@@ -656,7 +657,7 @@ def generate_law_jsonld(
     par_min = min(par_numbers) if par_numbers else "?"
     par_max = max(par_numbers) if par_numbers else "?"
 
-    ontology_id = f"estleg:{prefix}_Map_2026"
+    ontology_id = mint_act_iri(prefix)
 
     # Construct Riigi Teataja source URL
     rt_source_url = ""
@@ -737,7 +738,7 @@ def generate_law_stub_jsonld(
     if rt_url:
         rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
     ontology_node: dict = {
-        "@id": f"estleg:{prefix}_Map_2026",
+        "@id": mint_act_iri(prefix),
         "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
         "rdfs:label": et_literal(f"{title} teemakaardistus"),
         "dc:source": title,

@@ -25,6 +25,7 @@ from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
     act_root_node,
+    mint_act_iri,
     iter_peep_files,
     jsonld_text,
     jsonld_texts,
@@ -1313,7 +1314,7 @@ def generate_schema_nodes(*, total_concepts: int) -> list[dict]:
     """
     return [
         {
-            "@id": "estleg:LegalConcepts_Map_2026",
+            "@id": mint_act_iri("LegalConcepts"),
             "@type": ["owl:Ontology"],
             "rdfs:label": "Eesti õiguse mõisted (Estonian Legal Concepts)",
             "dc:description": "Seaduses defineeritud õigusmõisted ja nende ristviited.",

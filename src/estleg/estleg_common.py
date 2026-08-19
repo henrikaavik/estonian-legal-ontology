@@ -613,6 +613,79 @@ def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
 NS = "https://w3id.org/estleg/"
 
 # ---------------------------------------------------------------------------
+# Act-root IRI mint / parse (#444)
+# ---------------------------------------------------------------------------
+# Every act/regulation (and the handful of subcorpus-map wrappers) uses
+# ``estleg:<prefix>_Map_<year>``. The year is a snapshot stamp, not the
+# act's enactment year. One minter + one reverse-parser so a scheme change
+# (#445) is a single-file edit.
+MAP_IRI_YEAR = 2026
+MAP_IRI_SUFFIX = f"_Map_{MAP_IRI_YEAR}"
+MAP_IRI_TOKEN_RE = re.compile(r"_Map_\d{4}")
+MAP_IRI_RE = re.compile(r"_Map_\d{4}$")
+_ACT_IRI_SUFFIX_PATTERNS: tuple[re.Pattern[str], ...] = (
+    MAP_IRI_RE,
+    re.compile(r"_Map$"),
+    re.compile(r"_(?:Procedure|Substantive)Map_\d{4}$"),
+    re.compile(r"_Osa\d+(?:_.+)?$"),
+    re.compile(r"_Par_?\d+(?:_.+)?$"),
+    re.compile(r"_Chapter_?\d+(?:_.+)?$"),
+    re.compile(r"_Division_?\d+(?:_.+)?$"),
+    re.compile(r"_TopicScheme\d*$"),
+    re.compile(r"_Ontology(?:_v\d+)?$"),
+)
+
+
+def compact_iri_local(iri: str) -> str:
+    """Local name of an ``estleg:`` / expanded-NS IRI (empty if neither)."""
+    if iri.startswith("estleg:"):
+        return iri[len("estleg:") :]
+    if iri.startswith(NS):
+        return iri[len(NS) :].lstrip("/#")
+    return ""
+
+
+def mint_act_iri(prefix: str, *, year: int | None = None) -> str:
+    """Mint ``estleg:<prefix>_Map_<year>``. ``prefix`` may already be compact."""
+    local = compact_iri_local(prefix) if prefix.startswith(("estleg:", "http")) else prefix
+    local = local.strip().removeprefix("estleg:").strip("_")
+    stamp = year if year is not None else MAP_IRI_YEAR
+    return f"estleg:{local}_Map_{stamp}"
+
+
+def is_map_iri(iri: str) -> bool:
+    """True when ``iri`` is an act/map root (``_Map_<year>`` or ProcedureMap)."""
+    local = compact_iri_local(iri) or iri
+    return bool(
+        MAP_IRI_RE.search(local)
+        or re.search(r"_(?:Procedure|Substantive)Map_\d{4}$", local)
+    )
+
+
+def act_prefix_from_iri(iri: str) -> str | None:
+    """Recover the mint prefix from an act, part, or provision IRI.
+
+    Multi-segment prefixes stay intact: ``estleg:KARIST_2_Osa1_1_87`` →
+    ``KARIST_2``; ``estleg:Reg_1052132_Map_2026`` → ``Reg_1052132``.
+    Returns ``None`` when ``iri`` is not an estleg local name.
+    """
+    local = compact_iri_local(iri)
+    if not local:
+        if iri and ":" not in iri and "/" not in iri:
+            local = iri
+        else:
+            return None
+    prev = None
+    while prev != local:
+        prev = local
+        for pat in _ACT_IRI_SUFFIX_PATTERNS:
+            match = pat.search(local)
+            if match:
+                local = local[: match.start()]
+                break
+    return local or None
+
+# ---------------------------------------------------------------------------
 # Ontology version (#616)
 # ---------------------------------------------------------------------------
 # Single source of truth for the published ontology version. SemVer, matching

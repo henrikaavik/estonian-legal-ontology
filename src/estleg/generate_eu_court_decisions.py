@@ -34,6 +34,7 @@ from urllib.parse import quote
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
+    mint_act_iri,
     save_json,
     stamp_combined_dataset_head,
 )
@@ -820,7 +821,7 @@ def main():
 
         graph: list[dict] = [
             {
-                "@id": f"estleg:CURIA_{cat_key.title()}_Map_2026",
+                "@id": mint_act_iri(f"CURIA_{cat_key.title()}"),
                 "@type": ["owl:Ontology"],
                 "rdfs:label": {"@value": f"EL kohtulahendid – {label_et} ({len(items)})", "@language": "et"},
                 "dc:description": {"@value": f"Euroopa Liidu kohtulahendid – {label_et.lower()} eesti keeles.", "@language": "et"},
@@ -840,7 +841,7 @@ def main():
     print("\n--- Generating combined file ---")
     combined_graph: list[dict] = [
         {
-            "@id": "estleg:CURIA_Combined_Map_2026",
+            "@id": mint_act_iri("CURIA_Combined"),
             "@type": ["owl:Ontology"],
             "rdfs:label": {"@value": "EL kohtulahendid – kõik (Combined)", "@language": "et"},
             "dc:description": {"@value": "Kõik Euroopa Liidu kohtulahendid eesti keeles EUR-Lexist.", "@language": "et"},

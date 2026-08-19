@@ -52,6 +52,7 @@ from pathlib import Path
 from estleg.estleg_common import (
     CONTEXT,
     PINNED_RUN_TIMESTAMP,
+    act_prefix_from_iri,
     act_root_node,
     build_globalid_xml_lookup,
     is_domain_individual,
@@ -100,13 +101,6 @@ def _draft_publication_sort_key(draft: dict) -> str:
 # clock" unmistakable; genuine run time lives in ``wall_time_seconds``.
 NS = "https://w3id.org/estleg/"
 
-# Structural tails stripped from an ``estleg:amends`` target to recover the
-# compact stem the amendment IRIs should adopt for laws/regulations absent from
-# the abbreviation registry (e.g. ``estleg:Reg_1052132_Map_2026`` → ``Reg_1052132``).
-_AMENDS_STEM_STRIP_RE = re.compile(
-    r"_(?:Map_\d+|Map|Osa\d+(?:_.*)?|Par_?\d+(?:_.*)?|Chapter\d+(?:_.*)?"
-    r"|Division\d+(?:_.*)?|TopicScheme\d+(?:_.*)?)$"
-)
 _COMPACT_PREFIX_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
 
 
@@ -1061,11 +1055,7 @@ def _stem_from_amends_target(amends_iri: str) -> str | None:
     """
     if not amends_iri or not amends_iri.startswith("estleg:"):
         return None
-    local = amends_iri[len("estleg:"):]
-    prev = None
-    while prev != local:
-        prev = local
-        local = _AMENDS_STEM_STRIP_RE.sub("", local)
+    local = act_prefix_from_iri(amends_iri)
     if not local or not _COMPACT_PREFIX_RE.match(local):
         return None
     return local

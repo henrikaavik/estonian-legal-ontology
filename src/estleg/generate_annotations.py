@@ -77,6 +77,7 @@ from estleg.estleg_common import (
     KRR_DIR,
     PINNED_RUN_TIMESTAMP,
     act_root_node,
+    is_map_iri,
     is_domain_individual,
     iter_peep_files,
     sanitize_id,
@@ -178,7 +179,6 @@ _ACT_LEVEL_TYPES = frozenset({"estleg:Act", "estleg:Map"})
 # than the bare prefix (some legacy multipart peeps carry ``estleg:`` or the bare namespace
 # IRI on the ontology node — those are not addressable, so we reject them).
 _BARE_NS = {"estleg:", "https://w3id.org/estleg/"}
-_MAP_IRI_RE = re.compile(r"^estleg:[^\s]+_Map(?:_\d{4})?$")
 # A per-osa act node carries its provision range in the IRI tail: ``…_OsaN_<start>_<end>``
 # (e.g. ``estleg:volaoigusseadus_Osa10_1005_1067`` -> start 1005). Used to pick the §§1-range
 # osa among same-title rank-1 candidates instead of the lexicographic first (issue #379).
@@ -521,7 +521,7 @@ def build_law_index(krr_dir: Path = KRR_DIR) -> _LawIndex:
                 break
         if not src:
             continue
-        rank = 0 if _MAP_IRI_RE.match(iri) else 1
+        rank = 0 if is_map_iri(iri) else 1
         range_start = _osa_range_start(iri)
         priority = (rank, float(range_start) if range_start is not None else float("inf"))
         # A few titles join two law names with " + " (e.g. "Tulumaksuseadus +

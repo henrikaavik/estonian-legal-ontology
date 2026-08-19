@@ -35,6 +35,7 @@ from estleg.estleg_common import (
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
     act_deprecation,
+    act_prefix_from_iri,
     act_root_node,
     is_domain_individual,
     iter_peep_files,
@@ -95,33 +96,9 @@ def is_provision_node(node: dict) -> bool:
 # prefix is recovered correctly.
 # ----------------------------------------------------------------------
 
-_ACT_SUFFIX_PATTERNS = [
-    re.compile(r"_Map_\d{4}$"),                            # _Map_2026
-    re.compile(r"_Osa\d+(?:_.+)?$"),                       # _Osa1, _Osa5_AsjaoigusteKaitse
-    re.compile(r"_(?:Procedure|Substantive)Map_\d{4}$"),   # KrMS variants
-]
-
-
 def _prefix_from_act_iri(act_iri: str) -> str | None:
-    """Derive the provision-keying prefix from a full act @id.
-
-    The prefix is the leading segment that all of the act's provisions
-    share (e.g. 'KOKS' for 'estleg:KOKS_Map_2026' whose provisions look
-    like 'estleg:KOKS_Par_22'; 'KARIST_2' for 'estleg:KARIST_2_Osa1_1_87'
-    whose provisions look like 'estleg:KARIST_2_Par_1').
-
-    Used as a fallback when build_provision_index encounters a peep
-    that has an owl:Ontology act node but no provisions to ground-truth
-    the prefix (a rare edge case for legacy or stub files).
-    """
-    if not act_iri.startswith("estleg:"):
-        return None
-    short = act_iri[len("estleg:"):]
-    for pat in _ACT_SUFFIX_PATTERNS:
-        m = pat.search(short)
-        if m:
-            return short[: m.start()]
-    return short  # legacy: no suffix
+    """Derive the provision-keying prefix from a full act @id (#444)."""
+    return act_prefix_from_iri(act_iri)
 
 
 def build_provision_index() -> tuple[

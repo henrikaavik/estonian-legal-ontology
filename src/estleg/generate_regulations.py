@@ -27,6 +27,7 @@ from estleg.estleg_common import (
     act_root_node,
     et_literal,
     is_domain_individual,
+    mint_act_iri,
 )
 from estleg.riigiteataja_common import (
     BASE_URL,
@@ -496,7 +497,7 @@ def build_regulation_jsonld(
 
     prefix = f"Reg_{tid}"
     provision_type = "estleg:LegalProvision"
-    ontology_id = f"estleg:{prefix}_Map_2026"
+    ontology_id = mint_act_iri(prefix)
 
     rt_source_url = ""
     if rt_url:

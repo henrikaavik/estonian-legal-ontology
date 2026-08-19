@@ -36,7 +36,13 @@ from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from estleg.estleg_common import KRR_DIR, NS, REPO_ROOT, jsonld_text
+from estleg.estleg_common import (
+    KRR_DIR,
+    NS,
+    REPO_ROOT,
+    act_prefix_from_iri,
+    jsonld_text,
+)
 
 ESTLEG_PREFIX = "estleg:"
 LEGAL_TEXT_MAX = 2000
@@ -96,13 +102,6 @@ TABLE_COLUMNS: dict[str, tuple[str, ...]] = {
 CITATION_PREDICATES: tuple[str, ...] = (
     "estleg:references",
     "estleg:referencedBy",
-)
-
-_ABBREV_MARKERS: tuple[str, ...] = (
-    "_Map_2026",
-    "_ProcedureMap",
-    "_Ontology",
-    "_TopicScheme",
 )
 
 _PROVISION_TYPE_PREFIX = "estleg:LegalProvision"
@@ -178,14 +177,9 @@ def truncate_legal_text(text: str, max_len: int = LEGAL_TEXT_MAX) -> str:
 
 def derive_abbrev(act_id: str) -> str:
     """Derive a law abbreviation from an act-root ``@id``."""
-    local = compact_iri(act_id)
-    local = local.removeprefix(ESTLEG_PREFIX)
-    for marker in _ABBREV_MARKERS:
-        if marker in local:
-            return local.split(marker, 1)[0]
-    if "_Osa" in local:
-        return local.split("_Osa", 1)[0]
-    return local
+    return act_prefix_from_iri(compact_iri(act_id)) or compact_iri(act_id).removeprefix(
+        ESTLEG_PREFIX
+    )
 
 
 def file_slug(path: Path) -> str:

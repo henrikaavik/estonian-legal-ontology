@@ -14,7 +14,7 @@ import re
 import sys
 from pathlib import Path
 
-from estleg.estleg_common import CONTEXT, KRR_DIR, save_json
+from estleg.estleg_common import CONTEXT, KRR_DIR, mint_act_iri, save_json
 
 PAR_NUM_RE = re.compile(r"_Par_(\d+)")
 
@@ -124,7 +124,7 @@ def backfill_graph(graph: list[dict]) -> int:
         ),
         None,
     )
-    act_iri = act.get("@id") if act and isinstance(act.get("@id"), str) else f"estleg:{prefix}_Map_2026"
+    act_iri = act.get("@id") if act and isinstance(act.get("@id"), str) else mint_act_iri(prefix)
     ordered = sorted(provisions, key=lambda n: _par_sort_key(str(n.get("@id", ""))))
     last_container: str | None = None
     last_cluster: str | None = None

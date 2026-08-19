@@ -24,7 +24,7 @@ import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-from estleg.estleg_common import CONTEXT
+from estleg.estleg_common import CONTEXT, NS, compact_iri_local, mint_act_iri
 from estleg.kov_registry import (
     HistoricalMunicipality,
     IssuerEntry,
@@ -139,7 +139,7 @@ def build_municipality_doc(
         )
     nodes = [
         {
-            "@id": "estleg:Municipalities_Map_2026",
+            "@id": mint_act_iri("Municipalities"),
             "@type": ["owl:Ontology"],
             "rdfs:label": "Estonian Municipalities (current EHAK)",
             "dcterms:source": {"@id": "https://www.stat.ee/sites/default/files/2020-03/ehak.csv"},
@@ -163,7 +163,7 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
     """Build the JSON-LD document containing all Issuer nodes."""
     nodes: list[dict] = [
         {
-            "@id": "estleg:Issuers_Kov_Map_2026",
+            "@id": mint_act_iri("Issuers_Kov"),
             "@type": ["owl:Ontology"],
             "rdfs:label": "KOV Issuers (volikogu and valitsus bodies)",
         }
@@ -237,7 +237,7 @@ def build_historical_municipality_doc(
     """
     nodes: list[dict] = [
         {
-            "@id": "estleg:HistoricalMunicipalities_Map_2026",
+            "@id": mint_act_iri("HistoricalMunicipalities"),
             "@type": ["owl:Ontology"],
             "rdfs:label": "Estonian Historical Municipalities (pre-merger KOV units)",
             "rdfs:comment": (
@@ -247,7 +247,9 @@ def build_historical_municipality_doc(
                 "Derived from the issuer registry's mappingEvidence "
                 "citations; see issue #130."
             ),
-            "dcterms:source": {"@id": "https://w3id.org/estleg/Issuers_Kov_Map_2026"},
+            "dcterms:source": {
+                "@id": f"{NS}{compact_iri_local(mint_act_iri('Issuers_Kov'))}"
+            },
         }
     ]
     for code in sorted(historical):

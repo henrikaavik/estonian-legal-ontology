@@ -54,7 +54,12 @@ import json
 import re
 from pathlib import Path
 
-from estleg.estleg_common import iter_peep_files, save_json
+from estleg.estleg_common import (
+    is_map_iri,
+    iter_peep_files,
+    mint_act_iri,
+    save_json,
+)
 
 ISSUED_UNDER_KEY = "estleg:issuedUnder"
 
@@ -99,7 +104,7 @@ def discover_act_roots(peep_files: list[Path]) -> set[str]:
             if not isinstance(node, dict):
                 continue
             iri = node.get("@id", "")
-            if not (isinstance(iri, str) and iri.endswith("_Map_2026")):
+            if not (isinstance(iri, str) and is_map_iri(iri)):
                 continue
             if "_Osa" in iri:
                 continue
@@ -126,7 +131,7 @@ def resolve_target(ref: str, act_roots: set[str]) -> str | None:
     code = OSA_BASE_TO_SHORTCODE.get(m.group("base"))
     if not code:
         return None
-    canonical = f"estleg:{code}_Map_2026"
+    canonical = mint_act_iri(code)
     return canonical if canonical in act_roots else None
 
 

@@ -23,6 +23,7 @@ from functools import partial
 from pathlib import Path
 
 from estleg.estleg_common import (
+    MAP_IRI_TOKEN_RE,
     act_root_node,
     is_domain_individual,
     iter_peep_files,
@@ -205,7 +206,7 @@ def classify_change_type(title: str) -> tuple[str, str] | None:
 # Underscore is a word char, so ``estleg:2026_aasta_…`` must still yield 2026.
 _YEAR_RE = re.compile(r"(?<![A-Za-z0-9])((?:19|20)\d{2})(?![0-9])")
 # Snapshot suffix on every act IRI — not the act's own year.
-_MAP_STAMP_RE = re.compile(r"_Map_\d{4}\b")
+_MAP_STAMP_RE = MAP_IRI_TOKEN_RE
 
 
 def years_mentioned(*texts: str) -> frozenset[str]:

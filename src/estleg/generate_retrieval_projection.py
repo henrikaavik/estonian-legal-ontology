@@ -62,7 +62,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import re
 import shutil
 import sys
 from pathlib import Path
@@ -71,10 +70,11 @@ from typing import Any
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     KRR_DIR,
-    NS,
+    NS,  # noqa: F401 — re-exported; tests import generate_retrieval_projection.NS
     ONTOLOGY_VERSION,
     REPO_ROOT,
     act_deprecation,
+    act_prefix_from_iri,
     act_root_node,
     jsonld_text,
     save_json,
@@ -236,18 +236,7 @@ def derive_abbrev(act_id: str | None) -> str | None:
     """
     if not act_id:
         return None
-    local = act_id
-    if local.startswith("estleg:"):
-        local = local[len("estleg:"):]
-    elif local.startswith(NS):
-        local = local[len(NS):]
-    for marker in ("_Map_2026", "_ProcedureMap", "_Ontology", "_TopicScheme"):
-        if marker in local:
-            return local.split(marker, 1)[0] or None
-    m = re.match(r"(.+?)_Osa\d+", local)
-    if m:
-        return m.group(1)
-    return local or None
+    return act_prefix_from_iri(act_id)
 
 
 def resolve_abbrev(
