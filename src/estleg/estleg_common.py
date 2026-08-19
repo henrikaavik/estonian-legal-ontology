@@ -36,6 +36,11 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "TsMS": "Tsiviilkohtumenetluse seadustik",
     "KrMS": "Kriminaalmenetluse seadustik",
     "TMS": "Täitemenetluse seadustik",
+    # #350: court texts cite VTMS / HKMS. Register the real laws so the
+    # longer alternation cannot fall through to TMS / KMS, and so a
+    # citation resolves to the existing peeps (estleg:VTMS_* / HALDUS_*).
+    "VTMS": "Väärteomenetluse seadustik",
+    "HKMS": "Halduskohtumenetluse seadustik",
     "KOKS": "Kohaliku omavalitsuse korralduse seadus",
     "PS": "Eesti Vabariigi põhiseadus",
     "PankrS": "Pankrotiseadus",
