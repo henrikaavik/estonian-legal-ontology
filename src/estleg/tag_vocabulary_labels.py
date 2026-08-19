@@ -155,6 +155,7 @@ ET_BY_LOCAL: dict[str, str] = {
     "municipalityType": "omavalitsuse liik",
     "normativeType": "normatiivne liik",
     "officialEnglishText": "ametlik ingliskeelne tekst",
+    "estoniaRelevant": "Eestile asjakohane",
     "paragrahv": "paragrahv",
     "parentProvision": "ülemsäte",
     "phaseOrder": "etapi järjekord",
@@ -249,6 +250,7 @@ ET_BY_LOCAL: dict[str, str] = {
 
 EN_BY_LOCAL: dict[str, str] = {
     "officialEnglishText": "official English text",
+    "estoniaRelevant": "Estonia-relevant",
     "CaseType_Administrative": "Administrative case",
     "CaseType_Civil": "Civil case",
     "CaseType_ConstitutionalReview": "Constitutional review",

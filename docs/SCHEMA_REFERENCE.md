@@ -510,6 +510,7 @@ The four rows above are the most common institutions; `estleg:EUInst_*` is an **
 * `estleg:eliIdentifier`: European Legislation Identifier URI -- `xsd:anyURI`
 * `estleg:documentDate`: Date of the legal act -- `xsd:date`
 * `estleg:inForce`: Whether the act is currently in force -- `xsd:boolean`
+* `estleg:estoniaRelevant`: `xsd:boolean`, present when an Estonian act transposes this instrument (seeded from `krr_outputs/reports/transposition_mapping.json` / `estleg:transposedBy`). The EUR-Lex peeps keep the full CELLAR acquis; `EURLEX_INDEX.json` `lens` is the in-force + Estonia-relevance consumer cut (issue #527).
 
 ### EU Legislation Example
 

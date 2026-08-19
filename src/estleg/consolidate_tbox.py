@@ -363,6 +363,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:definitionCount": ("estleg:Act", "xsd:integer"),
     "estleg:definitionVariantCount": ("estleg:LegalConcept", "xsd:integer"),
     "estleg:documentType": ("owl:Thing", "xsd:string"),
+    "estleg:estoniaRelevant": ("estleg:EULegislation", "xsd:boolean"),
     "estleg:entryIntoForce": ("owl:Thing", "xsd:date"),
     "estleg:euCourtCode": ("estleg:EUCourt", "xsd:string"),
     "estleg:euInstitutionCode": ("estleg:EUInstitution", "xsd:string"),

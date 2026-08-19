@@ -650,6 +650,9 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
         in_force_bool = "true" if is_in_force_value(item["in_force"]) else "false"
         node["estleg:inForce"] = {"@value": in_force_bool, "@type": "xsd:boolean"}
 
+    if item.get("estonia_relevant"):
+        node["estleg:estoniaRelevant"] = dict(ESTONIA_RELEVANT_TRUE)
+
     # Institutions
     if item.get("authors"):
         inst_refs = []
@@ -731,6 +734,152 @@ def count_emitted_by_doc_type(nodes: Iterable[dict]) -> dict[str, dict[str, int]
         else:
             bucket["not_in_force"] += 1
     return counts
+
+
+ESTONIA_RELEVANT_TRUE = {"@value": "true", "@type": "xsd:boolean"}
+
+
+def collect_estonia_relevant_celex(krr_dir: Path | None = None) -> set[str]:
+    """CELEX numbers Estonia has matched as transposing instruments (#527).
+
+    Seeded from the committed transposition report and, as a belt-and-braces
+    pass, from ``estleg:transposedBy`` already on EUR-Lex directive nodes.
+    """
+    root = krr_dir or KRR_DIR
+    celex: set[str] = set()
+    report = root / "reports" / "transposition_mapping.json"
+    if report.exists():
+        try:
+            data = json.loads(report.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        for mapping in data.get("mappings") or []:
+            if not isinstance(mapping, dict):
+                continue
+            value = mapping.get("directive_celex")
+            if isinstance(value, str) and value:
+                celex.add(value)
+    directives = root / "eurlex" / "eurlex_directives_peep.json"
+    if directives.exists():
+        try:
+            doc = json.loads(directives.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            doc = {}
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            if not node.get("estleg:transposedBy"):
+                continue
+            value = node.get("estleg:celexNumber")
+            if isinstance(value, str) and value:
+                celex.add(value)
+    return celex
+
+
+def stamp_estonia_relevant(node: dict, relevant: bool) -> bool:
+    """Set or clear ``estleg:estoniaRelevant``. Returns True if the node changed.
+
+    Positive hits are stamped ``true``. Non-relevant nodes omit the property
+    so the 33k-act historical pile is not rewritten with ``false``.
+    """
+    if relevant:
+        if node.get("estleg:estoniaRelevant") == ESTONIA_RELEVANT_TRUE:
+            return False
+        node["estleg:estoniaRelevant"] = dict(ESTONIA_RELEVANT_TRUE)
+        return True
+    if "estleg:estoniaRelevant" in node:
+        del node["estleg:estoniaRelevant"]
+        return True
+    return False
+
+
+def _node_estonia_relevant(node: dict) -> bool:
+    ref = node.get("estleg:estoniaRelevant")
+    if isinstance(ref, dict):
+        return str(ref.get("@value")).strip().casefold() == "true"
+    return ref is True
+
+
+def build_eurlex_lens(
+    nodes: Iterable[dict], relevant_celex: set[str]
+) -> dict[str, int | str]:
+    """Consumer-surface counts: in-force vs historical, plus Estonia relevance."""
+    in_force = 0
+    not_in_force = 0
+    estonia_relevant = 0
+    both = 0
+    for node in nodes:
+        if _node_doc_type_id(node) is None:
+            continue
+        force = _node_in_force(node)
+        if force:
+            in_force += 1
+        else:
+            not_in_force += 1
+        celex = node.get("estleg:celexNumber")
+        relevant = (
+            _node_estonia_relevant(node)
+            or (isinstance(celex, str) and celex in relevant_celex)
+        )
+        if relevant:
+            estonia_relevant += 1
+            if force:
+                both += 1
+    return {
+        "in_force": in_force,
+        "not_in_force": not_in_force,
+        "estonia_relevant": estonia_relevant,
+        "in_force_and_estonia_relevant": both,
+        "source": "transposition_mapping.json + estleg:transposedBy",
+        "note": (
+            "Full CELLAR acquis is retained. This lens is the in-force / "
+            "Estonia-pertinent consumer cut (#527)."
+        ),
+    }
+
+
+def apply_estonia_relevance_lens(
+    *,
+    krr_dir: Path | None = None,
+    dry_run: bool = False,
+) -> dict[str, int]:
+    """Stamp ``estoniaRelevant`` on EUR-Lex peeps and restamp INDEX ``lens``."""
+    root = krr_dir or KRR_DIR
+    eurlex_dir = root / "eurlex"
+    relevant = collect_estonia_relevant_celex(root)
+    stats = {"relevant_celex": len(relevant), "nodes_changed": 0, "peeps": 0}
+    all_nodes: list[dict] = []
+    for path in sorted(eurlex_dir.glob("*_peep.json")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        changed = False
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            if _node_doc_type_id(node) is None:
+                continue
+            all_nodes.append(node)
+            celex = node.get("estleg:celexNumber")
+            hit = isinstance(celex, str) and celex in relevant
+            if stamp_estonia_relevant(node, hit):
+                changed = True
+                stats["nodes_changed"] += 1
+        if changed:
+            stats["peeps"] += 1
+            if not dry_run:
+                save_json(path, doc)
+    index_path = eurlex_dir / "EURLEX_INDEX.json"
+    if index_path.exists() and not dry_run:
+        try:
+            index = json.loads(index_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            index = {}
+        if isinstance(index, dict):
+            index["lens"] = build_eurlex_lens(all_nodes, relevant)
+            save_json(index_path, index)
+    return stats
 
 
 def rebuild_eurlex_combined_from_peeps(eurlex_dir: Path = EURLEX_DIR) -> dict:
@@ -816,6 +965,14 @@ def parse_args() -> argparse.Namespace:
             "regulations peep + combined + schema (no SPARQL)."
         ),
     )
+    parser.add_argument(
+        "--apply-lens",
+        action="store_true",
+        help=(
+            "Offline #527 pass: stamp estleg:estoniaRelevant from the "
+            "transposition mapping and write EURLEX_INDEX.json lens counts."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -849,6 +1006,15 @@ def main():
         print("Retargeted non-Regulation CELEX types (#394):")
         for name, n in stats.items():
             print(f"  {name}: {n}")
+        return
+    if args.apply_lens:
+        stats = apply_estonia_relevance_lens()
+        print(
+            f"Applied Estonia-relevance lens (#527): "
+            f"{stats['relevant_celex']} CELEX, "
+            f"{stats['nodes_changed']} nodes, "
+            f"{stats['peeps']} peep file(s)"
+        )
         return
     if args.rebuild_combined_from_peeps:
         stats = rebuild_eurlex_combined_from_peeps()
@@ -888,6 +1054,7 @@ def main():
 
     all_legislation: dict[str, list[dict]] = {}
     partial_types: dict[str, bool] = {}
+    relevant_celex = collect_estonia_relevant_celex()
 
     for doc_key, doc_info in EU_DOC_TYPES.items():
         print(f"\n--- Fetching {doc_info['label_en']}s ({doc_info['cdm_class']}) ---")
@@ -896,6 +1063,9 @@ def main():
         )
         print(f"  Total unique: {len(items)} fetched (index counts the emitted subset)")
 
+        for item in items:
+            if item.get("celex") in relevant_celex:
+                item["estonia_relevant"] = True
         all_legislation[doc_key] = items
         partial_types[doc_key] = was_partial
 
@@ -1025,6 +1195,8 @@ def main():
             "file": reg_file,
             "partial": reg_partial,
         }
+
+    index["lens"] = build_eurlex_lens(combined_graph, relevant_celex)
 
     index_path = EURLEX_DIR / "EURLEX_INDEX.json"
     save_json(index_path, index)
