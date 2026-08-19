@@ -46,6 +46,16 @@ def test_year_prefixed_budget_bill_does_not_resolve_to_other_year():
     assert result is None
 
 
+def test_yearless_extracted_name_still_uses_title_year():
+    """#557 title detect may drop '2017.'; the title must still year-guard."""
+    result = resolve_law_name(
+        "aasta riigieelarve seadus",
+        _lookup(),
+        context_text="2017. aasta riigieelarve seaduse muutmise seadus",
+    )
+    assert result is None
+
+
 def test_yearless_framework_budget_bill_still_resolves():
     # Resolver input is the affected-law name, not the bill's own title.
     result = resolve_law_name("riigieelarve seaduse", _lookup())

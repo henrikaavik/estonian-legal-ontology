@@ -14,8 +14,10 @@ Outputs:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import sys
 from collections import defaultdict
 from functools import partial
 from pathlib import Path
@@ -28,6 +30,7 @@ from estleg.estleg_common import (
     jsonld_texts,
     save_json,
 )
+from estleg.generate_draft_legislation import detect_affected_laws
 from estleg.estleg_common import (
     sanitize_id as _shared_sanitize_id,
 )
@@ -37,6 +40,48 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 EELNOUD_DIR = KRR_DIR / "eelnoud"
 
 NS = "https://w3id.org/estleg/"
+
+# Ticket #557: coverage is measured on *law-naming* drafts, not every EIS
+# row. A draft is law-naming when a usable existing-law name can be read
+# from ``affectedLawName`` or from the title via ``detect_affected_laws``.
+LAW_NAMING_COVERAGE_FLOOR = 0.60
+_JUNK_NAME_STEMS = ("muutmi", "täiendami", "kehtetuks", "kehtestami")
+
+
+def is_usable_law_name(name: str) -> bool:
+    """False for section-number fragments and the bill's own title (#266/#557)."""
+    text = name.strip()
+    if len(text) <= 5:
+        return False
+    lowered = text.lower()
+    if "eelnõu" in lowered or "eelnou" in lowered:
+        return False
+    if lowered[:1].isdigit() or lowered.startswith("§"):
+        return False
+    if any(stem in lowered for stem in _JUNK_NAME_STEMS):
+        return False
+    if lowered in {"seadus", "seadustik"}:
+        return False
+    return True
+
+
+def law_names_for_draft(node: dict) -> list[str]:
+    """Usable affected-law names from the stored field plus the title."""
+    title = jsonld_text(node.get("rdfs:label", ""), prefer_language="et")
+    stored = affected_law_name_values(
+        node.get("estleg:affectedLawName"), prefer_language="et"
+    )
+    names: list[str] = []
+    seen: set[str] = set()
+    for raw in [*stored, *detect_affected_laws(title)]:
+        if not is_usable_law_name(raw):
+            continue
+        key = raw.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        names.append(raw)
+    return names
 
 
 
@@ -353,6 +398,8 @@ def _contiguous_subsequence(needle: str, haystack: str) -> bool:
 def resolve_law_name(
     affected_name: str,
     lookup: dict[str, dict],
+    *,
+    context_text: str = "",
 ) -> dict | None:
     """Try to resolve an affected-law name to an INDEX entry.
 
@@ -362,13 +409,17 @@ def resolve_law_name(
     ``_contiguous_subsequence`` to avoid e.g. ``"riik"`` colliding
     with ``"riiklik"``. Ties on substring matches are broken by
     shortest key length (more specific wins).
+    ``context_text`` is the draft title: a year-prefixed budget bill
+    must not resolve to another year's annual act even when the
+    extracted name dropped the year (#380 / #557).
     """
     norm = normalize_law_name(affected_name)
     slug = slug_from_name(norm)
+    year_query = " ".join(part for part in (affected_name, context_text) if part)
 
     def _ok(entry: dict, key: str) -> bool:
         return year_compatible_law_match(
-            affected_name,
+            year_query,
             key,
             entry.get("name", ""),
             entry.get("slug", ""),
@@ -450,7 +501,18 @@ def get_ontology_iri(law_entry: dict, iri_map: dict[str, str]) -> str | None:
     return prefer_act_iri(iris)
 
 
-def main() -> None:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--drafts-only",
+        action="store_true",
+        help="Update eelnoud files only; skip law-file affectedBy rewrite (#557).",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = parse_args([] if argv is None else argv)
     print("=" * 70)
     print("Estonian Legal Ontology - Draft Legislation Impact Analysis")
     print("=" * 70)
@@ -496,7 +558,7 @@ def main() -> None:
                 del node[key]
 
     # Clear estleg:affectedBy from all law peep files
-    for fpath in iter_peep_files(include_kov=False):  # KOV does not apply (EU/draft pipeline)
+    for fpath in [] if args.drafts_only else iter_peep_files(include_kov=False):  # KOV does not apply (EU/draft pipeline)
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)
@@ -577,15 +639,11 @@ def main() -> None:
             node["estleg:enactedAs"] = {"@id": enacted_iri}
 
         # -- affected law resolution --
-        affected_raw = node.get("estleg:affectedLawName")
-        if not affected_raw:
-            continue
-
-        affected_names = affected_law_name_values(
-            affected_raw, prefer_language="et"
-        )
+        affected_names = law_names_for_draft(node)
         if not affected_names:
             continue
+        if not node.get("estleg:affectedLawName"):
+            node["estleg:affectedLawName"] = affected_names
 
         # Dedup resolved IRIs by ``@id`` (issue #266). Several affected-name
         # strings on one draft can resolve to the *same* act IRI (e.g. an
@@ -596,7 +654,7 @@ def main() -> None:
         seen_iris: set[str] = set()
         amends_iris: list[dict] = []
         for aname in affected_names:
-            entry = resolve_law_name(aname, lookup)
+            entry = resolve_law_name(aname, lookup, context_text=title)
             if entry:
                 ont_iri = get_ontology_iri(entry, iri_map)
                 if ont_iri is None:
@@ -631,12 +689,53 @@ def main() -> None:
     save_json(combined_path, drafts_doc)
     print(f"  Updated: {combined_path.name}")
 
-    # ---------- inverse linking on law files ----------
-    print(f"\n[4/5] Adding estleg:affectedBy to {len(law_affected_by)} law files...")
+    # Write the same amendsLaw / changeType / affectedLawName onto peeps
+    # so a peep-only consumer sees the IRI (combined was the only write
+    # target, which left 0 amendsLaw on *_peep.json — #557).
+    peep_synced = 0
+    enriched_by_id = {
+        node.get("@id"): node
+        for node in draft_nodes
+        if isinstance(node.get("@id"), str)
+    }
+    for fpath in eelnoud_targets:
+        if fpath == combined_path:
+            continue
+        try:
+            with open(fpath, "r", encoding="utf-8") as handle:
+                peep_doc = json.load(handle)
+        except (json.JSONDecodeError, FileNotFoundError):
+            continue
+        changed = False
+        for node in peep_doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            src = enriched_by_id.get(node.get("@id"))
+            if src is None:
+                continue
+            for key in (
+                "estleg:amendsLaw",
+                "estleg:changeType",
+                "estleg:affectedLawName",
+                "estleg:enactedAs",
+            ):
+                if key in src and node.get(key) != src[key]:
+                    node[key] = src[key]
+                    changed = True
+        if changed:
+            save_json(fpath, peep_doc)
+            peep_synced += 1
+    print(f"  Peep files synced: {peep_synced}")
 
+    # ---------- inverse linking on law files ----------
     inverse_count = 0
     no_act_node_skipped = 0
-    for law_file, draft_iris in sorted(law_affected_by.items()):
+    if args.drafts_only:
+        print("\n[4/5] Skipping law-file affectedBy rewrite (--drafts-only)")
+    else:
+        print(f"\n[4/5] Adding estleg:affectedBy to {len(law_affected_by)} law files...")
+
+    for law_file, draft_iris in [] if args.drafts_only else sorted(law_affected_by.items()):
         filepath = KRR_DIR / law_file
         if not filepath.exists():
             continue
@@ -681,6 +780,16 @@ def main() -> None:
     # regardless of data changes (timestamp-only churn, banned by AGENTS.md).
     # Every value below is fully determined by the corpus, so the report is
     # byte-stable across reruns of the same inputs.
+    naming = 0
+    naming_resolved = 0
+    for node in draft_nodes:
+        if not law_names_for_draft(node):
+            continue
+        naming += 1
+        if node.get("estleg:amendsLaw"):
+            naming_resolved += 1
+    coverage = (naming_resolved / naming) if naming else 1.0
+
     report = {
         "summary": {
             "total_draft_nodes": len(draft_nodes),
@@ -690,6 +799,9 @@ def main() -> None:
             # The prior ``len(unresolved)`` was the raw occurrence count and
             # disagreed with the list length (1414 vs 845 in the live corpus).
             "affected_law_names_unresolved": len(set(unresolved)),
+            "law_naming_drafts": naming,
+            "law_naming_resolved": naming_resolved,
+            "law_naming_coverage": round(coverage, 4),
             "law_files_with_inverse_links": inverse_count,
             "enacted_as_resolved": sum(
                 1
@@ -720,6 +832,8 @@ def main() -> None:
     print(f"  Drafts processed:          {len(draft_nodes)}")
     print(f"  Affected laws resolved:    {resolved_count}")
     print(f"  Unresolved names:          {len(unresolved)}")
+    print(f"  Law-naming drafts:         {naming}")
+    print(f"  Law-naming resolved:       {naming_resolved} ({coverage:.1%})")
     print(f"  Law files with inverse:    {inverse_count}")
     print()
     print("  Change types:")
@@ -731,7 +845,16 @@ def main() -> None:
         for f, drafts in most_affected[:5]:
             print(f"    {f:55s}  {len(drafts)} drafts")
     print("=" * 70)
+    # Tiny fixtures (unit tests) are not a coverage sample. The gate is
+    # for the real eelnoud corpus (#557).
+    if naming >= 100 and coverage < LAW_NAMING_COVERAGE_FLOOR:
+        print(
+            f"ERROR: law-naming coverage {coverage:.1%} is below the "
+            f"{LAW_NAMING_COVERAGE_FLOOR:.0%} gate (#557)",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

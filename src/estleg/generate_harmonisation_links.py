@@ -638,6 +638,105 @@ def get_law_harmonisation_target_iri(law_file: str) -> str | None:
     return None
 
 
+def load_sidecar_ee_edges(by_directive_dir: Path = BY_DIRECTIVE_DIR) -> dict[str, dict]:
+    """Aggregate Harmonisation_<celex> nodes → EE ``harmonises`` / directive."""
+    edges: dict[str, dict] = {}
+    if not by_directive_dir.exists():
+        return edges
+    for path in sorted(by_directive_dir.glob("*.json")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if not isinstance(nid, str) or not nid.startswith("estleg:Harmonisation_"):
+                continue
+            payload: dict = {}
+            if node.get("estleg:harmonises"):
+                payload["estleg:harmonises"] = node["estleg:harmonises"]
+            if node.get("estleg:sharedDirective"):
+                payload["estleg:sharedDirective"] = node["estleg:sharedDirective"]
+            if payload:
+                edges[nid] = payload
+    return edges
+
+
+def apply_ee_edges_to_node(node: dict, payload: dict) -> bool:
+    """Copy EE ``harmonises`` / ``sharedDirective`` onto a combined stub."""
+    changed = False
+    for key, value in payload.items():
+        if node.get(key) != value:
+            node[key] = value
+            changed = True
+    return changed
+
+
+def patch_combined_harmonisation_edges(
+    combined_path: Path,
+    edges: dict[str, dict],
+) -> int:
+    """Stream-update HarmonisationLink stubs in combined_ontology.jsonld (#557)."""
+    if not edges or not combined_path.exists():
+        return 0
+    text = combined_path.read_text(encoding="utf-8")
+    marker = text.find('"@graph"')
+    if marker < 0:
+        raise ValueError(f"{combined_path}: no @graph")
+    bracket = text.find("[", marker)
+    if bracket < 0:
+        raise ValueError(f"{combined_path}: @graph is not an array")
+    decoder = json.JSONDecoder()
+    index = bracket + 1
+    length = len(text)
+    tmp = combined_path.with_suffix(combined_path.suffix + ".tmp")
+    updated = 0
+    first = True
+
+    def _skip_ws_comma(start: int) -> int:
+        pos = start
+        while pos < length and text[pos] in " \t\r\n,":
+            pos += 1
+        return pos
+
+    with tmp.open("w", encoding="utf-8") as handle:
+        handle.write(text[: bracket + 1])
+        # Keep `[` and the first object on separate lines so head-parsers
+        # that count braces per line still see @graph[0] (#517).
+        handle.write("\n")
+        while True:
+            index = _skip_ws_comma(index)
+            if index >= length:
+                raise ValueError(f"{combined_path}: unterminated @graph")
+            if text[index] == "]":
+                break
+            obj, end = decoder.raw_decode(text, index)
+            nid = obj.get("@id") if isinstance(obj, dict) else None
+            payload = edges.get(nid) if isinstance(nid, str) else None
+            if not first:
+                handle.write(",\n")
+            else:
+                first = False
+            handle.write("    ")
+            if payload and apply_ee_edges_to_node(obj, payload):
+                dumped = json.dumps(obj, ensure_ascii=False, indent=2)
+                handle.write(
+                    "\n".join(
+                        f"    {line}" if i else line
+                        for i, line in enumerate(dumped.splitlines())
+                    )
+                )
+                updated += 1
+            else:
+                handle.write(text[index:end])
+            index = end
+        handle.write(text[index:])
+    tmp.replace(combined_path)
+    return updated
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -670,6 +769,14 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Override the staleness threshold (in days) for "
             "transposition_mapping.json."
+        ),
+    )
+    parser.add_argument(
+        "--patch-combined",
+        action="store_true",
+        help=(
+            "Offline #557 pass: copy EE estleg:harmonises edges from "
+            "harmonisation sidecars onto combined_ontology.jsonld stubs."
         ),
     )
     return parser.parse_args()
@@ -739,6 +846,16 @@ def _check_mapping_freshness(
 
 def main():
     args = parse_args()
+    if args.patch_combined:
+        edges = load_sidecar_ee_edges()
+        updated = patch_combined_harmonisation_edges(
+            KRR_DIR / "combined_ontology.jsonld", edges
+        )
+        print(
+            f"Patched combined HarmonisationLink stubs (#557): "
+            f"{updated}/{len(edges)} aggregates updated"
+        )
+        return
     print("=" * 60)
     print(
         "Generate comparative NIM measures for LV/LT/FI/SE "

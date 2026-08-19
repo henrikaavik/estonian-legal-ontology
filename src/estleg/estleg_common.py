@@ -474,6 +474,12 @@ SHAPE_REQUIRED_CLOSURE_PROPS: dict[str, tuple[str, ...]] = {
     # ProposedAmendmentShape — amendingDraft is the only required IRI edge
     # (rdfs:label comes from STUB_KEEP_PROPS).
     "estleg:ProposedAmendment": ("estleg:amendingDraft",),
+    # HarmonisationLinkShape is optional, but combined stubs were dropping
+    # the EE transposing-law edge that makes the layer queryable (#557).
+    "estleg:HarmonisationLink": (
+        "estleg:harmonises",
+        "estleg:sharedDirective",
+    ),
 }
 
 # The IRI-valued subset of SHAPE_REQUIRED_CLOSURE_PROPS: the only `estleg:`
@@ -493,6 +499,8 @@ STUB_SEMANTIC_EDGE_PREDICATES: frozenset[str] = frozenset(
         "estleg:enactedByMunicipality",
         "estleg:partOfAct",
         "estleg:amendingDraft",
+        "estleg:harmonises",
+        "estleg:sharedDirective",
     }
 )
 
