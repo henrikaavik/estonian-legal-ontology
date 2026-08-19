@@ -96,6 +96,54 @@ def test_only_fills_unknown_never_overwrites(tmp_path):
     assert statuses["estleg:P_1"] is None  # #128: provisions never get temporalStatus
 
 
+def test_residual_status_live_index_is_in_force() -> None:
+    law = {"name": "cotonou", "stubKind": "treaty"}
+    node = {"@id": "estleg:X_Map", "@type": ["estleg:Act", "estleg:Law"]}
+    assert D.residual_status(law=law, node=node) == "inForce"
+    deprecated = {**node, "owl:deprecated": True}
+    assert D.residual_status(law=law, node=deprecated) is None
+    assert D.residual_status(law=None, node=node) is None
+
+
+def test_deprecated_copy_from_replacement(tmp_path) -> None:
+    (tmp_path / "canon_peep.json").write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:AS_Map",
+                        "@type": ["estleg:Act"],
+                        "estleg:temporalStatus": "inForce",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    legacy = tmp_path / "legacy_peep.json"
+    legacy.write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:ALKS_Map",
+                        "@type": ["estleg:Act"],
+                        "owl:deprecated": True,
+                        "dcterms:isReplacedBy": {"@id": "estleg:AS_Map"},
+                        "estleg:temporalStatus": "unknown",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    by_id = D.collect_act_status_by_id(tmp_path)
+    files, acts = D.process_deprecated_copy(tmp_path, by_id, dry_run=False)
+    assert files == 1 and acts == 1
+    doc = json.loads(legacy.read_text(encoding="utf-8"))
+    assert doc["@graph"][0]["estleg:temporalStatus"] == "inForce"
+
+
 def test_apply_is_idempotent(tmp_path):
     peep = tmp_path / "p_peep.json"
     peep.write_text(
