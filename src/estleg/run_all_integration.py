@@ -246,9 +246,11 @@ STEPS: list[dict] = [
         "script": "classify_eurovoc.py",
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
-        "writes": ["*_peep.json", "regulations/**/*_peep.json",
-                   "reports/eurovoc_classification.json",
-                   "eurovoc_concept_scheme.jsonld"],
+        "writes": [
+            "eurovoc/eurovoc_overlay.jsonld",
+            "reports/eurovoc_classification.json",
+            "eurovoc_concept_scheme.jsonld",
+        ],
     },
     {
         "name": "extract_temporal_data.py",

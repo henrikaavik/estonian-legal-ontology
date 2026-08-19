@@ -10,7 +10,8 @@ trail lives in data/eurovoc_domain_mapping.json.
 Generates:
   - krr_outputs/reports/eurovoc_classification.json    (report of all classifications)
   - krr_outputs/eurovoc_concept_scheme.jsonld  (SKOS ConceptScheme + Concepts, #544)
-  - Updates existing law JSON-LD files with dcterms:subject
+  - krr_outputs/eurovoc/eurovoc_overlay.jsonld  (act IRIs + subjects, #463)
+  - Optionally updates peeps with ``--write-peeps`` (legacy)
 """
 
 from __future__ import annotations
@@ -46,6 +47,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 
 NS = "https://w3id.org/estleg/"
+EUROVOC_OVERLAY_DIRNAME = "eurovoc"
+EUROVOC_OVERLAY_NAME = "eurovoc_overlay.jsonld"
 
 
 EUROVOC_URI_BASE = "http://eurovoc.europa.eu/"
@@ -565,6 +568,50 @@ def classify_text(
     return results[:MAX_DOMAINS_PER_LAW]
 
 
+def eurovoc_subject_refs(
+    domains: list[tuple[str, str, str, str, int, list[str]]],
+) -> list[dict[str, str]]:
+    """Bare EuroVoc IRI refs (SHACL ``sh:nodeKind sh:IRI``)."""
+    return [{"@id": f"{EUROVOC_URI_BASE}{domain[0]}"} for domain in domains]
+
+
+def overlay_node_for_act(
+    act_id: str,
+    domains: list[tuple[str, str, str, str, int, list[str]]],
+) -> dict:
+    """One overlay node: same act IRI, subjects only (#463)."""
+    refs = eurovoc_subject_refs(domains)
+    return {
+        "@id": act_id,
+        "dcterms:subject": refs,
+        "eli:is_about": refs,
+    }
+
+
+def write_eurovoc_overlay(
+    nodes: list[dict],
+    dest: Path | None = None,
+) -> Path:
+    """Write the EuroVoc overlay graph. Overlay nodes share act IRIs."""
+    path = dest or (KRR_DIR / EUROVOC_OVERLAY_DIRNAME / EUROVOC_OVERLAY_NAME)
+    ctx = dict(CONTEXT)
+    ctx["dcterms"] = "http://purl.org/dc/terms/"
+    ctx["eli"] = "http://data.europa.eu/eli/ontology#"
+    graph: list[dict] = [
+        {
+            "@id": "estleg:EuroVocOverlay",
+            "@type": "owl:Ontology",
+            "rdfs:comment": (
+                "EuroVoc dcterms:subject / eli:is_about overlay (#463). "
+                "Merged onto act IRIs by generate_combined_jsonld."
+            ),
+        },
+        *nodes,
+    ]
+    save_json(path, {"@context": ctx, "@graph": graph})
+    return path
+
+
 def update_law_file_eurovoc(
     filepath: Path,
     domains: list[tuple[str, str, str, str, int, list[str]]],
@@ -599,12 +646,7 @@ def update_law_file_eurovoc(
         return False
 
     # Build subject references — bare IRI refs only (SHACL expects sh:nodeKind sh:IRI)
-    subject_refs = []
-    for domain in domains:
-        code = domain[0]
-        subject_refs.append({
-            "@id": f"{EUROVOC_URI_BASE}{code}",
-        })
+    subject_refs = eurovoc_subject_refs(domains)
 
     # Check for existing dcterms:subject (non-EuroVoc entries preserved)
     existing = target_node.get("dcterms:subject", [])
@@ -777,6 +819,14 @@ def main(argv: list[str] | None = None):
             "without classifying acts."
         ),
     )
+    parser.add_argument(
+        "--write-peeps",
+        action="store_true",
+        help=(
+            "Legacy: also stamp dcterms:subject onto peep files. "
+            "Default is overlay-only (#463)."
+        ),
+    )
     args = parser.parse_args(argv)
 
     skos_path = write_eurovoc_skos_graph()
@@ -791,13 +841,14 @@ def main(argv: list[str] | None = None):
 
     _start = time.perf_counter()
 
-    # --- Step 0: Clear existing EuroVoc subjects ---
-    print("\n--- Clearing existing EuroVoc subjects ---")
-    cleared_count = 0
-    for peep_file in iter_peep_files():
-        if clear_eurovoc_subjects_from_file(peep_file):
-            cleared_count += 1
-    print(f"  Cleared EuroVoc subjects from {cleared_count} files")
+    # --- Step 0: optional peep clear (legacy --write-peeps only) ---
+    if args.write_peeps:
+        print("\n--- Clearing existing EuroVoc subjects on peeps ---")
+        cleared_count = 0
+        for peep_file in iter_peep_files():
+            if clear_eurovoc_subjects_from_file(peep_file):
+                cleared_count += 1
+        print(f"  Cleared EuroVoc subjects from {cleared_count} files")
 
     # --- Step 1: Discover peep files ---
     print("\n--- Discovering peep files ---")
@@ -841,6 +892,7 @@ def main(argv: list[str] | None = None):
     files_error = 0
     files_with_no_output = 0
     unclassified: list[str] = []
+    overlay_nodes: list[dict] = []
 
     # Coverage counters
     _files_processed = 0
@@ -936,18 +988,17 @@ def main(argv: list[str] | None = None):
             for code, *_ in domains:
                 domain_counts[code] = domain_counts.get(code, 0) + 1
 
-            # Write back to the source path (not KRR_DIR / filename) — the
-            # KOV files live under regulations/kov/<issuer>/, state regs
-            # under regulations/riik/, and laws at root. The helper takes
-            # the real path so all three cases work.
-            if update_law_file_eurovoc(path, domains):
+            act_id = meta.get("@id") or ""
+            if act_id:
+                overlay_nodes.append(overlay_node_for_act(act_id, domains))
+            wrote = True
+            if args.write_peeps:
+                wrote = update_law_file_eurovoc(path, domains)
+            if wrote:
                 files_updated += 1
                 _files_with_output += 1
                 if is_kov:
                     _files_with_output_kov += 1
-                # Each successful update adds the selected domains as
-                # subject IRIs on the act node. Count one triple per
-                # domain entry assigned.
                 _triples += len(domains)
                 if is_kov:
                     _triples_kov += len(domains)
@@ -959,6 +1010,10 @@ def main(argv: list[str] | None = None):
                   f"({files_updated} files updated)...")
 
     print(f"  Processed all {len(laws_meta)} acts")
+
+    overlay_path = write_eurovoc_overlay(overlay_nodes)
+    print(f"  Wrote EuroVoc overlay: {_display_path(overlay_path)} "
+          f"({len(overlay_nodes)} act nodes)")
 
     # --- Step 3: Generate domain statistics ---
     # Surface a per-domain row for EVERY defined domain (including domains that

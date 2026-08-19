@@ -375,6 +375,8 @@ COMBINED_OVERLAY_SUBDIRS: tuple[str, ...] = (
     # ProvisionVersion nodes) stays a separate surface and its forward edges are
     # stripped instead (see COMBINED_STRIPPED_PREDICATES).
     "amendments",
+    # #463: EuroVoc subjects live in an overlay so a law regen cannot wipe them.
+    "eurovoc",
 )
 
 # Compact-IRI prefixes each overlay subdir owns. The parity gate uses these to

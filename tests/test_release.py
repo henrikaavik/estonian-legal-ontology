@@ -413,9 +413,10 @@ class TestParallelWriteDisjointness:
         # identical *_peep.json basenames, this conservatively overlaps the
         # regulations/**/*_peep.json glob ("when in doubt, treat as
         # overlapping"). That is exactly why --parallel is rejected for the
-        # real DAG: classify_eurovoc.py writes both *_peep.json AND
-        # regulations/**/*_peep.json while extract_court_provision_links.py
-        # writes *_peep.json, with no dependency between them.
+        # real DAG: several enrichment steps still write *_peep.json
+        # (extract_court_provision_links, extract_temporal_data, …) with no
+        # dependency between them. classify_eurovoc writes an overlay now
+        # (#463) but the remaining peep writers still block --parallel.
         assert r._globs_can_overlap("*_peep.json", "regulations/**/*_peep.json")
         # Nested fixed prefixes with compatible basenames overlap.
         assert r._globs_can_overlap("a/**/x.json", "a/b/x.json")
