@@ -13,6 +13,7 @@ Outputs:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import time
@@ -396,6 +397,99 @@ SAMEAS_ALIASES: dict[str, str] = {
     "harno": "haridus_ja_noorteamet",
 }
 
+# Abbreviation display labels for materialized alias individuals (#457).
+SAMEAS_ALIAS_LABELS: dict[str, str] = {
+    "mta": "MTA",
+    "ppa": "PPA",
+    "ttja": "TTJA",
+    "harno": "Harno",
+}
+
+WIKIDATA_INSTITUTIONS_PATH = REPO_ROOT / "data" / "wikidata_institutions.json"
+WIKIDATA_ENTITY_PREFIX = "http://www.wikidata.org/entity/"
+
+# Predecessor agency kept as its own node after the 2021 merger (#457).
+KESKKONNAINSPEKTSIOON_SLUG = "keskkonnainspektsioon"
+KESKKONNAAMET_SLUG = "keskkonnaamet"
+
+# Generic surface tokens that are not named state institutions (#457).
+GENERIC_INSTITUTION_SLUGS = frozenset({"vald", "linn", "kohus"})
+
+
+def load_wikidata_institutions(path: Path = WIKIDATA_INSTITUTIONS_PATH) -> dict[str, dict]:
+    if not path.is_file():
+        return {}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        key: value
+        for key, value in doc.items()
+        if not key.startswith("_") and isinstance(value, dict) and value.get("qid")
+    }
+
+
+def wikidata_iri_for_slug(slug: str, mapping: dict[str, dict] | None = None) -> str | None:
+    payload = mapping if mapping is not None else load_wikidata_institutions()
+    entry = payload.get(slug)
+    if not isinstance(entry, dict):
+        return None
+    qid = entry.get("qid")
+    if not isinstance(qid, str) or not qid.startswith("Q"):
+        return None
+    return f"{WIKIDATA_ENTITY_PREFIX}{qid}"
+
+
+_NAMED_BY_SUFFIX: dict[str, tuple[str, str]] | None = None
+
+
+def named_institution_by_suffix() -> dict[str, tuple[str, str]]:
+    """suffix → (canonical nominative name, type) from NAMED_INSTITUTIONS."""
+    global _NAMED_BY_SUFFIX
+    if _NAMED_BY_SUFFIX is None:
+        out: dict[str, tuple[str, str]] = {}
+        for name, raw_suffix, itype in NAMED_INSTITUTIONS:
+            if _is_abbreviation_entry(name):
+                continue
+            out[normalize_iri_suffix(raw_suffix)] = (name, itype)
+        _NAMED_BY_SUFFIX = out
+    return _NAMED_BY_SUFFIX
+
+
+def preferred_institution_type(suffix: str, itype: str) -> str:
+    """Ministers are not ministries (#457)."""
+    if suffix.endswith("minister") and not suffix.endswith("ministeerium"):
+        return "minister"
+    return itype
+
+
+def _same_as_ids(node: dict) -> list[str]:
+    value = node.get("owl:sameAs")
+    if isinstance(value, dict) and isinstance(value.get("@id"), str):
+        return [value["@id"]]
+    if isinstance(value, list):
+        return [
+            item["@id"]
+            for item in value
+            if isinstance(item, dict) and isinstance(item.get("@id"), str)
+        ]
+    return []
+
+
+def merge_same_as(node: dict, extra_iris: list[str]) -> None:
+    ids = _same_as_ids(node)
+    for iri in extra_iris:
+        if iri and iri not in ids:
+            ids.append(iri)
+    if not ids:
+        node.pop("owl:sameAs", None)
+    elif len(ids) == 1:
+        node["owl:sameAs"] = {"@id": ids[0]}
+    else:
+        node["owl:sameAs"] = [{"@id": iri} for iri in ids]
+
+
+def _competence_label(name: str, ctype: str) -> str:
+    return f"{canonicalize_institution_label(name)} – {ctype}"
+
 
 _CANONICAL_BODY_SLUGS = frozenset({
     "linnavolikogu", "vallavolikogu", "alevivolikogu",
@@ -588,7 +682,7 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     # match back to the nominative ``*minister`` slug.
     (re.compile(r"\b([a-zäöüõšž]+(?:minister|ministri)\w*)\b",
                 re.IGNORECASE | re.UNICODE),
-     "ministry", "ministry"),
+     "minister", "minister"),
     # Agencies: "Xamet", "Xinspektsioon". Issue #259: the trailing token
     # is constrained to a case-suffix alternation (see _root_inflection_group)
     # so derivational forms like "politseiametnik" (a person) and
@@ -1130,12 +1224,23 @@ def _record_provision_for_institution(
     repeatedly via the same module instance, or if the same provision
     triggers the same institution detection across multiple summaries.
     """
+    named = named_institution_by_suffix().get(iri_suffix)
+    if named:
+        canon_name, named_type = named
+        itype = named_type
+    itype = preferred_institution_type(iri_suffix, itype)
     if inst_iri not in state.inst_data:
         state.inst_data[inst_iri] = {
             "name": canon_name,
             "iri_suffix": iri_suffix,
             "type": itype,
         }
+    else:
+        if named:
+            state.inst_data[inst_iri]["name"] = canon_name
+        state.inst_data[inst_iri]["type"] = preferred_institution_type(
+            iri_suffix, state.inst_data[inst_iri].get("type") or itype
+        )
     key = (provision_iri, competence_type, law_name)
     if key in state.inst_provision_keys[inst_iri]:
         return
@@ -1362,26 +1467,30 @@ def write_institution_files(state: _PipelineState) -> set[str]:
 
     for inst_iri, info in sorted(state.inst_data.items()):
         provisions = state.inst_provisions[inst_iri]
+        suffix = info["iri_suffix"]
+        named = named_institution_by_suffix().get(suffix)
+        display_name = named[0] if named else canonicalize_institution_label(info["name"])
+        if suffix == KESKKONNAAMET_SLUG:
+            display_name = "Keskkonnaamet"
+        inst_type = preferred_institution_type(
+            suffix, named[1] if named else info["type"]
+        )
         inst_node: dict = {
             "@id": inst_iri,
             "@type": ["owl:NamedIndividual", "estleg:Institution"],
             # #577: de-inflect generic-pattern labels to nominative (a no-op on
             # already-canonical named institutions).
-            "rdfs:label": canonicalize_institution_label(info["name"]),
-            "estleg:institutionType": info["type"],
+            "rdfs:label": display_name,
+            "estleg:institutionType": inst_type,
         }
 
-        # Add owl:sameAs links for abbreviation aliases of this institution
-        suffix = info["iri_suffix"]
-        if suffix in canonical_aliases:
-            same_as = [
-                {"@id": f"estleg:Institution_{a}"}
-                for a in canonical_aliases[suffix]
-            ]
-            if len(same_as) == 1:
-                inst_node["owl:sameAs"] = same_as[0]
-            else:
-                inst_node["owl:sameAs"] = same_as
+        extra_same_as = [
+            f"estleg:Institution_{alias}" for alias in canonical_aliases.get(suffix, [])
+        ]
+        wd = wikidata_iri_for_slug(suffix)
+        if wd:
+            extra_same_as.append(wd)
+        merge_same_as(inst_node, extra_same_as)
 
         graph: list[dict] = [inst_node]
 
@@ -1411,7 +1520,7 @@ def write_institution_files(state: _PipelineState) -> set[str]:
             competence_node = {
                 "@id": competence_iri,
                 "@type": ["owl:NamedIndividual", "estleg:Competence"],
-                "rdfs:label": f"{info['name']} – {ctype}",
+                "rdfs:label": _competence_label(display_name, ctype),
                 "estleg:competenceType": ctype,
                 "estleg:institution": {"@id": inst_iri},
                 "estleg:appliesToProvision": applies_to,
@@ -1442,7 +1551,129 @@ def write_institution_files(state: _PipelineState) -> set[str]:
         save_json(INSTIT_DIR / filename, doc)
         written_slugs.add(info["iri_suffix"])
 
+    written_slugs.update(write_alias_and_predecessor_files(INSTIT_DIR))
     return written_slugs
+
+
+def _institution_root_node(doc: dict) -> dict | None:
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:Institution" in types and "estleg:Competence" not in types:
+            return node
+    return None
+
+
+def write_alias_and_predecessor_files(instit_dir: Path) -> set[str]:
+    """Materialize abbreviation alias nodes and the Keskkonnainspektsioon predecessor."""
+    written: set[str] = set()
+    for alias, canonical in SAMEAS_ALIASES.items():
+        node = {
+            "@id": f"estleg:Institution_{alias}",
+            "@type": ["owl:NamedIndividual", "estleg:Institution"],
+            "rdfs:label": SAMEAS_ALIAS_LABELS.get(alias, alias.upper()),
+            "estleg:institutionType": "agency",
+            "owl:sameAs": {"@id": f"estleg:Institution_{canonical}"},
+        }
+        wd = wikidata_iri_for_slug(canonical)
+        if wd:
+            merge_same_as(node, [wd])
+        save_json(
+            instit_dir / f"institution_{alias}.json",
+            {"@context": CONTEXT, "@graph": [node]},
+        )
+        written.add(alias)
+
+    pred = {
+        "@id": f"estleg:Institution_{KESKKONNAINSPEKTSIOON_SLUG}",
+        "@type": ["owl:NamedIndividual", "estleg:Institution"],
+        "rdfs:label": "Keskkonnainspektsioon",
+        "estleg:institutionType": "agency",
+        "dcterms:isReplacedBy": {
+            "@id": f"estleg:Institution_{KESKKONNAAMET_SLUG}"
+        },
+        "rdfs:comment": (
+            "Historical Environmental Inspectorate; merged into Keskkonnaamet "
+            "on 2021-01-01 (#457)."
+        ),
+    }
+    wd = wikidata_iri_for_slug(KESKKONNAINSPEKTSIOON_SLUG)
+    if wd:
+        merge_same_as(pred, [wd])
+    save_json(
+        instit_dir / f"institution_{KESKKONNAINSPEKTSIOON_SLUG}.json",
+        {"@context": CONTEXT, "@graph": [pred]},
+    )
+    written.add(KESKKONNAINSPEKTSIOON_SLUG)
+    return written
+
+
+def cleanup_institution_overlay(instit_dir: Path = INSTIT_DIR) -> dict[str, int]:
+    """Remint existing institution files without rescanning peeps (#457)."""
+    wd_map = load_wikidata_institutions()
+    named = named_institution_by_suffix()
+    reminted = 0
+    for path in sorted(instit_dir.glob("institution_*.json")):
+        slug = path.stem.removeprefix("institution_")
+        if slug in SAMEAS_ALIASES or slug == KESKKONNAINSPEKTSIOON_SLUG:
+            continue
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
+            continue
+        changed = False
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            label = node.get("rdfs:label")
+            if not isinstance(label, str):
+                continue
+            if "estleg:Competence" in types:
+                if " – " in label:
+                    head, tail = label.rsplit(" – ", 1)
+                    new_label = _competence_label(head, tail)
+                    if new_label != label:
+                        node["rdfs:label"] = new_label
+                        changed = True
+                continue
+            if "estleg:Institution" not in types:
+                continue
+            preferred = named.get(slug)
+            new_label = preferred[0] if preferred else canonicalize_institution_label(label)
+            if slug == KESKKONNAAMET_SLUG:
+                new_label = "Keskkonnaamet"
+            if new_label != label:
+                node["rdfs:label"] = new_label
+                changed = True
+            new_type = preferred_institution_type(
+                slug, preferred[1] if preferred else str(node.get("estleg:institutionType") or "")
+            )
+            if new_type and node.get("estleg:institutionType") != new_type:
+                node["estleg:institutionType"] = new_type
+                changed = True
+            extras = [
+                f"estleg:Institution_{alias}"
+                for alias, canonical in SAMEAS_ALIASES.items()
+                if canonical == slug
+            ]
+            wd = wikidata_iri_for_slug(slug, wd_map)
+            if wd:
+                extras.append(wd)
+            before = _same_as_ids(node)
+            merge_same_as(node, extras)
+            if _same_as_ids(node) != before:
+                changed = True
+        if changed:
+            save_json(path, doc)
+            reminted += 1
+    extras = write_alias_and_predecessor_files(instit_dir)
+    return {"reminted": reminted, "extra_files": len(extras)}
 
 
 def write_report(state: _PipelineState, total_law_files: int) -> Path:
@@ -1546,7 +1777,18 @@ def write_coverage(state: _PipelineState, start_time: float) -> tuple[Path, list
     return out_path, kov_files
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--cleanup-only",
+        action="store_true",
+        help="Remint existing institution overlay files without rescanning peeps (#457).",
+    )
+    args = parser.parse_args([] if argv is None else argv)
+    if args.cleanup_only:
+        print(cleanup_institution_overlay())
+        return 0
+
     print("=" * 70)
     print("Estonian Legal Ontology - Institutional Competence Extraction")
     print("=" * 70)
@@ -1640,4 +1882,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    import sys
+
+    raise SystemExit(main(sys.argv[1:]))

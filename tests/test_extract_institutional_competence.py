@@ -1586,10 +1586,20 @@ class TestIssue118ExtendedCaseSuffixes:
         """After the re-run every krr_outputs/institutions/institution_*.json
         filename stem must already be its own canonical slug — i.e.
         normalize_iri_suffix() is a fixed point on it."""
-        from estleg.extract_institutional_competence import INST_DIR, normalize_iri_suffix
+        from estleg.extract_institutional_competence import (
+            INST_DIR,
+            KESKKONNAINSPEKTSIOON_SLUG,
+            SAMEAS_ALIASES,
+            normalize_iri_suffix,
+        )
+        # #457: abbreviation alias files and the historical predecessor
+        # node are intentional non-fixed-points of normalize_iri_suffix.
+        allowed = set(SAMEAS_ALIASES) | {KESKKONNAINSPEKTSIOON_SLUG}
         offenders: list[tuple[str, str]] = []
         for path in sorted(INST_DIR.glob("institution_*.json")):
             slug = path.stem.removeprefix("institution_")
+            if slug in allowed:
+                continue
             norm = normalize_iri_suffix(slug)
             if norm != slug:
                 offenders.append((slug, norm))
@@ -2390,7 +2400,7 @@ class TestIssue321MinisterInflectedForms:
         from estleg.extract_institutional_competence import GENERIC_PATTERNS
         minister_pat = next(
             pat for pat, label, _itype in GENERIC_PATTERNS
-            if label == "ministry" and "minister" in pat.pattern
+            if label == "minister" and "minister" in pat.pattern
             and "ministeerium" not in pat.pattern
         )
         for form in ("sotsiaalminister", "sotsiaalministril",
