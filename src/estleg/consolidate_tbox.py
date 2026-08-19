@@ -402,6 +402,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:minPenaltyCurrency": ("estleg:Sanction", "xsd:string"),
     "estleg:minPenaltyUnit": ("estleg:Sanction", "xsd:string"),
     "estleg:normativeType": ("owl:Thing", "estleg:NormativeType"),
+    "estleg:officialEnglishText": ("estleg:Act", "rdfs:Resource"),
     "estleg:paragrahv": ("estleg:LegalProvision", "xsd:string"),
     "estleg:phaseOrder": ("estleg:LegislativePhase", "xsd:integer"),
     "estleg:preambleText": ("estleg:Act", "xsd:string"),

@@ -30,6 +30,7 @@ from estleg.estleg_common import (
     CONTEXT,
     save_json,
     stamp_combined_dataset_head,
+    title_langstrings,
 )
 from estleg.eurlex_common import (
     SPARQL_ENDPOINT,
@@ -248,12 +249,17 @@ def fetch_legislation_type(
         query = f"""
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
 
-SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE {{
+SELECT DISTINCT ?work ?celex ?title ?title_en ?date ?inforce ?eli ?author ?deadline WHERE {{
   ?work a {cdm_class} .
   ?work cdm:resource_legal_id_celex ?celex .
   ?exp cdm:expression_belongs_to_work ?work .
   ?exp cdm:expression_uses_language <http://publications.europa.eu/resource/authority/language/EST> .
   ?exp cdm:expression_title ?title .
+  OPTIONAL {{
+    ?exp_en cdm:expression_belongs_to_work ?work .
+    ?exp_en cdm:expression_uses_language <http://publications.europa.eu/resource/authority/language/ENG> .
+    ?exp_en cdm:expression_title ?title_en .
+  }}
   OPTIONAL {{ ?work cdm:work_date_document ?date }}
   OPTIONAL {{ ?work cdm:resource_legal_in-force ?inforce }}
   OPTIONAL {{ ?work cdm:resource_legal_eli ?eli }}
@@ -300,6 +306,9 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE 
                     cur = item.get("transposition_deadline", "")
                     if not cur or deadline < cur:
                         item["transposition_deadline"] = deadline
+                title_en = b.get("title_en", {}).get("value", "")
+                if title_en and not item.get("title_en"):
+                    item["title_en"] = title_en
                 continue
 
             author_uri = b.get("author", {}).get("value", "")
@@ -309,6 +318,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE 
                 "celex": celex,
                 "cellar_uri": b.get("work", {}).get("value", ""),
                 "title": b.get("title", {}).get("value", ""),
+                "title_en": b.get("title_en", {}).get("value", ""),
                 "date": b.get("date", {}).get("value", ""),
                 "in_force": b.get("inforce", {}).get("value", ""),
                 "eli": b.get("eli", {}).get("value", ""),
@@ -550,12 +560,14 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
         return None
 
     safe_celex = sanitize_celex(item["celex"])
-    title_lit = {"@value": item["title"][:500], "@language": "et"}
+    title_et = item["title"][:500]
+    title_en = (item.get("title_en") or "")[:500]
+    title_lit = {"@value": title_et, "@language": "et"}
     node: dict = {
         "@id": f"estleg:EU_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
         "rdfs:label": title_lit,
-        "dcterms:title": dict(title_lit),
+        "dcterms:title": title_langstrings(title_et, title_en or None),
         "estleg:celexNumber": item["celex"],
         "estleg:euDocumentType": {"@id": f"estleg:EUDocType_{effective_type_id}"},
     }

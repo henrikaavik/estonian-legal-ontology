@@ -919,6 +919,58 @@ def bilingual_label(et: str, en: str) -> list[dict[str, str]]:
     ]
 
 
+def title_langstrings(
+    title_et: str, title_en: str | None = None
+) -> dict[str, str] | list[dict[str, str]]:
+    """``dcterms:title`` as an ``@et`` literal, plus ``@en`` when present (#510)."""
+    et = {"@value": title_et, "@language": "et"}
+    if title_en:
+        return [et, {"@value": title_en, "@language": "en"}]
+    return et
+
+
+def merge_title_langstring(node: dict, language: str, text: str) -> bool:
+    """Ensure ``dcterms:title`` carries ``text`` tagged ``language``.
+
+    A bare string is treated as untagged Estonian and promoted to a
+    langString list so an English title can sit beside it (#510 / #437).
+    Returns True when the node changed.
+    """
+    if not text:
+        return False
+    wanted = {"@value": text, "@language": language}
+    current = node.get("dcterms:title")
+    if current is None:
+        node["dcterms:title"] = wanted
+        return True
+    if isinstance(current, dict):
+        if current.get("@value") == text and current.get("@language") == language:
+            return False
+        items = [current]
+    elif isinstance(current, str):
+        if language == "et" and current == text:
+            return False
+        items = [{"@value": current, "@language": "et"}]
+    elif isinstance(current, list):
+        items = list(current)
+    else:
+        items = []
+    for item in items:
+        if (
+            isinstance(item, dict)
+            and item.get("@language") == language
+            and item.get("@value") == text
+        ):
+            return False
+        if isinstance(item, dict) and item.get("@language") == language:
+            item["@value"] = text
+            node["dcterms:title"] = items
+            return True
+    items.append(wanted)
+    node["dcterms:title"] = items
+    return True
+
+
 def jsonld_text(
     value: object, default: str = "", *, prefer_language: str | None = None
 ) -> str:

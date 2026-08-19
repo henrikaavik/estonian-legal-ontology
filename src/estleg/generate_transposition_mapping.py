@@ -29,6 +29,7 @@ from estleg.estleg_common import (
     act_root_node,
     iter_peep_files,
     jsonld_text,
+    merge_title_langstring,
 )
 from estleg.estleg_common import (
     save_json as _save_json,
@@ -146,11 +147,15 @@ def fetch_transposition_measures(
     holds in CELLAR today, so it returned zero rows (#129).
 
     Returns ``(items, partial)`` where each item is a dict with
-    ``celex_dir``, ``directive_uri``, ``title_nat`` and ``partial`` is
+    ``celex_dir``, ``directive_uri``, ``title_nat``, optional
+    ``title_en`` (#510) and ``partial`` is
     ``True`` iff the sweep stopped early due to a terminal SPARQL
     failure under ``allow_partial``. Without ``allow_partial``, terminal
     failures propagate as ``RuntimeError`` so the run exits non-zero
     rather than silently truncating the dataset (#129).
+    ``title_en`` is retained for langString emission only — matching
+    still uses Estonian ``title_nat`` so a short English title cannot
+    inflate counts or create a false fuzzy link (#318).
 
     Note: ``ORDER BY ?nim`` makes OFFSET pagination stable across
     pages — without it EUR-Lex may reorder rows between requests and
@@ -164,13 +169,17 @@ def fetch_transposition_measures(
     while True:
         query = f"""
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
-SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
+SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat ?title_en WHERE {{
   ?nim cdm:measure_national_implementing_implemented_by_country <{ESTONIA_COUNTRY_URI}> .
   ?nim cdm:measure_national_implementing_implements_directive ?directive .
   ?directive cdm:resource_legal_id_celex ?celex_dir .
   OPTIONAL {{
     ?nim cdm:work_title ?title_nat .
     FILTER(lang(?title_nat) = 'et' || lang(?title_nat) = '')
+  }}
+  OPTIONAL {{
+    ?nim cdm:work_title ?title_en .
+    FILTER(lang(?title_en) = 'en')
   }}
 }} ORDER BY ?nim LIMIT {PAGE_SIZE} OFFSET {offset}
 """
@@ -191,6 +200,7 @@ SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
             celex_dir = b.get("celex_dir", {}).get("value", "")
             title_binding = b.get("title_nat", {})
             title_nat = title_binding.get("value", "")
+            title_en = (b.get("title_en") or {}).get("value", "")
             directive_uri = b.get("directive", {}).get("value", "")
 
             if not title_nat:
@@ -211,12 +221,23 @@ SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
             # language tag through the OPTIONAL anyway. An untagged literal
             # (empty ``xml:lang``) is kept — Estonian NIM titles are the
             # untagged case in CELLAR today.
+            # #510 keeps ``?title_en`` as a *separate* binding so English
+            # can be stored as a langString without entering this match key.
             title_lang = title_binding.get("xml:lang", "")
             if title_lang and title_lang.lower() != "et":
                 continue
 
             key = (celex_dir, title_nat)
             if key in seen:
+                if title_en:
+                    for item in reversed(all_items):
+                        if (
+                            item["celex_dir"] == celex_dir
+                            and item["title_nat"] == title_nat
+                            and not item.get("title_en")
+                        ):
+                            item["title_en"] = title_en
+                            break
                 continue
             seen.add(key)
 
@@ -224,6 +245,7 @@ SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
                 "celex_dir": celex_dir,
                 "directive_uri": directive_uri,
                 "title_nat": title_nat,
+                "title_en": title_en,
             })
 
         if len(bindings) < PAGE_SIZE:
@@ -884,6 +906,23 @@ def update_law_file(filepath: Path, directive_ids: list[str]) -> bool:
     return True
 
 
+def update_law_english_title(filepath: Path, title_en: str) -> bool:
+    """Add CELLAR English NIM title as ``dcterms:title@en`` (#510)."""
+    if not title_en:
+        return False
+    try:
+        data = load_json(filepath)
+    except Exception:
+        return False
+    target_node = find_law_transposition_target(data)
+    if target_node is None:
+        return False
+    if not merge_title_langstring(target_node, "en", title_en):
+        return False
+    save_json(filepath, data)
+    return True
+
+
 def update_directive_file(directive_celex_to_laws: dict[str, list[str]]) -> int:
     """
     Add estleg:transposedBy to EU directive entries in the directives file.
@@ -1125,9 +1164,12 @@ def main():
     missing_directives: list[dict] = []
     missing_law_iris: list[dict] = []
 
+    law_file_english: dict[str, str] = {}
+
     for measure in measures:
         celex_dir = measure["celex_dir"]
         title_nat = measure["title_nat"]
+        title_en = measure.get("title_en") or ""
 
         # A combined amending act ("A seaduse ja B seaduse muutmise seadus")
         # transposes the directive into BOTH laws — emit a link for each so the
@@ -1158,10 +1200,14 @@ def main():
                 "directive_celex": celex_dir,
                 "directive_iri": directive_iri,
                 "national_title": title_nat,
+                "national_title_en": title_en,
                 "matched_law_name": law_match["name"],
                 "matched_source_act": law_match.get("source_act", ""),
                 "law_files": law_match["files"],
             }
+            if title_en:
+                for filepath_str in law_match["files"]:
+                    law_file_english.setdefault(filepath_str, title_en)
             matched_mappings.append(mapping_entry)
 
             collect_transposition_file_links(
@@ -1203,6 +1249,13 @@ def main():
             print(f"    Updated: {filepath.name} ({len(dir_iris)} directive(s))")
 
     print(f"  Total law files updated: {files_updated}")
+
+    print("\n--- Adding CELLAR English NIM titles to matched laws (#510) ---")
+    english_titles_updated = 0
+    for filepath_str, title_en in law_file_english.items():
+        if update_law_english_title(Path(filepath_str), title_en):
+            english_titles_updated += 1
+    print(f"  Law files with English title: {english_titles_updated}")
 
     # --- Step 6: Update EU directive file with inverse links ---
     print("\n--- Adding inverse transposedBy links to EU directives ---")
