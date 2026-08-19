@@ -28,6 +28,7 @@ import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 from estleg.estleg_common import (
     CONTEXT,
     act_root_node,
+    et_literal,
     sanitize_id,
     save_json,
     sha256_hex,
@@ -665,7 +666,7 @@ def generate_law_jsonld(
     ontology_node: dict = {
         "@id": ontology_id,
         "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
-        "rdfs:label": f"{title} teemakaardistus",
+        "rdfs:label": et_literal(f"{title} teemakaardistus"),
         "dc:source": title,
         "dcterms:title": title,
         "estleg:contentStatus": "structuredBody",
@@ -738,7 +739,7 @@ def generate_law_stub_jsonld(
     ontology_node: dict = {
         "@id": f"estleg:{prefix}_Map_2026",
         "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
-        "rdfs:label": f"{title} teemakaardistus",
+        "rdfs:label": et_literal(f"{title} teemakaardistus"),
         "dc:source": title,
         "dcterms:title": title,
         "estleg:contentStatus": content_status,
@@ -818,7 +819,9 @@ def generate_multipart_law(
         osa_ontology_node: dict = {
             "@id": ontology_id,
             "@type": ["estleg:Act", "estleg:Law", "estleg:Part", "schema:Legislation"],
-            "rdfs:label": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
+            "rdfs:label": et_literal(
+                f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus"
+            ),
             "dc:source": title,
             "dcterms:title": title,
             "estleg:contentStatus": "structuredBody",

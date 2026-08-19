@@ -25,6 +25,7 @@ from pathlib import Path
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     act_root_node,
+    et_literal,
     is_domain_individual,
 )
 from estleg.riigiteataja_common import (
@@ -173,7 +174,9 @@ def extract_annexes(root: ET.Element, prefix: str) -> list[dict]:
         node: dict = {
             "@id": annex_id,
             "@type": ["owl:NamedIndividual", "estleg:Annex"],
-            "rdfs:label": f"Lisa {annex_nr}{(' – ' + title) if title else ''}",
+            "rdfs:label": et_literal(
+                f"Lisa {annex_nr}{(' – ' + title) if title else ''}"
+            ),
             "estleg:annexNumber": str(annex_nr),
         }
         if href:
@@ -267,11 +270,13 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
             "@id": p_id,
             "@type": ["owl:NamedIndividual", class_id],
             "estleg:paragrahv": display,
-            "rdfs:label": label,
+            "rdfs:label": et_literal(label),
             "estleg:sourceAct": title,
             # Issue #415: structural IRI join from provision up to its act root.
             "estleg:partOfAct": {"@id": act_iri},
-            "estleg:summary": provision_summary(display, label, title, text),
+            "estleg:summary": et_literal(
+                provision_summary(display, label, title, text)
+            ),
         }
         if full_text:
             node["estleg:legalText"] = full_text
@@ -328,11 +333,13 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
             "@id": p_id,
             "@type": ["owl:NamedIndividual", class_id],
             "estleg:paragrahv": display,
-            "rdfs:label": label,
+            "rdfs:label": et_literal(label),
             "estleg:sourceAct": title,
             # Issue #415: structural IRI join from provision up to its act root.
             "estleg:partOfAct": {"@id": act_iri},
-            "estleg:summary": provision_summary(display, label, title, summary),
+            "estleg:summary": et_literal(
+                provision_summary(display, label, title, summary)
+            ),
         }
         if text_full:
             node["estleg:legalText"] = text_full
@@ -537,7 +544,7 @@ def build_regulation_jsonld(
     ontology_node: dict = {
         "@id": ontology_id,
         "@type": act_classes,
-        "rdfs:label": f"{title} (määrus)",
+        "rdfs:label": et_literal(f"{title} (määrus)"),
         "dc:source": title,
         "dcterms:title": title,
         "estleg:documentType": "määrus",

@@ -906,6 +906,19 @@ def act_deprecation(doc: object) -> tuple[bool, str | None]:
     return False, None
 
 
+def et_literal(text: str) -> dict[str, str]:
+    """JSON-LD language-tagged Estonian string (#437)."""
+    return {"@value": text, "@language": "et"}
+
+
+def bilingual_label(et: str, en: str) -> list[dict[str, str]]:
+    """``rdfs:label`` array with ``@et`` and ``@en`` (#437)."""
+    return [
+        {"@value": et, "@language": "et"},
+        {"@value": en, "@language": "en"},
+    ]
+
+
 def jsonld_text(
     value: object, default: str = "", *, prefer_language: str | None = None
 ) -> str:

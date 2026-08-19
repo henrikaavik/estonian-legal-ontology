@@ -25,7 +25,7 @@ import xml.etree.ElementTree as ET
 from datetime import date as _date_cls
 from pathlib import Path
 
-from estleg.estleg_common import CONTEXT, sanitize_id
+from estleg.estleg_common import CONTEXT, et_literal, sanitize_id
 from estleg.estleg_common import save_json as _atomic_save_json
 from estleg.generate_all_laws import (
     _iter_loiked as _iter_loiked,
@@ -268,7 +268,9 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
         {
             "@id": ontology_id,
             "@type": ["estleg:Act", "estleg:Law"],
-            "rdfs:label": f"VÕS Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
+            "rdfs:label": et_literal(
+                f"VÕS Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus"
+            ),
             "dc:source": "Võlaõigusseadus",
         },
     ]
@@ -328,7 +330,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
         graph.append({
             "@id": cl["id"],
             "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
-            "rdfs:label": cl["label"],
+            "rdfs:label": et_literal(cl["label"]),
         })
 
     # Add paragraph nodes — IRIs are namespaced by osa so cross-part
@@ -366,7 +368,9 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
                 "estleg:LegalProvision",
             ],
             "estleg:paragrahv": p_display,
-            "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
+            "rdfs:label": et_literal(
+                f"{p_display} {p_title}".strip() if p_title else p_display
+            ),
             "estleg:sourceAct": "Võlaõigusseadus",
             # Issue #415: structural IRI join to this osa's act root.
             "estleg:partOfAct": {"@id": ontology_id},
@@ -456,13 +460,15 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             # Snapshot-stable act IRI (no volatile §min–§max range) — #269c.
             "@id": "estleg:TsUS_Osa1",
             "@type": ["estleg:Act", "estleg:Law"],
-            "rdfs:label": f"TsÜS Osa 1 (Üldsätted) §{par_min}–{par_max} kaardistus",
+            "rdfs:label": et_literal(
+                f"TsÜS Osa 1 (Üldsätted) §{par_min}–{par_max} kaardistus"
+            ),
             "dc:source": "Tsiviilseadustiku üldosa seadus",
         },
         {
             "@id": "estleg:Cluster_TsUS_Uldsatted",
             "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
-            "rdfs:label": "Üldsätted (tsiviilõiguse aluspõhimõtted)",
+            "rdfs:label": et_literal("Üldsätted (tsiviilõiguse aluspõhimõtted)"),
         },
     ]
 
@@ -487,7 +493,9 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
                 "estleg:LegalProvision",
             ],
             "estleg:paragrahv": p_display,
-            "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
+            "rdfs:label": et_literal(
+                f"{p_display} {p_title}".strip() if p_title else p_display
+            ),
             # IRI reference, not a bare string literal (#370 item 2).
             "estleg:requestedCluster": {"@id": "estleg:Cluster_TsUS_Uldsatted"},
             "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",

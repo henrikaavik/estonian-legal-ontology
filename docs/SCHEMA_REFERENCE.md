@@ -8,11 +8,14 @@
 
 ### Language-tag policy
 
-Corpus default language is Estonian. This is a **vocabulary-only** policy (issue #437): new T-Box `rdfs:label` values in `controlled_vocabulary.jsonld` SHOULD be language-tagged `@et`, plus `@en` when an English gloss exists. The first tagged set is the high-value classes `Act`, `LegalProvision`, `DraftLegislation`, `CourtDecision`, `Chapter`, and `TopicCluster` (six class nodes, all bilingual `@et`/`@en`). Remaining CV labels may stay plain strings until a later pass.
+Corpus default language is Estonian (issue #437).
 
-Law-peep instance literals (`rdfs:label`, `estleg:summary`, `estleg:legalText`, …) may remain plain `xsd:string` until a dedicated remint. Do not treat peep literals as language-tagged — `FILTER(lang(?x) = "et")` will not match them. A default `"@language": "et"` is **not** set on `estleg_common.CONTEXT`, because that would turn SHACL `xsd:string` literals into `rdf:langString`.
+- **T-Box.** Every `rdfs:label` in `krr_outputs/controlled_vocabulary.jsonld` is bilingual `@et` + `@en`. Remint with `python3 scripts/tag_vocabulary_labels.py`.
+- **New ABox.** Law and regulation generators emit `rdfs:label` / `estleg:summary` as `{"@value": "…", "@language": "et"}` via `estleg_common.et_literal`.
+- **Existing peeps.** Committed instance literals may stay plain `xsd:string` until a dedicated remint. `FILTER(lang(?x) = "et")` will not match those.
+- **No default `@language` on `CONTEXT`.** A context-wide `"@language": "et"` would turn SHACL `xsd:string` fields into `rdf:langString`. Human-language properties already accept either (`sh:or` xsd:string / rdf:langString, issue #509 / #305).
 
-Subcorpus `*_schema.json` files already tag `@et`/`@en` on their schema labels.
+Subcorpus `*_schema.json` files also tag `@et`/`@en` on their schema labels.
 
 ### Provenance (dataset-level)
 

@@ -210,8 +210,9 @@ class TestStructuredParsing:
         for prov in provisions:
             assert prov["estleg:paragrahv"].startswith("§")
             label = prov["rdfs:label"]
-            assert isinstance(label, str)
-            assert label
+            assert isinstance(label, dict)
+            assert label.get("@language") == "et"
+            assert label.get("@value")
 
             type_list = prov["@type"]
             assert "owl:NamedIndividual" in type_list
@@ -449,8 +450,10 @@ class TestKovTypeContradiction:
         ontology = doc["@graph"][0]
         assert "estleg:Act" in ontology["@type"]
         assert "estleg:MunicipalRegulation" in ontology["@type"]
-        assert isinstance(ontology.get("rdfs:label"), str)
-        assert ontology["rdfs:label"]
+        label = ontology.get("rdfs:label")
+        assert isinstance(label, dict)
+        assert label.get("@language") == "et"
+        assert label.get("@value")
 
 
 # ---------------------------------------------------------------------------

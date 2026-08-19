@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from estleg import generate_missing_parts
+from estleg import estleg_common, generate_missing_parts
 
 
 def _node_by_id(doc: dict, node_id: str) -> dict:
@@ -194,7 +194,7 @@ def test_tsus_osa1_act_id_is_snapshot_stable() -> None:
     assert doc is not None
     assert doc["@graph"][0]["@id"] == "estleg:TsUS_Osa1"
     # The §range still appears in the human-readable label.
-    assert "§3" in doc["@graph"][0]["rdfs:label"]
+    assert "§3" in estleg_common.jsonld_text(doc["@graph"][0]["rdfs:label"])
 
 
 def test_vos_act_id_is_snapshot_stable() -> None:

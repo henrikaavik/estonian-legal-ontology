@@ -11,7 +11,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import Counter
 
-from estleg.estleg_common import sanitize_id
+from estleg.estleg_common import et_literal, sanitize_id
 from estleg.riigiteataja_common import ct, ln
 
 
@@ -828,8 +828,8 @@ def emit_hierarchy_and_provisions(
         cluster_node: dict = {
             "@id": cluster_id,
             "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-            "rdfs:label": f"{par_range} {ch_title}".strip(),
-            "skos:prefLabel": f"{par_range} {ch_title}".strip(),
+            "rdfs:label": et_literal(f"{par_range} {ch_title}".strip()),
+            "skos:prefLabel": et_literal(f"{par_range} {ch_title}".strip()),
             "skos:inScheme": {"@id": scheme_id},
         }
         if cluster_has_broader and part_concept_id:
@@ -838,7 +838,7 @@ def emit_hierarchy_and_provisions(
         chapter_node: dict = {
             "@id": chapter_id,
             "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-            "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
+            "rdfs:label": et_literal(f"{ch_nr}. peatükk – {ch_title}".strip(" –")),
             "estleg:chapterNumber": ch_nr,
             "estleg:partOfAct": {"@id": ontology_id},
             "dcterms:subject": chapter_cluster_subject(cluster_id),
@@ -862,7 +862,9 @@ def emit_hierarchy_and_provisions(
                     {
                         "@id": div_id,
                         "@type": ["owl:NamedIndividual", "estleg:Division"],
-                        "rdfs:label": f"{j_nr}. jagu – {j_title}".strip(" –"),
+                        "rdfs:label": et_literal(
+                            f"{j_nr}. jagu – {j_title}".strip(" –")
+                        ),
                         "estleg:isPartOf": {"@id": chapter_id},
                     }
                 )
@@ -903,8 +905,8 @@ def emit_hierarchy_and_provisions(
             preamble_cluster: dict = {
                 "@id": preamble_cluster_id,
                 "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                "rdfs:label": preamble_label,
-                "skos:prefLabel": preamble_label,
+                "rdfs:label": et_literal(preamble_label),
+                "skos:prefLabel": et_literal(preamble_label),
                 "skos:inScheme": {"@id": scheme_id},
             }
             if cluster_has_broader and part_concept_id:
@@ -914,7 +916,7 @@ def emit_hierarchy_and_provisions(
                 {
                     "@id": preamble_chapter_id,
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                    "rdfs:label": preamble_label,
+                    "rdfs:label": et_literal(preamble_label),
                     "estleg:partOfAct": {"@id": ontology_id},
                     "dcterms:subject": chapter_cluster_subject(preamble_cluster_id),
                 }
@@ -941,8 +943,8 @@ def emit_hierarchy_and_provisions(
             {
                 "@id": fallback_cluster_id,
                 "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                "rdfs:label": f"{par_range} {fallback_label}".strip(),
-                "skos:prefLabel": f"{par_range} {fallback_label}".strip(),
+                "rdfs:label": et_literal(f"{par_range} {fallback_label}".strip()),
+                "skos:prefLabel": et_literal(f"{par_range} {fallback_label}".strip()),
                 "skos:inScheme": {"@id": scheme_id},
             }
         )
@@ -967,8 +969,8 @@ def emit_hierarchy_and_provisions(
                     {
                         "@id": part_concept_id,
                         "@type": ["owl:NamedIndividual", "skos:Concept"],
-                        "rdfs:label": part_label,
-                        "skos:prefLabel": part_label,
+                        "rdfs:label": et_literal(part_label),
+                        "skos:prefLabel": et_literal(part_label),
                         "skos:inScheme": {"@id": scheme_id},
                         "skos:narrower": [{"@id": cl["id"]} for cl in clusters],
                     },
@@ -985,7 +987,7 @@ def emit_hierarchy_and_provisions(
             {
                 "@id": scheme_id,
                 "@type": ["skos:ConceptScheme"],
-                "rdfs:label": scheme_label,
+                "rdfs:label": et_literal(scheme_label),
                 "skos:hasTopConcept": top_concepts,
             },
         )
@@ -1024,10 +1026,10 @@ def emit_hierarchy_and_provisions(
             "@id": p_id,
             "@type": ["owl:NamedIndividual", class_id],
             "estleg:paragrahv": p_display,
-            "rdfs:label": label,
+            "rdfs:label": et_literal(label),
             "estleg:sourceAct": title,
             "estleg:partOfAct": {"@id": ontology_id},
-            "estleg:summary": provision_summary(text, p_title, p_display),
+            "estleg:summary": et_literal(provision_summary(text, p_title, p_display)),
         }
         if full_text:
             node["estleg:legalText"] = full_text

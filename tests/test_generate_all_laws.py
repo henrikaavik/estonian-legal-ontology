@@ -771,7 +771,7 @@ class TestProvisionSummaryFallback:
             node for node in doc["@graph"]
             if node.get("@id") == "estleg:KTEST_Par_1"
         )
-        assert provision["estleg:summary"] == "§ 1. Rakendussäte"
+        assert estleg_common.jsonld_text(provision["estleg:summary"]) == "§ 1. Rakendussäte"
         assert "estleg:legalText" not in provision
 
     def test_title_only_multipart_paragraph_gets_summary(self):
@@ -799,7 +799,7 @@ class TestProvisionSummaryFallback:
             node for node in by_file["kokkuvotte_multi_osa1_peep.json"]["@graph"]
             if node.get("@id") == "estleg:KMULT_Osa1_Par_2"
         )
-        assert provision["estleg:summary"] == "§ 2. Mõiste"
+        assert estleg_common.jsonld_text(provision["estleg:summary"]) == "§ 2. Mõiste"
         assert "estleg:legalText" not in provision
 
 
@@ -909,10 +909,10 @@ class TestNestedChapterAttribution:
 
         div1 = next(n for n in doc["@graph"]
                     if n.get("@id", "").startswith("estleg:Division_TNXX_")
-                    and "Esimene" in n.get("rdfs:label", ""))
+                    and "Esimene" in estleg_common.jsonld_text(n.get("rdfs:label", "")))
         div2 = next(n for n in doc["@graph"]
                     if n.get("@id", "").startswith("estleg:Division_TNXX_")
-                    and "Teine" in n.get("rdfs:label", ""))
+                    and "Teine" in estleg_common.jsonld_text(n.get("rdfs:label", "")))
 
         par5 = next(n for n in doc["@graph"]
                     if n.get("@id", "").endswith("Par_5"))
@@ -4184,8 +4184,12 @@ class TestCollectTextNoLoigeDuplication:
         prov = next(
             n for n in doc["@graph"] if n.get("@id") == "estleg:DUPX_Par_1"
         )
-        assert prov["estleg:summary"].count("Esimene siduv lause.") == 1
-        assert prov["estleg:summary"].count("Teine siduv lause.") == 1
+        assert estleg_common.jsonld_text(prov["estleg:summary"]).count(
+            "Esimene siduv lause."
+        ) == 1
+        assert estleg_common.jsonld_text(prov["estleg:summary"]).count(
+            "Teine siduv lause."
+        ) == 1
 
 
 # ---------------------------------------------------------------------------
@@ -4361,7 +4365,7 @@ class TestMultipartActIdStable:
         act = results["kars_osa1_peep.json"]["@graph"][0]
         assert act["@id"] == "estleg:KARSY_Osa1", act["@id"]
         # The §-range survives only in the human-readable label.
-        assert "1–87" in act["rdfs:label"], act["rdfs:label"]
+        assert "1–87" in estleg_common.jsonld_text(act["rdfs:label"]), act["rdfs:label"]
 
     def test_act_id_stable_when_par_range_shifts(self):
         """Inserting/removing a paragraph shifts the §-range but must NOT

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Language-tag policy (#437)
+
+- Every CV `rdfs:label` is bilingual `@et` + `@en`.
+- Law/regulation generators emit new labels and summaries as `@et`
+  via `et_literal`. CONTEXT has no default `@language`.
+
 ### Per-document provision classes removed (#434)
 
 - Generators type provisions as `estleg:LegalProvision` (KOV also
