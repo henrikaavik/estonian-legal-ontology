@@ -2062,12 +2062,14 @@ estleg:KovProvisionShape
 # subclass triples loaded into the data graph to resolve that.
 # Validating only that citationTarget is an IRI (sh:nodeKind sh:IRI)
 # avoids the brittleness; the LegalProvision range constraint is
-# documented via rdfs:range in metadata.jsonld.
+# documented via rdfs:range in controlled_vocabulary.jsonld.
+# Pattern accepts compact `estleg:` and expanded w3id forms, including
+# #514 unresolved-cite IRIs (`Citation_<ABBREV>_P_…`) and Estonian letters.
 estleg:CitationShape
     a sh:NodeShape ;
     sh:targetClass estleg:Citation ;
     sh:nodeKind sh:IRI ;
-    sh:pattern "^https://w3id\\.org/estleg/Citation_[A-Za-z0-9_]+_[0-9]+$" ;
+    sh:pattern "^(estleg:Citation_|https://w3id\\.org/estleg/Citation_).+" ;
     sh:property [
         sh:path estleg:citationTarget ;
         sh:minCount 0 ;

@@ -944,9 +944,11 @@ class TestMergeDateForSource:
 
 class TestMetadataJsonLd:
     def test_new_classes_present(self):
-        path = REPO_ROOT / "metadata.jsonld"
+        # #433: T-Box classes and properties live in the CV default graph;
+        # metadata.jsonld is DCAT-only.
+        path = REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld"
         if not path.exists():
-            pytest.fail("metadata.jsonld missing")
+            pytest.fail("controlled_vocabulary.jsonld missing")
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         ids = {n.get("@id") for n in doc.get("@graph", [])}
@@ -968,12 +970,12 @@ class TestMetadataJsonLd:
             "estleg:implementedBy", "estleg:implementedByCount",
             "estleg:enforcedAtLevel",
         ):
-            assert required in ids, f"missing in metadata.jsonld: {required}"
+            assert required in ids, f"missing in controlled_vocabulary.jsonld: {required}"
 
     def test_subclass_triples_present(self):
-        path = REPO_ROOT / "metadata.jsonld"
+        path = REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld"
         if not path.exists():
-            pytest.fail("metadata.jsonld missing")
+            pytest.fail("controlled_vocabulary.jsonld missing")
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
 

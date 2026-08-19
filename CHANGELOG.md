@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Canonical T-Box in controlled_vocabulary.jsonld (#433)
+
+- CV is the default-graph schema: class hierarchy, ≥95% domain+range,
+  real comments, `owl:Ontology` + `owl:versionInfo`.
+- Junk terms `estleg:jsonld` / `counts` / `note` / `scope` / `title` deleted;
+  ABox uses remapped to `rdfs:comment` / `dcterms:abstract` / `dcterms:title`.
+- `metadata.jsonld` keeps DCAT only (`dcterms:conformsTo` the CV).
+- Unresolved placeholders moved to `krr_outputs/unresolved_references.jsonld`.
+- Four subcorpus schemas are regenerable from the CV.
+
 ### State-regulation provision versions (#431)
 
 - `generate_provision_versions --regulations-riik` writes current-snapshot

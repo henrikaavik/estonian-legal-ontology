@@ -12,7 +12,11 @@
     "estleg": "https://w3id.org/estleg/"
   },
   "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology",
-  "@type": ["dcat:Dataset", "owl:Ontology", "schema:Dataset"],
+  "@type": [
+    "dcat:Dataset",
+    "owl:Ontology",
+    "schema:Dataset"
+  ],
   "dcterms:title": [
     {
       "@value": "Estonian Legal Ontology",
@@ -72,7 +76,10 @@
   "dcterms:rights": "DRAFT layered rights model — pending legal sign-off. This dataset is NOT licensed as a whole under MIT. It is a compilation of (a) predominantly third-party legal texts that retain their own source rights (Riigi Teataja statutes/regulations; EU material © European Union, reused under Commission Decision 2011/833/EU, incl. EuroVoc; RIK/Riigikohus and EU Court decisions) and (b) an original compilation layer (selection/arrangement, cross-reference links, minted estleg: IRIs, ontology/TBox structure, controlled vocabularies, derived classifications) which the project offers under CC BY 4.0 (CC0 1.0 an acceptable alternative). Per-distribution dcterms:rights statements below give the source-specific terms. The MIT LICENSE in this repository applies ONLY to the repository software (scripts/, mcp_server/, tests/). Some distributions contain personal data — see estleg:containsPersonalData and docs/DATA_PROTECTION.md. See the top-level NOTICE and docs/DATA_RIGHTS.md. Verify upstream source terms before redistribution.",
   "dcterms:hasPart": {
     "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#compilation",
-    "@type": ["dcat:Dataset", "dcterms:BibliographicResource"],
+    "@type": [
+      "dcat:Dataset",
+      "dcterms:BibliographicResource"
+    ],
     "dcterms:title": "Original compilation layer (estleg)",
     "dcterms:description": "DRAFT pending legal sign-off. The project's own copyrightable / sui-generis-database-right contribution ONLY: the selection & arrangement of the corpus, cross-reference links, minted estleg: IRIs, ontology/TBox structure, controlled vocabularies, and derived classifications — explicitly NOT the third-party legal texts, which retain their source rights (see the per-distribution dcterms:rights, the top-level NOTICE, and docs/DATA_RIGHTS.md). This layer alone is offered under CC BY 4.0 (CC0 1.0 an acceptable alternative). The MIT LICENSE in this repository covers the repository software (scripts/, mcp_server/, tests/) only.",
     "dcterms:license": {
@@ -248,16 +255,9 @@
       "@type": "xsd:date"
     }
   },
-  "dcterms:conformsTo": [
-    {
-      "@id": "https://www.w3.org/TR/json-ld11/",
-      "dcterms:title": "JSON-LD 1.1"
-    },
-    {
-      "@id": "https://www.w3.org/TR/vocab-dcat-3/",
-      "dcterms:title": "DCAT Vocabulary 3"
-    }
-  ],
+  "dcterms:conformsTo": {
+    "@id": "https://w3id.org/estleg/vocabulary"
+  },
   "dcterms:accrualPeriodicity": {
     "@id": "http://purl.org/cld/freq/monthly"
   },
@@ -287,7 +287,10 @@
     "@id": "https://github.com/henrikaavik/estonian-legal-ontology"
   },
   "schema:version": "0.11.0",
-  "schema:inLanguage": ["et", "en"],
+  "schema:inLanguage": [
+    "et",
+    "en"
+  ],
   "schema:hasPart": {
     "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#compilation"
   },
@@ -483,355 +486,5 @@
     "estleg:integrationLayerCount": 15,
     "estleg:courtDecisionYearRange": "1993-2026",
     "estleg:regulationSnapshotDate": "2026-05-01"
-  },
-  "@graph": [
-    {
-      "@id": "estleg:Act",
-      "@type": "owl:Class",
-      "rdfs:label": "Act",
-      "rdfs:comment": "An enacted Estonian legal act of any level (law, state regulation, municipal regulation)."
-    },
-    {
-      "@id": "estleg:Law",
-      "@type": "owl:Class",
-      "rdfs:label": "Law",
-      "rdfs:subClassOf": {
-        "@id": "estleg:Act"
-      },
-      "rdfs:comment": "A statute (seadus). Stamped onto every existing law act node during KOV layer 1 enrichment."
-    },
-    {
-      "@id": "estleg:Municipality",
-      "@type": "owl:Class",
-      "rdfs:label": "Municipality",
-      "rdfs:comment": "Current Estonian municipality (KOV unit). Territorial entity, identified by EHAK code."
-    },
-    {
-      "@id": "estleg:Issuer",
-      "@type": "owl:Class",
-      "rdfs:label": "Issuer",
-      "rdfs:subClassOf": {
-        "@id": "estleg:Institution"
-      },
-      "rdfs:comment": "An act-issuing body (volikogu or valitsus). Subclass of Institution so competence-extractor links target Issuers via existing Institution-range properties."
-    },
-    {
-      "@id": "estleg:KovProvision",
-      "@type": "owl:Class",
-      "rdfs:label": "KovProvision",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      },
-      "rdfs:comment": "A provision belonging to a MunicipalRegulation. Stamped during KOV layer 1 enrichment so SHACL can target provision-level constraints without OWL inference."
-    },
-    {
-      "@id": "estleg:Citation",
-      "@type": "owl:Class",
-      "rdfs:label": "Citation",
-      "rdfs:comment": "Reified preamble citation (used by KOV layer 2). Carries citationTarget, citationDetail, citationText."
-    },
-    {
-      "@id": "estleg:Similarity",
-      "@type": "owl:Class",
-      "rdfs:label": "Similarity",
-      "rdfs:comment": "Reified similarity link between two acts (used by KOV layer 3). Carries similarTarget, similarityScore, similarityModel."
-    },
-    {
-      "@id": "estleg:DomesticRegulation",
-      "@type": "owl:Class",
-      "rdfs:label": "DomesticRegulation",
-      "rdfs:comment": "An Estonian domestic regulation (Eesti määrus) of any level — a subordinate legal act issued under an enabling Estonian law. Common superclass of the state-level (estleg:NationalRegulation) and municipal (estleg:MunicipalRegulation) regulation branches; introduced so shared domestic-regulation SHACL constraints have a single conceptual home without forcing a municipal regulation to be (mis-)classified as state-level (issue #424). Disjoint from estleg:EULegislation, which models EU-level acts.",
-      "rdfs:subClassOf": {
-        "@id": "estleg:Act"
-      }
-    },
-    {
-      "@id": "estleg:NationalRegulation",
-      "@type": "owl:Class",
-      "rdfs:label": "NationalRegulation",
-      "rdfs:comment": "A state-level Estonian regulation (riigi tasandi määrus) issued by a state organ. Superclass of the government and ministerial regulation classes. Subclass of estleg:DomesticRegulation, NOT of estleg:MunicipalRegulation: a municipal regulation is a sibling, not an instance, of this class (issue #424).",
-      "rdfs:subClassOf": {
-        "@id": "estleg:DomesticRegulation"
-      }
-    },
-    {
-      "@id": "estleg:MunicipalRegulation",
-      "@type": "owl:Class",
-      "rdfs:label": "MunicipalRegulation",
-      "rdfs:comment": "A municipal (KOV) regulation enacted by a local-government issuer (volikogu or valitsus) — kohaliku omavalitsuse määrus. Subclass of estleg:DomesticRegulation. Deliberately NOT a subclass of estleg:NationalRegulation: a KOV määrus is local-government, not state-level, legislation, so no entailment path makes it a state regulation (issue #424; was a logical error corrected from the earlier subClassOf NationalRegulation hack).",
-      "rdfs:subClassOf": {
-        "@id": "estleg:DomesticRegulation"
-      }
-    },
-    {
-      "@id": "estleg:GovernmentRegulation",
-      "@type": "owl:Class",
-      "rdfs:label": "GovernmentRegulation",
-      "rdfs:comment": "A regulation issued by the Government of the Republic (Vabariigi Valitsus). Subclass of estleg:NationalRegulation.",
-      "rdfs:subClassOf": {
-        "@id": "estleg:NationalRegulation"
-      }
-    },
-    {
-      "@id": "estleg:MinisterialRegulation",
-      "@type": "owl:Class",
-      "rdfs:label": "MinisterialRegulation",
-      "rdfs:comment": "A regulation issued by a minister (ministri määrus). Subclass of estleg:NationalRegulation.",
-      "rdfs:subClassOf": {
-        "@id": "estleg:NationalRegulation"
-      }
-    },
-    {
-      "@id": "estleg:enactedBy",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "enactedBy",
-      "rdfs:comment": "The Issuer that enacted this MunicipalRegulation or KovProvision.",
-      "rdfs:range": {
-        "@id": "estleg:Issuer"
-      }
-    },
-    {
-      "@id": "estleg:enactedByMunicipality",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "enactedByMunicipality",
-      "rdfs:comment": "The current Municipality whose Issuer enacted this MunicipalRegulation or KovProvision.",
-      "rdfs:range": {
-        "@id": "estleg:Municipality"
-      }
-    },
-    {
-      "@id": "estleg:titleNormalized",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "titleNormalized",
-      "rdfs:comment": "Lowercased, transliterated title with the municipality-name prefix stripped. Used by Layer 3 bucket detection.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:partOfAct",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "partOfAct",
-      "rdfs:comment": "IRI link from a provision to its parent act node. The existing sourceAct is a literal title; partOfAct is the structural join path.",
-      "rdfs:range": {
-        "@id": "estleg:Act"
-      }
-    },
-    {
-      "@id": "estleg:ehakCode",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "ehakCode",
-      "rdfs:comment": "Four-digit EHAK code from Statistics Estonia.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:county",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "county",
-      "rdfs:comment": "Estonian county (maakond) the Municipality belongs to.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:bodyType",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "bodyType",
-      "rdfs:comment": "Issuer body type: 'volikogu' (legislative council) or 'valitsus' (executive).",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:currentMunicipality",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "currentMunicipality",
-      "rdfs:comment": "The current Municipality that the Issuer maps to (post-2017 successor for legacy Issuers).",
-      "rdfs:range": {
-        "@id": "estleg:Municipality"
-      }
-    },
-    {
-      "@id": "estleg:historicalMunicipalityName",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "historicalMunicipalityName",
-      "rdfs:comment": "Free-text issuing-time municipality name. Preserves history without modeling defunct entities.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:mappingSource",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "mappingSource",
-      "rdfs:comment": "How the Issuer→Municipality mapping was derived: 'auto-match' | 'haldusreform-2017' | 'manual-review' | 'url:<citation>'.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:mappingEvidence",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "mappingEvidence",
-      "rdfs:comment": "Source citation for a curated Issuer mapping. Empty for auto-match rows; required for every curated row.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:citationTarget",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "citationTarget",
-      "rdfs:comment": "Resolved provision IRI for a Citation. Range: LegalProvision (paragraph-level — sub-paragraph detail rides on citationDetail).",
-      "rdfs:range": {
-        "@id": "estleg:LegalProvision"
-      }
-    },
-    {
-      "@id": "estleg:citationDetail",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "citationDetail",
-      "rdfs:comment": "Optional sub-paragraph specificity for a Citation, e.g. 'lg 1 p 3'. Layer 2b populates from preamble text.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:citationText",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "citationText",
-      "rdfs:comment": "Optional original citation string for traceability, e.g. '§ 42 lg 1 alusel'.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:issuedUnder",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "issuedUnder",
-      "rdfs:comment": "Act → enabling act link, derived from preamble citations. Range: Act (Law, NationalRegulation, MunicipalRegulation). Layer 2b populates.",
-      "rdfs:range": {
-        "@id": "estleg:Act"
-      }
-    },
-    {
-      "@id": "estleg:implementsCitation",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "implementsCitation",
-      "rdfs:comment": "Act → reified Citation node carrying the resolved target plus original detail. Layer 2b populates.",
-      "rdfs:range": {
-        "@id": "estleg:Citation"
-      }
-    },
-    {
-      "@id": "estleg:similarAct",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "similarAct",
-      "rdfs:comment": "MunicipalRegulation act → reified Similarity node pointing at a peer act. Layer 3 (KOV act-level similarity) populates.",
-      "rdfs:range": {
-        "@id": "estleg:Similarity"
-      }
-    },
-    {
-      "@id": "estleg:similarTarget",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "similarTarget",
-      "rdfs:comment": "Peer act IRI on a reified Similarity node. Range: Act (a KOV MunicipalRegulation peer, or a state Act for cross-layer pairs). Layer 3 populates.",
-      "rdfs:range": {
-        "@id": "estleg:Act"
-      }
-    },
-    {
-      "@id": "estleg:similarityModel",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "similarityModel",
-      "rdfs:comment": "Scoring model used for a Similarity node, e.g. 'tfidf-cosine' (Layer 3 v1). Recorded so a later switch (e.g. embeddings) is identifiable from the node alone.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:regulationTypeBucket",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "regulationTypeBucket",
-      "rdfs:comment": "Layer 3 regulation-type bucket label stamped on a MunicipalRegulation act, e.g. 'jaatmehoolduseeskiri' or '_uncategorized'.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:implementedBy",
-      "@type": "owl:ObjectProperty",
-      "rdfs:label": "implementedBy",
-      "rdfs:comment": "Act → acts enacted under this act. Filtered projection of preamble enabling-link inverses (issuedUnder + Citation.citationTarget). Range: Act. Layer 2b populates.",
-      "rdfs:range": {
-        "@id": "estleg:Act"
-      }
-    },
-    {
-      "@id": "estleg:implementedByCount",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "implementedByCount",
-      "rdfs:comment": "Aggregate count of implementedBy entries on an act or provision. Layer 2b populates.",
-      "rdfs:range": {
-        "@id": "xsd:integer"
-      }
-    },
-    {
-      "@id": "estleg:enforcedAtLevel",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "enforcedAtLevel",
-      "rdfs:comment": "Sanction enforcement level: 'state' or 'municipality'. Derived in Layer 2c from the parent act's type.",
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:ReleaseDelta",
-      "@type": "owl:Class",
-      "rdfs:label": "ReleaseDelta",
-      "rdfs:comment": "Machine-readable inter-release IRI delta (added/removed act IRIs and counts). Issue #549."
-    },
-    {
-      "@id": "estleg:added",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "added",
-      "rdfs:comment": "IRI added between compared snapshots. Listed sample may be capped; see estleg:addedCount."
-    },
-    {
-      "@id": "estleg:removed",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "removed",
-      "rdfs:comment": "IRI removed between compared snapshots. Listed sample may be capped; see estleg:removedCount."
-    },
-    {
-      "@id": "estleg:addedCount",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "addedCount",
-      "rdfs:comment": "Full count of IRIs added between compared snapshots.",
-      "rdfs:range": {
-        "@id": "xsd:integer"
-      }
-    },
-    {
-      "@id": "estleg:removedCount",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "removedCount",
-      "rdfs:comment": "Full count of IRIs removed between compared snapshots.",
-      "rdfs:range": {
-        "@id": "xsd:integer"
-      }
-    },
-    {
-      "@id": "estleg:containsPersonalData",
-      "@type": "owl:DatatypeProperty",
-      "rdfs:label": "containsPersonalData",
-      "rdfs:comment": "Boolean flag on a dcat:Distribution (or other resource) asserting that it contains personal data about identifiable natural persons within the meaning of the GDPR (e.g. names and case details of parties in court decisions). When true, republication is governed by data-protection law, not merely copyright — see docs/DATA_PROTECTION.md. Introduced for tickets #545/#546.",
-      "rdfs:range": {
-        "@id": "xsd:boolean"
-      }
-    }
-  ]
+  }
 }

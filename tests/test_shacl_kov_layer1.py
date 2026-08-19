@@ -202,7 +202,7 @@ class TestCitationShape:
     def test_valid_citation_passes(self):
         # Minimal graph: Citation pointing to any IRI target. The shape
         # only enforces nodeKind sh:IRI on citationTarget — class-level
-        # range is documented in metadata.jsonld via rdfs:range, not
+        # range is documented in controlled_vocabulary.jsonld via rdfs:range, not
         # SHACL (avoiding subclass-inference brittleness).
         ok, msg = _validate({
             "@context": CONTEXT,

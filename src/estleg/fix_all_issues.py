@@ -92,6 +92,7 @@ NEW_NS = "https://w3id.org/estleg/"
 # generator outputs) must NEVER be re-ingested.
 COMBINED_ALLOWED_JSONLD = (
     "controlled_vocabulary.jsonld",
+    "unresolved_references.jsonld",  # #433 ABox placeholders moved out of the CV
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
     # #608: act-level FRBR Expression layer — addressable "law as of date D"

@@ -64,6 +64,7 @@ EXPECTED_NS = "https://w3id.org/estleg/"
 # with `scripts/fix_all_issues.COMBINED_ALLOWED_JSONLD`.
 COMBINED_ALLOWED_JSONLD = (
     "controlled_vocabulary.jsonld",
+    "unresolved_references.jsonld",  # #433 ABox placeholders moved out of the CV
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
     "act_expressions_combined.jsonld",  # #608 FRBR Expression layer
@@ -1636,6 +1637,133 @@ def validate_vocabulary_coverage(files: list[Path]):
             print(f"    undefined vocabulary term: {term}")
     else:
         print(f"  OK: {len(used_predicates)} predicates and {len(used_classes)} classes are covered")
+
+
+def validate_canonical_tbox(krr_dir: Path = KRR_DIR):
+    """#433: the CV is the default-graph T-Box; metadata is DCAT-only."""
+    print("\n--- Canonical T-Box (#433) ---")
+    from estleg.consolidate_tbox import (
+        JUNK_TERMS,
+        METADATA_PATH,
+        PLACEHOLDER_NEEDLE,
+        VOCABULARY_IRI,
+        graph_nodes,
+        index_by_id,
+        is_unresolved_individual,
+        load_jsonld,
+        placeholder_ids,
+        property_coverage,
+        schema_ids_missing_from_vocab,
+    )
+
+    vocab_path = krr_dir / "controlled_vocabulary.jsonld"
+    if not vocab_path.is_file():
+        error("controlled_vocabulary.jsonld not found")
+        return
+    vocab = load_jsonld(vocab_path)
+    nodes = graph_nodes(vocab)
+    index = index_by_id(nodes)
+    header = index.get(VOCABULARY_IRI)
+    if header is None or "owl:Ontology" not in (
+        header.get("@type")
+        if isinstance(header.get("@type"), list)
+        else [header.get("@type")]
+    ):
+        error("controlled_vocabulary.jsonld: missing owl:Ontology header (#433)")
+    elif not header.get("owl:versionInfo"):
+        error("controlled_vocabulary.jsonld: owl:Ontology header lacks owl:versionInfo")
+    else:
+        print(f"  OK: ontology header {VOCABULARY_IRI} version {header['owl:versionInfo']}")
+
+    both, total, missing = property_coverage(nodes)
+    coverage = (both / total) if total else 0.0
+    if coverage < 0.95:
+        error(
+            f"controlled_vocabulary.jsonld: {both}/{total} properties have "
+            f"rdfs:domain and rdfs:range ({coverage:.1%} < 95%)"
+        )
+        for term in missing[:15]:
+            print(f"    missing domain+range: {term}")
+    else:
+        print(
+            f"  OK: {both}/{total} properties have rdfs:domain and rdfs:range "
+            f"({coverage:.1%})"
+        )
+
+    leftovers = placeholder_ids(nodes)
+    if leftovers:
+        error(
+            f"controlled_vocabulary.jsonld: {len(leftovers)} placeholder "
+            f"comments still contain {PLACEHOLDER_NEEDLE!r}"
+        )
+    else:
+        print("  OK: 0 placeholder vocabulary comments")
+
+    junk = sorted(JUNK_TERMS & set(index))
+    if junk:
+        error(f"controlled_vocabulary.jsonld: junk terms still declared: {junk}")
+    else:
+        print("  OK: junk terms jsonld/counts/note/scope/title removed")
+
+    parked = [
+        nid
+        for nid, node in index.items()
+        if is_unresolved_individual(node)
+    ]
+    if parked:
+        error(
+            f"controlled_vocabulary.jsonld: {len(parked)} unresolved "
+            "placeholder individuals still in the T-Box"
+        )
+    unresolved_path = krr_dir / "unresolved_references.jsonld"
+    if not unresolved_path.is_file():
+        error("unresolved_references.jsonld not found (#433)")
+    else:
+        print(
+            f"  OK: unresolved placeholders live in {unresolved_path.name} "
+            f"({len(graph_nodes(load_jsonld(unresolved_path)))} individuals)"
+        )
+
+    if METADATA_PATH.is_file():
+        metadata = load_jsonld(METADATA_PATH)
+        meta_classes = [
+            node.get("@id")
+            for node in graph_nodes(metadata)
+            if isinstance(node, dict) and "owl:Class" in (
+                node.get("@type")
+                if isinstance(node.get("@type"), list)
+                else [node.get("@type")]
+            )
+        ]
+        if meta_classes:
+            error(
+                "metadata.jsonld @graph still declares owl:Class nodes "
+                f"(default-graph T-Box leak): {meta_classes[:8]}"
+            )
+        conforms = metadata.get("dcterms:conformsTo")
+        conforms_id = (
+            conforms.get("@id")
+            if isinstance(conforms, dict)
+            else conforms
+        )
+        if conforms_id != VOCABULARY_IRI:
+            error(
+                "metadata.jsonld: dcterms:conformsTo must point at "
+                f"{VOCABULARY_IRI}"
+            )
+        else:
+            print("  OK: metadata.jsonld is DCAT-only and conformsTo the CV")
+
+    missing_schema = schema_ids_missing_from_vocab(index, krr_dir)
+    if missing_schema:
+        error(
+            "subcorpus *_schema.json terms missing from the CV: "
+            + ", ".join(
+                f"{name}({len(ids)})" for name, ids in missing_schema.items()
+            )
+        )
+    else:
+        print("  OK: 4 subcorpus schemas are projections of the CV")
 
 
 def _ingest_graph_into(
@@ -3326,6 +3454,13 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
         "https://w3id.org/estleg/Section",
         "https://w3id.org/estleg/LegalConcept",
     }
+    # #433: subcorpus *_schema.json files are projections of the CV, so every
+    # schema @id is a shared T-Box id rather than a semantic collision.
+    from estleg.consolidate_tbox import schema_paths, schema_term_ids
+
+    for schema_path in schema_paths().values():
+        if schema_path.is_file():
+            shared_class_ids.update(schema_term_ids(schema_path))
     dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k not in shared_class_ids}
     shared_dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k in shared_class_ids}
     if shared_dupes:
@@ -3453,6 +3588,7 @@ def main(argv: list[str] | None = None):
     validate_id_uniqueness(all_ids)
     validate_internal_references(all_ids, internal_refs)
     validate_vocabulary_coverage(files)
+    validate_canonical_tbox(krr_dir)
     validate_temporal_property_targets(files)
     validate_transposition_mapping(krr_dir)
     validate_registry_index(krr_dir, allow_missing_index=allow_missing_index)
