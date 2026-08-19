@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### State-regulation provision versions (#431)
+
+- `generate_provision_versions --regulations-riik` writes current-snapshot
+  `ProvisionVersion` sidecars from riik peeps (RT `dokument=määrus` is
+  wired for later history fetches). Coverage gate is ≥90%.
+
 ### AmendmentEvents join the version layer (#429)
 
 - Distinct `versionValidFrom` dates mint or enrich `AmendmentEvent`s with

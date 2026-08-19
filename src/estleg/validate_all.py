@@ -37,6 +37,7 @@ from estleg.estleg_common import (
     jsonld_id_values,
 )
 from estleg.generate_amendment_history import collect_versions_by_date
+from estleg.generate_provision_versions import riik_version_coverage
 
 # #519: the combined builder forward-chains rdf:type over the subclass
 # hierarchy, so a provision's combined @type is its source @type plus the
@@ -2613,6 +2614,18 @@ def _kehtiv_for_slug(
     return None
 
 
+def validate_regulation_version_coverage(krr_dir: Path = KRR_DIR):
+    """#431: ≥90% of state-regulation peeps must have a version sidecar."""
+    have, total, ratio = riik_version_coverage(krr_dir)
+    if total == 0:
+        return
+    if ratio < 0.9:
+        error(
+            f"regulation version coverage {have}/{total} ({ratio:.1%}) "
+            f"is below the #431 90% gate"
+        )
+
+
 def validate_last_amendment_matches_versions(krr_dir: Path = KRR_DIR):
     """#429: act lastAmendmentDate must equal max versionValidFrom when both exist."""
     vers_dir = krr_dir / "provision_versions"
@@ -3454,6 +3467,7 @@ def main(argv: list[str] | None = None):
     validate_provision_version_encoding(krr_dir)
     validate_version_layer_freshness(krr_dir)
     validate_last_amendment_matches_versions(krr_dir)
+    validate_regulation_version_coverage(krr_dir)
     validate_provision_text_quality(krr_dir)
     validate_harmonisation_symmetry(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)

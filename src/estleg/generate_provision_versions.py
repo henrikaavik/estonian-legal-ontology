@@ -71,6 +71,7 @@ import requests
 from estleg.estleg_common import (
     CONTEXT,
     KRR_DIR,
+    act_root_node,
     is_domain_individual,
     iter_peep_files,
     jsonld_text,
@@ -236,7 +237,12 @@ def _load_provision_map(
                     title = src
                 elif isinstance(src, list) and src and isinstance(src[0], str):
                     title = src[0]
-            is_provision = any(_PROVISION_TYPE_RE.match(t) for t in types if isinstance(t, str))
+            is_provision = any(
+                _PROVISION_TYPE_RE.match(t)
+                or (isinstance(t, str) and t.startswith("estleg:Regulation_"))
+                for t in types
+                if isinstance(t, str)
+            ) or "estleg:paragrahv" in node
             m = _PAR_IRI_RE.search(iri)
             if is_provision and m:
                 suffix = m.group("suffix")
@@ -262,6 +268,202 @@ def build_law_target(slug: str, krr_dir: Path = KRR_DIR) -> LawTarget | None:
         peep_files=peep_files,
         act_iri=act_iri,
     )
+
+
+def _jsonld_date(node: dict, *keys: str) -> str | None:
+    for key in keys:
+        raw = node.get(key)
+        if isinstance(raw, dict):
+            raw = raw.get("@value")
+        if isinstance(raw, str) and len(raw) >= 10:
+            return raw[:10]
+    return None
+
+
+def _jsonld_plain(value: object) -> str:
+    if isinstance(value, dict):
+        raw = value.get("@value")
+        return raw if isinstance(raw, str) else ""
+    return value if isinstance(value, str) else ""
+
+
+def iter_riik_regulation_peeps(krr_dir: Path = KRR_DIR) -> list[Path]:
+    """State-regulation peeps under ``regulations/riik/``."""
+    root = krr_dir / "regulations" / "riik"
+    if not root.is_dir():
+        return []
+    return sorted(p for p in root.glob("*_peep.json") if p.is_file())
+
+
+def build_regulation_target(peep_path: Path) -> LawTarget | None:
+    """Build a :class:`LawTarget` from one state-regulation peep (#431)."""
+    slug = peep_path.stem.removesuffix("_peep")
+    provisions, prefix, title, act_iri = _load_provision_map([peep_path])
+    if not provisions or not prefix or not title:
+        return None
+    return LawTarget(
+        slug=slug,
+        title=title,
+        prefix=prefix,
+        provisions=provisions,
+        peep_files=[peep_path],
+        act_iri=act_iri,
+    )
+
+
+def redaction_from_regulation_doc(doc: dict) -> Redaction | None:
+    """Current-snapshot redaction identity from a regulation peep (#431)."""
+    root = act_root_node(doc)
+    if root is None:
+        return None
+    gid = _jsonld_plain(root.get("estleg:terviktekstId")) or _jsonld_plain(
+        root.get("estleg:globalId")
+    )
+    valid_from = _jsonld_date(
+        root,
+        "estleg:lastAmendmentDate",
+        "estleg:entryIntoForce",
+        "estleg:kehtiv",
+    )
+    if not gid or not valid_from:
+        return None
+    src = root.get("dcterms:source")
+    url = src.get("@id") if isinstance(src, dict) else ""
+    if not isinstance(url, str):
+        url = ""
+    return Redaction(global_id=str(gid), valid_from=valid_from, valid_to=None, url=url)
+
+
+def extract_peep_provision_texts(
+    peep_files: list[Path],
+    provisions: dict[str, str],
+) -> dict[str, str]:
+    """Map paragraph suffix → legalText (else summary) from peep files."""
+    iri_to_suffix = {iri: suffix for suffix, iri in provisions.items()}
+    texts: dict[str, str] = {}
+    for path in peep_files:
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            iri = node.get("@id")
+            suffix = iri_to_suffix.get(iri) if isinstance(iri, str) else None
+            if not suffix:
+                continue
+            text = jsonld_text(node.get("estleg:legalText")) or jsonld_text(
+                node.get("estleg:summary")
+            )
+            if text:
+                texts[suffix] = text
+    return texts
+
+
+def process_regulation_snapshot(
+    target: LawTarget,
+    *,
+    out_dir: Path = VERSIONS_DIR,
+) -> LawResult:
+    """Write a current-snapshot ProvisionVersion sidecar for one regulation (#431)."""
+    try:
+        doc = json.loads(target.peep_files[0].read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, IndexError) as exc:
+        return LawResult(
+            slug=target.slug,
+            title=target.title,
+            redactions_total=0,
+            redactions_fetched=0,
+            redactions_failed=0,
+            provisions_in_law=len(target.provisions),
+            provisions_versioned=0,
+            versions_emitted=0,
+            sidecar_path=None,
+            error=str(exc),
+        )
+    redaction = redaction_from_regulation_doc(doc)
+    if redaction is None:
+        return LawResult(
+            slug=target.slug,
+            title=target.title,
+            redactions_total=0,
+            redactions_fetched=0,
+            redactions_failed=0,
+            provisions_in_law=len(target.provisions),
+            provisions_versioned=0,
+            versions_emitted=0,
+            sidecar_path=None,
+            error="no snapshot redaction",
+        )
+    texts = extract_peep_provision_texts(target.peep_files, target.provisions)
+    if not texts:
+        return LawResult(
+            slug=target.slug,
+            title=target.title,
+            redactions_total=1,
+            redactions_fetched=1,
+            redactions_failed=0,
+            provisions_in_law=len(target.provisions),
+            provisions_versioned=0,
+            versions_emitted=0,
+            sidecar_path=None,
+            max_redactions=1,
+            current_redaction_id=redaction.global_id,
+            current_redaction_valid_from=redaction.valid_from,
+            error="no provision texts",
+        )
+    version_nodes = synthesise_versions(target, [(redaction, texts)])
+    if not version_nodes:
+        return LawResult(
+            slug=target.slug,
+            title=target.title,
+            redactions_total=1,
+            redactions_fetched=1,
+            redactions_failed=0,
+            provisions_in_law=len(target.provisions),
+            provisions_versioned=0,
+            versions_emitted=0,
+            sidecar_path=None,
+            max_redactions=1,
+            current_redaction_id=redaction.global_id,
+            current_redaction_valid_from=redaction.valid_from,
+            error="no versions synthesised",
+        )
+    out_path = write_sidecar(target, version_nodes, out_dir=out_dir)
+    versioned = len({
+        n["estleg:versionOf"]["@id"]
+        for n in version_nodes
+        if isinstance(n.get("estleg:versionOf"), dict)
+    })
+    return LawResult(
+        slug=target.slug,
+        title=target.title,
+        redactions_total=1,
+        redactions_fetched=1,
+        redactions_failed=0,
+        provisions_in_law=len(target.provisions),
+        provisions_versioned=versioned,
+        versions_emitted=len(version_nodes),
+        sidecar_path=_rel(out_path),
+        max_redactions=1,
+        current_redaction_id=redaction.global_id,
+        current_redaction_valid_from=redaction.valid_from,
+    )
+
+
+def riik_version_coverage(krr_dir: Path = KRR_DIR) -> tuple[int, int, float]:
+    """Return ``(sidecars, peeps, ratio)`` for state regulations (#431)."""
+    peeps = iter_riik_regulation_peeps(krr_dir)
+    versions_dir = krr_dir / "provision_versions"
+    have = 0
+    for path in peeps:
+        slug = path.stem.removesuffix("_peep")
+        if (versions_dir / f"{slug}.jsonld").is_file():
+            have += 1
+    total = len(peeps)
+    ratio = have / total if total else 0.0
+    return have, total, ratio
 
 
 def missing_law_target_error(slug: str, krr_dir: Path = KRR_DIR) -> str:
@@ -595,13 +797,19 @@ def _search(params: dict[str, object], *, timeout: int = 30) -> list[dict]:
     return data.get("aktid", []) or []
 
 
-def fetch_current_redaction(title: str, *, today: str, timeout: int = 30) -> Redaction | None:
+def fetch_current_redaction(
+    title: str,
+    *,
+    today: str,
+    timeout: int = 30,
+    dokument: str = "seadus",
+) -> Redaction | None:
     """Return the consolidated-text edition in force on ``today`` for ``title``."""
     aktid = _search(
         {
             "leht": 1,
             "limiit": 500,
-            "dokument": "seadus",
+            "dokument": dokument,
             "tekst": "terviktekst",
             "kehtiv": today,
             "kehtivKehtetus": "false",
@@ -639,6 +847,7 @@ def fetch_redaction_chain(
     *,
     today: str | None = None,
     timeout: int = 30,
+    dokument: str = "seadus",
 ) -> list[Redaction]:
     """Return the chronological redaction chain (oldest -> newest, current last).
 
@@ -658,7 +867,7 @@ def fetch_redaction_chain(
         {
             "leht": 1,
             "limiit": 500,
-            "dokument": "seadus",
+            "dokument": dokument,
             "tekst": "terviktekst",
             "pealkiri": title,
         },
@@ -706,7 +915,9 @@ def fetch_redaction_chain(
             )
         )
 
-    current = fetch_current_redaction(title, today=today, timeout=timeout)
+    current = fetch_current_redaction(
+        title, today=today, timeout=timeout, dokument=dokument
+    )
     if current is not None:
         # Avoid duplicating the current edition if it already appeared in the chain
         # (it would not — current has lopp >= today — but be defensive).
@@ -1911,7 +2122,7 @@ def _write_coverage(results: list[LawResult], *, start_perf: float, path: Path =
         input_files_total=len(all_input_files),
         input_files_kov=len(kov_files),
         files_processed=len(results),
-        files_processed_kov=0,  # laws-only pipeline; KOV regulations have no redaction history yet
+        files_processed_kov=0,  # KOV still out of scope; #431 covers state riik only
         files_with_output=sum(1 for r in results if r.versions_emitted > 0),
         files_with_output_kov=0,
         files_skipped=sum(1 for r in results if r.error or r.versions_emitted == 0),
@@ -1994,6 +2205,17 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         "--all",
         action="store_true",
         help="Process every law slug with an on-disk peep file. This is the full ingestion mode.",
+    )
+    parser.add_argument(
+        "--regulations-riik",
+        action="store_true",
+        help="Emit current-snapshot ProvisionVersion sidecars for state regulations (#431).",
+    )
+    parser.add_argument(
+        "--regulation",
+        action="append",
+        metavar="SLUG",
+        help="Process this state-regulation peep slug (repeatable). Implies --regulations-riik.",
     )
     parser.add_argument(
         "--max-redactions",
@@ -2082,6 +2304,50 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
     start_perf = time.perf_counter()
+    if args.regulations_riik or args.regulation:
+        krr_dir = KRR_DIR
+        versions_dir = VERSIONS_DIR
+        if args.regulation:
+            paths = []
+            riik = krr_dir / "regulations" / "riik"
+            for slug in args.regulation:
+                cand = Path(slug)
+                if cand.is_file():
+                    paths.append(cand)
+                    continue
+                match = riik / f"{slug}_peep.json"
+                if match.is_file():
+                    paths.append(match)
+        else:
+            paths = iter_riik_regulation_peeps(krr_dir)
+        results: list[LawResult] = []
+        for path in paths:
+            target = build_regulation_target(path)
+            if target is None:
+                results.append(
+                    LawResult(
+                        slug=path.stem.removesuffix("_peep"),
+                        title=path.stem,
+                        redactions_total=0,
+                        redactions_fetched=0,
+                        redactions_failed=0,
+                        provisions_in_law=0,
+                        provisions_versioned=0,
+                        versions_emitted=0,
+                        sidecar_path=None,
+                        error="ineligible regulation peep",
+                    )
+                )
+                continue
+            results.append(process_regulation_snapshot(target, out_dir=versions_dir))
+        _write_coverage(results, start_perf=start_perf, path=COVERAGE_PATH)
+        write_law_report(results, krr_dir / "reports" / "regulation_versions_report.json")
+        have, total, ratio = riik_version_coverage(krr_dir)
+        print(
+            f"State-regulation version coverage: {have}/{total} "
+            f"({ratio:.1%}); #431 target is ≥90%."
+        )
+        return 0 if ratio >= 0.9 or args.regulation else 1
     today = args.today or date.today().isoformat()
     fetch_sleep = 0.0 if args.no_sleep else FETCH_SLEEP_SECONDS
     max_redactions = effective_max_redactions(args)
