@@ -473,11 +473,13 @@ The largest generated artifacts are committed through Git LFS:
 `git lfs install` before cloning or validating the full release surface.
 
 This release introduces Git LFS for the repository; earlier commits still
-contain these artifacts as normal Git blobs. We are not planning a destructive
-`git lfs migrate import --everything` history rewrite for this release, so
-clone size for historical revisions is unchanged and operators checking out old
-commits should treat those files as regular Git-tracked JSON/JSON-LD rather than
-LFS-managed artifacts.
+contain these artifacts as normal Git blobs. `#480` is **keep-LFS**: we
+are not dropping these blobs from git, not opening a second data remote,
+and not running a destructive `git lfs migrate import --everything`
+history rewrite. Clone size for historical revisions is unchanged;
+operators checking out old commits should treat those files as regular
+Git-tracked JSON/JSON-LD rather than LFS-managed artifacts. See
+`docs/ARCHITECTURE.md`.
 
 The release `contentHash` in `release_manifest.json` is computed over the
 subset highlighted in the manifest (`combined_ontology.jsonld`,

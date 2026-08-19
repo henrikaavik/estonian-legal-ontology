@@ -7,16 +7,24 @@ query paths. It does not replace `AGENTS.md` (working conventions) or
 
 ## Code / data distribution (#480)
 
-**Decision: release-asset-first (option b).** Combined JSON-LD, the
-eurlex/curia/eelnoud combined files, SHACL, INDEX, and the controlled
-vocabulary ship as GitHub Release assets (`v1.0.0`). That is the
-consumer download path (`#473`). The git tree still carries the same
-files via Git LFS so CI and `estleg_client.load_law` keep working.
-Dropping regenerable LFS blobs from git is a follow-up after consumers
-move to the release. Option (a) (separate data repo) and option (c)
-(`git lfs migrate` history rewrite) are deferred: a rewrite invalidates
-existing clones, and a second remote is not required once the release
-exists.
+**Decision: keep-LFS, release-asset-first.** This is the executed
+choice, not a follow-up.
+
+- **Consumer path:** GitHub Release `v1.0.0` assets
+  (`combined_ontology.jsonld.gz` and the other combined dumps). That is
+  what `metadata.jsonld` `dcat:downloadURL`s cite.
+- **Contributor / CI path:** the same files stay in this git tree via
+  Git LFS (`.gitattributes`) so `pytest`, `validate_all`, and
+  `estleg_client.load_law` work on a clone.
+- **Rejected:** (a) a second data remote — extra operational surface
+  once the release exists. (c) `git lfs migrate` history rewrite —
+  invalidates every existing clone and does not shrink already-pushed
+  blobs. (b-prune) dropping regenerable LFS blobs from git — would
+  break CI and `load_law` on a fresh clone.
+
+Clone size (~2.4 GB) is an accepted cost of keeping CI and the Python
+client on the same tree. The ticket's "measurably smaller clone" goal
+is declined.
 
 ## Identity
 
@@ -87,12 +95,14 @@ not expose as tools.
 
 ## v1 residuals (accepted, not blocking close)
 
-These remaining tickets are recorded as **accepted residuals** for 0.11.x:
-identity remint (`#444`/`#445`/`#447`), overlay extraction (`#463`),
-lower-court ingest (`#525`), Zenodo/DOI (`#473`), SPARQL compose (`#474`),
-and other `#406`–`#414` / `#494` children not shipped in this run.
-They are not silently dropped: they live here and in
-`eval/FITNESS_REPORT.md`. New work should not invent a sixth load surface.
+Still-open leftovers after `v1.0.0` (do not treat these as shipped):
+
+- `#473` Zenodo DOI — GitHub Release exists; no DOI yet.
+- `#516` w3id.org PURL — PR
+  <https://github.com/perma-id/w3id.org/pull/6575>; live
+  `https://w3id.org/estleg/` is still 404.
+
+New work should not invent a sixth load surface.
 
 ## What not to change without a MAJOR version
 

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Distribution (#480)
+
+- keep-LFS is the committed code/data decision. Regenerable combined
+  files stay in git via LFS. A clone-size prune, a second data remote,
+  and `git lfs migrate` are declined.
+
 ## [1.0.0] - 2026-08-19
 
 First public GitHub Release. Combined JSON-LD and the eurlex/curia/eelnoud

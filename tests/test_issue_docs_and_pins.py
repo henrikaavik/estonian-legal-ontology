@@ -17,6 +17,9 @@ def test_architecture_doc_exists_and_names_surfaces():
     assert "mcp_server" in text
     assert "v1 residuals" in text
     assert "release-asset-first" in text
+    assert "keep-LFS" in text
+    assert "measurably smaller clone" in text
+    assert "follow-up after consumers" not in text
 
 
 def test_citation_cff_version_matches_ontology():
