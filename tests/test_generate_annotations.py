@@ -491,20 +491,18 @@ class TestBuildAnnotations:
         res = build_annotations_for_opinion(op, idx)
         assert res.unresolved_names == []
         assert set(res.resolved_iris) == {"estleg:VOS_Map_2026", "estleg:TSYS_Map_2026"}
-        # Two annotation nodes — one per annotated law; abbrev suffix disambiguates IRIs.
-        assert len(res.annotations) == 2
-        annotated = {n["estleg:annotates"]["@id"] for n in res.annotations}
+        # #459: one node per document, multiple annotates targets.
+        assert len(res.annotations) == 1
+        node = res.annotations[0]
+        annotated = {item["@id"] for item in node["estleg:annotates"]}
         assert annotated == {"estleg:VOS_Map_2026", "estleg:TSYS_Map_2026"}
-        for n in res.annotations:
-            assert n["@type"] == ["owl:NamedIndividual", "estleg:Annotation"]
-            assert n["@id"].startswith("estleg:Annotation_OK_vos")  # opinion-slug prefix
-            assert isinstance(n["estleg:annotationText"], str) and n["estleg:annotationText"].strip()
-            assert n["estleg:annotationType"] == "interpretation"
-            assert n["estleg:annotationSource"] == "Õiguskantsler"
-            assert n["estleg:annotationSourceUrl"] == {"@value": op.url, "@type": "xsd:anyURI"}
-            assert n["estleg:annotationDate"] == {"@value": "2024-05-01", "@type": "xsd:date"}
-        # Distinct @ids (the per-law abbrev suffix).
-        assert len({n["@id"] for n in res.annotations}) == 2
+        assert node["@type"] == ["owl:NamedIndividual", "estleg:Annotation"]
+        assert node["@id"].startswith("estleg:Annotation_OK_vos")
+        assert isinstance(node["estleg:annotationText"], str) and node["estleg:annotationText"].strip()
+        assert node["estleg:annotationType"] == "interpretation"
+        assert node["estleg:annotationSource"] == "Õiguskantsler"
+        assert node["estleg:annotationSourceUrl"] == {"@value": op.url, "@type": "xsd:anyURI"}
+        assert node["estleg:annotationDate"] == {"@value": "2024-05-01", "@type": "xsd:date"}
 
     def test_multi_law_opinion_disambiguates_reused_abbrev_suffixes(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
@@ -521,9 +519,11 @@ class TestBuildAnnotations:
             "Tõlgenduslik seisukoht.",
         )
         res = build_annotations_for_opinion(op, idx)
-        assert len(res.annotations) == 2
-        assert len({n["@id"] for n in res.annotations}) == 2
-        assert all("_SAME_" in n["@id"] for n in res.annotations)
+        assert len(res.annotations) == 1
+        assert {item["@id"] for item in res.annotations[0]["estleg:annotates"]} == {
+            "estleg:SAME_Map_2026",
+            "estleg:SAME_2_Map_2026",
+        }
 
     def test_multi_law_abbrev_hash_collision_gets_disambig_suffix(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
@@ -547,11 +547,8 @@ class TestBuildAnnotations:
             "Tõlgenduslik seisukoht.",
         )
         res = build_annotations_for_opinion(op, idx)
-        assert len(res.annotations) == 2
-        ids = [n["@id"] for n in res.annotations]
-        assert len(set(ids)) == 2  # both distinct despite the forced hash collision
-        # The disambiguation appends a deterministic _2 tail to the colliding @id.
-        assert any(i.endswith("_2") for i in ids)
+        assert len(res.annotations) == 1
+        assert res.annotations[0]["@id"].startswith("estleg:Annotation_OK_abbrev")
 
     def test_single_law_opinion_iri_has_no_abbrev_suffix(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
@@ -738,7 +735,8 @@ class TestBuildAnnotations:
             doc = json.loads(peep.read_text(encoding="utf-8"))
             corpus_ids.update(n["@id"] for n in doc["@graph"] if isinstance(n, dict) and isinstance(n.get("@id"), str))
         for n in res.annotations:
-            assert n["estleg:annotates"]["@id"] in corpus_ids
+            for iri in ga.annotates_iris(n):
+                assert iri in corpus_ids
 
 
 # ---------------------------------------------------------------------------
@@ -815,6 +813,17 @@ def test_shacl_rejects_literal_annotates():
     assert not conforms
 
 
+def test_shacl_accepts_multiple_annotates():
+    node = _well_formed_annotation()
+    node["estleg:annotates"] = [
+        {"@id": "estleg:VOS_Map_2026"},
+        {"@id": "estleg:TSYS_Map_2026"},
+    ]
+    graph_json = {"@context": dict(ga.CONTEXT), "@graph": [node]}
+    conforms, msg = _shacl_conforms(graph_json)
+    assert conforms, msg
+
+
 # ---------------------------------------------------------------------------
 # End-to-end run() with a fixture corpus + seed file
 # ---------------------------------------------------------------------------
@@ -843,9 +852,9 @@ def test_run_with_seed_writes_sidecar_and_coverage(tmp_path: Path):
 
     doc = json.loads(out_path.read_text(encoding="utf-8"))
     ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
-    # vos-40: 1 ; vos-tsys: 2 ; olematu: 0 -> 3 annotation nodes.
-    assert len(ann_nodes) == 3
-    targets = {n["estleg:annotates"]["@id"] for n in ann_nodes}
+    # vos-40: 1 node ; vos-tsys: 1 node (two annotates) ; olematu: 0.
+    assert len(ann_nodes) == 2
+    targets = {iri for n in ann_nodes for iri in ga.annotates_iris(n)}
     assert targets == {"estleg:VOS_Map_2026", "estleg:TSYS_Map_2026"}
     # Every annotates target is a real corpus node @id.
     corpus_ids = set()
@@ -859,7 +868,7 @@ def test_run_with_seed_writes_sidecar_and_coverage(tmp_path: Path):
     assert cov["files_processed"] == 3              # opinions processed
     assert cov["files_with_output"] == 2            # opinions that produced ≥1 annotation
     assert cov["files_skipped"] == 1                # the olematu opinion
-    assert cov["triples_emitted"] == 3              # estleg:Annotation node count
+    assert cov["triples_emitted"] == 2              # estleg:Annotation node count
     assert cov["unresolved_references"] == 1        # one law name didn't resolve
     assert "law_name_not_resolved_to_corpus_node" in cov["skip_reasons"]
 

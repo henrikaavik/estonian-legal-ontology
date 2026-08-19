@@ -28,15 +28,12 @@ reference resolution at scale — that is the multi-hour follow-up run. Per the 
     opinion title plus usable PDF body text when available (Estonian texts cite laws by
     genitive name, e.g. "Karistusseadustiku § 381¹ …" → Karistusseadustik).
 
-Either way the output is identical in shape: for each opinion we resolve every named law to
-its real act-level node IRI (the law peep's ``owl:Ontology`` ``@id``, e.g.
-``estleg:KOKS_Map_2026`` — like ``generate_harmonisation_links.py::get_law_harmonisation_target_iri``),
-and emit **one** ``estleg:Annotation`` per (opinion, resolved law) — ``AnnotationShape``
-requires exactly one ``estleg:annotates``, so we go one-annotation-per-(opinion, law) and
-dedup the law IRIs within an opinion. A law name that does not resolve to a corpus node is
-**skipped** (never a dangling ``annotates``) and recorded in the coverage report's skip
-reasons. IRI scheme: ``estleg:Annotation_OK_<opinion-slug>`` for a single-law opinion, or
-``estleg:Annotation_OK_<opinion-slug>_<ABBREV>`` when an opinion concerns several laws.
+Either way the output is identical in shape: for each opinion we resolve every named law
+(and, when the text cites ``§``, the matching provision IRIs) and emit **one**
+``estleg:Annotation`` per document with one or more ``estleg:annotates`` targets (#459).
+A law name that does not resolve to a corpus node is **skipped** (never a dangling
+``annotates``) and recorded in the coverage report's skip reasons. IRI scheme:
+``estleg:Annotation_OK_<opinion-slug>``.
 
 Output placement (mirrors the sanctions / amendments / provision_versions sidecars):
   * the ``estleg:Annotation`` nodes go to ``krr_outputs/annotations/oiguskantsler_seisukohad.jsonld``
@@ -108,7 +105,12 @@ PDF_PROBE_REPORT_PATH = KRR_DIR / "reports" / "annotations_pdf_probe.json"
 SEED_PATH = REPO_ROOT / "data" / "annotations" / "seed_annotations.json"
 
 ANNOTATION_SOURCE = "Õiguskantsler"
-ANNOTATION_TYPE = "interpretation"  # Õiguskantsler opinions are interpretive
+ANNOTATION_TYPE = "interpretation"  # default when the title does not classify
+_SECTION_CITE_RE = re.compile(
+    r"(?:§+\s*|paragrahvi?\s+)(\d+)(?:([¹²³⁴⁵⁶⁷⁸⁹⁰]+)|[_^](\d+))?",
+    re.IGNORECASE,
+)
+_SUPERSCRIPT_TO_DIGIT = str.maketrans("¹²³⁴⁵⁶⁷⁸⁹⁰", "1234567890")
 
 SEISUKOHAD_LISTING_URL = "https://www.oiguskantsler.ee/seisukohad-ja-algatused/seisukohad"
 FETCH_SLEEP_SECONDS = 0.4
@@ -1102,6 +1104,91 @@ def _truncate_to_sentence(text: str, max_chars: int) -> str:
     return (head[:last_space] if last_space > 0 else head).rstrip() + "…"
 
 
+def classify_annotation_type(title: str, text: str = "") -> str:
+    """Pick an AnnotationShape enum value from the document title (#459)."""
+    hay = f"{title}\n{text}".casefold()
+    if any(token in hay for token in ("hoiatus", "hoiatab")):
+        return "warning"
+    if any(token in hay for token in ("soovitus", "soovitab", "ettepanek")):
+        return "guidance"
+    if "kommentaar" in hay:
+        return "commentary"
+    if any(token in hay for token in ("juhend", "praktika", "selgitus")):
+        return "practice_note"
+    if "arvamus" in hay:
+        return "commentary"
+    return "interpretation"
+
+
+def extract_section_numbers(text: str) -> list[str]:
+    """Return cited section numbers (``12``, ``381_1``) in first-seen order."""
+    found: list[str] = []
+    seen: set[str] = set()
+    for match in _SECTION_CITE_RE.finditer(text or ""):
+        base = match.group(1)
+        extra = match.group(3) or ""
+        if match.group(2):
+            extra = match.group(2).translate(_SUPERSCRIPT_TO_DIGIT)
+        key = f"{base}_{extra}" if extra else base
+        if key not in seen:
+            seen.add(key)
+            found.append(key)
+    return found
+
+
+def act_iri_prefix(iri: str) -> str:
+    if not iri.startswith("estleg:"):
+        return ""
+    return re.sub(r"_Map(?:_\d{4})?$", "", iri)
+
+
+def provision_iris_for_acts(
+    act_iris: list[str], text: str, provision_ids: set[str] | None
+) -> list[str]:
+    """Prefer cited ``_Par_`` nodes when they exist in ``provision_ids``."""
+    if not provision_ids:
+        return list(act_iris)
+    sections = extract_section_numbers(text)
+    if not sections:
+        return list(act_iris)
+    out: list[str] = []
+    seen: set[str] = set()
+    for act in act_iris:
+        prefix = act_iri_prefix(act)
+        matched = False
+        if prefix:
+            for section in sections:
+                candidate = f"{prefix}_Par_{section}"
+                if candidate in provision_ids and candidate not in seen:
+                    out.append(candidate)
+                    seen.add(candidate)
+                    matched = True
+        if not matched and act not in seen:
+            out.append(act)
+            seen.add(act)
+    return out
+
+
+def _annotates_value(iris: list[str]) -> dict | list[dict]:
+    refs = [{"@id": iri} for iri in iris]
+    if len(refs) == 1:
+        return refs[0]
+    return refs
+
+
+def annotates_iris(node: dict) -> list[str]:
+    value = node.get("estleg:annotates")
+    if isinstance(value, dict) and isinstance(value.get("@id"), str):
+        return [value["@id"]]
+    if isinstance(value, list):
+        return [
+            item["@id"]
+            for item in value
+            if isinstance(item, dict) and isinstance(item.get("@id"), str)
+        ]
+    return []
+
+
 def _annotation_text(opinion: Opinion) -> str:
     """Build a substantive ``annotationText`` for the opinion.
 
@@ -1118,14 +1205,19 @@ def _annotation_text(opinion: Opinion) -> str:
     return _truncate_to_sentence(text, 2000)
 
 
-def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _OpinionResult:
-    """Resolve an opinion's law(s) and build one ``estleg:Annotation`` per resolved law.
+def build_annotations_for_opinion(
+    opinion: Opinion,
+    law_index: _LawIndex,
+    *,
+    provision_ids: set[str] | None = None,
+) -> _OpinionResult:
+    """Resolve an opinion's law(s) and build one ``estleg:Annotation`` (#459).
 
     A law name that does not resolve to a corpus act node is recorded (``unresolved_names``)
     and produces no annotation — never a dangling ``estleg:annotates``. When an opinion's
     explicit ``law_names`` is empty (the scrape source), law references are extracted from
-    the *title* instead. Within an opinion the resolved IRIs are deduped (one annotation per
-    distinct annotated law).
+    the *title* instead. Cited ``§`` numbers are remapped onto provision IRIs when those
+    nodes exist in ``provision_ids``.
     """
     result = _OpinionResult(opinion_id=opinion.opinion_id, title=opinion.title, law_names=opinion.law_names)
 
@@ -1161,44 +1253,21 @@ def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _Op
         return result
 
     text = _annotation_text(opinion)
-    multi = len(iris) > 1
-    abbrevs = {iri: law_index.abbrev(iri) for iri in iris}
-    abbrev_counts: dict[str, int] = {}
-    for abbrev in abbrevs.values():
-        abbrev_counts[abbrev] = abbrev_counts.get(abbrev, 0) + 1
-    used_ann_iris: set[str] = set()
-    for iri in iris:
-        suffix = ""
-        if multi:
-            target_suffix = abbrevs[iri]
-            if abbrev_counts[target_suffix] > 1:
-                target_suffix = f"{target_suffix}_{_short_hash(iri, length=6)}"
-            suffix = f"_{target_suffix}"
-        ann_iri = f"estleg:Annotation_OK_{sanitize_id(opinion.opinion_id)}{suffix}"
-        # Post-hash collision guard: a 24-bit abbrev-hash clash within one opinion's law set
-        # would otherwise silently overwrite a node. Append a deterministic _2/_3 tail
-        # (mirrors the opinion-id disambiguation pattern) so every @id stays distinct.
-        if ann_iri in used_ann_iris:
-            base = ann_iri
-            ordinal = 2
-            while f"{base}_{ordinal}" in used_ann_iris:
-                ordinal += 1
-            ann_iri = f"{base}_{ordinal}"
-        used_ann_iris.add(ann_iri)
-        node: dict = {
-            "@id": ann_iri,
-            "@type": ["owl:NamedIndividual", "estleg:Annotation"],
-            "estleg:annotates": {"@id": iri},
-            "estleg:annotationText": text,
-            "estleg:annotationType": ANNOTATION_TYPE,
-            "estleg:annotationSource": ANNOTATION_SOURCE,
-            "rdfs:label": {"@value": f"Õiguskantsleri seisukoht: {opinion.title}", "@language": "et"},
-        }
-        if opinion.url:
-            node["estleg:annotationSourceUrl"] = _xsd_anyuri(opinion.url)
-        if opinion.date_iso:
-            node["estleg:annotationDate"] = _xsd_date(opinion.date_iso)
-        result.annotations.append(node)
+    targets = provision_iris_for_acts(iris, f"{opinion.title}\n{text}", provision_ids)
+    node = {
+        "@id": f"estleg:Annotation_OK_{sanitize_id(opinion.opinion_id)}",
+        "@type": ["owl:NamedIndividual", "estleg:Annotation"],
+        "estleg:annotates": _annotates_value(targets),
+        "estleg:annotationText": text,
+        "estleg:annotationType": classify_annotation_type(opinion.title, text),
+        "estleg:annotationSource": ANNOTATION_SOURCE,
+        "rdfs:label": {"@value": f"Õiguskantsleri seisukoht: {opinion.title}", "@language": "et"},
+    }
+    if opinion.url:
+        node["estleg:annotationSourceUrl"] = _xsd_anyuri(opinion.url)
+    if opinion.date_iso:
+        node["estleg:annotationDate"] = _xsd_date(opinion.date_iso)
+    result.annotations.append(node)
     return result
 
 
@@ -1238,6 +1307,127 @@ def write_sidecar(annotations: list[dict], *, out_path: Path = SIDECAR_PATH) -> 
         fh.write("\n")
     tmp.replace(out_path)
     return out_path
+
+
+def collect_provision_ids(krr_dir: Path = KRR_DIR) -> set[str]:
+    """Collect ``estleg:*_Par_*`` @ids from root law peeps."""
+    ids: set[str] = set()
+    for path in sorted(krr_dir.glob("*_peep.json")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if isinstance(nid, str) and "_Par_" in nid:
+                ids.add(nid)
+    return ids
+
+
+def remint_annotation_sidecar(
+    *,
+    in_path: Path = SIDECAR_PATH,
+    out_path: Path | None = None,
+    provision_ids: set[str] | None = None,
+) -> dict[str, int]:
+    """Collapse one-document-per-N-acts nodes and drop duplicated bodies (#459)."""
+    dest = out_path or in_path
+    doc = json.loads(in_path.read_text(encoding="utf-8"))
+    graph = doc.get("@graph") or []
+    header = next(
+        (node for node in graph if isinstance(node, dict) and "owl:Ontology" in (
+            node.get("@type") if isinstance(node.get("@type"), list) else [node.get("@type")]
+        )),
+        None,
+    )
+    groups: dict[str, list[dict]] = {}
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:Annotation" not in types:
+            continue
+        url = node.get("estleg:annotationSourceUrl")
+        if isinstance(url, dict):
+            url = url.get("@value")
+        key = url if isinstance(url, str) and url else str(node.get("@id"))
+        groups.setdefault(key, []).append(node)
+
+    collapsed: list[dict] = []
+    for key, nodes in groups.items():
+        first = nodes[0]
+        ids = [str(node.get("@id") or "") for node in nodes]
+        common = ids[0]
+        if len(ids) > 1:
+            prefix = ""
+            for chars in zip(*ids):
+                if len(set(chars)) != 1:
+                    break
+                prefix += chars[0]
+            common = prefix.rstrip("_") or ids[0]
+        targets: list[str] = []
+        seen: set[str] = set()
+        for node in nodes:
+            for iri in annotates_iris(node):
+                if iri not in seen:
+                    targets.append(iri)
+                    seen.add(iri)
+        text = first.get("estleg:annotationText") or ""
+        if isinstance(text, dict):
+            text = text.get("@value") or ""
+        label = first.get("rdfs:label")
+        title = ""
+        if isinstance(label, dict):
+            title = str(label.get("@value") or "")
+        elif isinstance(label, str):
+            title = label
+        title = title.removeprefix("Õiguskantsleri seisukoht: ").strip()
+        refined = provision_iris_for_acts(targets, f"{title}\n{text}", provision_ids)
+        node = {
+            "@id": common,
+            "@type": ["owl:NamedIndividual", "estleg:Annotation"],
+            "estleg:annotates": _annotates_value(refined),
+            "estleg:annotationText": text,
+            "estleg:annotationType": classify_annotation_type(title, text),
+            "estleg:annotationSource": first.get("estleg:annotationSource") or ANNOTATION_SOURCE,
+        }
+        if first.get("estleg:annotationSourceUrl"):
+            node["estleg:annotationSourceUrl"] = first["estleg:annotationSourceUrl"]
+        if first.get("estleg:annotationDate"):
+            node["estleg:annotationDate"] = first["estleg:annotationDate"]
+        if first.get("rdfs:label"):
+            node["rdfs:label"] = first["rdfs:label"]
+        collapsed.append(node)
+
+    collapsed.sort(key=lambda item: str(item.get("@id") or ""))
+    if header is not None:
+        header["rdfs:label"] = {
+            "@value": (
+                f"Õiguskantsleri seisukohad — praktiku annotatsioonid "
+                f"({len(collapsed)} annotatsiooni)"
+            ),
+            "@language": "et",
+        }
+        new_graph = [header, *collapsed]
+    else:
+        new_graph = collapsed
+    write_sidecar(new_graph[1:] if header is not None else new_graph, out_path=dest)
+    return {
+        "before": sum(
+            1
+            for node in graph
+            if isinstance(node, dict)
+            and "estleg:Annotation" in (
+                node.get("@type") if isinstance(node.get("@type"), list) else [node.get("@type")]
+            )
+        ),
+        "after": len(collapsed),
+        "groups": len(groups),
+    }
 
 
 def remove_sidecar(out_path: Path = SIDECAR_PATH) -> None:
@@ -1541,11 +1731,21 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
              "Body extraction is ON by default under --scrape; this turns it off. Ignored "
              "without --scrape (a title-only seed source has no PDF body to extract).",
     )
+    parser.add_argument(
+        "--remint-sidecar",
+        action="store_true",
+        help="Collapse the committed annotations sidecar to one node per document (#459).",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _parse_args(argv)
+    args = _parse_args([] if argv is None else argv)
+    if args.remint_sidecar:
+        provision_ids = collect_provision_ids()
+        stats = remint_annotation_sidecar(provision_ids=provision_ids)
+        print(stats)
+        return 0
     cache_dir = None if args.no_cache else CACHE_DIR
     sleep = 0.0 if args.no_sleep else FETCH_SLEEP_SECONDS
     if args.probe_pdfs:
@@ -1577,4 +1777,4 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))
