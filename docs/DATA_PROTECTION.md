@@ -15,6 +15,7 @@ Two subcorpora carry personal data about identifiable natural persons:
 | Subcorpus | Location | Records | Where the personal data sits |
 |---|---|---|---|
 | Estonian Supreme Court decisions (Riigikohus) | `krr_outputs/riigikohus/` | ~12,137 | full personal **names** appear in `estleg:summary` |
+| First/second-instance decisions (kohtud) | `krr_outputs/kohtud/` | sample first cut | search-metadata only in the committed sample (court name, case number, date). Live `--fetch` may copy `kokkuvote` summaries that name persons — treat the directory as personal-data-bearing. |
 | EU Court of Justice decisions (CURIA) | `krr_outputs/curia/` | ~22,290 | **party names** appear in `rdfs:label` |
 
 These are flagged in `metadata.jsonld` on the corresponding `dcat:distribution`
@@ -91,5 +92,8 @@ consider whether you need the names at all for your use case.
   `dcterms:rights` note;
 - the CURIA distribution carries `estleg:containsPersonalData: true` plus a
   `dcterms:rights` note;
+- first/second-instance ingest (`krr_outputs/kohtud/`) is covered by this
+  notice even without a separate `dcat:distribution` row — treat it like
+  Riigikohus if summaries are stored;
 - `estleg:containsPersonalData` is declared as an `owl:DatatypeProperty` in the
   metadata `@graph`.

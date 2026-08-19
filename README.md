@@ -708,7 +708,7 @@ python3 scripts/generate_similarity_index.py
 ├── reviews/                  # Law review request files
 ├── .github/workflows/        # CI pipeline
 ├── CHANGELOG.md              # Version history
-└── LICENSE                   # MIT License
+└── LICENSE                   # MIT for software only — data rights in NOTICE
 ```
 
 ## Schema
@@ -917,4 +917,10 @@ python3 scripts/generate_harmonisation_links.py
 
 ## License
 
-MIT License -- see [LICENSE](LICENSE) for details.
+The MIT `LICENSE` covers repository **software** only (`scripts/`,
+`mcp_server/`, `tests/`, tooling). It does **not** license the JSON-LD
+corpus under `krr_outputs/`. That corpus is a layered compilation of
+third-party legal texts plus an original compilation layer (draft CC BY
+4.0). See [NOTICE](NOTICE), [docs/DATA_RIGHTS.md](docs/DATA_RIGHTS.md),
+and [docs/DATA_PROTECTION.md](docs/DATA_PROTECTION.md) before
+redistributing data.
