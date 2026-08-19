@@ -74,7 +74,9 @@ from pathlib import Path
 
 from estleg import deprecate_legacy_statutes as _legacy_deprecation
 from estleg import estleg_common
+from estleg.generate_analytical_overlay import stamp_analytical_properties
 from estleg.index_body_coverage import apply_body_coverage_fields
+from estleg.materialize_combined_inverses import materialize_combined_edges
 from estleg.multipart_coverage import (
     apply_known_multipart_annotations,
     preserve_multipart_annotations,
@@ -1284,6 +1286,8 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     regulation/harmonisation) so the artifact is graph-closed when loaded on its
     own. Version forward edges (estleg:hasVersion) are stripped, not stubbed —
     the version layer is a separate load surface (#561, COMBINED_STRIPPED_PREDICATES).
+    After stubs, #520 materializes inverse / dropped-forward / partOfAct-closure
+    edges and #521 stamps analytical counts/flags onto existing IRIs.
     """
     print("\n=== Generating combined JSON-LD ===")
 
@@ -1380,6 +1384,14 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     # cross-corpus reference so combined loads standalone with zero dangling
     # estleg: object IRIs.
     stub_count = _emit_closure_stubs(node_by_id, all_nodes, krr_dir)
+
+    # #520: materialise inverse + dropped-forward + partOfAct closure on the
+    # in-memory graph. generate_inverse_references writes some inverses onto
+    # peeps; combined never called that pass. Version edges stay stripped (#561).
+    inv_stats = materialize_combined_edges(all_nodes, node_by_id)
+    print(f"  Materialized inverse/closure edges (#520): {inv_stats}")
+    ana_stats = stamp_analytical_properties(all_nodes)
+    print(f"  Stamped analytical counts/flags (#521): {ana_stats}")
 
     # #519: forward-chain rdf:type over the subclass hierarchy so the shipped
     # graph answers `?x a estleg:LegalProvision` / `?x a estleg:Act` without a

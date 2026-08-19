@@ -1374,14 +1374,15 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
     assert nodes["estleg:Sanction_A_1_fine"]["rdfs:label"] == "Fine"
     assert nodes["estleg:Sanction_A_1_fine"]["estleg:applicableProvision"] == {"@id": "estleg:A_1"}
 
-    # court decision present only as a graph-closure LEAF stub: marked, carries
-    # label + identifier + link, drops the big text body AND every estleg: ref.
+    # court decision present only as a graph-closure stub: marked, carries
+    # label + identifier + link, drops the big text body. #520 re-asserts
+    # the dropped-forward interpretsLaw from the provision's interpretedBy.
     stub = nodes["estleg:RK_1_2_3_4"]
     assert stub["estleg:isStubNode"] is True
     assert stub["estleg:caseNumber"] == "1-2-3/4"
     assert stub["estleg:decisionLink"] == {"@value": "https://x", "@type": "xsd:anyURI"}
     assert "estleg:summary" not in stub
-    assert "estleg:interpretsLaw" not in stub  # internal ref stripped → leaf
+    assert stub["estleg:interpretsLaw"] == [{"@id": "estleg:A_1"}]
 
     # #561: the hasVersion forward edge is STRIPPED from combined (the version
     # layer is a separate load surface), so neither the edge nor its target

@@ -107,6 +107,20 @@ estleg:ActTemporalShape
         sh:name "officialEnglishText" ;
         sh:description "Optional official English Riigi Teataja URL (#510). Present only when RT publishes a translation (tolkeSeosId)." ;
     ] ;
+    sh:property [
+        sh:path estleg:competentAuthorityCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "competentAuthorityCount" ;
+        sh:description "Optional analytical count of act-level competentAuthority IRIs (#521)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasNoCompetentAuthority ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "hasNoCompetentAuthority" ;
+        sh:description "Optional coverage-gap flag when competentAuthorityCount is 0 (#521)." ;
+    ] ;
     # Issue #570: every statute root (estleg:Act, including the dual-typed
     # estleg:Law roots) must carry a human-readable rdfs:label. ActTemporalShape
     # was otherwise all-optional, leaving the top-level act node with no enforced
@@ -313,6 +327,20 @@ estleg:LegalProvisionShape
         sh:nodeKind sh:IRI ;
         sh:name "semanticallySimilarTo" ;
         sh:description "Provisions from other laws with similar content" ;
+    ] ;
+    sh:property [
+        sh:path estleg:inboundCitationCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "inboundCitationCount" ;
+        sh:description "Optional analytical count of referencedBy sources (#521)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:interpretationCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "interpretationCount" ;
+        sh:description "Optional analytical count of interpretedBy court IRIs (#521)." ;
     ] ;
     sh:property [
         sh:path estleg:definesTerm ;
@@ -1008,6 +1036,13 @@ estleg:EULegislationShape
         sh:nodeKind sh:IRI ;
         sh:name "transposedBy" ;
         sh:description "Estonian law that transposes this EU directive" ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasNoTransposition ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "hasNoTransposition" ;
+        sh:description "Optional coverage-gap flag when no Estonian act transposes this directive (#521)." ;
     ] .
 
 # Shape for HarmonisationLink instances (issue #197).
@@ -1552,6 +1587,12 @@ estleg:InstitutionShape
         sh:in ( "ministry" "agency" "court" "local_government" "parliament" "head_of_state" "government" ) ;
         sh:name "institutionType" ;
         sh:description "Coarse institution classification (issue #357): one of ministry, agency, court, local_government, parliament, head_of_state, government. Present on every materialised Institution; optional here so a fallback-materialised reference node without it still conforms." ;
+    ] ;
+    sh:property [
+        sh:path estleg:governs ;
+        sh:nodeKind sh:IRI ;
+        sh:name "governs" ;
+        sh:description "Optional inverse of competentAuthority, materialized at combined-build time (#520)." ;
     ] .
 
 # Shape for reified institutional competence instances

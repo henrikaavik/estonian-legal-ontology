@@ -57,6 +57,26 @@ HASVERSION_MIN_RESOLVED_FRACTION = 0.5
 
 NS = "https://w3id.org/estleg/"
 
+# Forward → inverse pairs the combined builder materialises (#520).
+# Peep-side passes below still special-case referencedBy / implementedBy /
+# hasVersion; this table is the single extension point for new pairs.
+INVERSE_PAIRS: tuple[tuple[str, str], ...] = (
+    ("estleg:references", "estleg:referencedBy"),
+    ("estleg:issuedUnder", "estleg:implementedBy"),
+    ("estleg:interpretsLaw", "estleg:interpretedBy"),
+    ("estleg:versionOf", "estleg:hasVersion"),
+    ("estleg:transposesDirective", "estleg:transposedBy"),
+    ("estleg:harmonisedWith", "estleg:harmonises"),
+    ("estleg:competentAuthority", "estleg:governs"),
+    ("estleg:parentProvision", "estleg:hasSubsection"),
+)
+
+# Version nodes live on the separate provision_versions/ surface (#561).
+# Combined must not emit either direction — they would dangle.
+COMBINED_SKIP_INVERSE_PAIRS: frozenset[tuple[str, str]] = frozenset(
+    {("estleg:versionOf", "estleg:hasVersion")}
+)
+
 
 # ---------------------------------------------------------------------------
 # IRI prefix aliases

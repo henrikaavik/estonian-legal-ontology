@@ -1913,6 +1913,32 @@
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:governs"
+      }
+    },
+    {
+      "@id": "estleg:competentAuthorityCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "pädevate asutuste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "competent authority count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Number of distinct estleg:competentAuthority IRIs on this statute root. Derived for the analytical overlay (#521).",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
       }
     },
     {
@@ -3066,6 +3092,32 @@
       }
     },
     {
+      "@id": "estleg:governs",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohaldab",
+          "@language": "et"
+        },
+        {
+          "@value": "governs",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Inverse of estleg:competentAuthority. Materialized at combined-build time from act-level authority edges so a consumer can ask which statutes an institution enforces without scanning the graph (#520). Range is rdfs:Resource so RDFS inference does not type the act objects as estleg:Act in the institutions SHACL bucket.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:competentAuthority"
+      }
+    },
+    {
       "@id": "estleg:harmonisedWith",
       "@type": [
         "owl:ObjectProperty"
@@ -3279,6 +3331,52 @@
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
+      }
+    },
+    {
+      "@id": "estleg:hasNoCompetentAuthority",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "puudub pädev asutus",
+          "@language": "et"
+        },
+        {
+          "@value": "has no competent authority",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True when a statute root has zero estleg:competentAuthority edges. Analytical coverage-gap flag (#521); omitted when the count is positive.",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:hasNoTransposition",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "puudub ülevõtt",
+          "@language": "et"
+        },
+        {
+          "@value": "has no transposition",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True when an in-force EU directive has no Estonian transposing act (no incoming estleg:transposesDirective / no estleg:transposedBy). Analytical coverage-gap flag (#521). Domain is owl:Thing so RDFS inference does not type EUR-Lex stubs as estleg:EULegislation in the laws SHACL bucket.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {
@@ -3590,6 +3688,29 @@
       }
     },
     {
+      "@id": "estleg:inboundCitationCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "sissetulevate viidete arv",
+          "@language": "et"
+        },
+        {
+          "@value": "inbound citation count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Number of distinct estleg:referencedBy sources on this node. Derived for the analytical overlay (#521); omitted when zero.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
       "@id": "estleg:inPart",
       "@type": [
         "owl:ObjectProperty"
@@ -3702,6 +3823,29 @@
       },
       "rdfs:range": {
         "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:interpretationCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "tõlgenduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "interpretation count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Number of distinct estleg:interpretedBy court IRIs on this node. Derived for the analytical overlay (#521); omitted when zero.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
       }
     },
     {
@@ -3884,7 +4028,8 @@
     {
       "@id": "estleg:isPartOf",
       "@type": [
-        "owl:ObjectProperty"
+        "owl:ObjectProperty",
+        "owl:TransitiveProperty"
       ],
       "rdfs:label": [
         {
@@ -3896,7 +4041,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Links a provision, division, or hierarchy node to its containing act structure node.",
+      "rdfs:comment": "Links a provision, division, or hierarchy node to its containing act structure node. owl:TransitiveProperty: the combined builder also materializes a direct estleg:partOfAct to the act root (#520).",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
@@ -4665,7 +4810,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "IRI link from a provision (or Chapter) to its parent act root. owl:FunctionalProperty: a provision belongs to at most one act (issue #522). Distinct from the literal estleg:sourceAct title.",
+      "rdfs:comment": "IRI link from a provision, Chapter, or Subsection to its parent act root. owl:FunctionalProperty: a provision belongs to at most one act (issue #522). Combined materializes the transitive closure so lõiked carry the same edge as their parent § (#520). Distinct from the literal estleg:sourceAct title.",
       "rdfs:domain": {
         "@type": "owl:Class",
         "owl:unionOf": {
@@ -5351,6 +5496,29 @@
       }
     },
     {
+      "@id": "estleg:similarFrom",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "sarnasuse lähtesäte",
+          "@language": "et"
+        },
+        {
+          "@value": "similar from",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Source provision or act of a reified estleg:Similarity link in the analytical overlay (#521). No rdfs:range so RDFS inference does not type overlay stubs as Act/LegalProvision.",
+      "rdfs:domain": {
+        "@id": "estleg:Similarity"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
+      }
+    },
+    {
       "@id": "estleg:similarTarget",
       "@type": [
         "owl:ObjectProperty"
@@ -5901,6 +6069,9 @@
       "rdfs:comment": "Links an Estonian act to the EU directive it transposes. Canonical TBox declaration folded into the controlled vocabulary so the 376 EU-transposition assertions in combined_ontology.jsonld resolve their predicate (issue #563); previously defined only in krr_outputs/transposition_schema.json, which the combined builder does not merge. NB: deliberately carries NO rdfs:range estleg:EULegislation — in the laws SHACL bucket the directive objects are bare cross-reference IRIs (estleg:EU_<celex>) whose full, labelled node lives in the eurlex corpus; under rdfs inference an rdfs:range would RDFS-type those stubs as estleg:EULegislation and trip the EULegislationShape label/celexNumber/euDocumentType requirements.",
       "rdfs:domain": {
         "@id": "estleg:Act"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:transposedBy"
       }
     },
     {

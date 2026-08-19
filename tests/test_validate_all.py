@@ -2807,9 +2807,9 @@ def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
 def test_validate_combined_graph_closure_flags_non_leaf_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     leaky = _court_stub("estleg:RK_1")
-    # estleg:interpretsLaw is NOT a whitelisted shaped-closure edge (#488), so a
-    # stub carrying it is still a stripping regression.
-    leaky["estleg:interpretsLaw"] = {"@id": "estleg:A_1"}
+    # estleg:hasSanction is still not a whitelisted stub edge (#488). #520
+    # now allows interpretsLaw/issuedUnder/transposedBy/governs on stubs.
+    leaky["estleg:hasSanction"] = {"@id": "estleg:Sanction_A_1"}
     _write_combined(
         krr,
         [

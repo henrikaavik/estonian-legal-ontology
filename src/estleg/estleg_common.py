@@ -267,6 +267,7 @@ PUBLIC_LOAD_SUBDIRS: tuple[str, ...] = (
     "annotations",
     "harmonisation",
     "regulations",
+    "analytical",
 )
 
 PUBLIC_LOAD_JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
@@ -501,6 +502,11 @@ STUB_SEMANTIC_EDGE_PREDICATES: frozenset[str] = frozenset(
         "estleg:amendingDraft",
         "estleg:harmonises",
         "estleg:sharedDirective",
+        # #520: dropped-forward / inverse edges re-asserted onto stubs.
+        "estleg:issuedUnder",
+        "estleg:interpretsLaw",
+        "estleg:transposedBy",
+        "estleg:governs",
     }
 )
 
