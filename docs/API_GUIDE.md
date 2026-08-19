@@ -239,6 +239,13 @@ print(f"Total triples: {len(g)}")
 
 The most powerful way to query this dataset is loading files into a semantic graph database (Apache Jena, Blazegraph, Oxigraph, etc.) and using SPARQL.
 
+The in-repo quickstart is Oxigraph via `docker compose up` →
+[http://localhost:7878](http://localhost:7878) (issue #474). Each corpus is a
+named graph (`https://w3id.org/estleg/graph/laws` and siblings). The compose
+file loads `krr_outputs/exports/estleg_all_sample.nq.gz` by default; generate
+the full `krr_outputs/estleg_all.nq.gz` with
+`python3 -m estleg.serialize_named_graphs --write`.
+
 > **Which graph to query.** Provisions are typed `estleg:LegalProvision` on the
 > instance (issue #434), so `?x a estleg:LegalProvision` works on a single peep
 > and on `combined_ontology.jsonld` without RDFS inference. Act-class rollup

@@ -48,9 +48,19 @@ _SPARQL_BLOCK = re.compile(r"```sparql\n(.*?)```", re.DOTALL)
 
 
 def _read_readme_sparql_blocks() -> list[str]:
-    """Return the SPARQL example bodies from README.md, in document order."""
+    """Return SPARQL bodies from the README 'SPARQL query examples' section.
+
+    Other README fences (e.g. the #474 GRAPH inventory query) are not
+    counted here — QUERY_SPECS indexes only the four worked examples.
+    """
     text = README.read_text(encoding="utf-8")
-    return [block.strip() for block in _SPARQL_BLOCK.findall(text)]
+    marker = "### SPARQL query examples"
+    start = text.find(marker)
+    section = text[start:] if start >= 0 else text
+    next_heading = section.find("\n## ", 1)
+    if next_heading > 0:
+        section = section[:next_heading]
+    return [block.strip() for block in _SPARQL_BLOCK.findall(section)]
 
 
 @dataclass(frozen=True)

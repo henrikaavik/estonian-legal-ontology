@@ -108,6 +108,33 @@ N-Quads wrap triples in a named graph
 (`https://w3id.org/estleg/graph/combined` for combined, or
 `https://w3id.org/estleg/graph/<filename-stem>` otherwise).
 
+### SPARQL endpoint (Oxigraph)
+
+One-command load of a **named-graph** dump (#474). Each corpus is a SPARQL
+`GRAPH`: `…/graph/laws`, `/regulations`, `/riigikohus`, `/eurlex`,
+`/curia`, `/drafts`, `/enrichment-layers`.
+
+```bash
+docker compose up
+# SPARQL UI / protocol: http://localhost:7878
+```
+
+The compose file loads `krr_outputs/exports/estleg_all_sample.nq.gz` by
+default (seven graphs, fixture-sized). For the full corpus:
+
+```bash
+python3 -m estleg.serialize_named_graphs --write
+ESTLEG_DUMP=./krr_outputs/estleg_all.nq.gz docker compose up
+```
+
+`estleg_all.nq.gz` is a generated release asset (not Git LFS) — attach it
+to the v1.0.0 GitHub release (#473). Until that tag exists, generate it
+locally from the combined JSON-LD / N-Quads sources.
+
+```sparql
+SELECT ?g (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } } GROUP BY ?g
+```
+
 ### Tabular export
 
 A star-schema projection for pandas/R lives in
