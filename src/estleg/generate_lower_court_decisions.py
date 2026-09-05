@@ -10,6 +10,12 @@ rows.
     python3 -m estleg.generate_lower_court_decisions --fetch --year 2026 --limit 50 --apply
 
 Live fetch is operator-run. Tests inject a fixture JSON page.
+
+Whatever the scope, the output is a *sample*: one search page, capped by
+``--limit``, never a complete corpus. Every write is therefore marked as
+such (#689) — "(näidis)" in the ontology label, ``estleg:isSampleData``
+on the header node, and ``"sample": true`` in the index — so downstream
+consumers cannot mistake it for full lower-court coverage.
 """
 
 from __future__ import annotations
@@ -36,6 +42,21 @@ DECISION_PAGE = "https://www.riigiteataja.ee/kohtulahendid/{oid}"
 OUT_DIR = KRR_DIR / "kohtud"
 INDEX_NAME = "KOHTUD_INDEX.json"
 SAMPLE_PEEP = "kohtud_sample_peep.json"
+
+# #689: this ingest is always a sample — one search page, capped by
+# ``--limit`` — so the sample marking is unconditional, not year-dependent.
+SAMPLE_LABEL_SUFFIX = "(näidis)"
+SAMPLE_COMMENT = (
+    "Scoped sample ingest (#525/#689), not a complete corpus: a capped slice "
+    "of first- and second-instance decisions (maakohus / halduskohus / "
+    "ringkonnakohus) from the Riigi Teataja kohtulahendid search API. Supreme "
+    "Court decisions are ingested separately under krr_outputs/riigikohus/."
+)
+INDEX_NOTE = (
+    "Sample ingest (näidis), not a corpus (#525/#689): a capped slice of "
+    "maakohus / halduskohus / ringkonnakohus decisions. Riigikohus stays in "
+    "krr_outputs/riigikohus/."
+)
 
 CASE_TYPE_BY_PREFIX = {
     "1": "Criminal",
@@ -223,20 +244,27 @@ def write_corpus(
     year: int | None,
     source_total: int,
 ) -> dict:
-    """Write a peep + index. Returns the index document."""
+    """Write a peep + index. Returns the index document.
+
+    The header node is always marked as sample data (#689): a year-scoped
+    run is still one capped search page, so it must not read as complete
+    lower-court coverage for that year.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
+    scope = f" {year}" if year else ""
     graph: list[dict] = [
         {
             "@id": f"estleg:Kohtud_{year or 'sample'}",
             "@type": ["owl:Ontology"],
             "rdfs:label": {
                 "@value": (
-                    f"Esimese ja teise astme kohtulahendid {year}"
-                    if year
-                    else "Esimese ja teise astme kohtulahendid (näidis)"
+                    f"Esimese ja teise astme kohtulahendid{scope} "
+                    f"{SAMPLE_LABEL_SUFFIX}"
                 ),
                 "@language": "et",
             },
+            "rdfs:comment": {"@value": SAMPLE_COMMENT, "@language": "en"},
+            "estleg:isSampleData": True,
             "dc:source": "Riigi Teataja kohtulahendid",
         }
     ]
@@ -249,10 +277,8 @@ def write_corpus(
     index = {
         "generated": BUILD_EVALUATION_DATE,
         "source": SEARCH_URL,
-        "note": (
-            "Scoped first cut (#525): maakohus / halduskohus / "
-            "ringkonnakohus. Riigikohus stays in krr_outputs/riigikohus/."
-        ),
+        "sample": True,
+        "note": INDEX_NOTE,
         "api_total": source_total,
         "ingested": len(hits),
         "year": year,
