@@ -410,3 +410,18 @@ def test_transposition_by_law_name() -> None:
 
 def test_transposition_empty_query() -> None:
     assert data.transposition_matches("") == []
+
+
+@pytest.mark.parametrize('url', [
+    'https://[invalid/akt/1',
+    'https://riigiteataja.ee:bad/akt/1',
+    '//riigiteataja.ee/akt/1',
+    'javascript://riigiteataja.ee/akt/1',
+    'https://user@riigiteataja.ee/akt/1',
+    'https://riigiteataja.ee /akt/1',
+])
+def test_rt_url_skips_malformed_or_non_web_sources(url: str) -> None:
+    fallback = 'https://www.riigiteataja.ee/akt/123'
+    node = {'dcterms:source': {'@id': url}, 'owl:sameAs': {'@id': fallback}}
+    assert data.rt_url(node) == fallback
+    assert data.external_ids({'owl:sameAs': {'@id': url}}) == {}

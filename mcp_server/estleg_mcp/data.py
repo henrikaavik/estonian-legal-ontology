@@ -900,8 +900,21 @@ _RT_HOST = "riigiteataja.ee"
 
 def _host_of(url: str) -> str:
     """Lower-cased hostname of an absolute URL ("" for a CURIE or a bare string)."""
-    netloc = urlsplit(url).netloc
-    return netloc.rpartition("@")[2].partition(":")[0].strip().lower().rstrip(".")
+    try:
+        parsed = urlsplit(url)
+        host = parsed.hostname or ""
+        # Accessing port also validates malformed / out-of-range ports.
+        parsed.port
+    except ValueError:
+        return ""
+    if (
+        parsed.scheme not in {"http", "https"}
+        or parsed.username is not None
+        or parsed.password is not None
+        or any(c.isspace() for c in url)
+    ):
+        return ""
+    return host.lower().rstrip(".")
 
 
 def _is_rt_host(url: str) -> bool:
