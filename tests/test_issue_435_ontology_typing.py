@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg.estleg_common import (
     DOMAIN_INDIVIDUAL_TYPES,
     is_domain_individual,
@@ -116,6 +118,8 @@ def test_committed_law_peeps_have_no_ontology_act_dual_types() -> None:
     assert dual == 0
 
 
+# LFS artifact; runs in the json-validation `-m corpus` job (#679)
+@pytest.mark.corpus
 def test_combined_has_no_ontology_act_dual_types() -> None:
     combined = REPO / "krr_outputs" / "combined_ontology.jsonld"
     assert combined.is_file()

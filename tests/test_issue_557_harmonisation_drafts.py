@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg.estleg_common import (
     STUB_SEMANTIC_EDGE_PREDICATES,
     required_closure_props,
@@ -143,6 +145,8 @@ def test_committed_draft_law_naming_coverage() -> None:
     assert peep_with_iri >= 100
 
 
+# LFS artifact; runs in the json-validation `-m corpus` job (#679)
+@pytest.mark.corpus
 def test_combined_harmonisation_stub_has_ee_edge() -> None:
     """Pin after --patch-combined: the Biotsiidiseadus sidecar edge is visible."""
     text = ONTOLOGY.read_text(encoding="utf-8")
