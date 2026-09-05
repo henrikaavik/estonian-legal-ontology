@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hmac
 import os
+import sys
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -64,7 +65,10 @@ def search_laws(query: str, limit: int = 10) -> list[dict[str, Any]]:
 
     Example question: "Which Estonian laws mention 'töölepingu' / employment?"
 
-    Returns a list of {name, title, abbrev, rt_url, status}.
+    Returns a list of {name, title, abbrev, rt_url, status, external_ids}.
+    ``rt_url`` is a riigiteataja.ee URL or "" (never another host);
+    ``external_ids`` carries any non-riigiteataja identifier the act links
+    itself to, e.g. {"wikidata": "http://www.wikidata.org/entity/Q2352833"}.
     """
     results: list[dict[str, Any]] = []
     for rec in data.search_law_records(query, limit=limit):
@@ -76,6 +80,7 @@ def search_laws(query: str, limit: int = 10) -> list[dict[str, Any]]:
                 "title": data.act_title(act) or rec.title,
                 "abbrev": data.display_abbrev(rec),
                 "rt_url": data.rt_url(act),
+                "external_ids": data.external_ids(act),
                 "status": data._text(act.get("estleg:temporalStatus")) if act else "",
             }
         )
@@ -100,7 +105,11 @@ def get_law(law: str, as_of: str | None = None) -> dict[str, Any]:
     Example question: "Give me an overview of the Penal Code (Karistusseadustik)."
 
     Returns {title, abbrev, status, consolidated_as_of, rt_url,
-    eurovoc_subjects, num_provisions, num_chapters}. ``status`` is the
+    external_ids, eurovoc_subjects, num_provisions, num_chapters}. ``rt_url``
+    is the act's riigiteataja.ee URL, or "" when the ontology records no
+    riigiteataja source for it (a handful of acts, including KarS and VÕS);
+    ``external_ids`` then still carries what the act does link to, e.g.
+    {"wikidata": "http://www.wikidata.org/entity/Q2352833"}. ``status`` is the
     ontology's ``temporalStatus`` (may be "unknown" for some laws);
     ``consolidated_as_of`` is the date of the consolidated text captured. With
     ``as_of`` it additionally carries {as_of, num_provisions_as_of}; the
@@ -122,6 +131,7 @@ def get_law(law: str, as_of: str | None = None) -> dict[str, Any]:
         "consolidated_as_of": data.act_kehtiv_date(act),
         "ontology_version": data.ontology_version(),
         "rt_url": data.rt_url(act),
+        "external_ids": data.external_ids(act),
         "eurovoc_subjects": subjects,
         "num_provisions": len(data.provision_nodes(graph)),
         "num_chapters": len(data.chapter_nodes(graph)),
@@ -185,7 +195,8 @@ def get_provision(
     date (e.g. "2010-06-15") to read the § exactly as it stood on that date: the
     tool selects the historical redaction whose validity window contains the
     date and reports its redaction id and window. Legal text is truncated to
-    ~2000 characters; the rt_url points to the full act on riigiteataja.ee.
+    ~2000 characters; the rt_url points to the full act on riigiteataja.ee (or
+    is "" for the few acts whose ontology node records no riigiteataja source).
 
     Example question: "What did § 13 of the Penal Code (KarS) say on 2010-06-15?"
 
@@ -488,7 +499,9 @@ def sanctions_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
 
     The enforcement-teeth lens: imprisonment, fines, and other penalties
     attached to the law's provisions, with the § that imposes each. Each item
-    carries the riigiteataja.ee URL of the act. Unknown law returns
+    carries the riigiteataja.ee URL of the act, or "" for the few acts whose
+    ontology node records no riigiteataja source (KarS is one). Unknown law
+    returns
     ``[{note}]``; a known law that defines no sanctions returns ``[]``.
     ``limit`` caps the list (KarS has hundreds).
 
@@ -913,6 +926,11 @@ def layers_available() -> list[dict[str, Any]]:
     ``combined_ontology.jsonld``, annotations, EUR-Lex peeps) are listed as
     ``excluded`` so a silent dead layer is documented rather than implied.
 
+    The table also carries a ``provision_detection`` row, which is a live
+    self-test rather than a path check: it reports how many § nodes the Penal
+    Code currently resolves, so an upstream retype of the provision class
+    (which would silently empty half the tool surface) is visible here.
+
     Returns a list of {layer, path, status, tools, present, note} where
     ``status`` is ``wired``, ``loadable``, or ``excluded``.
     """
@@ -995,6 +1013,41 @@ def _build_http_app():
     return app
 
 
+def check_provision_detection() -> None:
+    """Refuse to boot when the corpus's § nodes are no longer detected (#678).
+
+    A generator change that retypes provisions breaks no import and loses no
+    file: ``get_provision``, ``provision_history``, the reference tools, the
+    court/authority lenses and every ``num_provisions`` count simply return
+    nothing, and a lawmaker reads that as "the corpus says there is nothing".
+    Failing loudly at startup is the only place that regression is cheap to
+    catch. ``ESTLEG_ALLOW_EMPTY_PROVISIONS=1`` downgrades it to a warning for
+    an operator who knowingly wants the remaining tools.
+    """
+    check = data.provision_detection_check()
+    if check["ok"]:
+        return
+    print(
+        f"estleg-mcp: provision detection is dark -- {check['abbrev']} "
+        f"({check['law']}) resolves {check['provisions']} § nodes.\n"
+        "  Every provision-backed tool (get_provision, provision_history, "
+        "who_references, references_of, court_decisions_for_law, "
+        "competent_authority_for_law, num_provisions) would answer empty.\n"
+        "  Check that ESTLEG_CORPUS points at a corpus containing "
+        "krr_outputs/INDEX.json, and that its *_peep.json § nodes still carry "
+        "an estleg:LegalProvision @type (see estleg_mcp.data._is_provision).\n"
+        "  Set ESTLEG_ALLOW_EMPTY_PROVISIONS=1 to start anyway.",
+        file=sys.stderr,
+    )
+    if os.environ.get("ESTLEG_ALLOW_EMPTY_PROVISIONS", "").strip() == "1":
+        print(
+            "estleg-mcp: ESTLEG_ALLOW_EMPTY_PROVISIONS=1 set; starting anyway.",
+            file=sys.stderr,
+        )
+        return
+    raise SystemExit(1)
+
+
 def main() -> None:
     """Run the estleg MCP server.
 
@@ -1005,7 +1058,12 @@ def main() -> None:
     token; unset = open) tune it. Behind a reverse proxy, set
     ``ESTLEG_ALLOWED_HOSTS`` to the public host(s) to re-enable DNS-rebinding
     protection (see :func:`_transport_security`).
+
+    Either transport is preceded by :func:`check_provision_detection`, so a
+    corpus whose § nodes stopped being detected fails at boot instead of
+    serving confident empty answers.
     """
+    check_provision_detection()
     transport = os.environ.get("ESTLEG_TRANSPORT", "stdio").strip().lower()
     if transport in ("http", "streamable-http", "streamable_http"):
         import uvicorn
