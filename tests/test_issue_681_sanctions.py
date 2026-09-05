@@ -517,8 +517,8 @@ class TestDissolutionAndConfiscation:
 
     def test_neither_carries_an_amount(self):
         for record in (
-            extract_dissolution("sundlõpetamisega")[0],
-            extract_confiscation("konfiskeerimine")[0],
+            extract_dissolution("Karistatakse sundlõpetamisega.")[0],
+            extract_confiscation("Kohus konfiskeerib vara.")[0],
         ):
             assert "max_penalty" not in record
             assert "min_penalty" not in record
@@ -1033,3 +1033,60 @@ class TestStaleInlineSanctionAnchorsArePurged:
              "estleg:hasSanction": [{"@id": "estleg:Sanction_X"}]}
         )
         assert not _is_inline_sanction_node("not a node")
+
+
+@pytest.mark.parametrize('text', [
+    'Taotleja ei ole pankrotis, likvideerimisel ega sundlõpetamisel.',
+    'Registrisse kantakse andmed sundlõpetamise kohta.',
+    '(1) Rikkumise eest karistatakse rahatrahviga. (2) Sundlõpetamise kohta peetakse registrit.',
+])
+def test_dissolution_mentions_are_not_penalties(text):
+    assert extract_dissolution(text) == []
+    assert not any(s['sanction_type'] == 'compulsory_dissolution' for s in extract_sanctions(text))
+
+
+@pytest.mark.parametrize('text', [
+    'Ettevõtlustulust ei ole lubatud maha arvata maksumaksjalt erikonfiskeeritud vara maksumust.',
+    'Registrisse kantakse konfiskeerimise andmed.',
+    'Isikul on ese, mille võib võtta seaduse alusel hoiule, hõivata või konfiskeerida.',
+    'Vara ei konfiskeerita.',
+])
+def test_confiscation_mentions_are_not_penalties(text):
+    assert extract_confiscation(text) == []
+
+
+@pytest.mark.parametrize('text', [
+    'Kohus konfiskeerib süüteo toimepanemise vahendi.',
+    'Kohus võib konfiskeerida süüteo toimepanemise vahendi.',
+    'Käesoleva paragrahvi rikkumise korral konfiskeeritakse ese.',
+    'Kohus võib kohaldada kuriteoga saadud vara laiendatud konfiskeerimist.',
+])
+def test_operative_confiscation_is_preserved(text):
+    assert extract_confiscation(text) == [{'sanction_type': 'confiscation'}]
+
+
+def test_committed_sanctions_do_not_turn_eligibility_or_tax_rules_into_penalties():
+    from pathlib import Path
+    import json
+
+    root = Path(__file__).resolve().parents[1] / 'krr_outputs' / 'sanctions'
+    excluded = {
+        ('estleg:Reg_1061969_Par_8', 'compulsory_dissolution'),
+        ('estleg:TULUMA_Par_34_Lg_1', 'confiscation'),
+        ('estleg:KARIST_2_Osa2_Par_308', 'confiscation'),
+    }
+    for path in root.glob('*.json'):
+        for node in json.loads(path.read_text()).get('@graph', []):
+            pair = (node.get('estleg:applicableProvision', {}).get('@id'),
+                    node.get('estleg:sanctionType'))
+            assert pair not in excluded, (path.name, pair)
+
+
+@pytest.mark.parametrize('inference', _INFERENCE_MODES)
+def test_range_ordering_does_not_compare_different_units(inference):
+    conforms, message = _validate(_sanction(**{
+        'estleg:minPenalty': '30 days', 'estleg:maxPenalty': '1 years',
+        'estleg:minPenaltyAmount': _decimal('30'), 'estleg:maxPenaltyAmount': _decimal('1'),
+        'estleg:minPenaltyUnit': 'days', 'estleg:maxPenaltyUnit': 'years',
+    }), inference)
+    assert conforms, message

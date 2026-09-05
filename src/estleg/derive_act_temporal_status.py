@@ -199,7 +199,9 @@ def _set_status(node: dict, status: str, recompute: bool) -> bool:
     """
     existing = node.get(STATUS_PROPERTY)
     determined = existing not in (None, UNKNOWN)
-    if determined and (not recompute or _has_act_dates(node)):
+    if determined and (
+        not recompute or (_has_act_dates(node) and not _is_deprecated(node))
+    ):
         return False
     if existing == status:
         return False

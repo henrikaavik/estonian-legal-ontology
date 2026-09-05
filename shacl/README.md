@@ -68,6 +68,11 @@ that lacks the property: a Sanction carrying only `estleg:maxPenalty
 the structured penalty fields are optional, so a ceiling must constrain
 the amount when it is present without requiring it.
 
+Penalty range ordering compares amounts only when `minPenaltyUnit` and
+`maxPenaltyUnit` agree, and any currencies agree. Mixed-unit ranges such as
+30 days to 1 year require normalisation; comparing their bare numbers would
+produce a false violation. This guard uses core SHACL (`sh:equals` / `sh:not`).
+
 ## Severity
 
 Omitted `sh:severity` is the SHACL default, `sh:Violation`. Use it for

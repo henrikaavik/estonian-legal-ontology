@@ -662,12 +662,18 @@ Represents a penalty or sanction defined by a legal provision.
 
 `confiscation` (KarS §§ 83–85) and `compulsory_dissolution` (KarS § 46)
 carry no amount — the offence provision states no ceiling for either.
+Extraction requires operative wording: a sentencing formula ending in
+`sundlõpetamisega`, or an order to confiscate / a court applying confiscation.
+Eligibility conditions, registry fields and references to previously confiscated
+property do not themselves impose these sanctions.
 `percent_of_turnover` expresses a fine as a share of a legal person's
 turnover (KarS § 400 lg 3/lg 4); being relative, it carries no currency.
 
 Statutory ceilings are enforced by SHACL: imprisonment in years ≤ 20
 (KarS § 45), arrest in days ≤ 30 (KarS § 48), daily rates ≤ 500
-(KarS § 44).
+(KarS § 44). The minimum/maximum ordering check compares numeric amounts
+only when their units and currencies agree; mixed-unit ranges require
+normalisation before they can be ordered.
 
 ### Institution (`estleg:Institution`)
 Represents a state institution with legal competences.

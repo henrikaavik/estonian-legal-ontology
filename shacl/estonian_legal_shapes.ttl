@@ -1584,19 +1584,22 @@ estleg:SanctionShape
         sh:name "minPenaltyUnit" ;
         sh:description "Unit of the minimum penalty amount (same controlled set as maxPenaltyUnit)" ;
     ] ;
-    # --- statutory range sanity (issue #681) ---
-    # A penalty range must not be inverted. sh:lessThanOrEquals compares
-    # every estleg:minPenaltyAmount at the focus node against every
-    # estleg:maxPenaltyAmount there; a Sanction carrying only one of the
-    # two has no pair to compare and conforms vacuously, so the
-    # max-only records stay valid. Kept as its own property shape so the
-    # message describes the range, not the datatype.
-    sh:property [
-        sh:path estleg:minPenaltyAmount ;
-        sh:lessThanOrEquals estleg:maxPenaltyAmount ;
-        sh:name "penalty range ordering" ;
-        sh:message "estleg:minPenaltyAmount must not exceed estleg:maxPenaltyAmount; an inverted range signals a mis-parsed source penalty (issue #681)." ;
-        sh:description "The minimum penalty must be less than or equal to the maximum penalty" ;
+    # Compare amounts only when their units and currencies agree. For example,
+    # 30 days to 1 year is a valid range although the bare numbers are 30 > 1.
+    # Mixed-unit ranges need conversion before ordering can be checked.
+    sh:node [
+        sh:message "Comparable penalty amounts must have minPenaltyAmount <= maxPenaltyAmount (issue #681)." ;
+        sh:or (
+            [ sh:not [ sh:property [
+                sh:path estleg:minPenaltyUnit ;
+                sh:equals estleg:maxPenaltyUnit ] ] ]
+            [ sh:not [ sh:property [
+                sh:path estleg:minPenaltyCurrency ;
+                sh:equals estleg:maxPenaltyCurrency ] ] ]
+            [ sh:property [
+                sh:path estleg:minPenaltyAmount ;
+                sh:lessThanOrEquals estleg:maxPenaltyAmount ] ]
+        ) ;
     ] ;
     sh:property [
         sh:path estleg:maxPenaltyCurrency ;

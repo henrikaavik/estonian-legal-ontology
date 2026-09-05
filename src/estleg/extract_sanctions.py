@@ -774,7 +774,11 @@ def extract_dissolution(text: str) -> list[dict]:
     Dissolution has no magnitude — an entity is dissolved or it is not —
     so the record carries no ``max_penalty`` and no structured amount.
     """
-    if re.search(r"sundlõpeta\w*", text, re.IGNORECASE):
+    # An eligibility condition or register entry only mentions dissolution.
+    # Require the sentencing formula and its instrumental penalty ending.
+    if re.search(
+        r"\bkaristatakse\b[^.;!?]*\bsundlõpetamisega\b", text, re.IGNORECASE
+    ):
         return [{"sanction_type": "compulsory_dissolution"}]
     return []
 
@@ -788,7 +792,16 @@ def extract_confiscation(text: str) -> list[dict]:
     the amount is whatever the offence yielded — so no ``max_penalty``
     is emitted.
     """
-    if re.search(r"konfiskeeri\w*", text, re.IGNORECASE):
+    # Past confiscations, registry fields and search powers are references,
+    # not new sanctions. Recognise operative orders / court application only.
+    operative = (
+        r"(?<!ei )\bkonfiskeeri(?:b|takse)\b"
+        r"|\b(?:kohaldab\s+kohus|kohus\s+kohaldab)"
+        r"[^.;!?]*\bkonfiskeerimist\b"
+        r"|\bkohus\s+võib\s+kohaldada[^.;!?]*\bkonfiskeerimist\b"
+        r"|\bkohus\s+võib\s+konfiskeerida\b"
+    )
+    if re.search(operative, text, re.IGNORECASE):
         return [{"sanction_type": "confiscation"}]
     return []
 

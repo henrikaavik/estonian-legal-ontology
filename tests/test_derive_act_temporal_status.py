@@ -321,3 +321,14 @@ def test_format_distribution_lists_all_statuses():
     assert "'unknown': 0" in rendered
     assert "'repealed': 0" in rendered
     assert "'notYetEffective': 0" in rendered
+
+
+def test_recompute_clears_deprecated_status_even_with_act_dates(tmp_path):
+    peep = _peep(tmp_path, 'deprecated_dated_peep.json', [{
+        '@id': 'estleg:Old_Map', '@type': ['estleg:Act'],
+        'owl:deprecated': True, 'estleg:temporalStatus': 'inForce',
+        'estleg:entryIntoForce': {'@value': '2002-07-01', '@type': 'xsd:date'},
+    }])
+    result = D.process_deprecated_status(tmp_path, dry_run=False, recompute=True)
+    assert result['acts_changed'] == 1
+    assert _statuses(peep)['estleg:Old_Map'] == 'unknown'
