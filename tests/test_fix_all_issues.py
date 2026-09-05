@@ -1349,6 +1349,22 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
             ]
         },
     )
+    # overlay source (#561 amendments): merged in full, but its forward edge
+    # into the version layer is stripped like estleg:hasVersion (#681).
+    write_json(
+        tmp_path / "amendments" / "amendments_a.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Amendment_A_vf_20240101",
+                    "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+                    "rdfs:label": "Amendment 2024-01-01",
+                    "estleg:amends": {"@id": "estleg:A_1"},
+                    "estleg:resultedInVersion": {"@id": "estleg:A_1_v1"},
+                }
+            ]
+        },
+    )
     # sibling source: only a lightweight stub of this is carried into combined
     write_json(
         tmp_path / "riigikohus" / "rk_2020.jsonld",
@@ -1389,6 +1405,11 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
     # appears — combined stays genuinely closed, not dangling-but-exempt.
     assert "estleg:hasVersion" not in nodes["estleg:A_1"]
     assert "estleg:A_1_v1" not in nodes
+    # #681: the same policy covers the amendment layer's forward edge into
+    # the version layer — the AmendmentEvent is merged, the edge is not.
+    event = nodes["estleg:Amendment_A_vf_20240101"]
+    assert event["estleg:amends"] == {"@id": "estleg:A_1"}
+    assert "estleg:resultedInVersion" not in event
 
 
 def test_combined_builder_stub_keeps_external_link_drops_internal_ref(tmp_path):

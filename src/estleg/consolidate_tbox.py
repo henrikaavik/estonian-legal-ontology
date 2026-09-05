@@ -179,7 +179,11 @@ REAL_COMMENTS: dict[str, str] = {
         "Ordinal or official number of an Annex."
     ),
     "estleg:applicableProvision": (
-        "Provision that a court decision or annotation treats as applicable."
+        "Provision that a court decision, sanction, or annotation treats as "
+        "applicable. Domain is owl:Thing on purpose: the predicate is shared by "
+        "CourtDecision and Sanction nodes, and a CourtDecision domain axiom would "
+        "phantom-type every Sanction as a court decision under RDFS inference "
+        "(#681; see shacl/README.md)."
     ),
     "estleg:appliesToProvision": (
         "Links a competence, sanction, or annotation to the provision it "
@@ -345,7 +349,9 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:amendmentDate": ("estleg:AmendmentEvent", "xsd:date"),
     "estleg:amends": ("estleg:AmendmentEvent", "rdfs:Resource"),
     "estleg:annexNumber": ("estleg:Annex", "xsd:string"),
-    "estleg:applicableProvision": ("estleg:CourtDecision", "rdfs:Resource"),
+    # Shared by CourtDecision and Sanction: a CourtDecision domain would
+    # phantom-type every Sanction under RDFS inference (#681).
+    "estleg:applicableProvision": ("owl:Thing", "rdfs:Resource"),
     "estleg:appliesToProvision": ("owl:Thing", "rdfs:Resource"),
     "estleg:appliesToProvisionCount": ("owl:Thing", "xsd:integer"),
     "estleg:assertionConfidence": ("owl:Thing", "xsd:decimal"),

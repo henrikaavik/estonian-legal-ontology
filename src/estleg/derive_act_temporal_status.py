@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Derive act-level ``estleg:temporalStatus`` from version sidecars (#617).
+"""Derive act-level ``estleg:temporalStatus`` from version sidecars (#617, #682).
 
 The fitness eval (#617) flagged ``temporalStatus = unknown`` on ~100 % of laws —
 the corpus can't say whether a law is currently in force. But the answer already
@@ -14,12 +14,21 @@ The ontology models temporal validity at the **act** level (#128 — a closed-wo
 gate in ``validate_all`` rejects ``temporalStatus`` on non-Act nodes), so this
 fills the gap *there*: for each law it aggregates the current-redaction status of
 its provisions and stamps the derived status onto the law's ``estleg:Act``
-node(s) — but **only where the act is currently ``unknown``**, never overwriting a
-value ``extract_temporal_data`` already determined.
+node(s).
 
 Status semantics match ``extract_temporal_data.determine_temporal_status``
-(``inForce`` / ``repealed`` / ``notYetEffective``). A law with no version data is
-left ``unknown`` (nothing to derive from).
+(``inForce`` / ``repealed`` / ``notYetEffective`` / ``unknown``).
+
+**#682 — honest unknowns.** An earlier residual pass stamped ``inForce`` on every
+indexed act that had no sidecar evidence, and a deprecated act copied the status
+of its ``dcterms:isReplacedBy`` successor. Together those made all 1,146 act
+roots claim ``inForce``, which is an assertion the corpus cannot support:
+``determine_temporal_status`` deliberately refuses to default to ``inForce``
+without dates, and the residual pass undid that honesty. Now an act with no
+sidecar evidence and no act-level dates settles at ``unknown``, and a deprecated
+(retired-IRI) act root always carries ``unknown`` — a retired identifier is a
+legal-succession artefact, not a repeal, so neither ``inForce`` nor ``repealed``
+may be inferred from it.
 
 This is a **surgical, offline, deterministic** post-process (no network). It is
 NOT in the legal-review-gated paths (sanctions / deontic / court / transposition);
@@ -28,6 +37,8 @@ VÕS flagship; ``--all`` applies corpus-wide (a larger change — review the eva
 delta + closure gate).
 
 Idempotent; ``--dry-run`` reports without writing; atomic writes via ``save_json``.
+``--recompute`` re-derives every targeted act root instead of only filling
+``unknown``/missing, so a previously stamped residual ``inForce`` is corrected.
 """
 
 from __future__ import annotations
@@ -45,6 +56,17 @@ from estleg.estleg_common import BUILD_EVALUATION_DATE, KRR_DIR, save_json
 DEFAULT_FLAGSHIP_LAWS = ("volaoigusseadus",)
 
 VERSION_DIR = KRR_DIR / "provision_versions"
+
+STATUS_PROPERTY = "estleg:temporalStatus"
+UNKNOWN = "unknown"
+
+# Canonical print order for status distributions.
+STATUS_ORDER = ("inForce", "notYetEffective", "repealed", UNKNOWN)
+
+# Act-level date triples written by ``extract_temporal_data``. When a node
+# carries one of these its status was determined from dates, and #682's
+# re-derivation must not clobber it.
+ACT_DATE_PROPERTIES = ("estleg:repealDate", "estleg:entryIntoForce")
 
 
 def _date_value(value) -> str | None:
@@ -132,130 +154,153 @@ def _is_deprecated(node: dict) -> bool:
     return node.get("owl:deprecated") is True
 
 
-def _replaced_by_iri(node: dict) -> str | None:
-    raw = node.get("dcterms:isReplacedBy")
-    if isinstance(raw, dict) and isinstance(raw.get("@id"), str):
-        return raw["@id"]
-    return None
+def _has_act_dates(node: dict) -> bool:
+    """True when the node carries its own entry-into-force / repeal date.
+
+    Such a status came from ``extract_temporal_data.determine_temporal_status``
+    (authoritative act-level XML metadata), so re-derivation leaves it alone.
+    """
+    return any(node.get(prop) is not None for prop in ACT_DATE_PROPERTIES)
 
 
 def residual_status(*, law: dict | None, node: dict) -> str | None:
-    """Classify an Act that still has no version-sidecar status (#409).
+    """Classify an Act that has no version-sidecar status (#409, #682).
 
-    Live INDEX treaty/ratification shells and other live INDEX laws without
-    XML/sidecar dates are current published consolidations → ``inForce``.
-    Deprecated duplicates are not classified here (copied from replacement).
+    Always ``None``: an indexed act with no sidecar evidence and no act-level
+    dates stays ``unknown``. This used to return ``inForce`` for any live INDEX
+    law on the theory that a published Riigi Teataja consolidation is current,
+    which silently asserted in-force status for ~385 acts on no evidence at all
+    and contradicted ``determine_temporal_status``'s refusal to default. The
+    seam is kept (with its inputs) so a *real* residual rule — one backed by RT
+    ``kehtivus`` or an act-level date — can be reintroduced here.
+    """
+    return None
+
+
+def desired_status(node: dict, sidecar_status: str | None, law: dict | None = None) -> str:
+    """The temporalStatus an Act root should carry, on the evidence available.
+
+    Deprecated (retired-IRI) act roots are ``unknown``: a superseded identifier
+    says nothing about whether the statute behind it is in force (#682/#426).
     """
     if _is_deprecated(node):
-        return None
-    if law is None:
-        return None
-    return "inForce"
+        return UNKNOWN
+    if sidecar_status:
+        return sidecar_status
+    return residual_status(law=law, node=node) or UNKNOWN
 
 
-def apply_to_file(path: Path, status: str) -> tuple[int, dict]:
-    """Stamp the derived status onto Act nodes that are currently ``unknown``.
+def _set_status(node: dict, status: str, recompute: bool) -> bool:
+    """Write ``status`` onto one Act node. Returns True when it changed.
 
-    Returns (acts_changed, doc). Only fills ``unknown`` / missing — never
-    overwrites a status ``extract_temporal_data`` already set.
+    Fill-only (default): an already-determined value is preserved. Under
+    ``recompute``: only a *date-determined* value is preserved, so residual
+    stamps from before #682 are corrected.
+    """
+    existing = node.get(STATUS_PROPERTY)
+    determined = existing not in (None, UNKNOWN)
+    if determined and (
+        not recompute or (_has_act_dates(node) and not _is_deprecated(node))
+    ):
+        return False
+    if existing == status:
+        return False
+    node[STATUS_PROPERTY] = status
+    return True
+
+
+def act_status_counts(doc: dict) -> Counter:
+    """Status distribution over the Act roots of one loaded peep document."""
+    counts: Counter = Counter()
+    for node in doc.get("@graph") or []:
+        if isinstance(node, dict) and _is_act(node):
+            counts[node.get(STATUS_PROPERTY) or "missing"] += 1
+    return counts
+
+
+def format_distribution(counts: Counter) -> str:
+    """Render a status Counter with the canonical statuses always present."""
+    ordered = {status: counts.get(status, 0) for status in STATUS_ORDER}
+    ordered.update({k: v for k, v in sorted(counts.items()) if k not in ordered})
+    return str(ordered)
+
+
+def apply_to_file(
+    path: Path, status: str | None, recompute: bool = False, law: dict | None = None
+) -> tuple[int, dict]:
+    """Stamp the derived status onto the Act nodes of one peep file.
+
+    ``status`` is the law's sidecar-derived status, or ``None`` when the sidecar
+    yields nothing — in which case the act settles at ``unknown`` rather than a
+    residual ``inForce`` (#682). Returns (acts_changed, doc); the document is
+    mutated in memory either way, so dry runs can still report the outcome.
     """
     doc = json.loads(path.read_text(encoding="utf-8"))
     changed = 0
-    for node in doc.get("@graph", []):
+    for node in doc.get("@graph") or []:
         if not isinstance(node, dict) or not _is_act(node):
             continue
-        existing = node.get("estleg:temporalStatus")
-        if existing in (None, "unknown"):
-            if existing != status:
-                node["estleg:temporalStatus"] = status
-                changed += 1
+        if _set_status(node, desired_status(node, status, law), recompute):
+            changed += 1
     return changed, doc
 
 
-def collect_act_status_by_id(krr_dir: Path) -> dict[str, str]:
-    """``@id`` → temporalStatus for every classified Act in root peeps."""
-    found: dict[str, str] = {}
-    for path in krr_dir.glob("*_peep.json"):
-        try:
-            doc = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
-        for node in doc.get("@graph") or []:
-            if not isinstance(node, dict):
-                continue
-            nid = node.get("@id")
-            status = node.get("estleg:temporalStatus")
-            # Include Part statuses so deprecated leftovers that point at an
-            # osa node can copy a known value.
-            if isinstance(nid, str) and isinstance(status, str) and status != "unknown":
-                found[nid] = status
-    return found
+def process_deprecated_status(
+    krr_dir: Path, dry_run: bool, recompute: bool = False
+) -> dict:
+    """Set ``unknown`` on deprecated Act roots corpus-wide (#682).
 
-
-def process_deprecated_copy(
-    krr_dir: Path, status_by_id: dict[str, str], dry_run: bool
-) -> tuple[int, int]:
-    """Copy temporalStatus from ``dcterms:isReplacedBy`` onto deprecated Acts."""
-    files_changed = 0
-    acts_changed = 0
+    Replaces the pre-#682 pass that copied the ``dcterms:isReplacedBy``
+    successor's status onto the retired IRI. A retired IRI is legal succession,
+    not repeal: copying ``inForce`` asserted the retired act is in force, and
+    stamping ``repealed`` would assert e.g. that the Constitution was repealed
+    because ``estleg:PS_Map`` was superseded by
+    ``estleg:eesti_vabariigi_pohiseadus_Map``. Neither is knowable here.
+    """
+    result = {"files_changed": 0, "acts_changed": 0, "acts": 0, "statuses": Counter()}
     for path in sorted(krr_dir.glob("*_peep.json")):
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
         changed = 0
+        deprecated = 0
         for node in doc.get("@graph") or []:
             if not isinstance(node, dict) or not _is_act(node) or not _is_deprecated(node):
                 continue
-            existing = node.get("estleg:temporalStatus")
-            if existing not in (None, "unknown"):
-                continue
-            replacement = _replaced_by_iri(node)
-            status = status_by_id.get(replacement) if replacement else None
-            if status and existing != status:
-                node["estleg:temporalStatus"] = status
+            deprecated += 1
+            if _set_status(node, UNKNOWN, recompute):
                 changed += 1
+            result["statuses"][node.get(STATUS_PROPERTY) or "missing"] += 1
+        result["acts"] += deprecated
         if changed:
-            files_changed += 1
-            acts_changed += changed
+            result["files_changed"] += 1
+            result["acts_changed"] += changed
             if not dry_run:
                 save_json(path, doc)
-    return files_changed, acts_changed
+    return result
 
 
-def process_law(law: dict, evaluation_date: str, dry_run: bool) -> dict:
+def process_law(law: dict, evaluation_date: str, dry_run: bool, recompute: bool = False) -> dict:
     name = law["name"]
     status = derive_act_status(name, evaluation_date)
-    summary = {"law": name, "status": status, "acts_changed": 0, "source": "sidecar"}
+    summary = {
+        "law": name,
+        "status": status or UNKNOWN,
+        "acts_changed": 0,
+        "source": "sidecar" if status else "no-evidence",
+        "statuses": Counter(),
+    }
     for fname in law["files"]:
         path = KRR_DIR / fname
         if not path.exists():
             continue
-        if status is None:
-            try:
-                doc = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            file_changed = 0
-            for node in doc.get("@graph") or []:
-                if not isinstance(node, dict) or not _is_act(node):
-                    continue
-                fallback = residual_status(law=law, node=node)
-                if fallback is None:
-                    continue
-                existing = node.get("estleg:temporalStatus")
-                if existing in (None, "unknown") and existing != fallback:
-                    node["estleg:temporalStatus"] = fallback
-                    file_changed += 1
-            if file_changed:
-                summary["status"] = fallback
-                summary["source"] = "residual"
-                summary["acts_changed"] += file_changed
-                if not dry_run:
-                    save_json(path, doc)
+        try:
+            changed, doc = apply_to_file(path, status, recompute, law)
+        except (OSError, json.JSONDecodeError):
             continue
-        changed, doc = apply_to_file(path, status)
         summary["acts_changed"] += changed
+        summary["statuses"] += act_status_counts(doc)
         if changed and not dry_run:
             save_json(path, doc)
     return summary
@@ -275,6 +320,11 @@ def main(argv: list[str] | None = None) -> int:
         "--evaluation-date", default=BUILD_EVALUATION_DATE,
         help=f"As-of date for in-force computation (default pinned: {BUILD_EVALUATION_DATE}).",
     )
+    parser.add_argument(
+        "--recompute", action="store_true",
+        help="Re-derive every targeted act root (#682) instead of only filling "
+             "unknown/missing; preserves only date-determined statuses.",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Report without writing.")
     args = parser.parse_args(argv)
 
@@ -290,37 +340,46 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: law(s) not in INDEX: {sorted(missing)}")
             return 1
 
+    mode = "recompute" if args.recompute else "fill-only"
     print("=" * 70)
-    print("Derive act-level temporalStatus from version sidecars (#617, #128)")
+    print("Derive act-level temporalStatus from version sidecars (#617, #128, #682)")
     print(f"  As-of date: {args.evaluation_date}{'  [DRY RUN]' if args.dry_run else ''}")
-    print(f"  Laws: {len(targets)}")
+    print(f"  Laws: {len(targets)}  Mode: {mode}")
     print("=" * 70)
 
     total_acts = 0
-    by_status: Counter = Counter()
+    act_statuses: Counter = Counter()
     by_source: Counter = Counter()
     laws_changed = 0
     for law in targets:
-        summary = process_law(law, args.evaluation_date, args.dry_run)
+        summary = process_law(law, args.evaluation_date, args.dry_run, args.recompute)
+        act_statuses += summary["statuses"]
+        by_source[summary["source"]] += 1
         if summary["acts_changed"]:
             laws_changed += 1
-            by_status[summary["status"]] += 1
-            by_source[summary.get("source") or "sidecar"] += 1
             if not args.all:
                 verb = "would set" if args.dry_run else "set"
                 print(f"  {summary['law']}: {verb} {summary['acts_changed']} act node(s) -> {summary['status']}")
         total_acts += summary["acts_changed"]
 
-    dep_files, dep_acts = process_deprecated_copy(KRR_DIR, collect_act_status_by_id(KRR_DIR), args.dry_run)
+    deprecated = process_deprecated_status(KRR_DIR, args.dry_run, args.recompute)
     print(f"\n  Laws {'would change' if args.dry_run else 'changed'}: {laws_changed}")
     print(f"  Act nodes {'would change' if args.dry_run else 'changed'}: {total_acts}")
-    print(f"  Derived status distribution (laws): {dict(sorted(by_status.items()))}")
-    print(f"  Source: {dict(sorted(by_source.items()))}")
+    print(f"  Act root status distribution (INDEX laws): {format_distribution(act_statuses)}")
+    print(f"  Evidence per law: {dict(sorted(by_source.items()))}")
     print(
-        f"  Deprecated copies {'would change' if args.dry_run else 'changed'}: "
-        f"{dep_files} files / {dep_acts} act nodes"
+        f"  Deprecated act roots (corpus-wide): {deprecated['acts']} — "
+        f"{deprecated['files_changed']} file(s) / {deprecated['acts_changed']} node(s) "
+        f"{'would change' if args.dry_run else 'changed'}"
     )
-    if not args.dry_run and (total_acts or dep_acts):
+    print(f"  Deprecated status distribution: {format_distribution(deprecated['statuses'])}")
+    stale_deprecated = deprecated["statuses"].total() - deprecated["statuses"][UNKNOWN]
+    if stale_deprecated and not args.recompute:
+        print(
+            f"  NOTE: {stale_deprecated} deprecated act root(s) still carry a "
+            "non-unknown status; rerun with --recompute to correct them (#682)."
+        )
+    if not args.dry_run and (total_acts or deprecated["acts_changed"]):
         print("\n  NOTE: rebuild combined_ontology.jsonld so the load surface carries "
               "the new temporalStatus (fix_all_issues.generate_combined_jsonld).")
     return 0

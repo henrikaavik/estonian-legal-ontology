@@ -1501,9 +1501,15 @@ estleg:SanctionShape
         sh:path estleg:sanctionType ;
         sh:minCount 1 ;
         sh:datatype xsd:string ;
-        sh:in ( "imprisonment" "fine" "pecuniary_punishment" "arrest" "coercive_payment" ) ;
+        sh:in (
+            "imprisonment" "fine" "pecuniary_punishment" "arrest" "coercive_payment"
+            # Issue #681: KarS's two remaining "other punishments" —
+            # konfiskeerimine (KarS §§ 83-85) and sundlõpetamine (KarS § 46),
+            # the latter the harshest sanction available against a legal person.
+            "confiscation" "compulsory_dissolution"
+        ) ;
         sh:name "sanctionType" ;
-        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest, coercive_payment" ;
+        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest, coercive_payment, confiscation, compulsory_dissolution" ;
     ] ;
     sh:property [
         sh:path estleg:maxPenalty ;
@@ -1557,18 +1563,43 @@ estleg:SanctionShape
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
-        sh:in ( "years" "months" "days" "daily_rates" "fine_units" "monetary" ) ;
+        sh:in (
+            "years" "months" "days" "daily_rates" "fine_units" "monetary"
+            # Issue #681: a fine capped at a share of a legal person's
+            # turnover (KarS § 400 lg 3/lg 4). Relative, so no currency.
+            "percent_of_turnover"
+        ) ;
         sh:name "maxPenaltyUnit" ;
-        sh:description "Unit of the maximum penalty amount: years/months/days, daily_rates (KarS päevamäär), fine_units (väärteo trahviühik), or monetary (a fixed sum)" ;
+        sh:description "Unit of the maximum penalty amount: years/months/days, daily_rates (KarS päevamäär), fine_units (väärteo trahviühik), monetary (a fixed sum), or percent_of_turnover (a share of a legal person's turnover)" ;
     ] ;
     sh:property [
         sh:path estleg:minPenaltyUnit ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
-        sh:in ( "years" "months" "days" "daily_rates" "fine_units" "monetary" ) ;
+        sh:in (
+            "years" "months" "days" "daily_rates" "fine_units" "monetary"
+            "percent_of_turnover"
+        ) ;
         sh:name "minPenaltyUnit" ;
         sh:description "Unit of the minimum penalty amount (same controlled set as maxPenaltyUnit)" ;
+    ] ;
+    # Compare amounts only when their units and currencies agree. For example,
+    # 30 days to 1 year is a valid range although the bare numbers are 30 > 1.
+    # Mixed-unit ranges need conversion before ordering can be checked.
+    sh:node [
+        sh:message "Comparable penalty amounts must have minPenaltyAmount <= maxPenaltyAmount (issue #681)." ;
+        sh:or (
+            [ sh:not [ sh:property [
+                sh:path estleg:minPenaltyUnit ;
+                sh:equals estleg:maxPenaltyUnit ] ] ]
+            [ sh:not [ sh:property [
+                sh:path estleg:minPenaltyCurrency ;
+                sh:equals estleg:maxPenaltyCurrency ] ] ]
+            [ sh:property [
+                sh:path estleg:minPenaltyAmount ;
+                sh:lessThanOrEquals estleg:maxPenaltyAmount ] ]
+        ) ;
     ] ;
     sh:property [
         sh:path estleg:maxPenaltyCurrency ;
@@ -1586,6 +1617,94 @@ estleg:SanctionShape
         sh:name "minPenaltyCurrency" ;
         sh:description "Currency code for a monetary minimum penalty; present only when minPenaltyUnit is 'monetary'" ;
     ] .
+
+# --------------------------------------------------------------------
+# Statutory ceilings on extracted penalties (issue #681)
+#
+# An extracted amount that exceeds what the Penal Code allows is a
+# parser bug, not a law: KarS caps determinate imprisonment at 20 years
+# (§ 45), arrest at 30 days (§ 48) and pecuniary punishment at 500 daily
+# rates (§ 44). Anything above those came from a mis-captured citation
+# year, cross-reference or line-bridged number.
+#
+# Each ceiling gets its own NodeShape so it can carry its own
+# sh:message — sh:message on a shape applies to every constraint of that
+# shape, so three sh:or constraints on one shape could not be told
+# apart. Every constraint is core SHACL (sh:or / sh:not / sh:hasValue /
+# sh:maxInclusive); there is no sh:sparql and no rdfs:range or
+# rdfs:domain, so the shapes behave identically under pyshacl
+# inference="rdfs" and inference="none" as shacl/README.md requires.
+#
+# Read each as: NOT(this sanction type) OR NOT(this unit) OR amount
+# within the ceiling. A Sanction with no estleg:maxPenaltyAmount
+# satisfies the sh:maxInclusive branch vacuously, which is what keeps
+# free-text-only records such as maxPenalty "life" conforming.
+# --------------------------------------------------------------------
+
+estleg:SanctionImprisonmentMaxYearsShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:message "KarS § 45: a determinate term of imprisonment runs from 30 days to 20 years; a longer term can only be life imprisonment, recorded as maxPenalty 'life' with no amount (issue #681)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path estleg:sanctionType ; sh:hasValue "imprisonment" ] ] ]
+        [ sh:not [ sh:property [
+            sh:path estleg:maxPenaltyUnit ; sh:hasValue "years" ] ] ]
+        [ sh:property [
+            sh:path estleg:maxPenaltyAmount ;
+            sh:maxInclusive 20 ] ]
+    ) .
+
+estleg:SanctionArrestMaxDaysShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:message "KarS § 48: arrest for a misdemeanour is at most 30 days (issue #681)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path estleg:sanctionType ; sh:hasValue "arrest" ] ] ]
+        [ sh:not [ sh:property [
+            sh:path estleg:maxPenaltyUnit ; sh:hasValue "days" ] ] ]
+        [ sh:property [
+            sh:path estleg:maxPenaltyAmount ;
+            sh:maxInclusive 30 ] ]
+    ) .
+
+estleg:SanctionDailyRatesMaxShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:message "KarS § 44: a pecuniary punishment is 30 to 500 daily rates (päevamäär); a higher count is a mis-parsed amount (issue #681)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path estleg:maxPenaltyUnit ; sh:hasValue "daily_rates" ] ] ]
+        [ sh:property [
+            sh:path estleg:maxPenaltyAmount ;
+            sh:maxInclusive 500 ] ]
+    ) .
+
+# --------------------------------------------------------------------
+# A retired Act IRI must not claim to be in force (issue #682)
+#
+# When an act IRI is superseded the node is marked owl:deprecated true
+# and its estleg:temporalStatus must fall back to "unknown": the
+# deprecated IRI no longer stands for a specific consolidated text, so
+# asserting "inForce" on it tells consumers a retired identifier is
+# current law. Core SHACL only (sh:or over sh:not-wrapped sh:hasValue),
+# so it is inference-safe under both validator surfaces.
+#
+# owl:deprecated arrives from the JSON-LD as a JSON boolean, i.e.
+# "true"^^xsd:boolean, which is what sh:hasValue true matches.
+# --------------------------------------------------------------------
+
+estleg:DeprecatedActNotInForceShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Act ;
+    sh:message "An Act marked owl:deprecated true must not also carry estleg:temporalStatus \"inForce\"; a retired IRI keeps temporalStatus \"unknown\" (issue #682)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path owl:deprecated ; sh:hasValue true ] ] ]
+        [ sh:not [ sh:property [
+            sh:path estleg:temporalStatus ; sh:hasValue "inForce" ] ] ]
+    ) .
 
 # Shape for Institution instances
 estleg:InstitutionShape

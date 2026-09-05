@@ -648,10 +648,32 @@ Represents a penalty or sanction defined by a legal provision.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `estleg:sanctionType` | `xsd:string` | Type: imprisonment, pecuniary_punishment, fine, arrest, coercive_payment |
+| `estleg:sanctionType` | `xsd:string` | Type: imprisonment, pecuniary_punishment, fine, arrest, coercive_payment, confiscation, compulsory_dissolution |
 | `estleg:maxPenalty` | `xsd:string` | Maximum penalty (e.g., "5 years", "300 fine units") |
 | `estleg:minPenalty` | `xsd:string` | Minimum penalty if specified |
 | `estleg:applicableProvision` | `owl:ObjectProperty` | IRI of the provision defining this sanction |
+| `estleg:maxPenaltyAmount` | `xsd:decimal` | Numeric value of the maximum penalty; absent when the penalty has no finite amount (e.g. life imprisonment) |
+| `estleg:minPenaltyAmount` | `xsd:decimal` | Numeric value of the minimum penalty; must not exceed `maxPenaltyAmount` |
+| `estleg:maxPenaltyUnit` | `xsd:string` | Unit: years, months, days, daily_rates, fine_units, monetary, percent_of_turnover |
+| `estleg:minPenaltyUnit` | `xsd:string` | Same controlled set as `maxPenaltyUnit` |
+| `estleg:maxPenaltyCurrency` | `xsd:string` | Currency code; present only when the unit is `monetary` |
+| `estleg:minPenaltyCurrency` | `xsd:string` | Currency code; present only when the unit is `monetary` |
+| `estleg:isStatutoryDefault` | `xsd:boolean` | True when the value comes from a statutory ceiling rather than the provision text |
+
+`confiscation` (KarS §§ 83–85) and `compulsory_dissolution` (KarS § 46)
+carry no amount — the offence provision states no ceiling for either.
+Extraction requires operative wording: a sentencing formula ending in
+`sundlõpetamisega`, or an order to confiscate / a court applying confiscation.
+Eligibility conditions, registry fields and references to previously confiscated
+property do not themselves impose these sanctions.
+`percent_of_turnover` expresses a fine as a share of a legal person's
+turnover (KarS § 400 lg 3/lg 4); being relative, it carries no currency.
+
+Statutory ceilings are enforced by SHACL: imprisonment in years ≤ 20
+(KarS § 45), arrest in days ≤ 30 (KarS § 48), daily rates ≤ 500
+(KarS § 44). The minimum/maximum ordering check compares numeric amounts
+only when their units and currencies agree; mixed-unit ranges require
+normalisation before they can be ordered.
 
 ### Institution (`estleg:Institution`)
 Represents a state institution with legal competences.
@@ -788,6 +810,14 @@ The citation graph is still a single flat `estleg:references` / `estleg:referenc
 | `estleg:lastAmendmentDate` | Act | `xsd:date` | Most recent amendment date for the selected act snapshot |
 | `estleg:publicationDate` | Act | `xsd:date` | Publication date for the selected act snapshot |
 | `estleg:temporalStatus` | Act | `xsd:string` | Status evaluated against the build's declared temporal evaluation date. ABox tokens: `inForce`, `repealed`, `unknown` (SHACL also allows `notYetEffective`). Corresponding T-Box individuals `estleg:TemporalStatus_*`; the property is not an ObjectProperty (#522). |
+
+> **`unknown` is the honest value, not a gap (#682).** An act root with no
+> version-sidecar evidence for its status is stamped `unknown` rather than being
+> defaulted to `inForce`, and a **deprecated (retired-IRI) act root is never
+> `inForce`** — it carries `unknown`. The new SHACL shape
+> `estleg:DeprecatedActNotInForceShape` enforces that. Act roots currently split
+> 736 `inForce` / 410 `unknown`. Recompute with
+> `python3 -m estleg.derive_act_temporal_status --all --recompute`.
 
 ### Amendment Properties
 

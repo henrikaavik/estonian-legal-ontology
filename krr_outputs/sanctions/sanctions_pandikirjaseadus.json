@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,6 +21,25 @@
       ],
       "rdfs:label": "Sanctions – pandikirjaseadus",
       "dc:source": "pandikirjaseadus"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_32_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_32"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (PandiKS § 32.)"
     },
     {
       "@id": "estleg:Sanction_PandiKS_Par_57_coercive_payment",
@@ -28,6 +52,18 @@
         "@id": "estleg:PandiKS_Par_57"
       },
       "rdfs:label": "Coercive payment (PandiKS § 57.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_57_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_57_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (PandiKS)"
     },
     {
       "@id": "estleg:Sanction_PandiKS_Par_59_fine",
@@ -67,6 +103,43 @@
       "rdfs:label": "Fine, max 400000 EUR (PandiKS § 59.)"
     },
     {
+      "@id": "estleg:Sanction_PandiKS_Par_59_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_59_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_59_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_59_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS)"
+    },
+    {
       "@id": "estleg:Sanction_PandiKS_Par_59_1_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -82,7 +155,63 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (PandiKS § 59<sup>1</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (PandiKS § 59¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_59_1_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_59_1"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS § 59¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_59_1_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_59_1_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_59_1_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_59_1_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS)"
     },
     {
       "@id": "estleg:Sanction_PandiKS_Par_60_fine",
@@ -122,6 +251,43 @@
       "rdfs:label": "Fine, max 400000 EUR (PandiKS § 60.)"
     },
     {
+      "@id": "estleg:Sanction_PandiKS_Par_60_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_60_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_60_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_60_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS)"
+    },
+    {
       "@id": "estleg:Sanction_PandiKS_Par_61_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -159,6 +325,43 @@
       "rdfs:label": "Fine, max 400000 EUR (PandiKS § 61.)"
     },
     {
+      "@id": "estleg:Sanction_PandiKS_Par_61_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_61_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_61_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_61_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS)"
+    },
+    {
       "@id": "estleg:Sanction_PandiKS_Par_62_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -175,6 +378,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (PandiKS § 62.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_62_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_62"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS § 62.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_62_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_62_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_62_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_62_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS)"
     },
     {
       "@id": "estleg:Sanction_PandiKS_Par_63_fine",
@@ -195,6 +454,62 @@
       "rdfs:label": "Fine, max 300 fine units (PandiKS § 63.)"
     },
     {
+      "@id": "estleg:Sanction_PandiKS_Par_63_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_63"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS § 63.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_63_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_63_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_63_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_63_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (PandiKS)"
+    },
+    {
       "@id": "estleg:Sanction_PandiKS_Par_64_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -211,6 +526,24 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (PandiKS § 64.)"
+    },
+    {
+      "@id": "estleg:Sanction_PandiKS_Par_64_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:PandiKS_Par_64_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (PandiKS)"
     }
   ]
 }
