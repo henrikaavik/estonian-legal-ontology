@@ -680,3 +680,22 @@ def test_committed_riigikohus_corpus_is_screened() -> None:
     validate_all.reset()
     validate_all.validate_no_personal_codes(files)
     assert validate_all.errors == [], validate_all.errors
+
+
+@pytest.mark.parametrize('prefix', ['registrikood 12345678, ', 'otsuse nr 42, '])
+def test_negative_label_does_not_exempt_a_later_number(prefix: str) -> None:
+    screened, findings = ec.screen_personal_data(prefix + VALID)
+    assert len(findings) == 1
+    assert VALID not in screened
+    assert screened.startswith(prefix)
+
+
+def test_gate_checks_unicode_escaped_digits(tmp_path: Path) -> None:
+    path = _write_peep(
+        tmp_path / 'escaped_peep.json',
+        [_decision('estleg:RK_escaped', **{'estleg:legalText': f'isikukood {VALID}'})],
+    )
+    escaped = ''.join('\\u%04x' % ord(c) for c in VALID)
+    path.write_text(path.read_text().replace(VALID, escaped), encoding='utf-8')
+    validate_all.validate_no_personal_codes([path])
+    assert validate_all.errors

@@ -2147,7 +2147,8 @@ PERSONAL_CODE_LABEL_WINDOW = 40
 # the stem is left open: the corpus writes both "otsuse nr" and "otsusega nr"
 # for the same administrative decision number.
 PERSONAL_CODE_NEGATIVE_LABEL_RE = re.compile(
-    r"registrikood\w*|reg\.?\s*kood\w*|otsus\w*\s+nr\.?",
+    r"(?:registrikood\w*|reg\.?\s*kood\w*|otsus\w*\s+nr\.?)"
+    r"[ \t:=(\"\']*$",
     re.IGNORECASE,
 )
 

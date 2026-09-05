@@ -694,8 +694,9 @@ def validate_no_personal_codes(files: list[Path]):
     Cost control: re-parsing the ~200 MB riigikohus corpus purely for this
     gate is avoidable. `json.dump` never escapes ASCII digits, so a code
     inside a literal is always present verbatim in the file bytes — a raw-text
-    scan that finds no checksum-valid run proves the parsed file has none
-    either, and the file is skipped without being deserialised. The raw scan
+    scan can skip files with no checksum-valid run only when they contain no
+    JSON Unicode escapes. Escaped documents are decoded first because escapes
+    can conceal digits or alter digit boundaries. The raw scan
     is deliberately looser than `find_personal_codes` (it ignores labels, which
     JSON escaping can reorder around a line break), so it stays a superset.
     """
@@ -708,7 +709,9 @@ def validate_no_personal_codes(files: list[Path]):
             # validate_json_syntax already reports unreadable / mis-encoded
             # files; do not double-report them here.
             continue
-        if not any(
+        # JSON Unicode escapes can hide any digit (and break raw boundaries).
+        # Decode those documents before applying the literal-level detector.
+        if "\\u" not in raw and not any(
             is_valid_isikukood(match.group(0)) for match in ISIKUKOOD_RE.finditer(raw)
         ):
             continue
