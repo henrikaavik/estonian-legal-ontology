@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg import run_all_integration
 from estleg.generate_eu_legislation import rebuild_eurlex_combined_from_peeps
 
@@ -61,6 +63,8 @@ def test_dag_rebuilds_eurlex_combined_after_transposition():
     assert "eurlex/eurlex_combined.jsonld" in step["writes"]
 
 
+# LFS artifact; runs in the json-validation `-m corpus` job (#679)
+@pytest.mark.corpus
 def test_committed_eurlex_combined_matches_directive_peep_transposition():
     root = Path(__file__).resolve().parents[1] / "krr_outputs" / "eurlex"
     peep = json.loads((root / "eurlex_directives_peep.json").read_text(encoding="utf-8"))

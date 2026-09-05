@@ -17,7 +17,10 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest>=8,<10",
-  "ruff>=0.6,<1",
+  # Pinned to the 0.16 line (#677): the ``[tool.ruff.lint] select`` below
+  # holds the ruleset steady, this holds the minor version steady so a
+  # 0.17 default-behaviour change cannot land unreviewed via CI.
+  "ruff>=0.16,<0.17",
   "pytest-cov>=5,<8",
 ]
 pdf = [
