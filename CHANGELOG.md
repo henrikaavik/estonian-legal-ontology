@@ -4,6 +4,74 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### 2026-09 public-sector readiness — Tier 0 (#676, tickets #677–#690)
+
+Fourteen "stop the bleeding" fixes from the September 2026 public-sector
+readiness review. Each ticket's PR describes the change in full; this is
+the consumer-facing summary.
+
+- **CI gates again.** `ruff` is pinned to the 0.16 line with an explicit
+  `[tool.ruff.lint] select` in both packages (#677). The five tests that read
+  Git LFS artifacts are `corpus`-marked and run in the LFS-materialised
+  `json-validation` job; `test_migrate_uris` no longer depends on a stale
+  dry-run report (#679). The legacy-namespace exclusion list is identical in
+  `validate.yml`, `tests/test_no_legacy_namespace.py` and
+  `src/estleg/migrate_namespace.py`, with a parity test (#687). CODEOWNERS
+  routes the safety-critical entries to the `src/estleg/` modules instead of
+  the `scripts/` shims, enforced by `tests/test_codeowners.py` (#685). The two
+  CodeQL alerts are fixed in code (#688).
+- **MCP tools restored (#678, #680).** `estleg-mcp` accepts the bare
+  `estleg:LegalProvision` / `estleg:KovProvision` classes that the generators
+  have stamped since #434, so `get_provision`, `provision_history`,
+  `who_references`, `references_of`, `court_decisions_for_law`,
+  `competent_authority_for_law` and every provision count return data again;
+  `server.main()` aborts on a zero KarS provision count and
+  `layers_available()` reports the live count. `rt_url` is guarded to
+  riigiteataja.ee; non-RT `owl:sameAs` IRIs surface under `external_ids`.
+- **Personal identification codes are screened out of court text (#683).**
+  `estleg_common.screen_personal_data` masks checksum-valid Estonian
+  `isikukood` runs in `estleg:summary` / `estleg:legalText` at both court
+  write sites; the committed Riigikohus corpus was backfilled (12,104 nodes
+  scanned, 21 nodes / 27 codes masked), every decision node carries
+  `estleg:personalDataScreened` and `estleg:personalDataMaskedCount`, and
+  `validate_all.py` fails on any surviving code. The masked display forms are
+  in `krr_outputs/reports/personal_data_mask_report.json`.
+- **Lower-court data is a labelled sample (#689).** `krr_outputs/kohtud/`
+  holds one county-court decision flagged `estleg:isSampleData: true` (index:
+  `"sample": true`); the two synthetic `2000000xx` rows are gone.
+- **Sanctions layer rebuilt (#681).** `extract_sanctions` works per lõige,
+  skips the general part (Üldosa) of split codes, adds the
+  `percent_of_turnover` unit and the `confiscation` / `compulsory_dissolution`
+  types, and caps imprisonment at 20 years. The sidecars were regenerated:
+  8,019 sanction records across 684 laws (was 2,550 / 294). New SHACL shapes
+  enforce `min ≤ max`, imprisonment ≤ 20 years, arrest ≤ 30 days and ≤ 500
+  daily rates. `estleg:applicableProvision` lost its `rdfs:domain
+  estleg:CourtDecision`, which had phantom-typed every Sanction under RDFS
+  inference and turned the `sidecars` SHACL bucket red.
+- **`temporalStatus` is honest (#682).** An act root with no version evidence
+  is `unknown`, not `inForce`; a deprecated (retired-IRI) root is never
+  `inForce`, enforced by `estleg:DeprecatedActNotInForceShape`. Recomputed
+  over all act roots: 736 `inForce` / 410 `unknown` (was 1,146 `inForce`).
+- **Rights and privacy notices ship with the release (#684).** `NOTICE`,
+  `LICENSE`, `docs/DATA_RIGHTS.md` and `docs/DATA_PROTECTION.md` are release
+  assets (`docs/RELEASE.md` step 5). `CITATION.cff` and `krr_outputs/void.ttl`
+  scope CC BY 4.0 to the `#compilation` subset only.
+- **Catalogue counts regenerated (#686).** `metadata.jsonld` and the nine
+  documents that repeat it now say 1,195 law files, 12,104 Riigikohus
+  decisions and 27,228 JSON/JSON-LD files (were 1,190 / 12,137 / 23,118). Both
+  Riigikohus case-type tables are derived from `RIIGIKOHUS_INDEX.json`
+  (Civil 4,988 · Criminal 3,686 · Administrative 2,434 · Constitutional Review
+  800 · Misdemeanor 107 · Other 89) and pinned by
+  `tests/test_validate_all.py::test_riigikohus_case_type_tables_match_index`.
+- **w3id status corrected (#690).** The PURL has resolved since 2026-08-19;
+  the three documents that still said "404" are fixed, and
+  `w3id/estleg/.htaccess` redirects any SemVer version IRI to its tagged
+  release so a new tag needs no w3id resubmission.
+- **Validation report is honest.** `docs/VALIDATION_REPORT.md` no longer
+  claims 0 errors: it records the 2026-09-05 gate run, separates the 3,426
+  stale validator-rule findings (#702) from real findings, and lists the red
+  SHACL buckets that are Tier 1 work.
+
 ### Distribution (#480)
 
 - keep-LFS is the committed code/data decision. Regenerable combined

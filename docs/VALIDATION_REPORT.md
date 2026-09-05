@@ -1,21 +1,60 @@
 # Validation Report
 
-**Last updated:** 2026-05-26
+**Last updated:** 2026-09-05 (gate run on the Tier 0 tree of epic #676)
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files validated | 23,069 |
-| Errors | 0 |
-| Warnings | 0 |
-| Result | **PASSED** |
+| Files validated | 27,181 |
+| Errors | 3,548 |
+| Warnings | 2 |
+| Result | **FAILED** — see [What the errors are](#what-the-errors-are) |
 
-The repository advertises 23,118 generated JSON/JSON-LD files. `validate_all.py`
-excludes generated reports, indexes, manifests, and probe outputs that are not
-corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
-JSON-LD files.
+> **Correction.** Until 2026-09-05 this report said `Errors: 0 / PASSED`
+> against a run dated 2026-05-26. That statement was false for every committed
+> tree since at least v1.0.0 (2026-08-19): the `json-validation` CI job has
+> been red on every `main` run in that period. The numbers above come from a
+> local run of the same command on 2026-09-05; the baseline on the pre-Tier-0
+> tree (`c96577d50c`) was 26,791 files / 3,558 errors / 2 warnings.
+
+The repository advertises 27,228 generated JSON/JSON-LD files (`metadata.jsonld`
+`estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
+manifests, and probe outputs that are not corpus inputs, which is why it
+validates 27,181.
+
+## What the errors are
+
+Every error is itemised below with its status. **3,426 of the 3,548 (96.6%)
+are stale validator rules, not data defects**; fixing the validator is Tier 1
+ticket #702. None of the remaining findings was introduced by Tier 0; the
+Tier 0 tree removed ten findings and added none.
+
+| Count | Finding | Status |
+|---:|---|---|
+| 3,021 | `dcterms:subject is not an array` on Chapter nodes | Stale rule: chapters carry a single Cluster object by design since the concept layer landed. **#702.** |
+| 405 | `dcterms:title must be a string or language-tagged value` on act roots | Stale rule: bilingual title lists are the #437 language-tag policy. **#702.** |
+| 38 | Duplicate `@id` within file (37 in `analytical_overlay.jsonld`, 1 in `annotations/oiguskantsler_seisukohad.jsonld`) | Pre-existing; **#702 / #709**. |
+| 34 + 5 | `INDEX.json` registry drift on the split codes (AÕS, KarS, TsMS, TsÜS, VÕS): `_osaN` files report 0 act-level nodes; `_map` files have no provision nodes and no registry exception | Pre-existing; the multipart-code registry rules predate `estleg:Part` roots. **#702 / #704.** |
+| 27 | `@type is not an array` (26 controlled-vocabulary nodes, 1 in `analytical_overlay.jsonld`) | Pre-existing T-Box shape issue. **#709.** |
+| 5 | `skos:exactMatch is not an array` (`NormType_*`) | Pre-existing. **#709.** |
+| 3 + 3 + 1 | `eurlex` / `curia` / `eelnoud` combined files: missing source graph IDs, one stale ID, older than a canonical source | Stale LFS aggregates that were not rebuilt with the sources. **#705.** |
+| 2 | `combined_ontology.jsonld` and `eelnoud_combined.jsonld`: shared provision IDs drift from source on SHACL-sensitive fields (21,802 in the flagship file after the Tier 0 rebuild, 24,792 before; most on split-code `_OsaN` nodes and on classifier fields) | Aggregate-artifact drift; pre-existing (24,792 on the pre-Tier-0 tree). **#705.** |
+| 1 | `combined_ontology.jsonld`: 2,409 stub nodes carry `estleg:` object refs outside the shaped closure edges | Pre-existing builder finding. **#416 / #705.** |
+| 1 | 69,211 `@id` values duplicated across files | The semantic-collision check counts the same node in an aggregate and in its source; the rule needs the aggregate exemption. **#702.** |
+| 1 | Undefined reusable vocabulary terms: 5 predicates | Pre-existing. **#709.** |
+| 1 | 78 act-level temporal properties on non-Act nodes | Pre-existing. **#702.** |
+
+Findings removed by Tier 0: the six `metadata.jsonld` count mismatches
+(#686), the merged-overlay-absent-from-combined finding and one
+stale-aggregate finding on each of the `eurlex` / `curia` / `eelnoud` files
+(combined rebuild, #681/#682). `dataset_build_manifest.json` was regenerated so its
+`catalogModified` matches the new `dcterms:modified` (#686).
+
+Warnings (2): `generation_manifest_laws.json` is not committed (Tier 1
+#692/#704), and 9 amendment chains carry 1.0% duplicate `AmendmentEvent`
+nodes (re-run `generate_amendment_history.py`).
 
 ## Load surfaces and validation gates
 
@@ -79,39 +118,77 @@ and CI wiring. The public subdirectories are defined once in
 13. State and KOV regulation indexes match their output trees
 14. `metadata.jsonld` advertised counts match repository counts
 15. Institution labels have no duplicate normalized canonical form
+16. No Estonian personal identification code survives in `estleg:summary` / `estleg:legalText` (`validate_no_personal_codes`, #683)
 
 ## Data Coverage
 
+Counts as of the 2026-09-05 Tier 0 tree (`metadata.jsonld` `dcterms:modified`
+2026-09-04). `validate_all.py` cross-checks the catalogue counts against the
+tree, so a stale row here fails the gate.
+
 | Category | Files | Indexed records |
-|----------|-------|-----------------|
-| Enacted law peep files | 1,190 | 1,122 law index entries / 1,190 indexed files |
-| State regulations | 3,812 | 3,812 in current regulation index |
+|----------|------:|-----------------|
+| Enacted law peep files | 1,195 | 1,122 law index entries |
+| State regulations | 3,812 | 3,812 in the regulation index |
 | KOV regulations | 11,059 | 11,059 |
-| Draft legislation | 3 phase files | 22,832 drafts |
-| Supreme Court decisions | 34 | 12,137 decisions |
-| EU legislation | 3 | 33,242 acts |
-| EU court decisions | 5 | 22,290 decisions |
-| ProvisionVersion sidecars | 742 | full-history sidecars generated after the Phase 3.3 live run |
-| Õiguskantsler annotation sidecars | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
-| Institutions | 113 | institution files |
-| Controlled vocabulary | 1 | 134 vocabulary and fallback nodes |
+| Draft legislation | 6 | 22,832 drafts |
+| Supreme Court decisions | 35 | 12,104 decisions (Civil 4,988 · Criminal 3,686 · Administrative 2,434 · Constitutional Review 800 · Misdemeanor 107 · Other 89) |
+| Lower-court decisions (`kohtud/`) | 1 | 1 decision — a labelled **sample** (`estleg:isSampleData`), not a corpus (#689) |
+| EU legislation | 6 | 33,242 acts |
+| EU court decisions | 9 | 22,290 decisions |
+| Sanction sidecars | 684 | 8,019 sanction records (#681) |
+| ProvisionVersion sidecars | 4,422 | version history for laws and state regulations |
+| Amendment sidecars | 5,647 | 20,937 `AmendmentEvent` nodes |
+| Õiguskantsler annotation sidecar | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
+| Institutions | 117 | institution files |
+| Controlled vocabulary | 1 | 417 vocabulary and fallback nodes |
 
 ## SHACL Bucket Checks
 
-| Bucket | Files | Result |
-|--------|-------|--------|
-| `riigikohus` | 35 | PASS |
-| `drafts` | 4 | PASS |
-| `eurlex` | 163 | PASS |
-| `curia` | 6 | PASS |
-| `laws` | 5,003 | PASS |
-| `kov` | 11,063 | PASS |
-| `sidecars` | 6,796 | PASS |
-| `--all` | 23,064 | PASS (`7,117,928` triples) |
+Per-bucket source validation is `scripts/shacl_validate_all.py --bucket <name>`
+(RDFS inference). The table records what was actually run on 2026-09-05 and,
+for the buckets not re-run locally, the CI result at `c96577d50c`
+(`semantic-validation (<bucket>)` jobs of the 2026-08-31 scheduled run).
 
-Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cross-file references and shared classification nodes are validated consistently.
+| Bucket | Files | Result | What the violations are |
+|---|---:|---|---|
+| `sidecars` | 10,873 | **FAIL** — 309,422 violations (314,522 on `c96577d50c`) | Tier 0 removed the 5,100 phantom `caseType` / `caseNumber` violations: `estleg:applicableProvision` carried `rdfs:domain estleg:CourtDecision`, which typed every Sanction as a court decision under inference. What remains is pre-existing: 99,981 provision IRIs referenced from the version, concept and sanction sidecars are phantom-typed `estleg:LegalProvision` by `rdfs:range` axioms and then fail `paragrahv` / `summary` / `partOfAct` (3 × 99,981); 4,841 `AmendmentEvent` nodes lack `estleg:amends`; 4,433 referenced `Reg_*` and act-map IRIs lack `rdfs:label`; 179 `versionValidFrom`; 24 `institutionType`; 2 annotation fields. **#702 / #709.** |
+| `riigikohus` | 35 | **FAIL** (CI) | ~30k `versionOf` / `versionText` / `versionValidFrom` violations from the same range-axiom phantom typing of ProvisionVersion stubs. **#702 / #709.** |
+| `laws`, `kov`, `drafts`, `curia` | — | **FAIL** (CI) | Not re-run locally on 2026-09-05; red in CI at `c96577d50c`. Triage is **#702**. |
+| `eurlex` | 163 | PASS (CI) | |
+| `--all` | — | not run on 2026-09-05 | |
+
+The "phantom typing" pattern is documented in `shacl/README.md`: a class
+`rdfs:domain` / `rdfs:range` on a predicate shared across classes types every
+subject / object into that class under `inference="rdfs"`, after which the
+class's shape demands fields the node was never meant to carry. Narrowing the
+remaining axioms is **#709**; making the validator report only the genuine
+findings is **#702**.
+
+### Combined-only gate (`scripts/validate_combined_standalone.py`)
+
+2026-09-05, Tier 0 tree after the combined rebuild: ****FAIL — 251,273 violations****.
+The findings are aggregate-artifact findings and fall into three groups, none
+introduced by Tier 0: `estleg:Subsection` nodes typed `estleg:LegalProvision`
+fail `paragrahv` / `summary` (the lõige nodes carry `subsectionNumber` and
+`legalText` instead — the shape predates #514 lõige minting; **#702 / #709**);
+regulation-provision closure stubs (`Reg_*`) fail `paragrahv` / `summary` /
+`partOfAct` because the stub keeps the type but not those fields (**#416 /
+#705**); 4,841 `AmendmentEvent` nodes lack `estleg:amends` (**#702**). The
+482 label-less orphan Sanction nodes that the pre-rebuild artifact carried are
+gone (the extractor now purges stale inline anchors, #681).
+
+### Seadusloome zero-warning gate
+
+`scripts/validate_seadusloome_sync.py` fails at graph closure on
+`eurlex/eurlex_combined.jsonld` (`owl:imports estleg:EURlex_Schema_2026`, a
+stale LFS aggregate) before SHACL runs. Rebuilding every aggregate in one DAG
+step is **#705**; until then this gate is red for a known reason and is not a
+statement about the source data.
 
 ## Similarity Coverage
+
+_Figures from the 2026-05-26 run; not re-measured on 2026-09-05._
 
 `scripts/generate_similarity_index.py` now includes state regulations while still deferring KOV similarity to Layer 3.
 
@@ -124,6 +201,8 @@ Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cro
 Similarity output now contains 84,527 analyzed provisions, 108,684 pairs, and updates 3,659 JSON-LD files.
 
 ## Õiguskantsler Annotation Ingestion
+
+_Figures from the Phase 3.4 run (2026-05); not re-measured on 2026-09-05._
 
 Phase 3.4 used `scripts/generate_annotations.py --probe-pdfs --pdf-probe-sample-size 10`
 as the go/no-go probe before the full live scrape. The probe found usable PDF
@@ -154,6 +233,8 @@ This gate covers the **Seadusloome public load surface** — combined **plus** t
 public subdirectories. See "Load surfaces and validation gates" above for how it
 relates to the combined-only gate (`scripts/validate_combined_standalone.py`) and
 the per-bucket source gate (`scripts/shacl_validate_all.py --bucket <name>`).
+
+**Status 2026-09-05: red** — see [Seadusloome zero-warning gate](#seadusloome-zero-warning-gate-1) above for the reason (#705).
 
 `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
 
@@ -223,6 +304,18 @@ re-emitting these dead references.
 
 ## Known Remaining Issues
 
-No validation-blocking issues are known in the remediated scope. The draft
-resolver cleanup documented above remains a required follow-up before the
-next live draft-impact ingestion run.
+- **Validator rules (#702):** 3,426 of the 3,549 `validate_all.py` errors are
+  the two stale rules on `dcterms:subject` and `dcterms:title`; the
+  semantic-collision and registry-drift checks also need the aggregate and
+  `estleg:Part` exemptions. Until #702 lands, `json-validation` stays red and
+  cannot be a required check.
+- **T-Box axioms (#709):** `rdfs:range` / `rdfs:domain` on shared predicates
+  phantom-type referenced nodes under RDFS inference, which is what keeps the
+  `sidecars` and `riigikohus` SHACL buckets red.
+- **Aggregates (#705):** `eurlex` / `curia` / `eelnoud` combined files and
+  `combined_ontology.{nt,nq,ttl}` are stale relative to their sources; the
+  Seadusloome gate fails at graph closure on `eurlex_combined.jsonld`.
+- **Draft resolver:** the dead-reference cleanup documented above remains a
+  required follow-up before the next live draft-impact ingestion run.
+- **Personal names (#720):** codes are screened (#683); names in Riigikohus
+  summaries and CURIA party labels are a DPO decision, not a validator gap.
