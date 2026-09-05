@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -30,6 +35,18 @@
       "rdfs:label": "Coercive payment (VMTS § 45.)"
     },
     {
+      "@id": "estleg:Sanction_VMTS_Par_45_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:VMTS_Par_45_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (VMTS)"
+    },
+    {
       "@id": "estleg:Sanction_VMTS_Par_48_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -46,6 +63,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (VMTS § 48.)"
+    },
+    {
+      "@id": "estleg:Sanction_VMTS_Par_48_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:VMTS_Par_48"
+      },
+      "estleg:maxPenalty": "3200 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "3200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 3200 EUR (VMTS § 48.)"
+    },
+    {
+      "@id": "estleg:Sanction_VMTS_Par_48_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:VMTS_Par_48_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (VMTS)"
+    },
+    {
+      "@id": "estleg:Sanction_VMTS_Par_48_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:VMTS_Par_48_Lg_2"
+      },
+      "estleg:maxPenalty": "3200 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "3200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 3200 EUR (VMTS)"
     },
     {
       "@id": "estleg:Sanction_VMTS_Par_50_fine",

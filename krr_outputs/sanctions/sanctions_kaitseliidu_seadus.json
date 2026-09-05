@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,6 +21,30 @@
       ],
       "rdfs:label": "Sanctions – kaitseliidu_seadus",
       "dc:source": "kaitseliidu_seadus"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_19_compulsory_dissolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "compulsory_dissolution",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_19"
+      },
+      "rdfs:label": "Compulsory dissolution (KAITSE § 19.)"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_19_Lg_9_compulsory_dissolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "compulsory_dissolution",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_19_Lg_9"
+      },
+      "rdfs:label": "Compulsory dissolution (KAITSE)"
     },
     {
       "@id": "estleg:Sanction_KAITSE_Par_86_arrest",
@@ -74,6 +103,62 @@
       "rdfs:label": "Fine, max 3200 EUR (KAITSE § 86.)"
     },
     {
+      "@id": "estleg:Sanction_KAITSE_Par_86_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_86_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (KAITSE)"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_86_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_86_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KAITSE)"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_86_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_86_Lg_2"
+      },
+      "estleg:maxPenalty": "3200 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "3200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 3200 EUR (KAITSE)"
+    },
+    {
       "@id": "estleg:Sanction_KAITSE_Par_87_arrest",
       "@type": [
         "owl:NamedIndividual",
@@ -111,6 +196,43 @@
       "rdfs:label": "Fine, max 200 fine units (KAITSE § 87.)"
     },
     {
+      "@id": "estleg:Sanction_KAITSE_Par_87_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_87_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (KAITSE)"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_87_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_87_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (KAITSE)"
+    },
+    {
       "@id": "estleg:Sanction_KAITSE_Par_88_arrest",
       "@type": [
         "owl:NamedIndividual",
@@ -146,6 +268,43 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (KAITSE § 88.)"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_88_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_88_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (KAITSE)"
+    },
+    {
+      "@id": "estleg:Sanction_KAITSE_Par_88_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KAITSE_Par_88_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KAITSE)"
     }
   ]
 }

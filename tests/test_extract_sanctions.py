@@ -1836,28 +1836,33 @@ class TestKaristatakseFallbackScoped:
         assert results == [], results
 
     def test_fallback_plausibility_cap_present(self):
-        """Defense-in-depth: the fallback also discards values > 25
-        (KarS §45 ceiling). Verified at the regex+guard level so the cap
-        is pinned even though the shared digit max-only branch covers the
-        same surface form. A 4-digit ``kuni`` value reachable only via the
-        greedy fallback span is dropped."""
+        """Defense-in-depth: the fallback also discards values > 20
+        (KarS § 45 lg 1 ceiling). Verified at the regex+guard level so the
+        cap is pinned even though the shared digit max-only branch covers
+        the same surface form. A 4-digit ``kuni`` value reachable only via
+        the greedy fallback span is dropped.
+
+        Issue #681 lowered the cap from 25 to 20 so the extractor cannot
+        emit a term that ``estleg:SanctionImprisonmentMaxYearsShape``
+        would then reject.
+        """
         import re
 
         from estleg.extract_sanctions import _ESTONIAN_NUMBERS  # noqa: F401
         # Re-derive the exact guarded fallback contract: kuni-adjacent
-        # digit, sentence-bounded, value <= 25.
+        # digit, sentence-bounded, value <= 20.
         pat = (r"karistatakse[^.]*?\bkuni\s+(\d+)\s*[-\s]*"
                r"aasta(?:se)?\s+vangistus")
         text = ("karistatakse 2002 aasta redaktsiooni järgi kuni 2002 "
                 "aastase vangistusega")
         captured = [m.group(1) for m in re.finditer(pat, text, re.IGNORECASE)]
-        kept = [v for v in captured if int(v) <= 25]
+        kept = [v for v in captured if int(v) <= 20]
         assert "2002" in captured  # the greedy span can reach it
-        assert kept == []          # ...but the >25 cap discards it
+        assert kept == []          # ...but the >20 cap discards it
 
     def test_legitimate_digit_kuni_still_captured(self):
         """A genuine ``karistatakse ... kuni N aastase vangistusega``
-        (N <= 25) is still captured."""
+        (N <= 20) is still captured."""
         from estleg.extract_sanctions import extract_imprisonment
         results = extract_imprisonment(
             "Selle eest karistatakse rahatrahvi või kuni 12 "

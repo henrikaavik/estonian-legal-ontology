@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -18,30 +23,276 @@
       "dc:source": "karistusregistri_seadus"
     },
     {
-      "@id": "estleg:Sanction_KARIST_Par_25_imprisonment",
+      "@id": "estleg:Sanction_KARIST_Par_12_compulsory_dissolution",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
       ],
-      "estleg:sanctionType": "imprisonment",
+      "estleg:sanctionType": "compulsory_dissolution",
       "estleg:applicableProvision": {
-        "@id": "estleg:KARIST_Par_25"
+        "@id": "estleg:KARIST_Par_12"
       },
-      "estleg:maxPenalty": "life",
-      "rdfs:label": "Imprisonment, life (KARIST § 25.)"
+      "rdfs:label": "Compulsory dissolution (KARIST § 12.)"
     },
     {
-      "@id": "estleg:Sanction_KARIST_Par_37_1_imprisonment",
+      "@id": "estleg:Sanction_KARIST_Par_12_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_12"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST § 12.)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_12_Lg_4_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_12_Lg_4"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_12_Lg_6_compulsory_dissolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "compulsory_dissolution",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_12_Lg_6"
+      },
+      "rdfs:label": "Compulsory dissolution (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_12_Lg_6_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_12_Lg_6"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_13_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_13"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST § 13.)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_13_Lg_2_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_13_Lg_2"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_imprisonment",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
       ],
       "estleg:sanctionType": "imprisonment",
       "estleg:applicableProvision": {
-        "@id": "estleg:KARIST_Par_37_1"
+        "@id": "estleg:KARIST_Par_24"
       },
-      "estleg:maxPenalty": "life",
-      "rdfs:label": "Imprisonment, life (KARIST § 37<sup>1</sup>.)"
+      "estleg:maxPenalty": "10 years",
+      "estleg:minPenalty": "5 years",
+      "estleg:maxPenaltyAmount": {
+        "@value": "10",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "years",
+      "estleg:minPenaltyAmount": {
+        "@value": "5",
+        "@type": "xsd:decimal"
+      },
+      "estleg:minPenaltyUnit": "years",
+      "rdfs:label": "Imprisonment, 5 years to 10 years (KARIST § 24.)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_imprisonment_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "imprisonment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_24"
+      },
+      "estleg:maxPenalty": "20 years",
+      "estleg:minPenalty": "5 years",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "years",
+      "estleg:minPenaltyAmount": {
+        "@value": "5",
+        "@type": "xsd:decimal"
+      },
+      "estleg:minPenaltyUnit": "years",
+      "rdfs:label": "Imprisonment, 5 years to 20 years (KARIST § 24.)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_24"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST § 24.)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_Lg_1_imprisonment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "imprisonment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_24_Lg_1"
+      },
+      "estleg:maxPenalty": "20 years",
+      "estleg:minPenalty": "5 years",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "years",
+      "estleg:minPenaltyAmount": {
+        "@value": "5",
+        "@type": "xsd:decimal"
+      },
+      "estleg:minPenaltyUnit": "years",
+      "rdfs:label": "Imprisonment, 5 years to 20 years (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_Lg_1_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_24_Lg_1"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_Lg_2_imprisonment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "imprisonment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_24_Lg_2"
+      },
+      "estleg:maxPenalty": "10 years",
+      "estleg:minPenalty": "5 years",
+      "estleg:maxPenaltyAmount": {
+        "@value": "10",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "years",
+      "estleg:minPenaltyAmount": {
+        "@value": "5",
+        "@type": "xsd:decimal"
+      },
+      "estleg:minPenaltyUnit": "years",
+      "rdfs:label": "Imprisonment, 5 years to 10 years (KARIST)"
+    },
+    {
+      "@id": "estleg:Sanction_KARIST_Par_24_Lg_2_pecuniary_punishment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "pecuniary_punishment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KARIST_Par_24_Lg_2"
+      },
+      "estleg:maxPenalty": "500 daily rates",
+      "estleg:maxPenaltyAmount": {
+        "@value": "500",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "daily_rates",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Pecuniary punishment, max 500 daily rates (KARIST)"
     }
   ]
 }

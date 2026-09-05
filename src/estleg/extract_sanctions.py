@@ -2,9 +2,28 @@
 """
 Extract penalties and sanctions from law text.
 
-Scans provision legalText (falling back to summary) for Estonian sanction patterns
-(imprisonment, fines, arrest, coercive payments) and creates estleg:Sanction
-nodes linked to the originating provision.
+Scans provision legalText (falling back to summary) for Estonian sanction
+patterns — imprisonment, pecuniary punishment (including turnover-share
+fines), fines, arrest, coercive payments, confiscation and compulsory
+dissolution — and creates estleg:Sanction nodes linked to the originating
+provision.
+
+Scope of extraction (issue #681)
+--------------------------------
+Two gates keep the extractors on provisions that actually IMPOSE a penalty:
+
+* A code's **general part** (``üldosa``) is skipped outright. It defines the
+  sanction system rather than any offence penalty, so extracting from it
+  manufactures phantom sanctions. See ``_is_general_part``.
+* The life-imprisonment pattern additionally requires a **sentencing
+  formula** (``karistatakse``) in the provision text, which suppresses the
+  same error wherever else a statute merely refers to life imprisonment
+  (register-retention rules, use-of-force provisions, sentencing rules).
+
+Text is read once whole and once per **lõige** (subsection), merging into a
+single dedup, so a section that punishes its subsections differently
+contributes all of their penalties rather than only the first. See
+``extract_sanctions`` and ``split_loiked``.
 
 Outputs:
   - krr_outputs/sanctions/  (per-law sanction JSON-LD files)
@@ -103,12 +122,31 @@ def estonian_numerals_supported() -> frozenset[str]:
     return frozenset(_ESTONIAN_NUMBERS.keys())
 
 
-# Severity index: lower = less severe
+# Severity index: lower = less severe.
+#
+# Issue #681 adds the two KarS non-custodial "other punishments":
+#
+# * ``confiscation`` (konfiskeerimine, KarS §§ 83–85) scores **2**, the
+#   same tier as ``fine``. Confiscation removes the instrument or proceeds
+#   of the offence rather than imposing a new burden on the offender, so
+#   it sits with the monetary sanctions and below ``pecuniary_punishment``.
+# * ``compulsory_dissolution`` (sundlõpetamine, KarS § 46) scores **4**,
+#   the same tier as ``arrest`` — i.e. between the monetary sanctions and
+#   ``imprisonment``, as issue #681 specifies. It is the harshest sanction
+#   available against a legal person (it ends the entity's existence), so
+#   it must outrank every fine, but it is not a deprivation of liberty and
+#   so must not outrank ``imprisonment``.
+#
+# Ties are intentional: severity is an ordinal *tier*, not a total order.
+# ``main()`` resolves ``max_severity_type`` from the sanction that actually
+# set the maximum, so a tie no longer mislabels the tier (see there).
 SEVERITY = {
     "coercive_payment": 1,
     "fine": 2,
+    "confiscation": 2,
     "pecuniary_punishment": 3,
     "arrest": 4,
+    "compulsory_dissolution": 4,
     "imprisonment": 5,
 }
 
@@ -119,6 +157,8 @@ SANCTION_TYPE_LABELS = {
     "fine": "Fine",
     "arrest": "Arrest",
     "coercive_payment": "Coercive payment",
+    "confiscation": "Confiscation",
+    "compulsory_dissolution": "Compulsory dissolution",
 }
 
 
@@ -172,26 +212,123 @@ def _provision_ref(node: dict) -> str:
     return law_abbr or ""
 
 
-def _find_act_node(doc: dict) -> dict | None:
-    """Return the act node from a peep file's @graph, or None if no
-    act node is present.
+def _node_types(node: dict) -> list[str]:
+    """Return a node's ``@type`` as a list, tolerating the string form."""
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        return [types]
+    return list(types)
 
-    Match criteria: the node must be typed `estleg:Act`. Auxiliary
-    ``owl:Ontology`` graph headers (concept-cluster manifests, combined
-    dataset heads) are not acts and are ignored. #435 dropped
-    ``owl:Ontology`` from domain individuals.
+
+def _find_act_node(doc: dict) -> dict | None:
+    """Return the act (or act-part) root node from a peep file's @graph,
+    or None if no such node is present.
+
+    Match criteria: the node must be typed ``estleg:Act`` or
+    ``estleg:Part``. Auxiliary ``owl:Ontology`` graph headers
+    (concept-cluster manifests, combined dataset heads) are not acts and
+    are ignored. #435 dropped ``owl:Ontology`` from domain individuals.
+
+    Issue #681: multi-part laws are split into ``<law>_osaN_peep.json``
+    files whose root node is typed ``estleg:Part`` **only** \u2014 commits
+    ``c5625a748b`` / ``2676a1f81b`` retyped provisions and dropped the
+    per-document act classes, leaving these roots without ``estleg:Act``.
+    An ``estleg:Act``-only match therefore returned None for 37 root
+    peeps (both Karistusseadustik parts, all eight Asja\u00f5igusseadus
+    parts, V\u00f5la\u00f5igusseadus, Tsiviilseadustiku \u00fcldosa seadus, \u2026), so the
+    entire Penal Code \u2014 the corpus's densest source of sanctions \u2014 was
+    silently skipped as ``missing_act_node``. Accepting an
+    ``estleg:Part`` root restores them. ``estleg:Act`` still wins when
+    both typings are present, so single-file acts are unaffected.
 
     Callers must handle a None return \u2014 the per-file processing
     treats it as a malformed-input skip (logged to the coverage
     report's failure_samples + skip_reasons['missing_act_node']).
     """
+    part_node: dict | None = None
     for n in doc.get("@graph", []):
-        types = n.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
+        types = _node_types(n)
         if "estleg:Act" in types:
             return n
-    return None
+        if part_node is None and "estleg:Part" in types:
+            part_node = n
+    return part_node
+
+
+def _label_texts(value: object) -> list[str]:
+    """Flatten a JSON-LD label/title value into a list of plain strings.
+
+    Accepts the three shapes the corpus uses interchangeably: a bare
+    string, a langString object (``{"@value": \u2026, "@language": \u2026}``), and
+    a list mixing both.
+    """
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return [str(inner)] if isinstance(inner, (str, int, float)) else []
+    if isinstance(value, list):
+        out: list[str] = []
+        for item in value:
+            out.extend(_label_texts(item))
+        return out
+    return []
+
+
+# A code's *general part* is marked by a parenthesised part designation
+# in the root node's label: "Karistusseadustik Osa 1 (\u00dcLDOSA) \u00a71\u201387
+# kaardistus", "V\u00d5S Osa 1 (\u00dcldosa) \u00a71\u2013207 kaardistus", "Asja\u00f5igusseadus
+# Osa 1 (\u00dcLDOSA) \u00a71\u201331 kaardistus".
+#
+# Issue #681 describes the rule as "label contains \u00fcldosa", but a bare
+# substring test is too broad: several *standalone acts* carry the word
+# in their own name \u2014 Keskkonnaseadustiku \u00fcldosa seadus, Majandustegevuse
+# seadustiku \u00fcldosa seadus, Sotsiaalseadustiku \u00fcldosa seadus,
+# Tsiviilseadustiku \u00fcldosa seadus (and its ``Osa 2 (ISIKUD)`` /
+# ``Osa 4 (TEHINGUD)`` / ``Osa 7`` parts). Those are ordinary acts with
+# their own penalty provisions \u2014 two of them ship sanction sidecars
+# today \u2014 so a substring rule would delete legitimate sanctions.
+# Requiring the parentheses selects exactly the general-part files of a
+# split code and leaves the standalone \u00fcldosa acts alone.
+_GENERAL_PART_LABEL_RE = re.compile(r"\(\s*\u00fcldosa\s*\)", re.IGNORECASE)
+
+
+def _is_general_part(act_node: dict) -> bool:
+    """Return True iff the act/part root node denotes a code's general part.
+
+    The general part (\u00fcldosa) of a code defines the *sanction system* \u2014
+    what imprisonment, a fine or confiscation ARE, and the statutory
+    ranges that the special part's offence provisions draw on. It states
+    no offence penalties of its own, so running the sanction extractors
+    over it manufactures phantom sanctions: on KarS \u00dcldosa it produced 14
+    records, six of them false ``life`` hits on \u00a7\u00a7 4, 22\u00b9, 45, 53, 77 and
+    83\u00b2 \u2014 sections that merely *describe* life imprisonment (issue #681).
+    """
+    for key in ("rdfs:label", "dcterms:title", "dc:title"):
+        for text in _label_texts(act_node.get(key)):
+            if _GENERAL_PART_LABEL_RE.search(text):
+                return True
+    return False
+
+
+def _is_inline_sanction_node(node: object) -> bool:
+    """True for a peep-side ``estleg:Sanction`` node (issue #681).
+
+    Canonical Sanction nodes live in the ``sanctions/`` sidecar; a peep must
+    carry only the ``estleg:hasSanction`` edge. Older passes left minimal
+    inline anchor nodes (``@id`` / ``@type`` / ``estleg:sanctionType``) in
+    the peeps, and because nothing cleared them a regeneration that stopped
+    emitting a sanction left its anchor behind as an orphan — 482 of them
+    reached ``combined_ontology.jsonld`` as label-less, provision-less
+    Sanction nodes. ``main`` now removes every inline Sanction node before
+    it rewrites a peep (Step 2).
+    """
+    if not isinstance(node, dict):
+        return False
+    types = node.get("@type")
+    if isinstance(types, str):
+        types = [types]
+    return isinstance(types, list) and "estleg:Sanction" in types
 
 
 def _classify_enforcement_level(act_node: dict) -> str:
@@ -202,10 +339,7 @@ def _classify_enforcement_level(act_node: dict) -> str:
 
     Handles @type as either a string or a list of strings.
     """
-    types = act_node.get("@type") or []
-    if isinstance(types, str):
-        types = [types]
-    if "estleg:MunicipalRegulation" in types:
+    if "estleg:MunicipalRegulation" in _node_types(act_node):
         return "municipality"
     return "state"
 
@@ -288,6 +422,53 @@ def _ordered_year_range(lo_raw: int, hi_raw: int) -> tuple[str, str]:
     return f"{lo} years", f"{hi} years"
 
 
+# A sentencing formula. Estonian offence provisions state their penalty
+# as "…, – karistatakse <sanction>". Its presence separates a provision
+# that IMPOSES a penalty from one that merely describes the sanction
+# system (issue #681).
+_SENTENCING_FORMULA_RE = re.compile(r"\bkaristatakse\b", re.IGNORECASE)
+
+# An imprisonment range or ceiling may be followed by an alternative life
+# term before the noun: "kaheksa- kuni kahekümneaastase või eluaegse
+# vangistusega" (KarS § 114). Without tolerating that interposed clause
+# the patterns below never reach ``vangistus``, so § 114's 8–20 year
+# range was lost and only the separate ``life`` record survived (#681).
+_OR_LIFE = r"(?:või\s+eluaeg\w*\s+)?"
+
+# KarS § 45 lg 1: a determinate term of imprisonment runs from 30 days to
+# 20 years. Beyond that the only sentence available is life imprisonment,
+# which is recorded as ``max_penalty "life"`` with no amount. Any larger
+# year value is therefore a mis-parse (a citation year, a cross-referenced
+# section number, a bridged line), not a sentence. Kept equal to the bound
+# in ``estleg:SanctionImprisonmentMaxYearsShape`` so the extractor can
+# never emit a record the SHACL gate rejects (issue #681).
+_MAX_DETERMINATE_YEARS = 20
+
+_YEARS_RE = re.compile(r"^(\d+)\s+years$")
+
+
+def _years_value(penalty: str | None) -> int | None:
+    """Return the year count of a ``"<N> years"`` penalty string, else None.
+
+    ``"life"``, ``"30 days"``, ``"18 months"`` and ``None`` all return
+    None — only a determinate term in years is subject to the KarS § 45
+    ceiling.
+    """
+    if not penalty:
+        return None
+    match = _YEARS_RE.match(penalty)
+    return int(match.group(1)) if match else None
+
+
+def _spans_overlap(span: tuple[int, int], spans: list[tuple[int, int]]) -> bool:
+    """Return True iff ``span`` intersects any span in ``spans``."""
+    start, end = span
+    return any(
+        start < other_end and other_start < end
+        for other_start, other_end in spans
+    )
+
+
 def extract_imprisonment(text: str) -> list[dict]:
     """Detect imprisonment sentences.
 
@@ -298,20 +479,71 @@ def extract_imprisonment(text: str) -> list[dict]:
     Estonian numerals (``_ESTONIAN_NUMBERS``). The previous ``\\w+``
     over-matched arbitrary tokens before ``aasta``, which produced
     spurious empty matches and hid genuine extraction failures.
+
+    Deduplication (issue #681)
+    --------------------------
+    Records are deduplicated on the **exact ``(min, max)`` pair**. The
+    previous ``_already()`` helper compared a candidate against both the
+    ``max_penalty`` *and* the ``min_penalty`` of every record already
+    collected, so a max-only ceiling was swallowed whenever some range
+    happened to share that value as its *lower* bound. KarS § 400 lg 1
+    ("kuni üheaastase vangistusega" — max 1 year) therefore vanished
+    because lg 2's 1–3 year range starts at 1 year, two genuinely
+    different penalties for two different subsections.
+
+    A max-only match that merely re-reads the upper bound of a range
+    already captured (§ 114's "kuni kahekümneaastase …" sitting inside
+    "kaheksa- kuni kahekümneaastase …") is suppressed by **span
+    overlap** instead, which is precise where value comparison was not.
     """
     results: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+    # Character spans consumed by a range match; a ceiling match landing
+    # inside one is that range's own upper bound, not a separate penalty.
+    range_spans: list[tuple[int, int]] = []
 
-    def _already(penalty_str: str, field: str = "max_penalty") -> bool:
-        return any(r.get(field) == penalty_str for r in results) or any(
-            r.get("min_penalty") == penalty_str for r in results
-        )
+    def _add(max_penalty: str, min_penalty: str | None = None) -> None:
+        key = (min_penalty or "", max_penalty)
+        if key in seen:
+            return
+        # Issue #681: enforce the KarS § 45 lg 1 ceiling at the single
+        # point every imprisonment record passes through. Capping only
+        # the ``karistatakse`` fallback left the ceiling unenforced on
+        # every other branch — "karistatakse kuni 25 aastase
+        # vangistusega" was emitted as 25 years by the uncapped digit
+        # max-only pattern, and "25 kuni 30 aastase" as a 25–30 range —
+        # which ``estleg:SanctionImprisonmentMaxYearsShape`` then
+        # rejects, turning a parse artefact into a release-gate failure.
+        for penalty in (max_penalty, min_penalty):
+            years = _years_value(penalty)
+            if years is not None and years > _MAX_DETERMINATE_YEARS:
+                print(
+                    f"  WARN: discarding implausible imprisonment term "
+                    f"{penalty!r}; KarS § 45 lg 1 caps a determinate "
+                    f"sentence at {_MAX_DETERMINATE_YEARS} years "
+                    f"(beyond that only life imprisonment exists)"
+                )
+                return
+        seen.add(key)
+        rec: dict = {"sanction_type": "imprisonment"}
+        if min_penalty is not None:
+            rec["min_penalty"] = min_penalty
+        rec["max_penalty"] = max_penalty
+        results.append(rec)
 
-    # Life imprisonment: "eluaegne/eluaegse vangistus"
-    if re.search(r"eluaeg\w*\s+vangistus", text, re.IGNORECASE):
-        results.append({
-            "sanction_type": "imprisonment",
-            "max_penalty": "life",
-        })
+    # Life imprisonment: "eluaegne/eluaegse vangistus".
+    #
+    # Issue #681: gated on a sentencing formula. KarS Üldosa §§ 4, 22¹,
+    # 45, 53, 77 and 83² each mention life imprisonment while *defining*
+    # the sanction system, and each produced a phantom ``life`` sanction.
+    # This is defence in depth behind the general-part file skip in
+    # ``main()``; it also protects any other act that refers to life
+    # imprisonment without imposing it.
+    if (
+        _SENTENCING_FORMULA_RE.search(text)
+        and re.search(r"eluaeg\w*\s+vangistus", text, re.IGNORECASE)
+    ):
+        _add("life")
 
     # --- Word-based patterns (most common in KarS) ---
     _NUMBER_ALT = "|".join(
@@ -325,7 +557,8 @@ def extract_imprisonment(text: str) -> list[dict]:
     # numeral and ``aasta`` (``-?\s*``), so compound, split, and
     # hyphenated surface forms all match.
     range_pat = (
-        rf"({_NUMBER_ALT})-?\s+kuni\s+({_NUMBER_ALT})-?\s*aasta(?:se)?\s+vangistus"
+        rf"({_NUMBER_ALT})-?\s+kuni\s+({_NUMBER_ALT})-?\s*aasta(?:se)?"
+        rf"\s+{_OR_LIFE}vangistus"
     )
     for m in re.finditer(range_pat, text, re.IGNORECASE):
         min_val = _parse_number(m.group(1))
@@ -333,52 +566,39 @@ def extract_imprisonment(text: str) -> list[dict]:
         if min_val is not None and max_val is not None:
             # Issue #273: enforce min <= max (source range may be high-to-low).
             min_pen, max_pen = _ordered_year_range(min_val, max_val)
-            results.append({
-                "sanction_type": "imprisonment",
-                "min_penalty": min_pen,
-                "max_penalty": max_pen,
-            })
-
-    # Max only (word): "kuni viieaastase vangistusega"
-    # Issue #320/#372: allow an optional hyphen and optional whitespace
-    # between the numeral and ``aasta`` (e.g. "kümne aastase",
-    # "kaheksateist aastase", "kaheksa-aastase").
-    max_pat = rf"kuni\s+({_NUMBER_ALT})-?\s*aasta(?:se)?\s+vangistus"
-    for m in re.finditer(max_pat, text, re.IGNORECASE):
-        val = _parse_number(m.group(1))
-        if val is not None and not _already(f"{val} years"):
-            results.append({
-                "sanction_type": "imprisonment",
-                "max_penalty": f"{val} years",
-            })
+            range_spans.append(m.span())
+            _add(max_pen, min_pen)
 
     # --- Digit-based patterns (less common but possible) ---
 
     # Range: "N kuni M aastase vangistusega"
     for m in re.finditer(
-        r"(\d+)\s*[\-\u2013\u2014]?\s*kuni\s+(\d+)\s*[\-\s]*aasta(?:se)?\s+vangistus",
+        rf"(\d+)\s*[\-–—]?\s*kuni\s+(\d+)\s*[\-\s]*aasta(?:se)?"
+        rf"\s+{_OR_LIFE}vangistus",
         text, re.IGNORECASE,
     ):
         # Issue #273: enforce min <= max (source range may be high-to-low).
         min_s, max_s = _ordered_year_range(int(m.group(1)), int(m.group(2)))
-        if not _already(max_s):
-            results.append({
-                "sanction_type": "imprisonment",
-                "min_penalty": min_s,
-                "max_penalty": max_s,
-            })
+        range_spans.append(m.span())
+        _add(max_s, min_s)
+
+    # Max only (word): "kuni viieaastase vangistusega"
+    # Issue #320/#372: allow an optional hyphen and optional whitespace
+    # between the numeral and ``aasta`` (e.g. "kümne aastase",
+    # "kaheksateist aastase", "kaheksa-aastase").
+    max_pat = rf"kuni\s+({_NUMBER_ALT})-?\s*aasta(?:se)?\s+{_OR_LIFE}vangistus"
+    for m in re.finditer(max_pat, text, re.IGNORECASE):
+        val = _parse_number(m.group(1))
+        if val is not None and not _spans_overlap(m.span(), range_spans):
+            _add(f"{val} years")
 
     # Max only (digit): "kuni N aastase vangistusega"
     for m in re.finditer(
-        r"kuni\s+(\d+)\s*[\-\s]*aasta(?:se)?\s+vangistus",
+        rf"kuni\s+(\d+)\s*[\-\s]*aasta(?:se)?\s+{_OR_LIFE}vangistus",
         text, re.IGNORECASE,
     ):
-        penalty = f"{m.group(1)} years"
-        if not _already(penalty):
-            results.append({
-                "sanction_type": "imprisonment",
-                "max_penalty": penalty,
-            })
+        if not _spans_overlap(m.span(), range_spans):
+            _add(f"{m.group(1)} years")
 
     # "karistatakse ... kuni N aastase vangistusega" (digit fallback)
     #
@@ -389,21 +609,27 @@ def extract_imprisonment(text: str) -> list[dict]:
     # number ("§-s 118" → "118 years"). Two guards now scope it:
     #   (a) require ``kuni`` adjacent to the number and stay within the
     #       sentence (``[^.]*?`` instead of ``.*?``); and
-    #   (b) a plausibility cap — KarS §45 sets the maximum determinate
-    #       prison term at 25 years, so any value > 25 is discarded as a
+    #   (b) a plausibility cap — KarS § 45 lg 1 sets the maximum
+    #       determinate prison term at 20 years (beyond that only life
+    #       imprisonment exists), so any value > 20 is discarded as a
     #       mis-captured citation/cross-reference.
+    #
+    # Issue #681 lowered this cap from 25 to 20 to match the statute and
+    # ``estleg:SanctionImprisonmentMaxYearsShape``. While the cap sat at
+    # 25 the extractor could emit a 21–25 year term that the SHACL bound
+    # then rejected, turning a parser artefact into a release-gate
+    # failure. Discarding it here keeps the two in agreement; no corpus
+    # provision falls in that window.
     for m in re.finditer(
-        r"karistatakse[^.]*?\bkuni\s+(\d+)\s*[-\s]*aasta(?:se)?\s+vangistus",
+        rf"karistatakse[^.]*?\bkuni\s+(\d+)\s*[-\s]*aasta(?:se)?"
+        rf"\s+{_OR_LIFE}vangistus",
         text, re.IGNORECASE,
     ):
         val = m.group(1)
-        if int(val) > 25:
+        if int(val) > 20:
             continue
-        if not _already(f"{val} years"):
-            results.append({
-                "sanction_type": "imprisonment",
-                "max_penalty": f"{val} years",
-            })
+        if not _spans_overlap(m.span(), range_spans):
+            _add(f"{val} years")
 
     # Fallback: "vangistus(ega) N <unit>" — REQUIRES an explicit unit
     # token to interpret the number. The previous heuristic guessed
@@ -429,12 +655,9 @@ def extract_imprisonment(text: str) -> list[dict]:
                 break
         if normalised is None:
             continue
-        penalty_str = f"{val} {normalised}"
-        if not _already(penalty_str):
-            results.append({
-                "sanction_type": "imprisonment",
-                "max_penalty": penalty_str,
-            })
+        if _spans_overlap(m.span(), range_spans):
+            continue
+        _add(f"{val} {normalised}")
 
     return results
 
@@ -450,6 +673,16 @@ def extract_pecuniary(text: str) -> list[dict]:
     with ``is_statutory_default=True`` so downstream consumers can
     distinguish "extracted from text" from "statutory fallback".
     """
+    turnover = extract_turnover_percentage(text)
+    if turnover:
+        # Issue #681: the lõige states its own ceiling as a share of the
+        # legal person's turnover, so the KarS § 44 natural-person
+        # fallback is not merely redundant here — it is wrong. KarS § 400
+        # lg 3/lg 4 were stamped "500 daily rates" instead of the 5 % /
+        # 5–10 % turnover fines the text actually imposes. Extraction runs
+        # per lõige (see ``extract_sanctions``), so a sibling lõige that
+        # says a bare "rahalise karistusega" still gets the default.
+        return turnover
     results: list[dict] = []
     if re.search(r"rahalise?\s+karistus", text, re.IGNORECASE):
         results.append({
@@ -458,6 +691,106 @@ def extract_pecuniary(text: str) -> list[dict]:
             "is_statutory_default": True,
         })
     return results
+
+
+# "rahalise karistusega kuni 5 protsenti juriidilise isiku käibest" and
+# "rahalise karistusega 5 kuni 10 protsenti juriidilise isiku käibest"
+# (KarS § 400 lg 3 / lg 4). The bounded ``[^.]{0,40}`` gap keeps the
+# match inside one sentence while tolerating the "juriidilise isiku"
+# qualifier between the amount and ``käibest``.
+_TURNOVER_RANGE_RE = re.compile(
+    r"rahalise?\s+karistus\w*\s+(\d+(?:[.,]\d+)?)\s+kuni\s+"
+    r"(\d+(?:[.,]\d+)?)\s*(?:%|protsenti)[^.]{0,40}?käibest",
+    re.IGNORECASE,
+)
+_TURNOVER_MAX_RE = re.compile(
+    r"rahalise?\s+karistus\w*\s+kuni\s+(\d+(?:[.,]\d+)?)\s*"
+    r"(?:%|protsenti)[^.]{0,40}?käibest",
+    re.IGNORECASE,
+)
+
+
+def _turnover_amount(raw: str) -> str:
+    """Render a captured turnover percentage as a penalty string.
+
+    Estonian writes a decimal with a comma; the structured parser wants a
+    dot. ``"5"`` → ``"5 % of turnover"``, ``"2,5"`` → ``"2.5 % of turnover"``.
+    """
+    return f"{raw.replace(',', '.')} % of turnover"
+
+
+def extract_turnover_percentage(text: str) -> list[dict]:
+    """Detect a pecuniary punishment expressed as a share of turnover.
+
+    Issue #681: KarS § 400 lg 3/lg 4 fine a legal person "kuni 5
+    protsenti" / "5 kuni 10 protsenti juriidilise isiku käibest". No
+    pattern recognised that shape, so ``extract_pecuniary`` fell through
+    to the KarS § 44 natural-person default of 500 daily rates — a fine
+    the provision does not impose, on a person it does not apply to.
+
+    Emits ``pecuniary_punishment`` records carrying the new
+    ``percent_of_turnover`` structured unit. A turnover share is a
+    *relative* ceiling, so it has no currency.
+    """
+    results: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+
+    def _add(max_raw: str, min_raw: str | None = None) -> None:
+        max_pen = _turnover_amount(max_raw)
+        min_pen = _turnover_amount(min_raw) if min_raw is not None else None
+        key = (min_pen or "", max_pen)
+        if key in seen:
+            return
+        seen.add(key)
+        rec: dict = {"sanction_type": "pecuniary_punishment"}
+        if min_pen is not None:
+            rec["min_penalty"] = min_pen
+        rec["max_penalty"] = max_pen
+        results.append(rec)
+
+    # Range first (most specific): "5 kuni 10 protsenti ... käibest".
+    range_spans: list[tuple[int, int]] = []
+    for m in _TURNOVER_RANGE_RE.finditer(text):
+        range_spans.append(m.span())
+        _add(m.group(2), m.group(1))
+
+    # Ceiling: "kuni 5 protsenti ... käibest".
+    for m in _TURNOVER_MAX_RE.finditer(text):
+        if _spans_overlap(m.span(), range_spans):
+            continue
+        _add(m.group(1))
+
+    return results
+
+
+def extract_dissolution(text: str) -> list[dict]:
+    """Detect compulsory dissolution of a legal person (sundlõpetamine).
+
+    Issue #681: KarS § 46 lets a court dissolve a legal person, and 28
+    Eriosa provisions impose it ("karistatakse … sundlõpetamisega").
+    No extractor recognised it, so the harshest sanction available
+    against a legal person was absent from the graph entirely.
+
+    Dissolution has no magnitude — an entity is dissolved or it is not —
+    so the record carries no ``max_penalty`` and no structured amount.
+    """
+    if re.search(r"sundlõpeta\w*", text, re.IGNORECASE):
+        return [{"sanction_type": "compulsory_dissolution"}]
+    return []
+
+
+def extract_confiscation(text: str) -> list[dict]:
+    """Detect confiscation (konfiskeerimine).
+
+    Issue #681: KarS §§ 83–85 govern confiscation of the instrument, the
+    object and the proceeds of an offence; 55 Eriosa provisions invoke
+    it. Like dissolution it states no ceiling in the offence provision —
+    the amount is whatever the offence yielded — so no ``max_penalty``
+    is emitted.
+    """
+    if re.search(r"konfiskeeri\w*", text, re.IGNORECASE):
+        return [{"sanction_type": "confiscation"}]
+    return []
 
 
 def extract_fine_units(text: str) -> list[dict]:
@@ -730,7 +1063,36 @@ ALL_EXTRACTORS = [
     extract_mojutustrahv,
     extract_coercive,
     extract_arrest,
+    extract_dissolution,
+    extract_confiscation,
 ]
+
+
+# A lõige (subsection) marker: "(1)", "(2)", … at the head of a
+# subsection. Bounded to two digits so a bare parenthesised year
+# ("(2003)") or a long numeric citation cannot masquerade as one.
+_LOIGE_MARKER_RE = re.compile(r"(\(\d{1,2}\))")
+
+
+def split_loiked(text: str) -> list[str]:
+    """Split provision text into its lõige (subsection) chunks.
+
+    Returns ``[text]`` unchanged when the provision has no lõige
+    markers. Otherwise each chunk starts at its ``(n)`` marker; any
+    prose standing before the first marker is returned as its own
+    leading chunk so nothing is dropped.
+    """
+    parts = _LOIGE_MARKER_RE.split(text)
+    if len(parts) == 1:
+        return [text]
+    chunks: list[str] = []
+    preamble = parts[0].strip()
+    if preamble:
+        chunks.append(preamble)
+    for i in range(1, len(parts), 2):
+        body = parts[i + 1] if i + 1 < len(parts) else ""
+        chunks.append(parts[i] + body)
+    return chunks or [text]
 
 
 def extract_sanctions(text: str) -> list[dict]:
@@ -741,24 +1103,48 @@ def extract_sanctions(text: str) -> list[dict]:
     from a text-derived one. If both flagged and unflagged variants
     of the same logical key appear, the unflagged variant wins (a
     text-derived value is more specific than a statutory default).
+
+    Per-lõige extraction (issue #681)
+    ---------------------------------
+    A section that punishes several subsections differently was read as
+    one blob, so the subsections' penalties collided and all but one
+    were lost — KarS § 141 reported only lg 1's 1–5 years, dropping
+    lg 2's 6–15 years and lg 3's pecuniary punishment. The extractors
+    are therefore run once over the whole text and again over each
+    lõige chunk, merging into the same dedup.
+
+    Running the whole text as well as the chunks is deliberate: it keeps
+    every record the single-pass reading produced (some extractors need
+    context that a chunk boundary would cut, e.g. ``extract_arrest``
+    wants a sentencing verb co-occurring with the arrest token), while
+    the per-chunk pass adds the subsection detail. Because both passes
+    feed one dedup keyed on type + penalties, the result is a superset
+    with no duplicates.
     """
     all_sanctions: list[dict] = []
     seen: dict[str, dict] = {}
-    for extractor in ALL_EXTRACTORS:
-        for s in extractor(text):
-            key = f"{s['sanction_type']}|{s.get('max_penalty', '')}|{s.get('min_penalty', '')}"
-            existing = seen.get(key)
-            if existing is None:
-                seen[key] = s
-                all_sanctions.append(s)
-            elif existing.get("is_statutory_default") and not s.get(
-                "is_statutory_default"
-            ):
-                # Replace the statutory-default record with the
-                # text-derived one in-place so list order is stable.
-                idx = all_sanctions.index(existing)
-                all_sanctions[idx] = s
-                seen[key] = s
+
+    def _merge(s: dict) -> None:
+        key = f"{s['sanction_type']}|{s.get('max_penalty', '')}|{s.get('min_penalty', '')}"
+        existing = seen.get(key)
+        if existing is None:
+            seen[key] = s
+            all_sanctions.append(s)
+        elif existing.get("is_statutory_default") and not s.get(
+            "is_statutory_default"
+        ):
+            # Replace the statutory-default record with the
+            # text-derived one in-place so list order is stable.
+            idx = all_sanctions.index(existing)
+            all_sanctions[idx] = s
+            seen[key] = s
+
+    chunks = split_loiked(text)
+    passes = [text] if len(chunks) == 1 else [text, *chunks]
+    for chunk in passes:
+        for extractor in ALL_EXTRACTORS:
+            for s in extractor(chunk):
+                _merge(s)
     return all_sanctions
 
 
@@ -827,12 +1213,17 @@ def _normalise_penalty_text(penalty: str) -> str:
 #   "daily_rates"           — KarS päevamäär (pecuniary punishment)
 #   "fine_units"            — väärteo trahviühik (misdemeanour fine)
 #   "monetary"              — a fixed monetary sum (paired with a currency)
+#   "percent_of_turnover"   — a share of a legal person's turnover
 PENALTY_UNIT_YEARS = "years"
 PENALTY_UNIT_MONTHS = "months"
 PENALTY_UNIT_DAYS = "days"
 PENALTY_UNIT_DAILY_RATES = "daily_rates"
 PENALTY_UNIT_FINE_UNITS = "fine_units"
 PENALTY_UNIT_MONETARY = "monetary"
+# Issue #681: KarS § 400 lg 3/lg 4 cap a legal person's fine at a share
+# of its turnover. The ceiling is relative, so unlike "monetary" it
+# carries NO currency — the amount is a percentage, not a sum.
+PENALTY_UNIT_PERCENT_OF_TURNOVER = "percent_of_turnover"
 
 PENALTY_UNITS: frozenset[str] = frozenset({
     PENALTY_UNIT_YEARS,
@@ -841,6 +1232,7 @@ PENALTY_UNITS: frozenset[str] = frozenset({
     PENALTY_UNIT_DAILY_RATES,
     PENALTY_UNIT_FINE_UNITS,
     PENALTY_UNIT_MONETARY,
+    PENALTY_UNIT_PERCENT_OF_TURNOVER,
 })
 
 # Maps the trailing free-text unit token (already normalised by the
@@ -859,6 +1251,9 @@ _FREE_TEXT_UNIT_TO_STRUCTURED: dict[str, tuple[str, str | None]] = {
     "fine unit": (PENALTY_UNIT_FINE_UNITS, None),
     "fine units": (PENALTY_UNIT_FINE_UNITS, None),
     "eur": (PENALTY_UNIT_MONETARY, "EUR"),
+    # Issue #681: a turnover-share ceiling. No currency — the amount is
+    # a percentage, so a currency code would be meaningless.
+    "% of turnover": (PENALTY_UNIT_PERCENT_OF_TURNOVER, None),
 }
 
 # "<amount> <unit-words>" — amount is digits (optionally with a decimal
@@ -1131,21 +1526,44 @@ def main() -> int:
             continue
         enforcement_level = _classify_enforcement_level(act_node)
 
+        # Issue #681: a code's general part (üldosa) defines the sanction
+        # SYSTEM, not offence penalties. Extraction is suppressed for it,
+        # but the file still runs through the clear/save lifecycle below
+        # so a regeneration RETRACTS whatever a previous run wrote — the
+        # 14 phantom KarS Üldosa records (six false ``life`` hits) are
+        # deleted from the peep and their sidecar removed, rather than
+        # merely stopping being regenerated.
+        general_part = _is_general_part(act_node)
+        if general_part:
+            _files_skipped += 1
+            _skip_reasons["general_part"] = (
+                _skip_reasons.get("general_part", 0) + 1
+            )
+
         is_kov = "regulations/kov/" in str(filepath)
         _files_processed.add(filepath)
         if is_kov:
             _files_processed_kov.add(filepath)
 
-        # Step 1: detect prior peep-side output BEFORE any mutation.
+        # Step 1: detect prior peep-side output BEFORE any mutation. Inline
+        # Sanction anchor nodes count as prior output too, so a peep that
+        # carries only stale anchors is still rewritten (and cleaned).
         had_existing_peep = any(
-            ("estleg:hasSanction" in n) or ("estleg:enforcedAtLevel" in n)
+            ("estleg:hasSanction" in n)
+            or ("estleg:enforcedAtLevel" in n)
+            or _is_inline_sanction_node(n)
             for n in doc["@graph"]
         )
 
-        # Step 2: clear peep-side state unconditionally (idempotency).
+        # Step 2: clear peep-side state unconditionally (idempotency): the
+        # edges on every node, and every inline estleg:Sanction node — the
+        # canonical Sanction nodes are (re)written to the sidecar below.
         for n in doc["@graph"]:
             n.pop("estleg:hasSanction", None)
             n.pop("estleg:enforcedAtLevel", None)
+        doc["@graph"] = [
+            n for n in doc["@graph"] if not _is_inline_sanction_node(n)
+        ]
 
         law_name = filepath.stem.replace("_peep", "")
         law_sanctions: list[dict] = []
@@ -1158,8 +1576,10 @@ def main() -> int:
 
         iri_counts: dict[str, int] = defaultdict(int)
 
-        # Step 3: run extraction over the cleared graph.
-        for node in doc["@graph"]:
+        # Step 3: run extraction over the cleared graph. A general-part
+        # file contributes no provisions, so the loop body never runs and
+        # the file falls through to Step 4 with an empty result set.
+        for node in ([] if general_part else doc["@graph"]):
             summary = classifier_text(node)
             if not summary:
                 continue
@@ -1294,11 +1714,14 @@ def main() -> int:
     severity_index: list[dict] = []
     for law_name, sanctions in sorted(all_law_sanctions.items()):
         max_severity = 0
+        max_severity_type = "unknown"
         max_monetary_eur: Decimal | None = None
         for s in sanctions:
             stype = s.get("estleg:sanctionType", "")
             sev = SEVERITY.get(stype, 0)
-            max_severity = max(max_severity, sev)
+            if sev > max_severity:
+                max_severity = sev
+                max_severity_type = stype
             # Issue #393: expose the largest monetary penalty (EUR) so
             # consumers can rank WITHIN the fine tier — a 20,000,000 EUR
             # fine and a 64 EUR fine both score type-severity 2, leaving
@@ -1312,9 +1735,14 @@ def main() -> int:
             "law": law_name,
             "sanction_count": len(sanctions),
             "max_severity": max_severity,
-            "max_severity_type": next(
-                (k for k, v in SEVERITY.items() if v == max_severity), "unknown"
-            ),
+            # Issue #681: report the type that actually SET the maximum.
+            # The previous reverse lookup returned the first key in
+            # SEVERITY holding that score, which was unambiguous only
+            # while every score was unique. ``confiscation`` now ties
+            # with ``fine`` at 2 and ``compulsory_dissolution`` with
+            # ``arrest`` at 4, so a law sanctioned only by confiscation
+            # would have been mislabelled "fine".
+            "max_severity_type": max_severity_type,
             # Largest EUR amount on any sanction for this law (None when
             # the law has no euro-denominated sanction). A float for JSON
             # readability; the authoritative xsd:decimal lives on the node.

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,6 +21,30 @@
       ],
       "rdfs:label": "Sanctions – erakonnaseadus",
       "dc:source": "erakonnaseadus"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_compulsory_dissolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "compulsory_dissolution",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12"
+      },
+      "rdfs:label": "Compulsory dissolution (ERAKON § 12.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_Lg_3_compulsory_dissolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "compulsory_dissolution",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_Lg_3"
+      },
+      "rdfs:label": "Compulsory dissolution (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_12_coercive_payment",
@@ -34,7 +63,26 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Coercive payment, max 15000 EUR (ERAKON § 12<sup>12</sup>.)"
+      "rdfs:label": "Coercive payment, max 15000 EUR (ERAKON § 12¹².)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_12_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_12_Lg_1"
+      },
+      "estleg:maxPenalty": "15000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "15000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Coercive payment, max 15000 EUR (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_14_fine",
@@ -53,7 +101,7 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12<sup>14</sup>.)"
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12¹⁴.)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_14_fine_2",
@@ -71,7 +119,44 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12<sup>14</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12¹⁴.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_14_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_14_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (ERAKON)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_14_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_14_Lg_2"
+      },
+      "estleg:maxPenalty": "15000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "15000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_15_fine",
@@ -89,7 +174,25 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12<sup>15</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12¹⁵.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_15_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_15_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_16_fine",
@@ -108,7 +211,7 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12<sup>16</sup>.)"
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12¹⁶.)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_16_fine_2",
@@ -126,10 +229,66 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12<sup>16</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12¹⁶.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_16_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_16_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (ERAKON)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_16_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_16_Lg_2"
+      },
+      "estleg:maxPenalty": "15000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "15000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_17_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_17"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (ERAKON § 12¹⁷.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_17_fine_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
@@ -144,7 +303,44 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12<sup>17</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12¹⁷.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_17_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_17_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (ERAKON)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_17_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_17_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_18_fine",
@@ -163,7 +359,7 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12<sup>18</sup>.)"
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12¹⁸.)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_18_fine_2",
@@ -181,7 +377,44 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12<sup>18</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12¹⁸.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_18_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_18_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (ERAKON)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_18_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_18_Lg_2"
+      },
+      "estleg:maxPenalty": "15000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "15000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_19_fine",
@@ -200,7 +433,7 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12<sup>19</sup>.)"
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON § 12¹⁹.)"
     },
     {
       "@id": "estleg:Sanction_ERAKON_Par_12_19_fine_2",
@@ -218,7 +451,44 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12<sup>19</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (ERAKON § 12¹⁹.)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_19_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_19_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (ERAKON)"
+    },
+    {
+      "@id": "estleg:Sanction_ERAKON_Par_12_19_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:ERAKON_Par_12_19_Lg_2"
+      },
+      "estleg:maxPenalty": "15000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "15000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 15000 EUR (ERAKON)"
     }
   ]
 }

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -28,6 +33,18 @@
         "@id": "estleg:toodete_ja_teenuste_ligipaasetavuse_sead_Par_19"
       },
       "rdfs:label": "Coercive payment (toodete § 19.)"
+    },
+    {
+      "@id": "estleg:Sanction_toodete_ja_teenuste_ligipaasetavuse_sead_Par_19_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:toodete_ja_teenuste_ligipaasetavuse_sead_Par_19_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (toodete)"
     },
     {
       "@id": "estleg:Sanction_toodete_ja_teenuste_ligipaasetavuse_sead_Par_20_fine",
@@ -65,6 +82,43 @@
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
       "rdfs:label": "Fine, max 20000 EUR (toodete § 20.)"
+    },
+    {
+      "@id": "estleg:Sanction_toodete_ja_teenuste_ligipaasetavuse_sead_Par_20_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:toodete_ja_teenuste_ligipaasetavuse_sead_Par_20_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (toodete)"
+    },
+    {
+      "@id": "estleg:Sanction_toodete_ja_teenuste_ligipaasetavuse_sead_Par_20_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:toodete_ja_teenuste_ligipaasetavuse_sead_Par_20_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (toodete)"
     }
   ]
 }

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,6 +21,30 @@
       ],
       "rdfs:label": "Sanctions – kemikaaliseadus",
       "dc:source": "kemikaaliseadus"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_30_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_30"
+      },
+      "rdfs:label": "Coercive payment (KEMIKA § 30.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_30_Lg_3_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_30_Lg_3"
+      },
+      "rdfs:label": "Coercive payment (KEMIKA)"
     },
     {
       "@id": "estleg:Sanction_KEMIKA_Par_42_coercive_payment",
@@ -28,6 +57,18 @@
         "@id": "estleg:KEMIKA_Par_42"
       },
       "rdfs:label": "Coercive payment (KEMIKA § 42.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_42_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_42_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (KEMIKA)"
     },
     {
       "@id": "estleg:Sanction_KEMIKA_Par_43_fine",
@@ -67,6 +108,43 @@
       "rdfs:label": "Fine, max 2600 EUR (KEMIKA § 43.)"
     },
     {
+      "@id": "estleg:Sanction_KEMIKA_Par_43_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_43_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_43_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_43_Lg_2"
+      },
+      "estleg:maxPenalty": "2600 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "2600",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 2600 EUR (KEMIKA)"
+    },
+    {
       "@id": "estleg:Sanction_KEMIKA_Par_44_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -83,6 +161,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (KEMIKA § 44.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_44_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_44"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KEMIKA § 44.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_44_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_44_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_44_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_44_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KEMIKA)"
     },
     {
       "@id": "estleg:Sanction_KEMIKA_Par_45_fine",
@@ -103,7 +237,82 @@
       "rdfs:label": "Fine, max 300 fine units (KEMIKA § 45.)"
     },
     {
+      "@id": "estleg:Sanction_KEMIKA_Par_45_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_45"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KEMIKA § 45.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_45_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_45_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_45_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_45_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KEMIKA)"
+    },
+    {
       "@id": "estleg:Sanction_KEMIKA_Par_46_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_46"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KEMIKA § 46.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_46_fine_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
@@ -119,6 +328,43 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (KEMIKA § 46.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_46_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_46_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_46_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_46_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KEMIKA)"
     },
     {
       "@id": "estleg:Sanction_KEMIKA_Par_47_fine",
@@ -158,6 +404,43 @@
       "rdfs:label": "Fine, max 300 fine units (KEMIKA § 47.)"
     },
     {
+      "@id": "estleg:Sanction_KEMIKA_Par_47_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_47_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_47_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_47_Lg_2"
+      },
+      "estleg:maxPenalty": "23000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "23000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 23000 EUR (KEMIKA)"
+    },
+    {
       "@id": "estleg:Sanction_KEMIKA_Par_48_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -174,6 +457,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (KEMIKA § 48.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_48_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_48"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KEMIKA § 48.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_48_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_48_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_48_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_48_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KEMIKA)"
     },
     {
       "@id": "estleg:Sanction_KEMIKA_Par_49_fine",
@@ -211,6 +550,67 @@
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
       "rdfs:label": "Fine, max 8400 EUR (KEMIKA § 49.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_49_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_49_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_49_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_49_Lg_2"
+      },
+      "estleg:maxPenalty": "8400 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "8400",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 8400 EUR (KEMIKA)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_50_confiscation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "confiscation",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_50"
+      },
+      "rdfs:label": "Confiscation (KEMIKA § 50.)"
+    },
+    {
+      "@id": "estleg:Sanction_KEMIKA_Par_50_Lg_6_confiscation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "confiscation",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KEMIKA_Par_50_Lg_6"
+      },
+      "rdfs:label": "Confiscation (KEMIKA)"
     }
   ]
 }

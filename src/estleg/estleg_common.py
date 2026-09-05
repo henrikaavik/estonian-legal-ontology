@@ -424,6 +424,13 @@ COMBINED_STRIPPED_PREDICATES: frozenset[str] = frozenset(
         # estleg:earliestSupersedingDate signals are retained instead, and the
         # full edge resolves on the seadusloome load surface.
         "estleg:interpretsVersion",
+        # #681: estleg:resultedInVersion links an AmendmentEvent (amendments/
+        # overlay, merged into combined since #561) to the ProvisionVersion it
+        # produced (#429). The target lives only in provision_versions/, so
+        # left in place the edge dangled 60,377 times in the rebuilt
+        # combined-only graph. Strip it like the other version-layer forward
+        # edges; it resolves on the full load surface.
+        "estleg:resultedInVersion",
     }
 )
 
