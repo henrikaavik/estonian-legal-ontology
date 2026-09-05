@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Estonian Legal Ontology encodes 1,122 enacted laws (1,190 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+The Estonian Legal Ontology encodes 1,122 enacted laws (1,195 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,104 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
 
 > **Maintenance note:** The counts in this guide are sourced from `krr_outputs/INDEX.json`, the per-pipeline reports under `krr_outputs/reports/` (e.g. `amendment_history_report.json`, `institutional_competence_report.json`, `sanctions_report.json`), and `metadata.jsonld` (`estleg:statistics`). Update them from those canonical files when the corpus is regenerated.
 
@@ -10,7 +10,7 @@ The Estonian Legal Ontology encodes 1,122 enacted laws (1,190 law files), 22,832
 
 ```
 krr_outputs/
-  *.json              # 1,190 enacted law files (*_peep.json)
+  *.json              # 1,195 enacted law files (*_peep.json)
   amendments/         # 5,647 amendment chain files
   concepts/           # Legal concept graph + report
   curia/              # EU court decisions (CJEU/CURIA)

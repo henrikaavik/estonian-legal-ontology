@@ -5,7 +5,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid.
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,118 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. `validate_all.py` currently validates
@@ -478,16 +478,18 @@ transposition-mapping) remain laws-and-state-only by design.
 
 ### Supreme Court Decisions (Riigikohus)
 
+<!-- case types: keep in sync with krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json case_type_counts — tests/test_validate_all.py::test_riigikohus_case_type_tables_match_index enforces both this table and the one in docs/README.md -->
+
 | Case Type | Estonian | Count |
 |-----------|----------|-------|
-| Administrative | Haldusasi | 9,561 |
-| Civil | Tsiviilasi | 970 |
-| Criminal | Kriminaalasi | 484 |
-| Constitutional Review | Pohiseaduslikkuse jarelevalve | 336 |
+| Civil | Tsiviilasi | 4,988 |
+| Criminal | Kriminaalasi | 3,686 |
+| Administrative | Haldusasi | 2,434 |
+| Constitutional Review | Pohiseaduslikkuse jarelevalve | 800 |
 | Misdemeanor | Vaarteoasi | 107 |
-| Other | Muu | 679 |
+| Other | Muu | 89 |
 
-Years covered: 1993-2026 (12,137 decisions total)
+Years covered: 1993-2026 (12,104 decisions total)
 
 ### EU Legislation (EUR-Lex)
 
@@ -618,7 +620,7 @@ python3 scripts/generate_similarity_index.py
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (23,118 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (27,008 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry

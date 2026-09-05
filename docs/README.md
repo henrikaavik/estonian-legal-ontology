@@ -5,7 +5,7 @@ This project provides a comprehensive, machine-readable ontology of Estonian and
 
 Canonical headline counts live in the root [README.md](../README.md) and `metadata.jsonld` (`estleg:statistics`). Do not edit those two independently.
 
-**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,118 JSON/JSON-LD files** | ontology **1.0.0** (2026-08-19)
+**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-04)
 
 ## Enacted Laws (1,122 total)
 
@@ -116,16 +116,18 @@ See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete documentation.
 
 ## Supreme Court Decisions (Riigikohus)
 
-12,137 decisions from 1993-2026, sourced from [rikos.rik.ee](https://rikos.rik.ee).
+12,104 decisions from 1993-2026, sourced from [rikos.rik.ee](https://rikos.rik.ee).
+
+<!-- case types: keep in sync with krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json case_type_counts — tests/test_validate_all.py::test_riigikohus_case_type_tables_match_index enforces both this table and the one in README.md -->
 
 | Case Type | Count |
 |-----------|-------|
-| Civil (Tsiviilasi) | 4,745 |
-| Criminal (Kriminaalasi) | 3,422 |
-| Administrative (Haldusasi) | 2,392 |
-| Constitutional Review | 792 |
-| Other | 679 |
+| Civil (Tsiviilasi) | 4,988 |
+| Criminal (Kriminaalasi) | 3,686 |
+| Administrative (Haldusasi) | 2,434 |
+| Constitutional Review | 800 |
 | Misdemeanor (Vaarteoasi) | 107 |
+| Other | 89 |
 
 ## EU Legislation (EUR-Lex)
 
@@ -216,4 +218,4 @@ top-level `NOTICE` and [DATA_RIGHTS.md](DATA_RIGHTS.md).
 | EUR-Lex / CURIA | https://eur-lex.europa.eu | EU court decisions | SPARQL |
 
 ---
-*Last updated: 2026-08-19 to match `metadata.jsonld` / ontology 1.0.0. Court case-type split from `krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json`.*
+*Last updated: 2026-09-04 to match `metadata.jsonld` (`dcterms:modified`) / ontology 1.0.0. Court case-type split from `krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json`.*

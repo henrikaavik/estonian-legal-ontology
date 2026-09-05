@@ -98,9 +98,12 @@ not expose as tools.
 Still-open leftovers after `v1.0.0` (do not treat these as shipped):
 
 - `#473` Zenodo DOI — GitHub Release exists; no DOI yet.
-- `#516` w3id.org PURL — PR
-  <https://github.com/perma-id/w3id.org/pull/6575>; live
-  `https://w3id.org/estleg/` is still 404.
+- `#516` w3id.org PURL — **done**. PR
+  <https://github.com/perma-id/w3id.org/pull/6575> merged 2026-08-19:
+  `https://w3id.org/estleg/` 302-redirects to the repository and
+  `https://w3id.org/estleg/1.0.0` 302-redirects to the tagged release
+  (`releases/tag/v1.0.0`). Content negotiation (RDF vs HTML per `Accept`)
+  is **not** live — that is `#728`.
 
 New work should not invent a sixth load surface.
 
