@@ -99,18 +99,19 @@ URLs) are #473 and are not produced by this in-repo record.
    only the release tarball must get the layered-rights and personal-data notices
    with it — CC BY 4.0 covers the compilation layer only, and the court
    subcorpora carry personal data.
-6. No w3id action is needed for the version IRI. `w3id/estleg/.htaccess` matches
-   a SemVer triple and redirects `https://w3id.org/estleg/<version>` to
-   `releases/tag/v<version>`, so a new tag resolves without resubmitting to
-   `perma-id/w3id.org` (#690). Only a change to the rewrite rules themselves
-   needs a new pull request there.
+6. Before relying on a new version IRI, submit the generalised SemVer rule in
+   `w3id/estleg/.htaccess` to `perma-id/w3id.org` and verify it is deployed
+   (#690). This repository contains a staging copy; merging it here does not
+   change the live resolver. Once that upstream change is deployed, a new
+   `https://w3id.org/estleg/<version>` will redirect to `releases/tag/v<version>`
+   without another w3id submission. Verify the redirect for each release.
 
 ---
 
 ## Current Release Snapshot
 
 The current release indexes 1,122 enacted laws (1,195 law files) and
-advertises 27,228 JSON/JSON-LD files overall, matching
+advertises 27,008 JSON/JSON-LD files overall, matching
 `krr_outputs/INDEX.json` (`total_laws`) and the root README /
 `metadata.jsonld` headline. Sequential live jobs in the 2026-05-26
 refresh completed the full law corpus refresh, Riigikohus full-text

@@ -7,8 +7,8 @@
 
 | Metric | Count |
 |--------|-------|
-| Files validated | 27,181 |
-| Errors | 3,548 |
+| Files validated | 26,961 |
+| Errors | 3,546 |
 | Warnings | 2 |
 | Result | **FAILED** — see [What the errors are](#what-the-errors-are) |
 
@@ -19,17 +19,19 @@
 > local run of the same command on 2026-09-05; the baseline on the pre-Tier-0
 > tree (`c96577d50c`) was 26,791 files / 3,558 errors / 2 warnings.
 
-The repository advertises 27,228 generated JSON/JSON-LD files (`metadata.jsonld`
+The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
 manifests, and probe outputs that are not corpus inputs, which is why it
-validates 27,181.
+validates 26,961.
 
 ## What the errors are
 
-Every error is itemised below with its status. **3,426 of the 3,548 (96.6%)
+Every error is itemised below with its status. **3,426 of the 3,546 (96.6%)
 are stale validator rules, not data defects**; fixing the validator is Tier 1
-ticket #702. None of the remaining findings was introduced by Tier 0; the
-Tier 0 tree removed ten findings and added none.
+ticket #702. The review rerun found 3,546 errors versus 3,547 immediately
+before the review fixes. The rebuilt combined file removed its stale-file
+finding; the cross-file collision count fell from 66,110 to 66,108. No new
+validation error category appeared.
 
 | Count | Finding | Status |
 |---:|---|---|
@@ -39,10 +41,10 @@ Tier 0 tree removed ten findings and added none.
 | 34 + 5 | `INDEX.json` registry drift on the split codes (AÕS, KarS, TsMS, TsÜS, VÕS): `_osaN` files report 0 act-level nodes; `_map` files have no provision nodes and no registry exception | Pre-existing; the multipart-code registry rules predate `estleg:Part` roots. **#702 / #704.** |
 | 27 | `@type is not an array` (26 controlled-vocabulary nodes, 1 in `analytical_overlay.jsonld`) | Pre-existing T-Box shape issue. **#709.** |
 | 5 | `skos:exactMatch is not an array` (`NormType_*`) | Pre-existing. **#709.** |
-| 3 + 3 + 1 | `eurlex` / `curia` / `eelnoud` combined files: missing source graph IDs, one stale ID, older than a canonical source | Stale LFS aggregates that were not rebuilt with the sources. **#705.** |
+| 3 + 1 + 1 | `eurlex` / `curia` / `eelnoud` combined files: missing source graph IDs in each, one stale CURIA ID, and the draft aggregate older than a canonical source | Stale LFS aggregates that were not rebuilt with the sources. **#705.** |
 | 2 | `combined_ontology.jsonld` and `eelnoud_combined.jsonld`: shared provision IDs drift from source on SHACL-sensitive fields (21,802 in the flagship file after the Tier 0 rebuild, 24,792 before; most on split-code `_OsaN` nodes and on classifier fields) | Aggregate-artifact drift; pre-existing (24,792 on the pre-Tier-0 tree). **#705.** |
 | 1 | `combined_ontology.jsonld`: 2,409 stub nodes carry `estleg:` object refs outside the shaped closure edges | Pre-existing builder finding. **#416 / #705.** |
-| 1 | 69,211 `@id` values duplicated across files | The semantic-collision check counts the same node in an aggregate and in its source; the rule needs the aggregate exemption. **#702.** |
+| 1 | 66,108 `@id` values duplicated across files | The semantic-collision check counts the same node in an aggregate and in its source; the rule needs the aggregate exemption. **#702.** |
 | 1 | Undefined reusable vocabulary terms: 5 predicates | Pre-existing. **#709.** |
 | 1 | 78 act-level temporal properties on non-Act nodes | Pre-existing. **#702.** |
 
@@ -136,7 +138,7 @@ tree, so a stale row here fails the gate.
 | Lower-court decisions (`kohtud/`) | 1 | 1 decision — a labelled **sample** (`estleg:isSampleData`), not a corpus (#689) |
 | EU legislation | 6 | 33,242 acts |
 | EU court decisions | 9 | 22,290 decisions |
-| Sanction sidecars | 684 | 8,019 sanction records (#681) |
+| Sanction sidecars | 464 | 7,264 sanction records (#681) |
 | ProvisionVersion sidecars | 4,422 | version history for laws and state regulations |
 | Amendment sidecars | 5,647 | 20,937 `AmendmentEvent` nodes |
 | Õiguskantsler annotation sidecar | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
@@ -146,8 +148,8 @@ tree, so a stale row here fails the gate.
 ## SHACL Bucket Checks
 
 Per-bucket source validation is `scripts/shacl_validate_all.py --bucket <name>`
-(RDFS inference). The table records what was actually run on 2026-09-05 and,
-for the buckets not re-run locally, the CI result at `c96577d50c`
+(RDFS inference). The table records the original Tier 0 run before the review
+fixes and, for buckets not re-run locally, the CI result at `c96577d50c`
 (`semantic-validation (<bucket>)` jobs of the 2026-08-31 scheduled run).
 
 | Bucket | Files | Result | What the violations are |
@@ -165,9 +167,32 @@ class's shape demands fields the node was never meant to carry. Narrowing the
 remaining axioms is **#709**; making the validator report only the genuine
 findings is **#702**.
 
+### Review checks on regenerated data
+
+The review removed 755 false confiscation/dissolution records and 220 empty
+sanction sidecars. The remaining 7,264 sanctions in 464 files and the deprecated act
+roots conform to the affected shapes (`SanctionShape`, the three sanction
+ceiling shapes, and `DeprecatedActNotInForceShape`) under both `inference="none"`
+and `inference="rdfs"`. Range ordering is checked only for matching units and
+currencies: 30 days to 1 year must not be rejected as 30 > 1.
+
+The full source-bucket and standalone SHACL counts below/above remain the
+original Tier 0 measurements; the review reran the affected shapes, JSON-LD
+validation/parity, and the Seadusloome load gate.
+
+The default suite passes (4,282 passed, 67 skipped); MCP passes (110 passed,
+1 skipped). With materialised LFS inputs, `pytest -q -m corpus` reports
+62 passed, 1 skipped and four failures that also occur on the pre-review inputs:
+the reverse EuroVoc example in `API_GUIDE.md`, the 2,409-stub closure-policy
+finding, a test requiring obsolete `LegalProvision_<slug>` instances, and a
+test requiring a direct `NationalRegulation → Act` axiom rather than the
+current `NationalRegulation → DomesticRegulation → Act` hierarchy. These remain
+outside the review fixes; the stale test/validator expectations belong with
+#702 and the closure-policy finding with #705.
+
 ### Combined-only gate (`scripts/validate_combined_standalone.py`)
 
-2026-09-05, Tier 0 tree after the combined rebuild: ****FAIL — 251,273 violations****.
+2026-09-05, original Tier 0 tree before the review fixes: **FAIL — 251,273 violations**.
 The findings are aggregate-artifact findings and fall into three groups, none
 introduced by Tier 0: `estleg:Subsection` nodes typed `estleg:LegalProvision`
 fail `paragrahv` / `summary` (the lõige nodes carry `subsectionNumber` and
@@ -304,7 +329,7 @@ re-emitting these dead references.
 
 ## Known Remaining Issues
 
-- **Validator rules (#702):** 3,426 of the 3,549 `validate_all.py` errors are
+- **Validator rules (#702):** 3,426 of the 3,546 `validate_all.py` errors are
   the two stale rules on `dcterms:subject` and `dcterms:title`; the
   semantic-collision and registry-drift checks also need the aggregate and
   `estleg:Part` exemptions. Until #702 lands, `json-validation` stays red and

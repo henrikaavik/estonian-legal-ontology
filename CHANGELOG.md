@@ -43,7 +43,9 @@ the consumer-facing summary.
   skips the general part (Üldosa) of split codes, adds the
   `percent_of_turnover` unit and the `confiscation` / `compulsory_dissolution`
   types, and caps imprisonment at 20 years. The sidecars were regenerated:
-  8,019 sanction records across 684 laws (was 2,550 / 294). New SHACL shapes
+  7,264 sanction records across 464 laws (was 2,550 / 294). The review removed
+  755 false confiscation/dissolution records by requiring operative wording;
+  eligibility conditions and references to confiscated property are excluded. New SHACL shapes
   enforce `min ≤ max`, imprisonment ≤ 20 years, arrest ≤ 30 days and ≤ 500
   daily rates. `estleg:applicableProvision` lost its `rdfs:domain
   estleg:CourtDecision`, which had phantom-typed every Sanction under RDFS
@@ -58,7 +60,7 @@ the consumer-facing summary.
   scope CC BY 4.0 to the `#compilation` subset only.
 - **Catalogue counts regenerated (#686).** `metadata.jsonld` and the nine
   documents that repeat it now say 1,195 law files, 12,104 Riigikohus
-  decisions and 27,228 JSON/JSON-LD files (were 1,190 / 12,137 / 23,118). Both
+  decisions and 27,008 JSON/JSON-LD files (were 1,190 / 12,137 / 23,118). Both
   Riigikohus case-type tables are derived from `RIIGIKOHUS_INDEX.json`
   (Civil 4,988 · Criminal 3,686 · Administrative 2,434 · Constitutional Review
   800 · Misdemeanor 107 · Other 89) and pinned by
