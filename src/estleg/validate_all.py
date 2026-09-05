@@ -28,13 +28,17 @@ from pathlib import Path
 from estleg import estleg_common
 from estleg.deprecate_legacy_statutes import verify_decisions_applied
 from estleg.estleg_common import (
+    ISIKUKOOD_RE,
     act_deprecation,
     act_root_node,
+    find_personal_codes,
     is_domain_individual,
     is_non_data_file,
+    is_valid_isikukood,
     is_xml_sameas_iri,
     iter_krr_jsonld_files,
     jsonld_id_values,
+    jsonld_texts,
 )
 from estleg.generate_amendment_history import collect_versions_by_date
 from estleg.generate_provision_versions import riik_version_coverage
@@ -658,6 +662,86 @@ def validate_temporal_property_targets(files: list[Path]):
             print(f"    ... and {len(offenders) - 20} more")
     else:
         print("  OK: all act-level temporal properties live on estleg:Act nodes")
+
+
+# #683: the only two published literals that carry verbatim scraped court
+# prose. Structured fields (case number, ECLI, rikObjectId) are court-assigned
+# document identifiers, not personal data, so they are deliberately excluded.
+PERSONAL_DATA_TEXT_PROPS: tuple[str, ...] = (
+    "estleg:summary",
+    "estleg:legalText",
+)
+
+
+def validate_no_personal_codes(files: list[Path]):
+    """#683: no Estonian personal ID code may survive in published court text.
+
+    Riigikohus decisions are scraped verbatim from rikos.rik.ee, and the
+    court's anonymisation initials party *names* while sometimes leaving an
+    ``isikukood`` in the reasoning. A personal identification code is a direct
+    identifier under the GDPR. Generation now screens both literals at their
+    write sites and `estleg.screen_court_personal_data` backfilled the
+    committed corpus, so a surviving code means one of those two paths
+    regressed — this gate is the release-blocking backstop.
+
+    Detection calls `estleg_common.find_personal_codes`, the same routine the
+    screener rewrites from, so the gate and the screener cannot disagree about
+    what counts as a code — including the carve-out for runs introduced by
+    `registrikood` / `otsuse nr`, which state the number is not a person. Only
+    the masked form is reported: a validator failure must not itself print the
+    code.
+
+    Cost control: re-parsing the ~200 MB riigikohus corpus purely for this
+    gate is avoidable. `json.dump` never escapes ASCII digits, so a code
+    inside a literal is always present verbatim in the file bytes — a raw-text
+    scan that finds no checksum-valid run proves the parsed file has none
+    either, and the file is skipped without being deserialised. The raw scan
+    is deliberately looser than `find_personal_codes` (it ignores labels, which
+    JSON escaping can reorder around a line break), so it stays a superset.
+    """
+    print("\n--- Personal Identification Codes (#683) ---")
+    offenders: list[tuple[str, str, str, str]] = []
+    for filepath in files:
+        try:
+            raw = filepath.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            # validate_json_syntax already reports unreadable / mis-encoded
+            # files; do not double-report them here.
+            continue
+        if not any(
+            is_valid_isikukood(match.group(0)) for match in ISIKUKOOD_RE.finditer(raw)
+        ):
+            continue
+        try:
+            doc = json.loads(raw)
+        except json.JSONDecodeError:
+            continue  # already reported by the syntax gate
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            if "estleg:CourtDecision" not in node_types(node):
+                continue
+            node_id = node.get("@id", "?")
+            for prop in PERSONAL_DATA_TEXT_PROPS:
+                for text in jsonld_texts(node.get(prop)):
+                    for finding in find_personal_codes(text):
+                        offenders.append(
+                            (filepath.name, node_id, prop, finding["masked"])
+                        )
+
+    if offenders:
+        error(
+            f"{len(offenders)} Estonian personal ID codes in published court text "
+            f"— run scripts/screen_court_personal_data.py (#683)"
+        )
+        for file_name, node_id, prop, masked in offenders[:20]:
+            print(f"    {file_name}: {node_id} {prop} carries {masked}")
+        if len(offenders) > 20:
+            print(f"    ... and {len(offenders) - 20} more")
+    else:
+        print("  OK: no personal identification codes in estleg:summary / estleg:legalText")
 
 
 def collect_internal_refs(filepath: Path, doc: dict) -> list[tuple[str, str, str, str]]:
@@ -3634,6 +3718,7 @@ def main(argv: list[str] | None = None):
     validate_vocabulary_coverage(files)
     validate_canonical_tbox(krr_dir)
     validate_temporal_property_targets(files)
+    validate_no_personal_codes(files)
     validate_transposition_mapping(krr_dir)
     validate_registry_index(krr_dir, allow_missing_index=allow_missing_index)
     validate_multipart_coverage(krr_dir, allow_missing_index=allow_missing_index)

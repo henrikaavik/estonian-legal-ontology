@@ -2096,3 +2096,234 @@ def record_fetch_hash(
         encoding="utf-8",
     )
     return dest
+
+
+# ---------------------------------------------------------------------------
+# Estonian personal identification code (isikukood) screening (#683).
+#
+# Riigikohus decision text is scraped verbatim from rikos.rik.ee, and a party's
+# or witness's isikukood occasionally survives the court's own anonymisation
+# (typically as "isikukoodiga 3xxxxxxxxxx"). An isikukood is a direct
+# identifier under the GDPR, so it must never reach a published
+# ``estleg:summary`` / ``estleg:legalText`` literal. These helpers are the
+# single source of truth for detection, masking, and the replacement
+# placeholder: the generator write sites and the offline backfill pass
+# (``estleg.screen_court_personal_data``) both call ``screen_personal_data``,
+# and ``validate_all.validate_no_personal_codes`` reuses the same detector as
+# the release gate.
+# ---------------------------------------------------------------------------
+
+# An isikukood is exactly 11 ASCII digits. The lookarounds keep the match
+# *isolated*: a longer digit run (a 12-digit registry id, a document number, a
+# truncated account number) must never be partially masked. ``[0-9]`` rather
+# than ``\d`` so non-ASCII Unicode decimal digits cannot enter the checksum.
+ISIKUKOOD_RE = re.compile(r"(?<![0-9])[0-9]{11}(?![0-9])")
+
+# Written in place of a detected code. Estonian, because the surrounding
+# literal is Estonian court text. Deliberately digit-free so screening an
+# already-screened string is a no-op.
+PERSONAL_CODE_PLACEHOLDER = "[isikukood eemaldatud]"
+
+# Word forms that label the number that follows as a personal code:
+# ``isikukood`` with any Estonian inflection (isikukoodi, isikukoodiga,
+# isikukoodide, ...), the abbreviation ``ik``, and its dotted form ``i.k.``.
+PERSONAL_CODE_LABEL_RE = re.compile(
+    r"isikukood\w*|(?<!\w)i\.\s?k\.|(?<!\w)ik(?!\w)",
+    re.IGNORECASE,
+)
+
+# How far back from a digit run a label still counts as labelling it. Wide
+# enough for "isikukoodiga 37... " and "isiku (ik 37...)", narrow enough that
+# an unrelated earlier sentence does not label the run.
+PERSONAL_CODE_LABEL_WINDOW = 40
+
+# Labels that state the following number is NOT a personal code: an Estonian
+# or foreign company registry code (a Latvian registrikood is also 11 digits
+# and collides with the checksum roughly one time in eleven) and an
+# administrative decision number. Replacing either with the placeholder
+# distorts the court text without protecting anyone, so a run carrying one of
+# these labels and no personal-code label is left alone.
+# ``otsus`` carries the same Estonian inflection as ``isikukood`` above, so
+# the stem is left open: the corpus writes both "otsuse nr" and "otsusega nr"
+# for the same administrative decision number.
+PERSONAL_CODE_NEGATIVE_LABEL_RE = re.compile(
+    r"registrikood\w*|reg\.?\s*kood\w*|otsus\w*\s+nr\.?",
+    re.IGNORECASE,
+)
+
+# Tighter than the positive window, and cut at a line break: a negative label
+# only disarms the run it directly introduces. An earlier sentence mentioning
+# a registry code must not silently exempt a personal code further down.
+PERSONAL_CODE_NEGATIVE_WINDOW = 25
+
+_ISIKUKOOD_WEIGHTS_ROUND1 = (1, 2, 3, 4, 5, 6, 7, 8, 9, 1)
+_ISIKUKOOD_WEIGHTS_ROUND2 = (3, 4, 5, 6, 7, 8, 9, 1, 2, 3)
+
+
+def isikukood_check_digit(digits: str) -> int:
+    """Check digit for the first ten digits of an Estonian personal ID code.
+
+    Round 1 weights the ten body digits 1..9,1 and takes the sum modulo 11.
+    A remainder below 10 is the check digit; a remainder of 10 forces round 2
+    with weights 3..9,1,2,3, where a remainder of 10 in turn yields 0.
+    """
+    body = [int(c) for c in digits[:10]]
+    remainder = sum(d * w for d, w in zip(body, _ISIKUKOOD_WEIGHTS_ROUND1)) % 11
+    if remainder < 10:
+        return remainder
+    remainder = sum(d * w for d, w in zip(body, _ISIKUKOOD_WEIGHTS_ROUND2)) % 11
+    return 0 if remainder == 10 else remainder
+
+
+def is_valid_isikukood(code: str) -> bool:
+    """True when *code* is a structurally valid Estonian personal ID code.
+
+    Requires all three of: a leading century/sex digit in 1-8, a plausible
+    ``YYMMDD`` birth date in digits 2-7 (month 01-12, day 01-31), and a
+    matching check digit. Structural validity only — it cannot tell a real
+    person's code from a checksum collision, which is why the policy in
+    :func:`screen_personal_data` masks on the checksum rather than on the
+    label alone.
+    """
+    if len(code) != 11 or not code.isascii() or not code.isdigit():
+        return False
+    if code[0] not in "12345678":
+        return False
+    month = int(code[3:5])
+    day = int(code[5:7])
+    if not (1 <= month <= 12) or not (1 <= day <= 31):
+        return False
+    return int(code[10]) == isikukood_check_digit(code)
+
+
+def mask_isikukood(code: str) -> str:
+    """Non-reversible display form of a personal code, e.g. ``344****38``.
+
+    Keeps the century/sex digit and the birth year so a report row stays
+    diagnosable, and drops the birth day and the serial that identify the
+    person. Reports and log lines carry this form, never the full code.
+    """
+    if len(code) < 5:
+        return "*" * len(code)
+    return f"{code[:3]}****{code[-2:]}"
+
+
+def _has_negative_label(text: str, start: int) -> bool:
+    """True when the run at *start* is introduced by a not-a-person label.
+
+    The window is cut at the nearest line break so a registry code mentioned
+    on the previous line cannot exempt a personal code on this one.
+    """
+    window = text[max(0, start - PERSONAL_CODE_NEGATIVE_WINDOW):start]
+    break_at = window.rfind("\n")
+    if break_at != -1:
+        window = window[break_at + 1:]
+    return PERSONAL_CODE_NEGATIVE_LABEL_RE.search(window) is not None
+
+
+def iter_personal_code_matches(
+    text: str, *, labelled_only: bool = False
+) -> Iterator[tuple[re.Match[str], dict]]:
+    """Yield ``(match, finding)`` for every maskable personal code in *text*.
+
+    Single source of truth for the #683 policy. ``screen_personal_data``
+    rewrites from it and ``validate_all.validate_no_personal_codes`` detects
+    from it, so the screener and the release gate cannot drift apart on what
+    counts as a code.
+    """
+    if not isinstance(text, str) or not text:
+        return
+    for match in ISIKUKOOD_RE.finditer(text):
+        code = match.group(0)
+        if not is_valid_isikukood(code):
+            continue
+        start = match.start()
+        window = text[max(0, start - PERSONAL_CODE_LABEL_WINDOW):start]
+        labelled = PERSONAL_CODE_LABEL_RE.search(window) is not None
+        if labelled_only and not labelled:
+            continue
+        # A personal-code label always wins: "registrikood 12345678, isikukood
+        # <code>" is a personal code despite the nearby registry mention.
+        if not labelled and _has_negative_label(text, start):
+            continue
+        yield match, {
+            "masked": mask_isikukood(code),
+            "labelled": labelled,
+            "offset": start,
+        }
+
+
+def find_personal_codes(text: str, *, labelled_only: bool = False) -> list[dict]:
+    """Findings for every maskable personal code in *text*, without rewriting."""
+    return [finding for _match, finding in iter_personal_code_matches(
+        text, labelled_only=labelled_only
+    )]
+
+
+def screen_personal_data(
+    text: str, *, labelled_only: bool = False
+) -> tuple[str, list[dict]]:
+    """Replace Estonian personal ID codes in *text* with the placeholder.
+
+    Returns ``(screened_text, findings)``. Each finding is
+    ``{"masked": "344****38", "labelled": bool, "offset": int}``: the masked
+    display form, whether an ``isikukood`` / ``ik`` / ``i.k.`` label appears
+    within :data:`PERSONAL_CODE_LABEL_WINDOW` characters before the run, and
+    the character offset of the run in the *input* text. The full code is
+    never returned, logged, or persisted.
+
+    Policy: every isolated, checksum-valid, date-plausible 11-digit run is
+    replaced, labelled or not — an occasional over-mask of a checksum
+    collision is the accepted trade, because leaking a personal code is not
+    recoverable. The one carve-out is a run introduced by a label that states
+    it is not a person: ``registrikood`` / ``reg. kood`` (a Latvian company
+    registry code is 11 digits too) or ``otsuse nr``. Those are left intact
+    unless a personal-code label also precedes them. Pass
+    ``labelled_only=True`` to restrict the pass to explicitly labelled runs.
+
+    Idempotent: the placeholder contains no digits, so screening an already
+    screened string yields the same string and no findings.
+    """
+    if not isinstance(text, str) or not text:
+        return text, []
+
+    findings: list[dict] = []
+    parts: list[str] = []
+    cursor = 0
+    for match, finding in iter_personal_code_matches(
+        text, labelled_only=labelled_only
+    ):
+        findings.append(finding)
+        parts.append(text[cursor:match.start()])
+        parts.append(PERSONAL_CODE_PLACEHOLDER)
+        cursor = match.end()
+
+    if not findings:
+        return text, []
+    parts.append(text[cursor:])
+    return "".join(parts), findings
+
+
+PERSONAL_DATA_SCREENED_PROP = "estleg:personalDataScreened"
+PERSONAL_DATA_MASKED_COUNT_PROP = "estleg:personalDataMaskedCount"
+
+
+def stamp_personal_data_screening(node: dict, masked_count: int) -> bool:
+    """Record #683 screening provenance on *node*. True when the node changed.
+
+    ``estleg:personalDataMaskedCount`` accumulates rather than overwrites: the
+    summary and the full text are written by different passes, and a rerun
+    that finds nothing new must not reset a count an earlier pass established.
+    That is also what makes the backfill idempotent — a second run adds zero.
+    """
+    changed = node.get(PERSONAL_DATA_SCREENED_PROP) is not True
+    node[PERSONAL_DATA_SCREENED_PROP] = True
+
+    prior = node.get(PERSONAL_DATA_MASKED_COUNT_PROP)
+    if not isinstance(prior, int) or isinstance(prior, bool):
+        prior = 0
+    total = prior + masked_count
+    if node.get(PERSONAL_DATA_MASKED_COUNT_PROP) != total:
+        changed = True
+    node[PERSONAL_DATA_MASKED_COUNT_PROP] = total
+    return changed

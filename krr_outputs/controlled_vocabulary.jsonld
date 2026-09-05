@@ -4145,6 +4145,32 @@
       }
     },
     {
+      "@id": "estleg:isSampleData",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "on näidisandmed",
+          "@language": "et"
+        },
+        {
+          "@value": "is sample data",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "True on a graph header whose contents are a placeholder sample, not a load-surface corpus (#689). Graph headers are bare owl:Ontology nodes, so rdfs:domain owl:Ontology restates a type the subject already carries and mints nothing new under rdfs inference (#377).",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "owl:Ontology"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
       "@id": "estleg:isStatutoryDefault",
       "@type": [
         "owl:DatatypeProperty"
@@ -4895,6 +4921,58 @@
       },
       "rdfs:range": {
         "@id": "estleg:Act"
+      }
+    },
+    {
+      "@id": "estleg:personalDataMaskedCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "eemaldatud isikuandmete arv",
+          "@language": "et"
+        },
+        {
+          "@value": "personal data masked count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "How many Estonian personal identification codes (isikukood) were replaced by the placeholder in this decision's estleg:summary and estleg:legalText. Zero means the decision was screened and nothing matched. Accumulates across the summary and full-text passes; masked forms are recorded in krr_outputs/reports/personal_data_mask_report.json (#683).",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:personalDataScreened",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "isikuandmed kontrollitud",
+          "@language": "et"
+        },
+        {
+          "@value": "personal data screened",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "True when this decision's published text passed Estonian personal identification code (isikukood) screening before publication, so any code found was replaced by a placeholder. Screening is a GDPR minimisation control over verbatim scraped court prose; see docs/DATA_PROTECTION.md (#683).",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {
