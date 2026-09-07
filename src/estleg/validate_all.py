@@ -25,7 +25,7 @@ from pathlib import Path
 # Make sibling scripts importable regardless of cwd so `estleg_common`
 # (the single source of truth for operational-state-file exclusion)
 # resolves whether this module is run as a script or imported by tests.
-from estleg import estleg_common
+from estleg import check_numeric_identity_strings, check_tbox_consistency, estleg_common
 from estleg.deprecate_legacy_statutes import verify_decisions_applied
 from estleg.estleg_common import (
     ISIKUKOOD_RE,
@@ -251,6 +251,14 @@ SINGLE_VALUED_PROPS = {
     "estleg:normativeType",
 }
 
+# Properties in MULTI_VALUED_PROPS that are legitimately single-valued on
+# specific node types. An estleg:Chapter maps to exactly one cluster, so it
+# carries `dcterms:subject` as a single IRI object; demanding an array there
+# reported one false error per chapter (#702).
+SINGLE_VALUED_ON_TYPES = {
+    "dcterms:subject": {"estleg:Chapter"},
+}
+
 GENERATED_CLASS_PREFIXES = (
     "estleg:LegalProvision_",
     "estleg:Regulation_",
@@ -432,11 +440,39 @@ def validate_multi_valued(filepath: Path, doc: dict):
     if "@graph" not in doc:
         return
     for i, node in enumerate(doc["@graph"]):
+        node_types = estleg_common.node_type_list(node)
         for key in node:
             if key in MULTI_VALUED_PROPS:
                 val = node[key]
                 if not isinstance(val, list):
+                    exempt_types = SINGLE_VALUED_ON_TYPES.get(key, ())
+                    if any(t in exempt_types for t in node_types):
+                        continue
                     error(f"{filepath.name}: {key} is not an array at graph[{i}] (@id={node.get('@id', '?')})")
+
+
+def validate_tbox_consistency(filepath: Path, doc: dict):
+    """Run the T-Box consistency check as part of the gate (#702).
+
+    ``estleg.check_tbox_consistency`` shipped as a standalone script that
+    nothing invoked, so a node asserting both ``inForce`` and ``repealed``, or a
+    provision pointing at two different acts, could reach a release unflagged.
+    """
+    for violation in check_tbox_consistency.check_document(doc):
+        error(f"{filepath.name}: {violation.message}")
+
+
+def validate_numeric_identity_strings(filepath: Path, doc: dict):
+    """Identity properties must be plain strings, never numeric value objects (#702).
+
+    ``estleg.check_numeric_identity_strings`` was likewise never called from the
+    gate. A numeric-typed section number silently changes identity comparisons.
+    """
+    for node_id, prop, value in check_numeric_identity_strings.find_violations(doc):
+        error(
+            f"{filepath.name}: {prop} on {node_id} is a numeric-typed value "
+            f"object; identity properties must be plain strings ({value})"
+        )
 
 
 def validate_section_numbers(filepath: Path, doc: dict):
@@ -528,6 +564,27 @@ def validate_per_document_classes(filepath: Path, doc: dict):
             )
 
 
+def _is_title_literal(value: object) -> bool:
+    """Accept JSON-LD string literals, including language-tagged values."""
+    if isinstance(value, str):
+        return True
+    if not isinstance(value, dict) or not isinstance(value.get("@value"), str):
+        return False
+    if set(value) - {"@value", "@language", "@direction", "@type"}:
+        return False
+    if "@type" in value:
+        return (
+            value["@type"] in ("xsd:string", "http://www.w3.org/2001/XMLSchema#string")
+            and "@language" not in value
+            and "@direction" not in value
+        )
+    if "@language" in value and (
+        not isinstance(value["@language"], str) or not value["@language"]
+    ):
+        return False
+    return "@direction" not in value or value["@direction"] in ("ltr", "rtl")
+
+
 def validate_source_provenance(filepath: Path, doc: dict):
     if "@graph" not in doc:
         return
@@ -541,10 +598,19 @@ def validate_source_provenance(filepath: Path, doc: dict):
                 )
         if "dcterms:title" in node:
             value = node["dcterms:title"]
-            if not isinstance(value, (str, dict)):
+            # A bilingual title is carried as a list of language-tagged values
+            # (#437), so a list is valid as long as every member is (#702).
+            values = value if isinstance(value, list) else [value]
+            if isinstance(value, list) and not values:
                 error(
-                    f"{filepath.name}: dcterms:title must be a string or "
-                    f"language-tagged value at graph[{i}] (@id={node.get('@id', '?')})"
+                    f"{filepath.name}: dcterms:title must not be an empty list "
+                    f"at graph[{i}] (@id={node.get('@id', '?')})"
+                )
+            elif not all(_is_title_literal(v) for v in values):
+                error(
+                    f"{filepath.name}: dcterms:title must be a string literal "
+                    f"or a list of string literals "
+                    f"at graph[{i}] (@id={node.get('@id', '?')})"
                 )
 
 
@@ -3698,6 +3764,8 @@ def main(argv: list[str] | None = None):
         validate_types(filepath, doc)
         validate_multi_valued(filepath, doc)
         validate_section_numbers(filepath, doc)
+        validate_tbox_consistency(filepath, doc)
+        validate_numeric_identity_strings(filepath, doc)
         validate_dc_source(filepath, doc)
         validate_source_provenance(filepath, doc)
         validate_act_xml_sameas(filepath, doc)

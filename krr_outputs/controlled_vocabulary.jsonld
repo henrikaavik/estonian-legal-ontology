@@ -19,12 +19,12 @@
       "owl:versionInfo": "1.0.0",
       "rdfs:label": [
         {
-          "@value": "Eesti õigusontoloogia sõnavara",
-          "@language": "et"
-        },
-        {
           "@value": "Estonian Legal Ontology vocabulary",
           "@language": "en"
+        },
+        {
+          "@value": "Eesti õigusontoloogia sõnavara",
+          "@language": "et"
         }
       ],
       "rdfs:comment": "Canonical T-Box for https://w3id.org/estleg/ — classes, class hierarchy, and properties in the default graph (#433).",
@@ -761,23 +761,6 @@
       "rdfs:comment": "Closed deontic class of a provision or lõige (obligation, permission, prohibition, competence, or other)."
     },
     {
-      "@id": "estleg:Part",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "Osa",
-          "@language": "et"
-        },
-        {
-          "@value": "Part",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "Multipart act part node used for large laws split into osa files."
-    },
-    {
       "@id": "estleg:ParliamentaryResolution",
       "@type": [
         "owl:Class"
@@ -798,21 +781,21 @@
       "rdfs:comment": "A Riigikogu otsus (parliamentary resolution). Not a seadus. Ingested from RT dokument=otsus (#529)."
     },
     {
-      "@id": "estleg:ProcedureStage",
+      "@id": "estleg:Part",
       "@type": [
         "owl:Class"
       ],
       "rdfs:label": [
         {
-          "@value": "Menetlusetapp",
+          "@value": "Osa",
           "@language": "et"
         },
         {
-          "@value": "Procedure Stage",
+          "@value": "Part",
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A procedural-stage node (e.g. a stage of criminal procedure under KrMS). Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
+      "rdfs:comment": "Multipart act part node used for large laws split into osa files."
     },
     {
       "@id": "estleg:PresidentialDecree",
@@ -833,6 +816,23 @@
         }
       ],
       "rdfs:comment": "A presidential or historically equivalent seadlus. Not a seadus. Ingested from RT dokument=seadlus (algtekst; consolidations are not published) (#529)."
+    },
+    {
+      "@id": "estleg:ProcedureStage",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Menetlusetapp",
+          "@language": "et"
+        },
+        {
+          "@value": "Procedure Stage",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "A procedural-stage node (e.g. a stage of criminal procedure under KrMS). Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
     },
     {
       "@id": "estleg:ProposedAmendment",
@@ -928,6 +928,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      },
       "rdfs:label": [
         {
           "@value": "Jaotis",
@@ -938,10 +941,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A structural section (jagu) node of an act's hierarchy. Declared in the curated TBox for issue #566 — it is used as @type on hierarchy nodes in combined_ontology.jsonld but was previously absent from the curated vocabulary, leaving a consumer that loads only the TBox with an undeclared class.",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "rdfs:comment": "A structural section (jagu) node of an act's hierarchy. Declared in the curated TBox for issue #566 — it is used as @type on hierarchy nodes in combined_ontology.jsonld but was previously absent from the curated vocabulary, leaving a consumer that loads only the TBox with an undeclared class."
     },
     {
       "@id": "estleg:Similarity",
@@ -1705,7 +1705,7 @@
       ],
       "rdfs:comment": "CELEX identifier for the EU legal act (e.g., 32016R0679).",
       "rdfs:domain": {
-        "@id": "estleg:EULegislation"
+        "@id": "owl:Thing"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -1730,75 +1730,6 @@
         "@value": "Deciding chamber extracted from the legalText header (e.g. Halduskolleegium, Kriminaalkolleegium, Erikogu).",
         "@language": "en"
       },
-      "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
-      },
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:courtKind",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "kohtu liik",
-          "@language": "et"
-        },
-        {
-          "@value": "court kind",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "county | administrative | circuit | supreme. First- and second-instance ingest uses county/administrative/circuit (#525).",
-      "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
-      },
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:courtLevel",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "kohtuaste",
-          "@language": "et"
-        },
-        {
-          "@value": "court level",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "firstInstance | appeal | supreme (#525).",
-      "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
-      },
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:courtName",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "kohtu nimi",
-          "@language": "et"
-        },
-        {
-          "@value": "court name",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "Issuing court as published by Riigi Teataja (toiminguEsitajaAsutus).",
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -2168,6 +2099,75 @@
       }
     },
     {
+      "@id": "estleg:courtKind",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtu liik",
+          "@language": "et"
+        },
+        {
+          "@value": "court kind",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "county | administrative | circuit | supreme. First- and second-instance ingest uses county/administrative/circuit (#525).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:courtLevel",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtuaste",
+          "@language": "et"
+        },
+        {
+          "@value": "court level",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "firstInstance | appeal | supreme (#525).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:courtName",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtu nimi",
+          "@language": "et"
+        },
+        {
+          "@value": "court name",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Issuing court as published by Riigi Teataja (toiminguEsitajaAsutus).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:coversConcept",
       "@type": [
         "owl:ObjectProperty"
@@ -2455,7 +2455,7 @@
       ],
       "rdfs:comment": "Date of the legal act.",
       "rdfs:domain": {
-        "@id": "estleg:EULegislation"
+        "@id": "owl:Thing"
       },
       "rdfs:range": {
         "@id": "xsd:date"
@@ -2573,33 +2573,7 @@
         "@language": "en"
       },
       "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
-      },
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
-      "@id": "estleg:judge",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "kohtunik",
-          "@language": "et"
-        },
-        {
-          "@value": "judge",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": {
-        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
-        "@language": "en"
-      },
-      "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
+        "@id": "owl:Thing"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -2782,32 +2756,6 @@
       }
     },
     {
-      "@id": "estleg:estoniaRelevant",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "Eestile asjakohane",
-          "@language": "et"
-        },
-        {
-          "@value": "Estonia-relevant",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": {
-        "@value": "True when an Estonian act transposes this EU instrument (seeded from the EUR-Lex NIM transposition mapping). The full CELLAR acquis is retained; this flag is the Estonia-pertinence lens (#527).",
-        "@language": "en"
-      },
-      "rdfs:domain": {
-        "@id": "estleg:EULegislation"
-      },
-      "rdfs:range": {
-        "@id": "xsd:boolean"
-      }
-    },
-    {
       "@id": "estleg:entryIntoForce",
       "@type": [
         "owl:DatatypeProperty"
@@ -2831,6 +2779,32 @@
       },
       "rdfs:range": {
         "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:estoniaRelevant",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Eestile asjakohane",
+          "@language": "et"
+        },
+        {
+          "@value": "Estonia-relevant",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "True when an Estonian act transposes this EU instrument (seeded from the EUR-Lex NIM transposition mapping). The full CELLAR acquis is retained; this flag is the Estonia-pertinence lens (#527).",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {
@@ -3009,7 +2983,7 @@
       ],
       "rdfs:comment": "Link to the legal act in EUR-Lex (Estonian version).",
       "rdfs:domain": {
-        "@id": "estleg:EULegislation"
+        "@id": "owl:Thing"
       },
       "rdfs:range": {
         "@id": "xsd:anyURI"
@@ -3138,29 +3112,6 @@
       }
     },
     {
-      "@id": "estleg:grantedBy",
-      "@type": [
-        "owl:ObjectProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "andnud",
-          "@language": "et"
-        },
-        {
-          "@value": "Granted By",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "Act IRI under which a reified estleg:Competence is granted.",
-      "rdfs:domain": {
-        "@id": "owl:Thing"
-      },
-      "rdfs:range": {
-        "@id": "rdfs:Resource"
-      }
-    },
-    {
       "@id": "estleg:governs",
       "@type": [
         "owl:ObjectProperty"
@@ -3184,6 +3135,29 @@
       },
       "owl:inverseOf": {
         "@id": "estleg:competentAuthority"
+      }
+    },
+    {
+      "@id": "estleg:grantedBy",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "andnud",
+          "@language": "et"
+        },
+        {
+          "@value": "Granted By",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act IRI under which a reified estleg:Competence is granted.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
       }
     },
     {
@@ -3380,29 +3354,6 @@
       }
     },
     {
-      "@id": "estleg:hasPart",
-      "@type": [
-        "owl:ObjectProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "on osa",
-          "@language": "et"
-        },
-        {
-          "@value": "Has Part",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "Links hierarchy nodes to their child part or division nodes.",
-      "rdfs:domain": {
-        "@id": "owl:Thing"
-      },
-      "rdfs:range": {
-        "@id": "rdfs:Resource"
-      }
-    },
-    {
       "@id": "estleg:hasNoCompetentAuthority",
       "@type": [
         "owl:DatatypeProperty"
@@ -3446,6 +3397,29 @@
       },
       "rdfs:range": {
         "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:hasPart",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "on osa",
+          "@language": "et"
+        },
+        {
+          "@value": "Has Part",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links hierarchy nodes to their child part or division nodes.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
       }
     },
     {
@@ -3757,29 +3731,6 @@
       }
     },
     {
-      "@id": "estleg:inboundCitationCount",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "sissetulevate viidete arv",
-          "@language": "et"
-        },
-        {
-          "@value": "inbound citation count",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "Number of distinct estleg:referencedBy sources on this node. Derived for the analytical overlay (#521); omitted when zero.",
-      "rdfs:domain": {
-        "@id": "owl:Thing"
-      },
-      "rdfs:range": {
-        "@id": "xsd:integer"
-      }
-    },
-    {
       "@id": "estleg:inPart",
       "@type": [
         "owl:ObjectProperty"
@@ -3800,6 +3751,29 @@
       },
       "rdfs:range": {
         "@id": "estleg:Part"
+      }
+    },
+    {
+      "@id": "estleg:inboundCitationCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "sissetulevate viidete arv",
+          "@language": "et"
+        },
+        {
+          "@value": "inbound citation count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Number of distinct estleg:referencedBy sources on this node. Derived for the analytical overlay (#521); omitted when zero.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
       }
     },
     {
@@ -3872,29 +3846,6 @@
       }
     },
     {
-      "@id": "estleg:interpretationOutdated",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "tõlgendus aegunud",
-          "@language": "et"
-        },
-        {
-          "@value": "interpretation outdated",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "True when at least one provision this decision interpreted has a later redaction (a version whose versionValidFrom is after the decisionDate) — i.e. the law was amended after the ruling, so the precedent may be outdated (issue #618). Derived offline by scripts/derive_court_interpretation_staleness.py. Self-contained on the decision node, so it is retained in combined_ontology.jsonld.",
-      "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
-      },
-      "rdfs:range": {
-        "@id": "xsd:boolean"
-      }
-    },
-    {
       "@id": "estleg:interpretationCount",
       "@type": [
         "owl:DatatypeProperty"
@@ -3915,6 +3866,29 @@
       },
       "rdfs:range": {
         "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:interpretationOutdated",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "tõlgendus aegunud",
+          "@language": "et"
+        },
+        {
+          "@value": "interpretation outdated",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True when at least one provision this decision interpreted has a later redaction (a version whose versionValidFrom is after the decisionDate) — i.e. the law was amended after the ruling, so the precedent may be outdated (issue #618). Derived offline by scripts/derive_court_interpretation_staleness.py. Self-contained on the decision node, so it is retained in combined_ontology.jsonld.",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {
@@ -4255,6 +4229,32 @@
       "rdfs:comment": "Literal name of the issuing body when a structured Issuer node is not available.",
       "rdfs:domain": {
         "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:judge",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohtunik",
+          "@language": "et"
+        },
+        {
+          "@value": "judge",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
+        "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -5485,29 +5485,6 @@
       }
     },
     {
-      "@id": "estleg:rtReference",
-      "@type": [
-        "owl:DatatypeProperty"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "RT viide",
-          "@language": "et"
-        },
-        {
-          "@value": "Rt Reference",
-          "@language": "en"
-        }
-      ],
-      "rdfs:comment": "Riigi Teataja reference string on an AmendmentEvent.",
-      "rdfs:domain": {
-        "@id": "estleg:AmendmentEvent"
-      },
-      "rdfs:range": {
-        "@id": "xsd:string"
-      }
-    },
-    {
       "@id": "estleg:rtObjektId",
       "@type": [
         "owl:DatatypeProperty"
@@ -5525,6 +5502,29 @@
       "rdfs:comment": "Riigi Teataja kohtulahendid objektId used as the stable key for first/second-instance decisions (#525).",
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:rtReference",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "RT viide",
+          "@language": "et"
+        },
+        {
+          "@value": "Rt Reference",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Riigi Teataja reference string on an AmendmentEvent.",
+      "rdfs:domain": {
+        "@id": "estleg:AmendmentEvent"
       },
       "rdfs:range": {
         "@id": "xsd:string"

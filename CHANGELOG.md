@@ -4,6 +4,58 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### 2026-09 public-sector readiness — Tier 1 (#676, ticket #702)
+
+Repairs the validator so the gate reports real defects, and makes both
+published validation documents measured rather than hand-maintained.
+
+- **`validate_all.py`: 3,549 → ~122 errors (-96.5%).** Two rules were wrong, not
+  the data. `dcterms:subject` demanded an array on every node, but an
+  `estleg:Chapter` maps to exactly one cluster and carries a single IRI object
+  by design (3,021 errors); the rule now exempts that one type, and Acts and
+  Parts still require arrays. `dcterms:title` rejected the bilingual title
+  lists that have been the language-tag policy since #437 (405 errors); it now
+  accepts a list of language-tagged values while still rejecting empty lists
+  and non-literal members.
+- **`curia` SHACL bucket: 66,740 → 0 violations, now passing.** Four
+  `rdfs:domain` axioms on shared predicates phantom-typed every EU court
+  decision under RDFS inference: `celexNumber`, `eurLexLink` and `documentDate`
+  (domain `estleg:EULegislation`) typed 22,290 decisions as legislation, which
+  then failed `euDocumentType`; `ecliIdentifier` (domain
+  `estleg:CourtDecision`) typed 22,225 of them as Estonian decisions, which
+  then failed `caseType` and `caseNumber` — they carry `euCaseNumber`. All four
+  are now `owl:Thing`, following the `applicableProvision` precedent from #681.
+  The flagship combined artifact is regenerated with the same domains; a
+  corpus regression checks both load surfaces and their RDFS entailments.
+- **Two checkers now run in the gate.** `check_tbox_consistency` and
+  `check_numeric_identity_strings` shipped as scripts that nothing invoked, so
+  a node asserting both `inForce` and `repealed`, a provision pointing at two
+  acts, or a numeric-typed identity string could reach a release unflagged.
+  Both are clean across all 27,012 corpus files, so this is a regression guard
+  — and it makes `metadata.jsonld`'s `estleg:consistencyChecked` claim earned.
+- **`consolidate_tbox.py` is idempotent again.** `write_unresolved` truncated
+  on a second run, because `build_consolidated_graph` returns only the
+  individuals *that* run relocated. Re-running the builder therefore destroyed
+  the 61 placeholders an earlier run had produced and left every reference to
+  them dangling (59 `estleg:hasSection` edges on `estleg:VOS_Part11` alone). It
+  now merges by `@id`.
+- **A test no longer rewrites `docs/`.** `fix_all_issues.audit_duplicate_ids`
+  wrote a hard-coded `REPO_ROOT/docs/DUPLICATE_IDS_REPORT.md` while ignoring
+  the `krr_dir` it was passed, so the fixture test that monkeypatches `KRR_DIR`
+  to a `tmp_path` overwrote the committed report on every full test run. That
+  is why the shipped report cited `root_a_peep.json`, a file that exists only
+  inside that test. The audit no longer writes the file.
+- **Both reports are generated and CI-checked.**
+  `scripts/generate_validation_report.py` measures the summary from a real run
+  and stamps the commit SHA and timestamp into a delimited block (the curated
+  analysis around it is untouched); `scripts/generate_duplicate_ids_report.py`
+  renders the duplicate report from the corpus — 61 in-file duplicates across
+  3 files, where the fixture version claimed one. Both have `--check` modes
+  wired into the `json-validation` job, so the numbers cannot silently drift
+  back into a false conformance claim. A changed input count fails the check:
+  added/deleted files must not be mistaken for an LFS materialisation gap.
+
+
 ### 2026-09 public-sector readiness — Tier 0 (#676, tickets #677–#690)
 
 Fourteen "stop the bleeding" fixes from the September 2026 public-sector
