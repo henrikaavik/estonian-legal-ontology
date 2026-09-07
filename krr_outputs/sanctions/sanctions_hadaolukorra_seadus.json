@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,6 +21,30 @@
       ],
       "rdfs:label": "Sanctions – hadaolukorra_seadus",
       "dc:source": "hadaolukorra_seadus"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_33_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_33"
+      },
+      "rdfs:label": "Coercive payment (HADAOL § 33.)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_33_Lg_3_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_33_Lg_3"
+      },
+      "rdfs:label": "Coercive payment (HADAOL)"
     },
     {
       "@id": "estleg:Sanction_HADAOL_Par_47_coercive_payment",
@@ -28,6 +57,18 @@
         "@id": "estleg:HADAOL_Par_47"
       },
       "rdfs:label": "Coercive payment (HADAOL § 47.)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_47_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_47_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (HADAOL)"
     },
     {
       "@id": "estleg:Sanction_HADAOL_Par_48_fine",
@@ -46,6 +87,24 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 100 fine units (HADAOL § 48.)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_48_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_48_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (HADAOL)"
     },
     {
       "@id": "estleg:Sanction_HADAOL_Par_49_fine",
@@ -85,7 +144,63 @@
       "rdfs:label": "Fine, max 400000 EUR (HADAOL § 49.)"
     },
     {
+      "@id": "estleg:Sanction_HADAOL_Par_49_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_49_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (HADAOL)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_49_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_49_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (HADAOL)"
+    },
+    {
       "@id": "estleg:Sanction_HADAOL_Par_51_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_51"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HADAOL § 51.)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_51_fine_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
@@ -101,6 +216,43 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (HADAOL § 51.)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_51_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_51_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (HADAOL)"
+    },
+    {
+      "@id": "estleg:Sanction_HADAOL_Par_51_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HADAOL_Par_51_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HADAOL)"
     },
     {
       "@id": "estleg:Sanction_HADAOL_Par_54_fine",

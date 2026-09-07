@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -33,7 +38,7 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 200 fine units (RIIGIP § 17<sup>1</sup>.)"
+      "rdfs:label": "Fine, max 200 fine units (RIIGIP § 17¹.)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_1_fine_2",
@@ -52,7 +57,44 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17<sup>1</sup>.)"
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_1_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_1_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (RIIGIP)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_1_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_1_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_2_arrest",
@@ -71,7 +113,7 @@
       },
       "estleg:maxPenaltyUnit": "days",
       "estleg:isStatutoryDefault": true,
-      "rdfs:label": "Arrest, max 30 days (RIIGIP § 17<sup>2</sup>.)"
+      "rdfs:label": "Arrest, max 30 days (RIIGIP § 17².)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_2_fine",
@@ -89,7 +131,7 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 200 fine units (RIIGIP § 17<sup>2</sup>.)"
+      "rdfs:label": "Fine, max 200 fine units (RIIGIP § 17².)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_2_fine_2",
@@ -108,7 +150,63 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17<sup>2</sup>.)"
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17².)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_2_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_2_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (RIIGIP)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_2_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_2_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (RIIGIP)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_2_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_2_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_3_fine",
@@ -126,7 +224,63 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (RIIGIP § 17<sup>3</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (RIIGIP § 17³.)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_3_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_3"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17³.)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_3_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_3_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (RIIGIP)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_3_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_3_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_4_fine",
@@ -144,7 +298,7 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 200 fine units (RIIGIP § 17<sup>4</sup>.)"
+      "rdfs:label": "Fine, max 200 fine units (RIIGIP § 17⁴.)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_4_fine_2",
@@ -163,7 +317,44 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17<sup>4</sup>.)"
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17⁴.)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_4_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_4_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (RIIGIP)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_4_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_4_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP)"
     },
     {
       "@id": "estleg:Sanction_RIIGIP_Par_17_5_fine",
@@ -181,7 +372,63 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 300 fine units (RIIGIP § 17<sup>5</sup>.)"
+      "rdfs:label": "Fine, max 300 fine units (RIIGIP § 17⁵.)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_5_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_5"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP § 17⁵.)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_5_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_5_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (RIIGIP)"
+    },
+    {
+      "@id": "estleg:Sanction_RIIGIP_Par_17_5_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:RIIGIP_Par_17_5_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (RIIGIP)"
     }
   ]
 }

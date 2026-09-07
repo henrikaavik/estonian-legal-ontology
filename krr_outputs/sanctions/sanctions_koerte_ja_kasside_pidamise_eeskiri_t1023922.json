@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -27,7 +32,25 @@
       "estleg:applicableProvision": {
         "@id": "estleg:Reg_1023922_Par_4_4"
       },
-      "rdfs:label": "Coercive payment (Reg § 4<sup>1</sup>.)"
+      "rdfs:label": "Coercive payment (Reg § 4¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_Reg_1023922_Par_4_4_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:Reg_1023922_Par_4_4"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (Reg § 4¹.)"
     }
   ]
 }

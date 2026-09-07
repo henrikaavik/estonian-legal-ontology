@@ -28,6 +28,51 @@ The bucket validator also loads `controlled_vocabulary.jsonld` into the data
 graph, so T-Box `rdfs:range`/`rdfs:domain` axioms are live under RDFS
 inference. Keep those axioms off the stub-valued properties listed above.
 
+The same trap applies to **`rdfs:domain` on a property that more than one
+class uses**. A domain axiom types every *subject* of the property into
+that class, so a property shared across classes must carry no domain at
+all. `estleg:applicableProvision` is the worked example: it is used by
+both `estleg:CourtDecision` and `estleg:Sanction`, and a
+`rdfs:domain estleg:CourtDecision` on it phantom-types every Sanction as a
+court decision under `inference="rdfs"`, after which
+`estleg:CourtDecisionShape` demands `estleg:caseType` and
+`estleg:caseNumber` of it — two violations per sanction node, none of them
+real. Before adding a domain axiom, check every class that writes the
+predicate.
+
+## One constraint per shape when the message matters
+
+`sh:message` attaches to a *shape*, not to a constraint, so every
+constraint on a shape reports the same message. A shape that needs to
+explain **which** rule was broken therefore gets one constraint of its
+own rather than several.
+
+The statutory ceilings on `estleg:Sanction` (issue #681) are the worked
+example: `SanctionImprisonmentMaxYearsShape` (KarS § 45, 20 years),
+`SanctionArrestMaxDaysShape` (KarS § 48, 30 days) and
+`SanctionDailyRatesMaxShape` (KarS § 44, 500 daily rates) are three
+NodeShapes over the same `sh:targetClass estleg:Sanction`, each holding
+a single `sh:or` and its own citation. Folded into one shape they would
+all report whichever message that shape carried.
+
+Each ceiling reads as `NOT(this sanction type) OR NOT(this unit) OR
+amount within the ceiling`, built from `sh:or`, `sh:not`, `sh:hasValue`
+and `sh:maxInclusive`. Keep them **core SHACL** — no `sh:sparql` — for
+the same reason the inference note above gives: both validator surfaces
+must agree, and the two-surface policy is only checkable when the shapes
+mean the same thing under `inference="rdfs"` and `inference="none"`.
+
+Note that a constraint of this shape is *vacuously satisfied* by a node
+that lacks the property: a Sanction carrying only `estleg:maxPenalty
+"life"` and no `estleg:maxPenaltyAmount` conforms. That is deliberate —
+the structured penalty fields are optional, so a ceiling must constrain
+the amount when it is present without requiring it.
+
+Penalty range ordering compares amounts only when `minPenaltyUnit` and
+`maxPenaltyUnit` agree, and any currencies agree. Mixed-unit ranges such as
+30 days to 1 year require normalisation; comparing their bare numbers would
+produce a false violation. This guard uses core SHACL (`sh:equals` / `sh:not`).
+
 ## Severity
 
 Omitted `sh:severity` is the SHACL default, `sh:Violation`. Use it for

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -30,6 +35,18 @@
       "rdfs:label": "Coercive payment (KIIRGU § 87.)"
     },
     {
+      "@id": "estleg:Sanction_KIIRGU_Par_87_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_87_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (KIIRGU)"
+    },
+    {
       "@id": "estleg:Sanction_KIIRGU_Par_115_coercive_payment",
       "@type": [
         "owl:NamedIndividual",
@@ -40,6 +57,18 @@
         "@id": "estleg:KIIRGU_Par_115"
       },
       "rdfs:label": "Coercive payment (KIIRGU § 115.)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_115_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_115_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (KIIRGU)"
     },
     {
       "@id": "estleg:Sanction_KIIRGU_Par_117_fine",
@@ -79,6 +108,43 @@
       "rdfs:label": "Fine, max 300 fine units (KIIRGU § 117.)"
     },
     {
+      "@id": "estleg:Sanction_KIIRGU_Par_117_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_117_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KIIRGU)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_117_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_117_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KIIRGU)"
+    },
+    {
       "@id": "estleg:Sanction_KIIRGU_Par_117_1_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -95,7 +161,7 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 10000 EUR (KIIRGU § 117<sup>1</sup>.)"
+      "rdfs:label": "Fine, max 10000 EUR (KIIRGU § 117¹.)"
     },
     {
       "@id": "estleg:Sanction_KIIRGU_Par_117_1_fine_2",
@@ -113,7 +179,44 @@
         "@type": "xsd:decimal"
       },
       "estleg:maxPenaltyUnit": "fine_units",
-      "rdfs:label": "Fine, max 150 fine units (KIIRGU § 117<sup>1</sup>.)"
+      "rdfs:label": "Fine, max 150 fine units (KIIRGU § 117¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_117_1_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_117_1_Lg_1"
+      },
+      "estleg:maxPenalty": "150 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "150",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 150 fine units (KIIRGU)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_117_1_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_117_1_Lg_2"
+      },
+      "estleg:maxPenalty": "10000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "10000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 10000 EUR (KIIRGU)"
     },
     {
       "@id": "estleg:Sanction_KIIRGU_Par_118_fine",
@@ -153,6 +256,43 @@
       "rdfs:label": "Fine, max 300 fine units (KIIRGU § 118.)"
     },
     {
+      "@id": "estleg:Sanction_KIIRGU_Par_118_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_118_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KIIRGU)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_118_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_118_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KIIRGU)"
+    },
+    {
       "@id": "estleg:Sanction_KIIRGU_Par_119_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -169,6 +309,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (KIIRGU § 119.)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_119_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_119"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KIIRGU § 119.)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_119_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_119_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KIIRGU)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_119_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_119_Lg_2"
+      },
+      "estleg:maxPenalty": "32000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "32000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 32000 EUR (KIIRGU)"
     },
     {
       "@id": "estleg:Sanction_KIIRGU_Par_120_fine",
@@ -208,7 +404,63 @@
       "rdfs:label": "Fine, max 300 fine units (KIIRGU § 120.)"
     },
     {
+      "@id": "estleg:Sanction_KIIRGU_Par_120_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_120_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KIIRGU)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_120_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_120_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KIIRGU)"
+    },
+    {
       "@id": "estleg:Sanction_KIIRGU_Par_121_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_121"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KIIRGU § 121.)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_121_fine_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
@@ -224,6 +476,43 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (KIIRGU § 121.)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_121_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_121_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (KIIRGU)"
+    },
+    {
+      "@id": "estleg:Sanction_KIIRGU_Par_121_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:KIIRGU_Par_121_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (KIIRGU)"
     }
   ]
 }

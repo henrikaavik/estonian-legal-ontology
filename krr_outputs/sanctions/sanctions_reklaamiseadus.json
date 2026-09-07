@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -28,6 +33,18 @@
         "@id": "estleg:REKLAA_Par_32"
       },
       "rdfs:label": "Coercive payment (REKLAA § 32.)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_32_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_32_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (REKLAA)"
     },
     {
       "@id": "estleg:Sanction_REKLAA_Par_33_fine",
@@ -67,7 +84,63 @@
       "rdfs:label": "Fine, max 400000 EUR (REKLAA § 33.)"
     },
     {
+      "@id": "estleg:Sanction_REKLAA_Par_33_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_33_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (REKLAA)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_33_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_33_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (REKLAA)"
+    },
+    {
       "@id": "estleg:Sanction_REKLAA_Par_33_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_33_1"
+      },
+      "estleg:maxPenalty": "5000000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "5000000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 5000000 EUR (REKLAA § 33¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_33_1_fine_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
@@ -83,7 +156,45 @@
       },
       "estleg:maxPenaltyUnit": "monetary",
       "estleg:maxPenaltyCurrency": "EUR",
-      "rdfs:label": "Fine, max 700000 EUR (REKLAA § 33<sup>1</sup>.)"
+      "rdfs:label": "Fine, max 700000 EUR (REKLAA § 33¹.)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_33_1_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_33_1_Lg_1"
+      },
+      "estleg:maxPenalty": "700000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "700000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 700000 EUR (REKLAA)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_33_1_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_33_1_Lg_2"
+      },
+      "estleg:maxPenalty": "5000000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "5000000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 5000000 EUR (REKLAA)"
     },
     {
       "@id": "estleg:Sanction_REKLAA_Par_34_fine",
@@ -123,6 +234,43 @@
       "rdfs:label": "Fine, max 400000 EUR (REKLAA § 34.)"
     },
     {
+      "@id": "estleg:Sanction_REKLAA_Par_34_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_34_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (REKLAA)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_34_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_34_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (REKLAA)"
+    },
+    {
       "@id": "estleg:Sanction_REKLAA_Par_35_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -139,6 +287,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (REKLAA § 35.)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_35_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_35"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (REKLAA § 35.)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_35_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_35_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (REKLAA)"
+    },
+    {
+      "@id": "estleg:Sanction_REKLAA_Par_35_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:REKLAA_Par_35_Lg_2"
+      },
+      "estleg:maxPenalty": "400000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "400000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 400000 EUR (REKLAA)"
     }
   ]
 }

@@ -245,6 +245,10 @@ def test_sanction_type_has_closed_value_set():
         "pecuniary_punishment",
         "arrest",
         "coercive_payment",
+        # Issue #681: KarS's two remaining "other punishments" —
+        # konfiskeerimine (KarS §§ 83-85) and sundlõpetamine (KarS § 46).
+        "confiscation",
+        "compulsory_dissolution",
     }, values
 
 

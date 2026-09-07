@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -28,6 +33,18 @@
         "@id": "estleg:HASART_Par_73"
       },
       "rdfs:label": "Coercive payment (HASART § 73.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_73_Lg_1_coercive_payment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "coercive_payment",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_73_Lg_1"
+      },
+      "rdfs:label": "Coercive payment (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_74_arrest",
@@ -86,7 +103,82 @@
       "rdfs:label": "Fine, max 26000 EUR (HASART § 74.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_74_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_74_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_74_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_74_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_74_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_74_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_75_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_75"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 75.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_75_fine_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Sanction"
@@ -102,6 +194,43 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 300 fine units (HASART § 75.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_75_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_75_Lg_1"
+      },
+      "estleg:maxPenalty": "300 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "300",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 300 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_75_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_75_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_76_fine",
@@ -122,6 +251,62 @@
       "rdfs:label": "Fine, max 100 fine units (HASART § 76.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_76_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_76"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART § 76.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_76_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_76_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_76_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_76_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_79_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -138,6 +323,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 100 fine units (HASART § 79.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_79_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_79"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART § 79.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_79_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_79_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_79_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_79_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_82_arrest",
@@ -177,6 +418,81 @@
       "rdfs:label": "Fine, max 200 fine units (HASART § 82.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_82_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_82"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 82.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_82_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_82_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_82_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_82_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_82_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_82_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_83_arrest",
       "@type": [
         "owl:NamedIndividual",
@@ -212,6 +528,81 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 200 fine units (HASART § 83.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_83_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_83"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 83.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_83_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_83_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_83_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_83_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_83_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_83_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_86_arrest",
@@ -270,6 +661,62 @@
       "rdfs:label": "Fine, max 20000 EUR (HASART § 86.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_86_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_86_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_86_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_86_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_86_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_86_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_87_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -286,6 +733,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 200 fine units (HASART § 87.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_87_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_87"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 87.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_87_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_87_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_87_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_87_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_88_arrest",
@@ -325,6 +828,81 @@
       "rdfs:label": "Fine, max 200 fine units (HASART § 88.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_88_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_88"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 88.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_88_Lg_1_arrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "arrest",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_88_Lg_1"
+      },
+      "estleg:maxPenalty": "30 days",
+      "estleg:maxPenaltyAmount": {
+        "@value": "30",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "days",
+      "estleg:isStatutoryDefault": true,
+      "rdfs:label": "Arrest, max 30 days (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_88_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_88_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_88_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_88_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_89_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -341,6 +919,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 100 fine units (HASART § 89.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_89_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_89"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART § 89.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_89_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_89_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_89_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_89_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_90_fine",
@@ -361,6 +995,62 @@
       "rdfs:label": "Fine, max 200 fine units (HASART § 90.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_90_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_90"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 90.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_90_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_90_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_90_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_90_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_91_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -377,6 +1067,136 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 200 fine units (HASART § 91.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_91_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_91"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 91.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_91_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_91_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_91_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_91_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_92_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_92"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART § 92.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_92_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_92"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 92.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_92_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_92_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_92_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_92_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_93_fine",
@@ -397,6 +1217,62 @@
       "rdfs:label": "Fine, max 200 fine units (HASART § 93.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_93_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_93"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 93.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_93_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_93_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_93_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_93_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_94_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -415,6 +1291,62 @@
       "rdfs:label": "Fine, max 200 fine units (HASART § 94.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_94_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_94"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 94.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_94_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_94_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_94_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_94_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_95_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -431,6 +1363,62 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 200 fine units (HASART § 95.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_95_fine_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_95"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART § 95.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_95_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_95_Lg_1"
+      },
+      "estleg:maxPenalty": "200 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "200",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 200 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_95_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_95_Lg_2"
+      },
+      "estleg:maxPenalty": "26000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "26000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 26000 EUR (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_97_fine",
@@ -470,6 +1458,43 @@
       "rdfs:label": "Fine, max 20000 EUR (HASART § 97.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_97_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_97_Lg_1"
+      },
+      "estleg:maxPenalty": "100 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "100",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 100 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_97_Lg_2_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_97_Lg_2"
+      },
+      "estleg:maxPenalty": "20000 EUR",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20000",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "monetary",
+      "estleg:maxPenaltyCurrency": "EUR",
+      "rdfs:label": "Fine, max 20000 EUR (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_98_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -486,6 +1511,24 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 10 fine units (HASART § 98.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_98_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_98_Lg_1"
+      },
+      "estleg:maxPenalty": "10 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "10",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 10 fine units (HASART)"
     },
     {
       "@id": "estleg:Sanction_HASART_Par_99_fine",
@@ -506,6 +1549,24 @@
       "rdfs:label": "Fine, max 20 fine units (HASART § 99.)"
     },
     {
+      "@id": "estleg:Sanction_HASART_Par_99_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_99_Lg_1"
+      },
+      "estleg:maxPenalty": "20 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 20 fine units (HASART)"
+    },
+    {
       "@id": "estleg:Sanction_HASART_Par_100_fine",
       "@type": [
         "owl:NamedIndividual",
@@ -522,6 +1583,48 @@
       },
       "estleg:maxPenaltyUnit": "fine_units",
       "rdfs:label": "Fine, max 20 fine units (HASART § 100.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_100_Lg_1_fine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "fine",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_100_Lg_1"
+      },
+      "estleg:maxPenalty": "20 fine units",
+      "estleg:maxPenaltyAmount": {
+        "@value": "20",
+        "@type": "xsd:decimal"
+      },
+      "estleg:maxPenaltyUnit": "fine_units",
+      "rdfs:label": "Fine, max 20 fine units (HASART)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_101_confiscation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "confiscation",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_101"
+      },
+      "rdfs:label": "Confiscation (HASART § 101.)"
+    },
+    {
+      "@id": "estleg:Sanction_HASART_Par_101_Lg_3_confiscation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Sanction"
+      ],
+      "estleg:sanctionType": "confiscation",
+      "estleg:applicableProvision": {
+        "@id": "estleg:HASART_Par_101_Lg_3"
+      },
+      "rdfs:label": "Confiscation (HASART)"
     }
   ]
 }
