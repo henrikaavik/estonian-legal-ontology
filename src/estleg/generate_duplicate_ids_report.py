@@ -46,8 +46,9 @@ def _is_lfs_pointer(path: Path) -> bool:
         return False
 
 
-def iter_corpus_files(krr_dir: Path = KRR_DIR) -> list[Path]:
+def iter_corpus_files(krr_dir: Path | None = None) -> list[Path]:
     """Every readable JSON/JSON-LD file in the corpus, LFS pointers excluded."""
+    krr_dir = krr_dir if krr_dir is not None else KRR_DIR
     files = [
         path
         for path in sorted(krr_dir.rglob("*"))
@@ -56,8 +57,9 @@ def iter_corpus_files(krr_dir: Path = KRR_DIR) -> list[Path]:
     return [path for path in files if not _is_lfs_pointer(path)]
 
 
-def collect(krr_dir: Path = KRR_DIR) -> tuple[dict[str, Counter], dict[str, set[str]]]:
+def collect(krr_dir: Path | None = None) -> tuple[dict[str, Counter], dict[str, set[str]]]:
     """Return ``(in_file_duplicates, cross_file_ids)`` for the corpus."""
+    krr_dir = krr_dir if krr_dir is not None else KRR_DIR
     in_file: dict[str, Counter] = {}
     cross_file: dict[str, set[str]] = defaultdict(set)
     for path in iter_corpus_files(krr_dir):
@@ -163,17 +165,16 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.check:
         current = REPORT_PATH.read_text(encoding="utf-8") if REPORT_PATH.is_file() else ""
-        # Only comparable against the same corpus: LFS pointers are skipped, and
-        # CI materialises a subset of the LFS artifacts, so a partial checkout
-        # scans fewer files and legitimately finds fewer duplicates (#702).
+        # Added/deleted inputs and missing LFS materialisation both change the
+        # count. Neither permits us to certify the committed report as current.
         recorded = _scanned(current)
         if recorded is not None and recorded != scanned:
             print(
-                f"Skipping the comparison: this environment scanned {scanned:,} "
-                f"files, the committed report records {recorded:,}. That is an "
-                "LFS-materialisation difference, not a stale report."
+                f"Cannot verify DUPLICATE_IDS_REPORT.md: this environment scanned {scanned:,} "
+                f"files, the committed report records {recorded:,}. "
+                "Materialise missing inputs or regenerate the report for the changed corpus."
             )
-            return 0
+            return 1
         # The generated-at line carries a timestamp, so compare the body only.
         if _body(current) != _body(rendered):
             print("DUPLICATE_IDS_REPORT.md is stale; regenerate it.")
@@ -200,7 +201,7 @@ def _body(text: str) -> str:
     return "\n".join(
         line
         for line in text.splitlines()
-        if not line.startswith(("Generated from", "Files scanned:"))
+        if not line.startswith("Generated from")
     )
 
 

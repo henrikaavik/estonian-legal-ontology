@@ -566,6 +566,27 @@ def validate_per_document_classes(filepath: Path, doc: dict):
             )
 
 
+def _is_title_literal(value: object) -> bool:
+    """Accept JSON-LD string literals, including language-tagged values."""
+    if isinstance(value, str):
+        return True
+    if not isinstance(value, dict) or not isinstance(value.get("@value"), str):
+        return False
+    if set(value) - {"@value", "@language", "@direction", "@type"}:
+        return False
+    if "@type" in value:
+        return (
+            value["@type"] in ("xsd:string", "http://www.w3.org/2001/XMLSchema#string")
+            and "@language" not in value
+            and "@direction" not in value
+        )
+    if "@language" in value and (
+        not isinstance(value["@language"], str) or not value["@language"]
+    ):
+        return False
+    return "@direction" not in value or value["@direction"] in ("ltr", "rtl")
+
+
 def validate_source_provenance(filepath: Path, doc: dict):
     if "@graph" not in doc:
         return
@@ -587,10 +608,10 @@ def validate_source_provenance(filepath: Path, doc: dict):
                     f"{filepath.name}: dcterms:title must not be an empty list "
                     f"at graph[{i}] (@id={node.get('@id', '?')})"
                 )
-            elif not all(isinstance(v, (str, dict)) for v in values):
+            elif not all(_is_title_literal(v) for v in values):
                 error(
-                    f"{filepath.name}: dcterms:title must be a string, a "
-                    f"language-tagged value, or a list of those "
+                    f"{filepath.name}: dcterms:title must be a string literal "
+                    f"or a list of string literals "
                     f"at graph[{i}] (@id={node.get('@id', '?')})"
                 )
 

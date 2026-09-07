@@ -49,6 +49,11 @@
 > order. That rule is excluded from the `--check` comparison and belongs with
 > the stale-aggregate work (#705).
 
+Both report checks fail when the input file count differs from the recorded
+count. Materialise missing LFS inputs before checking; when the corpus has
+changed, regenerate the reports. A count difference cannot establish that the
+report is current.
+
 The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
 manifests, and probe outputs that are not corpus inputs, which is why it
@@ -72,7 +77,8 @@ The two repaired rules were:
 - `dcterms:title must be a string or language-tagged value` (405) — bilingual
   title lists are the #437 language-tag policy. The rule now accepts a list of
   language-tagged values, while still rejecting empty lists and non-literal
-  members.
+  members. Value objects must contain a string `@value`; IRI objects, empty
+  objects, and numeric literals are rejected both alone and inside lists.
 
 | Count | Finding | Status |
 |---:|---|---|

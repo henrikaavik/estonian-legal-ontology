@@ -3132,6 +3132,10 @@ class TestValidatorShapeRules:
         [
             "Ühetaoline pealkiri",
             {"@value": "Pealkiri", "@language": "et"},
+            {"@value": "Pealkiri"},
+            {"@value": "Pealkiri", "@type": "xsd:string"},
+            {"@value": "Pealkiri", "@type": "http://www.w3.org/2001/XMLSchema#string"},
+            {"@value": "Title", "@language": "en", "@direction": "ltr"},
             [
                 {"@value": "Pealkiri", "@language": "et"},
                 {"@value": "Title", "@language": "en"},
@@ -3146,6 +3150,30 @@ class TestValidatorShapeRules:
 
     @pytest.mark.parametrize("title", [[], 42, ["ok", 42], None])
     def test_rejected_title_shapes(self, title):
+        doc = {"@graph": [{"@id": "estleg:Act_X", "dcterms:title": title}]}
+        validate_all.validate_source_provenance(Path("act.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "dcterms:title" in validate_all.errors[0]
+
+    @pytest.mark.parametrize("in_list", [False, True])
+    @pytest.mark.parametrize(
+        "value",
+        [
+            {},
+            {"@id": "estleg:NotATitle"},
+            {"@value": 42},
+            {"@value": None},
+            {"@value": "Title", "@id": "estleg:NotATitle"},
+            {"@value": "42", "@type": "xsd:integer"},
+            {"@value": "Title", "@type": []},
+            {"@value": "Title", "@language": 42},
+            {"@value": "Title", "@language": ""},
+            {"@value": "Title", "@language": "en", "@type": "xsd:string"},
+            {"@value": "Title", "@direction": "invalid"},
+        ],
+    )
+    def test_rejects_non_string_value_objects(self, value, in_list):
+        title = ["Valid title", value] if in_list else value
         doc = {"@graph": [{"@id": "estleg:Act_X", "dcterms:title": title}]}
         validate_all.validate_source_provenance(Path("act.json"), doc)
         assert len(validate_all.errors) == 1

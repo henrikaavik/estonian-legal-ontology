@@ -11,6 +11,8 @@ from __future__ import annotations
 import json
 from collections import Counter
 
+import pytest
+
 from estleg import generate_duplicate_ids_report as dup
 from estleg import generate_validation_report as vr
 
@@ -126,15 +128,8 @@ class TestAuditDoesNotMutateDocs:
         assert dup.REPORT_PATH.read_text(encoding="utf-8") == before
 
 
-class TestChecksTolerateAPartialCorpus:
-    """#702: `--check` must not fail the build for an LFS-materialisation gap.
-
-    CI's `json-validation` job pulls a subset of the Git-LFS artifacts, and both
-    generators skip LFS pointers. A partial checkout therefore scans fewer files
-    and legitimately produces different numbers. Comparing regardless reported a
-    stale report when the report was fine -- which is how the first version of
-    these CI steps failed.
-    """
+class TestChecksRequireComparableCorpora:
+    """Changed input counts must never bypass the report checks (#702)."""
 
     def test_validation_report_reads_back_its_file_count(self):
         block = vr.render_block(
@@ -152,35 +147,59 @@ class TestChecksTolerateAPartialCorpus:
     def test_duplicate_report_scanned_count_absent_is_none(self):
         assert dup._scanned("# Duplicate `@id` Report\n") is None
 
-    def test_duplicate_check_skips_when_the_corpus_differs(self, tmp_path, monkeypatch, capsys):
-        """A smaller corpus must exit 0 with an explicit notice, not fail."""
-        (tmp_path / "one.json").write_text(
-            json.dumps({"@graph": [{"@id": "estleg:A"}, {"@id": "estleg:A"}]}),
-            encoding="utf-8",
-        )
+    @pytest.mark.parametrize("measured_files", [0, 1, 3])
+    def test_validation_check_rejects_changed_file_count(
+        self, measured_files, tmp_path, monkeypatch, capsys
+    ):
         report = tmp_path / "REPORT.md"
-        # A report recorded against a much larger corpus than we can see now.
-        report.write_text(dup.render({}, {}, 27012), encoding="utf-8")
-        monkeypatch.setattr(dup, "REPORT_PATH", report)
-        monkeypatch.setattr(dup, "KRR_DIR", tmp_path)
-        monkeypatch.setattr(dup, "iter_corpus_files", lambda krr_dir=tmp_path: [tmp_path / "one.json"])
-        monkeypatch.setattr(dup, "collect", lambda krr_dir=tmp_path: ({}, {}))
-
-        assert dup.main(["--check"]) == 0
-        assert "LFS-materialisation difference" in capsys.readouterr().out
-
-    def test_duplicate_check_still_fails_on_a_real_drift(self, tmp_path, monkeypatch, capsys):
-        """Same corpus size, different content -> that is a stale report."""
-        report = tmp_path / "REPORT.md"
-        report.write_text(dup.render({}, {}, 1), encoding="utf-8")
-        monkeypatch.setattr(dup, "REPORT_PATH", report)
-        monkeypatch.setattr(dup, "iter_corpus_files", lambda krr_dir=None: [tmp_path / "one.json"])
+        report.write_text(vr.render_block({"files": 2, "errors": 0, "warnings": 0}, Counter()))
+        monkeypatch.setattr(vr, "REPORT_PATH", report)
         monkeypatch.setattr(
-            dup, "collect", lambda krr_dir=None: ({"one.json": Counter({"estleg:A": 2})}, {})
+            vr, "run_validator", lambda: (
+                "  ERROR: new.json: Duplicate @id within file: estleg:A\n"
+                f"Files validated: {measured_files}\nErrors: 1\nWarnings: 0\n"
+            )
         )
+        assert vr.main(["--check"]) == 1
+        assert "Cannot verify" in capsys.readouterr().out
 
-        assert dup.main(["--check"]) == 1
-        assert "stale" in capsys.readouterr().out
+    @pytest.mark.parametrize("errors", [0, 1])
+    def test_validation_check_compares_content_at_same_size(
+        self, errors, tmp_path, monkeypatch
+    ):
+        report = tmp_path / "REPORT.md"
+        report.write_text(vr.render_block({"files": 2, "errors": 0, "warnings": 0}, Counter()))
+        monkeypatch.setattr(vr, "REPORT_PATH", report)
+        output = "  ERROR: new.json: Duplicate @id within file: estleg:A\n" if errors else ""
+        output += f"Files validated: 2\nErrors: {errors}\nWarnings: 0\n"
+        monkeypatch.setattr(vr, "run_validator", lambda: output)
+        assert vr.main(["--check"]) == errors
+
+    @pytest.mark.parametrize("change", ["add", "remove", "lfs_pointer", "edit", "none"])
+    def test_duplicate_check_detects_changed_inputs(
+        self, change, tmp_path, monkeypatch
+    ):
+        """Exercise discovery and collection on real files, including the added-file bypass."""
+        corpus = tmp_path / "krr_outputs"
+        corpus.mkdir()
+        clean = json.dumps({"@graph": [{"@id": "estleg:A"}]})
+        (corpus / "one.json").write_text(clean)
+        second = corpus / "two.json"
+        second.write_text(json.dumps({"@graph": [{"@id": "estleg:B"}]}))
+        report = tmp_path / "REPORT.md"
+        report.write_text(dup.render(*dup.collect(corpus), len(dup.iter_corpus_files(corpus))))
+        monkeypatch.setattr(dup, "REPORT_PATH", report)
+        monkeypatch.setattr(dup, "KRR_DIR", corpus)
+        duplicates = json.dumps({"@graph": [{"@id": "estleg:C"}, {"@id": "estleg:C"}]})
+        if change == "add":
+            (corpus / "new.json").write_text(duplicates)
+        elif change == "remove":
+            second.unlink()
+        elif change == "lfs_pointer":
+            second.write_text("version https://git-lfs.github.com/spec/v1\noid sha256:abc\n")
+        elif change == "edit":
+            second.write_text(duplicates)
+        assert dup.main(["--check"]) == (0 if change == "none" else 1)
 
 
 class TestMtimeDerivedRowsAreExcluded:

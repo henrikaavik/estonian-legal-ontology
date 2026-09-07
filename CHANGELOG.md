@@ -25,6 +25,8 @@ published validation documents measured rather than hand-maintained.
   `estleg:CourtDecision`) typed 22,225 of them as Estonian decisions, which
   then failed `caseType` and `caseNumber` — they carry `euCaseNumber`. All four
   are now `owl:Thing`, following the `applicableProvision` precedent from #681.
+  The flagship combined artifact is regenerated with the same domains; a
+  corpus regression checks both load surfaces and their RDFS entailments.
 - **Two checkers now run in the gate.** `check_tbox_consistency` and
   `check_numeric_identity_strings` shipped as scripts that nothing invoked, so
   a node asserting both `inForce` and `repealed`, a provision pointing at two
@@ -50,7 +52,8 @@ published validation documents measured rather than hand-maintained.
   renders the duplicate report from the corpus — 61 in-file duplicates across
   3 files, where the fixture version claimed one. Both have `--check` modes
   wired into the `json-validation` job, so the numbers cannot silently drift
-  back into a false conformance claim.
+  back into a false conformance claim. A changed input count fails the check:
+  added/deleted files must not be mistaken for an LFS materialisation gap.
 
 
 ### 2026-09 public-sector readiness — Tier 0 (#676, tickets #677–#690)

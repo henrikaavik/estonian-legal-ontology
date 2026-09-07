@@ -183,19 +183,16 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         current = report[start : end + len(END_MARKER)]
 
-        # The numbers are only comparable against the same corpus. CI
-        # materialises a subset of the Git-LFS artifacts and validate_all skips
-        # LFS pointers, so a partial checkout legitimately validates fewer
-        # files. Comparing regardless would fail the build for an environment
-        # difference rather than for a stale report (#702).
+        # A changed file count may mean new/deleted corpus inputs, not just
+        # missing LFS materialisation. Either way we cannot certify the report.
         recorded, measured = _files_validated(current), _files_validated(block)
         if recorded is not None and measured is not None and recorded != measured:
             print(
-                f"Skipping the numeric comparison: this environment validated "
+                f"Cannot verify VALIDATION_REPORT.md: this environment validated "
                 f"{measured:,} files, the committed report records {recorded:,}. "
-                "That is an LFS-materialisation difference, not a stale report."
+                "Materialise missing inputs or regenerate the report for the changed corpus."
             )
-            return 0
+            return 1
 
         if _comparable(current) != _comparable(block):
             print("VALIDATION_REPORT.md numbers are stale; regenerate them.")
