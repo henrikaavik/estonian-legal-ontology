@@ -225,6 +225,7 @@ jobs:
         run: python3 -m pip install -e ".[dev]"
 
       - name: Pull required LFS artifacts
+        id: corpus-lfs
         run: |
           paths=(
             krr_outputs/combined_ontology.jsonld
@@ -275,6 +276,10 @@ jobs:
       # on disk, so opt them in here — these are the suite's only assertions
       # against the *shipped* graph rather than synthetic fixtures.
       - name: Real-corpus pytest invariants (materialised combined)
+        # Run even when JSON hygiene or the namespace check failed. Otherwise
+        # the Tier 1 backlog prevents the tiered release invariants from ever
+        # being exercised. Still require successful LFS materialisation.
+        if: ${{ !cancelled() && steps.corpus-lfs.outcome == 'success' }}
         run: python3 -m pytest -q -m corpus
 
   semantic-validation:
