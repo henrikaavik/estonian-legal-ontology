@@ -42,12 +42,13 @@ enforced by a release gate.
   the placeholder `[isikukood eemaldatud]` and returns only the **masked** form
   of what it removed (e.g. `344****38`). The full code is never returned,
   logged, or persisted anywhere in the repository.
-- It is applied at **both court write sites**, so newly generated Riigikohus
-  decisions are screened before they ever reach disk.
+- It is applied to Riigikohus summaries and full text, and to lower-court
+  summaries. Both summary writers screen before their 800-character limit,
+  so truncation cannot publish the beginning of a personal code.
 - The committed corpus was backfilled by the offline pass
   `python3 -m estleg.screen_court_personal_data` (shim:
   `scripts/screen_court_personal_data.py`).
-- Every Riigikohus decision node now carries the stamps
+- Every Riigikohus and lower-court decision node now carries the stamps
   `estleg:personalDataScreened: true` and `estleg:personalDataMaskedCount`, so a
   consumer can tell a screened node from an unscreened one without re-running
   the detector.
@@ -153,7 +154,7 @@ consider whether you need the names at all for your use case.
 - `estleg:containsPersonalData` is declared as an `owl:DatatypeProperty` in the
   metadata `@graph`.
 
-Per court-decision node (`krr_outputs/riigikohus/`):
+Per court-decision node (`krr_outputs/riigikohus/` and `krr_outputs/kohtud/`):
 
 - `estleg:personalDataScreened: true` — the node passed through
   `screen_personal_data`;

@@ -33,6 +33,8 @@ from estleg.estleg_common import (
     KRR_DIR,
     assert_allowed_http_url,
     save_json,
+    screen_personal_data,
+    stamp_personal_data_screening,
 )
 
 SEARCH_URL = (
@@ -195,8 +197,13 @@ def decision_node(hit: dict) -> dict:
             "@value": hit["date"],
             "@type": "xsd:date",
         }
+    findings = []
     if hit.get("summary"):
-        node["estleg:summary"] = {"@value": hit["summary"][:800], "@language": "et"}
+        # Screen before truncation, as in the Supreme Court writer: slicing
+        # first can leave a partial personal code beyond the detector's reach.
+        summary, findings = screen_personal_data(hit["summary"])
+        node["estleg:summary"] = {"@value": summary[:800], "@language": "et"}
+    stamp_personal_data_screening(node, len(findings))
     return node
 
 

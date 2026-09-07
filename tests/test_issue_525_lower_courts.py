@@ -11,6 +11,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
+from estleg.estleg_common import isikukood_check_digit
 from estleg.generate_lower_court_decisions import (
     classify_court,
     collect_hits,
@@ -115,6 +118,21 @@ def test_write_corpus_and_cli_from_fixture(tmp_path: Path) -> None:
         ]
     )
     assert (out / "KOHTUD_INDEX.json").is_file()
+
+
+@pytest.mark.parametrize("padding", [0, 790])
+def test_lower_court_screens_personal_codes_before_writing(tmp_path: Path, padding: int):
+    body = "3900101000"
+    code = body + str(isikukood_check_digit(body))
+    hit = parse_search_hit(json.loads(FIXTURE.read_text())["tulemused"][0])
+    hit["summary"] = "x" * padding + " ik " + code
+    index = write_corpus([hit], out_dir=tmp_path, year=None, source_total=1)
+    doc = json.loads((tmp_path / index["file"]).read_text())
+    node = next(n for n in doc["@graph"] if "estleg:CourtDecision" in n["@type"])
+    text = node["estleg:summary"]["@value"]
+    assert code[:5] not in text  # also catch a code split at the 800-char cut
+    assert node["estleg:personalDataScreened"] is True
+    assert node["estleg:personalDataMaskedCount"] == 1
 
 
 def test_write_corpus_marks_sample_without_year(tmp_path: Path) -> None:
