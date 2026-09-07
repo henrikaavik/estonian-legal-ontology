@@ -30,8 +30,9 @@ the consumer-facing summary.
   riigiteataja.ee; non-RT `owl:sameAs` IRIs surface under `external_ids`.
 - **Personal identification codes are screened out of court text (#683).**
   `estleg_common.screen_personal_data` masks checksum-valid Estonian
-  `isikukood` runs in `estleg:summary` / `estleg:legalText` at both court
-  write sites; the committed Riigikohus corpus was backfilled (12,104 nodes
+  `isikukood` runs in `estleg:summary` / `estleg:legalText` before truncation
+  in both court summary writers and at the full-text write site. The committed
+  Riigikohus corpus was backfilled (12,104 nodes
   scanned, 21 nodes / 27 codes masked), every decision node carries
   `estleg:personalDataScreened` and `estleg:personalDataMaskedCount`, and
   `validate_all.py` fails on any surviving code. The masked display forms are
@@ -43,9 +44,12 @@ the consumer-facing summary.
   skips the general part (Üldosa) of split codes, adds the
   `percent_of_turnover` unit and the `confiscation` / `compulsory_dissolution`
   types, and caps imprisonment at 20 years. The sidecars were regenerated:
-  7,264 sanction records across 464 laws (was 2,550 / 294). The review removed
+  7,392 sanction records across 464 laws (was 2,550 / 294). The review removed
   755 false confiscation/dissolution records by requiring operative wording;
-  eligibility conditions and references to confiscated property are excluded. New SHACL shapes
+  eligibility conditions and references to confiscated property are excluded.
+  Further review scopes life imprisonment to its operative sentence, preserves
+  superscripted subsections, and keeps corporate penalties without a stated
+  amount free of the natural-person daily-rate default. New SHACL shapes
   enforce `min ≤ max`, imprisonment ≤ 20 years, arrest ≤ 30 days and ≤ 500
   daily rates. `estleg:applicableProvision` lost its `rdfs:domain
   estleg:CourtDecision`, which had phantom-typed every Sanction under RDFS
@@ -70,7 +74,7 @@ the consumer-facing summary.
   `w3id/estleg/.htaccess` redirects any SemVer version IRI to its tagged
   release so a new tag needs no w3id resubmission.
 - **Validation report is honest.** `docs/VALIDATION_REPORT.md` no longer
-  claims 0 errors: it records the 2026-09-05 gate run, separates the 3,426
+  claims 0 errors: it records the 2026-09-07 gate rerun, separates the 3,426
   stale validator-rule findings (#702) from real findings, and lists the red
   SHACL buckets that are Tier 1 work.
 

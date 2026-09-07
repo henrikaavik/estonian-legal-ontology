@@ -1,6 +1,6 @@
 # Validation Report
 
-**Last updated:** 2026-09-05 (gate run on the Tier 0 tree of epic #676)
+**Last updated:** 2026-09-07 (reviewed Tier 0 tree of epic #676)
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
@@ -16,7 +16,7 @@
 > against a run dated 2026-05-26. That statement was false for every committed
 > tree since at least v1.0.0 (2026-08-19): the `json-validation` CI job has
 > been red on every `main` run in that period. The numbers above come from a
-> local run of the same command on 2026-09-05; the baseline on the pre-Tier-0
+> local rerun of the same command on 2026-09-07; the baseline on the pre-Tier-0
 > tree (`c96577d50c`) was 26,791 files / 3,558 errors / 2 warnings.
 
 The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
@@ -28,10 +28,9 @@ validates 26,961.
 
 Every error is itemised below with its status. **3,426 of the 3,546 (96.6%)
 are stale validator rules, not data defects**; fixing the validator is Tier 1
-ticket #702. The review rerun found 3,546 errors versus 3,547 immediately
-before the review fixes. The rebuilt combined file removed its stale-file
-finding; the cross-file collision count fell from 66,110 to 66,108. No new
-validation error category appeared.
+ticket #702. The 2026-09-07 review rerun still reports 3,546 errors and
+66,108 cross-file ID collisions. No new validation error category appeared;
+all 3,621,971 internal object references resolve.
 
 | Count | Finding | Status |
 |---:|---|---|
@@ -54,8 +53,8 @@ stale-aggregate finding on each of the `eurlex` / `curia` / `eelnoud` files
 (combined rebuild, #681/#682). `dataset_build_manifest.json` was regenerated so its
 `catalogModified` matches the new `dcterms:modified` (#686).
 
-Warnings (2): `generation_manifest_laws.json` is not committed (Tier 1
-#692/#704), and 9 amendment chains carry 1.0% duplicate `AmendmentEvent`
+Warnings (2): `generation_manifest_laws.json` is not committed
+(Tier 1 #692/#704), and 9 amendment chains carry 1.0% duplicate `AmendmentEvent`
 nodes (re-run `generate_amendment_history.py`).
 
 ## Load surfaces and validation gates
@@ -124,9 +123,9 @@ and CI wiring. The public subdirectories are defined once in
 
 ## Data Coverage
 
-Counts as of the 2026-09-05 Tier 0 tree (`metadata.jsonld` `dcterms:modified`
-2026-09-04). `validate_all.py` cross-checks the catalogue counts against the
-tree, so a stale row here fails the gate.
+Counts re-derived on the 2026-09-07 reviewed Tier 0 tree (`metadata.jsonld`
+`dcterms:modified` 2026-09-07). `validate_all.py` cross-checks the catalogue
+counts against the tree, so a stale catalogue fails the gate.
 
 | Category | Files | Indexed records |
 |----------|------:|-----------------|
@@ -138,7 +137,7 @@ tree, so a stale row here fails the gate.
 | Lower-court decisions (`kohtud/`) | 1 | 1 decision — a labelled **sample** (`estleg:isSampleData`), not a corpus (#689) |
 | EU legislation | 6 | 33,242 acts |
 | EU court decisions | 9 | 22,290 decisions |
-| Sanction sidecars | 464 | 7,264 sanction records (#681) |
+| Sanction sidecars | 464 | 7,392 sanction records (#681) |
 | ProvisionVersion sidecars | 4,422 | version history for laws and state regulations |
 | Amendment sidecars | 5,647 | 20,937 `AmendmentEvent` nodes |
 | Õiguskantsler annotation sidecar | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
@@ -158,7 +157,7 @@ fixes and, for buckets not re-run locally, the CI result at `c96577d50c`
 | `riigikohus` | 35 | **FAIL** (CI) | ~30k `versionOf` / `versionText` / `versionValidFrom` violations from the same range-axiom phantom typing of ProvisionVersion stubs. **#702 / #709.** |
 | `laws`, `kov`, `drafts`, `curia` | — | **FAIL** (CI) | Not re-run locally on 2026-09-05; red in CI at `c96577d50c`. Triage is **#702**. |
 | `eurlex` | 163 | PASS (CI) | |
-| `--all` | — | not run on 2026-09-05 | |
+| `--all` | — | 2026-09-07 attempt resource-limited | Stopped during graph loading at 6 GiB process RSS on a 16 GiB host; no completed SHACL result. |
 
 The "phantom typing" pattern is documented in `shacl/README.md`: a class
 `rdfs:domain` / `rdfs:range` on a predicate shared across classes types every
@@ -169,26 +168,43 @@ findings is **#702**.
 
 ### Review checks on regenerated data
 
-The review removed 755 false confiscation/dissolution records and 220 empty
-sanction sidecars. The remaining 7,264 sanctions in 464 files and the deprecated act
-roots conform to the affected shapes (`SanctionShape`, the three sanction
-ceiling shapes, and `DeprecatedActNotInForceShape`) under both `inference="none"`
-and `inference="rdfs"`. Range ordering is checked only for matching units and
-currencies: 30 days to 1 year must not be rejected as 30 > 1.
+The earlier review removed 755 false confiscation/dissolution records and
+220 empty sanction sidecars. The 2026-09-07 review additionally keeps natural-
+and legal-person penalties distinct, preserves superscripted subsections such
+as `(1¹)`, and requires the operative life-imprisonment wording to stay within
+the same sentence/subsection. A corporate penalty with no stated amount carries
+no natural-person daily-rate default. Company board members and unrelated
+company mentions do not trigger the corporate rule.
 
-The full source-bucket and standalone SHACL counts below/above remain the
-original Tier 0 measurements; the review reran the affected shapes, JSON-LD
-validation/parity, and the Seadusloome load gate.
+The final sanctions and deprecated act roots conform to the affected shapes
+(`SanctionShape`, the three sanction ceiling shapes, and
+`DeprecatedActNotInForceShape`) under both `inference="none"` and
+`inference="rdfs"`, with zero validation results. Range ordering is checked
+only for matching units and currencies: 30 days to 1 year must not be rejected
+as 30 > 1. Combined was regenerated with the canonical builder after the full
+sanctions pass: 268,836 nodes (268,835 unique IDs plus the dataset header).
 
-The default suite passes (4,282 passed, 67 skipped); MCP passes (110 passed,
-1 skipped). With materialised LFS inputs, `pytest -q -m corpus` reports
+The full source-bucket and standalone SHACL counts below/above remain
+historical measurements. The 2026-09-07 full `--all` and standalone attempts
+were stopped at 6 GiB process RSS each to keep the 16 GiB workstation
+responsive; neither produced a completed SHACL result. These attempts do not
+establish full SHACL conformance. The affected shapes, JSON-LD
+validation/parity, and Seadusloome load gate were rerun.
+
+The default suite passes (4,293 passed, 67 skipped); MCP passes (113 passed,
+1 skipped). Ruff, Docs lint, and the release/validate-only integration DAG
+dry-run pass. With materialised LFS inputs, `pytest -q -m corpus` reports
 62 passed, 1 skipped and four failures that also occur on the pre-review inputs:
 the reverse EuroVoc example in `API_GUIDE.md`, the 2,409-stub closure-policy
 finding, a test requiring obsolete `LegalProvision_<slug>` instances, and a
 test requiring a direct `NationalRegulation → Act` axiom rather than the
 current `NationalRegulation → DomesticRegulation → Act` hierarchy. These remain
-outside the review fixes; the stale test/validator expectations belong with
-#702 and the closure-policy finding with #705.
+outside the review fixes; the stale test/validator expectations belong
+with #702 and the closure-policy finding with #705.
+
+The CI corpus-test step now runs after JSON hygiene fails, provided LFS
+materialisation succeeded. The 2026-09-07 #731 CI run verifies this behavior:
+the baseline corpus failures are reported instead of silently skipped.
 
 ### Combined-only gate (`scripts/validate_combined_standalone.py`)
 
@@ -198,14 +214,15 @@ introduced by Tier 0: `estleg:Subsection` nodes typed `estleg:LegalProvision`
 fail `paragrahv` / `summary` (the lõige nodes carry `subsectionNumber` and
 `legalText` instead — the shape predates #514 lõige minting; **#702 / #709**);
 regulation-provision closure stubs (`Reg_*`) fail `paragrahv` / `summary` /
-`partOfAct` because the stub keeps the type but not those fields (**#416 /
-#705**); 4,841 `AmendmentEvent` nodes lack `estleg:amends` (**#702**). The
+`partOfAct` because the stub keeps the type but not those fields
+(**#416 / #705**); 4,841 `AmendmentEvent` nodes lack `estleg:amends` (**#702**). The
 482 label-less orphan Sanction nodes that the pre-rebuild artifact carried are
 gone (the extractor now purges stale inline anchors, #681).
 
 ### Seadusloome zero-warning gate
 
-`scripts/validate_seadusloome_sync.py` fails at graph closure on
+The 2026-09-07 rerun of `scripts/validate_seadusloome_sync.py` fails at graph
+closure on
 `eurlex/eurlex_combined.jsonld` (`owl:imports estleg:EURlex_Schema_2026`, a
 stale LFS aggregate) before SHACL runs. Rebuilding every aggregate in one DAG
 step is **#705**; until then this gate is red for a known reason and is not a
@@ -213,7 +230,7 @@ statement about the source data.
 
 ## Similarity Coverage
 
-_Figures from the 2026-05-26 run; not re-measured on 2026-09-05._
+_Figures from the 2026-05-26 run; not re-measured on 2026-09-07._
 
 `scripts/generate_similarity_index.py` now includes state regulations while still deferring KOV similarity to Layer 3.
 
@@ -227,7 +244,7 @@ Similarity output now contains 84,527 analyzed provisions, 108,684 pairs, and up
 
 ## Õiguskantsler Annotation Ingestion
 
-_Figures from the Phase 3.4 run (2026-05); not re-measured on 2026-09-05._
+_Figures from the Phase 3.4 run (2026-05); not re-measured on 2026-09-07._
 
 Phase 3.4 used `scripts/generate_annotations.py --probe-pdfs --pdf-probe-sample-size 10`
 as the go/no-go probe before the full live scrape. The probe found usable PDF
@@ -259,7 +276,7 @@ public subdirectories. See "Load surfaces and validation gates" above for how it
 relates to the combined-only gate (`scripts/validate_combined_standalone.py`) and
 the per-bucket source gate (`scripts/shacl_validate_all.py --bucket <name>`).
 
-**Status 2026-09-05: red** — see [Seadusloome zero-warning gate](#seadusloome-zero-warning-gate-1) above for the reason (#705).
+**Status 2026-09-07: red** — see [Seadusloome zero-warning gate](#seadusloome-zero-warning-gate) above for the reason (#705).
 
 `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
 
