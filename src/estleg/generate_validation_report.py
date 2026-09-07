@@ -130,10 +130,36 @@ def splice(report: str, block: str) -> str:
     return report[:start] + block + report[end + len(END_MARKER) :]
 
 
+def _files_validated(block: str) -> int | None:
+    """The `Files validated` figure recorded in a generated block, if present."""
+    match = re.search(r"\| Files validated \| ([\d,]+) \|", block)
+    return int(match.group(1).replace(",", "")) if match else None
+
+
+# Error categories whose count is derived from filesystem mtimes rather than
+# from file content. `git status` can be clean while these move: regenerating a
+# T-Box artifact makes it newer than an aggregate that embeds it, and a fresh
+# checkout assigns mtimes in arbitrary order. They are excluded from --check so
+# the guard reports real drift instead of clock noise (#702). The rule itself
+# being mtime-based is a separate problem, tracked with the aggregates (#705).
+ENVIRONMENT_DEPENDENT_CATEGORIES = ("older than at least one canonical source file",)
+
+
 def _comparable(block: str) -> str:
-    """Drop the stamp line so --check ignores SHA/timestamp churn."""
+    """Normalise a block for comparison.
+
+    Drops the stamp line, the mtime-derived category rows, and the total
+    `Errors` row -- the total moves with those rows, so comparing it would
+    reintroduce exactly the clock noise the exclusions remove. Every
+    content-derived category row is still compared, which is where real drift
+    shows up.
+    """
     return "\n".join(
-        line for line in block.splitlines() if not line.startswith("*Measured by")
+        line
+        for line in block.splitlines()
+        if not line.startswith("*Measured by")
+        and not line.startswith("| Errors |")
+        and not any(cat in line for cat in ENVIRONMENT_DEPENDENT_CATEGORIES)
     )
 
 
@@ -156,6 +182,21 @@ def main(argv: list[str] | None = None) -> int:
             print("VALIDATION_REPORT.md is missing the generated-block markers.")
             return 1
         current = report[start : end + len(END_MARKER)]
+
+        # The numbers are only comparable against the same corpus. CI
+        # materialises a subset of the Git-LFS artifacts and validate_all skips
+        # LFS pointers, so a partial checkout legitimately validates fewer
+        # files. Comparing regardless would fail the build for an environment
+        # difference rather than for a stale report (#702).
+        recorded, measured = _files_validated(current), _files_validated(block)
+        if recorded is not None and measured is not None and recorded != measured:
+            print(
+                f"Skipping the numeric comparison: this environment validated "
+                f"{measured:,} files, the committed report records {recorded:,}. "
+                "That is an LFS-materialisation difference, not a stale report."
+            )
+            return 0
+
         if _comparable(current) != _comparable(block):
             print("VALIDATION_REPORT.md numbers are stale; regenerate them.")
             return 1

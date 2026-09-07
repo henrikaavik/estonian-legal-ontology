@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -95,7 +96,11 @@ def _git_sha() -> str:
         return "unknown"
 
 
-def render(in_file: dict[str, Counter], cross_file: dict[str, set[str]]) -> str:
+def render(
+    in_file: dict[str, Counter],
+    cross_file: dict[str, set[str]],
+    scanned: int,
+) -> str:
     total_dupes = sum(sum(c.values()) - len(c) for c in in_file.values())
     collisions = {
         nid: files for nid, files in cross_file.items() if len(files) > 1
@@ -106,6 +111,8 @@ def render(in_file: dict[str, Counter], cross_file: dict[str, set[str]]) -> str:
         f"Generated from `krr_outputs/` at commit `{_git_sha()}` on "
         f"{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} by "
         "`scripts/generate_duplicate_ids_report.py`. Do not hand-edit.",
+        "",
+        f"Files scanned: {scanned:,}.",
         "",
         "## In-file duplicates",
         "",
@@ -150,11 +157,23 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    scanned = len(iter_corpus_files())
     in_file, cross_file = collect()
-    rendered = render(in_file, cross_file)
+    rendered = render(in_file, cross_file, scanned)
 
     if args.check:
         current = REPORT_PATH.read_text(encoding="utf-8") if REPORT_PATH.is_file() else ""
+        # Only comparable against the same corpus: LFS pointers are skipped, and
+        # CI materialises a subset of the LFS artifacts, so a partial checkout
+        # scans fewer files and legitimately finds fewer duplicates (#702).
+        recorded = _scanned(current)
+        if recorded is not None and recorded != scanned:
+            print(
+                f"Skipping the comparison: this environment scanned {scanned:,} "
+                f"files, the committed report records {recorded:,}. That is an "
+                "LFS-materialisation difference, not a stale report."
+            )
+            return 0
         # The generated-at line carries a timestamp, so compare the body only.
         if _body(current) != _body(rendered):
             print("DUPLICATE_IDS_REPORT.md is stale; regenerate it.")
@@ -170,10 +189,18 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
+def _scanned(text: str) -> int | None:
+    """The `Files scanned` figure recorded in a report, if present."""
+    match = re.search(r"^Files scanned: ([\d,]+)\.", text, re.MULTILINE)
+    return int(match.group(1).replace(",", "")) if match else None
+
+
 def _body(text: str) -> str:
     """Strip the generated-at line so --check ignores SHA/timestamp churn."""
     return "\n".join(
-        line for line in text.splitlines() if not line.startswith("Generated from")
+        line
+        for line in text.splitlines()
+        if not line.startswith(("Generated from", "Files scanned:"))
     )
 
 

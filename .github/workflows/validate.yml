@@ -234,6 +234,10 @@ jobs:
             krr_outputs/annotations/oiguskantsler_seisukohad.jsonld
             krr_outputs/curia/curia_combined.jsonld
             krr_outputs/eurlex/eurlex_combined.jsonld
+            # #702: the overlay is LFS-tracked but was not pulled here, so
+            # this gate validated a smaller corpus than a local run and
+            # never saw the 37 in-file duplicate @ids it carries.
+            krr_outputs/analytical/analytical_overlay.jsonld
           )
           include=$(IFS=,; echo "${paths[*]}")
           git lfs pull --include="$include" --exclude=""

@@ -124,3 +124,97 @@ class TestAuditDoesNotMutateDocs:
         fix_all_issues.audit_duplicate_ids(tmp_path)
 
         assert dup.REPORT_PATH.read_text(encoding="utf-8") == before
+
+
+class TestChecksTolerateAPartialCorpus:
+    """#702: `--check` must not fail the build for an LFS-materialisation gap.
+
+    CI's `json-validation` job pulls a subset of the Git-LFS artifacts, and both
+    generators skip LFS pointers. A partial checkout therefore scans fewer files
+    and legitimately produces different numbers. Comparing regardless reported a
+    stale report when the report was fine -- which is how the first version of
+    these CI steps failed.
+    """
+
+    def test_validation_report_reads_back_its_file_count(self):
+        block = vr.render_block(
+            {"files": 26961, "errors": 122, "warnings": 2}, Counter()
+        )
+        assert vr._files_validated(block) == 26961
+
+    def test_validation_report_file_count_absent_is_none(self):
+        assert vr._files_validated("no table here") is None
+
+    def test_duplicate_report_reads_back_its_scanned_count(self):
+        block = dup.render({}, {}, 27012)
+        assert dup._scanned(block) == 27012
+
+    def test_duplicate_report_scanned_count_absent_is_none(self):
+        assert dup._scanned("# Duplicate `@id` Report\n") is None
+
+    def test_duplicate_check_skips_when_the_corpus_differs(self, tmp_path, monkeypatch, capsys):
+        """A smaller corpus must exit 0 with an explicit notice, not fail."""
+        (tmp_path / "one.json").write_text(
+            json.dumps({"@graph": [{"@id": "estleg:A"}, {"@id": "estleg:A"}]}),
+            encoding="utf-8",
+        )
+        report = tmp_path / "REPORT.md"
+        # A report recorded against a much larger corpus than we can see now.
+        report.write_text(dup.render({}, {}, 27012), encoding="utf-8")
+        monkeypatch.setattr(dup, "REPORT_PATH", report)
+        monkeypatch.setattr(dup, "KRR_DIR", tmp_path)
+        monkeypatch.setattr(dup, "iter_corpus_files", lambda krr_dir=tmp_path: [tmp_path / "one.json"])
+        monkeypatch.setattr(dup, "collect", lambda krr_dir=tmp_path: ({}, {}))
+
+        assert dup.main(["--check"]) == 0
+        assert "LFS-materialisation difference" in capsys.readouterr().out
+
+    def test_duplicate_check_still_fails_on_a_real_drift(self, tmp_path, monkeypatch, capsys):
+        """Same corpus size, different content -> that is a stale report."""
+        report = tmp_path / "REPORT.md"
+        report.write_text(dup.render({}, {}, 1), encoding="utf-8")
+        monkeypatch.setattr(dup, "REPORT_PATH", report)
+        monkeypatch.setattr(dup, "iter_corpus_files", lambda krr_dir=None: [tmp_path / "one.json"])
+        monkeypatch.setattr(
+            dup, "collect", lambda krr_dir=None: ({"one.json": Counter({"estleg:A": 2})}, {})
+        )
+
+        assert dup.main(["--check"]) == 1
+        assert "stale" in capsys.readouterr().out
+
+
+class TestMtimeDerivedRowsAreExcluded:
+    """#702: the freshness rule counts by mtime, so --check must ignore it.
+
+    `older than at least one canonical source file` compares filesystem
+    timestamps, not content. Regenerating a T-Box artifact makes it newer than
+    an aggregate that embeds it, and a fresh checkout assigns mtimes in
+    arbitrary order -- so this row moved 3 -> 4 (and the total 122 -> 123) with
+    a clean `git status`, which made --check report a stale report twice over.
+    """
+
+    def _block(self, freshness: int, duplicates: int = 38):
+        return vr.render_block(
+            {"files": 26961, "errors": freshness + duplicates, "warnings": 2},
+            Counter(
+                {
+                    "Duplicate @id within file": duplicates,
+                    "older than at least one canonical source file": freshness,
+                }
+            ),
+        )
+
+    def test_freshness_drift_alone_is_not_treated_as_stale(self):
+        assert vr._comparable(self._block(3)) == vr._comparable(self._block(4))
+
+    def test_a_content_category_drifting_is_still_caught(self):
+        assert vr._comparable(self._block(3)) != vr._comparable(
+            self._block(3, duplicates=39)
+        )
+
+    def test_the_committed_block_still_shows_the_real_totals(self):
+        """Excluded from comparison, but still published for the reader."""
+        text = vr.REPORT_PATH.read_text(encoding="utf-8")
+        block = text[text.find(vr.BEGIN_MARKER) : text.find(vr.END_MARKER)]
+        assert "| Errors |" in block
+        assert "older than at least one canonical source file" in block

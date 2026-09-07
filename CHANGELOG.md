@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 Repairs the validator so the gate reports real defects, and makes both
 published validation documents measured rather than hand-maintained.
 
-- **`validate_all.py`: 3,549 → 122 errors (-96.5%).** Two rules were wrong, not
+- **`validate_all.py`: 3,549 → ~122 errors (-96.5%).** Two rules were wrong, not
   the data. `dcterms:subject` demanded an array on every node, but an
   `estleg:Chapter` maps to exactly one cluster and carries a single IRI object
   by design (3,021 errors); the rule now exempts that one type, and Acts and

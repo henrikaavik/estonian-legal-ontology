@@ -7,12 +7,12 @@
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `049ff362cbc9b428bd4a00bb9121e24d8e5e6b2b`, 2026-09-07 11:24 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `d20d7877a51d10c4cc90182604acf4fd5543d719`, 2026-09-07 12:09 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
 | Files validated | 26,961 |
-| Errors | 122 |
+| Errors | 123 |
 | Warnings | 2 |
 | Result | **FAILED** |
 
@@ -23,8 +23,8 @@
 | 27 | @type is not an array |
 | 5 | skos:exactMatch is not an array |
 | 5 | indexed file has no provision nodes and no registry exception |
+| 4 | older than at least one canonical source file |
 | 3 | missing <n> source graph IDs |
-| 3 | older than at least one canonical source file |
 | 2 | <n> shared provision IDs drift from source on SHACL-sensitive fields |
 | 1 | <n> @id values are duplicated across files (semantic collisions) |
 | 1 | <n> predicates, <n> classes |
@@ -41,8 +41,13 @@
 > hand-maintained — `scripts/generate_validation_report.py` measures it from a
 > real run and stamps the commit SHA, and `--check` fails CI if the committed
 > numbers drift from the corpus. Baselines: 26,791 files / 3,558 errors on the
-> pre-Tier-0 tree (`c96577d50c`), 26,961 / 3,549 after Tier 0, 26,961 / 122
-> after the #702 validator repair.
+> pre-Tier-0 tree (`c96577d50c`), 26,961 / 3,549 after Tier 0, and 26,961 /
+> 122-123 after the #702 validator repair. The total moves by one because the
+> `older than at least one canonical source file` rule counts filesystem
+> mtimes, not content: regenerating a T-Box artifact makes it newer than the
+> aggregates embedding it, and a fresh checkout assigns mtimes in arbitrary
+> order. That rule is excluded from the `--check` comparison and belongs with
+> the stale-aggregate work (#705).
 
 The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
@@ -53,7 +58,9 @@ validates 26,961.
 
 Every error is itemised below with its status. **#702 removed 3,426 of the
 3,549 errors (96.5%) by repairing two stale validator rules** — they were
-validator bugs, not data defects, and they buried the 122 findings that remain.
+validator bugs, not data defects, and they buried the ~122 findings that
+remain (the total moves by one with the mtime-based freshness rule; see the
+Correction note above).
 No new validation error category appeared; all internal object references
 resolve.
 
@@ -380,9 +387,9 @@ re-emitting these dead references.
 ## Known Remaining Issues
 
 - **Validator rules (#702 — repaired):** the two stale rules on
-  `dcterms:subject` and `dcterms:title` are fixed (3,549 → 122 errors). The
+  `dcterms:subject` and `dcterms:title` are fixed (3,549 → ~122 errors). The
   semantic-collision and registry-drift checks still need the aggregate and
-  `estleg:Part` exemptions, so `json-validation` stays red on the remaining 122
+  `estleg:Part` exemptions, so `json-validation` stays red on the remaining ~122
   and is not yet a required check.
 - **T-Box axioms (#709):** `rdfs:range` / `rdfs:domain` on shared predicates
   phantom-type referenced nodes under RDFS inference. #702 narrowed the four
