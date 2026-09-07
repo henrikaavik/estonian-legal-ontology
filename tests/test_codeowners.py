@@ -113,7 +113,14 @@ def _codeowners_modules() -> set[str]:
 
 def _contributing_modules() -> set[str]:
     text = CONTRIBUTING.read_text(encoding="utf-8")
-    return set(SRC_MODULE_RE.findall(text))
+    section = re.search(
+        r"^## Mandatory legal-correctness review[^\n]*\n(.*?)(?=^## |\Z)",
+        text,
+        re.MULTILINE | re.DOTALL,
+    )
+    assert section, "CONTRIBUTING.md must retain the legal-review section"
+    # Setup/helper references elsewhere are not additions to the review list.
+    return set(SRC_MODULE_RE.findall(section.group(1)))
 
 
 def test_safety_critical_modules_are_routed() -> None:

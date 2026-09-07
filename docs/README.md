@@ -5,11 +5,47 @@ This project provides a comprehensive, machine-readable ontology of Estonian and
 
 Canonical headline counts live in the root [README.md](../README.md) and `metadata.jsonld` (`estleg:statistics`). Do not edit those two independently.
 
-**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-04)
+**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-07)
+
+## Project status
+
+Documentation checked against `main` at `0cb9ac91bc` on **2026-09-07**:
+
+- Tier 0 (#677–#690) and the validator/report work (#702) are merged and
+  closed. The remaining Tier 1–3 work is tracked by
+  [epic #676](https://github.com/henrikaavik/estonian-legal-ontology/issues/676).
+- The measured JSON gate reports **26,961 files / 122 errors / 2 warnings**.
+  CURIA and EUR-Lex bucket checks pass; other corpus/SHACL gates still fail.
+  Required merge checks (`lint`, `pytest`, `estleg-mcp tests`) passing is not
+  full-graph conformance. See [VALIDATION_REPORT.md](VALIDATION_REPORT.md).
+- The latest tag remains [v1.0.0](https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v1.0.0),
+  published 2026-08-19. September fixes on `main` are not a new tagged release.
+  Metadata refresh dates do not establish that the legal text was refreshed.
+- The RT public-API migration (#691), current-date freshness checks (#693),
+  reproducible ingest/overlay handling (#697/#704), and release-asset parity
+  (#705) remain open. Heuristic coverage is not measured legal accuracy (#698).
+
+## Documentation map
+
+| Need | Document |
+|---|---|
+| Install, load, and contribute | [Root README](../README.md), [CONTRIBUTING.md](../CONTRIBUTING.md) |
+| Load surfaces and producer layout | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Python and SPARQL examples | [API_GUIDE.md](API_GUIDE.md) |
+| MCP tools and deployment configuration | [MCP README](../mcp_server/README.md) |
+| Classes, properties, and literal shapes | [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) |
+| Release procedure and validation evidence | [RELEASE.md](RELEASE.md), [VALIDATION_REPORT.md](VALIDATION_REPORT.md) |
+| Rights and personal-data handling | [DATA_RIGHTS.md](DATA_RIGHTS.md), [DATA_PROTECTION.md](DATA_PROTECTION.md) |
+| Estonian overview | [HTML overview](eesti-oigusontoloogia-ulevaade.html) |
+| Historical review and roadmap rationale | [September review](PUBLIC_SECTOR_REVIEW_2026-09.md) |
+
+Historical reviews, worksheets, and `superpowers/` plans record their original
+trees and measurements. They are not current operating instructions or live
+issue-status lists.
 
 ## Enacted Laws (1,122 total)
 
-All laws from [Riigi Teataja](https://www.riigiteataja.ee) have been mapped, including:
+The indexed corpus contains laws sourced from [Riigi Teataja](https://www.riigiteataja.ee), including:
 
 ### Civil Law (7)
 1. Tsiviilseadustiku üldosa seadus (TsÜS) - General Part of Civil Code
@@ -164,7 +200,7 @@ Courts: Court of Justice (17,720), General Court (4,036), Civil Service Tribunal
 ## Repository Structure
 ```
 .
-├── krr_outputs/            # JSON-LD corpus (~23k files)
+├── krr_outputs/            # JSON/JSON-LD corpus (~27k files; see headline)
 │   ├── *_peep.json         # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Combined load surface (Git LFS)
 │   ├── INDEX.json          # Enacted law registry
@@ -183,7 +219,9 @@ Courts: Court of Justice (17,720), General Court (4,036), Civil Service Tribunal
 ├── mcp_server/             # estleg-mcp natural-language query layer
 ├── docs/                   # Documentation
 ├── shacl/                  # SHACL validation shapes
-├── scripts/                # Generation and validation scripts
+├── src/estleg/             # Generation, enrichment, and validation implementations
+├── estleg_client/          # Read-only Python client
+├── scripts/                # Compatibility command-line entry points
 ├── tests/                  # Unit + corpus invariant tests
 ├── reviews/                # Law review request files
 ├── .github/workflows/      # CI pipeline
@@ -194,7 +232,9 @@ Courts: Court of Justice (17,720), General Court (4,036), Civil Service Tribunal
 https://github.com/henrikaavik/estonian-legal-ontology
 
 ## Contribution Guidelines
-Please submit pull requests with improvements. Ensure all JSON-LD files pass validation:
+Please submit pull requests with improvements. Follow
+[CONTRIBUTING.md](../CONTRIBUTING.md) for required checks and how to report
+existing corpus failures. Release validation checks include:
 - Valid JSON syntax
 - Consistent @context
 - No duplicate @id values within files

@@ -1,5 +1,11 @@
 # Estonian Regulations Integration Plan
 
+> **Historical implementation plan (May 2026).** The phases and measurements
+> below record that rollout. Layer 2c subsequently merged in #250. The legacy
+> RT API examples below are not current refresh instructions: #691 tracks
+> migration to the new API. See the [current refresh guidance](../README.md#refreshing-data)
+> and [validation report](VALIDATION_REPORT.md).
+
 > **Status (2026-05-01):** Phase 1 implemented and merged. 3,792 state-level
 > regulations are generated under `krr_outputs/regulations/riik/`. Cross-
 > reference, inverse-reference, deontic, and temporal pipelines now treat
@@ -93,7 +99,7 @@ citations (`<law> § 6 lg 3 p 2 ja § 22 lg 1 p 34` style references the
 v1 parser missed) — see PR #99 commits `b6614e75` (code) and
 `6d9e533f` (corpus).
 
-**Gate B umbrella status:** 2/3 sub-PRs merged (Layer 2a + Layer 2b).
+**Gate B status at the 2026-05-04 checkpoint:** 2/3 sub-PRs merged (Layer 2a + Layer 2b).
 Layer 2c (sanctions, competence, court-provision-links) is the
 remaining piece.
 

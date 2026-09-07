@@ -1,19 +1,19 @@
 {
   "generated": "2026-06-01T00:00:00+00:00",
-  "ontology_version": "0.11.0",
+  "ontology_version": "1.0.0",
   "population": {
     "indexed_laws": 1122,
-    "law_files_loaded": 1152,
-    "provisions": 39082
+    "law_files_loaded": 1157,
+    "provisions": 39545
   },
   "vertical_coverage_laws": {
     "sanctions": {
-      "laws_with": 203,
-      "pct": 18.1
+      "laws_with": 239,
+      "pct": 21.3
     },
     "competentAuthority": {
-      "laws_with": 623,
-      "pct": 55.5
+      "laws_with": 560,
+      "pct": 49.9
     },
     "interpretedBy": {
       "laws_with": 84,
@@ -30,16 +30,16 @@
   },
   "provision_coverage": {
     "estleg:targetGroup": {
-      "count": 27146,
-      "pct": 69.5
+      "count": 26759,
+      "pct": 67.7
     },
     "estleg:normativeType": {
-      "count": 13969,
-      "pct": 35.7
+      "count": 16558,
+      "pct": 41.9
     },
     "estleg:competentAuthority": {
-      "count": 7766,
-      "pct": 19.9
+      "count": 8585,
+      "pct": 21.7
     }
   },
   "point_in_time": {
@@ -50,27 +50,27 @@
     "version_sidecar_pct": 65.7
   },
   "crossref_edge_resolution": {
-    "note": "Of citation EDGES that exist, the fraction resolving to a node defined in the indexed corpus (validates the #561/#630 closure work). This is edge precision, NOT extraction recall — citations present in text that never became an edge are not counted here.",
-    "edges": 28207,
-    "resolved_in_corpus": 28207,
+    "note": "Of citation EDGES that exist, the fraction resolving to a node defined in the indexed corpus (validates the #561/#630 closure work). This measures reference integrity, not semantic precision or extraction recall — citations present in text that never became an edge are not counted here.",
+    "edges": 35671,
+    "resolved_in_corpus": 35671,
     "pct": 100.0
   },
   "inline_sanctions": {
     "sanction_node_definitions_in_peeps": 0,
-    "hasSanction_edges": 2455,
+    "hasSanction_edges": 7145,
     "inline": false
   },
   "vertical_cooccurrence": {
     "note": "'verticals present' counts an edge being present (referenced), not the answer being inline-retrievable — see retrievability_gap.",
     "histogram": {
       "0": 378,
-      "1": 118,
-      "2": 369,
-      "3": 164,
-      "4": 67,
-      "5": 26
+      "1": 183,
+      "2": 278,
+      "3": 181,
+      "4": 73,
+      "5": 29
     },
-    "laws_with_all_verticals_referenced": 26,
+    "laws_with_all_verticals_referenced": 29,
     "most_complete_laws": [
       {
         "law": "ariseadustik",
@@ -107,6 +107,17 @@
       },
       {
         "law": "elektroonilise_side_seadus",
+        "verticals": [
+          "competentAuthority",
+          "euDirective",
+          "interpretedBy",
+          "pointInTime",
+          "sanctions"
+        ],
+        "score": 5
+      },
+      {
+        "law": "finantsinspektsiooni_seadus",
         "verticals": [
           "competentAuthority",
           "euDirective",
@@ -170,23 +181,12 @@
           "sanctions"
         ],
         "score": 5
-      },
-      {
-        "law": "kindlustustegevuse_seadus",
-        "verticals": [
-          "competentAuthority",
-          "euDirective",
-          "interpretedBy",
-          "pointInTime",
-          "sanctions"
-        ],
-        "score": 5
       }
     ]
   },
   "retrievability_gap": {
     "note": "The #617 finding, refined. The verticals are present as EDGES on many laws, and on the full load surface (combined + sidecars) most resolve: sanctions are merged into combined as overlay nodes (#561) and act-level temporalStatus is now derived where version data exists (#617). The residual gap is per-PEEP self-containment — a single *_peep.json file still does not carry its sanction definitions inline (they live in the sanctions/ sidecar). The consumable answer surface is combined, not the individual peep.",
-    "laws_all_verticals_referenced": 26,
+    "laws_all_verticals_referenced": 29,
     "sanction_definitions_inline_in_peeps": 0,
     "act_temporalStatus_known_pct": 65.6
   }

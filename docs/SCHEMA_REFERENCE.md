@@ -50,14 +50,14 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 ### Properties
 
 #### Enacted Law Properties
-* `rdfs:label`: The title or heading of the provision (Estonian plain string, `xsd:string`, no language tag). Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
-* `estleg:summary`: Free-text summary of the provision (Estonian plain string, `xsd:string`, no language tag; SHACL constrains it with `sh:datatype xsd:string`). Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
+* `rdfs:label`: The title or heading of the provision. Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
+* `estleg:summary`: Free-text summary of the provision. Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
 
-> **Note:** Instance-node labels and summaries are Estonian-only and carry no language tag — `FILTER(lang(?x) = "en")` returns no rows. Bilingual (Estonian/English) labelling is a possible future goal; it is not part of the current corpus and is not enforced by SHACL or CI.
+> **Literal types:** Both properties accept plain `xsd:string` and language-tagged `rdf:langString` values. Existing peeps commonly use plain Estonian strings; new generators use `@et`. English translations are not guaranteed. See the language-tag policy above; use `STR(?label)` when matching across both representations.
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
 * `estleg:references`: Defines cross-references to other legal provisions or laws. Typed sub-properties (`estleg:repeals`, `estleg:isLegalBasisFor`, `estleg:exceptionTo`, `estleg:derogatesFrom`) are emitted when the Estonian verb governing the citation is clear (issue #513); untyped `references` remains so existing queries still work.
 * `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
-* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge. Declared in `controlled_vocabulary.jsonld` as `owl:ObjectProperty` + `owl:FunctionalProperty` (domain `LegalProvision` ∪ `Chapter`, range `Act`): a provision belongs to at most one act (issue #522). ABox values stay IRI links; `scripts/check_tbox_consistency.py` flags a node with two distinct `partOfAct` IRIs or a list-valued `temporalStatus` that is both `inForce` and `repealed`. Dataset nodes (`krr_outputs/void.ttl`, `metadata.jsonld`, and future `combined_ontology.jsonld` headers) carry `estleg:consistencyChecked true` (`xsd:boolean`) as that checker stamp — not an owlrl run over the 265 MB combined graph. T-Box individuals `estleg:TemporalStatus_InForce` `owl:disjointWith` `estleg:TemporalStatus_Repealed`; `estleg:temporalStatus` remains a `DatatypeProperty` whose ABox tokens are `inForce` / `repealed` / `unknown`.
+* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge. Declared in `controlled_vocabulary.jsonld` as `owl:ObjectProperty` + `owl:FunctionalProperty` (domain `LegalProvision` ∪ `Chapter`, range `Act`): a provision belongs to at most one act (issue #522). ABox values stay IRI links; `scripts/check_tbox_consistency.py` flags a node with two distinct `partOfAct` IRIs or a list-valued `temporalStatus` that is both `inForce` and `repealed`. Dataset nodes (`krr_outputs/void.ttl`, `metadata.jsonld`, and `combined_ontology.jsonld` headers) carry `estleg:consistencyChecked true` (`xsd:boolean`) as that checker stamp. `validate_all.py` now runs the T-Box consistency and act-only temporal checks (#702); the stamp alone is not proof that every gate passes. T-Box individuals `estleg:TemporalStatus_InForce` `owl:disjointWith` `estleg:TemporalStatus_Repealed`; `estleg:temporalStatus` remains a `DatatypeProperty` whose ABox tokens are `inForce` / `repealed` / `unknown`.
 * `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed), **not** `eli:date_publication`, and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
 * `estleg:officialEnglishText`: Optional IRI of the official English Riigi Teataja consolidation (`https://www.riigiteataja.ee/en/eli/{tolkeSeosId}`). `owl:ObjectProperty`, `rdfs:subPropertyOf rdfs:seeAlso`, domain `Act` (issue #510). Derived from the RT public metadata field `tolkeSeosId` — **not** from the current Estonian `/akt/{id}.xml` globaalID, which is a different consolidation. Acts with no published English translation omit the property. The Estonian XML stays on `dcterms:source`.
 * `estleg:isRatificationShell`: `xsd:boolean` on treaty/accession *statutes*. These nodes are the Estonian ratifying act (often a one-section shell), **not** the treaty body. RT publishes treaty texts under the separate *välislepingud* register, which this corpus does not ingest (issue #528). `INDEX.json` `stubKind=treaty` is the same distinction for catalog consumers.
@@ -136,11 +136,12 @@ kept sole/succession legacy roots) lives in
   },
   "@graph": [
     {
-      "@id": "estleg:PS_Par_8",
-      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_PS"],
+      "@id": "estleg:eesti_vabariigi_pohiseadus_Par_8",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
       "estleg:paragrahv": "§ 8",
       "rdfs:label": "§ 8 Kodakondsus",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:partOfAct": {"@id": "estleg:eesti_vabariigi_pohiseadus_Map"},
       "estleg:summary": "Iga lapsel, kelle vanematest üks on Eesti kodanik, on õigus Eesti kodakondsusele sünni järgi."
     }
   ]
@@ -151,13 +152,9 @@ kept sole/succession legacy roots) lives in
 > referenced `schema:name`, `schema:text`, and `schema:isPartOf`. The
 > current generators DO NOT emit those predicates, and the SHACL
 > shapes do not constrain them. Use `rdfs:label` for titles and
-> `estleg:summary` for textual content. The migration plan for the
-> `metadata.jsonld` description-prose vs hard counts (608/637/11,059)
-> is tracked in #162: the hard numbers should move into a structured
-> `estleg:statistics` block and the descriptions should become
-> qualitative. That metadata change is out of this PR's scope; the
-> note here serves as a forward-pointer so future readers know the
-> drift is intentional, not undocumented.
+> `estleg:summary` for textual content. Catalogue counts now live in
+> `metadata.jsonld`'s structured `estleg:statistics` block, checked against
+> corpus discovery by `validate_all.py`. See [project status](README.md#project-status).
 
 #### Law Generation Resume State
 
@@ -376,9 +373,9 @@ alternatives, and they carry **different kinds of value**:
 
 | Property | Type | Carries | Stability |
 |----------|------|---------|-----------|
-| `dcterms:source` | IRI object `{"@id": "https://..."}` | The **canonical, resolvable source IRI/URL** for the concrete source record (e.g. the Riigi Teataja act XML at `https://www.riigiteataja.ee/akt/<globalId>.xml`, an EUR-Lex CELEX URL, an EIS document URL, a riigikohus.ee decision URL). Reserved for IRI objects only — never a bare string. Enforced by `validate_source_provenance` in `validate_all.py`. | Canonical; new data SHOULD emit this whenever an authoritative IRI exists. |
-| `owl:sameAs` | IRI object `{"@id": "https://..."}` | The same source IRI as `dcterms:source` **when that URL identifies the act text itself** (i.e. it is not merely "about" the act but *is* the act). Optional; only emitted for sources that are the canonical text. | Stable. |
-| `dcterms:title` | language-tagged string (or plain string) | The **canonical source title** of the act/document as published (e.g. `"Karistusseadustik"@et`). This is the preferred field for a clean, structured title. | Stable; preferred for titles. |
+| `dcterms:source` | IRI object `{"@id": "https://..."}` | Source record/document URL, such as RT XML, an EUR-Lex CELEX page, an EIS document, or a court decision. Reserved for IRI objects only — never a bare string. `validate_source_provenance` checks the stored shape, not live URL availability. Legacy RT XML links still require migration (#691). | Canonical; new data SHOULD emit this whenever an authoritative IRI exists. |
+| `owl:sameAs` | IRI object `{"@id": "https://..."}` | Identity link to the same legal entity in another identifier system. A source document is not automatically the same entity. Act nodes must not use RT `*.xml` document URLs here; `validate_act_xml_sameas` enforces that distinction (#447). | Optional; source documents belong in `dcterms:source`. |
+| `dcterms:title` | string literal or non-empty array of string literals | The **canonical source title** of the act/document as published (e.g. `"Karistusseadustik"@et`). Plain strings and language-tagged value objects are accepted; bilingual arrays are supported. IRI objects, numeric values, and empty arrays are rejected by the JSON validator (#702). | Stable; preferred for titles. |
 | `dc:source` | plain string (or array of plain strings) | **Legacy — the human-readable source descriptor.** Depending on the document type this is the RT/source citation string, the act title, or the originating-database name (e.g. `"Karistusseadustik"`, `"Riigi Teataja XML"`, `"Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee"`, `"Riigikohus – rikos.rik.ee"`, `"EUR-Lex – eur-lex.europa.eu"`). It is **semantically overloaded by design** — it is whatever a human would read as "the source" for that document type. Multi-valued arrays of strings are permitted and are preserved losslessly (issue #159); a single-element array is collapsed back to a scalar by `fix_all_issues.normalize_dc_source`. Typing is enforced by `validate_dc_source` in `validate_all.py`. | **Stable but legacy.** New data SHOULD ALSO emit `dcterms:source` (IRI) and/or `dcterms:title` (structured title) where an authoritative value exists. `dc:source` is **not to be removed** — consumers rely on it as the human-readable fallback. |
 | `estleg:contentStatus` | string | `structuredBody`, `noStructuredBody`, `controlledVocabulary`, or a more specific documented status. (Not a provenance field per se, but emitted alongside the above on act nodes.) | Stable. |
 
@@ -809,6 +806,19 @@ The citation graph is still a single flat `estleg:references` / `estleg:referenc
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
 | `dcterms:subject` | Act | IRI | Optional act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. When present, SHACL expects a EuroVoc IRI. |
+
+The JSON validator requires an array for act subjects. A Chapter may instead
+carry a single subject IRI pointing to its topic cluster (#702). EuroVoc's
+default write target is the [separate overlay](EUROVOC_OVERLAY.md); older
+peeps can also retain subject assertions.
+
+### Shared EU and court properties
+
+`estleg:celexNumber`, `estleg:eurLexLink`, `estleg:documentDate`, and
+`estleg:ecliIdentifier` have `rdfs:domain owl:Thing` in the controlled
+vocabulary and combined graph (#702). These properties are shared across
+legislation and court decisions; using them must not infer the wrong subject
+class. `estleg:decisionDate` retains its `estleg:CourtDecision` domain.
 
 ### Temporal Properties
 | Property | Domain | Range | Description |
