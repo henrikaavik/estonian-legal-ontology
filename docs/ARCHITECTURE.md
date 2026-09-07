@@ -42,7 +42,7 @@ is declined.
 | Surface | What you load | Use for |
 |---|---|---|
 | Combined-only | `krr_outputs/combined_ontology.jsonld` | Law graph + overlay nodes + typed stubs. **No** provision-version text (`hasVersion` is stripped). |
-| Full public RDF | combined + `PUBLIC_LOAD_SUBDIRS` (`eelnoud`, `riigikohus`, `kohtud` (sample, `estleg:isSampleData`), `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`, `provision_versions`, `annotations`, `harmonisation`, `regulations`) + `data/ehak/` | Full bodies, point-in-time, KOV provisions. Seadusloome / Jena path. |
+| Full public RDF | combined + `PUBLIC_LOAD_SUBDIRS` (`eelnoud`, `riigikohus`, `kohtud` (sample, `estleg:isSampleData`), `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`, `provision_versions`, `annotations`, `harmonisation`, `regulations`) + `data/ehak/historical_municipalities.jsonld` | Full bodies, point-in-time, KOV provisions. Seadusloome / Jena path. |
 | Retrieval projection | `krr_outputs/retrieval/` JSONL (derived, not SHACL) | RAG / untruncated § text as of a date. |
 
 Combined is **closed via stubs** (`estleg:isStubNode`). Class queries on
@@ -86,7 +86,7 @@ are a documented two-surface policy, not a bug.
 
 | Path | Loads | Audience |
 |---|---|---|
-| MCP (`mcp_server/`) | Per-file peeps + sidecars. Never combined / LFS. | Chat / IDE. Live: `https://estleg.sixtyfour.ee/mcp` |
+| MCP (`mcp_server/`) | Per-file peeps + sidecars. Never the flagship combined graph. | Chat / IDE. Configured endpoint: `https://estleg.sixtyfour.ee/mcp`; deployment revision must be checked separately. |
 | Seadusloome SPARQL | Full public RDF, `inference=none` | Product site |
 | Retrieval JSONL | Flattened provision+version+act | RAG |
 

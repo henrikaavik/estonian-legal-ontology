@@ -50,7 +50,7 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 ### Properties
 
 #### Enacted Law Properties
-* `rdfs:label`: The title or heading of the provision. Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
+* `rdfs:label`: The title or heading of the provision. Replaces the legacy `schema:name`; current generators emit `rdfs:label`.
 * `estleg:summary`: Free-text summary of the provision. Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
 
 > **Literal types:** Both properties accept plain `xsd:string` and language-tagged `rdf:langString` values. Existing peeps commonly use plain Estonian strings; new generators use `@et`. English translations are not guaranteed. See the language-tag policy above; use `STR(?label)` when matching across both representations.
