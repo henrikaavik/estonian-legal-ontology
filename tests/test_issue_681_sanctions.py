@@ -168,6 +168,14 @@ class TestKarS141Rape:
             ("pecuniary_punishment", "", "500 daily rates"),
         }
 
+    def test_unrelated_company_mention_does_not_change_penalty_recipient(self):
+        text = "Teo eest karistatakse rahalise karistusega."
+        # Karistusregistri seadus § 24 also says a legal person has ceased
+        # to exist. Nominative case alone does not identify an offender.
+        assert extract_sanctions(text + " Juriidiline isik on lõppenud.") == (
+            extract_sanctions(text)
+        )
+
 
 class TestKarS400Competition:
     """§ 400 exercises both remaining defects at once: the dedup bug that

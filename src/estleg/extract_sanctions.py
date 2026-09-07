@@ -683,7 +683,9 @@ def extract_pecuniary(text: str) -> list[dict]:
             # KarS §§ 384–385 also mention a legal-person debtor, but punish
             # its board members; that genitive phrase is not a corporate fine.
             corporate = re.search(
-                r"\bjuriidili(?:ne\s+isik\b|st\s+isikut\b|sele\s+isikule\b"
+                r"\b(?:toime\s+pannud|pani\s+toime|toimepanija\s+on|süüdlane\s+on)"
+                r"\s+juriidiline\s+isik\b"
+                r"|\bjuriidili(?:st\s+isikut\b|sele\s+isikule\b"
                 r"|se\s+isiku\s+poolt\b)", chunk, re.IGNORECASE,
             )
             if not corporate:
