@@ -927,7 +927,8 @@ class TestPecuniaryStatutoryDefaultFlag:
     from statutory-default values.
     """
 
-    def test_pecuniary_default_flag_lands(self, tmp_path, monkeypatch):
+    @pytest.mark.parametrize("corporate", [False, True])
+    def test_pecuniary_default_flag_lands(self, tmp_path, monkeypatch, corporate):
         from estleg import estleg_common
         from estleg import extract_sanctions as mod
 
@@ -948,7 +949,8 @@ class TestPecuniaryStatutoryDefaultFlag:
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
                  "estleg:paragrahv": "§ 1",
                  "estleg:summary":
-                     "Selle eest karistatakse rahalise karistusega."},
+                     ("Juriidilist isikut karistatakse rahalise karistusega."
+                      if corporate else "Selle eest karistatakse rahalise karistusega.")},
             ],
         }), encoding="utf-8")
 
@@ -971,6 +973,11 @@ class TestPecuniaryStatutoryDefaultFlag:
         ]
         assert pecu_nodes, "expected at least one pecuniary sanction node"
         for n in pecu_nodes:
+            if corporate:
+                assert "estleg:isStatutoryDefault" not in n
+                assert "estleg:maxPenalty" not in n
+                assert "estleg:maxPenaltyAmount" not in n
+                continue
             assert n.get("estleg:isStatutoryDefault") is True, (
                 f"pecuniary statutory-default emission must carry "
                 f"the flag; got {n}"

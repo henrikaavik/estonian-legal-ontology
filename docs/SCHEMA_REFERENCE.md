@@ -669,6 +669,11 @@ property do not themselves impose these sanctions.
 `percent_of_turnover` expresses a fine as a share of a legal person's
 turnover (KarS § 400 lg 3/lg 4); being relative, it carries no currency.
 
+The `500 daily_rates` statutory fallback applies only to natural-person
+pecuniary punishment. Corporate clauses that state no amount retain the
+sanction type without `maxPenalty`, structured amounts, or `isStatutoryDefault`;
+a corporate ceiling cannot be inferred from the natural-person rule.
+
 Statutory ceilings are enforced by SHACL: imprisonment in years ≤ 20
 (KarS § 45), arrest in days ≤ 30 (KarS § 48), daily rates ≤ 500
 (KarS § 44). The minimum/maximum ordering check compares numeric amounts

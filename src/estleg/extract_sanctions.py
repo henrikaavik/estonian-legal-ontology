@@ -422,12 +422,6 @@ def _ordered_year_range(lo_raw: int, hi_raw: int) -> tuple[str, str]:
     return f"{lo} years", f"{hi} years"
 
 
-# A sentencing formula. Estonian offence provisions state their penalty
-# as "…, – karistatakse <sanction>". Its presence separates a provision
-# that IMPOSES a penalty from one that merely describes the sanction
-# system (issue #681).
-_SENTENCING_FORMULA_RE = re.compile(r"\bkaristatakse\b", re.IGNORECASE)
-
 # An imprisonment range or ceiling may be followed by an alternative life
 # term before the noun: "kaheksa- kuni kahekümneaastase või eluaegse
 # vangistusega" (KarS § 114). Without tolerating that interposed clause
@@ -539,9 +533,9 @@ def extract_imprisonment(text: str) -> list[dict]:
     # This is defence in depth behind the general-part file skip in
     # ``main()``; it also protects any other act that refers to life
     # imprisonment without imposing it.
-    if (
-        _SENTENCING_FORMULA_RE.search(text)
-        and re.search(r"eluaeg\w*\s+vangistus", text, re.IGNORECASE)
+    if re.search(
+        r"\bkaristatakse\b[^.;!?()]*\beluaeg\w*\s+vangistus",
+        text, re.IGNORECASE,
     ):
         _add("life")
 
@@ -673,23 +667,33 @@ def extract_pecuniary(text: str) -> list[dict]:
     with ``is_statutory_default=True`` so downstream consumers can
     distinguish "extracted from text" from "statutory fallback".
     """
-    turnover = extract_turnover_percentage(text)
-    if turnover:
-        # Issue #681: the lõige states its own ceiling as a share of the
-        # legal person's turnover, so the KarS § 44 natural-person
-        # fallback is not merely redundant here — it is wrong. KarS § 400
-        # lg 3/lg 4 were stamped "500 daily rates" instead of the 5 % /
-        # 5–10 % turnover fines the text actually imposes. Extraction runs
-        # per lõige (see ``extract_sanctions``), so a sibling lõige that
-        # says a bare "rahalise karistusega" still gets the default.
-        return turnover
     results: list[dict] = []
-    if re.search(r"rahalise?\s+karistus", text, re.IGNORECASE):
-        results.append({
-            "sanction_type": "pecuniary_punishment",
-            "max_penalty": "500 daily rates",
-            "is_statutory_default": True,
-        })
+    # Resolve the subject within each subsection even when called on the
+    # entire section. A corporate penalty (e.g. KarS § 141 lg 3) never takes
+    # the natural-person daily-rate default. Retain the sanction without an
+    # amount when that subsection states none; deriving a corporate ceiling
+    # would require the applicable version of the general-part rules.
+    for chunk in split_loiked(text):
+        turnover = extract_turnover_percentage(chunk)
+        if turnover:
+            records = turnover
+        elif re.search(r"rahalise?\s+karistus", chunk, re.IGNORECASE):
+            record = {"sanction_type": "pecuniary_punishment"}
+            # The legal person must be the offender/recipient of punishment.
+            # KarS §§ 384–385 also mention a legal-person debtor, but punish
+            # its board members; that genitive phrase is not a corporate fine.
+            corporate = re.search(
+                r"\bjuriidili(?:ne\s+isik\b|st\s+isikut\b|sele\s+isikule\b"
+                r"|se\s+isiku\s+poolt\b)", chunk, re.IGNORECASE,
+            )
+            if not corporate:
+                record.update(max_penalty="500 daily rates", is_statutory_default=True)
+            records = [record]
+        else:
+            records = []
+        for record in records:
+            if record not in results:
+                results.append(record)
     return results
 
 
@@ -1081,10 +1085,11 @@ ALL_EXTRACTORS = [
 ]
 
 
-# A lõige (subsection) marker: "(1)", "(2)", … at the head of a
-# subsection. Bounded to two digits so a bare parenthesised year
+# A lõige (subsection) marker: "(1)", "(1¹)", "(2)", … at the head of a
+# subsection, including amendments inserted between numbered subsections.
+# Bounded to two base digits so a bare parenthesised year
 # ("(2003)") or a long numeric citation cannot masquerade as one.
-_LOIGE_MARKER_RE = re.compile(r"(\(\d{1,2}\))")
+_LOIGE_MARKER_RE = re.compile(r"(\([0-9]{1,2}[⁰¹²³⁴⁵⁶⁷⁸⁹]*\))")
 
 
 def split_loiked(text: str) -> list[str]:
@@ -1178,8 +1183,9 @@ def _try_extract_penalty_from_summary(text: str, sanction_type: str) -> str | No
             if val is not None:
                 return f"{val} years"
     elif sanction_type == "pecuniary_punishment":
-        # Statutory max per KarS § 44: 500 daily rates
-        return "500 daily rates"
+        # extract_pecuniary already applies the natural-person default where
+        # appropriate. An amount-free corporate record must stay amount-free.
+        return None
     elif sanction_type == "fine":
         m = re.search(r"(\d[\d  ]*)\s*(?:eurot|trahviühiku)", text, re.IGNORECASE)
         if m:

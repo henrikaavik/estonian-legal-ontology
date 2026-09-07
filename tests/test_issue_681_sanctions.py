@@ -139,17 +139,34 @@ class TestKarS141Rape:
         assert _keyset(extract_sanctions(KARS_141)) == {
             ("imprisonment", "1 years", "5 years"),
             ("imprisonment", "6 years", "15 years"),
-            ("pecuniary_punishment", "", "500 daily rates"),
+            ("pecuniary_punishment", "", ""),
         }
 
-    def test_bare_pecuniary_keeps_the_statutory_default_flag(self):
+    def test_corporate_pecuniary_has_no_natural_person_default(self):
         record = next(
             r for r in extract_sanctions(KARS_141)
             if r["sanction_type"] == "pecuniary_punishment"
         )
-        # lg 3 says only "rahalise karistusega", so 500 daily rates is
-        # the KarS § 44 ceiling, not a value read out of the text.
-        assert record.get("is_statutory_default") is True
+        # lg 3 punishes a legal person. Its text supplies no amount and the
+        # natural-person ceiling does not apply to that subject.
+        assert "max_penalty" not in record
+        assert "is_statutory_default" not in record
+
+    def test_corporate_and_natural_person_subsections_remain_distinct(self):
+        text = "(1) Teo eest karistatakse rahalise karistusega. " + split_loiked(KARS_141)[2]
+        assert _keyset(extract_sanctions(text)) == {
+            ("pecuniary_punishment", "", "500 daily rates"),
+            ("pecuniary_punishment", "", ""),
+        }
+
+    def test_company_board_member_keeps_natural_person_default(self):
+        text = (
+            "Juriidilisest isikust võlgniku juhatuse liikme poolt vara "
+            "varjamise eest karistatakse rahalise karistusega."
+        )
+        assert _keyset(extract_sanctions(text)) == {
+            ("pecuniary_punishment", "", "500 daily rates"),
+        }
 
 
 class TestKarS400Competition:
@@ -242,6 +259,14 @@ class TestLifeImprisonmentRequiresSentencingFormula:
             "karistus, mida kohaldatakse kohtu poolt."
         )
         assert extract_imprisonment(text) == []
+
+    @pytest.mark.parametrize("separator", [". ", "; ", " (2) "])
+    def test_separate_penalty_clause_does_not_license_a_life_mention(self, separator):
+        text = (
+            "Teo eest karistatakse rahatrahviga" + separator
+            + "Eluaegse vangistusega karistatud isiku andmed säilitatakse."
+        )
+        assert not any(s.get("max_penalty") == "life" for s in extract_sanctions(text))
 
     def test_sentencing_formula_still_emits_life(self):
         text = "Tapmise eest –karistatakse eluaegse vangistusega."
@@ -625,6 +650,18 @@ class TestSplitLoiked:
     def test_parenthesised_year_is_not_a_loige_marker(self):
         text = "Viide seadusele (2003) ja karistus kuni üheaastase vangistusega."
         assert split_loiked(text) == [text]
+
+    def test_inserted_subsection_does_not_hide_the_natural_person_penalty(self):
+        natural = "(1) Teo eest karistatakse rahalise karistusega. "
+        corporate = (
+            "(1¹) Juriidilist isikut karistatakse rahalise karistusega "
+            "kuni 5 protsenti juriidilise isiku käibest."
+        )
+        assert split_loiked(natural + corporate) == [natural, corporate]
+        assert _keyset(extract_sanctions(natural + corporate)) == {
+            ("pecuniary_punishment", "", "500 daily rates"),
+            ("pecuniary_punishment", "", "5 % of turnover"),
+        }
 
     def test_output_order_is_deterministic(self):
         assert [
