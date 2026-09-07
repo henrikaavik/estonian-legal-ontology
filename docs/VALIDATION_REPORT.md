@@ -1,23 +1,48 @@
 # Validation Report
 
-**Last updated:** 2026-09-07 (reviewed Tier 0 tree of epic #676)
+**Last updated:** 2026-09-07 (Tier 1 #702 — validator repaired)
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
+<!-- BEGIN GENERATED: validation-summary -->
+
+*Measured by `scripts/generate_validation_report.py` at commit `049ff362cbc9b428bd4a00bb9121e24d8e5e6b2b`, 2026-09-07 11:24 UTC. Do not hand-edit this block.*
+
 | Metric | Count |
-|--------|-------|
+|--------|------:|
 | Files validated | 26,961 |
-| Errors | 3,546 |
+| Errors | 122 |
 | Warnings | 2 |
-| Result | **FAILED** — see [What the errors are](#what-the-errors-are) |
+| Result | **FAILED** |
+
+| Count | Error category |
+|------:|----------------|
+| 38 | Duplicate @id within file |
+| 34 | indexed file has <n> act-level nodes (expected <n>) |
+| 27 | @type is not an array |
+| 5 | skos:exactMatch is not an array |
+| 5 | indexed file has no provision nodes and no registry exception |
+| 3 | missing <n> source graph IDs |
+| 3 | older than at least one canonical source file |
+| 2 | <n> shared provision IDs drift from source on SHACL-sensitive fields |
+| 1 | <n> @id values are duplicated across files (semantic collisions) |
+| 1 | <n> predicates, <n> classes |
+| 1 | <n> act-level temporal properties on non-Act nodes |
+| 1 | <n> stub node(s) carry disallowed estleg: object refs — a stub may carry only the shaped closure edges ['<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>'] |
+| 1 | <n> stale extra IDs not present in any canonical source |
+
+<!-- END GENERATED: validation-summary -->
 
 > **Correction.** Until 2026-09-05 this report said `Errors: 0 / PASSED`
 > against a run dated 2026-05-26. That statement was false for every committed
 > tree since at least v1.0.0 (2026-08-19): the `json-validation` CI job has
-> been red on every `main` run in that period. The numbers above come from a
-> local rerun of the same command on 2026-09-07; the baseline on the pre-Tier-0
-> tree (`c96577d50c`) was 26,791 files / 3,558 errors / 2 warnings.
+> been red on every `main` run in that period. The table above is no longer
+> hand-maintained — `scripts/generate_validation_report.py` measures it from a
+> real run and stamps the commit SHA, and `--check` fails CI if the committed
+> numbers drift from the corpus. Baselines: 26,791 files / 3,558 errors on the
+> pre-Tier-0 tree (`c96577d50c`), 26,961 / 3,549 after Tier 0, 26,961 / 122
+> after the #702 validator repair.
 
 The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
@@ -26,16 +51,24 @@ validates 26,961.
 
 ## What the errors are
 
-Every error is itemised below with its status. **3,426 of the 3,546 (96.6%)
-are stale validator rules, not data defects**; fixing the validator is Tier 1
-ticket #702. The 2026-09-07 review rerun still reports 3,546 errors and
-66,108 cross-file ID collisions. No new validation error category appeared;
-all 3,621,971 internal object references resolve.
+Every error is itemised below with its status. **#702 removed 3,426 of the
+3,549 errors (96.5%) by repairing two stale validator rules** — they were
+validator bugs, not data defects, and they buried the 122 findings that remain.
+No new validation error category appeared; all internal object references
+resolve.
+
+The two repaired rules were:
+
+- `dcterms:subject is not an array` (3,021) — an `estleg:Chapter` maps to
+  exactly one cluster and carries a single IRI object by design. The rule now
+  exempts that type only; Acts and Parts still require an array.
+- `dcterms:title must be a string or language-tagged value` (405) — bilingual
+  title lists are the #437 language-tag policy. The rule now accepts a list of
+  language-tagged values, while still rejecting empty lists and non-literal
+  members.
 
 | Count | Finding | Status |
 |---:|---|---|
-| 3,021 | `dcterms:subject is not an array` on Chapter nodes | Stale rule: chapters carry a single Cluster object by design since the concept layer landed. **#702.** |
-| 405 | `dcterms:title must be a string or language-tagged value` on act roots | Stale rule: bilingual title lists are the #437 language-tag policy. **#702.** |
 | 38 | Duplicate `@id` within file (37 in `analytical_overlay.jsonld`, 1 in `annotations/oiguskantsler_seisukohad.jsonld`) | Pre-existing; **#702 / #709**. |
 | 34 + 5 | `INDEX.json` registry drift on the split codes (AÕS, KarS, TsMS, TsÜS, VÕS): `_osaN` files report 0 act-level nodes; `_map` files have no provision nodes and no registry exception | Pre-existing; the multipart-code registry rules predate `estleg:Part` roots. **#702 / #704.** |
 | 27 | `@type is not an array` (26 controlled-vocabulary nodes, 1 in `analytical_overlay.jsonld`) | Pre-existing T-Box shape issue. **#709.** |
@@ -43,7 +76,7 @@ all 3,621,971 internal object references resolve.
 | 3 + 1 + 1 | `eurlex` / `curia` / `eelnoud` combined files: missing source graph IDs in each, one stale CURIA ID, and the draft aggregate older than a canonical source | Stale LFS aggregates that were not rebuilt with the sources. **#705.** |
 | 2 | `combined_ontology.jsonld` and `eelnoud_combined.jsonld`: shared provision IDs drift from source on SHACL-sensitive fields (21,802 in the flagship file after the Tier 0 rebuild, 24,792 before; most on split-code `_OsaN` nodes and on classifier fields) | Aggregate-artifact drift; pre-existing (24,792 on the pre-Tier-0 tree). **#705.** |
 | 1 | `combined_ontology.jsonld`: 2,409 stub nodes carry `estleg:` object refs outside the shaped closure edges | Pre-existing builder finding. **#416 / #705.** |
-| 1 | 66,108 `@id` values duplicated across files | The semantic-collision check counts the same node in an aggregate and in its source; the rule needs the aggregate exemption. **#702.** |
+| 1 | `@id` values duplicated across files | The semantic-collision check counts the same node in an aggregate and in its source; the rule still needs the aggregate exemption. **#702 follow-up.** |
 | 1 | Undefined reusable vocabulary terms: 5 predicates | Pre-existing. **#709.** |
 | 1 | 78 act-level temporal properties on non-Act nodes | Pre-existing. **#702.** |
 
@@ -346,14 +379,17 @@ re-emitting these dead references.
 
 ## Known Remaining Issues
 
-- **Validator rules (#702):** 3,426 of the 3,546 `validate_all.py` errors are
-  the two stale rules on `dcterms:subject` and `dcterms:title`; the
-  semantic-collision and registry-drift checks also need the aggregate and
-  `estleg:Part` exemptions. Until #702 lands, `json-validation` stays red and
-  cannot be a required check.
+- **Validator rules (#702 — repaired):** the two stale rules on
+  `dcterms:subject` and `dcterms:title` are fixed (3,549 → 122 errors). The
+  semantic-collision and registry-drift checks still need the aggregate and
+  `estleg:Part` exemptions, so `json-validation` stays red on the remaining 122
+  and is not yet a required check.
 - **T-Box axioms (#709):** `rdfs:range` / `rdfs:domain` on shared predicates
-  phantom-type referenced nodes under RDFS inference, which is what keeps the
-  `sidecars` and `riigikohus` SHACL buckets red.
+  phantom-type referenced nodes under RDFS inference. #702 narrowed the four
+  axioms behind the `curia` bucket — `celexNumber`, `eurLexLink` and
+  `documentDate` (domain `EULegislation`) and `ecliIdentifier` (domain
+  `CourtDecision`) — which took that bucket from 66,740 violations to **0**.
+  The same pattern on `rdfs:range` still keeps `sidecars` and `riigikohus` red.
 - **Aggregates (#705):** `eurlex` / `curia` / `eelnoud` combined files and
   `combined_ontology.{nt,nq,ttl}` are stale relative to their sources; the
   Seadusloome gate fails at graph closure on `eurlex_combined.jsonld`.

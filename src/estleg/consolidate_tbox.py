@@ -542,7 +542,8 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
         "estleg:EUDocumentType",
     ),
     "estleg:euInstitution": ("estleg:EULegislation", "estleg:EUInstitution"),
-    "estleg:celexNumber": ("estleg:EULegislation", "xsd:string"),
+    # Domain is owl:Thing on purpose: see OVERWRITE_DOMAIN (#702).
+    "estleg:celexNumber": ("owl:Thing", "xsd:string"),
     "estleg:eliIdentifier": ("owl:Thing", "xsd:string"),
     "estleg:eurLexLink": ("owl:Thing", "xsd:anyURI"),
     "estleg:documentDate": ("owl:Thing", "xsd:date"),
@@ -570,6 +571,17 @@ OVERWRITE_DOMAIN: dict[str, str] = {
     "estleg:institution": "owl:Thing",
     "estleg:grantedBy": "owl:Thing",
     "estleg:enforcedAtLevel": "owl:Thing",
+    # Shared by EULegislation and EUCourtDecision. An EULegislation domain
+    # phantom-types all 22,290 EU court decisions as legislation under RDFS
+    # inference, after which the EULegislation shape demands euDocumentType
+    # they were never meant to carry (#702; review finding E3).
+    "estleg:celexNumber": "owl:Thing",
+    "estleg:eurLexLink": "owl:Thing",
+    "estleg:documentDate": "owl:Thing",
+    # Shared by CourtDecision and EUCourtDecision. A CourtDecision domain
+    # phantom-types EU court decisions as Estonian ones, which then fail
+    # caseType / caseNumber -- they carry euCaseNumber instead (#702).
+    "estleg:ecliIdentifier": "owl:Thing",
 }
 OVERWRITE_RANGE: dict[str, str] = {
     "estleg:amendsLaw": "rdfs:Resource",
@@ -845,6 +857,29 @@ def dump_jsonld(path: Path, doc: dict) -> None:
 
 
 def write_unresolved(nodes: list[dict], path: Path = UNRESOLVED_PATH) -> None:
+    """Write the relocated placeholders, preserving any already on disk (#702).
+
+    ``nodes`` holds only the individuals this run moved out of the T-Box, so a
+    second run computes an empty list. Truncating on that empty list destroyed
+    the placeholders an earlier run had relocated, which left every reference
+    that depended on them dangling (59 `hasSection` edges on `VOS_Part11`
+    alone). Merging by ``@id`` makes the builder idempotent; genuinely stale
+    entries are caught by validate_all's "stale extra IDs" check rather than by
+    silent deletion here.
+    """
+    merged: dict[str, dict] = {}
+    if path.is_file():
+        try:
+            existing = load_jsonld(path)
+        except (OSError, ValueError):
+            existing = {}
+        for node in graph_nodes(existing):
+            if isinstance(node.get("@id"), str):
+                merged[node["@id"]] = node
+    for node in nodes:
+        if isinstance(node.get("@id"), str):
+            merged[node["@id"]] = node
+    nodes = [merged[key] for key in sorted(merged)]
     dump_jsonld(
         path,
         {

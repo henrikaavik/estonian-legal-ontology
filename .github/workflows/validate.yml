@@ -269,6 +269,21 @@ jobs:
       - name: Validate JSON-LD hygiene
         run: python3 scripts/validate_all.py
 
+      # #702: docs/VALIDATION_REPORT.md and docs/DUPLICATE_IDS_REPORT.md used
+      # to be maintained by hand, and both drifted into publishing false
+      # statements (a "PASSED / 0 errors" conformance claim against a red gate,
+      # and a duplicate report generated from a pytest fixture). Both are now
+      # generated; these checks fail the build if the committed numbers no
+      # longer match the corpus. `if: always()` so the Tier 1 error backlog
+      # above does not mask a stale report.
+      - name: Validation report is current
+        if: always()
+        run: python3 scripts/generate_validation_report.py --check
+
+      - name: Duplicate-@id report is current
+        if: always()
+        run: python3 scripts/generate_duplicate_ids_report.py --check
+
       # #591: the default `pytest` job runs without git-LFS, so the
       # `corpus`-marked real-artifact tests (combined-graph closure, version
       # non-overlap, peep-count invariants) are auto-skipped there. This job

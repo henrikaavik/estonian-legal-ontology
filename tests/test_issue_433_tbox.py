@@ -184,3 +184,51 @@ def test_peeps_no_longer_use_junk_predicates() -> None:
     assert '"estleg:note"' not in text
     doc = json.loads(text)
     assert any("dcterms:abstract" in node for node in doc["@graph"])
+
+
+class TestUnresolvedPlaceholdersSurviveRerun:
+    """#702: `write_unresolved` used to truncate on a second run.
+
+    `build_consolidated_graph` returns only the individuals *this* run moved
+    out of the T-Box. Once they have been relocated, a re-run yields an empty
+    list, and the old truncating write erased the placeholders an earlier run
+    had produced. That silently broke every reference pointing at them --
+    59 `estleg:hasSection` edges on `estleg:VOS_Part11` alone.
+    """
+
+    def test_rerun_with_no_moves_preserves_existing_placeholders(self, tmp_path):
+        from estleg.consolidate_tbox import write_unresolved
+
+        path = tmp_path / "unresolved_references.jsonld"
+        write_unresolved(
+            [
+                {
+                    "@id": "estleg:VOS_Par_276",
+                    "@type": ["owl:NamedIndividual",
+                              "estleg:UnresolvedReferencePlaceholder"],
+                }
+            ],
+            path,
+        )
+        assert len(json.loads(path.read_text())["@graph"]) == 1
+
+        # A second consolidation moves nothing; the placeholder must survive.
+        write_unresolved([], path)
+        graph = json.loads(path.read_text())["@graph"]
+        assert [node["@id"] for node in graph] == ["estleg:VOS_Par_276"]
+
+    def test_new_placeholders_merge_with_existing(self, tmp_path):
+        from estleg.consolidate_tbox import write_unresolved
+
+        path = tmp_path / "unresolved_references.jsonld"
+        write_unresolved([{"@id": "estleg:A"}], path)
+        write_unresolved([{"@id": "estleg:B"}], path)
+        graph = json.loads(path.read_text())["@graph"]
+        assert [node["@id"] for node in graph] == ["estleg:A", "estleg:B"]
+
+    def test_committed_placeholders_are_intact(self):
+        """The 61 relocated placeholders must stay in the committed artifact."""
+        graph = json.loads(UNRESOLVED_PATH.read_text(encoding="utf-8"))["@graph"]
+        ids = {node["@id"] for node in graph}
+        assert "estleg:VOS_Par_276" in ids
+        assert len(ids) == 61
