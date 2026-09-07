@@ -39,6 +39,14 @@ pytestmark = pytest.mark.skipif(
 
 # A law that is reliably present and richly populated in the committed corpus.
 KARS = "KarS"
+# KarS's act node records NO dcterms:source -- only an owl:sameAs Wikidata IRI
+# -- so since #680 (rt_url is host-guarded to riigiteataja.ee) its rt_url is
+# "" rather than a wikidata.org URL. Restoring that source is a producer-side
+# ticket; until then, assertions that need a REAL riigiteataja citation use a
+# law that has one: PS (põhiseadus) for act/provision citations, LS
+# (liiklusseadus) where sanctions are also needed.
+PS = "PS"
+LS = "LS"
 RT_PREFIX = "https://www.riigiteataja.ee/akt/"
 
 
@@ -61,7 +69,7 @@ def _data_rows(items: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------------------
 # 1. search_laws -> {name, title, abbrev, rt_url, status}
 # ---------------------------------------------------------------------------
-SEARCH_FIELDS = {"name", "title", "abbrev", "rt_url", "status"}
+SEARCH_FIELDS = {"name", "title", "abbrev", "rt_url", "external_ids", "status"}
 
 
 def test_search_laws_contract_fields_and_recall() -> None:
@@ -72,9 +80,24 @@ def test_search_laws_contract_fields_and_recall() -> None:
     # Recall: the Penal Code itself must be in the results.
     names = {h["name"] for h in hits}
     assert "karistusseadustik" in names
-    # A real citation accompanies a resolvable law.
+    # #680: KarS has no riigiteataja source, so its citation is honestly
+    # empty -- never a foreign host -- and the Wikidata IRI it does carry is
+    # surfaced separately.
     kars = next(h for h in hits if h["name"] == "karistusseadustik")
-    assert kars["rt_url"].startswith(RT_PREFIX)
+    assert kars["rt_url"] == ""
+    assert kars["external_ids"]["wikidata"].startswith("http://www.wikidata.org/")
+
+
+def test_search_laws_citation_is_riigiteataja_or_empty() -> None:
+    # A law that does have a dcterms:source still yields a real citation...
+    hits = server.search_laws("põhiseadus", limit=20)
+    ps = next(h for h in hits if h["name"] == "eesti_vabariigi_pohiseadus")
+    assert ps["rt_url"].startswith(RT_PREFIX)
+    # ...and no row on any search ever carries another host (#680).
+    for needle in ("seadus", "karistus", "liiklus"):
+        for row in server.search_laws(needle, limit=50):
+            assert row["rt_url"] == "" or row["rt_url"].startswith(RT_PREFIX)
+            assert "riigiteataja.ee" not in "".join(row["external_ids"].values())
 
 
 def test_search_laws_excludes_owl_tbox_modules() -> None:
@@ -107,6 +130,7 @@ GET_LAW_FIELDS = {
     "consolidated_as_of",
     "ontology_version",
     "rt_url",
+    "external_ids",
     "eurovoc_subjects",
     "num_provisions",
     "num_chapters",
@@ -117,12 +141,25 @@ def test_get_law_contract_fields() -> None:
     law = server.get_law(KARS)
     _assert_fields(law, GET_LAW_FIELDS)
     assert law["abbrev"] == "KarS"
-    assert law["rt_url"].startswith(RT_PREFIX)
+    # #680: no riigiteataja source on the KarS act node -> "" (not wikidata).
+    assert law["rt_url"] == ""
+    assert law["external_ids"] == {
+        "wikidata": "http://www.wikidata.org/entity/Q2352833"
+    }
     assert isinstance(law["eurovoc_subjects"], list)
     assert law["num_provisions"] > 10
     assert isinstance(law["num_chapters"], int)
     assert law["ontology_version"] == data.ontology_version()
     assert law["ontology_version"]
+
+
+def test_get_law_citation_is_riigiteataja_for_a_sourced_act() -> None:
+    # The other side of #680: an act that records a dcterms:source still gets
+    # its real riigiteataja citation, with the .xml tail stripped.
+    law = server.get_law(PS)
+    _assert_fields(law, GET_LAW_FIELDS)
+    assert law["rt_url"].startswith(RT_PREFIX)
+    assert not law["rt_url"].endswith(".xml")
 
 
 def test_get_law_not_found_returns_note() -> None:
@@ -175,6 +212,15 @@ def test_get_provision_contract_fields() -> None:
     _assert_fields(prov, GET_PROVISION_FIELDS)
     assert "13" in prov["paragrahv"]
     assert prov["legal_text"]
+    # #680: KarS's act node has no riigiteataja source, so the § citation is
+    # honestly empty rather than a wikidata.org URL.
+    assert prov["rt_url"] == ""
+
+
+def test_get_provision_citation_is_riigiteataja_for_a_sourced_act() -> None:
+    prov = server.get_provision(PS, "§ 1")
+    _assert_fields(prov, GET_PROVISION_FIELDS)
+    assert prov["legal_text"]
     assert prov["rt_url"].startswith(RT_PREFIX)
 
 
@@ -217,8 +263,17 @@ def test_references_of_contract_fields() -> None:
     assert items, "KarS references something"
     for it in items[:10]:
         _assert_fields(it, REFERENCE_FIELDS)
-    # Cross-law targets carry a riigiteataja URL when resolvable.
-    assert any(it["rt_url"].startswith(RT_PREFIX) for it in items)
+    # #680: every KarS outgoing reference points back into KarS, whose act
+    # node records no riigiteataja source, so those citations are honestly
+    # empty -- never a foreign host.
+    assert all(it["rt_url"] == "" for it in items)
+    # A law whose references DO cross into sourced acts still carries real
+    # riigiteataja URLs, and nothing else.
+    cross = server.references_of(LS)
+    assert any(it["rt_url"].startswith(RT_PREFIX) for it in cross)
+    assert all(
+        it["rt_url"] == "" or it["rt_url"].startswith(RT_PREFIX) for it in cross
+    )
 
 
 def test_reference_tools_unknown_law_returns_note() -> None:
@@ -284,14 +339,28 @@ SANCTION_FIELDS = {"provision", "sanction_type", "penalty", "rt_url"}
 
 
 def test_sanctions_for_law_contract_fields_and_citation() -> None:
-    items = server.sanctions_for_law(KARS)
-    assert items, "KarS defines sanctions in the corpus"
+    # LS (liiklusseadus) both defines sanctions and records a real
+    # dcterms:source, so it exercises the citation the tool promises. KarS
+    # cannot: see test_sanctions_for_law_citation_empty_without_rt_source.
+    items = server.sanctions_for_law(LS)
+    assert items, "LS defines sanctions in the corpus"
     for it in items[:20]:
         _assert_fields(it, SANCTION_FIELDS)
         # Every sanction carries the act's riigiteataja URL.
         assert it["rt_url"].startswith(RT_PREFIX)
     # The penalty string is populated for at least some sanctions.
     assert any(it["penalty"] for it in items)
+
+
+def test_sanctions_for_law_citation_empty_without_rt_source() -> None:
+    # #680: KarS's act node records no riigiteataja source, so its sanctions
+    # carry "" rather than the wikidata.org URL the old fallback leaked. The
+    # sanctions themselves are unaffected.
+    items = server.sanctions_for_law(KARS)
+    assert items, "KarS defines sanctions in the corpus"
+    for it in items[:20]:
+        _assert_fields(it, SANCTION_FIELDS)
+        assert it["rt_url"] == ""
 
 
 def test_sanctions_for_law_unknown_returns_note() -> None:
@@ -400,7 +469,9 @@ def test_get_provision_as_of_selects_historical_redaction() -> None:
     _assert_fields(at_newer, AS_OF_FIELDS)
     assert at_newer["redaction_id"] == newer["redaction_id"]
     assert at_newer["valid_from"] == newer["valid_from"]
-    assert at_newer["rt_url"].startswith(RT_PREFIX)
+    # The point-in-time path carries the same act citation as the current one
+    # (whatever it is -- KarS's is "" until its dcterms:source is restored).
+    assert at_newer["rt_url"] == server.get_provision(KARS, "§ 13")["rt_url"]
 
     # On the day BEFORE the newer redaction began, the older one is in force --
     # the corpus stores valid_to as the inclusive last in-force day, so the
