@@ -23,7 +23,9 @@ EXCLUDE = (
     ":(exclude)docs/NAMESPACE_MIGRATION.md",
     ":(exclude)data/namespace_migration_state.json",
     # The migration machinery itself legitimately references the legacy host.
-    ":(exclude)scripts/migrate_namespace.py",
+    # ``scripts/migrate_namespace.py`` is a runpy shim and holds no legacy
+    # string; the REPLACEMENTS table lives in the src/ module (#687).
+    ":(exclude)src/estleg/migrate_namespace.py",
     ":(exclude)tests/test_no_legacy_namespace.py",
     # The w3id/ redirect config exists to point the retired host at the new IRI.
     ":(exclude)w3id",
@@ -43,6 +45,6 @@ def test_no_legacy_data_riik_ee_namespace():
     assert not hits, (
         "Legacy data.riik.ee namespace still present in:\n  "
         + "\n  ".join(hits)
-        + "\n(re-run scripts/migrate_namespace.py --apply; see "
+        + "\n(re-run python3 -m estleg.migrate_namespace --apply; see "
         "docs/NAMESPACE_MIGRATION.md)"
     )

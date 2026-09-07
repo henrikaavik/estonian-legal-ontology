@@ -57,15 +57,22 @@ Changes that touch any of the following **require sign-off from a legal-domain
 reviewer** in addition to the normal code review, and are routed to the
 [CODEOWNERS](.github/CODEOWNERS) for that path:
 
-- **Sanctions** — `krr_outputs/sanctions/**`, `scripts/extract_sanctions.py`
-- **Deontic classification** (`estleg:normativeType`) — `scripts/classify_deontic.py`
+- **Sanctions** — `krr_outputs/sanctions/**`, `src/estleg/extract_sanctions.py`
+- **Deontic classification** (`estleg:normativeType`) — `src/estleg/classify_deontic.py`
 - **Court decisions** — `krr_outputs/riigikohus/**`, `krr_outputs/curia/**`,
-  `scripts/generate_court_decisions.py`, `scripts/extract_court_provision_links.py`
+  `src/estleg/generate_court_decisions.py`,
+  `src/estleg/generate_eu_court_decisions.py`,
+  `src/estleg/extract_court_provision_links.py`
 - **Transposition & harmonisation** — `krr_outputs/reports/transposition_mapping.json`,
-  `krr_outputs/harmonisation/**`, `scripts/generate_transposition_mapping.py`,
-  `scripts/generate_harmonisation_links.py`
+  `krr_outputs/harmonisation/**`, `src/estleg/generate_transposition_mapping.py`,
+  `src/estleg/generate_harmonisation_links.py`
 - **Institutional competence** — `krr_outputs/institutions/**`,
-  `scripts/extract_institutional_competence.py`
+  `src/estleg/extract_institutional_competence.py`
+
+The extraction heuristics live in `src/estleg/`; the same-named entry points in
+`scripts/` are thin `runpy` shims, so CODEOWNERS routes the modules rather than
+the shims. `tests/test_codeowners.py` enforces that CODEOWNERS and this list
+stay in sync.
 
 When a PR changes these paths, flag it in the pull-request template, label it
 `needs-legal-review`, and do not merge until the legal-domain reviewer has

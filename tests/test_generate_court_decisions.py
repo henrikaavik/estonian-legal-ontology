@@ -296,7 +296,12 @@ class TestParseHtmlTable:
         assert row["decision_type"] == "Kohtuotsus"
         assert row["summary"] == "Keskkonnaameti kassatsioonkaebus"
         assert row["object_id"] == "4567890"
-        assert row["link"].startswith("https://rikos.rik.ee")
+        # CodeQL py/incomplete-url-substring-sanitization: a prefix match on
+        # a URL is satisfied by e.g. https://rikos.rik.ee.evil.test, so assert
+        # on the parsed host and scheme instead of the raw string.
+        parsed = urllib.parse.urlsplit(row["link"])
+        assert parsed.scheme == "https"
+        assert parsed.netloc == "rikos.rik.ee"
 
     def test_row_with_wrong_column_count_is_skipped(
         self, caplog: pytest.LogCaptureFixture

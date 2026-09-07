@@ -1538,17 +1538,32 @@ class TestRealMigrationStateFile:
             assert _SHA256_HEX_RE.match(state["last_applied_corpus_hash"])
 
     def test_apply_command_recognises_already_migrated_when_in_sync(
-        self, capsys: pytest.CaptureFixture[str]
+        self,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+        capsys: pytest.CaptureFixture[str],
     ) -> None:
         """``migrate_uris.py apply`` no-ops on an already-migrated corpus.
 
         Runs the real ``apply_cmd`` against the real repo. When the committed
         ``migration_state.json`` matches the live registry+corpus the command
-        prints the "already migrated" no-op message and returns. If they have
-        drifted (unrelated scanned-file edits since the backfill) the command
-        instead refuses with a "Corpus has changed"/"missing hash stamps"
-        error — both are correct, neither mutates files, so we accept either.
+        prints the "already migrated" no-op message and returns.
+
+        When they have drifted (unrelated scanned-file edits since the
+        backfill) ``apply_cmd`` falls through to the dry-run report instead.
+        #679: that report lives at the *gitignored* ``data/uri_migration_report
+        .json``, so the assertion used to depend on whether the developer
+        happened to have that untracked file — present, and the command refused
+        on a hash mismatch; absent, and it refused with "Dry-run report not
+        found" and the test failed. Point ``REPORT_PATH`` at ``tmp_path`` and
+        stage a report that is hash-bound to the *current* registry but carries
+        a deliberately stale corpus hash, so the refusal is the same on every
+        machine and still exercises the hash-binding guard. Neither branch
+        mutates the corpus.
         """
+        report_path = tmp_path / "uri_migration_report.json"
+        monkeypatch.setattr(migrate_uris, "REPORT_PATH", report_path)
+
         state = load_migration_state()
         assert state is not None
         in_sync = _already_migrated_per_state(state)
@@ -1558,11 +1573,24 @@ class TestRealMigrationStateFile:
             assert "already migrated per migration_state.json" in out
             assert "nothing to do" in out
         else:
+            assert migrate_uris.REGISTRY_PATH.exists()
+            report_path.write_text(
+                json.dumps(
+                    {
+                        "registry_hash": compute_registry_hash(
+                            migrate_uris.REGISTRY_PATH
+                        ),
+                        # No real corpus can hash to all zeroes, so apply_cmd
+                        # is guaranteed to stop at the corpus-hash guard.
+                        "corpus_hash": "0" * 64,
+                        "collisions": [],
+                        "renames": {},
+                        "files_affected": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
             with pytest.raises(SystemExit):
                 migrate_uris.apply_cmd()
             out = capsys.readouterr().out
-            assert (
-                "Corpus has changed" in out
-                or "missing hash stamps" in out
-                or "different migration is already recorded" in out
-            )
+            assert "Corpus has changed" in out

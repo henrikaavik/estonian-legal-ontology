@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg.ensure_multipart_map_peeps import map_iri_for_osa
 from estleg.extract_draft_impact import prefer_act_iri
 
@@ -36,6 +38,8 @@ def test_map_iri_for_osa_known_prefixes():
     assert map_iri_for_osa("estleg:KARIST_2_Par_1") is None
 
 
+# LFS artifact; runs in the json-validation `-m corpus` job (#679)
+@pytest.mark.corpus
 def test_committed_annotations_do_not_target_osa_parts():
     import re
 

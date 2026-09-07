@@ -71,8 +71,10 @@ Resulting IRI shapes: term `https://w3id.org/estleg/<Local>`, ontology
 
 ## How
 
-### 1. `scripts/migrate_namespace.py`
-Reuses the host-agnostic scaffolding from `scripts/migrate_uris.py`
+### 1. `python3 -m estleg.migrate_namespace`
+The implementation lives in `src/estleg/migrate_namespace.py`; `scripts/migrate_namespace.py`
+is a still-working compatibility shim, but the module is the canonical operator entry
+point. Reuses the host-agnostic scaffolding from `scripts/migrate_uris.py`
 (`_atomic_write_text` `:110`; the dry-run→report→apply skeleton) and the
 value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
 - Drives off **`git ls-files`** (recursive — covers `data/**`, `metadata.jsonld`,
@@ -81,6 +83,7 @@ value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
   checkout never half-swaps an un-pulled LFS file — see step 3).
 - **Excludes** from the swap: `CHANGELOG.md`, `docs/superpowers/plans/**`, **and
   this file `docs/NAMESPACE_MIGRATION.md`** (all hold legacy strings on purpose).
+- Dry-run is the default; apply with `python3 -m estleg.migrate_namespace --apply`.
 - Applies the three replacements to file **content** (byte-preserving). Dry-run
   is the default; `--apply` writes; idempotent (re-run = 0 changes).
 - **Separate state/report:** writes its sentinel + dry-run report to

@@ -25,7 +25,10 @@ http = [
 ]
 dev = [
   "pytest>=8,<10",
-  "ruff>=0.6,<1",
+  # Pinned to the 0.16 line (#677): the ``[tool.ruff.lint] select`` below
+  # holds the ruleset steady, this holds the minor version steady so a
+  # 0.17 default-behaviour change cannot land unreviewed via CI.
+  "ruff>=0.16,<0.17",
 ]
 
 [project.scripts]
@@ -40,3 +43,8 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
+# Same pin as the root pyproject: keep the historical pycodestyle+pyflakes
+# default so a newer ruff's broadened implicit ruleset can't fail CI (#677).
+select = ["E4", "E7", "E9", "F"]

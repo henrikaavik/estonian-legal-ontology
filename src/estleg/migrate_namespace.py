@@ -47,17 +47,29 @@ REPLACEMENTS: tuple[tuple[str, str], ...] = (
 NEW_NAMESPACE = "https://w3id.org/estleg/"
 LEGACY_HOST = "data.riik.ee"
 
-# Excluded: historical records + this migration's own doc/state (all legitimately
-# hold the legacy string; they are also excluded from the data.riik.ee==0 guard).
+# Excluded: historical records, this migration's own doc/state/machinery, and
+# the w3id/ redirect config (all legitimately hold the legacy string).
+#
+# This tuple MUST stay in lockstep with the two other exclusion lists — the
+# ``EXCLUDE`` pathspecs in ``tests/test_no_legacy_namespace.py`` and the
+# "No legacy data.riik.ee namespace" step in ``.github/workflows/validate.yml``
+# — because those two are the data.riik.ee==0 guard for exactly the files this
+# swap leaves alone. ``tests/test_namespace_exclusion_parity.py`` asserts the
+# three sets are equal (#687).
 EXCLUDE_PREFIXES: tuple[str, ...] = (
     "CHANGELOG.md",
     "docs/superpowers/plans/",
     "docs/NAMESPACE_MIGRATION.md",
     "data/namespace_migration_state.json",
     # The migration machinery itself legitimately references the legacy host.
-    "scripts/migrate_namespace.py",
+    # This module holds REPLACEMENTS + LEGACY_HOST, so an --apply run that did
+    # not skip it would rewrite its own source and disarm every later run.
+    # ``scripts/migrate_namespace.py`` is a runpy shim with no legacy string.
+    "src/estleg/migrate_namespace.py",
     "tests/test_no_legacy_namespace.py",
     ".github/workflows/validate.yml",
+    # The w3id/ redirect config exists to point the retired host at the new IRI.
+    "w3id/",
 )
 # Regenerated separately (Git-LFS), never string-swapped.
 SKIP_REGENERATED: frozenset[str] = frozenset(

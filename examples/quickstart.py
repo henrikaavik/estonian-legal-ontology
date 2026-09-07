@@ -81,7 +81,11 @@ LIMIT 1
 """
 
 _PAR_IN_IRI = re.compile(r"Par_(\d+(?:_\d+)*)")
-_SECTION_IN_LABEL = re.compile(r"§\s*([\d¹²³⁴⁵⁶⁷⁸⁹0-9]+(?:\s*[¹-⁹])?)")
+# Superscript section suffixes (§ 22¹) are listed one by one: `[¹-⁹]` looks
+# like nine characters but spans U+00B9-U+2079, i.e. 8129 code points, so it
+# matched dashes, quotes and most punctuation too (CodeQL py/overly-large-range).
+# `\d` already covers the plain digits, so the ASCII `0-9` range was redundant.
+_SECTION_IN_LABEL = re.compile(r"§\s*([\d¹²³⁴⁵⁶⁷⁸⁹]+(?:\s*[¹²³⁴⁵⁶⁷⁸⁹])?)")
 _FIRST_NUMBER = re.compile(r"(\d+(?:\.\d+)?)")
 
 

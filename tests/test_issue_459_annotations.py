@@ -6,6 +6,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+import pytest
+
 from estleg.generate_annotations import (
     SIDECAR_PATH,
     classify_annotation_type,
@@ -50,6 +52,8 @@ def _annotation_nodes() -> list[dict]:
     return nodes
 
 
+# LFS artifact; runs in the json-validation `-m corpus` job (#679)
+@pytest.mark.corpus
 def test_committed_sidecar_is_one_node_per_document() -> None:
     nodes = _annotation_nodes()
     assert 3000 <= len(nodes) <= 4500

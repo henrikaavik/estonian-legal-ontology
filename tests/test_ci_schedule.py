@@ -31,3 +31,14 @@ def test_validate_yml_has_integration_dry_run_and_generator_smoke() -> None:
     assert "tests/test_rt_schema_canary.py" in text
     assert "tests/test_generate_all_laws.py" in text
     assert "check_rt_staleness.py" in text
+
+
+def test_corpus_invariants_run_after_hygiene_failure_but_require_lfs() -> None:
+    text = VALIDATE_YML.read_text(encoding="utf-8")
+    job = text.split("  json-validation:\n", 1)[1].split("  semantic-validation:\n", 1)[0]
+    assert "id: corpus-lfs" in job.split("- name: No legacy", 1)[0]
+    step = job.split("- name: Real-corpus pytest invariants", 1)[1]
+    # An explicit status function overrides Actions' implicit success() check;
+    # the LFS prerequisite prevents a pointer-only checkout from running it.
+    assert "if: ${{ !cancelled() && steps.corpus-lfs.outcome == 'success' }}" in step
+    assert "run: python3 -m pytest -q -m corpus" in step
