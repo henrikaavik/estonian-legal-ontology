@@ -64,7 +64,7 @@ Producer modules live in `src/estleg/`; `scripts/` keeps one-release shims.
 The corpus is published as two nested load surfaces — pick the one your query needs:
 
 - **Combined-only surface** — `krr_outputs/combined_ontology.jsonld` loaded alone. A self-contained graph (zero dangling `estleg:` references): all enacted-law nodes, the fully-merged enrichment overlays (sanctions, legal concepts, institutions, annotations, amendments), and the curated TBox. Every cross-corpus entity it references — court decisions, EU acts, drafts, municipal (KOV) regulations, the EHAK municipality registry, and per-provision version history — is present as a **resolvable stub** (label + identifier + the SHACL-required structural edges), *not* its full body. Best for law-centric queries and a quick, single-file load.
-- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `kohtud/`, `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
+- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `kohtud/` (sample, `estleg:isSampleData`), `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
 
 A SPARQL example that joins onto a court/EU/KOV/version body needs the full surface; one that stays within laws + overlays works on combined alone.
 
@@ -551,6 +551,7 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 - Search: `POST https://www.riigiteataja.ee/api/v1/kohtuteave/otsing/kohtulahendid`
 - Individual: `https://www.riigiteataja.ee/kohtulahendid/{objektId}`
 - Operator ingest: `python3 -m estleg.generate_lower_court_decisions --fetch --year 2026 --limit 50 --apply`
+- Committed corpus is one capped search page — a single county-court decision, flagged `estleg:isSampleData` (#689)
 
 **EUR-Lex** (EU legislation):
 - SPARQL endpoint: `https://publications.europa.eu/webapi/rdf/sparql` (open, no auth)
@@ -640,7 +641,7 @@ python3 scripts/generate_similarity_index.py
 │   │   ├── riigikohus_YYYY_peep.json     # Per-year decisions (1993-2026)
 │   │   └── RIIGIKOHUS_INDEX.json         # Court decision registry
 │   ├── kohtud/               # First/second-instance decisions (#525)
-│   │   ├── kohtud_sample_peep.json       # Scoped sample (maakohus / halduskohus / ringkonnakohus)
+│   │   ├── kohtud_sample_peep.json       # One-decision sample (county court; estleg:isSampleData)
 │   │   └── KOHTUD_INDEX.json             # Lower-court ingest index
 │   ├── eurlex/               # EU legislation
 │   │   ├── eurlex_schema.json            # Schema definitions

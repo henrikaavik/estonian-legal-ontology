@@ -56,6 +56,8 @@ from estleg.estleg_common import (
     KNOWN_ABBREVIATIONS,
     allowed_get,
     save_json,
+    screen_personal_data,
+    stamp_personal_data_screening,
 )
 from estleg.estleg_common import (
     sanitize_id as _shared_sanitize_id,
@@ -1225,9 +1227,17 @@ def decision_to_node(
         node["estleg:ecliIdentifier"] = ecli
         _ensure_ecli_see_also(node, ecli)
 
-    # Summary
+    # Summary — #683: screen the scraped abstract for Estonian personal ID
+    # codes BEFORE the 800-char truncation. Truncating first could cut an
+    # isikukood in half and leave a partial digit run that no longer matches
+    # the 11-digit detector, so the order here is load-bearing.
+    summary_masked = 0
     if dec.get("summary"):
-        node["estleg:summary"] = {"@value": dec["summary"][:800], "@language": "et"}
+        summary_text, summary_findings = screen_personal_data(dec["summary"])
+        summary_masked = len(summary_findings)
+        node["estleg:summary"] = {"@value": summary_text[:800], "@language": "et"}
+    else:
+        summary_text = ""
 
     # Link — URL-encoded query string so case_nr containing '#'/'/'/spaces
     # never silently breaks the resulting URL. ``urlencode`` plus
@@ -1261,10 +1271,16 @@ def decision_to_node(
         if judges:
             node["estleg:judge"] = judges
 
-    # Referenced laws
-    refs = detect_referenced_laws(dec.get("summary") or "")
+    # Referenced laws — read off the screened summary so the raw abstract
+    # is not re-consulted after screening.
+    refs = detect_referenced_laws(summary_text)
     if refs:
         node["estleg:referencedLaw"] = refs
+
+    # #683 provenance: every decision node records that it went through
+    # personal-code screening, and how many codes were masked. The full-text
+    # pass adds to this count when it later writes estleg:legalText.
+    stamp_personal_data_screening(node, summary_masked)
 
     return node
 
@@ -1693,12 +1709,16 @@ def enrich_full_text(limit: int = DEFAULT_FULL_TEXT_LIMIT, *, use_cache: bool = 
                 cache_hits += 1
 
             if text:
+                # #683: the scraped detail page is the main carrier of party
+                # isikukoodid — screen before the literal is ever written.
+                text, text_findings = screen_personal_data(text)
                 # Plain Python str → JSON-LD plain string literal, which
                 # expands to ``xsd:string`` (matching the SHACL shape).
                 # NEVER language-tag this — the SHACL ``sh:datatype
                 # xsd:string`` on ``estleg:legalText`` would reject a
                 # ``rdf:langString``.
                 node["estleg:legalText"] = text
+                stamp_personal_data_screening(node, len(text_findings))
                 backfill_rk_identity(node)
                 succeeded += 1
                 modified = True
