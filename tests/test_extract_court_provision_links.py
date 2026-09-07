@@ -3,16 +3,12 @@ from __future__ import annotations
 
 import json
 import shutil
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import _RunCounters
-
-from extract_court_provision_links import (
+from estleg.estleg_common import _RunCounters
+from estleg.extract_court_provision_links import (
     PAT_KOV_ACT,
     PAT_RTIV,
     _expand_par_range,
@@ -26,7 +22,6 @@ from extract_court_provision_links import (
     resolve_citations,
     resolve_kov_citation,
 )
-
 
 # ---------------------------------------------------------------------------
 # Group 1a — expand_two_digit_year
@@ -180,6 +175,26 @@ def test_extract_empty_text() -> None:
     assert extract_citations_from_text(None) == ([], [])
 
 
+def test_vtms_hkms_do_not_resolve_to_tms_kms() -> None:
+    """#350: word boundary + registered keys; VTMS/HKMS must not become TMS/KMS."""
+    state, _ = extract_citations_from_text("kohus kohaldas VTMS § 12")
+    assert [c["law_ref"] for c in state] == ["VTMS"]
+    assert all(c["law_ref"] != "TMS" for c in state)
+
+    state, _ = extract_citations_from_text("viidatud HKMS § 3")
+    assert [c["law_ref"] for c in state] == ["HKMS"]
+    assert all(c["law_ref"] != "KMS" for c in state)
+
+    # Unknown prefix that merely *ends* in TMS: \\b must refuse the suffix.
+    state, _ = extract_citations_from_text("XTMS § 4")
+    assert state == []
+
+    state, _ = extract_citations_from_text("TMS § 8")
+    assert any(c["law_ref"] == "TMS" and c["paragraphs"] == ["8"] for c in state)
+    state, _ = extract_citations_from_text("KMS § 1")
+    assert any(c["law_ref"] == "KMS" and c["paragraphs"] == ["1"] for c in state)
+
+
 # ---------------------------------------------------------------------------
 # Group 2 — build_kov_act_index
 # ---------------------------------------------------------------------------
@@ -195,14 +210,14 @@ def test_build_kov_index_resolves_viimsi(monkeypatch) -> None:
         return iter(fixture_files)
 
     monkeypatch.setattr(
-        "extract_court_provision_links.iter_peep_files", fake_iter
+        "estleg.extract_court_provision_links.iter_peep_files", fake_iter
     )
 
     counters = _RunCounters()
     kov_index, collisions, iri_to_file, known_issuers = build_kov_act_index(counters)
 
     assert ("viimsi vallavolikogu", 2009, "22") in kov_index
-    assert kov_index[("viimsi vallavolikogu", 2009, "22")] == "estleg:Reg_1024484_Map_2026"
+    assert kov_index[("viimsi vallavolikogu", 2009, "22")] == "estleg:Reg_1024484_Map"
     assert "viimsi vallavolikogu" in known_issuers
     assert collisions == set()
 
@@ -214,7 +229,7 @@ def test_build_kov_index_detects_collisions(monkeypatch) -> None:
         return iter(fixture_files)
 
     monkeypatch.setattr(
-        "extract_court_provision_links.iter_peep_files", fake_iter
+        "estleg.extract_court_provision_links.iter_peep_files", fake_iter
     )
 
     counters = _RunCounters()
@@ -224,8 +239,8 @@ def test_build_kov_index_detects_collisions(monkeypatch) -> None:
     assert key in collisions
     assert key not in kov_index            # removed on collision detection
     # Both files still recorded in iri_to_file (cleanup pass needs them)
-    assert "estleg:Reg_2000001_Map_2026" in iri_to_file
-    assert "estleg:Reg_2000002_Map_2026" in iri_to_file
+    assert "estleg:Reg_2000001_Map" in iri_to_file
+    assert "estleg:Reg_2000002_Map" in iri_to_file
 
 
 # ---------------------------------------------------------------------------
@@ -243,26 +258,26 @@ def _kc(municipality="Viimsi ", body="Vallavolikogu", date="13.10.2009", num="22
 
 
 def test_resolver_strict_match() -> None:
-    idx = {("viimsi vallavolikogu", 2009, "22"): "estleg:Reg_1024484_Map_2026"}
-    iri, reason = resolve_kov_citation(_kc(), idx, set(), {"viimsi vallavolikogu"})
-    assert iri == "estleg:Reg_1024484_Map_2026"
+    idx = {("viimsi vallavolikogu", 2009, "22"): "estleg:Reg_1024484_Map"}
+    iri, reason, _issuer = resolve_kov_citation(_kc(), idx, set(), {"viimsi vallavolikogu"})
+    assert iri == "estleg:Reg_1024484_Map"
     assert reason is None
 
 
 def test_resolver_year_plus_one_alternate() -> None:
     # Index has 2010 entry; query year 2009 resolves via +1 alternate.
-    idx = {("tallinna linnavalitsus", 2010, "75"): "estleg:Reg_1014396_Map_2026"}
-    iri, reason = resolve_kov_citation(
+    idx = {("tallinna linnavalitsus", 2010, "75"): "estleg:Reg_1014396_Map"}
+    iri, reason, _issuer = resolve_kov_citation(
         _kc(municipality="Tallinna ", body="Linnavalitsus", date="14.05.2009", num="75"),
         idx, set(), {"tallinna linnavalitsus"},
     )
-    assert iri == "estleg:Reg_1014396_Map_2026"
+    assert iri == "estleg:Reg_1014396_Map"
     assert reason is None
 
 
 def test_resolver_ambiguous_primary_short_circuits() -> None:
     collisions = {("viimsi vallavolikogu", 2009, "22")}
-    iri, reason = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
     assert iri is None
     assert reason == "ambiguous_key"
 
@@ -270,20 +285,20 @@ def test_resolver_ambiguous_primary_short_circuits() -> None:
 def test_resolver_ambiguous_alternate_short_circuits() -> None:
     # Primary 2009 missing; alternate 2010 collision-tracked.
     collisions = {("viimsi vallavolikogu", 2010, "22")}
-    iri, reason = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
     assert iri is None
     assert reason == "ambiguous_key"
 
 
 def test_resolver_unmatched() -> None:
-    iri, reason = resolve_kov_citation(_kc(), {}, set(), {"viimsi vallavolikogu"})
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, set(), {"viimsi vallavolikogu"})
     assert iri is None
     assert reason == "issuer_year_num_unmatched"
 
 
 def test_resolver_unknown_issuer_short_circuits() -> None:
     # Issuer NOT in known_issuer_norms → unknown_issuer, no index lookup.
-    iri, reason = resolve_kov_citation(_kc(), {}, set(), set())
+    iri, reason, _issuer = resolve_kov_citation(_kc(), {}, set(), set())
     assert iri is None
     assert reason == "unknown_issuer"
 
@@ -329,7 +344,7 @@ def _stage_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
 
 def _run_script_against(krr: Path, monkeypatch, *, enable_kov: bool = True) -> dict:
     """Run main() with the fixture as the active KRR root; return coverage dict."""
-    import extract_court_provision_links as ecpl
+    from estleg import extract_court_provision_links as ecpl
 
     monkeypatch.setattr(ecpl, "KRR_DIR", krr)
     monkeypatch.setattr(ecpl, "RK_DIR", krr / "riigikohus")
@@ -366,7 +381,7 @@ def test_no_kov_flag_skips_kov_resolution(tmp_path, monkeypatch) -> None:
     )
     iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
     assert "estleg:Tsiviilkohtumenetluse_seadustik_Par_208" in iris  # state link kept
-    assert "estleg:Reg_1024484_Map_2026" not in iris                 # KOV link skipped
+    assert "estleg:Reg_1024484_Map" not in iris                 # KOV link skipped
 
     # KOV act file carries no interpretedBy.
     viimsi_doc = json.loads(
@@ -375,7 +390,7 @@ def test_no_kov_flag_skips_kov_resolution(tmp_path, monkeypatch) -> None:
         )
     )
     viimsi_act = next(
-        n for n in viimsi_doc["@graph"] if n["@id"] == "estleg:Reg_1024484_Map_2026"
+        n for n in viimsi_doc["@graph"] if n["@id"] == "estleg:Reg_1024484_Map"
     )
     assert not viimsi_act.get("estleg:interpretedBy")
 
@@ -424,7 +439,7 @@ def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch
         if n["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
     )
     iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
-    assert "estleg:Reg_1024484_Map_2026" in iris
+    assert "estleg:Reg_1024484_Map" in iris
     # State-law TsMS provision regression check.
     assert "estleg:Tsiviilkohtumenetluse_seadustik_Par_208" in iris
 
@@ -434,7 +449,7 @@ def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch
     )
     viimsi_act = next(
         n for n in viimsi_doc["@graph"]
-        if n["@id"] == "estleg:Reg_1024484_Map_2026"
+        if n["@id"] == "estleg:Reg_1024484_Map"
     )
     by = [v["@id"] for v in viimsi_act.get("estleg:interpretedBy", [])]
     assert "estleg:RK_FIXT_VIIMSI_2009" in by
@@ -476,7 +491,7 @@ def test_deprecated_legacy_peep_excluded_from_provision_index(
         "@context": {"estleg": "https://w3id.org/estleg/"},
         "@graph": [
             {
-                "@id": "estleg:Aaa_Map_2026",
+                "@id": "estleg:Aaa_Map",
                 "@type": ["estleg:Act", "estleg:Law"],
                 "owl:deprecated": True,
                 "dcterms:isReplacedBy": {
@@ -573,17 +588,24 @@ def test_shacl_widened_range_validates() -> None:
                 "estleg:caseType": {"@id": "estleg:CaseType_Other"},
                 "estleg:interpretsLaw": [
                     {"@id": "estleg:Some_Provision_Par_5"},
-                    {"@id": "estleg:Reg_1024484_Map_2026"},
+                    {"@id": "estleg:Reg_1024484_Map"},
                 ],
             },
             {
                 "@id": "estleg:Some_Provision_Par_5",
                 "@type": ["estleg:LegalProvision"],
                 "rdfs:label": "Test provision",
+                # LegalProvisionShape now also targets sh:targetClass
+                # LegalProvision (#450), so a typed provision must carry
+                # paragrahv / summary / partOfAct — this fixture is about
+                # the widened interpretsLaw range, not those fields.
+                "estleg:paragrahv": "§ 5",
+                "estleg:summary": "Test provision summary",
+                "estleg:partOfAct": {"@id": "estleg:Reg_1024484_Map"},
                 "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],
             },
             {
-                "@id": "estleg:Reg_1024484_Map_2026",
+                "@id": "estleg:Reg_1024484_Map",
                 "@type": ["estleg:MunicipalRegulation", "estleg:Act"],
                 "rdfs:label": "Viimsi 2009 #22 (test)",
                 # MunicipalRegulationLayer1Shape mandatory fields — provide them
@@ -678,7 +700,7 @@ class TestIssue172BuildKovActIndexContinue:
         the actNumber (validation failure → previously triggered `break`),
         and the SECOND MunicipalRegulation node is valid. Index MUST
         register the second."""
-        from extract_court_provision_links import build_kov_act_index
+        from estleg.extract_court_provision_links import build_kov_act_index
 
         peep = tmp_path / "act_peep.json"
         peep.write_text(json.dumps({
@@ -708,7 +730,7 @@ class TestIssue172BuildKovActIndexContinue:
             return iter([peep])
 
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files", fake_iter,
+            "estleg.extract_court_provision_links.iter_peep_files", fake_iter,
         )
 
         counters = _RunCounters()
@@ -727,7 +749,7 @@ class TestIssue172BuildKovActIndexContinue:
     ):
         """Same scenario but the early node has a malformed year
         (ValueError on int(entry_force[:4])). Must still continue."""
-        from extract_court_provision_links import build_kov_act_index
+        from estleg.extract_court_provision_links import build_kov_act_index
 
         peep = tmp_path / "act_peep.json"
         peep.write_text(json.dumps({
@@ -755,7 +777,7 @@ class TestIssue172BuildKovActIndexContinue:
             return iter([peep])
 
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files", fake_iter,
+            "estleg.extract_court_provision_links.iter_peep_files", fake_iter,
         )
 
         counters = _RunCounters()
@@ -771,7 +793,7 @@ class TestIssue172BuildKovActIndexContinue:
         followed by a valid MunicipalRegulation node — the
         ``if 'estleg:MunicipalRegulation' not in types: continue``
         gate already worked in the original code, but pin it here."""
-        from extract_court_provision_links import build_kov_act_index
+        from estleg.extract_court_provision_links import build_kov_act_index
 
         peep = tmp_path / "act_peep.json"
         peep.write_text(json.dumps({
@@ -799,7 +821,7 @@ class TestIssue172BuildKovActIndexContinue:
             return iter([peep])
 
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files", fake_iter,
+            "estleg.extract_court_provision_links.iter_peep_files", fake_iter,
         )
 
         counters = _RunCounters()
@@ -943,7 +965,7 @@ class TestIssue172PatKovActLeftAnchor:
     def test_resolver_recovers_overcaptured_municipality(self):
         """When PAT_KOV_ACT overcaptures (multiple titlecase words),
         the resolver's trim step still resolves to the right issuer."""
-        from extract_court_provision_links import resolve_kov_citation
+        from estleg.extract_court_provision_links import resolve_kov_citation
         # Synthetic: regex captured "Pärnu Maakohtu Tallinna" but only
         # "tallinna linnavolikogu" is in known_issuer_norms.
         match = {
@@ -953,14 +975,17 @@ class TestIssue172PatKovActLeftAnchor:
             "num": "15",
             "raw_text": "Pärnu Maakohtu Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15",
         }
-        idx = {("tallinna linnavolikogu", 2020, "15"): "estleg:Reg_TLN_15_Map_2026"}
-        iri, reason = resolve_kov_citation(
+        idx = {("tallinna linnavolikogu", 2020, "15"): "estleg:Reg_TLN_15_Map"}
+        iri, reason, _issuer = resolve_kov_citation(
             match, idx, set(), {"tallinna linnavolikogu"},
         )
-        assert iri == "estleg:Reg_TLN_15_Map_2026", (
+        assert iri == "estleg:Reg_TLN_15_Map", (
             f"trim should have recovered the runaway municipality; "
             f"got iri={iri}, reason={reason}"
         )
+        # #389: the returned issuer is the post-trim form, not the
+        # overcaptured "parnu maakohtu tallinna linnavolikogu".
+        assert _issuer == "tallinna linnavolikogu"
 
 
 # ---------------------------------------------------------------------------
@@ -974,7 +999,7 @@ def _write_provision_peep(path: Path, source_act_value) -> None:
         "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
-            {"@id": "estleg:Karistusseadustik_Map_2026",
+            {"@id": "estleg:Karistusseadustik_Map",
              "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
             {"@id": "estleg:Karistusseadustik_Par_121",
              "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -996,7 +1021,7 @@ def test_build_provision_index_handles_value_object_source_act(tmp_path, monkeyp
 
     def run(peep):
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files",
+            "estleg.extract_court_provision_links.iter_peep_files",
             lambda *, include_kov=True: [peep],
         )
         counters = _RunCounters()
@@ -1014,7 +1039,7 @@ def test_build_provision_index_handles_value_object_source_act(tmp_path, monkeyp
 def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch):
     """A court decision whose estleg:summary is a value object yields the
     same interpretsLaw / interpretedBy links as a plain-string summary."""
-    import extract_court_provision_links as ecpl
+    from estleg import extract_court_provision_links as ecpl
 
     abbrev_to_prefix = {"KarS": "Karistusseadustik"}
     prefix_to_provisions = {
@@ -1062,7 +1087,7 @@ def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch)
 
 
 def test_process_court_files_handles_value_object_legal_text(tmp_path, monkeypatch):
-    import extract_court_provision_links as ecpl
+    from estleg import extract_court_provision_links as ecpl
 
     abbrev_to_prefix = {"KarS": "Karistusseadustik"}
     prefix_to_provisions = {
@@ -1124,7 +1149,7 @@ def test_process_court_files_handles_value_object_legal_text(tmp_path, monkeypat
 def test_process_court_files_prefers_legal_text_over_summary(
     tmp_path, monkeypatch
 ):
-    import extract_court_provision_links as ecpl
+    from estleg import extract_court_provision_links as ecpl
 
     abbrev_to_prefix = {"KarS": "Karistusseadustik"}
     prefix_to_provisions = {
@@ -1179,7 +1204,7 @@ def test_process_court_files_prefers_legal_text_over_summary(
 def test_process_court_files_splits_mixed_full_text_and_summary_only(
     tmp_path, monkeypatch
 ):
-    import extract_court_provision_links as ecpl
+    from estleg import extract_court_provision_links as ecpl
 
     abbrev_to_prefix = {"KarS": "Karistusseadustik"}
     prefix_to_provisions = {
@@ -1265,7 +1290,7 @@ def _write_part_peep(
     source-act name) with one LegalProvision node per § in ``par_numbers``,
     each carrying ``estleg:sourceAct`` so several Parts share one act."""
     graph: list[dict] = [
-        {"@id": f"estleg:{prefix}_Map_2026",
+        {"@id": f"estleg:{prefix}_Map",
          "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
     ]
     for par in par_numbers:
@@ -1300,7 +1325,7 @@ class TestIssue256MultiPartLaws:
     def test_index_retains_both_part_prefixes(self, tmp_path, monkeypatch):
         files = self._stage_two_parts(tmp_path)
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files",
+            "estleg.extract_court_provision_links.iter_peep_files",
             lambda *, include_kov=True: iter(files),
         )
         counters = _RunCounters()
@@ -1318,7 +1343,7 @@ class TestIssue256MultiPartLaws:
     def test_abbrev_maps_to_union_of_prefixes(self, tmp_path, monkeypatch):
         files = self._stage_two_parts(tmp_path)
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files",
+            "estleg.extract_court_provision_links.iter_peep_files",
             lambda *, include_kov=True: iter(files),
         )
         _, source_act_to_prefixes, _ = build_provision_index(_RunCounters())
@@ -1331,7 +1356,7 @@ class TestIssue256MultiPartLaws:
         dropped. It must now resolve to the Osa1 IRI."""
         files = self._stage_two_parts(tmp_path)
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files",
+            "estleg.extract_court_provision_links.iter_peep_files",
             lambda *, include_kov=True: iter(files),
         )
         prefix_to_provisions, source_act_to_prefixes, _ = build_provision_index(
@@ -1372,7 +1397,7 @@ class TestIssue256MultiPartLaws:
         """A court decision citing KarS § 121 (General Part) gets an
         interpretsLaw arc to the Osa1 provision — end-to-end through
         process_court_files, not just the resolver."""
-        import extract_court_provision_links as ecpl
+        from estleg import extract_court_provision_links as ecpl
 
         files = self._stage_two_parts(tmp_path)
         monkeypatch.setattr(
@@ -1431,7 +1456,7 @@ class TestIssue256MultiPartLaws:
         _write_part_peep(osa2, "KARIST_2_Osa2", "Karistusseadustik", ["5"])
         files = [osa1, osa2]
         monkeypatch.setattr(
-            "extract_court_provision_links.iter_peep_files",
+            "estleg.extract_court_provision_links.iter_peep_files",
             lambda *, include_kov=True: iter(files),
         )
         prefix_to_provisions, source_act_to_prefixes, _ = build_provision_index(
@@ -1475,8 +1500,8 @@ class TestIssue602MonthsAndYearPivot:
     the 2-digit-year century pivot is a named constant."""
 
     def test_kov_act_regex_uses_shared_month_table(self):
-        import estleg_common
-        import extract_court_provision_links as cpl
+        from estleg import estleg_common
+        from estleg import extract_court_provision_links as cpl
 
         # Every shared genitive month form must match in the KOV act pattern.
         for month in estleg_common.ESTONIAN_MONTHS_GENITIVE:
@@ -1484,7 +1509,7 @@ class TestIssue602MonthsAndYearPivot:
             assert cpl.PAT_KOV_ACT.search(text), month
 
     def test_two_digit_year_pivot_is_named(self):
-        import extract_court_provision_links as cpl
+        from estleg import extract_court_provision_links as cpl
 
         assert cpl.TWO_DIGIT_YEAR_PIVOT == 50
         # Boundary behaviour: <= pivot → 2000s, > pivot → 1900s.
@@ -1494,7 +1519,7 @@ class TestIssue602MonthsAndYearPivot:
         assert cpl.expand_two_digit_year("01.01.95") == 1995
 
     def test_four_digit_year_unchanged(self):
-        import extract_court_provision_links as cpl
+        from estleg import extract_court_provision_links as cpl
 
         assert cpl.expand_two_digit_year("18. juuni 2019") == 2019
         assert cpl.expand_two_digit_year("14.05.2009") == 2009

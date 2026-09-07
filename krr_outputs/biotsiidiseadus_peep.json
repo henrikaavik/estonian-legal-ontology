@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:BIOTSI_Map_2026",
+      "@id": "estleg:BIOTSI_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Biotsiidiseadus teemakaardistus",
       "dc:source": "Biotsiidiseadus",
-      "dcterms:title": "Biotsiidiseadus",
+      "dcterms:title": [
+        {
+          "@value": "Biotsiidiseadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Biocidal Products Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/102012025021.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/102012025021.xml"
       },
       "estleg:kehtiv": {
@@ -33,7 +38,7 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1056681_Map_2026"
+          "@id": "estleg:Reg_1056681_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -398,16 +403,73 @@
           "@id": "http://eurovoc.europa.eu/502"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_biotsiidiseadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5899"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/10"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/502"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:KORS_Par_30"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_47"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:BIOTSI_Par_43_Lg_1"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_38_3_Lg_2"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_48"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_48_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_terviseamet"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        },
+        {
+          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
+        },
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        },
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/515092025002"
       }
     },
     {
@@ -469,10 +531,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -498,10 +564,14 @@
       "rdfs:label": "2. peatükk – TOIMEAINE KANDMINE BIOTSIIDIDIREKTIIVI LISASSE",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -549,9 +619,9 @@
       "rdfs:label": "3. peatükk – BIOTSIIDI KÄTTESAADAVAKS TEGEMISE LUBAMINE",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_3"
       },
       "estleg:hasPart": [
@@ -561,7 +631,11 @@
         {
           "@id": "estleg:Division_BIOTSI_3_2"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_BIOTSI_4",
@@ -586,10 +660,14 @@
       "rdfs:label": "4. peatükk – TEAVE JA KOOSTÖÖ",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -637,9 +715,9 @@
       "rdfs:label": "5. peatükk – BIOTSIIDI KÄTTESAADAVAKS TEGEMINE JA KASUTAMINE",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_5"
       },
       "estleg:hasPart": [
@@ -649,7 +727,11 @@
         {
           "@id": "estleg:Division_BIOTSI_5_2"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_BIOTSI_6",
@@ -674,10 +756,14 @@
       "rdfs:label": "6. peatükk – RIIGILÕIVUD JA TASUD",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -703,10 +789,14 @@
       "rdfs:label": "7. peatükk – RIIKLIK JÄRELEVALVE",
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_7"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -732,10 +822,14 @@
       "rdfs:label": "8. peatükk – VASTUTUS",
       "estleg:chapterNumber": "8",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_8"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -794,9 +888,9 @@
       "rdfs:label": "9. peatükk – RAKENDUSSÄTTED",
       "estleg:chapterNumber": "9",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_BIOTSI_9"
       },
       "estleg:hasPart": [
@@ -809,19 +903,23 @@
         {
           "@id": "estleg:Division_BIOTSI_9_3"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Käesolev seadus annab õigusliku aluse biotsiidi ja biotsiidiga töödeldud toote turul kättesaadavaks tegemisele ja kasutamisele, biotsiidi kasutamisega seotud majandustegevuse piiramisele ning riikliku järelevalve korraldamisele käesolevas seaduses ja Euroopa Liidu asjakohases määruses sätestatud nõuete täitmise üle eesmärgiga kaitsta tervist, keskkonda ja vara ning tagada kaupade vaba liikumine. (1¹) Biotsiidi ja biotsiidiga töödeldud toote turul kättesaadavaks tegemise ja kasutamise nõuded",
       "estleg:legalText": "(1) Käesolev seadus annab õigusliku aluse biotsiidi ja biotsiidiga töödeldud toote turul kättesaadavaks tegemisele ja kasutamisele, biotsiidi kasutamisega seotud majandustegevuse piiramisele ning riikliku järelevalve korraldamisele käesolevas seaduses ja Euroopa Liidu asjakohases määruses sätestatud nõuete täitmise üle eesmärgiga kaitsta tervist, keskkonda ja vara ning tagada kaupade vaba liikumine. (1¹) Biotsiidi ja biotsiidiga töödeldud toote turul kättesaadavaks tegemise ja kasutamise nõuded ja tingimused on kehtestatud Euroopa Parlamendi ja nõukogu määruses (EL) nr 528/2012, milles käsitletakse biotsiidide turul kättesaadavaks tegemist ja kasutamist (EMPs kohaldatav tekst) (ELT L 167, 27.06.2012, lk 1–123) (edaspidi biotsiidimäärus). (1²) Käesolevat seadust kohaldatakse biotsiidi ja biotsiidiga töödeldud toote turul kättesaadavaks tegemisele ja kasutamisele juhtudel, mida ei ole reguleeritud biotsiidimäärusega. (2) Käesolevat seadust ei kohaldata järgmiste toodete kohta: taimekaitsevahend, mille suhtes kohaldatakse taimekaitseseadust ja asjakohaseid Euroopa Liidu õigusakte; ravim, mille suhtes kohaldatakse ravimiseadust ja asjakohaseid Euroopa Liidu õigusakte; meditsiiniseade, mille suhtes kohaldatakse meditsiiniseadme seadust ja asjakohaseid Euroopa Liidu õigusakte; kosmeetikatoode, mille suhtes kohaldatakse rahvatervishoiu seadust; toiduga kokkupuutumiseks ettenähtud materjal või ese või nende koostisosa, mille suhtes kohaldatakse toiduseadust ja asjakohaseid Euroopa Liidu õigusakte; toit või toidu lisaaine, ensüüm, lõhna- ja maitseaine või abiaine, mille suhtes kohaldatakse toiduseadust ning asjakohaseid Euroopa Liidu õigusakte; sööt, mille suhtes kohaldatakse söödaseadust. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse ja biotsiidimääruse erisusi.",
@@ -944,13 +1042,13 @@
       "@id": "estleg:BIOTSI_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2.",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_BIOTSI_1"
@@ -972,13 +1070,13 @@
       "@id": "estleg:BIOTSI_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. [Kehtetud -]",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetud -",
       "estleg:legalText": "Kehtetud -",
@@ -1004,13 +1102,13 @@
       "@id": "estleg:BIOTSI_Par_5_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5¹.",
       "rdfs:label": "§ 5¹. Terminid",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Käesolevas seaduses kasutatakse termineid biotsiidimääruse tähenduses, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:legalText": "Käesolevas seaduses kasutatakse termineid biotsiidimääruse tähenduses, kui käesolevas seaduses ei ole sätestatud teisiti.",
@@ -1022,7 +1120,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_5_1_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_5_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1040,7 +1138,7 @@
       ]
     },
     {
-      "@id": "estleg:BIOTSI_Par_5_1_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_5_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1054,13 +1152,13 @@
       "@id": "estleg:BIOTSI_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Pädev asutus",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Käesolevas seaduses ja biotsiidimääruses sätestatud toimingud teeb ja haldusaktid annab Terviseamet, kui käesolevas seaduses või biotsiidimääruses ei ole sätestatud teisiti.",
       "estleg:legalText": "Käesolevas seaduses ja biotsiidimääruses sätestatud toimingud teeb ja haldusaktid annab Terviseamet, kui käesolevas seaduses või biotsiidimääruses ei ole sätestatud teisiti.",
@@ -1072,11 +1170,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_6_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_6_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1110,10 +1210,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:BIOTSI_Par_6_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1121,19 +1225,28 @@
       "estleg:legalText": "Käesolevas seaduses ja biotsiidimääruses sätestatud toimingud teeb ja haldusaktid annab Terviseamet, kui käesolevas seaduses või biotsiidimääruses ei ole sätestatud teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_6"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:BIOTSI_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. [Välja jäetud -]",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Välja jäetud -",
       "estleg:legalText": "Välja jäetud -",
@@ -1165,13 +1278,13 @@
       "@id": "estleg:BIOTSI_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Biotsiidi kättesaadavaks tegemise ja kasutamise üldnõuded",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidi turul kättesaadavaks tegemine on tegevus, millega biotsiid tehakse tasu eest või tasuta kättesaadavaks kasutamiseks või levitamiseks Euroopa Liidu tolliterritooriumil. Biotsiidi kättesaadavaks tegemiseks peetakse ka selle importi ja ladustamist, välja arvatud juhul, kui ladustamisele järgneb selle eksport või ringlusest kõrvaldamine. (2) Kehtetu - (3) Biotsiidi on lubatud Eestis kättesaadavaks teha ja kasutada, kui see on saanud asjakohase loa või registreerimistunnistuse",
       "estleg:legalText": "(1) Biotsiidi turul kättesaadavaks tegemine on tegevus, millega biotsiid tehakse tasu eest või tasuta kättesaadavaks kasutamiseks või levitamiseks Euroopa Liidu tolliterritooriumil. Biotsiidi kättesaadavaks tegemiseks peetakse ka selle importi ja ladustamist, välja arvatud juhul, kui ladustamisele järgneb selle eksport või ringlusest kõrvaldamine. (2) Kehtetu - (3) Biotsiidi on lubatud Eestis kättesaadavaks teha ja kasutada, kui see on saanud asjakohase loa või registreerimistunnistuse käesoleva seaduse või biotsiidimääruse kohaselt.",
@@ -1208,6 +1321,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1247,19 +1364,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_8"
       },
-      "rdfs:label": "§ 8 lg 3"
+      "rdfs:label": "§ 8 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9.",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_BIOTSI_2"
@@ -1269,7 +1393,9 @@
       },
       "estleg:summary": "1(1)Toimeaine loetellu kandmiseks esitab taotleja Kemikaalide Teabekeskusele:11)vormikohase taotluse;22)toimeainet käsitleva nõuetekohase toimiku;33)toimiku vähemalt ühe biotsiidi kohta, milles toimeainet kavatsetakse kasutada. Toimeaine loetellu kandmiseks esitab taotleja Kemikaalide Teabekeskusele: vormikohase taotluse; toimeainet käsitleva nõuetekohase toimiku; toimiku vähemalt ühe biotsiidi kohta, milles toimeainet kavatsetakse kasutada. 2(2)Toimeaine loetellu kandmise taotluse vormi kehtest",
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1286,19 +1412,23 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. [Kehtetud -]",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetud -",
       "estleg:legalText": "Kehtetud -",
@@ -1324,13 +1454,13 @@
       "@id": "estleg:BIOTSI_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Turustusloa andmise tingimused",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1359,13 +1489,13 @@
       "@id": "estleg:BIOTSI_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Turustusloa taotlemine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1394,13 +1524,13 @@
       "@id": "estleg:BIOTSI_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Biotsiidi toimik",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1429,13 +1559,13 @@
       "@id": "estleg:BIOTSI_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Taotluse menetlemine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1467,13 +1597,13 @@
       "@id": "estleg:BIOTSI_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Turustusloa andmine raammääratluse korral",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1499,13 +1629,13 @@
       "@id": "estleg:BIOTSI_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Turustusloa kehtivusaeg",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1531,13 +1661,13 @@
       "@id": "estleg:BIOTSI_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Turustusloa muutmine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1566,13 +1696,13 @@
       "@id": "estleg:BIOTSI_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Turustusloa kehtetuks tunnistamine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1601,13 +1731,13 @@
       "@id": "estleg:BIOTSI_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Turustuslubade vastastikune tunnustamine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1636,13 +1766,13 @@
       "@id": "estleg:BIOTSI_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Madala riskiastmega biotsiidi turustusloa vastastikuse tunnustamise erisused",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1671,13 +1801,13 @@
       "@id": "estleg:BIOTSI_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23.",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Division_BIOTSI_3_2"
@@ -1699,19 +1829,23 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:BIOTSI_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. [Kehtetud -]",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetud -",
       "estleg:legalText": "Kehtetud -",
@@ -1737,13 +1871,13 @@
       "@id": "estleg:BIOTSI_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26.",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_BIOTSI_4"
@@ -1771,13 +1905,13 @@
       "@id": "estleg:BIOTSI_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. [Kehtetud -]",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetud -",
       "estleg:legalText": "Kehtetud -",
@@ -1806,13 +1940,13 @@
       "@id": "estleg:BIOTSI_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Biotsiidide klassifitseerimine, pakendamine ja märgistamine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Kättesaadavaks tehtav biotsiid peab olema enne kättesaadavaks tegemist klassifitseeritud, märgistatud ja pakendatud kemikaaliseaduse ning selle alusel kehtestatud õigusaktide või Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1272/2008, mis käsitleb ainete ja segude klassifitseerimist, märgistamist ja pakendamist ning millega muudetakse direktiive 67/548/EMÜ ja 1999/45/EÜ ja tunnistatakse need kehtetuks ning muudetakse määrust (EÜ) nr 1907/2006 (EMPs kohaldatav tekst) (ELT L 353, 31.12.2008,",
       "estleg:legalText": "(1) Kättesaadavaks tehtav biotsiid peab olema enne kättesaadavaks tegemist klassifitseeritud, märgistatud ja pakendatud kemikaaliseaduse ning selle alusel kehtestatud õigusaktide või Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1272/2008, mis käsitleb ainete ja segude klassifitseerimist, märgistamist ja pakendamist ning millega muudetakse direktiive 67/548/EMÜ ja 1999/45/EÜ ja tunnistatakse need kehtetuks ning muudetakse määrust (EÜ) nr 1907/2006 (EMPs kohaldatav tekst) (ELT L 353, 31.12.2008, lk 1–1355), biotsiidimääruse ning käesoleva seaduse nõuete kohaselt. (2) Biotsiidi pakend peab võimaldama biotsiidi selgelt eristada toidust ja söödast. (3) Tarbijale tarbijakaitse seaduse mõistes kasutamiseks ettenähtud biotsiidile, mida võib eksikombel pidada toiduks või söödaks, tuleb lisada koostisosi, mis teevad selle tarbimise vastumeelseks. (4) Kehtetu - (5) Biotsiidi pakendi märgistus peab olema eestikeelne ning sellel ei tohi olla teavet, mis eksitaks kasutajat või suunaks teda biotsiidi kasutama mittesihtotstarbeliselt. (6) Käesolevas paragrahvis kindlaks määratud klassifitseerimise, pakendamise ja märgistamise nõudeid ei kohaldata biotsiidide veole. (7) Avalikus kohas kasutatav desinfektsioonivahend peab vastama loa või registreerimistunnistuse omaniku poolt ettenähtud kasutusalale ning sellega peavad kaasas olema kasutusjuhend ja teave loa või registreerimistunnistuse omaniku ja desinfektsioonivahendi koostisainete kohta, vajaduse korral ka muu teave, mis võimaldab biotsiidi sihipäraselt ja ohutult kasutada. (8) Käesoleva paragrahvi lõikes 7 nimetatud desinfektsioonivahendil peab olema järgmine tarbijale nähtav teave: biotsiidile pädeva asutuse või Euroopa Komisjoni antud number; biotsiidi kaubanduslik nimetus; iga toimeaine identsusandmed ja selle kontsentratsioon meetermõõdustiku ühikutes; kasutusjuhised, vajaduse korral biotsiidi mõju tekkeks vajalik aeg; sõltuvalt tootest Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1272/2008 nõutud ohupiktogrammid, tunnussõna, ohulaused, hoiatuslaused või lõik lisateabega vastavalt artiklile 25.",
@@ -1846,12 +1980,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
-          "@id": "estleg:BIOTSI_Par_43_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_43_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1892,7 +2030,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_32_Lg_1",
@@ -1905,7 +2047,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_32"
       },
-      "rdfs:label": "§ 32 lg 1"
+      "rdfs:label": "§ 32 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_32_Lg_2",
@@ -1918,7 +2067,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_32"
       },
-      "rdfs:label": "§ 32 lg 2"
+      "rdfs:label": "§ 32 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_32_Lg_3",
@@ -1931,7 +2087,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_32"
       },
-      "rdfs:label": "§ 32 lg 3"
+      "rdfs:label": "§ 32 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_32_Lg_4",
@@ -1957,7 +2125,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_32"
       },
-      "rdfs:label": "§ 32 lg 5"
+      "rdfs:label": "§ 32 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_32_Lg_6",
@@ -1983,7 +2163,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_32"
       },
-      "rdfs:label": "§ 32 lg 7"
+      "rdfs:label": "§ 32 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_32_Lg_8",
@@ -1996,19 +2188,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_32"
       },
-      "rdfs:label": "§ 32 lg 8"
+      "rdfs:label": "§ 32 lg 8",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Kättesaadavaks tegemise piirangud",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidi, mis on klassifitseeritud mürgiseks, kantserogeenseks, mutageenseks või reproduktiivtoksiliseks kemikaaliks või millel on endokriinseid häireid põhjustavad omadused või neurotoksiline või immunotoksiline toime arengule vastavalt biotsiidimääruse artikli 19 lõikes 4 sätestatule, ei tohi kättesaadavaks teha tarbijale tarbijakaitseseaduse tähenduses. (2) Kutsealaseks kasutamiseks ettenähtud biotsiide ei tohi kättesaadavaks teha tarbijale tarbijakaitseseaduse tähenduses.",
       "estleg:legalText": "(1) Biotsiidi, mis on klassifitseeritud mürgiseks, kantserogeenseks, mutageenseks või reproduktiivtoksiliseks kemikaaliks või millel on endokriinseid häireid põhjustavad omadused või neurotoksiline või immunotoksiline toime arengule vastavalt biotsiidimääruse artikli 19 lõikes 4 sätestatule, ei tohi kättesaadavaks teha tarbijale tarbijakaitseseaduse tähenduses. (2) Kutsealaseks kasutamiseks ettenähtud biotsiide ei tohi kättesaadavaks teha tarbijale tarbijakaitseseaduse tähenduses. (3) Kutsealaseks kasutamiseks ettenähtud biotsiide tohib kättesaadavaks teha üksnes hulgikaubanduses. (4) Kutsealaseks kasutamiseks ettenähtud biotsiidide müügiga tegelemiseks peab majandustegevusteate esitama hulgikaubanduse tegevusalal. (5) Majandustegevusteates esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised andmed: tegevuskoht või tegevuskohad, e-kaubanduse korral veebilehe aadress; kaup, mida soovitakse müüa (kutsealaseks kasutamiseks ettenähtud biotsiid). (6) Biotsiidi turul kättesaadavaks tegevatel isikutel peavad olema teadmised biotsiidide ohtlike omaduste, riskide ohjamise ja kasutustingimuste kohta ning valmisolek vajaduse korral nõustada biotsiidi kasutajaid.",
@@ -2036,7 +2243,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2062,7 +2271,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_33_Lg_1",
@@ -2075,7 +2288,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_33"
       },
-      "rdfs:label": "§ 33 lg 1"
+      "rdfs:label": "§ 33 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_33_Lg_2",
@@ -2088,7 +2313,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_33"
       },
-      "rdfs:label": "§ 33 lg 2"
+      "rdfs:label": "§ 33 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_33_Lg_3",
@@ -2101,7 +2338,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_33"
       },
-      "rdfs:label": "§ 33 lg 3"
+      "rdfs:label": "§ 33 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_33_Lg_4",
@@ -2114,7 +2358,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_33"
       },
-      "rdfs:label": "§ 33 lg 4"
+      "rdfs:label": "§ 33 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_33_Lg_5",
@@ -2140,19 +2391,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_33"
       },
-      "rdfs:label": "§ 33 lg 6"
+      "rdfs:label": "§ 33 lg 6",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Biotsiidi hoiu- ja kättesaadavaks tegemise koht",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Et tagada inimeste ja loomade tervise- ning keskkonnaohutus, tuleb biotsiidi hoida ja kättesaadavaks teha nii, et oleks välditud toidu, ravimite ja söötade, samuti muude kaupade saastumine sellega. (2) Biotsiidi hoiu- ja kättesaadavaks tegemise kohas ei tohi olla biotsiidi avatud pakendeid. Hoiu- ja kättesaadavaks tegemise kohas on keelatud biotsiidi ümberpakendamine. (3) Biotsiidi, mille pakend on purunenud, ei tohi kättesaadavaks teha.",
       "estleg:legalText": "(1) Et tagada inimeste ja loomade tervise- ning keskkonnaohutus, tuleb biotsiidi hoida ja kättesaadavaks teha nii, et oleks välditud toidu, ravimite ja söötade, samuti muude kaupade saastumine sellega. (2) Biotsiidi hoiu- ja kättesaadavaks tegemise kohas ei tohi olla biotsiidi avatud pakendeid. Hoiu- ja kättesaadavaks tegemise kohas on keelatud biotsiidi ümberpakendamine. (3) Biotsiidi, mille pakend on purunenud, ei tohi kättesaadavaks teha. Selline toode tuleb viivitamata kõrvaldada ja jäätmeseaduses sätestatud korras kahjutustada, arvestades biotsiidi ohutuskaardi andmeid. (4) Käesoleva paragrahvi lõikes 2 sätestatut ei kohaldata biotsiidimääruse V lisa kohaselt tooteliiki 1 kuuluva biotsiidi puhul.",
@@ -2189,6 +2452,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -2202,7 +2469,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_34"
       },
-      "rdfs:label": "§ 34 lg 1"
+      "rdfs:label": "§ 34 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_34_Lg_2",
@@ -2215,7 +2489,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_34"
       },
-      "rdfs:label": "§ 34 lg 2"
+      "rdfs:label": "§ 34 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_34_Lg_3",
@@ -2228,7 +2509,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_34"
       },
-      "rdfs:label": "§ 34 lg 3"
+      "rdfs:label": "§ 34 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_34_Lg_4",
@@ -2247,13 +2535,13 @@
       "@id": "estleg:BIOTSI_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Biotsiidi ja toimeaine ohutuskaart",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2276,13 +2564,13 @@
       "@id": "estleg:BIOTSI_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Biotsiidi reklaam",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Biotsiidi reklaam peab vastama reklaamiseaduse §-s 27 sätestatud nõuetele.",
       "estleg:legalText": "Biotsiidi reklaam peab vastama reklaamiseaduse §-s 27 sätestatud nõuetele.",
@@ -2291,7 +2579,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_36_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_36_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2315,10 +2603,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:BIOTSI_Par_36_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_36_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2326,19 +2618,26 @@
       "estleg:legalText": "Biotsiidi reklaam peab vastama reklaamiseaduse §-s 27 sätestatud nõuetele.",
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_36"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:BIOTSI_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Mürgistusalane teave",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Enne ohtliku biotsiidi Eestis turule laskmist tuleb vastavalt Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1272/2008 artiklile 45 esitada Terviseametile sama määruse VIII lisa kohane teave, mida kasutatakse mürgistusjuhtumite ennetus- ja ravimeetmete väljatöötamise ning rakendamise eesmärgil.",
       "estleg:legalText": "Enne ohtliku biotsiidi Eestis turule laskmist tuleb vastavalt Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1272/2008 artiklile 45 esitada Terviseametile sama määruse VIII lisa kohane teave, mida kasutatakse mürgistusjuhtumite ennetus- ja ravimeetmete väljatöötamise ning rakendamise eesmärgil.",
@@ -2347,11 +2646,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_37_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_37_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2388,10 +2689,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:BIOTSI_Par_37_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_37_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2399,19 +2704,31 @@
       "estleg:legalText": "Enne ohtliku biotsiidi Eestis turule laskmist tuleb vastavalt Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1272/2008 artiklile 45 esitada Terviseametile sama määruse VIII lisa kohane teave, mida kasutatakse mürgistusjuhtumite ennetus- ja ravimeetmete väljatöötamise ning rakendamise eesmärgil.",
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_37"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:BIOTSI_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Biotsiidi kasutamise üldnõuded",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Isik, kes kasutab biotsiidi kahjulike organismide hävitamiseks, tõrjumiseks, kahjutuks muutmiseks või nende ebasoovitava toime ohjamiseks, peab kahjulike organismide tõrjet tegema üksnes biotsiidi märgistusel ja kasutusjuhendis ettenähtud viisil ja tingimustel. (2) Kehtetu - (3) Kehtetu -",
       "estleg:legalText": "(1) Isik, kes kasutab biotsiidi kahjulike organismide hävitamiseks, tõrjumiseks, kahjutuks muutmiseks või nende ebasoovitava toime ohjamiseks, peab kahjulike organismide tõrjet tegema üksnes biotsiidi märgistusel ja kasutusjuhendis ettenähtud viisil ja tingimustel. (2) Kehtetu - (3) Kehtetu -",
@@ -2430,7 +2747,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2465,7 +2784,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_Lg_1",
@@ -2478,7 +2801,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_38"
       },
-      "rdfs:label": "§ 38 lg 1"
+      "rdfs:label": "§ 38 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_Lg_2",
@@ -2510,13 +2845,13 @@
       "@id": "estleg:BIOTSI_Par_38_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38¹.",
       "rdfs:label": "§ 38¹. Biotsiidi kutseline kasutaja",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidi kutseline kasutaja on isik, kellel on asjakohane ettevalmistus ja kes kasutab majandus- või kutsetegevuse käigus biotsiide, mis on biotsiidi turul kättesaadavaks tegemiseks ja kasutamiseks antud loaga või registreerimistunnistusega ette nähtud kutsealaseks kasutamiseks. (2) Biotsiidi kutselisel kasutajal peavad olema teadmised kutsetegevuses kasutatavate biotsiidide ohtlike omaduste, riskide ohjamise ja kasutustingimuste kohta ning biotsiidi ohutu kasutamise oskused, mis on saadud",
       "estleg:legalText": "(1) Biotsiidi kutseline kasutaja on isik, kellel on asjakohane ettevalmistus ja kes kasutab majandus- või kutsetegevuse käigus biotsiide, mis on biotsiidi turul kättesaadavaks tegemiseks ja kasutamiseks antud loaga või registreerimistunnistusega ette nähtud kutsealaseks kasutamiseks. (2) Biotsiidi kutselisel kasutajal peavad olema teadmised kutsetegevuses kasutatavate biotsiidide ohtlike omaduste, riskide ohjamise ja kasutustingimuste kohta ning biotsiidi ohutu kasutamise oskused, mis on saadud taseme- või tööalase koolituse käigus, mille kohta on olemas asjakohane tunnistus või tõend.",
@@ -2532,7 +2867,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2546,7 +2883,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_1_Lg_1",
@@ -2559,7 +2900,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_38_1"
       },
-      "rdfs:label": "§ 38¹ lg 1"
+      "rdfs:label": "§ 38¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_1_Lg_2",
@@ -2572,19 +2922,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_38_1"
       },
-      "rdfs:label": "§ 38¹ lg 2"
+      "rdfs:label": "§ 38¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38².",
       "rdfs:label": "§ 38². Biotsiidi kutselise kasutaja koolitus",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Koolitusasutus korraldab biotsiidi kutselise kasutaja koolitust täiskasvanute koolituse seaduses, kutseõppeasutuse seaduses ja käesolevas seaduses sätestatud nõuete kohaselt. (2) Koolitusasutus peab õppe- ja koolituskava koostamisel võtma aluseks kahjulike organismide tõrjuja 4. ja 5. taseme kutse standardid ja esitama oma kava enne koolituse korraldamist kahjulike organismide tõrjuja kutse andjale kutseseaduse tähenduses seisukoha ja ettepanekute saamiseks.",
       "estleg:legalText": "(1) Koolitusasutus korraldab biotsiidi kutselise kasutaja koolitust täiskasvanute koolituse seaduses, kutseõppeasutuse seaduses ja käesolevas seaduses sätestatud nõuete kohaselt. (2) Koolitusasutus peab õppe- ja koolituskava koostamisel võtma aluseks kahjulike organismide tõrjuja 4. ja 5. taseme kutse standardid ja esitama oma kava enne koolituse korraldamist kahjulike organismide tõrjuja kutse andjale kutseseaduse tähenduses seisukoha ja ettepanekute saamiseks.",
@@ -2600,7 +2962,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2613,12 +2977,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Koolitusasutus",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_2_Lg_1",
@@ -2631,7 +2998,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_38_2"
       },
-      "rdfs:label": "§ 38² lg 1"
+      "rdfs:label": "§ 38² lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_2_Lg_2",
@@ -2644,19 +3020,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_38_2"
       },
-      "rdfs:label": "§ 38² lg 2"
+      "rdfs:label": "§ 38² lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38³.",
       "rdfs:label": "§ 38³. Kutseline kahjulike organismide tõrje teenuse osutaja",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Kutseline kahjulike organismide tõrje teenuse osutaja on ettevõtja, kelle majandus- või kutsetegevuseks on kahjulike organismide tõrje teenuse osutamine ning kellel on selleks vähemalt üks asjakohase ettevalmistusega spetsialist. (2) Kutselisel kahjulike organismide tõrje teenuse osutajal on asjakohane õigussuhe käesoleva seaduse §-s 39 nimetatud vastutava spetsialistiga või on füüsilisest isikust ettevõtja ise pädev tegutsema vastutava spetsialistina. (3) Kehtetu -",
       "estleg:legalText": "(1) Kutseline kahjulike organismide tõrje teenuse osutaja on ettevõtja, kelle majandus- või kutsetegevuseks on kahjulike organismide tõrje teenuse osutamine ning kellel on selleks vähemalt üks asjakohase ettevalmistusega spetsialist. (2) Kutselisel kahjulike organismide tõrje teenuse osutajal on asjakohane õigussuhe käesoleva seaduse §-s 39 nimetatud vastutava spetsialistiga või on füüsilisest isikust ettevõtja ise pädev tegutsema vastutava spetsialistina. (3) Kehtetu -",
@@ -2675,8 +3058,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2693,7 +3080,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_3_Lg_1",
@@ -2706,7 +3097,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_38_3"
       },
-      "rdfs:label": "§ 38³ lg 1"
+      "rdfs:label": "§ 38³ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_3_Lg_2",
@@ -2724,7 +3124,16 @@
         {
           "@id": "estleg:BIOTSI_Par_39"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_38_3_Lg_3",
@@ -2743,13 +3152,13 @@
       "@id": "estleg:BIOTSI_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Vastutav spetsialist",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Vastutav spetsialist on isik, kes on pädev juhtima ja korraldama kahjulike organismide tõrjet ning nõustama ettevõtjat, et oleks tagatud õigusaktides sätestatud nõuete täitmine. (2) Vastutaval spetsialistil peab olema kahjulike organismide tõrje juhtimiseks ja korraldamiseks omandatud kahjulike organismide tõrjuja 5. taseme kutse kutseseaduse tähenduses, mille kohaselt isik korraldab ressursside jagamist ja teiste tööd ning vastutab selle töö eest.",
       "estleg:legalText": "(1) Vastutav spetsialist on isik, kes on pädev juhtima ja korraldama kahjulike organismide tõrjet ning nõustama ettevõtjat, et oleks tagatud õigusaktides sätestatud nõuete täitmine. (2) Vastutaval spetsialistil peab olema kahjulike organismide tõrje juhtimiseks ja korraldamiseks omandatud kahjulike organismide tõrjuja 5. taseme kutse kutseseaduse tähenduses, mille kohaselt isik korraldab ressursside jagamist ja teiste tööd ning vastutab selle töö eest. (3) Käesoleva paragrahvi lõikes 2 sätestatud kutse taotlemisel on nõutav vähemalt keskharidus, kutse- ja juhtimisalase täiendusõppe läbimine ning kolmeaastane kahjulike organismide tõrje töökogemus. (4) Välisriigis omandatud pädevuse vastavust käesoleva seaduse nõuetele hindab ja tõendab pädev asutus välisriigi kutsekvalifikatsiooni tunnustamise seaduse alusel, arvestades käesolevast seadusest tulenevaid erisusi. Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Terviseamet.",
@@ -2771,8 +3180,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2809,7 +3222,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_39_Lg_1",
@@ -2822,7 +3239,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_39"
       },
-      "rdfs:label": "§ 39 lg 1"
+      "rdfs:label": "§ 39 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_39_Lg_2",
@@ -2835,7 +3261,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_39"
       },
-      "rdfs:label": "§ 39 lg 2"
+      "rdfs:label": "§ 39 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_39_Lg_3",
@@ -2848,7 +3286,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_39"
       },
-      "rdfs:label": "§ 39 lg 3"
+      "rdfs:label": "§ 39 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_39_Lg_4",
@@ -2864,21 +3309,30 @@
       "rdfs:label": "§ 39 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:VKT_Par_7"
+          "@id": "estleg:VKT_Par_7_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Teatamiskohustus",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Kutseline kahjulike organismide tõrje teenuse osutaja peab esitama majandustegevusteate. (2) Majandustegevusteates esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised andmed: vastutava spetsialisti nimi ja isikukood, selle puudumise korral sünniaeg; vastutava spetsialisti telefoninumber ja e-posti aadress; vastutava spetsialisti kvalifikatsiooni tõendava tunnistuse number ja kehtivusaeg, kutse andja nimi, kutse andmise koht ja kuupäev.",
       "estleg:legalText": "(1) Kutseline kahjulike organismide tõrje teenuse osutaja peab esitama majandustegevusteate. (2) Majandustegevusteates esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised andmed: vastutava spetsialisti nimi ja isikukood, selle puudumise korral sünniaeg; vastutava spetsialisti telefoninumber ja e-posti aadress; vastutava spetsialisti kvalifikatsiooni tõendava tunnistuse number ja kehtivusaeg, kutse andja nimi, kutse andmise koht ja kuupäev.",
@@ -2894,7 +3348,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2928,7 +3384,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_40_Lg_1",
@@ -2941,7 +3401,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_40"
       },
-      "rdfs:label": "§ 40 lg 1"
+      "rdfs:label": "§ 40 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_40_Lg_2",
@@ -2960,13 +3432,13 @@
       "@id": "estleg:BIOTSI_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41. Kahjulike organismide tõrje teenuse osutamine objektil",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Kahjulike organismide tõrje objektina käsitatakse hoonet, rajatist või selle osa või nende juurde kuuluvat piiritletud maa-ala (edaspidi objekt), kus on võimalik kahjulike organismide levik. (2) Objekti valdaja korraldab kahjulike organismide jälgimise objektil ning vastutab nende kahjustava toime ennetamise ja nende hävitamise eest. (3) Objekti valdaja loob vajalikud tingimused kahjulike organismide tõrje ohutuks läbiviimiseks objektil ning koos tõrjet tegeva isikuga töötab välja tõrje",
       "estleg:legalText": "(1) Kahjulike organismide tõrje objektina käsitatakse hoonet, rajatist või selle osa või nende juurde kuuluvat piiritletud maa-ala (edaspidi objekt), kus on võimalik kahjulike organismide levik. (2) Objekti valdaja korraldab kahjulike organismide jälgimise objektil ning vastutab nende kahjustava toime ennetamise ja nende hävitamise eest. (3) Objekti valdaja loob vajalikud tingimused kahjulike organismide tõrje ohutuks läbiviimiseks objektil ning koos tõrjet tegeva isikuga töötab välja tõrje läbiviimise plaani. (4) Kutseline kahjulike organismide tõrje teenuse osutaja koostab tehtud tõrje kohta objekti valdajale aruande, mida säilitatakse vähemalt viis aastat. (5) Täpsustatud nõuded kahjulike organismide tõrje läbiviimisele, plaanile ja aruandele kehtestab määrusega.",
@@ -2991,12 +3463,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1056681_Map_2026"
+          "@id": "estleg:Reg_1056681_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -3030,7 +3506,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_41_Lg_1",
@@ -3056,7 +3536,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_41"
       },
-      "rdfs:label": "§ 41 lg 2"
+      "rdfs:label": "§ 41 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_41_Lg_3",
@@ -3069,7 +3558,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_41"
       },
-      "rdfs:label": "§ 41 lg 3"
+      "rdfs:label": "§ 41 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_41_Lg_4",
@@ -3082,7 +3580,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_41"
       },
-      "rdfs:label": "§ 41 lg 4"
+      "rdfs:label": "§ 41 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_41_Lg_5",
@@ -3101,13 +3608,13 @@
       "@id": "estleg:BIOTSI_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
       "rdfs:label": "§ 42. Riigilõivud dokumentide menetlemise eest Terviseametis",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidi toimeaine heakskiitmise taotleja, biotsiidile asjakohase loa taotleja või käesoleva seaduse kohaselt registreerimistunnistuse taotleja tasub enne dokumentide esitamist Terviseametile biotsiidimääruse kohaselt riigilõivu riigilõivuseaduses sätestatud määras järgmiste toimingute eest: biotsiidi toimeaine heakskiitmisega seotud taotluse menetlemine hindava liikmesriigina; biotsiidi või biotsiidipere loa taotluse menetlemine hindava liikmesriigina; biotsiidi või biotsiidipere loa",
       "estleg:legalText": "(1) Biotsiidi toimeaine heakskiitmise taotleja, biotsiidile asjakohase loa taotleja või käesoleva seaduse kohaselt registreerimistunnistuse taotleja tasub enne dokumentide esitamist Terviseametile biotsiidimääruse kohaselt riigilõivu riigilõivuseaduses sätestatud määras järgmiste toimingute eest: biotsiidi toimeaine heakskiitmisega seotud taotluse menetlemine hindava liikmesriigina; biotsiidi või biotsiidipere loa taotluse menetlemine hindava liikmesriigina; biotsiidi või biotsiidipere loa taotluse menetlemine asjaomase liikmesriigina; biotsiidi või biotsiidipere loaga seotud teate menetlemine; üleminekuperioodil biotsiidi registreerimistunnistuse taotluse menetlemine; üleminekuperioodil biotsiidi registreerimistunnistuse muudatuse taotluse menetlemine; üleminekuperioodil biotsiidi registreerimistunnistuse haldusliku muudatuse taotluse menetlemine. (2) Käesoleva paragrahvi lõikes 1 sätestatud toimingute eest võetava riigilõivu määrad vaadatakse üle vähemalt iga kahe aasta järel ja vajaduse korral tehakse asjakohased muudatused lõivu suuruses, võttes aluseks möödunud perioodi tegelikud kulutused.",
@@ -3126,8 +3633,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3164,7 +3675,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_Lg_1",
@@ -3177,7 +3692,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42"
       },
-      "rdfs:label": "§ 42 lg 1"
+      "rdfs:label": "§ 42 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_Lg_2",
@@ -3196,13 +3723,13 @@
       "@id": "estleg:BIOTSI_Par_42_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42¹.",
       "rdfs:label": "§ 42¹. Tasud biotsiidile loa andmise taotluse hindamise eest",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidile liidu või riikliku loa taotleja tasub biotsiidimääruse kohaselt taotluse hindamise eest Terviseametile. (2) Terviseamet hindab võimaluse korral taotlust asutusesiseselt või kasutab hindamiseks lepinguliste ekspertide abi. Eksperdi tunnitasu võib olla maksimaalselt 200 eurot. (3) Taotlust võib hinnata ekspert, kes on sõltumatu Eesti või välismaa füüsiline või juriidiline isik ning kellel on kogemus biotsiidide, taimekaitsevahendite või muude seda laadi ainete taotluste erialasel",
       "estleg:legalText": "(1) Biotsiidile liidu või riikliku loa taotleja tasub biotsiidimääruse kohaselt taotluse hindamise eest Terviseametile. (2) Terviseamet hindab võimaluse korral taotlust asutusesiseselt või kasutab hindamiseks lepinguliste ekspertide abi. Eksperdi tunnitasu võib olla maksimaalselt 200 eurot. (3) Taotlust võib hinnata ekspert, kes on sõltumatu Eesti või välismaa füüsiline või juriidiline isik ning kellel on kogemus biotsiidide, taimekaitsevahendite või muude seda laadi ainete taotluste erialasel hindamisel. Ekspert peab arvestama biotsiidimääruses esitatud nõuetega ja Euroopa Komisjoni asjakohaste juhistega erialase hindamise kohta. (4) Taotleja tasub Terviseametile järgmiste toimingute eest järgmiselt: toimeaine hindamise algtasu on 71 600 eurot ja maksimaalne tasu 624 200 eurot; toimeaine täiendava teabe hindamise algtasu on 42 100 eurot ja maksimaalne tasu 369 200 eurot; biotsiidipere liidu loa hindamise algtasu on 88 400 eurot ja maksimaalne tasu 769 800 eurot; biotsiidipere riikliku loa hindamise algtasu on 80 000 eurot ja maksimaalne tasu 697 000 eurot; biotsiidi liidu loa hindamise algtasu on 63 100 eurot ja maksimaalne tasu 551 300 eurot; biotsiidi riikliku loa hindamise algtasu on 42 100 eurot ja maksimaalne tasu 369 200 eurot; biotsiidi või biotsiidipere eelhindamise algtasu on 31 600 eurot ja maksimaalne tasu 278 200 eurot; biotsiidi või biotsiidipere loa järelhindamise algtasu on 4200 eurot ja maksimaalne tasu 41 400 eurot; samade omadustega biotsiidi või biotsiidipere loa hindamise tasu on 15 500 eurot; biotsiidi või biotsiidipere ajutise loa hindamise tasu on 26 100 eurot; biotsiidi või biotsiidipere lihtsustatud menetlusega loa hindamise algtasu on 21 100 eurot ja maksimaalne tasu 187 100 eurot; biotsiidi või biotsiidipere loa vastastikusel tunnustamisel hindamise tasu on 2100 eurot; biotsiidi või biotsiidipere olulise muudatuse hindamise algtasu on 10 500 eurot ja maksimaalne tasu 69 200 eurot; biotsiidi või biotsiidipere loa uuendamise hindamise algtasu on 21 100 eurot ja maksimaalne tasu 187 100 eurot; biotsiidi või biotsiidipere vähem tähtsa muudatuse hindamise algtasu on 4200 eurot ja maksimaalne tasu 27 100 eurot. (5) Käesoleva paragrahvi lõikes 4 sätestatud toimingute eest võetava tasu määrad vaadatakse üle vähemalt iga kahe aasta järel ja vajaduse korral tehakse asjakohased muudatused tasu suuruses, võttes aluseks möödunud perioodi tegelikud kulutused.",
@@ -3230,8 +3757,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3257,7 +3788,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_1_Lg_1",
@@ -3270,7 +3805,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_1"
       },
-      "rdfs:label": "§ 42¹ lg 1"
+      "rdfs:label": "§ 42¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_1_Lg_2",
@@ -3283,7 +3830,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_1"
       },
-      "rdfs:label": "§ 42¹ lg 2"
+      "rdfs:label": "§ 42¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_1_Lg_3",
@@ -3296,7 +3855,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_1"
       },
-      "rdfs:label": "§ 42¹ lg 3"
+      "rdfs:label": "§ 42¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_1_Lg_4",
@@ -3309,7 +3880,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_1"
       },
-      "rdfs:label": "§ 42¹ lg 4"
+      "rdfs:label": "§ 42¹ lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_1_Lg_5",
@@ -3328,13 +3911,13 @@
       "@id": "estleg:BIOTSI_Par_42_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42².",
       "rdfs:label": "§ 42². Tasude maksmise tingimused ja kord",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidile loa taotleja tasub biotsiidimääruses ettenähtud tähtaja jooksul Terviseametile seaduses ettenähtud algtasu. Olenevalt hindamisele tehtud tegelikest kulutustest maksab Terviseamet taotlejale enam makstud summa tagasi või maksab taotleja juurde, kuid kokku mitte rohkem kui seaduses ettenähtud maksimaalne tasu. (2) Taotluse hindaja peab pidama taotluse hindamiseks kulunud aja kohta tööaja arvestust, kuhu on kantud hindamiseks kulutatud aeg päevade kaupa.",
       "estleg:legalText": "(1) Biotsiidile loa taotleja tasub biotsiidimääruses ettenähtud tähtaja jooksul Terviseametile seaduses ettenähtud algtasu. Olenevalt hindamisele tehtud tegelikest kulutustest maksab Terviseamet taotlejale enam makstud summa tagasi või maksab taotleja juurde, kuid kokku mitte rohkem kui seaduses ettenähtud maksimaalne tasu. (2) Taotluse hindaja peab pidama taotluse hindamiseks kulunud aja kohta tööaja arvestust, kuhu on kantud hindamiseks kulutatud aeg päevade kaupa. (3) Tasu arvutamise aluseks võetakse tööks kulutatud tööaeg tundides, Terviseameti ametniku või töötaja tunnitasu eelmise kalendriaasta personali- ja majanduskulude alusel ning eksperdi tunnitasu. (4) Kui hindamiseks kulus vähem kui tasutud algsumma, maksab Terviseamet taotlejale enam makstud summa tagasi 30 kalendripäeva jooksul pärast taotlejale arve esitamist. Taotlejale ei tagastata 100 eurost väiksemat summat, kui taotleja ei ole tagasimaksmist nõudnud. (5) Kui hindamiseks kulus rohkem kui tasutud algsumma, maksab taotleja Terviseameti esitatud arve alusel nõutud tasu 30 kalendripäeva jooksul arve saamisest arvates Terviseameti arvelduskontole. (6) Kui taotleja ei tasu käesoleva paragrahvi lõikes 5 nimetatud summat ettenähtud tähtaja jooksul, on Terviseametil õigus anda tasu maksmiseks kohustav nõue sundtäitmisele täitemenetluse seadustikus sätestatud korras. (7) Terviseamet väljastab asjakohase otsuse viie tööpäeva jooksul pärast käesoleva paragrahvi lõikes 5 nimetatud summa laekumist.",
@@ -3368,8 +3951,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3392,7 +3979,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_1",
@@ -3405,7 +3996,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 1"
+      "rdfs:label": "§ 42² lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_2",
@@ -3418,7 +4021,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 2"
+      "rdfs:label": "§ 42² lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_3",
@@ -3431,7 +4041,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 3"
+      "rdfs:label": "§ 42² lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_4",
@@ -3444,7 +4066,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 4"
+      "rdfs:label": "§ 42² lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_5",
@@ -3457,7 +4091,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 5"
+      "rdfs:label": "§ 42² lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_6",
@@ -3470,7 +4116,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 6"
+      "rdfs:label": "§ 42² lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_42_2_Lg_7",
@@ -3483,19 +4141,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_42_2"
       },
-      "rdfs:label": "§ 42² lg 7"
+      "rdfs:label": "§ 42² lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
       "rdfs:label": "§ 43. Riiklik järelevalve",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Riiklikku järelevalvet biotsiididele ja biotsiidi sisaldavatele toodetele ning nende turul kättesaadavaks tegemisele ja kasutamisele käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning biotsiidimäärusega sätestatud nõuete täitmise üle teostavad: Terviseamet – biotsiidi ja biotsiidiga töödeldud toote kättesaadavaks tegemisele kehtestatud nõuete täitmise üle, biotsiidile ja biotsiidiga töödeldud tootele kehtestatud nõuete täitmise üle ja biotsiidi kasutamise üle kutselise kahjulike",
       "estleg:legalText": "Riiklikku järelevalvet biotsiididele ja biotsiidi sisaldavatele toodetele ning nende turul kättesaadavaks tegemisele ja kasutamisele käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning biotsiidimäärusega sätestatud nõuete täitmise üle teostavad: Terviseamet – biotsiidi ja biotsiidiga töödeldud toote kättesaadavaks tegemisele kehtestatud nõuete täitmise üle, biotsiidile ja biotsiidiga töödeldud tootele kehtestatud nõuete täitmise üle ja biotsiidi kasutamise üle kutselise kahjulike organismide tõrje teenuse osutaja juures ning rahvatervishoiu seaduse ja tervishoiuteenuste korraldamise seadusega reguleeritud valdkondades; Tarbijakaitse ja Tehnilise Järelevalve Amet – käesoleva seaduse § 32 lõikega 8 kehtestatud märgistamise nõuete täitmise üle muudes õigusaktides sätestatud Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalveobjektidel; Tööinspektsioon – biotsiidi kasutamisele kehtestatud nõuete täitmise üle töötervishoiu- ja tööohutuse seadusega reguleeritud valdkonnas; Keskkonnaamet – biotsiidi kasutamisele kehtestatud nõuete täitmise üle keskkonnaohtlikkuse seisukohast oma valdkonna järelevalve objektidel; Põllumajandus- ja Toiduamet – biotsiidi kasutamisele kehtestatud nõuete täitmise üle loomatervise ning sööda- ja toiduohutuse seisukohast oma valdkonna järelevalve objektidel; Maksu- ja Tolliamet – biotsiidide kättesaadavaks tegemisele kehtestatud nõuete täitmist ühenduse turule sisenemisel Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1020 turujärelevalve ja toodete vastavuse kohta ning millega muudetakse direktiivi 2004/42/EÜ ja määruseid (EÜ) nr 765/2008 ja (EL) nr 305/2011 (ELT L 169, 25.06.2019, lk 1–44), VII peatükis sätestatu kohaselt.",
@@ -3507,12 +4174,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_43_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_43_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3565,10 +4236,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:BIOTSI_Par_43_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_43_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3581,19 +4256,31 @@
         {
           "@id": "estleg:BIOTSI_Par_32"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43¹.",
       "rdfs:label": "§ 43¹. Riikliku järelevalve erimeetmed",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 45, 49, 50, 51, 52 ja 53 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 45, 49, 50, 51, 52 ja 53 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
@@ -3605,7 +4292,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_43_1_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_43_1_Lg_1"
         }
       ],
       "estleg:references": [
@@ -3640,10 +4327,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:BIOTSI_Par_43_1_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_43_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3656,19 +4347,26 @@
         {
           "@id": "estleg:KORS_Par_30"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43².",
       "rdfs:label": "§ 43². Riikliku järelevalve erisused",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Korrakaitseorganil on õigus kehtiva turustusloa või registreerimistunnistuse puudumise korral keelata biotsiidi import ühenduse tolliterritooriumile ja müük. (2) Kui riikliku järelevalve tegemise käigus on järelevalveasutus teinud biotsiidimääruse artikli 88 kohaselt ettekirjutuse biotsiidi kättesaadavaks tegemise ja kasutamise piiramise või ajutise keelamise kohta, teavitab ta sellest kohe Terviseametit, kes omakorda teavitab sellest viivitamata Euroopa Komisjoni ja teisi liikmesriike.",
       "estleg:legalText": "(1) Korrakaitseorganil on õigus kehtiva turustusloa või registreerimistunnistuse puudumise korral keelata biotsiidi import ühenduse tolliterritooriumile ja müük. (2) Kui riikliku järelevalve tegemise käigus on järelevalveasutus teinud biotsiidimääruse artikli 88 kohaselt ettekirjutuse biotsiidi kättesaadavaks tegemise ja kasutamise piiramise või ajutise keelamise kohta, teavitab ta sellest kohe Terviseametit, kes omakorda teavitab sellest viivitamata Euroopa Komisjoni ja teisi liikmesriike. (3) Järelevalveasutused esitavad Terviseametile 2015. aasta 1. juuliks ja pärast seda iga viienda aasta 1. aprilliks biotsiidimääruse artikli 65 lõike 3 kohased andmed. Terviseamet esitab saadud andmete alusel komisjonile biotsiidimääruse artikli 65 lõikes 3 nimetatud aruande. (4) Korrakaitseorgan võib riikliku järelevalve teostamise eesmärgil viibida ja liikuda sõidukiga, sealhulgas maastikusõidukiga ja ujuvvahendiga maa- või veealal, kus viibimine ja liikumine on keskkonnakaitse eesmärgil õigusaktiga keelatud või piiratud.",
@@ -3693,7 +4391,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3713,7 +4413,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_2_Lg_1",
@@ -3726,7 +4430,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_43_2"
       },
-      "rdfs:label": "§ 43² lg 1"
+      "rdfs:label": "§ 43² lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_2_Lg_2",
@@ -3739,7 +4450,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_43_2"
       },
-      "rdfs:label": "§ 43² lg 2"
+      "rdfs:label": "§ 43² lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_2_Lg_3",
@@ -3752,7 +4472,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_43_2"
       },
-      "rdfs:label": "§ 43² lg 3"
+      "rdfs:label": "§ 43² lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_2_Lg_4",
@@ -3765,19 +4494,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_43_2"
       },
-      "rdfs:label": "§ 43² lg 4"
+      "rdfs:label": "§ 43² lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_43_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43³.",
       "rdfs:label": "§ 43³. Vahetu sunni kasutamine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Keskkonnaametil on lubatud kasutada füüsilist jõudu korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:legalText": "Keskkonnaametil on lubatud kasutada füüsilist jõudu korrakaitseseaduses sätestatud alusel ja korras.",
@@ -3789,11 +4525,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_43_3_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_43_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3814,7 +4552,7 @@
           "@id": "estleg:GMOVS_Par_31_2"
         },
         {
-          "@id": "estleg:JäätS_Par_119_4"
+          "@id": "estleg:JaatS_Par_119_4"
         },
         {
           "@id": "estleg:KEMIKA_Par_41"
@@ -3833,10 +4571,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:BIOTSI_Par_43_3_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_43_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3844,19 +4586,31 @@
       "estleg:legalText": "Keskkonnaametil on lubatud kasutada füüsilist jõudu korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_43_3"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:BIOTSI_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
       "rdfs:label": "§ 44. Ettekirjutus",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3885,13 +4639,13 @@
       "@id": "estleg:BIOTSI_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
       "rdfs:label": "§ 45. Ettekirjutuse vaidlustamine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3920,13 +4674,13 @@
       "@id": "estleg:BIOTSI_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
       "rdfs:label": "§ 46. Sunniraha määr",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 32 000 eurot.",
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 32 000 eurot.",
@@ -3938,11 +4692,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:BIOTSI_Par_46_Lg_Unknown_1"
+          "@id": "estleg:BIOTSI_Par_46_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3958,12 +4714,6 @@
           "@id": "estleg:BIOTSI_Par_46_v129062014097"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_BIOTSI_Par_46_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ATMOSF_Par_226"
@@ -3985,10 +4735,20 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_46_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
-      "@id": "estleg:BIOTSI_Par_46_Lg_Unknown_1",
+      "@id": "estleg:BIOTSI_Par_46_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3996,19 +4756,34 @@
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 32 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_46"
-      }
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_46_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:BIOTSI_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Biotsiidi ja biotsiidiga töödeldud toote kättesaadavaks tegemisele ja kasutamisele kehtestatud nõuete rikkumine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiidi ja biotsiidiga töödeldud toote kättesaadavaks tegemisele ja kasutamisele käesoleva seaduse ja biotsiidimäärusega kehtestatud nõuete rikkumise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:legalText": "(1) Biotsiidi ja biotsiidiga töödeldud toote kättesaadavaks tegemisele ja kasutamisele käesoleva seaduse ja biotsiidimäärusega kehtestatud nõuete rikkumise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
@@ -4027,7 +4802,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -4057,12 +4834,6 @@
           "@id": "estleg:BIOTSI_Par_47_v110032015007"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_BIOTSI_Par_47_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:AUDIIT_Par_166_2"
@@ -4087,7 +4858,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_47_fine"
+        },
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_47_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:BIOTSI_Par_47_Lg_1",
@@ -4100,7 +4884,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_47"
       },
-      "rdfs:label": "§ 47 lg 1"
+      "rdfs:label": "§ 47 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_47_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:BIOTSI_Par_47_Lg_2",
@@ -4113,19 +4910,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_47"
       },
-      "rdfs:label": "§ 47 lg 2"
+      "rdfs:label": "§ 47 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_47_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:BIOTSI_Par_48",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
       "rdfs:label": "§ 48. Menetlus",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Käesoleva seaduse §-s 47 sätestatud väärtegude kohtuvälised menetlejad on vastavalt oma pädevusele: Tööinspektsioon; Keskkonnaamet; Tarbijakaitse ja Tehnilise Järelevalve Amet; Terviseamet; Põllumajandus- ja Toiduamet. kehtetu -",
       "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-s 47 sätestatud väärtegude kohtuvälised menetlejad on vastavalt oma pädevusele: Tööinspektsioon; Keskkonnaamet; Tarbijakaitse ja Tehnilise Järelevalve Amet; Terviseamet; Põllumajandus- ja Toiduamet. kehtetu -",
@@ -4144,8 +4959,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -4220,7 +5039,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_48_Lg_1",
@@ -4251,19 +5074,31 @@
         {
           "@id": "estleg:BIOTSI_Par_47"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
       "rdfs:label": "§ 49. Seaduse rakendamine biotsiidimääruses ettenähtud üleminekuperioodi reguleeriva tööprogrammi raames",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "(1) Biotsiide, mille toimeained vastavad biotsiidimääruse artikli 89 lõikes 2 sätestatud tingimustele, võib jätkuvalt kättesaadavaks teha ja kasutada pärast registreerimist Terviseametis. (1¹) Biotsiide, mis vastavad käesoleva paragrahvi lõikes 1 sätestatud nõuetele, registreeritakse kuni 2024. aasta 31. detsembrini või tähtpäevani, milleni on Euroopa Komisjoni otsusega pikendatud üleminekuperioodi teatud toimeainete kohta esitatud andmete läbivaatamiseks.",
       "estleg:legalText": "(1) Biotsiide, mille toimeained vastavad biotsiidimääruse artikli 89 lõikes 2 sätestatud tingimustele, võib jätkuvalt kättesaadavaks teha ja kasutada pärast registreerimist Terviseametis. (1¹) Biotsiide, mis vastavad käesoleva paragrahvi lõikes 1 sätestatud nõuetele, registreeritakse kuni 2024. aasta 31. detsembrini või tähtpäevani, milleni on Euroopa Komisjoni otsusega pikendatud üleminekuperioodi teatud toimeainete kohta esitatud andmete läbivaatamiseks. (2) Registreerimiseks esitatakse Terviseametile järgmised andmed: taotleja nimi, registrikood või isikukood ja kontaktandmed; biotsiidi ja toimeaine tootja kontaktandmed; vajaduse korral asjakohane teabekasutusnõusolek; biotsiidi kaubanduslik nimetus; biotsiidi täielik koostis ja iga ohtliku koostisaine klassifikatsioon; biotsiidi füüsikalised ja keemilised omadused, mis on asjakohased biotsiidi ettenähtud kasutamise, hoidmise ja transportimise seisukohast; biotsiidi tooteliik ja kasutusala; biotsiidi kasutajad; biotsiidi kasutusviis ja kasutusjuhend; andmed biotsiidi toime tõhususe kohta; biotsiidi märgistus ning pakendi suurus ja kirjeldus; toimeaine ohutuskaart; vajaduse korral lisateave biotsiidi kohta. (3) Kui toimeaine on kantud liidu heakskiidetud toimeainete nimekirja, tuleb taotleda registreeritud biotsiidile luba biotsiidimääruses sätestatud nõuete kohaselt. Taotlus loa saamiseks tuleb esitada hiljemalt biotsiidimääruse artikli 89 lõikes 3 nimetatud kuupäevaks. (4) Eestis registreeritud biotsiidi võib jätkuvalt turul kättesaadavaks teha pärast toimeaine heakskiitmise kuupäeva, kui taotleja on esitanud loataotluse Terviseametile või Euroopa Kemikaaliametile biotsiidiregistri kaudu. (5) Kehtetu - (6) Kehtetu - (7) Kehtetu -",
@@ -4297,8 +5132,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4336,7 +5175,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49_Lg_1",
@@ -4349,7 +5192,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_49"
       },
-      "rdfs:label": "§ 49 lg 1"
+      "rdfs:label": "§ 49 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49_Lg_1_1",
@@ -4362,7 +5217,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_49"
       },
-      "rdfs:label": "§ 49 lg 1¹"
+      "rdfs:label": "§ 49 lg 1¹",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49_Lg_2",
@@ -4375,7 +5239,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_49"
       },
-      "rdfs:label": "§ 49 lg 2"
+      "rdfs:label": "§ 49 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49_Lg_3",
@@ -4388,7 +5264,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_49"
       },
-      "rdfs:label": "§ 49 lg 3"
+      "rdfs:label": "§ 49 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49_Lg_4",
@@ -4401,7 +5284,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:BIOTSI_Par_49"
       },
-      "rdfs:label": "§ 49 lg 4"
+      "rdfs:label": "§ 49 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:BIOTSI_Par_49_Lg_5",
@@ -4446,13 +5344,13 @@
       "@id": "estleg:BIOTSI_Par_49_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49¹.",
       "rdfs:label": "§ 49¹. Seaduse § 39 lõike 2 rakendamine",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -4472,20 +5370,22 @@
       "@id": "estleg:BIOTSI_Par_50",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
       "rdfs:label": "§ 50.",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Division_BIOTSI_9_2"
       },
       "estleg:summary": "1(1)Ettekirjutuse täitmata jätmise korral ettekirjutuses määratud tähtajaks on järelevalvet teostaval isikul õigus kohaldada sunnivahendina sunniraha asendustäitmise ja sunniraha seaduses (RT I 2001, 50, 283; 94, 580) sätestatud korras. Ettekirjutuse täitmata jätmise korral ettekirjutuses määratud tähtajaks on järelevalvet teostaval isikul õigus kohaldada sunnivahendina sunniraha asendustäitmise ja sunniraha seaduses (RT I 2001, 50, 283; 94, 580) sätestatud korras. 2(2)Käesoleva paragrahvi lõike",
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4498,12 +5398,6 @@
           "@id": "estleg:BIOTSI_Par_50_v13186015"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_BIOTSI_Par_50_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RavS_Par_102"
@@ -4513,19 +5407,29 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_BIOTSI_Par_50_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:BIOTSI_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_biotsiidiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
       "rdfs:label": "§ 52. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Biotsiidiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:BIOTSI_Map_2026"
+        "@id": "estleg:BIOTSI_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",

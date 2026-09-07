@@ -5,6 +5,27 @@ It names the load surfaces, the write vs derived artifacts, and the
 query paths. It does not replace `AGENTS.md` (working conventions) or
 `docs/SCHEMA_REFERENCE.md` (T-Box / SPARQL).
 
+## Code / data distribution (#480)
+
+**Decision: keep-LFS, release-asset-first.** This is the executed
+choice, not a follow-up.
+
+- **Consumer path:** GitHub Release `v1.0.0` assets
+  (`combined_ontology.jsonld.gz` and the other combined dumps). That is
+  what `metadata.jsonld` `dcat:downloadURL`s cite.
+- **Contributor / CI path:** the same files stay in this git tree via
+  Git LFS (`.gitattributes`) so `pytest`, `validate_all`, and
+  `estleg_client.load_law` work on a clone.
+- **Rejected:** (a) a second data remote — extra operational surface
+  once the release exists. (c) `git lfs migrate` history rewrite —
+  invalidates every existing clone and does not shrink already-pushed
+  blobs. (b-prune) dropping regenerable LFS blobs from git — would
+  break CI and `load_law` on a fresh clone.
+
+Clone size (~2.4 GB) is an accepted cost of keeping CI and the Python
+client on the same tree. The ticket's "measurably smaller clone" goal
+is declined.
+
 ## Identity
 
 - **Namespace:** `https://w3id.org/estleg/` (slash). Compact CURIE
@@ -21,7 +42,7 @@ query paths. It does not replace `AGENTS.md` (working conventions) or
 | Surface | What you load | Use for |
 |---|---|---|
 | Combined-only | `krr_outputs/combined_ontology.jsonld` | Law graph + overlay nodes + typed stubs. **No** provision-version text (`hasVersion` is stripped). |
-| Full public RDF | combined + `PUBLIC_LOAD_SUBDIRS` (`eelnoud`, `riigikohus`, `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`, `provision_versions`, `annotations`, `harmonisation`, `regulations`) + `data/ehak/` | Full bodies, point-in-time, KOV provisions. Seadusloome / Jena path. |
+| Full public RDF | combined + `PUBLIC_LOAD_SUBDIRS` (`eelnoud`, `riigikohus`, `kohtud` (sample, `estleg:isSampleData`), `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`, `provision_versions`, `annotations`, `harmonisation`, `regulations`) + `data/ehak/` | Full bodies, point-in-time, KOV provisions. Seadusloome / Jena path. |
 | Retrieval projection | `krr_outputs/retrieval/` JSONL (derived, not SHACL) | RAG / untruncated § text as of a date. |
 
 Combined is **closed via stubs** (`estleg:isStubNode`). Class queries on
@@ -71,6 +92,20 @@ are a documented two-surface policy, not a bug.
 They are **not interchangeable**. MCP truncates legal text; combined
 cannot answer `as_of` provision text; SPARQL can join corpora MCP does
 not expose as tools.
+
+## v1 residuals (accepted, not blocking close)
+
+Still-open leftovers after `v1.0.0` (do not treat these as shipped):
+
+- `#473` Zenodo DOI — GitHub Release exists; no DOI yet.
+- `#516` w3id.org PURL — **done**. PR
+  <https://github.com/perma-id/w3id.org/pull/6575> merged 2026-08-19:
+  `https://w3id.org/estleg/` 302-redirects to the repository and
+  `https://w3id.org/estleg/1.0.0` 302-redirects to the tagged release
+  (`releases/tag/v1.0.0`). Content negotiation (RDF vs HTML per `Accept`)
+  is **not** live — that is `#728`.
+
+New work should not invent a sixth load surface.
 
 ## What not to change without a MAJOR version
 

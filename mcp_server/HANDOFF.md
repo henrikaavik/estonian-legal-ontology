@@ -1,6 +1,7 @@
 # estleg-mcp — handoff / where this stands
 
-_Snapshot: 2026-08-18. Matches `main` (`estleg-mcp` 0.1.0) and the live remote._
+_Snapshot: 2026-09-04. Matches `main` (`estleg-mcp` 0.1.0); the live remote
+still runs the pre-#678 build until it is redeployed._
 
 ## Goal
 
@@ -44,6 +45,41 @@ PR [#666](https://github.com/henrikaavik/estonian-legal-ontology/pull/666)
   (`GET /healthz` → `ok`).
 - Client config is in [README.md](README.md) (stdio and the remote `url` form).
 
+### 2026-09-04 — corpus drift repaired (#678, #680)
+
+Three regressions caused by upstream changes to the corpus and the scripts
+tree, all of which failed **silently** (no error, just empty or wrong output):
+
+- **#678 — provision detection was dark.** `data._is_provision` still required
+  the per-law `estleg:LegalProvision_<abbrev>` subclass, but since issue #434
+  the generators stamp the bare `estleg:LegalProvision` (KarS: 532 bare, 0
+  prefixed). `get_provision`, `provision_history`, `who_references`,
+  `references_of`, `court_decisions_for_law`, `competent_authority_for_law`
+  and every `num_provisions` count returned nothing. Same bug in the
+  regulation section counter (`estleg:Regulation_` prefix), which reported 0
+  sections for all ~15k määrused. Detection now accepts the bare class, the
+  municipal `estleg:KovProvision`, and the legacy prefixes. To stop it
+  recurring quietly: `data.provision_detection_check()` counts KarS's sections,
+  `server.main()` aborts on a zero count (opt out with
+  `ESTLEG_ALLOW_EMPTY_PROVISIONS=1`), and `layers_available()` carries a
+  `provision_detection` row with the live count.
+- **#680 — `rt_url` could return a foreign host.** It fell back to
+  `owl:sameAs` with no host check, so KarS and VÕS (no `dcterms:source`, a
+  Wikidata `owl:sameAs`) served a `wikidata.org` URL under a field documented
+  as the official riigiteataja.ee URL. `rt_url` is now guarded to
+  riigiteataja.ee and its subdomains, returning `""` otherwise, and
+  `data.external_ids()` surfaces the Wikidata IRI instead (wired into
+  `get_law` and `search_laws`). Census over the 1,120 INDEX laws: 984 have an
+  RT `dcterms:source`, 134 have no source at all, 2 (KarS, VÕS) previously
+  leaked Wikidata.
+- **EuroVoc keyword expansion was empty.** `_eurovoc_keywords_by_id` read the
+  `EUROVOC_DOMAINS` table from `scripts/classify_eurovoc.py`, which issue #472
+  reduced to a runpy shim; the table lives in `src/estleg/classify_eurovoc.py`.
+  It now tries the package path first and falls back to `scripts/`, still
+  parsing with `ast` rather than importing.
+
+Suite: 19 failing tests before, 0 after (104 passed, 1 skipped).
+
 ## Next steps
 
 1. Point remaining local clients (Cursor on Mac + Windows, Copilot) at
@@ -54,6 +90,17 @@ PR [#666](https://github.com/henrikaavik/estonian-legal-ontology/pull/666)
    on boot; redeploy after corpus releases).
 
 ## Known gaps / follow-ups
+
+- **KarS / VÕS have no riigiteataja source** in the ontology, so `get_law`,
+  `get_provision` and `sanctions_for_law` return `rt_url: ""` for them (their
+  Wikidata IRI comes back under `external_ids`). Restoring `dcterms:source`
+  on those act nodes is a **producer-side** ticket, not an MCP one; 134 acts
+  in total have no source. The MCP contract tests pin PS / LS for the
+  riigiteataja citation assertions until then.
+- **371 act nodes carry an official English-text ELI** under
+  `estleg:officialEnglishText` (e.g. `https://www.riigiteataja.ee/en/eli/…`).
+  No tool surfaces it today; `external_ids` deliberately covers only non-RT
+  identifiers. Cheap to add to `get_law` if an English citation is wanted.
 
 - **Semantic search** is not in v1: `similarity_index.json` and
   `combined_ontology.jsonld` ship as Git-LFS pointers, so a semantic tool needs

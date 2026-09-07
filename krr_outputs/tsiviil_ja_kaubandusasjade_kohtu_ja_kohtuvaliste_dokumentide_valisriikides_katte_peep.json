@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TKKKDVKKU_Map_2026",
+      "@id": "estleg:TKKKDVKKU_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Tsiviil- ja kaubandusasjade kohtu- ja kohtuväliste dokumentide välisriikides kätteandmise konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25036.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/25036.xml"
       },
       "estleg:kehtiv": {
@@ -36,16 +32,27 @@
           "@id": "http://eurovoc.europa.eu/10"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_tsiviil_ja_kaubandusasjade_kohtu_ja_kohtuvaliste_dokumentide_valisriikides_katte",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/10"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        },
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -78,13 +85,13 @@
       "@id": "estleg:TKKKDVKKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tsiviil_ja_kaubandusasjade_kohtu_ja_kohtuvaliste_dokumentide_valisriikides_katte"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ühineda juurdelisatud tsiviil- ja kaubandusasjade kohtu- ja kohtuväliste dokumen...]",
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjade kohtu- ja kohtuväliste dokumentide välisriikides kätteandmise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TKKKDVKKU_Map_2026"
+        "@id": "estleg:TKKKDVKKU_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud , mis on alla kirjutatud 1965. aasta 15. novembril Haagis.",
       "estleg:legalText": "Ühineda juurdelisatud , mis on alla kirjutatud 1965. aasta 15. novembril Haagis.",
@@ -93,11 +100,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TKKKDVKKU_Par_1_Lg_Unknown_1"
+          "@id": "estleg:TKKKDVKKU_Par_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -109,17 +118,21 @@
           "@id": "estleg:rahvusvahelise_kohtumenetluse_lihtsustam_Par_1"
         },
         {
-          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis__Par_1"
+          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_1"
         }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TKKKDVKKU_Par_1_Lg_Unknown_1",
+      "@id": "estleg:TKKKDVKKU_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -133,13 +146,13 @@
       "@id": "estleg:TKKKDVKKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tsiviil_ja_kaubandusasjade_kohtu_ja_kohtuvaliste_dokumentide_valisriikides_katte"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Ühinemisel määrata:1) konventsiooni artikli 2 alusel keskasutuseks Justiitsminis...]",
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjade kohtu- ja kohtuväliste dokumentide välisriikides kätteandmise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TKKKDVKKU_Map_2026"
+        "@id": "estleg:TKKKDVKKU_Map"
       },
       "estleg:summary": "Ühinemisel määrata:1) konventsiooni artikli 2 alusel keskasutuseks Justiitsministeerium;2) konventsiooni artikli 6 alusel teatisi koostavateks asutusteks kohtud.",
       "estleg:legalText": "Ühinemisel määrata:1) konventsiooni artikli 2 alusel keskasutuseks Justiitsministeerium;2) konventsiooni artikli 6 alusel teatisi koostavateks asutusteks kohtud.",
@@ -147,7 +160,9 @@
         "@id": "estleg:Cluster_TKKKDVKKU_default"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -162,7 +177,7 @@
           "@id": "estleg:VKKLKAPKOATK_Par_2"
         },
         {
-          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis__Par_2"
+          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_2"
         }
       ],
       "estleg:competentAuthority": [
@@ -175,19 +190,23 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TKKKDVKKU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tsiviil_ja_kaubandusasjade_kohtu_ja_kohtuvaliste_dokumentide_valisriikides_katte"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [Ühinemisel deklareerida: 1) Eesti Vabariik on vastu artikli 10 punktis c nimetat...]",
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjade kohtu- ja kohtuväliste dokumentide välisriikides kätteandmise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TKKKDVKKU_Map_2026"
+        "@id": "estleg:TKKKDVKKU_Map"
       },
       "estleg:summary": "Ühinemisel deklareerida: 1) Eesti Vabariik on vastu artikli 10 punktis c nimetatud edastusviisile; 2) artikli 15 alusel, et kohus võib nimetatud tingimustel otsuse teha; 3) artikli 16 3. lõike alusel ajavahemikuks kolm aastat.",
       "estleg:legalText": "Ühinemisel deklareerida: 1) Eesti Vabariik on vastu artikli 10 punktis c nimetatud edastusviisile; 2) artikli 15 alusel, et kohus võib nimetatud tingimustel otsuse teha; 3) artikli 16 3. lõike alusel ajavahemikuks kolm aastat.",
@@ -195,7 +214,9 @@
         "@id": "estleg:Cluster_TKKKDVKKU_default"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -215,7 +236,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

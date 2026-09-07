@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:EMTAS_Map_2026",
+      "@id": "estleg:EMTAS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Eesti Muusika- ja Teatriakadeemia seadus teemakaardistus",
       "dc:source": "Eesti Muusika- ja Teatriakadeemia seadus",
-      "dcterms:title": "Eesti Muusika- ja Teatriakadeemia seadus",
+      "dcterms:title": [
+        {
+          "@value": "Eesti Muusika- ja Teatriakadeemia seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Estonian Academy of Music and Theatre Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072025012.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/112072025012.xml"
       },
       "estleg:kehtiv": {
@@ -48,16 +53,39 @@
           "@id": "http://eurovoc.europa.eu/68"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/668"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-10-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/517072025004"
       }
     },
     {
@@ -90,13 +118,13 @@
       "@id": "estleg:EMTAS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Reguleerimisala ja kohaldamisala",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Käesolevas seaduses sätestatakse Eesti Muusika- ja Teatriakadeemia õiguslik seisund, eesmärk ja ülesanded, tegevuse alused ning juhtorganid. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:legalText": "(1) Käesolevas seaduses sätestatakse Eesti Muusika- ja Teatriakadeemia õiguslik seisund, eesmärk ja ülesanded, tegevuse alused ning juhtorganid. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
@@ -164,13 +192,13 @@
       "@id": "estleg:EMTAS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Eesti Muusika- ja Teatriakadeemia õiguslik seisund, eesmärk ja ülesanded",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Eesti Muusika- ja Teatriakadeemia (edaspidi akadeemia) on 1919. aasta 28. septembril asutatud Tallinna Kõrgema Muusikakooli järjepidevuse kandja. (2) Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Akadeemia on integreeritud teadus-, arendus-, õppe-, loome- ja kultuuriasutus. Akadeemia eesmärk on panustada rahvusvahelise kõrgetasemelise teadus-, õppe-, arendus- ja loometööga ning sellele",
       "estleg:legalText": "(1) Eesti Muusika- ja Teatriakadeemia (edaspidi akadeemia) on 1919. aasta 28. septembril asutatud Tallinna Kõrgema Muusikakooli järjepidevuse kandja. (2) Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Akadeemia on integreeritud teadus-, arendus-, õppe-, loome- ja kultuuriasutus. Akadeemia eesmärk on panustada rahvusvahelise kõrgetasemelise teadus-, õppe-, arendus- ja loometööga ning sellele tuginevate uuenduslike teenustega ühiskonna kestlikku arengusse ning rahva heaolu kasvu. (4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks akadeemia: pakub teadus-, arendus- ja loometegevusele tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel muusika ja teatrikunsti ning nendega seotud valdkondades; edendab muusikat ja teatrikunsti ning nendega seotud valdkondi, hoolitseb nende valdkondade järelkasvu ja elukestva õppe võimaluste tagamise eest ning osutab õppe-, loome-, teadus- ja arendustegevusel põhinevaid avalikke teenuseid; teeb muusika- ja teatrihariduse edendamisel koostööd teiste õppe- ja muude asutustega, toetades loova mõtteviisi levikut ning eesti keele ja kultuuri kestmist.",
@@ -192,8 +220,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -214,7 +246,7 @@
           "@id": "estleg:TalUKS_Par_2"
         },
         {
-          "@id": "estleg:TÜKS_Par_2"
+          "@id": "estleg:TUKS_Par_2"
         }
       ],
       "estleg:targetGroupConcept": [
@@ -224,7 +256,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_2_Lg_1",
@@ -250,7 +286,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_2_Lg_3",
@@ -276,19 +324,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 4"
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Akadeemia juhtimine",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Akadeemiat juhivad nõukogu, senat ja rektor. (2) Nõukogu on akadeemia juhtorgan, kes vastutab akadeemia pikaajalise ja kestliku arengu ning oluliste majandus-, finants- ja varaga seotud otsuste tegemise eest, tagades akadeemia eesmärkide saavutamise. (3) Senat on akadeemia akadeemiline otsustuskogu, kes vastutab akadeemia teadus-, arendus-, loome- ja õppetegevuse eest ning tagab selle kõrge kvaliteedi. (4) Rektor on akadeemia seaduslik esindaja, kes lähtub akadeemia juhtimisel akadeemia",
       "estleg:legalText": "(1) Akadeemiat juhivad nõukogu, senat ja rektor. (2) Nõukogu on akadeemia juhtorgan, kes vastutab akadeemia pikaajalise ja kestliku arengu ning oluliste majandus-, finants- ja varaga seotud otsuste tegemise eest, tagades akadeemia eesmärkide saavutamise. (3) Senat on akadeemia akadeemiline otsustuskogu, kes vastutab akadeemia teadus-, arendus-, loome- ja õppetegevuse eest ning tagab selle kõrge kvaliteedi. (4) Rektor on akadeemia seaduslik esindaja, kes lähtub akadeemia juhtimisel akadeemia põhikirjast, arengukavast, eelarvest ja teistest strateegilistest dokumentidest.",
@@ -382,13 +439,13 @@
       "@id": "estleg:EMTAS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Nõukogu",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Nõukogu: võtab vastu akadeemia põhikirja; võtab vastu akadeemia arengukava; võtab vastu akadeemia eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; otsustab rektori ettepanekul kinnisvara omandamise, võõrandamise, piiratud asjaõigusega koormamise ja akadeemiale laenu võtmise; täidab teisi seaduse või akadeemia põhikirjaga talle pandud ülesandeid. (2) Nõukogu koosseisu kuulub seitse liiget, kellest: kolm liiget nimetab senat akadeemia põhikirjas sätestatud korras;",
       "estleg:legalText": "(1) Nõukogu: võtab vastu akadeemia põhikirja; võtab vastu akadeemia arengukava; võtab vastu akadeemia eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; otsustab rektori ettepanekul kinnisvara omandamise, võõrandamise, piiratud asjaõigusega koormamise ja akadeemiale laenu võtmise; täidab teisi seaduse või akadeemia põhikirjaga talle pandud ülesandeid. (2) Nõukogu koosseisu kuulub seitse liiget, kellest: kolm liiget nimetab senat akadeemia põhikirjas sätestatud korras; ühe liikme nimetab Eesti Teaduste Akadeemia; kolm liiget nimetab valdkonna eest vastutav minister isikute hulgast, kellel on nõukogu liikme kohustuste täitmiseks ja akadeemia ühiskonnaga sidustamiseks vajalikud teadmised akadeemia tegevusvaldkondades, majanduses või ettevõtluses ning laitmatu reputatsioon. (3) Üks isik saab olla nõukogusse nimetatud ainult ühel käesoleva paragrahvi lõikes 2 toodud alusel. Käesoleva paragrahvi lõike 2 punkti 2 või 3 alusel nimetatavaks nõukogu liikmeks ei saa olla Eesti Teaduste Akadeemia president, asepresident ega peasekretär, valdkonna eest vastutava ministeeriumi minister ega kantsler, akadeemia töötaja ega teise Eesti ülikooli juhtorgani liige. (4) Nõukogu koosseisu määrab viieks aastaks Vabariigi Valitsus korraldusega valdkonna eest vastutava ministri ettepanekul. (5) Nõukogu liikme nimetanud asutus, juhtorgan või isik võib enda nimetatud liikme põhjendatud juhul enne tema volituste lõppu tagasi kutsuda. Nõukogu liikme tagasikutsumisel või omal soovil tagasiastumisel nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
@@ -413,8 +470,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -436,7 +497,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_4_Lg_1",
@@ -462,7 +527,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_4_Lg_3",
@@ -475,7 +552,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3"
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:itemNumber": "2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_4_Lg_4",
@@ -488,7 +578,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 4"
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_4_Lg_5",
@@ -501,19 +600,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 5"
+      "rdfs:label": "§ 4 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Senat",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Senat: teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt akadeemia põhikirjale; kehtetu - esitab nõukogule vastuvõtmiseks põhikirja; võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; täidab teisi seaduse või akadeemia põhikirjaga talle pandud ülesandeid. (2) Kui senat kasutab käesoleva paragrahvi lõike 1 punktis 4",
       "estleg:legalText": "(1) Senat: teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt akadeemia põhikirjale; kehtetu - esitab nõukogule vastuvõtmiseks põhikirja; võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; täidab teisi seaduse või akadeemia põhikirjaga talle pandud ülesandeid. (2) Kui senat kasutab käesoleva paragrahvi lõike 1 punktis 4 sätestatud vetoõigust, siis nõukogu otsus ei jõustu ja pärast akadeemia põhikirjas sätestatud menetluse läbimist otsustab nõukogu põhikirja, eelarve või arengukava vastuvõtmise lõplikult. (3) Senati koosseisu kuuluvad: rektor, kes on senati esimees; teised rektoraadi liikmed; üliõpilaste esindajad, kes moodustavad vähemalt ühe viiendiku senati koosseisust; teised põhikirjas nimetatud isikud. (4) Senati moodustamise tingimused ja kord sätestatakse akadeemia põhikirjas.",
@@ -535,8 +646,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -564,7 +679,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_5_Lg_1",
@@ -577,7 +696,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_5_Lg_2",
@@ -590,7 +716,8 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": "4"
     },
     {
       "@id": "estleg:EMTAS_Par_5_Lg_3",
@@ -603,7 +730,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 3"
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_5_Lg_4",
@@ -622,13 +761,13 @@
       "@id": "estleg:EMTAS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Rektor",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Rektor: esindab akadeemiat ja teeb akadeemia nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; vastutab akadeemia üldseisundi ja arengu, eelarve täitmise ning rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab nõukogu ja senati määruste ja otsuste täitmise; omab ühekordset vetoõigust senati määruse või otsuse suhtes; tagab akadeemia põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; on aruandekohustuslik nõukogu ja senati ees; täidab",
       "estleg:legalText": "(1) Rektor: esindab akadeemiat ja teeb akadeemia nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; vastutab akadeemia üldseisundi ja arengu, eelarve täitmise ning rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab nõukogu ja senati määruste ja otsuste täitmise; omab ühekordset vetoõigust senati määruse või otsuse suhtes; tagab akadeemia põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; on aruandekohustuslik nõukogu ja senati ees; täidab teisi akadeemia põhikirja või muude õigusaktidega talle pandud ülesandeid ning otsustab akadeemia tegevusega seotud küsimusi, mis ei ole antud nõukogu ega senati pädevusse. (2) Rektori valib valimiskogu kuni viieks aastaks akadeemia põhikirjas sätestatud korras. Valimiskogu liikmeteks on nõukogu ja senati liikmed ning teised akadeemia põhikirjas nimetatud isikud. (3) Akadeemia rektori ametikohale võib kandideerida isik, kes on või on olnud valitud professori ametikohale. (4) Nõukogu esimees sõlmib rektoriga lepingu, millega määratakse kindlaks rektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. (5) Nõukogul ja senatil on õigus avaldada rektorile umbusaldust ning rektor vabastatakse enne lepingu tähtaja möödumist ametist, kui selle otsuse poolt on kaks kolmandikku mõlema kogu koosseisust. (6) Rektori volitused lõpevad lepingu tähtaja möödumisel, omal soovil ametist tagasiastumisel või enne lepingu tähtaja möödumist ametist vabastamisel põhikirjas sätestatud korras. (7) Kui rektori volitused lõpevad ja volituste lõppemise ajaks ei ole valitud uut rektorit, määrab nõukogu rektori kohusetäitja kuni uue rektori valimiseni, kuid mitte kauemaks kui üheks aastaks. Kohusetäitjaga sõlmitavale lepingule kohaldatakse käesoleva paragrahvi lõikes 4 sätestatut. (8) Rektoriks valitud akadeemia töötajal on pärast rektori volituste lõppemist õigus jätkata töötamist samaväärsel ametikohal, kus ta akadeemias töötas.",
@@ -662,8 +801,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -685,7 +828,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_1",
@@ -698,7 +845,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_2",
@@ -711,7 +867,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 2"
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_3",
@@ -724,7 +889,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 3"
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_4",
@@ -737,7 +914,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 4"
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_5",
@@ -750,7 +936,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 5"
+      "rdfs:label": "§ 6 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_6",
@@ -763,7 +961,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 6"
+      "rdfs:label": "§ 6 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_6_Lg_7",
@@ -789,19 +996,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 8"
+      "rdfs:label": "§ 6 lg 8",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Akadeemia juhtorganite õigusaktid",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (2) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (3) Rektor annab oma pädevuse piires käskkirju ja korraldusi.",
       "estleg:legalText": "(1) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (2) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (3) Rektor annab oma pädevuse piires käskkirju ja korraldusi.",
@@ -885,13 +1101,13 @@
       "@id": "estleg:EMTAS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Akadeemia vara ja rahastamine",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Akadeemia on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja akadeemia põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Akadeemia omandab ja kasutab oma vara akadeemia tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse.",
       "estleg:legalText": "(1) Akadeemia on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja akadeemia põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Akadeemia omandab ja kasutab oma vara akadeemia tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse. (3) Akadeemia arendab, säilitab ja täiendab kultuuripärandi kaitseks ja oma ülesannete täitmiseks akadeemilise ja ajaloolise väärtusega kogusid, raamatukogu ja arhiive, tagades neile teadus- ja õppetöö eesmärgil vaba juurdepääsu. (4) Akadeemia valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: kinnisvara on õigus omandada, võõrandada või koormata piiratud asjaõigusega akadeemia rektori ettepanekul tehtud nõukogu otsusel ning nõukogu kehtestatud tingimustel ja korras; akadeemial ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; akadeemial on õigus asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; akadeemial ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi; akadeemial on õigus rektori ettepanekul tehtud nõukogu otsusel omatulude arvelt tagada akadeemia poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti akadeemia eelarveaasta omatuludest. (5) Akadeemia tegevust rahastatakse riigieelarvest samadel alustel teiste avalik-õiguslike ülikoolidega, samuti õppekulude hüvitamisest ja akadeemia põhitegevusest tulenevate tasuliste teenuste osutamisest saadud vahenditest ning muudest allikatest.",
@@ -916,8 +1132,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -938,7 +1158,7 @@
           "@id": "estleg:TalUKS_Par_8"
         },
         {
-          "@id": "estleg:TÜKS_Par_8"
+          "@id": "estleg:TUKS_Par_8"
         }
       ],
       "estleg:normativeType": {
@@ -951,7 +1171,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_8_Lg_1",
@@ -964,7 +1188,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 1"
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_8_Lg_2",
@@ -1003,7 +1239,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 4"
+      "rdfs:label": "§ 8 lg 4",
+      "estleg:itemNumber": "5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_8_Lg_5",
@@ -1016,19 +1265,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 5"
+      "rdfs:label": "§ 8 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Üleminekusätted",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "(1) Akadeemia kuratooriumi volitused lõpevad 2019. aasta 31. detsembril. (2) Akadeemia ülikooliseaduse alusel moodustatud nõukogu ja Eesti Teaduste Akadeemia esitavad käesoleva seaduse alusel moodustatava nõukogu liikmed valdkonna eest vastutavale ministrile hiljemalt 2019. aasta 1. oktoobriks. (3) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu määrab Vabariigi Valitsus korraldusega, arvestades, et nõukogu volitused algavad 2020. aasta 1. jaanuaril.",
       "estleg:legalText": "(1) Akadeemia kuratooriumi volitused lõpevad 2019. aasta 31. detsembril. (2) Akadeemia ülikooliseaduse alusel moodustatud nõukogu ja Eesti Teaduste Akadeemia esitavad käesoleva seaduse alusel moodustatava nõukogu liikmed valdkonna eest vastutavale ministrile hiljemalt 2019. aasta 1. oktoobriks. (3) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu määrab Vabariigi Valitsus korraldusega, arvestades, et nõukogu volitused algavad 2020. aasta 1. jaanuaril. (4) Akadeemia ülikooliseaduse alusel moodustatud nõukogu täidab alates 2020. aasta 1. jaanuarist käesoleva seadusega senatile pandud ülesandeid. Akadeemia ülikooliseaduse alusel moodustatud nõukogu volitused kehtivad kuni käesolevas seaduses nimetatud senati moodustamiseni, kuid mitte kauem kui ülikooliseaduse alusel moodustatud nõukogu volituste kehtivuse lõpuni. (5) Akadeemia ülikooliseaduse alusel moodustatud juhtorganid täidavad kuni 2019. aasta 31. detsembrini ülikooliseadusega neile pandud ülesandeid. (6) Akadeemia põhikiri ja teised õigusaktid viiakse käesoleva seadusega kooskõlla hiljemalt 2020. aasta 1. märtsiks. (7) Akadeemia enne käesoleva seaduse jõustumist valitud rektori volitused kehtivad kuni volituste lõppemiseni.",
@@ -1059,8 +1317,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1081,7 +1343,7 @@
           "@id": "estleg:TalUKS_Par_9"
         },
         {
-          "@id": "estleg:TÜKS_Par_14_1"
+          "@id": "estleg:TUKS_Par_14_1"
         }
       ],
       "estleg:competentAuthority": [
@@ -1097,7 +1359,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_9_Lg_1",
@@ -1136,7 +1402,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:EMTAS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 3"
+      "rdfs:label": "§ 9 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EMTAS_Par_9_Lg_4",
@@ -1194,13 +1469,13 @@
       "@id": "estleg:EMTAS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_muusika_ja_teatriakadeemia_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Seaduse jõustumine",
       "estleg:sourceAct": "Eesti Muusika- ja Teatriakadeemia seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EMTAS_Map_2026"
+        "@id": "estleg:EMTAS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2019. aasta 1. septembril.",
       "estleg:legalText": "Käesolev seadus jõustub 2019. aasta 1. septembril.",
@@ -1209,7 +1484,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:EMTAS_Par_10_Lg_Unknown_1"
+          "@id": "estleg:EMTAS_Par_10_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1219,7 +1494,7 @@
       ]
     },
     {
-      "@id": "estleg:EMTAS_Par_10_Lg_Unknown_1",
+      "@id": "estleg:EMTAS_Par_10_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

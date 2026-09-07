@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ATSS_Map_2026",
+      "@id": "estleg:ATSS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Asendustäitmise ja sunniraha seadus teemakaardistus",
       "dc:source": "Asendustäitmise ja sunniraha seadus",
-      "dcterms:title": "Asendustäitmise ja sunniraha seadus",
+      "dcterms:title": [
+        {
+          "@value": "Asendustäitmise ja sunniraha seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Substitutional Performance and Non-Compliance Levies Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/120022024002.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/120022024002.xml"
       },
       "estleg:kehtiv": {
@@ -52,16 +57,55 @@
         {
           "@id": "estleg:AmendmentLink_Draft_KAM23_0626_ATSS"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:ATSS_Par_12"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ATSS_Par_5"
+        },
+        {
+          "@id": "estleg:ATSS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:ATSS_Par_8"
+        },
+        {
+          "@id": "estleg:ATSS_Par_8_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        },
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-05-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/512042024001"
       }
     },
     {
@@ -105,10 +149,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ATSS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -134,10 +182,14 @@
       "rdfs:label": "2. peatükk – SUNNIVAHENDI RAKENDAMISE MENETLUS",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ATSS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -163,23 +215,27 @@
       "rdfs:label": "3. peatükk – RAKENDUSSÄTTED",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ATSS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:ATSS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus sätestab asendustäitmise ja sunniraha (edaspidi sunnivahend) mõiste ning sunnivahendi rakendamise menetluse. (2) Käesolevas seaduses sätestatud menetluses võib seadusega ette näha erandeid.",
       "estleg:legalText": "(1) Käesolev seadus sätestab asendustäitmise ja sunniraha (edaspidi sunnivahend) mõiste ning sunnivahendi rakendamise menetluse. (2) Käesolevas seaduses sätestatud menetluses võib seadusega ette näha erandeid.",
@@ -202,15 +258,19 @@
           "@id": "estleg:ATSS_Par_1_v27071"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
       "estleg:hasSanction": [
         {
           "@id": "estleg:Sanction_ATSS_Par_1_coercive_payment"
         }
       ],
-      "estleg:enforcedAtLevel": "state",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      }
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_1_Lg_1",
@@ -223,7 +283,13 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_1_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_1_Lg_2",
@@ -236,19 +302,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Sunnivahendi rakendamise eeldused",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Sunnivahendit rakendatakse, kui haldusorgani ettekirjutus jäetakse hoiatuses märgitud tähtaja jooksul täitmata. (2) Sunnivahendit võib kuni ettekirjutusega taotletava eesmärgi saavutamiseni korduvalt rakendada. Sunnivahendit võib muuta. (3) Sunnivahendit ei rakendata: kohtulahendite täitmise puhul; teenistusliku järelevalve läbiviimisel. (4) Käesolevas seaduses sätestatut ei kohaldata haldusorgani ettekirjutuste täitmisele, millega kohustatakse isikut maksma raha.",
       "estleg:legalText": "(1) Sunnivahendit rakendatakse, kui haldusorgani ettekirjutus jäetakse hoiatuses märgitud tähtaja jooksul täitmata. (2) Sunnivahendit võib kuni ettekirjutusega taotletava eesmärgi saavutamiseni korduvalt rakendada. Sunnivahendit võib muuta. (3) Sunnivahendit ei rakendata: kohtulahendite täitmise puhul; teenistusliku järelevalve läbiviimisel. (4) Käesolevas seaduses sätestatut ei kohaldata haldusorgani ettekirjutuste täitmisele, millega kohustatakse isikut maksma raha.",
@@ -273,7 +346,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -290,7 +365,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_2_Lg_1",
@@ -316,7 +395,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_2_Lg_3",
@@ -342,19 +428,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 4"
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Sunnivahendi rakendamise põhimõtted",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Sunnivahendi rakendamisel antavatele aktidele ja tehtavatele toimingutele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi. (2) Sunnivahendi rakendamist ei käsitata karistusena. (3) Kohustuse täitmise tagamiseks kasutatakse leebeimat sunnivahendit ja -määra, mis eelduste kohaselt on tõhusaimad. Haldusorgan peab valima sunnivahendi, mis isikut võimalikult vähe kahjustades sunnib teda täitma talle ettekirjutusega pandud kohustust.",
       "estleg:legalText": "(1) Sunnivahendi rakendamisel antavatele aktidele ja tehtavatele toimingutele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi. (2) Sunnivahendi rakendamist ei käsitata karistusena. (3) Kohustuse täitmise tagamiseks kasutatakse leebeimat sunnivahendit ja -määra, mis eelduste kohaselt on tõhusaimad. Haldusorgan peab valima sunnivahendi, mis isikut võimalikult vähe kahjustades sunnib teda täitma talle ettekirjutusega pandud kohustust.",
@@ -376,7 +471,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -386,12 +483,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Haldusorgan",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_3_Lg_1",
@@ -430,19 +530,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Ettekirjutus",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Ettekirjutus käesoleva seaduse tähenduses on haldusakt, mis paneb isikule kohustuse teha nõutav tegu või hoiduda keelatud teost. (2) Karistuse määramine ei välista ettekirjutuse täitmise tagamiseks sunnivahendi rakendamist.",
       "estleg:legalText": "(1) Ettekirjutus käesoleva seaduse tähenduses on haldusakt, mis paneb isikule kohustuse teha nõutav tegu või hoiduda keelatud teost. (2) Karistuse määramine ei välista ettekirjutuse täitmise tagamiseks sunnivahendi rakendamist.",
@@ -461,7 +573,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -472,7 +586,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_4_Lg_1",
@@ -485,7 +603,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_4_Lg_2",
@@ -504,13 +631,13 @@
       "@id": "estleg:ATSS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Sunnivahendi adressaat",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Sunnivahendi adressaat on füüsiline isik või eraõiguslik või avalikõiguslik juriidiline isik, keda on ettekirjutusega kohustatud nõutavat tegu tegema või keelatud teost hoiduma. Sunnivahendi adressaat on ka isik, kelle suhtes rakendatakse käesoleva seaduse §-s 12 sätestatud ettekirjutuseta asendustäitmist. Sunnivahendit ei rakendata riigiasutuse suhtes. (2) Kui adressaadi kohustused ei ole temaga lahutamatult seotud, võib sunnivahendit rakendada: käesoleva paragrahvi lõikes 1 nimetatud",
       "estleg:legalText": "(1) Sunnivahendi adressaat on füüsiline isik või eraõiguslik või avalikõiguslik juriidiline isik, keda on ettekirjutusega kohustatud nõutavat tegu tegema või keelatud teost hoiduma. Sunnivahendi adressaat on ka isik, kelle suhtes rakendatakse käesoleva seaduse §-s 12 sätestatud ettekirjutuseta asendustäitmist. Sunnivahendit ei rakendata riigiasutuse suhtes. (2) Kui adressaadi kohustused ei ole temaga lahutamatult seotud, võib sunnivahendit rakendada: käesoleva paragrahvi lõikes 1 nimetatud isiku õigusjärglasele, kui ettekirjutusest tulenev kohustus kehtib ka tema kohta; kolmandale isikule, kes seadusest tulenevalt vastutab sunnivahendi adressaadile ettekirjutusega pandud kohustuse täitmise eest. (3) Käesoleva paragrahvi lõikes 2 nimetatud isiku suhtes on lubatud rakendada sunnivahendit pärast seda, kui ta on ettekirjutuses sisalduvast kohustusest ja sunnivahendi rakendamise võimalusest teada saanud.",
@@ -532,8 +659,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -558,7 +689,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_5_Lg_1",
@@ -576,7 +711,22 @@
         {
           "@id": "estleg:ATSS_Par_12"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_5_Lg_2",
@@ -589,7 +739,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_5_Lg_3",
@@ -602,19 +764,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 3"
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Sunnivahendit rakendav haldusorgan",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "Sunnivahendit rakendab ettekirjutuse teinud haldusorgan, kui seadus ei sätesta teisiti.",
       "estleg:legalText": "Sunnivahendit rakendab ettekirjutuse teinud haldusorgan, kui seadus ei sätesta teisiti.",
@@ -626,7 +800,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ATSS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:ATSS_Par_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -636,7 +810,7 @@
       ]
     },
     {
-      "@id": "estleg:ATSS_Par_6_Lg_Unknown_1",
+      "@id": "estleg:ATSS_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -650,13 +824,13 @@
       "@id": "estleg:ATSS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Hoiatus",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Haldusorgan teeb enne sunnivahendi rakendamist adressaadile kirjaliku hoiatuse, milles peab sisalduma: adressaadi ees- ja perekonnanimi ning aadress või juriidilise isiku nimi ja postiaadress; viide ettekirjutusele, mille täitmist taotletakse; kuupäev, milleni on aega ettekirjutus vabatahtlikult täita (kui ettekirjutus sisaldab kohustust teatud teost hoiduda, ei ole kuupäeva vaja märkida); sunnivahend, mida rakendatakse ettekirjutuse täitmata jätmise korral; hoiatuse teinud haldusorgani",
       "estleg:legalText": "(1) Haldusorgan teeb enne sunnivahendi rakendamist adressaadile kirjaliku hoiatuse, milles peab sisalduma: adressaadi ees- ja perekonnanimi ning aadress või juriidilise isiku nimi ja postiaadress; viide ettekirjutusele, mille täitmist taotletakse; kuupäev, milleni on aega ettekirjutus vabatahtlikult täita (kui ettekirjutus sisaldab kohustust teatud teost hoiduda, ei ole kuupäeva vaja märkida); sunnivahend, mida rakendatakse ettekirjutuse täitmata jätmise korral; hoiatuse teinud haldusorgani nimetus; hoiatuse teinud haldusorgani volitatud ametiisiku allkiri; hoiatuse koostamise kuupäev. (2) Hoiatus võib kaasneda ettekirjutusega või olla tehtud eraldi teatena. (3) Hoiatusega ettekirjutuse vabatahtlikuks täitmiseks antud tähtaeg peab võimaldama sunnivahendi adressaadil kohustus täita. (4) Kui ettekirjutuse täitmiseks on võimalik rakendada mitut sunnivahendit, tuleb märkida nende liigid ja rakendamise järjekord ning rakendamise alustamise kuupäevad. Sunnivahendeid ei tohi hoiatuses kindlaks määrata alternatiivselt ega jätta sunni rakendajale õigust nende vahel valida. Uut sunnivahendit võib haldusorgan rakendada siis, kui esialgse sunnivahendiga ei ole ettekirjutuse täitmist saavutatud. (5) Sunniraha rakendamise hoiatuses märgitakse ettenähtud sunniraha summa. Kui isikut kohustatakse tegema mitut tegu või mitmest teost hoiduma, tuleb sunniraha määrata iga kohustuse kohta eraldi. (6) Asendustäitmise rakendamise hoiatuses märgitakse asendustäitmise kulude eeldatav suurus.",
@@ -687,8 +861,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -705,7 +883,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_7_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_7_Lg_1",
@@ -718,7 +906,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_7_Lg_2",
@@ -731,7 +934,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_7_Lg_3",
@@ -744,7 +954,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_7_Lg_4",
@@ -757,7 +974,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 4"
+      "rdfs:label": "§ 7 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_7_Lg_5",
@@ -770,7 +994,25 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 5"
+      "rdfs:label": "§ 7 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_7_Lg_5_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_7_Lg_6",
@@ -789,13 +1031,13 @@
       "@id": "estleg:ATSS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Sunnivahendi rakendamise lubatavus",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Sunnivahendit on lubatud rakendada, kui adressaadile on tehtud teatavaks ettekirjutus, mis kehtib, ning seda ei ole hoiatuses märgitud tähtaja jooksul täidetud. Erandid sätestab käesoleva seaduse § 12. (2) Sunnivahendi adressaadi põhjendatud taotluse alusel võib ettekirjutuse teinud haldusorgan sunnivahendi rakendamise edasi lükata ja teha uue hoiatuse, milles määrab ettekirjutuse täitmiseks uue tähtaja. Tähtaeg ei tohi olla pikem kui kaks kuud.",
       "estleg:legalText": "(1) Sunnivahendit on lubatud rakendada, kui adressaadile on tehtud teatavaks ettekirjutus, mis kehtib, ning seda ei ole hoiatuses märgitud tähtaja jooksul täidetud. Erandid sätestab käesoleva seaduse § 12. (2) Sunnivahendi adressaadi põhjendatud taotluse alusel võib ettekirjutuse teinud haldusorgan sunnivahendi rakendamise edasi lükata ja teha uue hoiatuse, milles määrab ettekirjutuse täitmiseks uue tähtaja. Tähtaeg ei tohi olla pikem kui kaks kuud. (3) Sunnivahendit ei tohi rakendada, kui: käesoleva paragrahvi lõikes 1 sätestatud sunni rakendamise alused on ära langenud; ettekirjutuse aluseks olnud õigusnorm on tunnistatud kehtetuks; sunnivahendi rakendamine lükatakse edasi; halduskohus peatab sunnivahendi rakendamise halduskohtumenetluse seadustikus ettenähtud korras. (4) Sunnivahendi rakendamata jätmise otsusest teatab sunnivahendi rakendamiseks pädev haldusorgan viivitamata sunnivahendi adressaadile.",
@@ -837,6 +1079,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -855,7 +1101,14 @@
         {
           "@id": "estleg:ATSS_Par_12"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_8_Lg_2",
@@ -868,7 +1121,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 2"
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_8_Lg_3",
@@ -881,7 +1141,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 3"
+      "rdfs:label": "§ 8 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_8_Lg_4",
@@ -900,13 +1167,13 @@
       "@id": "estleg:ATSS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Täitekorraldus",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Kui ettekirjutust ei ole hoiatuses märgitud tähtaja jooksul täidetud, annab sunnivahendit rakendav haldusorgan sunnivahendit haldusorgani nimel vahetult rakendavale isikule kirjaliku täitekorralduse, mis peab sisaldama: ettekirjutuse teinud ja sunnivahendit rakendava haldusorgani nimetuse; sunnivahendit vahetult rakendava isiku ees- ja perekonnanime või juriidilise isiku nime; viite haldusaktile, millega ettekirjutus tehti, ja ettekirjutuse sisu; kinnituse, et hoiatuses märgitud",
       "estleg:legalText": "(1) Kui ettekirjutust ei ole hoiatuses märgitud tähtaja jooksul täidetud, annab sunnivahendit rakendav haldusorgan sunnivahendit haldusorgani nimel vahetult rakendavale isikule kirjaliku täitekorralduse, mis peab sisaldama: ettekirjutuse teinud ja sunnivahendit rakendava haldusorgani nimetuse; sunnivahendit vahetult rakendava isiku ees- ja perekonnanime või juriidilise isiku nime; viite haldusaktile, millega ettekirjutus tehti, ja ettekirjutuse sisu; kinnituse, et hoiatuses märgitud sunnivahendit hakatakse rakendama; adressaadi ees- ja perekonnanime või juriidilise isiku nime; asendustäitmise korral sunnivahendi rakendamise koha; rakendatava sunnivahendi. (2) Adressaadi nõudmisel peab sunnivahendit vahetult rakendav isik esitama talle oma ametitunnistuse ning täitekorralduse.",
@@ -925,8 +1192,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -946,7 +1217,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_9_Lg_1",
@@ -959,7 +1234,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 1"
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_9_Lg_2",
@@ -972,19 +1259,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Sunniraha",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Sunniraha on hoiatuses kindlaksmääratud summa, mille peab adressaat tasuma, kui ta ettekirjutusega pandud kohustust hoiatuses märgitud tähtaja jooksul ei täida. (2) Sunniraha igakordse rakendamise ülemmäära sätestab seadus. (3) Adressaadil on õigus saada sunniraha tasumise kohta tasumist tõendav kviitung.",
       "estleg:legalText": "(1) Sunniraha on hoiatuses kindlaksmääratud summa, mille peab adressaat tasuma, kui ta ettekirjutusega pandud kohustust hoiatuses märgitud tähtaja jooksul ei täida. (2) Sunniraha igakordse rakendamise ülemmäära sätestab seadus. (3) Adressaadil on õigus saada sunniraha tasumise kohta tasumist tõendav kviitung.",
@@ -1006,19 +1305,15 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:ATSS_Par_10_v27071"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_ATSS_Par_10_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -1026,7 +1321,17 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_10_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_10_Lg_1",
@@ -1039,7 +1344,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_10_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_10_Lg_2",
@@ -1052,7 +1370,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 2"
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_10_Lg_2_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_10_Lg_3",
@@ -1065,19 +1398,32 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 3"
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_10_Lg_3_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Asendustäitmine",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Kui adressaat hoiatuses ettenähtud tähtaja jooksul ei täida talle ettekirjutusega pandud kohustust, mis ei ole temaga lahutamatult seotud, võib pädev haldusorgan selle adressaadi kulul täita ise või korraldada selle täitmise kolmanda isiku poolt (asendustäitmine). (2) Kui asendustäitmist viib läbi kolmas isik, võib haldusorgan kohustada adressaati hoiduma asendustäitmise takistamisest. Haldusorgan annab asendustäitmist läbiviivale kolmandale isikule täitekorralduse.",
       "estleg:legalText": "(1) Kui adressaat hoiatuses ettenähtud tähtaja jooksul ei täida talle ettekirjutusega pandud kohustust, mis ei ole temaga lahutamatult seotud, võib pädev haldusorgan selle adressaadi kulul täita ise või korraldada selle täitmise kolmanda isiku poolt (asendustäitmine). (2) Kui asendustäitmist viib läbi kolmas isik, võib haldusorgan kohustada adressaati hoiduma asendustäitmise takistamisest. Haldusorgan annab asendustäitmist läbiviivale kolmandale isikule täitekorralduse.",
@@ -1096,7 +1442,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1110,7 +1458,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_11_Lg_1",
@@ -1123,7 +1475,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_11_Lg_2",
@@ -1136,19 +1500,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 2"
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Asendustäitmise erijuhud",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Asendustäitmist on lubatud rakendada ettekirjutuse, hoiatuse ja täitekorralduseta, kui vahetu oht avalikule julgeolekule või korrale tuleb kõrvaldada viivitamata. (2) Asendustäitmist võib ettekirjutuseta rakendada ka juhul, kui adressaadile ei ole võimalik ettekirjutust õigel ajal teha. (3) Ettekirjutuses näidatud kohustuse täitmiseks võib rakendada asendustäitmist hoiatuse ja täitekorralduseta, kui vahetu oht avalikule julgeolekule või korrale tingib ettekirjutuse kiirendatud täitmise.",
       "estleg:legalText": "(1) Asendustäitmist on lubatud rakendada ettekirjutuse, hoiatuse ja täitekorralduseta, kui vahetu oht avalikule julgeolekule või korrale tuleb kõrvaldada viivitamata. (2) Asendustäitmist võib ettekirjutuseta rakendada ka juhul, kui adressaadile ei ole võimalik ettekirjutust õigel ajal teha. (3) Ettekirjutuses näidatud kohustuse täitmiseks võib rakendada asendustäitmist hoiatuse ja täitekorralduseta, kui vahetu oht avalikule julgeolekule või korrale tingib ettekirjutuse kiirendatud täitmise. (4) Käesoleva paragrahvi lõigetes 1–3 loetletud juhtudel kohaldatakse käesolevas seaduses sätestatud sunnivahendi rakendamise menetlust käesolevas paragrahvis sätestatud erisustega.",
@@ -1196,6 +1572,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1209,7 +1589,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_12_Lg_2",
@@ -1222,7 +1609,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_12_Lg_3",
@@ -1235,7 +1629,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_12_Lg_4",
@@ -1254,13 +1655,13 @@
       "@id": "estleg:ATSS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Asendustäitmise protokoll",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Haldusorgan või tema volitusel asendustäitmist läbi viiv kolmas isik protokollib asendustäitmise toimingu. Adressaadi nõudel antakse talle protokolli ärakiri. (2) Protokoll peab sisaldama: haldusorgani nimetuse, kelle nimel või volitusel protokoll on koostatud; protokolli koostanud isiku ees- ja perekonnanime ning ametinimetuse; adressaadi ees- ja perekonnanime ning aadressi või juriidilise isiku nime ja postiaadressi; asendustäitetoimingu sisu; protokolli koostamise aja ja koha; protokolli",
       "estleg:legalText": "(1) Haldusorgan või tema volitusel asendustäitmist läbi viiv kolmas isik protokollib asendustäitmise toimingu. Adressaadi nõudel antakse talle protokolli ärakiri. (2) Protokoll peab sisaldama: haldusorgani nimetuse, kelle nimel või volitusel protokoll on koostatud; protokolli koostanud isiku ees- ja perekonnanime ning ametinimetuse; adressaadi ees- ja perekonnanime ning aadressi või juriidilise isiku nime ja postiaadressi; asendustäitetoimingu sisu; protokolli koostamise aja ja koha; protokolli koostanud isiku allkirja.",
@@ -1279,8 +1680,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1290,7 +1695,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Protokoll",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1298,7 +1702,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_13_Lg_1",
@@ -1311,7 +1719,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_13_Lg_2",
@@ -1324,19 +1741,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Asendustäitmise kulud",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Asendustäitmise kulude hulka kuuluvad: asendustäitmise läbi viinud haldusorgani kulud; asendustäitmise läbi viinud kolmandale isikule makstav tasu; hüvitis isikule, kellele on õiguspäraselt tekitatud kahju asendustäitmist rakendades. (2) Kui asendustäitmise tegelikud kulud oluliselt ületavad asendustäitmise rakendamise hoiatuses märgitud kulusid, peab sunnivahendit rakendav haldusorgan sellest kulude suurenemise selgumisel viivitamatult adressaadile teatama.",
       "estleg:legalText": "(1) Asendustäitmise kulude hulka kuuluvad: asendustäitmise läbi viinud haldusorgani kulud; asendustäitmise läbi viinud kolmandale isikule makstav tasu; hüvitis isikule, kellele on õiguspäraselt tekitatud kahju asendustäitmist rakendades. (2) Kui asendustäitmise tegelikud kulud oluliselt ületavad asendustäitmise rakendamise hoiatuses märgitud kulusid, peab sunnivahendit rakendav haldusorgan sellest kulude suurenemise selgumisel viivitamatult adressaadile teatama.",
@@ -1355,7 +1784,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1374,7 +1805,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_14_Lg_1",
@@ -1387,7 +1822,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_14_Lg_2",
@@ -1400,19 +1844,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 2"
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Asendustäitmise kulude ja sunniraha sissenõudmine",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Asendustäitmise kulud ja sunniraha nõutakse sisse täitemenetluse seadustikus sätestatud korras nagu kohtuotsusest tulenev rahaline nõue. Võlgnikuks on adressaat ja sissenõudjaks sunnivahendit rakendanud haldusorgan. (1¹) Kaitseressursside Ameti määratud ja sissenõutavaks muutunud sunniraha nõude sissenõudja on Maksu- ja Tolliamet. (2) Sisse nõutakse asendustäitmise tegelikult kantud kulud, seda ka siis, kui nad ületavad hoiatuses märgitud eeldatava summa.",
       "estleg:legalText": "(1) Asendustäitmise kulud ja sunniraha nõutakse sisse täitemenetluse seadustikus sätestatud korras nagu kohtuotsusest tulenev rahaline nõue. Võlgnikuks on adressaat ja sissenõudjaks sunnivahendit rakendanud haldusorgan. (1¹) Kaitseressursside Ameti määratud ja sissenõutavaks muutunud sunniraha nõude sissenõudja on Maksu- ja Tolliamet. (2) Sisse nõutakse asendustäitmise tegelikult kantud kulud, seda ka siis, kui nad ületavad hoiatuses märgitud eeldatava summa. Asendustäitmise kulude arvutamise korra ja asendustäitmise läbi viinud kolmandale isikule makstava tasu piirmäärad ning tasu maksmise korra (3) Erandina võib sunnivahendit rakendav haldusorgan asendustäitmise eeldatavad kulud enne asendustäitmise tegelikku algust kindlaks määrata ning ettemaksuna sisse nõuda. Pärast asendustäitmise läbiviimist tehakse tasaarveldus",
@@ -1437,8 +1888,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1454,12 +1909,6 @@
           "@id": "estleg:ATSS_Par_15_v120022024002"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_ATSS_Par_15_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_153649_Par_7"
@@ -1478,7 +1927,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_15_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_15_Lg_1",
@@ -1491,7 +1950,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_15_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_15_Lg_1_1",
@@ -1504,7 +1978,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1¹"
+      "rdfs:label": "§ 15 lg 1¹",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ATSS_Par_15_Lg_1_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:ATSS_Par_15_Lg_2",
@@ -1517,7 +2006,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_15_Lg_3",
@@ -1530,19 +2028,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 3"
+      "rdfs:label": "§ 15 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Adressaadi õiguste kaitse",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "(1) Adressaat võib halduskohtumenetluse seadustikus sätestatud korras pöörduda kaebuse, esialgse õiguskaitse taotluse või kahju hüvitamise nõudega halduskohtu poole, kui ta leiab, et sunnivahendi rakendamisega on rikutud või võidakse rikkuda tema õigusi. (2) Kaebuse esitamine ei peata ettekirjutuse täitmist ega sunnivahendi rakendamist, kui kohus ei otsusta teisiti.",
       "estleg:legalText": "(1) Adressaat võib halduskohtumenetluse seadustikus sätestatud korras pöörduda kaebuse, esialgse õiguskaitse taotluse või kahju hüvitamise nõudega halduskohtu poole, kui ta leiab, et sunnivahendi rakendamisega on rikutud või võidakse rikkuda tema õigusi. (2) Kaebuse esitamine ei peata ettekirjutuse täitmist ega sunnivahendi rakendamist, kui kohus ei otsusta teisiti.",
@@ -1561,7 +2066,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1581,7 +2088,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_16_Lg_1",
@@ -1594,7 +2105,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_16_Lg_2",
@@ -1607,19 +2125,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ATSS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ATSS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17.",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ATSS_3"
@@ -1633,13 +2160,13 @@
       "@id": "estleg:ATSS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -1659,13 +2186,13 @@
       "@id": "estleg:ATSS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. [Kehtetu -]",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1685,13 +2212,13 @@
       "@id": "estleg:ATSS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20.",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ATSS_3"
@@ -1705,13 +2232,13 @@
       "@id": "estleg:ATSS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -1731,13 +2258,13 @@
       "@id": "estleg:ATSS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_asendustaitmise_ja_sunniraha_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Seaduse jõustumine",
       "estleg:sourceAct": "Asendustäitmise ja sunniraha seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ATSS_Map_2026"
+        "@id": "estleg:ATSS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
       "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
@@ -1749,7 +2276,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ATSS_Par_28_Lg_Unknown_1"
+          "@id": "estleg:ATSS_Par_28_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1759,7 +2286,7 @@
       ]
     },
     {
-      "@id": "estleg:ATSS_Par_28_Lg_Unknown_1",
+      "@id": "estleg:ATSS_Par_28_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:UVMS_Map_2026",
+      "@id": "estleg:UVMS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Ühistatud vara maksumuse määramise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13315835.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/13315835.xml"
       },
       "estleg:kehtiv": {
@@ -36,16 +32,24 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-01-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -78,13 +82,13 @@
       "@id": "estleg:UVMS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Käesolev seadus sätestab ühistatud vara maksumuse määramise selle kompenseerimis...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Käesolev seadus sätestab ühistatud vara maksumuse määramise selle kompenseerimiseks vastavalt Eesti Vabariigi omandireformi aluste seaduse §-le 14 ja Eesti Vabariigi põllumajandusreformi seaduse §-le 9.",
       "estleg:legalText": "Käesolev seadus sätestab ühistatud vara maksumuse määramise selle kompenseerimiseks vastavalt Eesti Vabariigi omandireformi aluste seaduse §-le 14 ja Eesti Vabariigi põllumajandusreformi seaduse §-le 9.",
@@ -93,7 +97,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_1_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -106,7 +110,7 @@
       ]
     },
     {
-      "@id": "estleg:UVMS_Par_1_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -120,13 +124,13 @@
       "@id": "estleg:UVMS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Ühistatud vara maksumuse määramise aluseks on lehma arvestuslik hind, mille kinn...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Ühistatud vara maksumuse määramise aluseks on lehma arvestuslik hind, mille kinnitab esmatasandi kohaliku omavalitsuse volikogu ühismajandi põllumajandusreformi komisjoni ettepanekul. Lehma arvestusliku hinna alammäär on 31,96 eurot.",
       "estleg:legalText": "Ühistatud vara maksumuse määramise aluseks on lehma arvestuslik hind, mille kinnitab esmatasandi kohaliku omavalitsuse volikogu ühismajandi põllumajandusreformi komisjoni ettepanekul. Lehma arvestusliku hinna alammäär on 31,96 eurot.",
@@ -135,14 +139,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_2_Lg_1"
         },
         {
-          "@id": "estleg:UVMS_Par_2_Lg_Unknown_2"
+          "@id": "estleg:UVMS_Par_2_Lg_2"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -162,10 +168,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:UVMS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -173,10 +183,19 @@
       "estleg:legalText": "Ühistatud vara maksumuse määramise aluseks on lehma arvestuslik hind, mille kinnitab esmatasandi kohaliku omavalitsuse volikogu ühismajandi põllumajandusreformi komisjoni ettepanekul.",
       "estleg:parentProvision": {
         "@id": "estleg:UVMS_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:UVMS_Par_2_Lg_Unknown_2",
+      "@id": "estleg:UVMS_Par_2_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -190,13 +209,13 @@
       "@id": "estleg:UVMS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [Ühistatud vara maksumus määratakse lehma arvestusliku hinna ja Vabariigi Valitsu...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Ühistatud vara maksumus määratakse lehma arvestusliku hinna ja Vabariigi Valitsuse poolt kehtestatud ühistatud varade hinna ümberarvestuse koefitsientide alusel.",
       "estleg:legalText": "Ühistatud vara maksumus määratakse lehma arvestusliku hinna ja Vabariigi Valitsuse poolt kehtestatud ühistatud varade hinna ümberarvestuse koefitsientide alusel.",
@@ -205,11 +224,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -220,10 +241,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:UVMS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -231,19 +256,28 @@
       "estleg:legalText": "Ühistatud vara maksumus määratakse lehma arvestusliku hinna ja Vabariigi Valitsuse poolt kehtestatud ühistatud varade hinna ümberarvestuse koefitsientide alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:UVMS_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:UVMS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. [Ühistatud vara maksumuse määramiseks teeb ühismajandi põllumajandusreformi komis...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Ühistatud vara maksumuse määramiseks teeb ühismajandi põllumajandusreformi komisjon kindlaks õigustatud subjektile kuulunud ühistatud vara koosseisu ühistamise akti ja muude tõendite alusel. Kui ühistatud vara koosseisu ei ole võimalik tõendada, loetakse ühistatud vara maksumus võrdseks ühe lehma arvestusliku hinnaga talumaa iga nelja hektari kohta.",
       "estleg:legalText": "Ühistatud vara maksumuse määramiseks teeb ühismajandi põllumajandusreformi komisjon kindlaks õigustatud subjektile kuulunud ühistatud vara koosseisu ühistamise akti ja muude tõendite alusel. Kui ühistatud vara koosseisu ei ole võimalik tõendada, loetakse ühistatud vara maksumus võrdseks ühe lehma arvestusliku hinnaga talumaa iga nelja hektari kohta.",
@@ -252,10 +286,10 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_4_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_4_Lg_1"
         },
         {
-          "@id": "estleg:UVMS_Par_4_Lg_Unknown_2"
+          "@id": "estleg:UVMS_Par_4_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -265,7 +299,7 @@
       ]
     },
     {
-      "@id": "estleg:UVMS_Par_4_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -276,7 +310,7 @@
       }
     },
     {
-      "@id": "estleg:UVMS_Par_4_Lg_Unknown_2",
+      "@id": "estleg:UVMS_Par_4_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -290,13 +324,13 @@
       "@id": "estleg:UVMS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. [Kehtetu -]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -316,13 +350,13 @@
       "@id": "estleg:UVMS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. [Käesoleva seaduse jõustumise päevaks kohaliku omavalitsuse volikogu poolt kinnit...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Käesoleva seaduse jõustumise päevaks kohaliku omavalitsuse volikogu poolt kinnitatud lehma arvestuslik hind on kehtiv, kui see ei ole madalam antud ühismajandi lehma keskmisest bilansilisest maksumusest.",
       "estleg:legalText": "Käesoleva seaduse jõustumise päevaks kohaliku omavalitsuse volikogu poolt kinnitatud lehma arvestuslik hind on kehtiv, kui see ei ole madalam antud ühismajandi lehma keskmisest bilansilisest maksumusest.",
@@ -331,11 +365,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_6_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -352,10 +388,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:UVMS_Par_6_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -363,19 +403,28 @@
       "estleg:legalText": "Käesoleva seaduse jõustumise päevaks kohaliku omavalitsuse volikogu poolt kinnitatud lehma arvestuslik hind on kehtiv, kui see ei ole madalam antud ühismajandi lehma keskmisest bilansilisest maksumusest.",
       "estleg:parentProvision": {
         "@id": "estleg:UVMS_Par_6"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:UVMS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. [Ühistatud vara kompenseeritakse natuuras põllumajandusreformi õigustatud subjekt...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Ühistatud vara kompenseeritakse natuuras põllumajandusreformi õigustatud subjektidele, kes on asunud või asuvad talu pidama, hiljemalt 1993. aasta 15. maiks, kui õigustatud subjekt ja ühismajandi põllumajandusreformi komisjon ei lepi kokku teisiti.",
       "estleg:legalText": "Ühistatud vara kompenseeritakse natuuras põllumajandusreformi õigustatud subjektidele, kes on asunud või asuvad talu pidama, hiljemalt 1993. aasta 15. maiks, kui õigustatud subjekt ja ühismajandi põllumajandusreformi komisjon ei lepi kokku teisiti.",
@@ -384,7 +433,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_7_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_7_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -394,7 +443,7 @@
       ]
     },
     {
-      "@id": "estleg:UVMS_Par_7_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_7_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -408,13 +457,13 @@
       "@id": "estleg:UVMS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. [Kõik käesoleva seaduse ja muude õigusaktidega reguleerimata ühistatud vara maksu...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Kõik käesoleva seaduse ja muude õigusaktidega reguleerimata ühistatud vara maksumuse määramise küsimused otsustab ühismajandi põllumajandusreformi komisjoni ettepanekul esmatasandi kohaliku omavalitsuse volikogu.",
       "estleg:legalText": "Kõik käesoleva seaduse ja muude õigusaktidega reguleerimata ühistatud vara maksumuse määramise küsimused otsustab ühismajandi põllumajandusreformi komisjoni ettepanekul esmatasandi kohaliku omavalitsuse volikogu.",
@@ -423,11 +472,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_8_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_8_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -444,10 +495,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:UVMS_Par_8_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_8_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -455,19 +510,28 @@
       "estleg:legalText": "Kõik käesoleva seaduse ja muude õigusaktidega reguleerimata ühistatud vara maksumuse määramise küsimused otsustab ühismajandi põllumajandusreformi komisjoni ettepanekul esmatasandi kohaliku omavalitsuse volikogu.",
       "estleg:parentProvision": {
         "@id": "estleg:UVMS_Par_8"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:UVMS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_uhistatud_vara_maksumuse_maaramise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. [Käesolev seadus jõustub väljakuulutamise päevast. Käesolev seadus jõustub väljak...]",
       "estleg:sourceAct": "Ühistatud vara maksumuse määramise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:UVMS_Map_2026"
+        "@id": "estleg:UVMS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub väljakuulutamise päevast.",
       "estleg:legalText": "Käesolev seadus jõustub väljakuulutamise päevast.",
@@ -476,7 +540,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:UVMS_Par_9_Lg_Unknown_1"
+          "@id": "estleg:UVMS_Par_9_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -486,7 +550,7 @@
       ]
     },
     {
-      "@id": "estleg:UVMS_Par_9_Lg_Unknown_1",
+      "@id": "estleg:UVMS_Par_9_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

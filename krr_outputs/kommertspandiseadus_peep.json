@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:KomPS_Map_2026",
+      "@id": "estleg:KomPS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Kommertspandiseadus teemakaardistus",
       "dc:source": "Kommertspandiseadus",
-      "dcterms:title": "Kommertspandiseadus",
+      "dcterms:title": [
+        {
+          "@value": "Kommertspandiseadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Commercial Pledges Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/123122022029.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/123122022029.xml"
       },
       "estleg:kehtiv": {
@@ -33,7 +38,7 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1008928_Map_2026"
+          "@id": "estleg:Reg_1008928_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -54,16 +59,113 @@
           "@id": "http://eurovoc.europa.eu/217"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_kommertspandiseadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3151"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/217"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:AOS_Osa8_Par_292"
+        },
+        {
+          "@id": "estleg:AOS_Osa8_Par_293"
+        },
+        {
+          "@id": "estleg:AOS_Osa8_Par_294"
+        },
+        {
+          "@id": "estleg:AOS_Osa8_Par_295"
+        },
+        {
+          "@id": "estleg:KomPS_Par_5"
+        },
+        {
+          "@id": "estleg:KomPS_Par_12"
+        },
+        {
+          "@id": "estleg:ARS_Par_42"
+        },
+        {
+          "@id": "estleg:ARS_Par_10"
+        },
+        {
+          "@id": "estleg:KomPS_Par_1"
+        },
+        {
+          "@id": "estleg:KomPS_Par_2"
+        },
+        {
+          "@id": "estleg:KomPS_Par_3"
+        },
+        {
+          "@id": "estleg:KomPS_Par_4"
+        },
+        {
+          "@id": "estleg:KomPS_Par_6"
+        },
+        {
+          "@id": "estleg:KomPS_Par_7"
+        },
+        {
+          "@id": "estleg:KomPS_Par_8"
+        },
+        {
+          "@id": "estleg:KomPS_Par_9"
+        },
+        {
+          "@id": "estleg:KomPS_Par_10"
+        },
+        {
+          "@id": "estleg:KomPS_Par_11"
+        },
+        {
+          "@id": "estleg:KomPS_Par_13"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KomPS_Par_30"
+        },
+        {
+          "@id": "estleg:KomPS_Par_30_Lg_1"
+        },
+        {
+          "@id": "estleg:KomPS_Par_11"
+        },
+        {
+          "@id": "estleg:KomPS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:KomPS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:KomPS_Par_16_Lg_3"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-02-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/503012023002"
       }
     },
     {
@@ -110,10 +212,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KomPS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -139,10 +245,14 @@
       "rdfs:label": "2. peatükk – KOMMERTSPANDIST TULENEVAD ÕIGUSLIKUD TAGAJÄRJED",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KomPS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -168,10 +278,14 @@
       "rdfs:label": "3. peatükk – KOMMERTSPANDI REGISTREERIMINE",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KomPS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -197,23 +311,27 @@
       "rdfs:label": "4. peatükk – RAKENDUSSÄTTED",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KomPS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Kommertspandi mõiste",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Äriregistrisse kantud ettevõtja võib nõude tagatisena seada oma vallasvarale kommertspandiregistrisse kantud käesolevas seaduses sätestatud ulatusega pandi (kommertspant), ilma et ta annaks üle panditava vara valdust. (2) Kommertspant ei eelda tagatava nõude olemasolu ega lõpe nõude lõppemisega. (3) Kommertspandile kohaldatakse asjaõigusseaduses registerpandi kohta sätestatut, kui käesolevast seadusest ei tulene teisiti.",
       "estleg:legalText": "(1) Äriregistrisse kantud ettevõtja võib nõude tagatisena seada oma vallasvarale kommertspandiregistrisse kantud käesolevas seaduses sätestatud ulatusega pandi (kommertspant), ilma et ta annaks üle panditava vara valdust. (2) Kommertspant ei eelda tagatava nõude olemasolu ega lõpe nõude lõppemisega. (3) Kommertspandile kohaldatakse asjaõigusseaduses registerpandi kohta sätestatut, kui käesolevast seadusest ei tulene teisiti.",
@@ -235,7 +353,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -260,7 +380,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_1_Lg_1",
@@ -273,7 +397,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_1_Lg_2",
@@ -305,13 +441,13 @@
       "@id": "estleg:KomPS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Kommertspandi ulatus",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kommertspant ulatub äriühingu kogu vallasvarale või füüsilisest isikust ettevõtja majandustegevusega seotud vallasvarale. Kommertspandi võib seada välismaa äriühingu Eesti filiaali vallasvarale. (2) Kommertspant ulatub kogu koormatavale varale, mis kuulub ettevõtjale pandikande tegemise ajal, samuti varale, mille ettevõtja omandab pärast pandikande tegemist. (3) Kommertspant ei ulatu: kassas või krediidiasutuses olevale rahale, ettevõtjale kuuluvatele osadele, aktsiatele, investeerimisfondi",
       "estleg:legalText": "(1) Kommertspant ulatub äriühingu kogu vallasvarale või füüsilisest isikust ettevõtja majandustegevusega seotud vallasvarale. Kommertspandi võib seada välismaa äriühingu Eesti filiaali vallasvarale. (2) Kommertspant ulatub kogu koormatavale varale, mis kuulub ettevõtjale pandikande tegemise ajal, samuti varale, mille ettevõtja omandab pärast pandikande tegemist. (3) Kommertspant ei ulatu: kassas või krediidiasutuses olevale rahale, ettevõtjale kuuluvatele osadele, aktsiatele, investeerimisfondi osakutele, osamaksule ühistus ja osalusele teistes ühingutes, võlakirjadele ja teistele tavakäibeks määratud võladokumentidele ning muudele väärtpaberitele; varale, millele saab seada teist liiki registerpandi või asjaõigusseaduse rakendamise seaduse § 132 lõikes 2 nimetatud pandi või millele ulatub kinnisasjale enne või pärast kommertspandi seadmist seatud hüpoteek või millele on seatud käsipant; varale, millele ei saa vastavalt seadusele pöörata sissenõuet.",
@@ -333,8 +469,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -365,7 +505,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_2_Lg_1",
@@ -378,7 +522,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_2_Lg_2",
@@ -391,7 +547,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_2_Lg_3",
@@ -404,19 +569,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 3"
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Kommertspandiga tagatud nõue",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kommertspandiga on pandisumma ulatuses tagatud nõue, sellele nõudele kolme aasta jooksul enne kommertspandiga koormatud vara müümist nõude rahuldamiseks välja maksmata intressid, samuti viivis ja võla sissenõudmise kulutused, pandipidaja poolt kommertspandiga koormatud vara omaniku eest tasutud kindlustusmaksed ning muud kõrvalnõuded.",
       "estleg:legalText": "Kommertspandiga on pandisumma ulatuses tagatud nõue, sellele nõudele kolme aasta jooksul enne kommertspandiga koormatud vara müümist nõude rahuldamiseks välja maksmata intressid, samuti viivis ja võla sissenõudmise kulutused, pandipidaja poolt kommertspandiga koormatud vara omaniku eest tasutud kindlustusmaksed ning muud kõrvalnõuded.",
@@ -428,11 +605,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -459,10 +638,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KomPS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -470,19 +653,28 @@
       "estleg:legalText": "Kommertspandiga on pandisumma ulatuses tagatud nõue, sellele nõudele kolme aasta jooksul enne kommertspandiga koormatud vara müümist nõude rahuldamiseks välja maksmata intressid, samuti viivis ja võla sissenõudmise kulutused, pandipidaja poolt kommertspandiga koormatud vara omaniku eest tasutud kindlustusmaksed ning muud kõrvalnõuded.",
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Kommertspandi seadmine",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kommertspandi seadmiseks sõlmib ettevõtja (pantija) pandipidajaga kommertspandilepingu. Kommertspandilepingus peab olema märgitud: pantija ärinimi ja registrikood; pandipidaja nimi ja isiku- või registrikood; pandisumma; muud seaduses sätestatud andmed. (2) Kommertspandileping peab olema notariaalselt tõestatud. (3) Kommertspant tekib avalduse alusel vastava kande tegemisest kommertspandiregistrisse.",
       "estleg:legalText": "(1) Kommertspandi seadmiseks sõlmib ettevõtja (pantija) pandipidajaga kommertspandilepingu. Kommertspandilepingus peab olema märgitud: pantija ärinimi ja registrikood; pandipidaja nimi ja isiku- või registrikood; pandisumma; muud seaduses sätestatud andmed. (2) Kommertspandileping peab olema notariaalselt tõestatud. (3) Kommertspant tekib avalduse alusel vastava kande tegemisest kommertspandiregistrisse.",
@@ -504,8 +696,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -523,7 +719,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kommertspandilepingus",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -531,7 +726,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_4_Lg_1",
@@ -544,7 +743,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_4_Lg_2",
@@ -557,7 +768,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_4_Lg_3",
@@ -576,13 +799,13 @@
       "@id": "estleg:KomPS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Vara kasutamine ja käsutamine",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Ettevõtja võib kommertspandiga koormatud vara tavapärase majandustegevuse raames kasutada ja käsutada. (2) Kui ettevõtja võõrandab kommertspandiga koormatud vara hulka kuuluva asja tavapärase majandustegevuse raames, lõpeb kommertspant sellele asjale. Kui isik, kellele asi võõrandati või kelle kasuks asja koormati, oli omandi või muu asjaõiguse omandamisel ettevõtja käsutusõiguse suhtes heauskne, lõpeb pandiõigus isegi siis, kui üleandmine oli vastuolus käesoleva paragrahvi lõikes 1",
       "estleg:legalText": "(1) Ettevõtja võib kommertspandiga koormatud vara tavapärase majandustegevuse raames kasutada ja käsutada. (2) Kui ettevõtja võõrandab kommertspandiga koormatud vara hulka kuuluva asja tavapärase majandustegevuse raames, lõpeb kommertspant sellele asjale. Kui isik, kellele asi võõrandati või kelle kasuks asja koormati, oli omandi või muu asjaõiguse omandamisel ettevõtja käsutusõiguse suhtes heauskne, lõpeb pandiõigus isegi siis, kui üleandmine oli vastuolus käesoleva paragrahvi lõikes 1 sätestatuga.",
@@ -601,8 +824,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -633,7 +860,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_5_Lg_1",
@@ -646,7 +877,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_5_Lg_2",
@@ -659,19 +902,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Koormatud vara üleminek",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Kommertspandiga koormatud vara, mis moodustab ettevõtte või käitise, üleminekul jääb kommertspant sellele püsima.",
       "estleg:legalText": "(1) Kehtetu - (2) Kommertspandiga koormatud vara, mis moodustab ettevõtte või käitise, üleminekul jääb kommertspant sellele püsima.",
@@ -690,7 +942,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -724,7 +978,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_6_Lg_1",
@@ -750,19 +1008,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 2"
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Kommertspandi kehtivus äriühingute ühinemisel, jagunemisel ja ümberkujundamisel",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kui äriühingute ühinemise korral oli enam kui ühe ühineva ühingu varale seatud kommertspant, võib ühinemise kanda äriregistrisse ainult juhul, kui koos avaldusega ühinemise registrisse kandmiseks esitatakse äriregistri pidajale pandipidajate notariaalselt tõestatud kokkulepe pandikannete järjestamise kohta. Sama kehtib äriühingu jagunemisel, kui mitme jagunemises osaleva äriühingu varale oli seatud kommertspant. (1¹) Kui äriühingute piiriülese ühinemise, jagunemise või ümberkujundamise",
       "estleg:legalText": "(1) Kui äriühingute ühinemise korral oli enam kui ühe ühineva ühingu varale seatud kommertspant, võib ühinemise kanda äriregistrisse ainult juhul, kui koos avaldusega ühinemise registrisse kandmiseks esitatakse äriregistri pidajale pandipidajate notariaalselt tõestatud kokkulepe pandikannete järjestamise kohta. Sama kehtib äriühingu jagunemisel, kui mitme jagunemises osaleva äriühingu varale oli seatud kommertspant. (1¹) Kui äriühingute piiriülese ühinemise, jagunemise või ümberkujundamise korral on Eesti äriregistrisse kantud ühendatava, jaguneva või ümberkujundatava ühingu varale seatud kommertspant ja kui ühendav, jagunenud või ümberkujundatud ühing allub teise Euroopa Majanduspiirkonna lepinguriigi õigusele, võib piiriülese ühinemise, jagunemise või ümberkujundamise kanda äriregistrisse vaid juhul, kui koos avaldusega esitatakse äriregistri pidajale pandipidaja notariaalselt tõestatud nõusolek ühinemise, jagunemise või ümberkujundamise registrisse kandmiseks. (1²) Kui osaühing või aktsiaselts, mille vara on koormatud kommertspandiga, ühineb ainuosanikuks või ainuaktsionäriks oleva füüsilise isiku varaga, võib ühinemise kanda äriregistrisse ainult juhul, kui koos avaldusega esitatakse äriregistri pidajale pandipidaja notariaalselt tõestatud nõusolek ühinemiseks. (2) Äriühingu ümberkujundamine ei mõjuta kommertspandi kehtivust ega pandikandega antud eelisõigust. (3) Kommertspandiregistri pidaja teeb käesoleva paragrahvi lõikest 1 tulenevad muudatused kommertspandi registrisse pandipidajate kokkuleppe alusel.",
@@ -790,8 +1057,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -833,7 +1104,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_7_Lg_1",
@@ -846,7 +1121,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_7_Lg_1_1",
@@ -859,7 +1149,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1¹"
+      "rdfs:label": "§ 7 lg 1¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_7_Lg_1_2",
@@ -872,7 +1177,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1²"
+      "rdfs:label": "§ 7 lg 1²",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_7_Lg_2",
@@ -885,7 +1205,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_7_Lg_3",
@@ -904,13 +1233,13 @@
       "@id": "estleg:KomPS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Kommertspandi kehtivus ettevõtja surma korral",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Pärandvarasse kuuluvale varale seatud kommertspant ei lõpe füüsilisest isikust ettevõtja surma korral.",
       "estleg:legalText": "Pärandvarasse kuuluvale varale seatud kommertspant ei lõpe füüsilisest isikust ettevõtja surma korral.",
@@ -922,12 +1251,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_8_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_8_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -949,10 +1282,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KomPS_Par_8_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_8_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -960,19 +1297,28 @@
       "estleg:legalText": "Pärandvarasse kuuluvale varale seatud kommertspant ei lõpe füüsilisest isikust ettevõtja surma korral.",
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_8"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Õigus kindlustushüvitisele",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kui kommertspandiga koormatud vara on kindlustatud, ulatub kommertspant ka kindlustushüvitise nõudele. (2) Väljamaksmisele kuuluva kindlustushüvitise võib pantijale täielikult või osaliselt välja maksta ning võlgnik võib kindlustushüvitisest loobuda üksnes kõigi kommertspandipidajate kirjalikul nõusolekul, kelle nõue on kommertspandiga tagatud.",
       "estleg:legalText": "(1) Kui kommertspandiga koormatud vara on kindlustatud, ulatub kommertspant ka kindlustushüvitise nõudele. (2) Väljamaksmisele kuuluva kindlustushüvitise võib pantijale täielikult või osaliselt välja maksta ning võlgnik võib kindlustushüvitisest loobuda üksnes kõigi kommertspandipidajate kirjalikul nõusolekul, kelle nõue on kommertspandiga tagatud.",
@@ -991,7 +1337,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1013,7 +1361,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_9_Lg_1",
@@ -1039,19 +1391,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Kommertspandist tulenevad õigused sundtäitmise ja pankroti korral",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Pandipidaja võib nõuda nõude rahuldamist kommertspandiga koormatud vara arvel kuni pandisumma ulatuses sundtäitmise või pankroti korral vastavalt pandile seadusest tulenevale järjekohale. Kommertspandiga tagatud nõude rahuldamisele ei kohaldata asjaõigusseaduse §-des 292–295 sätestatut. (2) Kui pandipidaja nõude tagatisena seatud kommertspandid kehtivad vahetult teineteise järel, kohaldatakse käesoleva paragrahvi lõikes 1 sätestatut pantide kogusummale.",
       "estleg:legalText": "(1) Pandipidaja võib nõuda nõude rahuldamist kommertspandiga koormatud vara arvel kuni pandisumma ulatuses sundtäitmise või pankroti korral vastavalt pandile seadusest tulenevale järjekohale. Kommertspandiga tagatud nõude rahuldamisele ei kohaldata asjaõigusseaduse §-des 292–295 sätestatut. (2) Kui pandipidaja nõude tagatisena seatud kommertspandid kehtivad vahetult teineteise järel, kohaldatakse käesoleva paragrahvi lõikes 1 sätestatut pantide kogusummale. (3) Pandipidajal ei ole eelisõigust tasumisele varast, mis arestiti enne kommertspandi kandmist kommertspandiregistrisse või kande tegemise päeval. Vara vabastamisel arestist või pankrotivarast välistamisel laieneb kommertspant ka sellele varale. (4) Kui koormatud varale pööratakse sissenõue kommertspandiga tagamata nõude või pandipidajast tagapool asuva järjekohaga kommertspandi pidaja nõude rahuldamiseks, võib pandipidaja nõuda enda nõude rahuldamist vara müügist saadud vahenditest või vahenditest, mis saadakse vara eest sundtäitmise alusel muul viisil, isegi juhul, kui tema nõue ei olnud veel sissenõutav, enne võlausaldajat, kelle kasuks varale sissenõue pöörati. Pandipidaja ei või nõuda nõude rahuldamist, kui teise nõude rahuldamisest ülejäänud vara on pandipidajale täielikuks tagatiseks.",
@@ -1076,7 +1440,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
@@ -1118,7 +1484,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_10_Lg_1",
@@ -1145,7 +1515,14 @@
         {
           "@id": "estleg:AOS_Osa8_Par_295"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_10_Lg_2",
@@ -1184,19 +1561,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 4"
+      "rdfs:label": "§ 10 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Nõude rahuldamine enne sissenõutavaks muutumist",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Võlausaldaja võib nõuda nõude rahuldamist kommertspandiga koormatud vara arvel isegi juhul, kui nõue ei ole muutunud sissenõutavaks, kui: koormatud vara jagatakse, ettevõtte majandamine peatatakse või vara antakse üle teisele isikule vastuolus käesoleva seaduse § 5 lõikes 1 sätestatuga või kogu kommertspandiga koormatud vara või suurem osa sellest hävib või võlgnik ei anna võlausaldajale käesoleva seaduse §-s 12 nimetatud teavet või koormatud vara jäetakse hooletusse või see on vähenenud ja",
       "estleg:legalText": "(1) Võlausaldaja võib nõuda nõude rahuldamist kommertspandiga koormatud vara arvel isegi juhul, kui nõue ei ole muutunud sissenõutavaks, kui: koormatud vara jagatakse, ettevõtte majandamine peatatakse või vara antakse üle teisele isikule vastuolus käesoleva seaduse § 5 lõikes 1 sätestatuga või kogu kommertspandiga koormatud vara või suurem osa sellest hävib või võlgnik ei anna võlausaldajale käesoleva seaduse §-s 12 nimetatud teavet või koormatud vara jäetakse hooletusse või see on vähenenud ja tagatise väärtus on seetõttu oluliselt langenud. (2) Võlausaldaja võib nõuda nõude rahuldamist käesoleva paragrahvi lõikes 1 nimetatud asjaoludel kolme kuu jooksul pärast neist asjaoludest teadasaamist. Vara üleandmisel, jagamisel või ettevõtte majandamise täielikul või osalisel peatamisel tuleb nõue esitada käesoleva seaduse § 6 lõikes 3 sätestatud tähtaja jooksul.",
@@ -1215,11 +1604,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:KomPS_Par_5"
+          "@id": "estleg:KomPS_Par_5_Lg_1"
         },
         {
           "@id": "estleg:KomPS_Par_12"
@@ -1248,7 +1639,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_11_Lg_1",
@@ -1264,12 +1659,24 @@
       "rdfs:label": "§ 11 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:KomPS_Par_5"
+          "@id": "estleg:KomPS_Par_5_Lg_1"
         },
         {
           "@id": "estleg:KomPS_Par_12"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_11_Lg_2",
@@ -1287,19 +1694,31 @@
         {
           "@id": "estleg:KomPS_Par_6"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Teabe andmise kohustus",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Ettevõtja, kelle varale on seatud kommertspant, on kohustatud pandipidajale viivitamata teatama ettevõtte majandamise peatamisest või ettevõtte jagamisest, võõrandamisest või muul viisil üleandmisest, samuti vara vähenemisest, kui tagatise väärtus oluliselt langeb, samuti vara või selle suurema osa hävimisest. Pandipidaja nõudel peab pantija andma pandipidajale koormatud vara kohta ka muud teavet, mis on vajalik tagatise väärtuse kindlakstegemiseks.",
       "estleg:legalText": "Ettevõtja, kelle varale on seatud kommertspant, on kohustatud pandipidajale viivitamata teatama ettevõtte majandamise peatamisest või ettevõtte jagamisest, võõrandamisest või muul viisil üleandmisest, samuti vara vähenemisest, kui tagatise väärtus oluliselt langeb, samuti vara või selle suurema osa hävimisest. Pandipidaja nõudel peab pantija andma pandipidajale koormatud vara kohta ka muud teavet, mis on vajalik tagatise väärtuse kindlakstegemiseks.",
@@ -1311,11 +1730,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_12_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_12_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1343,10 +1764,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KomPS_Par_12_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_12_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1354,19 +1779,31 @@
       "estleg:legalText": "Ettevõtja, kelle varale on seatud kommertspant, on kohustatud pandipidajale viivitamata teatama ettevõtte majandamise peatamisest või ettevõtte jagamisest, võõrandamisest või muul viisil üleandmisest, samuti vara vähenemisest, kui tagatise väärtus oluliselt langeb, samuti vara või selle suurema osa hävimisest. Pandipidaja nõudel peab pantija andma pandipidajale koormatud vara kohta ka muud teavet, mis on vajalik tagatise väärtuse kindlakstegemiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_12"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Pantija vastuväited",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Pantija võib pandipidaja vastu esitada ainult selliseid vastuväiteid, mis põhinevad pandikandel või mis tal on sissenõude esitanud võlausaldaja vastu võlaõiguslikul alusel. (2) Pantija võib käesoleva paragrahvi lõikes 1 nimetatud vastuväiteid esitada ka võlausaldaja õigusjärglase või isiku vastu, kellele pandipidaja kommertspandi üle andis. (3) Kommertspandiga koormatud vara omanik, kes ei ole võlgnik, võib esitada kommertspandiga tagatud nõude vastu samu vastuväiteid, mida võib esitada",
       "estleg:legalText": "(1) Pantija võib pandipidaja vastu esitada ainult selliseid vastuväiteid, mis põhinevad pandikandel või mis tal on sissenõude esitanud võlausaldaja vastu võlaõiguslikul alusel. (2) Pantija võib käesoleva paragrahvi lõikes 1 nimetatud vastuväiteid esitada ka võlausaldaja õigusjärglase või isiku vastu, kellele pandipidaja kommertspandi üle andis. (3) Kommertspandiga koormatud vara omanik, kes ei ole võlgnik, võib esitada kommertspandiga tagatud nõude vastu samu vastuväiteid, mida võib esitada võlgnik. Ta võib vastuväiteid esitada ka siis, kui võlgnik nõudele vastu ei vaidle.",
@@ -1388,7 +1825,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1415,7 +1854,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_13_Lg_1",
@@ -1428,7 +1871,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_13_Lg_2",
@@ -1441,7 +1896,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_13_Lg_3",
@@ -1454,19 +1921,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 3"
+      "rdfs:label": "§ 13 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Kommertspandiregistrisse kantavad andmed",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kommertspandiregistrisse kantakse: ettevõtja ärinimi ja isiku- või registrikood; kande tegemise kuupäev; kommertspandi rahaline suurus (pandisumma) eurodes ning mitmele pandipidajale ühiselt kuuluva kommertspandi korral ka neile kuuluvad murdosad; kommertspandi järjekoht; pandipidaja nimi ja isiku- või registrikood; kannete muutmine ja kustutamine; muud seaduses sätestatud andmed.",
       "estleg:legalText": "Kommertspandiregistrisse kantakse: ettevõtja ärinimi ja isiku- või registrikood; kande tegemise kuupäev; kommertspandi rahaline suurus (pandisumma) eurodes ning mitmele pandipidajale ühiselt kuuluva kommertspandi korral ka neile kuuluvad murdosad; kommertspandi järjekoht; pandipidaja nimi ja isiku- või registrikood; kannete muutmine ja kustutamine; muud seaduses sätestatud andmed.",
@@ -1478,12 +1957,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_14_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_14_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1511,10 +1994,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KomPS_Par_14_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_14_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1522,19 +2009,28 @@
       "estleg:legalText": "Kommertspandiregistrisse kantakse: ettevõtja ärinimi ja isiku- või registrikood; kande tegemise kuupäev; kommertspandi rahaline suurus (pandisumma) eurodes ning mitmele pandipidajale ühiselt kuuluva kommertspandi korral ka neile kuuluvad murdosad; kommertspandi järjekoht; pandipidaja nimi ja isiku- või registrikood; kannete muutmine ja kustutamine; muud seaduses sätestatud andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_14"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Kommertspandiregister",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kommertspandiregistrile kohaldatakse äriregistri seaduses ja äriseadustikus äriregistri kohta sätestatut käesolevas seaduses ettenähtud erisustega. (2) Äriregistri seaduse § 42 ei kohaldata. (3) Pandipidajale kohaldatakse äriregistri seaduse § 10 lõiget 5.",
       "estleg:legalText": "(1) Kommertspandiregistrile kohaldatakse äriregistri seaduses ja äriseadustikus äriregistri kohta sätestatut käesolevas seaduses ettenähtud erisustega. (2) Äriregistri seaduse § 42 ei kohaldata. (3) Pandipidajale kohaldatakse äriregistri seaduse § 10 lõiget 5.",
@@ -1628,13 +2124,13 @@
       "@id": "estleg:KomPS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Kande tegemine",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Registripidajale esitatavad avaldused peavad olema notariaalselt kinnitatud. Avaldus võib sisalduda kommertspandilepingus. Notariaalselt kinnitatud avaldus esitatakse koos kande tegemiseks vajalike dokumentidega registripidajale avalduse kinnitanud notari vahendusel notarite elektroonilise infosüsteemi kaudu. Mõjuval põhjusel võib avalduse ja kande tegemiseks vajalikud dokumendid esitada teise notari vahendusel. Notar selgitab isikule, millised dokumendid tuleb avaldusele lisada ja millised",
       "estleg:legalText": "(1) Registripidajale esitatavad avaldused peavad olema notariaalselt kinnitatud. Avaldus võib sisalduda kommertspandilepingus. Notariaalselt kinnitatud avaldus esitatakse koos kande tegemiseks vajalike dokumentidega registripidajale avalduse kinnitanud notari vahendusel notarite elektroonilise infosüsteemi kaudu. Mõjuval põhjusel võib avalduse ja kande tegemiseks vajalikud dokumendid esitada teise notari vahendusel. Notar selgitab isikule, millised dokumendid tuleb avaldusele lisada ja millised nõuded neile kehtivad. (2) Kommertspandiregistrisse tehakse kanne avalduse, kohtulahendi või muul seaduses sätestatud alusel. Kommertspandi registrisse kandmise avalduse võib esitada pantija või pandipidaja. Kui avalduse esitab pandipidaja, peab sellele olema lisatud pantija notariaalselt kinnitatud nõusolek kommertspandi registrisse kandmiseks. (3) Avalduses tuleb märkida käesoleva seaduse §-s 14 punktides 1, 3, 4, 5, 7 sätestatud andmed. Avaldusele tuleb lisada kommertspandileping. (4) Samal päeval posti või e-posti teel saabunud avaldused loetakse üheaegselt saabunuks ja registreeritakse päevikus sellel päeval saabunud avaldustest viimastena. Vastuvõtmise kellaajaks märgitakse avalduste vastuvõtu lõpetamise kellaaeg. (4¹) Kui digitaalallkirjastatud avalduse saab esitada otse arvutis peetava kommertspandiregistri infosüsteemi, registreeritakse avaldus ning tema laekumise aeg registripäevikus automatiseeritult. (4²) Kui digitaalallkirjastatud avalduse saab esitada otse arvutis peetava kommertspandiregistri infosüsteemi, ei või avaldust esitada e-posti teel. Vastasel juhul tagastab registripidaja e-postiga esitatud avalduse koos põhjuse äranäitamisega ning registripäevikus registreerimata. (4³) Posti teel esitatud dokumendid skaneeritakse, salvestatakse elektroonilisse toimikusse ning tagastatakse avaldaja soovil lihtpostiga. Dokumendid, mille tagastamist ei nõuta, hävitatakse ühe kuu möödudes nende esitamisest arvates. (5) Kommertspante ei saa seada ühele ja samale järjekohale, välja arvatud käesoleva paragrahvi 4. lõikes sätestatud juhul, kui pandilepingud on sõlmitud samal kuupäeval. Kommertspant võib kuuluda murdosades mitmele pandipidajale ühiselt. (6) Kommertspandi kande muutmiseks on nõutav nende pandipidajate notariaalselt kinnitatud nõusolek, kelle registrisse kantud õigust selline kande muutmine kahjustab. (7) Notariaalselt kinnitatud avaldus, avalduse esitamise volikiri ning kande tegemise, muutmise ja kustutamise nõusolek loetakse võrdseks digitaalallkirjastatud avalduse, volikirja ja nõusolekuga.",
@@ -1677,8 +2173,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1713,7 +2213,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_1",
@@ -1726,7 +2230,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_2",
@@ -1739,7 +2258,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_3",
@@ -1757,7 +2288,14 @@
         {
           "@id": "estleg:KomPS_Par_14"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_4",
@@ -1796,7 +2334,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 4²"
+      "rdfs:label": "§ 16 lg 4²",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_4_3",
@@ -1822,7 +2372,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 5"
+      "rdfs:label": "§ 16 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_6",
@@ -1835,7 +2392,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 6"
+      "rdfs:label": "§ 16 lg 6",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_16_Lg_7",
@@ -1848,19 +2417,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 7"
+      "rdfs:label": "§ 16 lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Kande õiguslik tähendus",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kommertspandiregistri kanne jõustub kande allakirjutamisest. (2) Kanne kehtib kolmanda isiku suhtes õigena, välja arvatud siis, kui kolmas isik teadis või pidi teadma, et kanne ei ole õige. (3) Kui registrisse kandmisele kuuluvaid asjaolusid ei ole registrisse kantud, on neil asjaoludel kolmanda isiku suhtes õiguslik tähendus üksnes juhul, kui kolmas isik neist teadis või pidi teadma. (4) Kehtetu -",
       "estleg:legalText": "(1) Kommertspandiregistri kanne jõustub kande allakirjutamisest. (2) Kanne kehtib kolmanda isiku suhtes õigena, välja arvatud siis, kui kolmas isik teadis või pidi teadma, et kanne ei ole õige. (3) Kui registrisse kandmisele kuuluvaid asjaolusid ei ole registrisse kantud, on neil asjaoludel kolmanda isiku suhtes õiguslik tähendus üksnes juhul, kui kolmas isik neist teadis või pidi teadma. (4) Kehtetu -",
@@ -1885,7 +2463,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1916,7 +2496,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_17_Lg_1",
@@ -1942,7 +2526,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 2"
+      "rdfs:label": "§ 17 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_17_Lg_3",
@@ -1955,7 +2548,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 3"
+      "rdfs:label": "§ 17 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_17_Lg_4",
@@ -1974,13 +2576,13 @@
       "@id": "estleg:KomPS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Kommertspandi lõppemine",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kommertspant lõpeb registrist kustutamisega, kui seaduses ei ole sätestatud teisiti. (2) Kommertspant kustutatakse registrist pantija avalduse põhjal, millele on lisatud pandipidaja notariaalselt kinnitatud nõusolek, või pandipidaja avalduse põhjal. (3) Ettevõtja kustutamisel äriregistrist peab kommertspandi kustutama. Ettevõtjat ei või äriregistrist kustutada enne kommertspandi kustutamist. (4) Kui kommertspant lõpeb vastavalt seadusele enne registrist kustutamist, peab selle registrist",
       "estleg:legalText": "(1) Kommertspant lõpeb registrist kustutamisega, kui seaduses ei ole sätestatud teisiti. (2) Kommertspant kustutatakse registrist pantija avalduse põhjal, millele on lisatud pandipidaja notariaalselt kinnitatud nõusolek, või pandipidaja avalduse põhjal. (3) Ettevõtja kustutamisel äriregistrist peab kommertspandi kustutama. Ettevõtjat ei või äriregistrist kustutada enne kommertspandi kustutamist. (4) Kui kommertspant lõpeb vastavalt seadusele enne registrist kustutamist, peab selle registrist kustutama registripidaja.",
@@ -2005,8 +2607,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2032,7 +2638,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_18_Lg_1",
@@ -2058,7 +2668,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 2"
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_18_Lg_3",
@@ -2071,7 +2690,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 3"
+      "rdfs:label": "§ 18 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_18_Lg_4",
@@ -2084,19 +2715,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 4"
+      "rdfs:label": "§ 18 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19.",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KomPS_3"
@@ -2115,13 +2758,13 @@
       "@id": "estleg:KomPS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. [Kehtetud -]",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kehtetud -",
       "estleg:legalText": "Kehtetud -",
@@ -2144,13 +2787,13 @@
       "@id": "estleg:KomPS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Järjekoha muutmine",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kommertspantide järjekoha muutmiseks on vajalik nende pandipidajate notariaalselt tõestatud kokkulepe, kelle pantide järjekoht muutub, samuti ettevõtja notariaalselt kinnitatud nõusolek. Kui järjekoha loovutamine rikub teiste pandipidajate õigusi, tuleb esitada ka nende pandipidajate notariaalselt tõestatud nõusolek, kelle õigusi rikutakse. (2) Kui järjekoha muutmisel tagasiastunud pant lõpeb, ei kaota etteastunud õigus selle tagajärjel järjekoha muutmisega saadud kohta.",
       "estleg:legalText": "(1) Kommertspantide järjekoha muutmiseks on vajalik nende pandipidajate notariaalselt tõestatud kokkulepe, kelle pantide järjekoht muutub, samuti ettevõtja notariaalselt kinnitatud nõusolek. Kui järjekoha loovutamine rikub teiste pandipidajate õigusi, tuleb esitada ka nende pandipidajate notariaalselt tõestatud nõusolek, kelle õigusi rikutakse. (2) Kui järjekoha muutmisel tagasiastunud pant lõpeb, ei kaota etteastunud õigus selle tagajärjel järjekoha muutmisega saadud kohta. (3) Järjekoha muutmine ei või kahjustada pantija õigusi, samuti pandipidajate õigusi, kelle pantide järjekohad on tagasiastuvate ja edasiastuvate õiguste vahel. (4) Järjekoha loovutanud pandipidaja peab järjekoha loovutamisest viivitamata teatama pantijale, samuti võlgnikule, kui pantija on kolmas isik. (5) Järjekohas eespool oleva kommertspandi kustutamisel astuvad hilisemal järjekohal asuvad pandid vastavalt ettepoole. Kande järjekohtade muutmise kohta teeb registripidaja ilma vastava avalduseta koos eespool oleva kommertspandi kustutamisega.",
@@ -2178,8 +2821,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2199,7 +2846,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_23_Lg_1",
@@ -2212,7 +2863,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 1"
+      "rdfs:label": "§ 23 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_23_Lg_2",
@@ -2238,7 +2904,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 3"
+      "rdfs:label": "§ 23 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_23_Lg_4",
@@ -2251,7 +2924,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 4"
+      "rdfs:label": "§ 23 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_23_Lg_5",
@@ -2264,19 +2949,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 5"
+      "rdfs:label": "§ 23 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Kande parandamine enne allakirjutamist",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kui kommertspandiregistri kanne ei vasta kandemäärusele ja kande ebaõigsus ilmneb enne sellele allakirjutamist, tehakse parandus uut kandemäärust tegemata.",
       "estleg:legalText": "Kui kommertspandiregistri kanne ei vasta kandemäärusele ja kande ebaõigsus ilmneb enne sellele allakirjutamist, tehakse parandus uut kandemäärust tegemata.",
@@ -2288,7 +2982,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_24_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_24_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2301,7 +2995,7 @@
       ]
     },
     {
-      "@id": "estleg:KomPS_Par_24_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_24_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2315,13 +3009,13 @@
       "@id": "estleg:KomPS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Kande parandamine pärast allakirjutamist",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kui kommertspandiregistri kanne ei vasta kandemäärusele ja kande ebaõigsus ilmneb pärast sellele allakirjutamist, teeb registripidaja kohe registrisse vastava märke ja teatab parandusettepanekust puudutatud isikutele, kellel on registripidaja poolt määratud tähtaja jooksul õigus esitada vastuväiteid. Tähtaja möödumisel otsustab kohtunik kande parandamise.",
       "estleg:legalText": "Kui kommertspandiregistri kanne ei vasta kandemäärusele ja kande ebaõigsus ilmneb pärast sellele allakirjutamist, teeb registripidaja kohe registrisse vastava märke ja teatab parandusettepanekust puudutatud isikutele, kellel on registripidaja poolt määratud tähtaja jooksul õigus esitada vastuväiteid. Tähtaja möödumisel otsustab kohtunik kande parandamise.",
@@ -2333,12 +3027,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_25_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_25_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2355,10 +3053,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KomPS_Par_25_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_25_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2366,19 +3068,31 @@
       "estleg:legalText": "Kui kommertspandiregistri kanne ei vasta kandemäärusele ja kande ebaõigsus ilmneb pärast sellele allakirjutamist, teeb registripidaja kohe registrisse vastava märke ja teatab parandusettepanekust puudutatud isikutele, kellel on registripidaja poolt määratud tähtaja jooksul õigus esitada vastuväiteid. Tähtaja möödumisel otsustab kohtunik kande parandamise.",
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_25"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Kande parandamise viis",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Kande parandamisel märgitakse ebaõige kanne kehtetuks ja tehakse õige kanne. (2) Uues kandes märgitakse, et see asendab eelmist. (3) Kande parandamine muul viisil on keelatud.",
       "estleg:legalText": "(1) Kande parandamisel märgitakse ebaõige kanne kehtetuks ja tehakse õige kanne. (2) Uues kandes märgitakse, et see asendab eelmist. (3) Kande parandamine muul viisil on keelatud.",
@@ -2423,6 +3137,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -2462,19 +3180,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 3"
+      "rdfs:label": "§ 26 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. [Kehtetu -]",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2497,13 +3222,13 @@
       "@id": "estleg:KomPS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. [Kehtetu -]",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2526,13 +3251,13 @@
       "@id": "estleg:KomPS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Seaduse jõustumine",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus jõustub 1997. aasta 1. jaanuaril. (2) Alates 1997. aasta 1. jaanuarist võib kommertspante registreerida üksnes kommertspandiregistris käesolevas seaduses sätestatud korras. Ettevõtteregistri pidaja võib kuni 1997. aasta 1. septembrini esitatud pandipidaja või tema kirjalikul nõusolekul ettevõtja avalduse alusel kustutada ettevõtteregistrist kõik seal registreeritud kommertspandid, teatades sellest viivitamata äriregistri pidajale.",
       "estleg:legalText": "(1) Käesolev seadus jõustub 1997. aasta 1. jaanuaril. (2) Alates 1997. aasta 1. jaanuarist võib kommertspante registreerida üksnes kommertspandiregistris käesolevas seaduses sätestatud korras. Ettevõtteregistri pidaja võib kuni 1997. aasta 1. septembrini esitatud pandipidaja või tema kirjalikul nõusolekul ettevõtja avalduse alusel kustutada ettevõtteregistrist kõik seal registreeritud kommertspandid, teatades sellest viivitamata äriregistri pidajale.",
@@ -2551,7 +3276,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2565,7 +3292,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_29_Lg_1",
@@ -2591,19 +3322,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 2"
+      "rdfs:label": "§ 29 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Ettevõtteregistris registreeritud kommertspandid",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Ettevõtete, asutuste ja organisatsioonide registrisse (edaspidi ettevõtteregister) kantud kommertspantidele kohaldatakse vastavalt käesoleva seaduse §-des 1–13 sätestatut. (2) Kui avaldus kommertspandi seadmiseks on ettevõtteregistrile esitatud enne 1997. aasta 1. jaanuari, võib selle registreerida ettevõtteregistris.",
       "estleg:legalText": "(1) Ettevõtete, asutuste ja organisatsioonide registrisse (edaspidi ettevõtteregister) kantud kommertspantidele kohaldatakse vastavalt käesoleva seaduse §-des 1–13 sätestatut. (2) Kui avaldus kommertspandi seadmiseks on ettevõtteregistrile esitatud enne 1997. aasta 1. jaanuari, võib selle registreerida ettevõtteregistris.",
@@ -2622,8 +3365,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -2695,7 +3442,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_30_Lg_1",
@@ -2749,7 +3500,19 @@
         {
           "@id": "estleg:KomPS_Par_13"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_30_Lg_2",
@@ -2762,19 +3525,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 2"
+      "rdfs:label": "§ 30 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. [Kehtetu -]",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2800,13 +3570,13 @@
       "@id": "estleg:KomPS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Ettevõtteregistri teatamiskohustus",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "Ettevõtteregister peab esitama äriregistri pidajale 1997. aasta 1. jaanuariks ettevõtteregistrisse kantud kommertspantide nimekirja.",
       "estleg:legalText": "Ettevõtteregister peab esitama äriregistri pidajale 1997. aasta 1. jaanuariks ettevõtteregistrisse kantud kommertspantide nimekirja.",
@@ -2818,7 +3588,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_32_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_32_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2829,10 +3599,13 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Ettevõtteregister"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KomPS_Par_32_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_32_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2840,19 +3613,26 @@
       "estleg:legalText": "Ettevõtteregister peab esitama äriregistri pidajale 1997. aasta 1. jaanuariks ettevõtteregistrisse kantud kommertspantide nimekirja.",
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_32"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KomPS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33.",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KomPS_4"
@@ -2866,13 +3646,13 @@
       "@id": "estleg:KomPS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -2892,13 +3672,13 @@
       "@id": "estleg:KomPS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Rakendamise määrused",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "kehtestab määrusega kommertspandiregistri kaardi vormi.",
       "estleg:legalText": "kehtestab määrusega kommertspandiregistri kaardi vormi.",
@@ -2910,12 +3690,12 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KomPS_Par_37_Lg_Unknown_1"
+          "@id": "estleg:KomPS_Par_37_Lg_1"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1008928_Map_2026"
+          "@id": "estleg:Reg_1008928_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -2953,12 +3733,12 @@
           "@id": "estleg:RPKS_Par_35"
         },
         {
-          "@id": "estleg:ÕÕS_Par_13"
+          "@id": "estleg:OOS_Par_13"
         }
       ]
     },
     {
-      "@id": "estleg:KomPS_Par_37_Lg_Unknown_1",
+      "@id": "estleg:KomPS_Par_37_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2972,13 +3752,13 @@
       "@id": "estleg:KomPS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kommertspandiseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Kasutatava vääringu erisused",
       "estleg:sourceAct": "Kommertspandiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KomPS_Map_2026"
+        "@id": "estleg:KomPS_Map"
       },
       "estleg:summary": "(1) Enne päeva, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel (edaspidi erandi kehtetuks tunnistamise päev), väljendatakse kommertspandiregistrisse kantud pandisummasid Eesti kroonides. (2) Pandisummad kantakse kommertspandiregistrisse eurodes, kui kandeavaldus esitatakse registripidajale enne erandi kehtetuks tunnistamise päeva, kuid kanne",
       "estleg:legalText": "(1) Enne päeva, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel (edaspidi erandi kehtetuks tunnistamise päev), väljendatakse kommertspandiregistrisse kantud pandisummasid Eesti kroonides. (2) Pandisummad kantakse kommertspandiregistrisse eurodes, kui kandeavaldus esitatakse registripidajale enne erandi kehtetuks tunnistamise päeva, kuid kanne tehakse pärast erandi kehtetuks tunnistamise päeva.",
@@ -2997,7 +3777,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3025,7 +3807,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KomPS_Par_38_Lg_1",
@@ -3051,7 +3837,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KomPS_Par_38"
       },
-      "rdfs:label": "§ 38 lg 2"
+      "rdfs:label": "§ 38 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

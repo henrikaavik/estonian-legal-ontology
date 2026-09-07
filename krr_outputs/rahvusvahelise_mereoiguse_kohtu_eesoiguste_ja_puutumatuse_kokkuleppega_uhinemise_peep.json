@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RMKEPKU_Map_2026",
+      "@id": "estleg:RMKEPKU_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Rahvusvahelise Mereõiguse Kohtu eesõiguste ja puutumatuse kokkuleppega ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/12882033.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/12882033.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,30 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_rahvusvahelise_mereoiguse_kohtu_eesoiguste_ja_puutumatuse_kokkuleppega_uhinemise",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2007-11-29",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:RMKEPKU_TopicScheme",
@@ -78,13 +87,13 @@
       "@id": "estleg:RMKEPKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_rahvusvahelise_mereoiguse_kohtu_eesoiguste_ja_puutumatuse_kokkuleppega_uhinemise"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ühineda juurdelisatud Rahvusvahelise Mereõiguse Kohtu eesõiguste ja puutumatuse...]",
       "estleg:sourceAct": "Rahvusvahelise Mereõiguse Kohtu eesõiguste ja puutumatuse kokkuleppega ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RMKEPKU_Map_2026"
+        "@id": "estleg:RMKEPKU_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud 1997. aasta 23. mail New Yorgis.",
       "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud 1997. aasta 23. mail New Yorgis.",
@@ -93,11 +102,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RMKEPKU_Par_1_Lg_Unknown_1"
+          "@id": "estleg:RMKEPKU_Par_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -118,17 +129,21 @@
           "@id": "estleg:naiste_diskrimineerimise_koigi_vormide_l_Par_1"
         },
         {
-          "@id": "estleg:puuetega_inimeste_oiguste_konventsiooni__Par_3"
+          "@id": "estleg:puuetega_inimeste_oiguste_konventsiooni_Par_3"
         }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RMKEPKU_Par_1_Lg_Unknown_1",
+      "@id": "estleg:RMKEPKU_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -142,13 +157,13 @@
       "@id": "estleg:RMKEPKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_rahvusvahelise_mereoiguse_kohtu_eesoiguste_ja_puutumatuse_kokkuleppega_uhinemise"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Pädev ametivõim artikli 20 mõistes on Vabariigi Valitsus.<table summary=\"allkiri...]",
       "estleg:sourceAct": "Rahvusvahelise Mereõiguse Kohtu eesõiguste ja puutumatuse kokkuleppega ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RMKEPKU_Map_2026"
+        "@id": "estleg:RMKEPKU_Map"
       },
       "estleg:summary": "Pädev ametivõim artikli 20 mõistes on Vabariigi Valitsus.",
       "estleg:legalText": "Pädev ametivõim artikli 20 mõistes on Vabariigi Valitsus.",
@@ -157,11 +172,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RMKEPKU_Par_2_Lg_Unknown_1"
+          "@id": "estleg:RMKEPKU_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -195,10 +212,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RMKEPKU_Par_2_Lg_Unknown_1",
+      "@id": "estleg:RMKEPKU_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -206,6 +227,15 @@
       "estleg:legalText": "Pädev ametivõim artikli 20 mõistes on Vabariigi Valitsus.",
       "estleg:parentProvision": {
         "@id": "estleg:RMKEPKU_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

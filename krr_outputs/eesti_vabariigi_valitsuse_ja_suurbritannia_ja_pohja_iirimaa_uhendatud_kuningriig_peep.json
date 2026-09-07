@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Map_2026",
+      "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Eesti Vabariigi Valitsuse ja Suurbritannia ja Põhja-Iirimaa Ühendatud Kuningriigi Valitsuse vaheline investeeringute soodustamise ja kaitse lepingu ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24787.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/24787.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,38 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_eesti_vabariigi_valitsuse_ja_suurbritannia_ja_pohja_iirimaa_uhendatud_kuningriig",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:references": [
+        {
+          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2"
+        },
+        {
+          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_1"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_TopicScheme",
@@ -78,13 +95,13 @@
       "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_vabariigi_valitsuse_ja_suurbritannia_ja_pohja_iirimaa_uhendatud_kuningriig"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Eesti Vabariigi Valitsuse ja Suurbritannia ja Põhja...]",
       "estleg:sourceAct": "Eesti Vabariigi Valitsuse ja Suurbritannia ja Põhja-Iirimaa Ühendatud Kuningriigi Valitsuse vaheline investeeringute soodustamise ja kaitse lepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Map_2026"
+        "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1994. aasta 12. mail Londonis.",
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1994. aasta 12. mail Londonis.",
@@ -93,18 +110,20 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1_Lg_Unknown_1"
+          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2"
         },
         {
-          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_Unknown_1"
+          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -133,10 +152,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1_Lg_Unknown_1",
+      "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -150,13 +173,13 @@
       "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_vabariigi_valitsuse_ja_suurbritannia_ja_pohja_iirimaa_uhendatud_kuningriig"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Deklareerida, et käesoleva seaduse §-s 1 nimetatud lepingu artikkel 6 esimest la...]",
       "estleg:sourceAct": "Eesti Vabariigi Valitsuse ja Suurbritannia ja Põhja-Iirimaa Ühendatud Kuningriigi Valitsuse vaheline investeeringute soodustamise ja kaitse lepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Map_2026"
+        "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Map"
       },
       "estleg:summary": "Deklareerida, et käesoleva seaduse §-s 1 nimetatud lepingu artikkel 6 esimest lauset mõistab Eesti Vabariik selliselt, et lepingupooled ei tee teise lepingupoole kodanike ja kompaniide investeeringutega seotud rahaülekannetele takistusi.",
       "estleg:legalText": "Deklareerida, et käesoleva seaduse §-s 1 nimetatud lepingu artikkel 6 esimest lauset mõistab Eesti Vabariik selliselt, et lepingupooled ei tee teise lepingupoole kodanike ja kompaniide investeeringutega seotud rahaülekannetele takistusi.",
@@ -165,11 +188,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_Unknown_1"
+          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
@@ -185,10 +210,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_Unknown_1",
+      "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -201,7 +230,16 @@
         {
           "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

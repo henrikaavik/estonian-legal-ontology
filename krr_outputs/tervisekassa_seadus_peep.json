@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TerKS_Map_2026",
+      "@id": "estleg:TerKS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Tervisekassa seadus teemakaardistus",
       "dc:source": "Tervisekassa seadus",
-      "dcterms:title": "Tervisekassa seadus",
+      "dcterms:title": [
+        {
+          "@value": "Tervisekassa seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Estonian Health Insurance Fund Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/117032026012.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/117032026012.xml"
       },
       "estleg:kehtiv": {
@@ -33,13 +38,13 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1046433_Map_2026"
+          "@id": "estleg:Reg_1046433_Map"
         },
         {
-          "@id": "estleg:Reg_1046818_Map_2026"
+          "@id": "estleg:Reg_1046818_Map"
         },
         {
-          "@id": "estleg:Reg_153136_Map_2026"
+          "@id": "estleg:Reg_153136_Map"
         }
       ],
       "estleg:implementedByCount": 3,
@@ -60,16 +65,124 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_tervisekassa_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/5899"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:TerKS_Par_9"
+        },
+        {
+          "@id": "estleg:TerKS_Par_12"
+        },
+        {
+          "@id": "estleg:SMS_Par_7"
+        },
+        {
+          "@id": "estleg:TTKS_Par_51"
+        },
+        {
+          "@id": "estleg:TerKS_Par_39"
+        },
+        {
+          "@id": "estleg:TerKS_Par_10"
+        },
+        {
+          "@id": "estleg:TerKS_Par_2"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TerKS_Par_48_6"
+        },
+        {
+          "@id": "estleg:TerKS_Par_48_6_Lg_1"
+        },
+        {
+          "@id": "estleg:TerKS_Par_10"
+        },
+        {
+          "@id": "estleg:TerKS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:TerKS_Par_11"
+        },
+        {
+          "@id": "estleg:TerKS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:TerKS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:TerKS_Par_48_2"
+        },
+        {
+          "@id": "estleg:TerKS_Par_48_2_Lg_1"
+        },
+        {
+          "@id": "estleg:TerKS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:TerKS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:TerKS_Par_14_Lg_4"
+        },
+        {
+          "@id": "estleg:TerKS_Par_17"
+        },
+        {
+          "@id": "estleg:TerKS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:TerKS_Par_17_Lg_5"
+        },
+        {
+          "@id": "estleg:TerKS_Par_48_1"
+        },
+        {
+          "@id": "estleg:TerKS_Par_48_1_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_sotsiaalminister"
+        },
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/513052026002"
       }
     },
     {
@@ -92,7 +205,7 @@
           "@id": "estleg:Cluster_TerKS_4"
         },
         {
-          "@id": "estleg:Cluster_TerKS_4_Dup2"
+          "@id": "estleg:Cluster_TerKS_4_46_46"
         },
         {
           "@id": "estleg:Cluster_TerKS_5"
@@ -125,10 +238,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TerKS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -187,9 +304,9 @@
       "rdfs:label": "2. peatükk – TERVISEKASSA ORGANID JA STRUKTUURIÜKSUSED",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TerKS_2"
       },
       "estleg:hasPart": [
@@ -202,7 +319,11 @@
         {
           "@id": "estleg:Division_TerKS_2_3"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_TerKS_3",
@@ -227,10 +348,14 @@
       "rdfs:label": "3. peatükk – TERVISEKASSA VARA JA EELARVE",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TerKS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -256,14 +381,18 @@
       "rdfs:label": "4. peatükk – RAAMATUPIDAMINE, ARUANDLUS, KONTROLL",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TerKS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_TerKS_4_Dup2",
+      "@id": "estleg:Cluster_TerKS_4_46_46",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -277,7 +406,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_TerKS_4_Dup2",
+      "@id": "estleg:Chapter_TerKS_4_9820bb1e",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -285,10 +414,14 @@
       "rdfs:label": "4. peatükk – TERVISEKASSA ANDMEKOGU",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_TerKS_4_Dup2"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_TerKS_4_46_46"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -314,10 +447,14 @@
       "rdfs:label": "5. peatükk – LÕPETAMINE",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TerKS_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -343,23 +480,27 @@
       "rdfs:label": "6. peatükk – RAKENDUSSÄTTED",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TerKS_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TerKS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Käesolev seadus sätestab Tervisekassa eesmärgi, ülesanded, pädevuse, õigusliku seisundi, tegevuse alused ja organid.",
       "estleg:legalText": "Käesolev seadus sätestab Tervisekassa eesmärgi, ülesanded, pädevuse, õigusliku seisundi, tegevuse alused ja organid.",
@@ -371,7 +512,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_1_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -395,7 +536,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_1_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -409,13 +550,13 @@
       "@id": "estleg:TerKS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Tervisekassa eesmärk ja ülesanded",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa eesmärk on ravikindlustushüvitiste võimaldamine, tervishoiuteenuste eest tasumine, vaktsiinikahjude hüvitamine ning tervishoiuteenuste korraldamisega seotud teiste ülesannete täitmine vastavalt ravikindlustuse seadusele, ravimiseadusele, tervishoiuteenuste korraldamise seadusele ja muudele õigusaktidele ning Tervisekassa eelarves ettenähtud kuludele. (2) Oma eesmärgi saavutamiseks täidab Tervisekassa järgmisi ülesandeid: korraldab ravikindlustust, tervishoiuteenuste eest",
       "estleg:legalText": "(1) Tervisekassa eesmärk on ravikindlustushüvitiste võimaldamine, tervishoiuteenuste eest tasumine, vaktsiinikahjude hüvitamine ning tervishoiuteenuste korraldamisega seotud teiste ülesannete täitmine vastavalt ravikindlustuse seadusele, ravimiseadusele, tervishoiuteenuste korraldamise seadusele ja muudele õigusaktidele ning Tervisekassa eelarves ettenähtud kuludele. (2) Oma eesmärgi saavutamiseks täidab Tervisekassa järgmisi ülesandeid: korraldab ravikindlustust, tervishoiuteenuste eest tasumist ning tervishoiuteenuste korraldamisega seotud teiste ülesannete täitmist, tagades Tervisekassa eelarve efektiivse ja otstarbeka kasutamise; täidab ravikindlustuse seadusest, tervishoiuteenuste korraldamise seadusest ja muudest õigusaktidest tulenevaid ülesandeid; korraldab vaktsiinikahjude hüvitamist ja täidab muid sellega seonduvaid ülesandeid vastavalt ravimiseadusele; peab ravikindlustushüvitiste võimaldamiseks ja käesolevast seadusest, ravikindlustuse seadusest, ravimiseadusest, tervishoiuteenuste korraldamise seadusest ning muudest õigusaktidest tulenevate muude ülesannete täitmiseks Tervisekassa andmekogu; teavitab isikuid Tervisekassa põhikirjas sätestatud korras elektrooniliselt või muul viisil ravikindlustuse seadusest või muudest õigusaktidest tulenevatest õigustest ja kohustustest; kontrollib Tervisekassa poolt osaliselt või täielikult tasutavate teenuste kvaliteeti ja põhjendatust; korraldab ravikindlustust ja tervishoiuteenuse osutamist ning Tervisekassat puudutavate välislepingute täitmist; osaleb tervishoiu planeerimisel ning avaldab arvamust Tervisekassaga, ravikindlustusega ja tervishoiuteenuste korraldusega seonduvate õigusaktide ja välislepingute eelnõude kohta; annab nõu ravikindlustusega seonduvates küsimustes; annab nõu tervishoiuteenuste korraldamise seaduses ning muude õigusaktidega seonduvates küsimustes; osaleb tervishoiuteenuste osutamise kvaliteeti, kättesaadavust ja efektiivsust arendavates tegevustes ja projektides ning tervisesüsteemi ja tervise infosüsteemi arendustegevuses ja haldamises koostöös Sotsiaalministeeriumiga. (2¹) Seadusega pandud ülesannete täitmiseks kasutab Tervisekassa Eesti rahvastikuregistri andmeid. (2²) Tervisekassa töötajal, kes kontrollib osaliselt või täielikult tasustatavate teenuste kvaliteeti ja põhjendatust, on juurdepääsuõigus tervishoiuteenuste eest tasumise, lepingulise järelevalve, tervishoiuteenuste statistika ning Tervisekassa eelarve efektiivse ja otstarbeka kasutamise eesmärgil tervise infosüsteemis olevatele isikuandmetele. Nimetatud eesmärkidel võib andmetöötlust läbi viia automatiseeritult. (2³) Käesoleva paragrahvi lõikes 22 nimetatud isikul on juurdepääsuõigus järgmistele tervise infosüsteemis olevatele andmetele: andmed andmete esitaja kohta; andmed ambulatoorse ja statsionaarse tervishoiuteenuse osutamise kohta; andmed ravimite kohta. (2⁴) Käesoleva paragrahvi lõikes 23 nimetatud täpsemate andmete loetelu ja päringute perioodid kehtestab määrusega. (3) Tervisekassa võib oma eesmärgi saavutamiseks nõuda kõigilt isikutelt ja asutustelt asjakohaste dokumentide ja informatsiooni esitamist, kui seaduses ei ole ette nähtud teisiti. (3¹) Tervisekassa võib oma ülesannete täitmisel koostatud nõude, haldusakti või muu dokumendi toimetada füüsilisele isikule kätte posti teel tähtkirjaga, lihtkirjaga või väljastusteatega tähtkirjaga või elektrooniliselt. Elektroonilist kättetoimetamise viisi kasutatakse juhul, kui on mõistlikult võimalik eeldada, et isikul on juurdepääs enda elektronpostile. (4) Tervisekassa võib põhikirjas sätestatud korras moodustada komisjone oma ülesannete täitmiseks.",
@@ -455,20 +596,24 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:TerKS_Par_48_6"
         },
         {
-          "@id": "estleg:TerKS_Par_48_6_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_6_Lg_1"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1046818_Map_2026"
+          "@id": "estleg:Reg_1046818_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -492,7 +637,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_2_Lg_1",
@@ -518,7 +667,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_2_Lg_2_1",
@@ -544,7 +702,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2²"
+      "rdfs:label": "§ 2 lg 2²",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_2_Lg_2_3",
@@ -557,7 +727,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2³"
+      "rdfs:label": "§ 2 lg 2³",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_2_Lg_2_4",
@@ -583,7 +762,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 3"
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_2_Lg_3_1",
@@ -596,7 +787,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 3¹"
+      "rdfs:label": "§ 2 lg 3¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_2_Lg_4",
@@ -609,19 +812,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 4"
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Tervisekassa kohustused oma ülesannete täitmisel",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassal on kohustus tulenevalt käesolevast seadusest, ravikindlustuse seadusest, ravimiseadusest, tervishoiuteenuste korraldamise seadusest, Tervisekassa põhikirjast ja muudest õigusaktidest täita järgmisi ülesandeid: sõlmida lepinguid tervise edendamise, haiguste ennetamise ja tervishoiuteenuste eest tasumiseks ning muude ülesannete täitmiseks; tasuda tervishoiuteenuse osutajale lepingus ettenähtud teenuste eest vastavalt lepingu tingimustele, kui seaduses ei ole ette nähtud teisiti;",
       "estleg:legalText": "Tervisekassal on kohustus tulenevalt käesolevast seadusest, ravikindlustuse seadusest, ravimiseadusest, tervishoiuteenuste korraldamise seadusest, Tervisekassa põhikirjast ja muudest õigusaktidest täita järgmisi ülesandeid: sõlmida lepinguid tervise edendamise, haiguste ennetamise ja tervishoiuteenuste eest tasumiseks ning muude ülesannete täitmiseks; tasuda tervishoiuteenuse osutajale lepingus ettenähtud teenuste eest vastavalt lepingu tingimustele, kui seaduses ei ole ette nähtud teisiti; tasuda soodustingimustel väljastatud ravimite ja meditsiiniseadmete eest apteekidele, kui seaduses ei ole ette nähtud teisiti; maksta kindlustatutele ajutise töövõimetuse hüvitisi, kui seaduses ei ole ette nähtud teisiti; hüvitada isikule vaktsiinikahjud vastavalt ravimiseaduses sätestatule; kehtetu - tagada kindlustatute tervislikku seisundit ja eraelu puudutavate andmete salastatus, mis on Tervisekassa töötajatele ja esindajatele teatavaks saanud seoses kutsekohustuste või lepinguliste õiguste teostamise ja kohustuste täitmisega, kui seaduses ei ole ette nähtud teisiti.",
@@ -633,11 +843,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -656,10 +868,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TerKS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -667,19 +883,31 @@
       "estleg:legalText": "Tervisekassal on kohustus tulenevalt käesolevast seadusest, ravikindlustuse seadusest, ravimiseadusest, tervishoiuteenuste korraldamise seadusest, Tervisekassa põhikirjast ja muudest õigusaktidest täita järgmisi ülesandeid: sõlmida lepinguid tervise edendamise, haiguste ennetamise ja tervishoiuteenuste eest tasumiseks ning muude ülesannete täitmiseks; tasuda tervishoiuteenuse osutajale lepingus ettenähtud teenuste eest vastavalt lepingu tingimustele, kui seaduses ei ole ette nähtud teisiti; tasuda soodustingimustel väljastatud ravimite ja meditsiiniseadmete eest apteekidele, kui seaduses ei ole ette nähtud teisiti; maksta kindlustatutele ajutise töövõimetuse hüvitisi, kui seaduses ei ole ette nähtud teisiti; hüvitada isikule vaktsiinikahjud vastavalt ravimiseaduses sätestatule; kehtetu - tagada kindlustatute tervislikku seisundit ja eraelu puudutavate andmete salastatus, mis on Tervisekassa töötajatele ja esindajatele teatavaks saanud seoses kutsekohustuste või lepinguliste õiguste teostamise ja kohustuste täitmisega, kui seaduses ei ole ette nähtud teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_3"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TerKS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Tervisekassa pädevus eelarve kasutamisel",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa kontrollib seadusest tulenevate ülesannete täitmiseks, sealhulgas tervise edendamise, haiguste ennetamise, tervishoiuteenuse osutaja poolt osutatud teenuste ja väljaantud töövõimetuslehtede ning retseptide õigsust ja põhjendatust, samuti apteegi poolt ravimite soodustingimustel väljastamise ning apteekide ja meditsiiniseadmete müüjate poolt meditsiiniseadmete soodustingimustel väljastamise õigsust ja põhjendatust. Ebaõigsuse või põhjendamatuse korral on Tervisekassal õigus",
       "estleg:legalText": "(1) Tervisekassa kontrollib seadusest tulenevate ülesannete täitmiseks, sealhulgas tervise edendamise, haiguste ennetamise, tervishoiuteenuse osutaja poolt osutatud teenuste ja väljaantud töövõimetuslehtede ning retseptide õigsust ja põhjendatust, samuti apteegi poolt ravimite soodustingimustel väljastamise ning apteekide ja meditsiiniseadmete müüjate poolt meditsiiniseadmete soodustingimustel väljastamise õigsust ja põhjendatust. Ebaõigsuse või põhjendamatuse korral on Tervisekassal õigus summa väljamaksmine vaidlustada või summa väljamaksmisest keelduda. Tervisekassal on õigus ebaõigesti või põhjendamatult väljamakstud summa tagasi nõuda või pidada kinni järgmiste perioodide väljamaksetest. (2) Kehtetu - (3) Tervisekassa nõuab kindlustatult või sotsiaalmaksu maksjalt Tervisekassa kasuks sisse kulud ravikindlustuse seaduses ettenähtud juhtudel. (3¹) Tervisekassal on tagasinõudeõigus isiku suhtes, kes vastutab sellise juhtumi toimumise eest, mille tõttu Tervisekassa tasus tervishoiuteenuse osutajale ravikindlustusega hõlmamata isikule tervishoiuteenuse osutamise eest, samuti kindlustusandjate ja Eesti Liikluskindlustuse Fondi suhtes, kes on kohustatud võimaldama hüvitisi sama juhtumi raames. (4) Tervisekassa nõuab kindlustatult põhjendatud kahtluse korral arstliku läbivaatuse või terviseuuringute läbimist ja nende tulemuste avaldamist Tervisekassale.",
@@ -707,8 +935,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -730,7 +962,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_4_Lg_1",
@@ -743,7 +979,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_4_Lg_2",
@@ -782,7 +1025,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3¹"
+      "rdfs:label": "§ 4 lg 3¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_4_Lg_4",
@@ -801,13 +1059,13 @@
       "@id": "estleg:TerKS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Tervisekassa õiguslik seisund",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa on käesoleva seadusega loodud avalik-õiguslik juriidiline isik. Tervisekassa õigusvõime tekib alates käesoleva seaduse jõustumisest. (2) Tervisekassa põhikirja kehtestab ning selles teeb muudatusi . Enne põhikirja muutmise ettepaneku esitamist Vabariigi Valitsusele kuulab valdkonna eest vastutav minister ära Tervisekassa nõukogu arvamuse. (3) Tervisekassa vastutab oma kohustuste täitmise eest kogu oma varaga, kui seaduses ei ole ette nähtud teisiti.",
       "estleg:legalText": "(1) Tervisekassa on käesoleva seadusega loodud avalik-õiguslik juriidiline isik. Tervisekassa õigusvõime tekib alates käesoleva seaduse jõustumisest. (2) Tervisekassa põhikirja kehtestab ning selles teeb muudatusi . Enne põhikirja muutmise ettepaneku esitamist Vabariigi Valitsusele kuulab valdkonna eest vastutav minister ära Tervisekassa nõukogu arvamuse. (3) Tervisekassa vastutab oma kohustuste täitmise eest kogu oma varaga, kui seaduses ei ole ette nähtud teisiti. Tervisekassa ei vastuta riigi kohustuste täitmise või täitmata jätmise eest. Riik vastutab Tervisekassa kohustuste täitmata jätmise eest ainult käesolevas seaduses ettenähtud juhtudel ja tingimustel. (4) Riik vastutab Tervisekassa kohustuste täitmise eest reservkapitali ebapiisavuse või selle kasutamise võimaluste või aluste puudumise korral, kui: Tervisekassa ei saa täita oma lepingulisi kohustusi või maksta ravikindlustushüvitisi raha vähemlaekumise tõttu, võrreldes riigieelarves Tervisekassa eelarveks ettenähtud summadega; Vabariigi Valitsuse või valdkonna eest vastutava ministri kehtestatud ravikindlustushüvitiste piirhindu ja piirmäärasid reguleerivad õigusaktid või Tervisekassa sõlmitud hinnakokkulepped ei võimalda Tervisekassal täita oma lepingulisi kohustusi või maksta ravikindlustushüvitisi. (5) Tervisekassa ei saa olla pankrotivõlgnik. (6) Tervisekassal on õigus võtta laenu ainult enda omandis olevate asjade tagatisel. Tervisekassal on keelatud anda laenu ja tagada teiste isikute laenukohustuste täitmist. (7) Tervisekassa on kuni käesoleva seaduse jõustumiseni tegutsenud Keskhaigekassa ja piirkondlike haigekassade õigusjärglane. (8) Tervisekassa ei või jaguneda ega ühineda teiste juriidiliste isikutega. Tervisekassat ei või ümber kujundada muud liiki juriidiliseks isikuks. (9) Tervisekassa registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
@@ -847,12 +1105,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_153136_Map_2026"
+          "@id": "estleg:Reg_153136_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -879,7 +1141,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_5_Lg_1",
@@ -892,7 +1158,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_5_Lg_2",
@@ -905,7 +1183,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_5_Lg_3",
@@ -931,7 +1221,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 4"
+      "rdfs:label": "§ 5 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_5_Lg_5",
@@ -957,7 +1256,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 6"
+      "rdfs:label": "§ 5 lg 6",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_5_Lg_7",
@@ -983,7 +1294,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 8"
+      "rdfs:label": "§ 5 lg 8",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_5_Lg_9",
@@ -996,19 +1319,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 9"
+      "rdfs:label": "§ 5 lg 9",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Nimi",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa nimi on Tervisekassa. Tervisekassal on ainuõigus oma nimele.",
       "estleg:legalText": "Tervisekassa nimi on Tervisekassa. Tervisekassal on ainuõigus oma nimele.",
@@ -1020,7 +1352,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1041,7 +1373,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_6_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1055,13 +1387,13 @@
       "@id": "estleg:TerKS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Asukoht",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa asukoht on Tallinn. Tervisekassa aadress on koht, kus asub Tervisekassa juhatus.",
       "estleg:legalText": "Tervisekassa asukoht on Tallinn. Tervisekassa aadress on koht, kus asub Tervisekassa juhatus.",
@@ -1073,7 +1405,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_7_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_7_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1094,7 +1426,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_7_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_7_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1108,13 +1440,13 @@
       "@id": "estleg:TerKS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Nõukogu",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa kõrgeim organ on Tervisekassa nõukogu. Nõukogul on 6 liiget.",
       "estleg:legalText": "Tervisekassa kõrgeim organ on Tervisekassa nõukogu. Nõukogul on 6 liiget.",
@@ -1123,7 +1455,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_8_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_8_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1138,7 +1470,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_8_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_8_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1152,13 +1484,13 @@
       "@id": "estleg:TerKS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Nõukogu liikmed",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervishoiu korraldamise valdkonna eest vastutav minister ja riigi eelarvepoliitika valdkonna eest vastutav minister on nõukogu liikmed ametikoha järgi. (2) Vabariigi Valitsus nimetab korraldusega Eesti Tööandjate Keskliidu ettepanekul kaks nõukogu liiget, Eesti Ametiühingute Keskliidu ettepanekul ühe nõukogu liikme ja Eesti Puuetega Inimeste Koja ettepanekul ühe nõukogu liikme. Ettepaneku tegija on kohustatud enne Vabariigi Valitsusele ettepaneku tegemist kontrollima nõukogu liikme",
       "estleg:legalText": "(1) Tervishoiu korraldamise valdkonna eest vastutav minister ja riigi eelarvepoliitika valdkonna eest vastutav minister on nõukogu liikmed ametikoha järgi. (2) Vabariigi Valitsus nimetab korraldusega Eesti Tööandjate Keskliidu ettepanekul kaks nõukogu liiget, Eesti Ametiühingute Keskliidu ettepanekul ühe nõukogu liikme ja Eesti Puuetega Inimeste Koja ettepanekul ühe nõukogu liikme. Ettepaneku tegija on kohustatud enne Vabariigi Valitsusele ettepaneku tegemist kontrollima nõukogu liikme vastavust käesoleva seaduse §-s 10 sätestatud nõuetele. (3) Vabariigi Valitsus võib nõukogu liikme tagasi kutsuda selle liikme nimetamise ettepaneku teinud organisatsiooni ettepanekul või kui nimetatud nõukogu liige ei vasta enam käesoleva seaduse §-s 10 sätestatud nõuetele.",
@@ -1177,8 +1509,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1200,7 +1536,7 @@
           "@id": "estleg:TerKS_Par_48_2"
         },
         {
-          "@id": "estleg:TerKS_Par_48_2_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1232,7 +1568,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_9_Lg_1",
@@ -1245,7 +1585,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 1"
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_9_Lg_2",
@@ -1263,7 +1612,22 @@
         {
           "@id": "estleg:TerKS_Par_10"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_9_Lg_3",
@@ -1281,19 +1645,31 @@
         {
           "@id": "estleg:TerKS_Par_10"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Nõuded nõukogu liikmetele",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu liige peab olema teovõimeline Eesti kodanik, kelle alaline elukoht on Eesti Vabariigis. (2) Käesoleva seaduse § 9 lõikes 2 nimetatud nõukogu liikme nimetamisel või tagasikutsumisel arvestatakse järgmisi nõudeid: tal on nõukogu liikme kohustuste täitmiseks vajalikud teadmised ja laitmatu reputatsioon; tema majandus- või kutsetegevus ei ole seotud tervishoiuteenuse osutajaga ega ravimi käitlemise tegevusluba omava või meditsiinitehnoloogia tootmise või müümisega tegeleva isikuga; ta",
       "estleg:legalText": "(1) Nõukogu liige peab olema teovõimeline Eesti kodanik, kelle alaline elukoht on Eesti Vabariigis. (2) Käesoleva seaduse § 9 lõikes 2 nimetatud nõukogu liikme nimetamisel või tagasikutsumisel arvestatakse järgmisi nõudeid: tal on nõukogu liikme kohustuste täitmiseks vajalikud teadmised ja laitmatu reputatsioon; tema majandus- või kutsetegevus ei ole seotud tervishoiuteenuse osutajaga ega ravimi käitlemise tegevusluba omava või meditsiinitehnoloogia tootmise või müümisega tegeleva isikuga; ta ei kuulu käesoleva lõike punktis 2 nimetatud tegevusala esindusorganisatsiooni juhtorganisse ega saa esindusorganisatsioonilt lepingu alusel töö- või teenustasu, mis on seotud esindusorganisatsiooni põhitegevusega või tema huvide esindamisega.",
@@ -1309,11 +1685,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_2"
         }
       ],
       "estleg:referencedBy": [
@@ -1327,7 +1705,7 @@
           "@id": "estleg:TerKS_Par_48_2"
         },
         {
-          "@id": "estleg:TerKS_Par_48_2_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1347,7 +1725,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_10_Lg_1",
@@ -1360,7 +1742,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_10_Lg_2",
@@ -1376,21 +1770,31 @@
       "rdfs:label": "§ 10 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_2"
         }
-      ]
+      ],
+      "estleg:itemNumber": "2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Nõukogu liikmete volituste tähtaeg",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse § 9 lõikes 1 nimetatud nõukogu liikmete volitused lõpevad koos vastavate isikute volituste lõppemisega § 9 lõikes 1 nimetatud ametikohtadel. (2) Kehtetu - (3) Käesoleva seaduse § 9 lõikes 2 nimetatud nõukogu liikmete volituste tähtaeg on kolm aastat ja neid ei saa nõukogu liikmeks nimetada rohkem kui kaks korda järjest.",
       "estleg:legalText": "(1) Käesoleva seaduse § 9 lõikes 1 nimetatud nõukogu liikmete volitused lõpevad koos vastavate isikute volituste lõppemisega § 9 lõikes 1 nimetatud ametikohtadel. (2) Kehtetu - (3) Käesoleva seaduse § 9 lõikes 2 nimetatud nõukogu liikmete volituste tähtaeg on kolm aastat ja neid ei saa nõukogu liikmeks nimetada rohkem kui kaks korda järjest.",
@@ -1409,11 +1813,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:TerKS_Par_9_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -1433,7 +1842,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_11_Lg_1",
@@ -1449,9 +1862,18 @@
       "rdfs:label": "§ 11 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_11_Lg_2",
@@ -1480,7 +1902,7 @@
       "rdfs:label": "§ 11 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_2"
         }
       ]
     },
@@ -1488,13 +1910,13 @@
       "@id": "estleg:TerKS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Nõukogu pädevus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu: kinnitab Tervisekassa arengukava; kuulates ära juhatuse arvamuse, teeb valdkonna eest vastutavale ministrile ettepaneku teha Vabariigi Valitsusele ettepanek Tervisekassa tervishoiuteenuste loetelu kehtestamiseks või muutmiseks; kinnitab ravijärjekorra maksimumpikkuse; teeb valdkonna eest vastutavale ministrile ettepaneku Tervisekassa meditsiiniseadmete ja ravimite loetelu kehtestamiseks, ravimite piirhindade kehtestamiseks, tervishoiuteenuste korraldamise seaduse § 504 lõikes 1",
       "estleg:legalText": "(1) Nõukogu: kinnitab Tervisekassa arengukava; kuulates ära juhatuse arvamuse, teeb valdkonna eest vastutavale ministrile ettepaneku teha Vabariigi Valitsusele ettepanek Tervisekassa tervishoiuteenuste loetelu kehtestamiseks või muutmiseks; kinnitab ravijärjekorra maksimumpikkuse; teeb valdkonna eest vastutavale ministrile ettepaneku Tervisekassa meditsiiniseadmete ja ravimite loetelu kehtestamiseks, ravimite piirhindade kehtestamiseks, tervishoiuteenuste korraldamise seaduse § 504 lõikes 1 sätestatud juurdepääsupiirangu ja ravikindlustuse seaduse § 663 lõikes 1 sätestatud eelloa nõude kehtestamiseks, kohaldamiseks või kohaldamise lõpetamiseks ning ravikindlustuse seaduse § 661 lõikes 1 sätestatud tervishoiuteenuste loetelu ja väljaspool ravijärjekorda osutatud tervishoiuteenuse kulu hüvitamise korra kehtestamiseks; kinnitab ravikindlustuse seaduse § 22 lõikes 1 nimetatud lepingu tüüptingimused, § 36 lõikes 4 sätestatud asjaolude hindamise alused ja § 36 lõikes 42 sätestatud lepingu tähtaja üle otsustamise tingimused; kinnitab tervishoiuteenuste korraldamise seaduse § 172 lõikes 3 sätestatud asjaolude hindamise alused; kuulanud ära juhatuse arvamuse, teeb valdkonna eest vastutavale ministrile ettepaneku kiirabi eest tasumise korra, kiirabibrigaadi pidajale makstava tasu arvutamise metoodika ja kiirabi hinna ning meditsiinilise kaugkonsultatsiooni teenuse eest makstava tasu arvutamise metoodika ja selle teenuse hinna kehtestamiseks või selle muutmiseks; annab valdkonna eest vastutavale ministrile arvamuse ravikindlustusega hõlmamata isikule osutatavate rahvastiku tervise kaitsega seotud tervishoiuteenuste loetelu kehtestamise või selle muutmise kohta; teeb valdkonna eest vastutavale ministrile ettepaneku arst-residendi tööjõukulu arvutamise ja baasasutusele hüvitamise aluste kehtestamiseks või muutmiseks; kinnitab juhatuse ettepanekul Tervisekassa eelarve, lähtudes riigieelarvest; otsustab juhatuse ettepanekul Tervisekassa eelmiste perioodide jaotamata kasumi kasutuselevõtu kooskõlas käesoleva seaduse §-ga 361; kinnitab juhatuse ettepanekul Tervisekassa struktuuri käesoleva seaduse ja Tervisekassa põhikirjaga reguleerimata ulatuses; kehtetu - kinnitab juhatuse ettepanekul raamatupidamise sise-eeskirjad; otsustab juhatuse ettepanekul kinnisasjade ja registrisse kantud või kantavate vallasasjade omandamise, võõrandamise ja koormamise ning laenude võtmise; nimetab ametisse ja kutsub tagasi juhatuse esimehe; nimetab ametisse ja kutsub tagasi oma algatusel või juhatuse esimehe ettepanekul juhatuse liikmed; otsustab juhatuse esimehega ametilepingu sõlmimise ja juhatuse esimehe ettepanekul juhatuse liikmetega ametilepingu sõlmimise; otsustab juhatuse liikme vastu varalise nõude esitamise; kinnitab juhatuse esimehe ja juhatuse liikmete ametitasu ja lisatasud, kuulates ära juhatuse esimehe arvamuse; kinnitab juhatuse poolt esitatavad aruanded ja neile esitatavad nõuded; määrab Tervisekassa audiitori ja otsustab audiitorile makstava tasu suuruse, kuulates ära juhatuse arvamuse. (2) Käesoleva paragrahvi lõikes 1 nimetatud küsimuste otsustamine kuulub nõukogu ainupädevusse. Juhatuse või juhatuse esimehe ettepanekul võib nõukogu võtta vastu otsuseid ka Tervisekassat puudutavates käesoleva paragrahvi lõikes 1 nimetamata küsimustes.",
@@ -1510,8 +1932,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1547,7 +1973,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_12_Lg_1",
@@ -1563,9 +1993,21 @@
       "rdfs:label": "§ 12 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:RaKS_Par_22"
+          "@id": "estleg:RaKS_Par_22_Lg_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_12_Lg_2",
@@ -1578,19 +2020,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Nõukogu järelevalve",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu teostab järelevalvet juhatuse üle. (2) Nõukogul on oma ülesannete täitmiseks õigus tutvuda kõikide Tervisekassa dokumentidega, samuti kontrollida või teha asjakohastele kolmandatele isikutele ülesandeks kontrollida Tervisekassa raamatupidamise õigsust, vara olemasolu, Tervisekassa tegevuse vastavust seadustele, Tervisekassa põhikirjale ja nõukogu otsustele.",
       "estleg:legalText": "(1) Nõukogu teostab järelevalvet juhatuse üle. (2) Nõukogul on oma ülesannete täitmiseks õigus tutvuda kõikide Tervisekassa dokumentidega, samuti kontrollida või teha asjakohastele kolmandatele isikutele ülesandeks kontrollida Tervisekassa raamatupidamise õigsust, vara olemasolu, Tervisekassa tegevuse vastavust seadustele, Tervisekassa põhikirjale ja nõukogu otsustele.",
@@ -1646,13 +2095,13 @@
       "@id": "estleg:TerKS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Nõukogu esimees ja aseesimees",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Valdkonna eest vastutav minister on nõukogu esimees ametikoha järgi. (2) Nõukogu liikmed valivad endi hulgast nõukogu aseesimehe. (3) Nõukogu esimees: korraldab nõukogu tööd; juhatab nõukogu koosolekuid; esindab nõukogu; otsustab muud küsimused, mis kuuluvad käesoleva seaduse või Tervisekassa põhikirja kohaselt nõukogu esimehe pädevusse. (4) Nõukogu esimehe äraolekul täidab tema ülesandeid nõukogu aseesimees. Nõukogu aseesimees ei saa asendada nõukogu esimeest nõusoleku andmisel käesoleva",
       "estleg:legalText": "(1) Valdkonna eest vastutav minister on nõukogu esimees ametikoha järgi. (2) Nõukogu liikmed valivad endi hulgast nõukogu aseesimehe. (3) Nõukogu esimees: korraldab nõukogu tööd; juhatab nõukogu koosolekuid; esindab nõukogu; otsustab muud küsimused, mis kuuluvad käesoleva seaduse või Tervisekassa põhikirja kohaselt nõukogu esimehe pädevusse. (4) Nõukogu esimehe äraolekul täidab tema ülesandeid nõukogu aseesimees. Nõukogu aseesimees ei saa asendada nõukogu esimeest nõusoleku andmisel käesoleva seaduse § 12 lõike 1 punktides 2 ja 3 sätestatud nõukogu otsuste vastuvõtmiseks vastavalt käesoleva seaduse § 17 lõike 5 sätetele.",
@@ -1674,7 +2123,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1696,7 +2147,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_14_Lg_1",
@@ -1709,7 +2164,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_14_Lg_2",
@@ -1735,7 +2199,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 3"
+      "rdfs:label": "§ 14 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_14_Lg_4",
@@ -1751,24 +2224,33 @@
       "rdfs:label": "§ 14 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_12"
+          "@id": "estleg:TerKS_Par_12_Lg_1"
         },
         {
-          "@id": "estleg:TerKS_Par_17"
+          "@id": "estleg:TerKS_Par_17_Lg_5"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Nõukogu aseesimehe valimine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu aseesimees valitakse: nõukogu uue esimehe ametisse asumisele järgneval nõukogu koosolekul; nõukogu aseesimehe tagasikutsumisele järgneval nõukogu koosolekul; nõukogu aseesimehe tagasiastumise või surma korral väljalangemisele järgneval nõukogu koosolekul. (2) Kui nõukogu aseesimehe valimised on kaks korda ära jäänud nõukogu koosoleku kvoorumi puudumise tõttu, valitakse nõukogu aseesimees, olenemata kvoorumist, tingimusel, et kõigile nõukogu liikmetele oli nõukogu koosoleku ajast,",
       "estleg:legalText": "(1) Nõukogu aseesimees valitakse: nõukogu uue esimehe ametisse asumisele järgneval nõukogu koosolekul; nõukogu aseesimehe tagasikutsumisele järgneval nõukogu koosolekul; nõukogu aseesimehe tagasiastumise või surma korral väljalangemisele järgneval nõukogu koosolekul. (2) Kui nõukogu aseesimehe valimised on kaks korda ära jäänud nõukogu koosoleku kvoorumi puudumise tõttu, valitakse nõukogu aseesimees, olenemata kvoorumist, tingimusel, et kõigile nõukogu liikmetele oli nõukogu koosoleku ajast, kohast ja päevakorrast teatatud Tervisekassa põhikirjas sätestatud korras. (3) Nõukogu aseesimees valitakse nõukogu koosolekul kohalviibivate nõukogu liikmete poolthäälteenamusega. Valimiste protseduur sätestatakse Tervisekassa põhikirjas.",
@@ -1840,13 +2322,13 @@
       "@id": "estleg:TerKS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Nõukogu koosolek",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu koosolekud toimuvad vastavalt vajadusele, kuid vähemalt üks kord kolme kuu jooksul. Nõukogu koosolekust teatamise kord sätestatakse Tervisekassa põhikirjas. (2) Nõukogu koosoleku kutsub kokku nõukogu esimees, tema äraolekul nõukogu aseesimees. Nõukogu koosolek kutsutakse kokku Tervisekassa põhikirjas ettenähtud tähtajal, kui seda nõuab nõukogu liige, juhatus, juhatuse esimees või audiitor. (3) Nõukogu koosoleku toimumise kohaks on Tervisekassa asukoht, kui nõukogu koosoleku",
       "estleg:legalText": "(1) Nõukogu koosolekud toimuvad vastavalt vajadusele, kuid vähemalt üks kord kolme kuu jooksul. Nõukogu koosolekust teatamise kord sätestatakse Tervisekassa põhikirjas. (2) Nõukogu koosoleku kutsub kokku nõukogu esimees, tema äraolekul nõukogu aseesimees. Nõukogu koosolek kutsutakse kokku Tervisekassa põhikirjas ettenähtud tähtajal, kui seda nõuab nõukogu liige, juhatus, juhatuse esimees või audiitor. (3) Nõukogu koosoleku toimumise kohaks on Tervisekassa asukoht, kui nõukogu koosoleku kokkukutsuja ei ole määranud muud nõukogu koosoleku toimumise kohta Eesti Vabariigis. (4) Nõukogu koosolek on otsustusvõimeline, kui kohal on üle poole nõukogu liikmetest ning nende hulgas on nõukogu esimees või aseesimees. (5) Kui nõukogu koosoleku läbiviimiseks puudub vajalik kvoorum, toimub uus koosolek sama päevakorraga hiljemalt seitsme päeva jooksul pärast koosoleku ärajäämist.",
@@ -1871,7 +2353,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1899,7 +2383,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_16_Lg_1",
@@ -1925,7 +2413,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_16_Lg_3",
@@ -1951,7 +2448,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 4"
+      "rdfs:label": "§ 16 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_16_Lg_5",
@@ -1970,13 +2476,13 @@
       "@id": "estleg:TerKS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Nõukogu otsus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu otsused võetakse vastu koosolekul või koosolekut kokku kutsumata. Nõukogu aseesimeest saab valida ja käesoleva seaduse § 12 lõike 1 punktides 21, 22, 3, 8 ning 10 sätestatud otsuseid saab vastu võtta ainult nõukogu koosolekul. (2) Otsuste tegemisel osaleb nõukogu liige isiklikult. (3) Igal nõukogu liikmel on üks hääl. Nõukogu liikmel ei ole õigust hääletamisest keelduda ega erapooletuks jääda, välja arvatud käesoleva paragrahvi lõikes 4 sätestatud juhtudel.",
       "estleg:legalText": "(1) Nõukogu otsused võetakse vastu koosolekul või koosolekut kokku kutsumata. Nõukogu aseesimeest saab valida ja käesoleva seaduse § 12 lõike 1 punktides 21, 22, 3, 8 ning 10 sätestatud otsuseid saab vastu võtta ainult nõukogu koosolekul. (2) Otsuste tegemisel osaleb nõukogu liige isiklikult. (3) Igal nõukogu liikmel on üks hääl. Nõukogu liikmel ei ole õigust hääletamisest keelduda ega erapooletuks jääda, välja arvatud käesoleva paragrahvi lõikes 4 sätestatud juhtudel. (4) Nõukogu liige ei või osaleda hääletamises, kui seaduses sätestatud juhtudel on tal keelatud otsuse vastuvõtmises osaleda või kui otsustatakse temaga kohtuvaidluse alustamist või lõpetamist Tervisekassa poolt. (5) Nõukogu otsus on vastu võetud, kui selle poolt hääletas üle poole nõukogu koosolekul osalenud nõukogu hääleõiguslikest liikmetest. Käesoleva seaduse § 12 lõike 1 punktides 3, 8 ja 10 sätestatud otsuste vastuvõtmisel on vajalik vähemalt 2/3 nõukogu koosolekul osalevate nõukogu liikmete nõusolek ning nõukogu esimehe kohalolek. Käesoleva seaduse § 12 lõike 1 punktides 2 ja 3 nimetatud otsuste vastuvõtmiseks on vajalik nõukogu esimehe nõusolek. (6) Kui nõukogu liikmete hääled jagunevad hääletamisel võrdselt, otsustab nõukogu esimehe, tema äraolekul nõukogu aseesimehe hääl, kui käesolevas seaduses ei ole ette nähtud teisiti. (7) Nõukogu otsus peab sisaldama otsuse nimetust, pealkirja ja numbrit ning otsuse tegemise kuupäeva. Nõukogu otsust muutev või kehtetuks tunnistav otsus peab sisaldama ka muudetava või kehtetuks tunnistatava otsuse pealkirja, kuupäeva ja numbrit. (8) Nõukogu otsusele kirjutab alla nõukogu esimees. Nõukogu esimehe äraolekul tehtud otsusele kirjutab alla nõukogu aseesimees. (9) Nõukogu otsused tehakse kättesaadavaks Tervisekassa koduleheküljel Internetis.",
@@ -2013,11 +2519,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_12"
+          "@id": "estleg:TerKS_Par_12_Lg_1"
         }
       ],
       "estleg:referencedBy": [
@@ -2045,7 +2553,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_17_Lg_1",
@@ -2061,7 +2573,7 @@
       "rdfs:label": "§ 17 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_12"
+          "@id": "estleg:TerKS_Par_12_Lg_1"
         }
       ]
     },
@@ -2102,7 +2614,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 4"
+      "rdfs:label": "§ 17 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_17_Lg_5",
@@ -2118,7 +2637,7 @@
       "rdfs:label": "§ 17 lg 5",
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_12"
+          "@id": "estleg:TerKS_Par_12_Lg_1"
         }
       ]
     },
@@ -2146,7 +2665,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 7"
+      "rdfs:label": "§ 17 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_17_Lg_8",
@@ -2159,7 +2685,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 8"
+      "rdfs:label": "§ 17 lg 8",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_17_Lg_9",
@@ -2178,13 +2713,13 @@
       "@id": "estleg:TerKS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Otsuse vastuvõtmine koosolekut kokku kutsumata",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Otsuse vastuvõtmiseks koosolekut kokku kutsumata saadab nõukogu esimees või tema äraolekul nõukogu aseesimees nõukogu liikmetele otsuse projekti ja määrab kirjaliku vastamise tähtaja, mis ei või olla lühem kui seitse päeva ja pikem kui kakskümmend üks päeva. Otsuse projektile lisab saatja selgituse projekti kohta ja põhjenduse, miks otsuse vastuvõtmine on otstarbekas koosolekut kokku kutsumata. (2) Otsus loetakse vastuvõetuks, kui otsuse poolt hääletab vähemalt üle poole nõukogu liikmetest.",
       "estleg:legalText": "(1) Otsuse vastuvõtmiseks koosolekut kokku kutsumata saadab nõukogu esimees või tema äraolekul nõukogu aseesimees nõukogu liikmetele otsuse projekti ja määrab kirjaliku vastamise tähtaja, mis ei või olla lühem kui seitse päeva ja pikem kui kakskümmend üks päeva. Otsuse projektile lisab saatja selgituse projekti kohta ja põhjenduse, miks otsuse vastuvõtmine on otstarbekas koosolekut kokku kutsumata. (2) Otsus loetakse vastuvõetuks, kui otsuse poolt hääletab vähemalt üle poole nõukogu liikmetest. Nõukogu liikmed, kes ei saada määratud tähtajaks kirjalikku vastust, loetakse otsuse eelnõule vastu hääletanuks. (3) Vastuvõetud otsusest koos selle sisu ja hääletamistulemustega teatab nõukogu esimees või aseesimees nõukogu liikmetele esimesel nõukogu koosolekul, mis järgneb tema poolt määratud kirjaliku vastamise tähtajale. (4) Käesoleva paragrahvi lõikes 1 nimetatud otsuse projektid, selgitused ja põhjendused ning lõikes 2 nimetatud kirjalikud vastused säilitatakse käesolevas seaduses ja Tervisekassa põhikirjas sätestatud korras.",
@@ -2206,7 +2741,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2228,7 +2765,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_18_Lg_1",
@@ -2241,7 +2782,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 1"
+      "rdfs:label": "§ 18 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_18_Lg_2",
@@ -2267,7 +2820,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 3"
+      "rdfs:label": "§ 18 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_18_Lg_4",
@@ -2286,13 +2848,13 @@
       "@id": "estleg:TerKS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Nõukogu koosoleku protokoll",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu koosolek protokollitakse. Protokolli kandmisele kuuluvad andmed ja muud nõuded koosoleku protokollile sätestatakse Tervisekassa põhikirjas. (2) Protokollile kirjutavad alla koosoleku juhataja ja protokollija. (3) Koosolekul tehtud otsuste, hääletamistulemuste ja käesolevas seaduses sätestatud eriarvamuste õige ja täieliku jäädvustamise eest protokollis vastutab koosoleku juhataja. (4) Koosoleku protokoll peab olema Tervisekassa asukohas nõukogu liikmetele kättesaadav alates",
       "estleg:legalText": "(1) Nõukogu koosolek protokollitakse. Protokolli kandmisele kuuluvad andmed ja muud nõuded koosoleku protokollile sätestatakse Tervisekassa põhikirjas. (2) Protokollile kirjutavad alla koosoleku juhataja ja protokollija. (3) Koosolekul tehtud otsuste, hääletamistulemuste ja käesolevas seaduses sätestatud eriarvamuste õige ja täieliku jäädvustamise eest protokollis vastutab koosoleku juhataja. (4) Koosoleku protokoll peab olema Tervisekassa asukohas nõukogu liikmetele kättesaadav alates viiendast päevast pärast koosoleku toimumist. (5) Protokoll koos lisadega säilitatakse Tervisekassa asukohas. Protokollide ja nende lisade hoidmise korraldab ning nende säilimise eest vastutab juhatuse esimees.",
@@ -2317,7 +2879,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2342,7 +2906,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_19_Lg_1",
@@ -2368,7 +2936,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 2"
+      "rdfs:label": "§ 19 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_19_Lg_3",
@@ -2381,7 +2958,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 3"
+      "rdfs:label": "§ 19 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_19_Lg_4",
@@ -2394,7 +2980,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 4"
+      "rdfs:label": "§ 19 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_19_Lg_5",
@@ -2407,19 +3000,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 5"
+      "rdfs:label": "§ 19 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Eriarvamus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu otsuse suhtes eriarvamusele jäänud nõukogu liikmel on õigus fikseerida oma eriarvamus kirjaliku või suulise avaldusena. (2) Nõukogu koosolekul vastuvõetud otsuse kohta esitatud eriarvamus kantakse protokolli, kirjalik eriarvamus lisatakse protokollile. (3) Kui nõukogu liige leiab, et nõukogu on oma otsusega rikkunud seadust või Tervisekassa põhikirja, teatab ta asetleidnud rikkumisest viivitamatult nõukogu esimehele või tema äraolekul nõukogu aseesimehele.",
       "estleg:legalText": "(1) Nõukogu otsuse suhtes eriarvamusele jäänud nõukogu liikmel on õigus fikseerida oma eriarvamus kirjaliku või suulise avaldusena. (2) Nõukogu koosolekul vastuvõetud otsuse kohta esitatud eriarvamus kantakse protokolli, kirjalik eriarvamus lisatakse protokollile. (3) Kui nõukogu liige leiab, et nõukogu on oma otsusega rikkunud seadust või Tervisekassa põhikirja, teatab ta asetleidnud rikkumisest viivitamatult nõukogu esimehele või tema äraolekul nõukogu aseesimehele.",
@@ -2449,6 +3051,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -2462,7 +3068,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 1"
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_20_Lg_2",
@@ -2494,13 +3107,13 @@
       "@id": "estleg:TerKS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Nõukogu liikmete tasustamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Nõukogu liikmetele, kes ei kuulu nõukogusse ametikoha järgi, makstakse nõukogu liikme kohustuste täitmise eest tasu kehtestatud suuruses ja korras.",
       "estleg:legalText": "Nõukogu liikmetele, kes ei kuulu nõukogusse ametikoha järgi, makstakse nõukogu liikme kohustuste täitmise eest tasu kehtestatud suuruses ja korras.",
@@ -2509,7 +3122,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_21_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_21_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2524,7 +3137,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_21_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_21_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2538,13 +3151,13 @@
       "@id": "estleg:TerKS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Nõukogu liikme vastutus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu liikmed vastutavad seaduste ja Tervisekassa põhikirja nõuete rikkumise ja oma kohustuste täitmata jätmisega Tervisekassale süüliselt tekitatud kahju eest solidaarselt. (2) Nõukogu liikmed, kes oma kohustuste täitmata jätmise või mittenõuetekohase täitmisega on süüliselt kahju tekitanud Tervisekassa võlausaldajale, vastutavad võlausaldaja ees solidaarselt Tervisekassaga. (3) Nõukogu liige vabaneb vastutusest Tervisekassa või võlausaldaja ees, kui ta on otsuse vastuvõtmisel hääletanud",
       "estleg:legalText": "(1) Nõukogu liikmed vastutavad seaduste ja Tervisekassa põhikirja nõuete rikkumise ja oma kohustuste täitmata jätmisega Tervisekassale süüliselt tekitatud kahju eest solidaarselt. (2) Nõukogu liikmed, kes oma kohustuste täitmata jätmise või mittenõuetekohase täitmisega on süüliselt kahju tekitanud Tervisekassa võlausaldajale, vastutavad võlausaldaja ees solidaarselt Tervisekassaga. (3) Nõukogu liige vabaneb vastutusest Tervisekassa või võlausaldaja ees, kui ta on otsuse vastuvõtmisel hääletanud vastu või kui ta ei osalenud otsustamises, kui mitteosalemine oli lubatud, või kui ta ei osalenud nõukogu koosolekul. (4) Nõukogu liikme vastu esitatava nõude aegumistähtaeg on viis aastat rikkumise toimumisest või rikkumise algusest. (5) Tervisekassa sõlmib vastutuskindlustuse lepingu käesolevast paragrahvist tuleneva nõukogu liikmete varalise vastutuse kindlustamiseks Tervisekassa põhikirjas ettenähtud põhitingimustel ja korras. Tervisekassa põhikirjas nähakse ette nõukogu liikmete omavastutus ja selle määr vastutuskindlustuse lepingu sõlmimiseks.",
@@ -2569,7 +3182,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2597,7 +3212,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_22_Lg_1",
@@ -2623,7 +3242,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 2"
+      "rdfs:label": "§ 22 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_22_Lg_3",
@@ -2636,7 +3264,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 3"
+      "rdfs:label": "§ 22 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_22_Lg_4",
@@ -2668,13 +3305,13 @@
       "@id": "estleg:TerKS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Tervisekassa juhatus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatus on Tervisekassa organ, kes juhib Tervisekassat. (2) Juhatus koosneb kolmest kuni seitsmest liikmest, kellest üks on juhatuse esimees. (3) Juhatuse liikmete volituste tähtaeg on kuni viis aastat. Juhatuse liikmete volituste tähtaeg sätestatakse Tervisekassa põhikirjas.",
       "estleg:legalText": "(1) Juhatus on Tervisekassa organ, kes juhib Tervisekassat. (2) Juhatus koosneb kolmest kuni seitsmest liikmest, kellest üks on juhatuse esimees. (3) Juhatuse liikmete volituste tähtaeg on kuni viis aastat. Juhatuse liikmete volituste tähtaeg sätestatakse Tervisekassa põhikirjas.",
@@ -2693,8 +3330,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2716,7 +3357,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_23_Lg_1",
@@ -2742,7 +3387,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 2"
+      "rdfs:label": "§ 23 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_23_Lg_3",
@@ -2755,19 +3409,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 3"
+      "rdfs:label": "§ 23 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Juhatuse liikmete nimetamine ja tagasikutsumine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse esimehe nimetab nõukogu. Juhatuse esimehe kandidaatide leidmiseks korraldab nõukogu avaliku konkursi. Konkursi kord sätestatakse Tervisekassa põhikirjas. Teised juhatuse liikmed nimetab nõukogu juhatuse esimehe ettepanekul. (2) Nõukogu sõlmib juhatuse liikmetega tähtajalise ametilepingu, milles fikseeritakse juhatuse liikme õigused ja kohustused ning tasu juhatuse liikme ülesannete täitmise eest. Informatsioon juhatuse esimehe ja liikmete tasu kohta on avalik.",
       "estleg:legalText": "(1) Juhatuse esimehe nimetab nõukogu. Juhatuse esimehe kandidaatide leidmiseks korraldab nõukogu avaliku konkursi. Konkursi kord sätestatakse Tervisekassa põhikirjas. Teised juhatuse liikmed nimetab nõukogu juhatuse esimehe ettepanekul. (2) Nõukogu sõlmib juhatuse liikmetega tähtajalise ametilepingu, milles fikseeritakse juhatuse liikme õigused ja kohustused ning tasu juhatuse liikme ülesannete täitmise eest. Informatsioon juhatuse esimehe ja liikmete tasu kohta on avalik. (3) Enne juhatuse liikme volituste tähtaja lõppu võib nõukogu juhatuse liikme tagasi kutsuda, kui juhatuse liige ei vasta käesolevas seaduses kehtestatud nõuetele, samuti muudel mõjuvatel põhjustel, milleks on eelkõige juhatuse liikme kohustuste olulisel määral täitmata jätmine või võimetus Tervisekassat juhtida. Kolme kuu jooksul, alates juhatuse liikme ametissenimetamisest, võib nõukogu juhatuse esimehe ettepanekul juhatuse liikme tagasi kutsuda põhjust ära näitamata. Uue juhatuse esimehe ametissenimetamise korral on nõukogul uue juhatuse esimehe ettepanekul õigus kolme kuu jooksul, alates uue juhatuse esimehe nimetamisest, juhatuse liikmed tagasi kutsuda põhjust ära näitamata. Juhatuse liikmega sõlmitud ametilepingust tulenevad õigused ja kohustused lõpevad vastavalt ametilepingule. (4) Juhatuse liikme tagasikutsumisel või muudel põhjustel ametist lahkumisel nimetatakse tema asemele juhatuse esimehe ettepanekul uus juhatuse liige. Juhatuse esimehe tagasikutsumise korral või muudel põhjustel ametist lahkumise korral nimetab nõukogu tema asemele uue juhatuse esimehe kolme kuu jooksul, alates juhatuse esimehe ametist lahkumisest. Juhatuse esimehe ametist lahkumisest kuni uue juhatuse esimehe nimetamiseni täidab juhatuse esimehe kohustusi nõukogu poolt määratav juhatuse liige.",
@@ -2789,8 +3452,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2812,7 +3479,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_24_Lg_1",
@@ -2825,7 +3496,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 1"
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_24_Lg_2",
@@ -2838,7 +3518,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 2"
+      "rdfs:label": "§ 24 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_24_Lg_3",
@@ -2851,7 +3540,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 3"
+      "rdfs:label": "§ 24 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_24_Lg_4",
@@ -2864,19 +3565,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 4"
+      "rdfs:label": "§ 24 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Nõuded juhatuse liikmele",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse liikmeks võib nimetada kõrgharidusega teovõimelise füüsilise isiku, kelle alaline elukoht on Eestis ning kellel on Tervisekassa juhtimiseks vajalikud teadmised, kutsealane sobivus ja laitmatu reputatsioon. (2) Juhatuse liikmeks ei või olla nõukogu liige ja pankrotivõlgnik. (3) Juhatuse liige on kohustatud viivitamatult informeerima juhatuse esimeest ja nõukogu esimeest huvide konfliktist, mis mõjutab või võib mõjutada juhatuse liiget otsustuste tegemisel.",
       "estleg:legalText": "(1) Juhatuse liikmeks võib nimetada kõrgharidusega teovõimelise füüsilise isiku, kelle alaline elukoht on Eestis ning kellel on Tervisekassa juhtimiseks vajalikud teadmised, kutsealane sobivus ja laitmatu reputatsioon. (2) Juhatuse liikmeks ei või olla nõukogu liige ja pankrotivõlgnik. (3) Juhatuse liige on kohustatud viivitamatult informeerima juhatuse esimeest ja nõukogu esimeest huvide konfliktist, mis mõjutab või võib mõjutada juhatuse liiget otsustuste tegemisel.",
@@ -2895,8 +3608,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2924,7 +3641,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_25_Lg_1",
@@ -2937,7 +3658,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_25"
       },
-      "rdfs:label": "§ 25 lg 1"
+      "rdfs:label": "§ 25 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_25_Lg_2",
@@ -2950,7 +3683,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_25"
       },
-      "rdfs:label": "§ 25 lg 2"
+      "rdfs:label": "§ 25 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_25_Lg_3",
@@ -2963,19 +3708,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_25"
       },
-      "rdfs:label": "§ 25 lg 3"
+      "rdfs:label": "§ 25 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Juhatuse pädevus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatus täidab Tervisekassa juhtimisel talle käesoleva seaduse, Tervisekassa põhikirja ja nõukogu otsustega pandud ülesandeid. Juhatus seisab hea Tervisekassa ülesannete ja kohustuste täitmise ning õiguste realiseerimise eest niivõrd, kuivõrd see ei ole käesoleva seaduse või põhikirja kohaselt nõukogu või juhatuse esimehe kohustus. Juhatus annab aru nõukogule. (2) Lähtudes riigi tervishoiupoliitikast, valmistab juhatus ette Tervisekassa arengukava ja Tervisekassa eelarve ning esitab need",
       "estleg:legalText": "(1) Juhatus täidab Tervisekassa juhtimisel talle käesoleva seaduse, Tervisekassa põhikirja ja nõukogu otsustega pandud ülesandeid. Juhatus seisab hea Tervisekassa ülesannete ja kohustuste täitmise ning õiguste realiseerimise eest niivõrd, kuivõrd see ei ole käesoleva seaduse või põhikirja kohaselt nõukogu või juhatuse esimehe kohustus. Juhatus annab aru nõukogule. (2) Lähtudes riigi tervishoiupoliitikast, valmistab juhatus ette Tervisekassa arengukava ja Tervisekassa eelarve ning esitab need nõukogule kinnitamiseks. (3) Kui nõukogu ei otsusta teisiti, valmistab juhatus ette materjalid ja otsuste projektid nõukogus arutamisele tulevates küsimustes. (4) Juhatusel on otsustamisõigus kõigis Tervisekassat puudutavates küsimustes, välja arvatud: küsimustes, mille otsustamine kuulub nõukogu ainupädevusse; küsimustes, mille on otsustanud nõukogu; käesolevas seaduses või Tervisekassa põhikirjas sätestatud küsimustes, mis kuuluvad juhatuse esimehe pädevusse.",
@@ -3063,13 +3820,13 @@
       "@id": "estleg:TerKS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Juhatuse esimees ja tema asendamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse esimees on Tervisekassa tegevjuht. Juhatuse esimees juhib Tervisekassa tööd ja juhatab juhatuse koosolekuid. (2) Juhatuse esimeest asendab juhatuse liige. Juhatuse esimehe asendamise kord sätestatakse Tervisekassa põhikirjas.",
       "estleg:legalText": "(1) Juhatuse esimees on Tervisekassa tegevjuht. Juhatuse esimees juhib Tervisekassa tööd ja juhatab juhatuse koosolekuid. (2) Juhatuse esimeest asendab juhatuse liige. Juhatuse esimehe asendamise kord sätestatakse Tervisekassa põhikirjas.",
@@ -3085,7 +3842,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3101,7 +3860,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_27_Lg_1",
@@ -3114,7 +3877,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_27"
       },
-      "rdfs:label": "§ 27 lg 1"
+      "rdfs:label": "§ 27 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_27_Lg_2",
@@ -3127,19 +3899,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_27"
       },
-      "rdfs:label": "§ 27 lg 2"
+      "rdfs:label": "§ 27 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Juhatuse esimehe pädevus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Juhatuse esimees: määrab kindlaks juhatuse liikmete töö- ja vastutusvaldkonnad; korraldab Tervisekassa raamatupidamist; sõlmib, muudab ja ütleb töölepingud üles Tervisekassa töötajatega; kinnitab Tervisekassa töötajate töötasud, lähtudes nõukogu poolt kinnitatud Tervisekassa eelarve ülalpidamiskuludest; võtab sõnaõigusega osa nõukogu koosolekutest; määrab juhatuse koosolekute protokollija; otsustab muud küsimused, mis kuuluvad käesoleva seaduse ja Tervisekassa põhikirja või nõukogu otsuste",
       "estleg:legalText": "Juhatuse esimees: määrab kindlaks juhatuse liikmete töö- ja vastutusvaldkonnad; korraldab Tervisekassa raamatupidamist; sõlmib, muudab ja ütleb töölepingud üles Tervisekassa töötajatega; kinnitab Tervisekassa töötajate töötasud, lähtudes nõukogu poolt kinnitatud Tervisekassa eelarve ülalpidamiskuludest; võtab sõnaõigusega osa nõukogu koosolekutest; määrab juhatuse koosolekute protokollija; otsustab muud küsimused, mis kuuluvad käesoleva seaduse ja Tervisekassa põhikirja või nõukogu otsuste kohaselt juhatuse esimehe pädevusse.",
@@ -3148,12 +3929,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_28_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_28_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3172,10 +3957,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TerKS_Par_28_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_28_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3183,19 +3972,31 @@
       "estleg:legalText": "Juhatuse esimees: määrab kindlaks juhatuse liikmete töö- ja vastutusvaldkonnad; korraldab Tervisekassa raamatupidamist; sõlmib, muudab ja ütleb töölepingud üles Tervisekassa töötajatega; kinnitab Tervisekassa töötajate töötasud, lähtudes nõukogu poolt kinnitatud Tervisekassa eelarve ülalpidamiskuludest; võtab sõnaõigusega osa nõukogu koosolekutest; määrab juhatuse koosolekute protokollija; otsustab muud küsimused, mis kuuluvad käesoleva seaduse ja Tervisekassa põhikirja või nõukogu otsuste kohaselt juhatuse esimehe pädevusse.",
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_28"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TerKS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Juhatuse koosolek",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse koosolekud toimuvad vastavalt vajadusele, kuid vähemalt kord kuus. (2) Juhatuse koosoleku kutsub kokku juhatuse esimees või teda asendav isik. Juhatuse koosolek kutsutakse kokku, kui seda nõuab juhatuse liige, Tervisekassa audiitor või nõukogu esimees või tema äraolekul nõukogu aseesimees. (3) Juhatuse koosoleku toimumise koht on Tervisekassa asukoht, kui koosoleku kokkukutsuja ei ole määranud muud juhatuse koosoleku toimumise kohta Eesti Vabariigis.",
       "estleg:legalText": "(1) Juhatuse koosolekud toimuvad vastavalt vajadusele, kuid vähemalt kord kuus. (2) Juhatuse koosoleku kutsub kokku juhatuse esimees või teda asendav isik. Juhatuse koosolek kutsutakse kokku, kui seda nõuab juhatuse liige, Tervisekassa audiitor või nõukogu esimees või tema äraolekul nõukogu aseesimees. (3) Juhatuse koosoleku toimumise koht on Tervisekassa asukoht, kui koosoleku kokkukutsuja ei ole määranud muud juhatuse koosoleku toimumise kohta Eesti Vabariigis. (4) Juhatuse koosolek on otsustusvõimeline, kui sellest võtab osa üle poole juhatuse liikmetest ning nende hulgas on juhatuse esimees või teda asendav juhatuse liige. (5) Juhatuse liige võtab juhatuse koosolekust osa isiklikult. (6) Igal juhatuse liikmel on üks hääl. Juhatuse liikmel ei ole õigust hääletamisest keelduda või erapooletuks jääda, välja arvatud käesoleva paragrahvi lõikes 7 sätestatud juhtudel. (7) Juhatuse liige ei või osaleda hääletamises, kui seaduses sätestatud juhtudel on tal keelatud otsuse vastuvõtmises osaleda. (8) Juhatuse koosolek protokollitakse vastavalt Tervisekassa põhikirjas juhatuse koosolekute protokollimiseks sätestatud nõuetele.",
@@ -3229,8 +4030,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3261,7 +4066,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_29_Lg_1",
@@ -3287,7 +4096,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 2"
+      "rdfs:label": "§ 29 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_29_Lg_3",
@@ -3313,7 +4134,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 4"
+      "rdfs:label": "§ 29 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_29_Lg_5",
@@ -3339,7 +4172,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 6"
+      "rdfs:label": "§ 29 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_29_Lg_7",
@@ -3352,7 +4194,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 7"
+      "rdfs:label": "§ 29 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_29_Lg_8",
@@ -3371,13 +4220,13 @@
       "@id": "estleg:TerKS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Juhatuse otsus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse otsus on vastu võetud, kui selle poolt hääletas vähemalt 2/3 juhatuse koosolekul osalenud hääleõiguslikest juhatuse liikmetest. (2) Juhatuse otsus peab sisaldama otsuse nimetust, pealkirja ja numbrit ning otsuse tegemise kuupäeva. Juhatuse otsust muutev või kehtetuks tunnistav otsus peab sisaldama ka muudetava või kehtetuks tunnistatava otsuse pealkirja, kuupäeva ja numbrit. (3) Juhatuse otsusele kirjutab alla juhatuse esimees.",
       "estleg:legalText": "(1) Juhatuse otsus on vastu võetud, kui selle poolt hääletas vähemalt 2/3 juhatuse koosolekul osalenud hääleõiguslikest juhatuse liikmetest. (2) Juhatuse otsus peab sisaldama otsuse nimetust, pealkirja ja numbrit ning otsuse tegemise kuupäeva. Juhatuse otsust muutev või kehtetuks tunnistav otsus peab sisaldama ka muudetava või kehtetuks tunnistatava otsuse pealkirja, kuupäeva ja numbrit. (3) Juhatuse otsusele kirjutab alla juhatuse esimees. Juhatuse esimehe äraolekul tehtud otsusele kirjutab alla juhatuse esimeest asendav juhatuse liige. (4) Kui juhatuse liige leiab, et juhatus või juhatuse esimees on oma otsusega rikkunud seadusi või Tervisekassa põhikirja, teatab ta asetleidnud rikkumisest viivitamatult juhatuse esimehele või tema äraolekul teda asendavale isikule. Kui rikkumist ei kõrvaldata hiljemalt teatamisele järgneval esimesel juhatuse koosolekul, informeerib teate esitanud juhatuse liige sellest nõukogu esimeest või tema äraolekul aseesimeest.",
@@ -3399,8 +4248,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3425,7 +4278,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_30_Lg_1",
@@ -3438,7 +4295,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 1"
+      "rdfs:label": "§ 30 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_30_Lg_2",
@@ -3451,7 +4317,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 2"
+      "rdfs:label": "§ 30 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_30_Lg_3",
@@ -3464,7 +4337,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 3"
+      "rdfs:label": "§ 30 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_30_Lg_4",
@@ -3477,19 +4359,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 4"
+      "rdfs:label": "§ 30 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Tervisekassa esindamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse esimehel on õigus esindada Tervisekassat kõigis õigustoimingutes ja tehingutes ainuisikuliselt. Juhatuse esimehel on õigustoimingute tegemiseks edasivolitamise õigus. Juhatuse teiste liikmete esindusõigus ja edasivolitamise õigus sätestatakse Tervisekassa põhikirjas. (2) Juhatuse liikmete õigust esindada Tervisekassat võib piirata nõukogu otsusega. Nõukogu otsusega seatud esindusõiguse piirangud ei kehti kolmandate isikute suhtes.",
       "estleg:legalText": "(1) Juhatuse esimehel on õigus esindada Tervisekassat kõigis õigustoimingutes ja tehingutes ainuisikuliselt. Juhatuse esimehel on õigustoimingute tegemiseks edasivolitamise õigus. Juhatuse teiste liikmete esindusõigus ja edasivolitamise õigus sätestatakse Tervisekassa põhikirjas. (2) Juhatuse liikmete õigust esindada Tervisekassat võib piirata nõukogu otsusega. Nõukogu otsusega seatud esindusõiguse piirangud ei kehti kolmandate isikute suhtes.",
@@ -3505,8 +4399,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3534,7 +4432,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_31_Lg_1",
@@ -3547,7 +4449,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 1"
+      "rdfs:label": "§ 31 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_31_Lg_2",
@@ -3560,19 +4469,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 2"
+      "rdfs:label": "§ 31 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Juhatuse liikme vastutus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Juhatuse liikmed vastutavad seaduste ja Tervisekassa põhikirja nõuete rikkumise ja oma kohustuste täitmata jätmisega Tervisekassale süüliselt tekitatud kahju eest solidaarselt. (2) Juhatuse liikmed, kes oma kohustuste täitmata jätmise või mittenõuetekohase täitmisega on süüliselt kahju tekitanud Tervisekassa võlausaldajale, vastutavad võlausaldaja ees solidaarselt Tervisekassaga. (3) Juhatuse liige vabaneb vastutusest Tervisekassa või võlausaldaja ees, kui ta on vastava tegevuse aluseks",
       "estleg:legalText": "(1) Juhatuse liikmed vastutavad seaduste ja Tervisekassa põhikirja nõuete rikkumise ja oma kohustuste täitmata jätmisega Tervisekassale süüliselt tekitatud kahju eest solidaarselt. (2) Juhatuse liikmed, kes oma kohustuste täitmata jätmise või mittenõuetekohase täitmisega on süüliselt kahju tekitanud Tervisekassa võlausaldajale, vastutavad võlausaldaja ees solidaarselt Tervisekassaga. (3) Juhatuse liige vabaneb vastutusest Tervisekassa või võlausaldaja ees, kui ta on vastava tegevuse aluseks oleva otsuse vastuvõtmisel hääletanud vastu või kui ta ei osalenud otsustamises, kui mitteosalemine oli lubatud, või kui ta ei osalenud juhatuse koosolekul. (4) Juhatuse liikme vastu esitatava nõude aegumistähtaeg on seitse aastat rikkumise toimumisest või rikkumise algusest. (5) Tervisekassa sõlmib vastutuskindlustuse lepingu käesolevast paragrahvist tuleneva juhatuse liikmete varalise vastutuse kindlustamiseks Tervisekassa põhikirjas ettenähtud põhitingimustel ja korras. Tervisekassa põhikirjas nähakse ette juhatuse liikmete omavastutus ja selle määr vastutuskindlustuse lepingu sõlmimiseks.",
@@ -3597,8 +4518,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3629,7 +4554,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_32_Lg_1",
@@ -3642,7 +4571,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 1"
+      "rdfs:label": "§ 32 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_32_Lg_2",
@@ -3655,7 +4593,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 2"
+      "rdfs:label": "§ 32 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_32_Lg_3",
@@ -3668,7 +4618,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 3"
+      "rdfs:label": "§ 32 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_32_Lg_4",
@@ -3681,7 +4640,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 4"
+      "rdfs:label": "§ 32 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_32_Lg_5",
@@ -3694,19 +4662,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 5"
+      "rdfs:label": "§ 32 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Struktuuriüksused",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa peamised struktuuriüksused ning nende asukoht ja pädevus sätestatakse Tervisekassa põhikirjas.",
       "estleg:legalText": "Tervisekassa peamised struktuuriüksused ning nende asukoht ja pädevus sätestatakse Tervisekassa põhikirjas.",
@@ -3715,7 +4692,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_33_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_33_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3730,7 +4707,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_33_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_33_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3744,13 +4721,13 @@
       "@id": "estleg:TerKS_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Omand",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa valdab, kasutab ja käsutab oma vara käesolevas seaduses ning Tervisekassa põhikirjas ettenähtud korras.",
       "estleg:legalText": "Tervisekassa valdab, kasutab ja käsutab oma vara käesolevas seaduses ning Tervisekassa põhikirjas ettenähtud korras.",
@@ -3762,7 +4739,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_34_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_34_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3786,7 +4763,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_34_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_34_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3800,13 +4777,13 @@
       "@id": "estleg:TerKS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Tervisekassa vara",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa vara moodustub: riigieelarves sotsiaalmaksuseaduse § 7 lõikes 3 ja § 10 lõikes 2 sätestatud määras ravikindlustuseks ettenähtud sotsiaalmaksu osast, samuti ravikindlustuseks ettenähtud sotsiaalmaksu ülelaekumistest; tervishoiuteenuste korraldamise seaduse § 51 lõike 2 punkti 2 alusel Tervisekassa eelarvesse ülekantavast riigieelarve eraldisest; ravimiseaduse alusel tasutavast vaktsiinikahjude sundkindlustusmaksest; seaduse või põhikirjaga lubatud tehingutest ning muudest",
       "estleg:legalText": "Tervisekassa vara moodustub: riigieelarves sotsiaalmaksuseaduse § 7 lõikes 3 ja § 10 lõikes 2 sätestatud määras ravikindlustuseks ettenähtud sotsiaalmaksu osast, samuti ravikindlustuseks ettenähtud sotsiaalmaksu ülelaekumistest; tervishoiuteenuste korraldamise seaduse § 51 lõike 2 punkti 2 alusel Tervisekassa eelarvesse ülekantavast riigieelarve eraldisest; ravimiseaduse alusel tasutavast vaktsiinikahjude sundkindlustusmaksest; seaduse või põhikirjaga lubatud tehingutest ning muudest õigustoimingutest saadavatest tuludest; annetustest; sissenõuetest teistelt isikutelt; intressidest ja muudest finantstuludest; muudest laekumistest.",
@@ -3818,15 +4795,15 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_35_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_35_Lg_1"
         }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:SMS_Par_7"
+          "@id": "estleg:SMS_Par_7_Lg_3"
         },
         {
-          "@id": "estleg:TTKS_Par_51"
+          "@id": "estleg:TTKS_Par_51_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -3836,7 +4813,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_35_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_35_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3847,24 +4824,25 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:SMS_Par_7"
+          "@id": "estleg:SMS_Par_7_Lg_3"
         },
         {
-          "@id": "estleg:TTKS_Par_51"
+          "@id": "estleg:TTKS_Par_51_Lg_2"
         }
-      ]
+      ],
+      "estleg:itemNumber": "2"
     },
     {
       "@id": "estleg:TerKS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Eelarve",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa eelarve koosneb Tervisekassa majandusaasta kuludest ja kulude katteallikatest. Kulude katteallikad koosnevad Tervisekassa majandusaasta tuludest ning eelmiste perioodide jaotamata kasumist. (1¹) Tervisekassa nõukogu esitab valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele eelarveaasta ja eelarveaastale järgneva kolme aasta kohta eelarvepositsiooni ettepaneku hiljemalt jooksva kalendriaasta 1. septembriks. Ettepanekule lisatakse analüüs, millest nähtuvad Tervisekassa",
       "estleg:legalText": "(1) Tervisekassa eelarve koosneb Tervisekassa majandusaasta kuludest ja kulude katteallikatest. Kulude katteallikad koosnevad Tervisekassa majandusaasta tuludest ning eelmiste perioodide jaotamata kasumist. (1¹) Tervisekassa nõukogu esitab valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele eelarveaasta ja eelarveaastale järgneva kolme aasta kohta eelarvepositsiooni ettepaneku hiljemalt jooksva kalendriaasta 1. septembriks. Ettepanekule lisatakse analüüs, millest nähtuvad Tervisekassa järgneva nelja kalendriaasta kulud ja kulude katteallikad, arvestades makromajanduslikku ja tervishoiu arengu prognoosi. Vabariigi Valitsus teeb ettepaneku eelarveaasta ja eelarveaastale järgneva kolme aasta Tervisekassa eelarvepositsiooni kehtestamise kohta Riigikogule. (1²) Riigikogu kinnitab Tervisekassa eelarvepositsiooni eelarveaasta ja eelarveaastale järgneva kolme aasta kohta riigieelarvega. (2) Juhatus valmistab ette eelarve projekti, lähtudes ravikindlustuse seadusest, tervishoiuteenuste korraldamise seadusest ja muudest õigusaktidest, riigieelarvest ja nõukogu poolt kinnitatud nõuetest, ning esitab selle nõukogule kinnitamiseks 14 päeva jooksul, arvates iga-aastase riigieelarve seaduse Riigi Teatajas avaldamisest. Eelarve projekti ettevalmistamise täpsem kord sätestatakse Tervisekassa põhikirjas. (3) Nõukogu kinnitab Tervisekassa eelarve 30 päeva jooksul, arvates igaaastase riigieelarve seaduse Riigi Teatajas avaldamisest. (4) Kui nõukogu ei ole käesolevas seaduses sätestatud tähtajaks Tervisekassa eelarvet kinnitanud, läheb eelarve kinnitamise õigus ja kohustus üle Vabariigi Valitsusele. (5) Kui Tervisekassa eelarvet ei ole kinnitatud eelarveaasta alguseks, võib kuni eelarve kinnitamiseni teha alanud eelarveaasta igal kuul kulutusi kuni 1/12 osa ulatuses eelmise aasta eelarvest. Kui eelarve projektis ettenähtud tulubaas on väiksem kui eelneval eelarveaastal, siis võib kuni eelarve kinnitamiseni teha alanud eelarveaasta igal kuul kulutusi kuni 1/12 eelarve projektis ettenähtud kulude summast, millest on maha arvatud kassatagavara ja reservkapitali moodustamiseks vajalikud summad. (6) Kehtetu - (7) Tervisekassa eelarve kulud jagunevad tervishoiukuludeks ja Tervisekassa tegevuskuludeks. Täpsem eelarve tulude ja kulude jaotus sätestatakse Tervisekassa põhikirjas. (8) Nõukogu võib majandusaasta jooksul vastu võtta Tervisekassa lisaeelarve, tasakaalustatult suurendades või vähendades Tervisekassa tulusid ja kulusid. (9) Tervisekassa eelarve avaldatakse Riigi Teatajas ja tehakse kättesaadavaks Tervisekassa koduleheküljel Internetis.",
@@ -3910,7 +4888,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3929,7 +4909,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_Lg_1",
@@ -3955,7 +4939,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 1¹"
+      "rdfs:label": "§ 36 lg 1¹",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_Lg_1_2",
@@ -3968,7 +4961,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 1²"
+      "rdfs:label": "§ 36 lg 1²",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_Lg_2",
@@ -4007,7 +5009,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 4"
+      "rdfs:label": "§ 36 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_Lg_5",
@@ -4020,7 +5031,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 5"
+      "rdfs:label": "§ 36 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_Lg_6",
@@ -4059,7 +5077,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 8"
+      "rdfs:label": "§ 36 lg 8",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_Lg_9",
@@ -4078,13 +5103,13 @@
       "@id": "estleg:TerKS_Par_36_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36¹.",
       "rdfs:label": "§ 36¹. Tervisekassa eelmiste perioodide jaotamata kasumi kasutamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Tervisekassa eelmiste perioodide jaotamata kasumi kasutuselevõtu otsustab nõukogu juhatuse ettepaneku alusel. (3) Juhatuse ettepanek eelmiste perioodide jaotamata kasumi kasutuselevõtuks peab sisaldama kasutuselevõetavate vahendite suurust ja jaotust. (4) Eelmiste perioodide jaotamata kasumit kasutatakse Tervisekassa eelarves ettenähtud ulatuses. (5) Tervisekassa eelmiste perioodide jaotamata kasumi kasutamise kohta esitatakse andmed Tervisekassa majandusaasta aruandes.",
       "estleg:legalText": "(1) Kehtetu - (2) Tervisekassa eelmiste perioodide jaotamata kasumi kasutuselevõtu otsustab nõukogu juhatuse ettepaneku alusel. (3) Juhatuse ettepanek eelmiste perioodide jaotamata kasumi kasutuselevõtuks peab sisaldama kasutuselevõetavate vahendite suurust ja jaotust. (4) Eelmiste perioodide jaotamata kasumit kasutatakse Tervisekassa eelarves ettenähtud ulatuses. (5) Tervisekassa eelmiste perioodide jaotamata kasumi kasutamise kohta esitatakse andmed Tervisekassa majandusaasta aruandes.",
@@ -4121,6 +5146,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -4160,7 +5189,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_36_1"
       },
-      "rdfs:label": "§ 36¹ lg 3"
+      "rdfs:label": "§ 36¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_36_1_Lg_4",
@@ -4192,13 +5228,13 @@
       "@id": "estleg:TerKS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Kassatagavara",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa kassatagavara on Tervisekassa rahalised vahendid, välja arvatud reservkapitali vahendid, mida kasutatakse Tervisekassa rahavoogude juhtimiseks. (2) Kehtetu - (3) Kehtetu - (4) Kehtetu -",
       "estleg:legalText": "(1) Tervisekassa kassatagavara on Tervisekassa rahalised vahendid, välja arvatud reservkapitali vahendid, mida kasutatakse Tervisekassa rahavoogude juhtimiseks. (2) Kehtetu - (3) Kehtetu - (4) Kehtetu -",
@@ -4292,13 +5328,13 @@
       "@id": "estleg:TerKS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Reservkapital",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa reservkapital on Tervisekassa eelarve vahenditest moodustatav reserv makromajanduslikest muutustest tulenevate Tervisekassa eelarve riskide vähendamiseks. (2) Reservkapitali suurus on 5,4 protsenti eelarve mahust. Reservkapitali kantakse igal aastal vähemalt 1/50 Tervisekassa eelarve kogumahust kuni käesolevas seaduses sätestatud reservkapitali suuruse saavutamiseni või taastamiseni. (3) Reservkapitali võib kasutusele võtta ainult erandkorras Vabariigi Valitsuse korraldusega",
       "estleg:legalText": "(1) Tervisekassa reservkapital on Tervisekassa eelarve vahenditest moodustatav reserv makromajanduslikest muutustest tulenevate Tervisekassa eelarve riskide vähendamiseks. (2) Reservkapitali suurus on 5,4 protsenti eelarve mahust. Reservkapitali kantakse igal aastal vähemalt 1/50 Tervisekassa eelarve kogumahust kuni käesolevas seaduses sätestatud reservkapitali suuruse saavutamiseni või taastamiseni. (3) Reservkapitali võib kasutusele võtta ainult erandkorras Vabariigi Valitsuse korraldusega valdkonna eest vastutava ministri ettepanekul. Enne ettepaneku esitamist Vabariigi Valitsusele kuulab valdkonna eest vastutav minister ära Tervisekassa nõukogu arvamuse.",
@@ -4320,8 +5356,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4349,7 +5389,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_38_Lg_1",
@@ -4388,19 +5432,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_38"
       },
-      "rdfs:label": "§ 38 lg 3"
+      "rdfs:label": "§ 38 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Kassatagavara ja reservkapitali hoidmine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa hoiab kassatagavara ja reservkapitali vahendeid riigiga sõlmitava hoiulepingu alusel riigi kontsernikonto koosseisu kuuluval arvelduskontol ja teostab sealt makseid. (2) Käesoleva paragrahvi lõikes 1 nimetatud hoiuleping peab võimaldama Tervisekassal igal ajal kassatagavara ja reservkapitali vahendite arvelt teostada õigusaktides sätestatud tingimustel väljamakseid talle käesoleva seadusega pandud ülesannete täitmiseks. Tervisekassa kavandatavatest väljamaksetest",
       "estleg:legalText": "(1) Tervisekassa hoiab kassatagavara ja reservkapitali vahendeid riigiga sõlmitava hoiulepingu alusel riigi kontsernikonto koosseisu kuuluval arvelduskontol ja teostab sealt makseid. (2) Käesoleva paragrahvi lõikes 1 nimetatud hoiuleping peab võimaldama Tervisekassal igal ajal kassatagavara ja reservkapitali vahendite arvelt teostada õigusaktides sätestatud tingimustel väljamakseid talle käesoleva seadusega pandud ülesannete täitmiseks. Tervisekassa kavandatavatest väljamaksetest Rahandusministeeriumi teavitamise konkreetsed tingimused lepitakse kokku hoiulepingus. (3) Riik maksab Tervisekassale riigi kontsernikonto koosseisu kuuluval arvelduskontol hoitavate vahendite jäägilt intressi, mille suurus on võrdne riigi likviidsete finantsvarade tulususega, kui Tervisekassaga sõlmitavas hoiulepingus ei ole kokku lepitud teisiti. (4) Riigi kontsernikonto koosseisu kuuluval arvelduskontol hoitavaid vahendeid paigutab Rahandusministeerium koos riigi rahaga riigieelarve seaduse § 66 lõike 5 alusel kehtestatud riigi rahavoo juhtimise põhimõtete kohaselt.",
@@ -4429,7 +5488,7 @@
           "@id": "estleg:TerKS_Par_48_1"
         },
         {
-          "@id": "estleg:TerKS_Par_48_1_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4450,6 +5509,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -4476,7 +5539,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_39"
       },
-      "rdfs:label": "§ 39 lg 2"
+      "rdfs:label": "§ 39 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_39_Lg_3",
@@ -4505,7 +5575,7 @@
       "rdfs:label": "§ 39 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:REELS_Par_66"
+          "@id": "estleg:REELS_Par_66_Lg_5"
         }
       ]
     },
@@ -4513,13 +5583,13 @@
       "@id": "estleg:TerKS_Par_39_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39¹.",
       "rdfs:label": "§ 39¹. Riskireserv",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa riskireserv on Tervisekassa eelarve vahenditest moodustatav reserv Tervisekassale võetud kohustustest tulenevate riskide vähendamiseks. (2) Riskireservi suurus on 2 protsenti Tervisekassa tervishoiukulude eelarve mahust. (3) Riskireservi võib kasutusele võtta Tervisekassa nõukogu otsusega.",
       "estleg:legalText": "(1) Tervisekassa riskireserv on Tervisekassa eelarve vahenditest moodustatav reserv Tervisekassale võetud kohustustest tulenevate riskide vähendamiseks. (2) Riskireservi suurus on 2 protsenti Tervisekassa tervishoiukulude eelarve mahust. (3) Riskireservi võib kasutusele võtta Tervisekassa nõukogu otsusega.",
@@ -4558,6 +5628,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -4597,19 +5671,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_39_1"
       },
-      "rdfs:label": "§ 39¹ lg 3"
+      "rdfs:label": "§ 39¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Tehingute tegemine järgmise aasta eelarve arvel",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa eesmärkide saavutamiseks on juhatusel õigus teha tehinguid järgmise aasta assigneeringute arvel kuni 30 protsendi ulatuses jooksvaks eelarveaastaks ettenähtud vastavatest assigneeringutest. (2) Tehingute tegemise järgmise aasta assigneeringute arvel enam kui 30 protsendi ulatuses jooksvaks aastaks ettenähtud vastavatest assigneeringutest otsustab Tervisekassa nõukogu.",
       "estleg:legalText": "(1) Tervisekassa eesmärkide saavutamiseks on juhatusel õigus teha tehinguid järgmise aasta assigneeringute arvel kuni 30 protsendi ulatuses jooksvaks eelarveaastaks ettenähtud vastavatest assigneeringutest. (2) Tehingute tegemise järgmise aasta assigneeringute arvel enam kui 30 protsendi ulatuses jooksvaks aastaks ettenähtud vastavatest assigneeringutest otsustab Tervisekassa nõukogu.",
@@ -4668,13 +5749,13 @@
       "@id": "estleg:TerKS_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41. Raamatupidamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa lähtub raamatupidamise korraldamisel raamatupidamise seadusest, teistest õigusaktidest ja Tervisekassa põhikirjast. (2) Tervisekassa kasutab raamatupidamises valdkonna eest vastutava ministri poolt kinnitatud bilansi- ja kasumiaruande skeeme.",
       "estleg:legalText": "(1) Tervisekassa lähtub raamatupidamise korraldamisel raamatupidamise seadusest, teistest õigusaktidest ja Tervisekassa põhikirjast. (2) Tervisekassa kasutab raamatupidamises valdkonna eest vastutava ministri poolt kinnitatud bilansi- ja kasumiaruande skeeme.",
@@ -4736,13 +5817,13 @@
       "@id": "estleg:TerKS_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
       "rdfs:label": "§ 42. Majandusaasta",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa majandusaasta algab 1. jaanuaril ja lõpeb 31. detsembril.",
       "estleg:legalText": "Tervisekassa majandusaasta algab 1. jaanuaril ja lõpeb 31. detsembril.",
@@ -4754,7 +5835,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_42_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_42_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4781,7 +5862,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_42_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_42_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4795,13 +5876,13 @@
       "@id": "estleg:TerKS_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
       "rdfs:label": "§ 43. Aruandlus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Nõukogu esitab kord aastas valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele aruande Tervisekassa majandustegevuse kohta. Aruande esitamise tähtaja, koostamise korra ja vormi määrab valdkonna eest vastutav minister. Nõukogu teavitab koheselt Vabariigi Valitsust Tervisekassa majandusliku seisundi olulisest halvenemisest ning muudest Tervisekassa tegevusega seotud olulistest asjaoludest. (2) Juhatus peab esitama nõukogule vähemalt kord kolme kuu jooksul ülevaate Tervisekassa",
       "estleg:legalText": "(1) Nõukogu esitab kord aastas valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele aruande Tervisekassa majandustegevuse kohta. Aruande esitamise tähtaja, koostamise korra ja vormi määrab valdkonna eest vastutav minister. Nõukogu teavitab koheselt Vabariigi Valitsust Tervisekassa majandusliku seisundi olulisest halvenemisest ning muudest Tervisekassa tegevusega seotud olulistest asjaoludest. (2) Juhatus peab esitama nõukogule vähemalt kord kolme kuu jooksul ülevaate Tervisekassa tegevusest ja majanduslikust olukorrast, samuti teatama koheselt Tervisekassa seisundi olulisest halvenemisest ning muudest Tervisekassa tegevusega seotud olulistest asjaoludest. (3) Pärast majandusaasta lõppu koostab juhatus raamatupidamise aastaaruande ja tegevusaruande seaduses sätestatud korras. (4) Juhatus esitab käesoleva paragrahvi lõigetes 1 ja 3 nimetatud aruanded kinnitamiseks nõukogule nelja kuu jooksul pärast majandusaasta lõppemist. Enne käesoleva paragrahvi lõikes 3 ettenähtud raamatupidamise aastaaruande esitamist nõukogule kinnitamiseks esitab juhatus aruande audiitorile kontrollimiseks.",
@@ -4826,8 +5907,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4845,7 +5930,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Juhatus",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -4853,7 +5937,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_43_Lg_1",
@@ -4866,7 +5954,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 1"
+      "rdfs:label": "§ 43 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_43_Lg_2",
@@ -4879,7 +5979,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 2"
+      "rdfs:label": "§ 43 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_43_Lg_3",
@@ -4911,13 +6018,13 @@
       "@id": "estleg:TerKS_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
       "rdfs:label": "§ 44. Aruannete avalikustamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa auditeeritud aastaaruanne ja tema tegevusaruanne avaldatakse Riigi Teatajas ning tehakse kättesaadavaks Tervisekassa koduleheküljel Internetis.",
       "estleg:legalText": "Tervisekassa auditeeritud aastaaruanne ja tema tegevusaruanne avaldatakse Riigi Teatajas ning tehakse kättesaadavaks Tervisekassa koduleheküljel Internetis.",
@@ -4929,7 +6036,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_44_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_44_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4947,7 +6054,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_44_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_44_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4961,13 +6068,13 @@
       "@id": "estleg:TerKS_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
       "rdfs:label": "§ 45. Kontroll",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassat kontrollib Riigikontroll ja audiitor.",
       "estleg:legalText": "Tervisekassat kontrollib Riigikontroll ja audiitor.",
@@ -4979,7 +6086,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_45_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_45_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4994,7 +6101,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_45_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_45_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5008,13 +6115,13 @@
       "@id": "estleg:TerKS_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
       "rdfs:label": "§ 46. Audiitor",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Audiitori nimetab nõukogu. Audiitori võib nimetada ühekordseks kontrolliks või teatud tähtajaks. (2) Tervisekassa audiitor ei või olla nõukogu liige, juhatuse liige ega Tervisekassa töötaja.",
       "estleg:legalText": "(1) Audiitori nimetab nõukogu. Audiitori võib nimetada ühekordseks kontrolliks või teatud tähtajaks. (2) Tervisekassa audiitor ei või olla nõukogu liige, juhatuse liige ega Tervisekassa töötaja.",
@@ -5033,11 +6140,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1046433_Map_2026"
+          "@id": "estleg:Reg_1046433_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -5067,7 +6176,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_Lg_1",
@@ -5080,7 +6193,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46"
       },
-      "rdfs:label": "§ 46 lg 1"
+      "rdfs:label": "§ 46 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_Lg_2",
@@ -5093,19 +6213,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46"
       },
-      "rdfs:label": "§ 46 lg 2"
+      "rdfs:label": "§ 46 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46¹.",
       "rdfs:label": "§ 46¹. Tervisekassa andmekogu",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa andmekogu peetakse seadustest tulenevate Tervisekassa avalike ülesannete täitmise eesmärgil, milleks on ravikindlustushüvitiste võimaldamine, tervishoiuteenuste eest tasumine, vaktsiinikahjude hüvitamine ning tervishoiuteenuste korraldamisega seotud teiste ülesannete täitmine vastavalt ravikindlustuse seadusele, ravimiseadusele, tervishoiuteenuste korraldamise seadusele ja muudele õigusaktidele ning Tervisekassa eelarves ettenähtud kuludele.",
       "estleg:legalText": "Tervisekassa andmekogu peetakse seadustest tulenevate Tervisekassa avalike ülesannete täitmise eesmärgil, milleks on ravikindlustushüvitiste võimaldamine, tervishoiuteenuste eest tasumine, vaktsiinikahjude hüvitamine ning tervishoiuteenuste korraldamisega seotud teiste ülesannete täitmine vastavalt ravikindlustuse seadusele, ravimiseadusele, tervishoiuteenuste korraldamise seadusele ja muudele õigusaktidele ning Tervisekassa eelarves ettenähtud kuludele.",
@@ -5117,7 +6249,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_46_1_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_46_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5132,7 +6264,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_46_1_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_46_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5146,13 +6278,13 @@
       "@id": "estleg:TerKS_Par_46_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46².",
       "rdfs:label": "§ 46². Tervisekassa andmekogu vastutav töötleja",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Tervisekassa andmekogu vastutav töötleja on Tervisekassa.",
       "estleg:legalText": "Tervisekassa andmekogu vastutav töötleja on Tervisekassa.",
@@ -5164,11 +6296,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_46_2_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_46_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5196,10 +6330,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TerKS_Par_46_2_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_46_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5207,19 +6345,28 @@
       "estleg:legalText": "Tervisekassa andmekogu vastutav töötleja on Tervisekassa.",
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TerKS_Par_46_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46³.",
       "rdfs:label": "§ 46³. Tervisekassa andmekogusse kantavad andmed",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa andmekogusse kantakse järgmised andmed: isiku üldandmed – isikukood ja sünniaeg, ees- ja perekonnanimi, elukoht, arvelduskonto ning kontaktandmed; kindlustuskaitse või muu tasu maksmise kohustuse ülevõtmise aluse tekkimise, lõppemise ja peatumise aluseks olevad andmed; mitterahaliste ravikindlustushüvitiste eest tasumise aluseks olevad andmed; rahaliste ravikindlustushüvitiste väljamaksmise aluseks olevad andmed; tervishoiuteenuse osutaja ja muud tervishoiuteenusega seotud",
       "estleg:legalText": "(1) Tervisekassa andmekogusse kantakse järgmised andmed: isiku üldandmed – isikukood ja sünniaeg, ees- ja perekonnanimi, elukoht, arvelduskonto ning kontaktandmed; kindlustuskaitse või muu tasu maksmise kohustuse ülevõtmise aluse tekkimise, lõppemise ja peatumise aluseks olevad andmed; mitterahaliste ravikindlustushüvitiste eest tasumise aluseks olevad andmed; rahaliste ravikindlustushüvitiste väljamaksmise aluseks olevad andmed; tervishoiuteenuse osutaja ja muud tervishoiuteenusega seotud andmed; tagasinõudeõiguse realiseerimiseks vajalikud andmed; tervishoiuteenusega seotud lisatasu piirmäära sihtrühma kuuluvuse kindlakstegemiseks vajalikud andmed; Tervisekassale ravikindlustuse seadusest, ravimiseadusest, tervishoiuteenuste korraldamise seadusest ja muudest õigusaktidest tulenevate ülesannete täitmiseks muud vajalikud andmed. (2) Tervisekassa andmekogu andmeid säilitatakse 75 aastat alates andmekogusse kandmisest või 30 aastat isiku surmast. (2¹) Erinevalt käesoleva paragrahvi lõikes 2 nimetatud tähtaegadest säilitatakse andmeid järgmiselt: isiku kinnipidamisasutuses, kinnipidamiskeskuses või arestimajas viibimise andmeid säilitatakse kolm aastat isiku kinnipidamisasutusest, kinnipidamiskeskusest või arestimajast vabastamisest arvates; tagasinõudeõiguse realiseerimiseks vajalikke andmeid säilitatakse seitse aastat nende andmekogusse kandmisest arvates, eluaegsete tervisekahjude korral kuni isiku surmani; logisid ja alusandmeid säilitatakse vastavalt andmekogu põhimääruses sätestatule. (3) Kohtutäituril, tervishoiuteenuse osutajal ning kindlustatud isiku eest sotsiaalmaksu maksjal on õigus töödelda seadusest tulenevate ülesannete täitmiseks Tervisekassa andmekogus olevaid andmeid. (4) Tervisekassa andmekogu kandes märgitud asjaolu omandab õigusliku tähenduse kande tegemisest, kui seaduses ei ole ette nähtud teistsugust tähtpäeva. (5) Tervisekassa andmekogu kanne tehakse viie kalendripäeva jooksul pärast kande tegemise aluseks olevate nõuetekohaselt vormistatud dokumentide Tervisekassasse saabumist.",
@@ -5250,8 +6397,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5271,7 +6422,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_3_Lg_1",
@@ -5284,7 +6439,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_3"
       },
-      "rdfs:label": "§ 46³ lg 1"
+      "rdfs:label": "§ 46³ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_3_Lg_2",
@@ -5297,7 +6461,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_3"
       },
-      "rdfs:label": "§ 46³ lg 2"
+      "rdfs:label": "§ 46³ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_3_Lg_2_1",
@@ -5310,7 +6483,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_3"
       },
-      "rdfs:label": "§ 46³ lg 2¹"
+      "rdfs:label": "§ 46³ lg 2¹",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_3_Lg_3",
@@ -5323,7 +6505,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_3"
       },
-      "rdfs:label": "§ 46³ lg 3"
+      "rdfs:label": "§ 46³ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_3_Lg_4",
@@ -5355,13 +6552,13 @@
       "@id": "estleg:TerKS_Par_46_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46⁴.",
       "rdfs:label": "§ 46⁴. Andmete kogumise õigus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassal on õigus saada isikult õigusaktides sätestatud juhtudel andmeid, sealhulgas eriliiki isikuandmeid, kui need andmed on vajalikud Tervisekassale seadusega pandud ülesannete täitmiseks. (2) Tervisekassal on õigus nõuda temaga lepingu sõlminud isikutelt, samuti teistelt isikutelt ning riigi- ja kohaliku omavalitsuse üksuse asutustelt õigusaktides sätestatud juhtudel isiku andmeid ning muid andmeid, kui need andmed on vajalikud Tervisekassale seadusega pandud ülesannete täitmiseks.",
       "estleg:legalText": "(1) Tervisekassal on õigus saada isikult õigusaktides sätestatud juhtudel andmeid, sealhulgas eriliiki isikuandmeid, kui need andmed on vajalikud Tervisekassale seadusega pandud ülesannete täitmiseks. (2) Tervisekassal on õigus nõuda temaga lepingu sõlminud isikutelt, samuti teistelt isikutelt ning riigi- ja kohaliku omavalitsuse üksuse asutustelt õigusaktides sätestatud juhtudel isiku andmeid ning muid andmeid, kui need andmed on vajalikud Tervisekassale seadusega pandud ülesannete täitmiseks. (3) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud isikud ei või nõuda tasu Tervisekassale andmete väljastamise eest. (4) Andmete väljastamiseks kohustatud isik või asutus peab oma kohustuse täitma viivitamata, kuid mitte hiljem kui Tervisekassa poolt andmete nõudmisel teatatud tähtaja jooksul, või põhjendama Tervisekassale kirjalikult kohustuse nõuetekohase täitmise võimatust.",
@@ -5386,8 +6583,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5410,7 +6611,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_4_Lg_1",
@@ -5423,7 +6628,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_4"
       },
-      "rdfs:label": "§ 46⁴ lg 1"
+      "rdfs:label": "§ 46⁴ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_4_Lg_2",
@@ -5436,7 +6648,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_4"
       },
-      "rdfs:label": "§ 46⁴ lg 2"
+      "rdfs:label": "§ 46⁴ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_4_Lg_3",
@@ -5449,7 +6673,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_4"
       },
-      "rdfs:label": "§ 46⁴ lg 3"
+      "rdfs:label": "§ 46⁴ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_4_Lg_4",
@@ -5462,19 +6698,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_4"
       },
-      "rdfs:label": "§ 46⁴ lg 4"
+      "rdfs:label": "§ 46⁴ lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46⁵.",
       "rdfs:label": "§ 46⁵. Tervisekassa andmekogu põhimäärus",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa andmekogu asutab ja selle põhimääruse kehtestab määrusega. (2) Tervisekassa andmekogu põhimääruses sätestatakse: andmekogu ülesehitus ja andmete täpsem koosseis; andmete andmekogusse kandmiseks vajalike alusdokumentide loetelu; andmete vastuvõtmise ja väljastamise üle arvestuse pidamise kord; andmeandjate loetelu, andmetele juurdepääsu ning nende väljastamise kord; ebaõigete andmete parandamise ja sellest teavitamise kord; andmetele juurdepääsu sulgemise tingimused ja kord;",
       "estleg:legalText": "(1) Tervisekassa andmekogu asutab ja selle põhimääruse kehtestab määrusega. (2) Tervisekassa andmekogu põhimääruses sätestatakse: andmekogu ülesehitus ja andmete täpsem koosseis; andmete andmekogusse kandmiseks vajalike alusdokumentide loetelu; andmete vastuvõtmise ja väljastamise üle arvestuse pidamise kord; andmeandjate loetelu, andmetele juurdepääsu ning nende väljastamise kord; ebaõigete andmete parandamise ja sellest teavitamise kord; andmetele juurdepääsu sulgemise tingimused ja kord; andmete säilitamise täpsem kord; muud andmekogu pidamiseks vajalikud tingimused.",
@@ -5493,7 +6741,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5515,7 +6765,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_5_Lg_1",
@@ -5541,19 +6795,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_46_5"
       },
-      "rdfs:label": "§ 46⁵ lg 2"
+      "rdfs:label": "§ 46⁵ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_46_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46⁶.",
       "rdfs:label": "§ 46⁶. Teaduseetika komitee",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Käesoleva seaduse §-s 461 nimetatud andmekogust teadusuuringu või statistika vajadusteks isikuandmete väljastamise eetilisust ja põhjendatust hindab sõltumatu teadlastest ja eri elualade esindajatest koosnev teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse §-s 26 nimetatud teaduseetika komitee.",
       "estleg:legalText": "Käesoleva seaduse §-s 461 nimetatud andmekogust teadusuuringu või statistika vajadusteks isikuandmete väljastamise eetilisust ja põhjendatust hindab sõltumatu teadlastest ja eri elualade esindajatest koosnev teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse §-s 26 nimetatud teaduseetika komitee.",
@@ -5565,7 +6828,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_46_6_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_46_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5592,7 +6855,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_46_6_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_46_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5606,13 +6869,13 @@
       "@id": "estleg:TerKS_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Tervisekassa lõpetamine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Tervisekassa lõpetatakse seadusega. (2) Tervisekassa lõpetamisel järelejäänud Tervisekassa vara antakse üle riigile, kui Tervisekassa lõpetamise seaduses ei ole ette nähtud teisiti.",
       "estleg:legalText": "(1) Tervisekassa lõpetatakse seadusega. (2) Tervisekassa lõpetamisel järelejäänud Tervisekassa vara antakse üle riigile, kui Tervisekassa lõpetamise seaduses ei ole ette nähtud teisiti.",
@@ -5674,13 +6937,13 @@
       "@id": "estleg:TerKS_Par_48",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
       "rdfs:label": "§ 48. Keskhaigekassa ja haigekassade lõpetamine ning vara üleandmine Eesti Haigekassale",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Sotsiaalminister on kohustatud kehtetuks tunnistama sotsiaalministri 1994. aasta 23. detsembri määrusega nr 67 kinnitatud Keskhaigekassa põhimääruse alates käesoleva seaduse jõustumisest ning ette nägema Keskhaigekassa vara üleandmise Eesti Haigekassale. Keskhaigekassa loetakse lõpetatuks ning tema vara üleantuks Eesti Haigekassa omandisse alates käesoleva seaduse jõustumisest. (2) Sotsiaalminister on kohustatud kehtetuks tunnistama sotsiaalministri 1994. aasta 25.",
       "estleg:legalText": "(1) Sotsiaalminister on kohustatud kehtetuks tunnistama sotsiaalministri 1994. aasta 23. detsembri määrusega nr 67 kinnitatud Keskhaigekassa põhimääruse alates käesoleva seaduse jõustumisest ning ette nägema Keskhaigekassa vara üleandmise Eesti Haigekassale. Keskhaigekassa loetakse lõpetatuks ning tema vara üleantuks Eesti Haigekassa omandisse alates käesoleva seaduse jõustumisest. (2) Sotsiaalminister on kohustatud kehtetuks tunnistama sotsiaalministri 1994. aasta 25. veebruari määrusega nr 17 kinnitatud haigekassa põhimääruse alates käesoleva seaduse jõustumisest ning ette nägema haigekassade vara üleandmise Eesti Haigekassale. Haigekassad loetakse lõpetatuks ning nende vara üleantuks Eesti Haigekassa omandisse alates käesoleva seaduse jõustumisest. (3) Vabariigi Valitsus on kohustatud kehtetuks tunnistama Vabariigi Valitsuse 1994. aasta 22. aprilli määrusega nr 143 kinnitatud ravikindlustusnõukogu põhimääruse alates käesoleva seaduse jõustumisest. Eesti Ravikindlustusnõukogu ja piirkondlike haigekassade juures tegutsevate ravikindlustusnõukogude tegevus loetakse lõpetatuks alates käesoleva seaduse jõustumisest. (4) Keskhaigekassa ja haigekassade valduses ja kasutuses oleva ning Eesti Haigekassa tegevuseks vajaliku riigi vallasvara annavad selle riigivara valitsejad üle Eesti Haigekassale kolme kuu jooksul, alates käesoleva sätte jõustumisest. Keskhaigekassa ja haigekassade valduses ja kasutuses oleva kinnisvara võõrandamine Eesti Haigekassale toimub riigivaraseaduses ettenähtud korras. Käesolevas seaduses käsitletakse kinnisvarana ka ehitisi, nende reaalosi ning rajatisi kuni nende aluse ja nende teenindamiseks vajaliku maatüki kandmiseni kinnistusraamatusse. (5) Keskhaigekassa ja haigekassade poolt töötajatega sõlmitud töölepingud jäävad jõusse ning lähevad üle Eesti Haigekassale alates käesoleva seaduse jõustumisest. (6) Keskhaigekassa direktor loetakse alates käesoleva seaduse jõustumisest nimetatuks Eesti Haigekassa juhatuse esimeheks temaga Keskhaigekassa direktorina sõlmitud töölepingu tähtaja lõppemiseni 2002. aasta 1. augustil. Eesti Haigekassa juhatuse liikmete volitused, kes nimetatakse ametisse Eesti Haigekassa nõukogu poolt käesoleva lõike kohaselt ametisse nimetatud Eesti Haigekassa juhatuse esimehe ettepanekute alusel, kestavad kuni kolme kuu möödumiseni käesolevas lõikes ettenähtud Eesti Haigekassa juhatuse esimehe volituste lõppemisest.",
@@ -5711,8 +6974,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5733,7 +7000,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Sotsiaalminister",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -5741,7 +7007,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_Lg_1",
@@ -5754,7 +7024,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 1"
+      "rdfs:label": "§ 48 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_Lg_2",
@@ -5767,7 +7044,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 2"
+      "rdfs:label": "§ 48 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_Lg_3",
@@ -5780,7 +7064,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 3"
+      "rdfs:label": "§ 48 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_Lg_4",
@@ -5806,7 +7102,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 5"
+      "rdfs:label": "§ 48 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_Lg_6",
@@ -5819,19 +7124,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TerKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 6"
+      "rdfs:label": "§ 48 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48¹.",
       "rdfs:label": "§ 48¹. Kassatagavara ja reservkapitali vahendite riigi kontsernikonto koosseisu üleviimine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Kassatagavara ja reservkapitali vahendite arvelt omandatud finantsvara realiseerib ning kassatagavara vahendite hoidmise ja haldamisega seotud lepingud lõpetab haigekassa ning käesoleva seaduse § 39 lõikes 1 nimetatud hoiulepingu sõlmivad haigekassa juhatuse esimees ja rahandusminister 2012. aasta 16. jaanuariks.",
       "estleg:legalText": "Kassatagavara ja reservkapitali vahendite arvelt omandatud finantsvara realiseerib ning kassatagavara vahendite hoidmise ja haldamisega seotud lepingud lõpetab haigekassa ning käesoleva seaduse § 39 lõikes 1 nimetatud hoiulepingu sõlmivad haigekassa juhatuse esimees ja rahandusminister 2012. aasta 16. jaanuariks.",
@@ -5843,15 +7160,17 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_48_1_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_39"
+          "@id": "estleg:TerKS_Par_39_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5877,10 +7196,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TerKS_Par_48_1_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_48_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5891,21 +7214,30 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:TerKS_Par_39"
+          "@id": "estleg:TerKS_Par_39_Lg_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48².",
       "rdfs:label": "§ 48². Haigekassa nõukogu liikmete volituste tähtaeg seoses nõukogu ümberkorraldamisega",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Eesti Haigekassa nõukogu ümberkorraldamise tulemusena jätkavad 2018. aasta 1. septembrist kaks Eesti Tööandjate Keskliidu ettepanekul nimetatud nõukogu liiget ning üks Eesti Ametiühingute Keskliidu ja üks Eesti Puuetega Inimeste Koja ettepanekul nimetatud nõukogu liige kuni oma volituste tähtaja lõppemiseni, kui nad vastavad käesoleva seaduse §-s 10 sätestatud nõuetele, ja käesoleva seaduse § 9 lõikes 1 nimetatud valdkondade eest vastutavad ministrid. Alates 2018. aasta 1.",
       "estleg:legalText": "Eesti Haigekassa nõukogu ümberkorraldamise tulemusena jätkavad 2018. aasta 1. septembrist kaks Eesti Tööandjate Keskliidu ettepanekul nimetatud nõukogu liiget ning üks Eesti Ametiühingute Keskliidu ja üks Eesti Puuetega Inimeste Koja ettepanekul nimetatud nõukogu liige kuni oma volituste tähtaja lõppemiseni, kui nad vastavad käesoleva seaduse §-s 10 sätestatud nõuetele, ja käesoleva seaduse § 9 lõikes 1 nimetatud valdkondade eest vastutavad ministrid. Alates 2018. aasta 1. septembrist on teiste nõukogu liikmete volitused lõppenud.",
@@ -5917,18 +7249,20 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_48_2_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
           "@id": "estleg:TerKS_Par_10"
         },
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5940,10 +7274,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TerKS_Par_48_2_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_48_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5957,21 +7295,30 @@
           "@id": "estleg:TerKS_Par_10"
         },
         {
-          "@id": "estleg:TerKS_Par_9"
+          "@id": "estleg:TerKS_Par_9_Lg_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_48_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48³.",
       "rdfs:label": "§ 48³. Struktuuriüksuse juhi töölepingu tähtaeg",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Kuni 2018. aasta 31. augustini kehtinud Eesti Haigekassa seaduse § 33 lõike 2 alusel struktuuriüksuse juhiga sõlmitud kehtiv tähtajaline tööleping loetakse 2018. aasta 1. oktoobrist tähtajatuks töösuhte algusest arvates. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata juhul, kui struktuuriüksuse juht esitab 2018. aasta 30. septembriks juhatuse esimehele kirjalikku taasesitamist võimaldavas vormis avalduse tähtajalise töölepingu jätkumiseks kuni selle tähtaja lõpuni.",
       "estleg:legalText": "(1) Kuni 2018. aasta 31. augustini kehtinud Eesti Haigekassa seaduse § 33 lõike 2 alusel struktuuriüksuse juhiga sõlmitud kehtiv tähtajaline tööleping loetakse 2018. aasta 1. oktoobrist tähtajatuks töösuhte algusest arvates. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata juhul, kui struktuuriüksuse juht esitab 2018. aasta 30. septembriks juhatuse esimehele kirjalikku taasesitamist võimaldavas vormis avalduse tähtajalise töölepingu jätkumiseks kuni selle tähtaja lõpuni.",
@@ -6025,13 +7372,13 @@
       "@id": "estleg:TerKS_Par_48_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48⁴.",
       "rdfs:label": "§ 48⁴. Haigekassa andmekoguga seotud õigused ja kohustused",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Ravikindlustuse seaduse alusel asutatud ravikindlustuse andmekoguga seotud õigused ja kohustused lähevad üle käesoleva seaduse alusel asutatud haigekassa andmekogule.",
       "estleg:legalText": "Ravikindlustuse seaduse alusel asutatud ravikindlustuse andmekoguga seotud õigused ja kohustused lähevad üle käesoleva seaduse alusel asutatud haigekassa andmekogule.",
@@ -6043,7 +7390,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_48_4_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_4_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -6053,7 +7400,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_48_4_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_48_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -6067,13 +7414,13 @@
       "@id": "estleg:TerKS_Par_48_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48⁵.",
       "rdfs:label": "§ 48⁵. Eesti Haigekassa nime muutmine Tervisekassaks",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Alates 2023. aasta 1. aprillist loetakse kehtivates õigusaktides kuni vastava muudatuse tegemiseni sõnad „Eesti Haigekassa” asendatuks sõnaga „Tervisekassa” vastavas käändes.",
       "estleg:legalText": "Alates 2023. aasta 1. aprillist loetakse kehtivates õigusaktides kuni vastava muudatuse tegemiseni sõnad „Eesti Haigekassa” asendatuks sõnaga „Tervisekassa” vastavas käändes.",
@@ -6085,7 +7432,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_48_5_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_5_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -6095,7 +7442,7 @@
       ]
     },
     {
-      "@id": "estleg:TerKS_Par_48_5_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_48_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -6109,13 +7456,13 @@
       "@id": "estleg:TerKS_Par_48_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48⁶.",
       "rdfs:label": "§ 48⁶. Käesoleva seaduse § 2 lõike 2",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "Käesoleva seaduse § 2 lõikes 22 nimetatud automatiseeritud andmetöötlust võib rakendada tehnilise lahenduse valmimisel.",
       "estleg:legalText": "Käesoleva seaduse § 2 lõikes 22 nimetatud automatiseeritud andmetöötlust võib rakendada tehnilise lahenduse valmimisel.",
@@ -6127,7 +7474,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TerKS_Par_48_6_Lg_Unknown_1"
+          "@id": "estleg:TerKS_Par_48_6_Lg_1"
         }
       ],
       "estleg:references": [
@@ -6142,10 +7489,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:TerKS_Par_48_6_Lg_Unknown_1",
+      "@id": "estleg:TerKS_Par_48_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -6158,19 +7509,26 @@
         {
           "@id": "estleg:TerKS_Par_2"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TerKS_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
       "rdfs:label": "§ 49.",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TerKS_6"
@@ -6184,13 +7542,13 @@
       "@id": "estleg:TerKS_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
       "rdfs:label": "§ 52. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -6210,13 +7568,13 @@
       "@id": "estleg:TerKS_Par_53",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tervisekassa_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 53.",
       "rdfs:label": "§ 53. Seaduse jõustumine",
       "estleg:sourceAct": "Tervisekassa seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TerKS_Map_2026"
+        "@id": "estleg:TerKS_Map"
       },
       "estleg:summary": "(1) Seadus jõustub 2001. aasta 1. jaanuaril. (2) Seaduse § 48 lõiked 1–4 jõustuvad 2000. aasta 1. oktoobril.",
       "estleg:legalText": "(1) Seadus jõustub 2001. aasta 1. jaanuaril. (2) Seaduse § 48 lõiked 1–4 jõustuvad 2000. aasta 1. oktoobril.",
@@ -6265,6 +7623,146 @@
         "@id": "estleg:TerKS_Par_53"
       },
       "rdfs:label": "§ 53 lg 2"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12"
+      },
+      "estleg:citationText": "käesoleva seaduse §-ga 361"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12"
+      },
+      "estleg:citationDetail": "TTKSE",
+      "estleg:citationText": "tervishoiuteenuste korraldamise seaduse § 504"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12"
+      },
+      "estleg:citationDetail": "RaKS",
+      "estleg:citationText": "ravikindlustuse seaduse § 663"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12"
+      },
+      "estleg:citationDetail": "RaKS",
+      "estleg:citationText": "ravikindlustuse seaduse § 661"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12"
+      },
+      "estleg:citationDetail": "TTKSE",
+      "estleg:citationText": "tervishoiuteenuste korraldamise seaduse § 172"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_Lg_1_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse §-ga 361"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_Lg_1_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12_Lg_1"
+      },
+      "estleg:citationDetail": "TTKSE",
+      "estleg:citationText": "tervishoiuteenuste korraldamise seaduse § 504"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_Lg_1_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12_Lg_1"
+      },
+      "estleg:citationDetail": "RaKS",
+      "estleg:citationText": "ravikindlustuse seaduse § 663"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_Lg_1_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12_Lg_1"
+      },
+      "estleg:citationDetail": "RaKS",
+      "estleg:citationText": "ravikindlustuse seaduse § 661"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_12_Lg_1_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_12_Lg_1"
+      },
+      "estleg:citationDetail": "TTKSE",
+      "estleg:citationText": "tervishoiuteenuste korraldamise seaduse § 172"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_46_6_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_46_6"
+      },
+      "estleg:citationText": "Käesoleva seaduse §-s 461"
+    },
+    {
+      "@id": "estleg:Citation_TerKS_P_46_6_Lg_1_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TerKS_Par_46_6_Lg_1"
+      },
+      "estleg:citationText": "Käesoleva seaduse §-s 461"
     }
   ]
 }

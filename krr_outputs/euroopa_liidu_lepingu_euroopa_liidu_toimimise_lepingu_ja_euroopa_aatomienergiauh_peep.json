@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Map_2026",
+      "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Euroopa Liidu lepingu, Euroopa Liidu toimimise lepingu ja Euroopa Aatomienergiaühenduse asutamislepingu üleminekusätteid käsitleva protokolli muutmise protokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/224112010001.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/224112010001.xml"
       },
       "estleg:kehtiv": {
@@ -39,17 +35,28 @@
           "@id": "http://eurovoc.europa.eu/525"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_euroopa_liidu_lepingu_euroopa_liidu_toimimise_lepingu_ja_euroopa_aatomienergiauh",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2010-11-25",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_TopicScheme",
@@ -81,13 +88,13 @@
       "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_liidu_lepingu_euroopa_liidu_toimimise_lepingu_ja_euroopa_aatomienergiauh"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida protokoll, millega muudetakse Euroopa Liidu lepingule, Euroopa Li...]",
       "estleg:sourceAct": "Euroopa Liidu lepingu, Euroopa Liidu toimimise lepingu ja Euroopa Aatomienergiaühenduse asutamislepingu üleminekusätteid käsitleva protokolli muutmise protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Map_2026"
+        "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Map"
       },
       "estleg:summary": "Ratifitseerida protokoll, millega muudetakse Euroopa Liidu lepingule, Euroopa Liidu toimimise lepingule ja Euroopa Aatomienergiaühenduse asutamislepingule lisatud protokolli üleminekusätete kohta¹, millele Eesti Vabariik on alla kirjutanud 2010. aasta 23. juunil Brüsselis.",
       "estleg:legalText": "Ratifitseerida protokoll, millega muudetakse Euroopa Liidu lepingule, Euroopa Liidu toimimise lepingule ja Euroopa Aatomienergiaühenduse asutamislepingule lisatud protokolli üleminekusätete kohta¹, millele Eesti Vabariik on alla kirjutanud 2010. aasta 23. juunil Brüsselis.",
@@ -95,7 +102,9 @@
         "@id": "estleg:Cluster_euroopa_liidu_lepingu_euroopa_liidu_toim_default"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -110,7 +119,7 @@
           "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1"
         },
         {
-          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi__Par_1"
+          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi_Par_1"
         },
         {
           "@id": "estleg:uhtset_patendikohut_kasitleva_lepingu_ni_Par_2"
@@ -123,19 +132,23 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_liidu_lepingu_euroopa_liidu_toimimise_lepingu_ja_euroopa_aatomienergiauh"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.]",
       "estleg:sourceAct": "Euroopa Liidu lepingu, Euroopa Liidu toimimise lepingu ja Euroopa Aatomienergiaühenduse asutamislepingu üleminekusätteid käsitleva protokolli muutmise protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Map_2026"
+        "@id": "estleg:euroopa_liidu_lepingu_euroopa_liidu_toim_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",

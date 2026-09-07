@@ -19,12 +19,8 @@ Covers the classification / encoding regressions tracked in:
 from __future__ import annotations
 
 import inspect
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_eu_court_decisions as mod  # noqa: E402
+from estleg import generate_eu_court_decisions as mod
 
 NBSP = "\u00a0"  # non-breaking space (U+00A0)
 
@@ -171,6 +167,11 @@ def test_tt_decision_to_node_emits_general_court_order() -> None:
     node = mod.decision_to_node(item)
     assert node["estleg:euCourt"] == {"@id": "estleg:EUCourt_GeneralCourt"}
     assert node["estleg:euCourtDecisionType"] == {"@id": "estleg:EUDecType_Order"}
+    assert "estleg:curiaLink" not in node
+    assert node["estleg:eurLexLink"]["@value"].endswith("CELEX:62016TT0624")
+    same_as = {item["@id"] for item in node["owl:sameAs"]}
+    assert mod.cellar_celex_iri("62016TT0624") in same_as
+    assert mod.cellar_ecli_iri("ECLI:EU:T:2019:47") in same_as
 
 
 # ---------------------------------------------------------------------------
@@ -325,6 +326,15 @@ def test_decision_to_node_skips_implausible_year(capsys) -> None:
     err = capsys.readouterr().err
     assert "documentDate" in err
     assert "0044-01-01" in err
+
+
+def test_schema_declares_eurlex_link_not_curialink() -> None:
+    """#441: the CURIA schema property is ``eurLexLink``, not ``curiaLink``."""
+    nodes = {node.get("@id"): node for node in mod.generate_schema_nodes()}
+    assert "estleg:eurLexLink" in nodes
+    assert "estleg:curiaLink" not in nodes
+    # #442: ecliIdentifier is shared with Riigikohus CourtDecision.
+    assert "rdfs:domain" not in nodes["estleg:ecliIdentifier"]
 
 
 def test_decision_to_node_emits_valid_recent_date() -> None:

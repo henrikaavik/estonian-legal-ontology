@@ -27,11 +27,11 @@ Measured by running the case-fixed `PAT_KOV_ACT` (Section "Citation regex" below
 
 | Court decision text                                                | Resolved act IRI                  |
 |--------------------------------------------------------------------|-----------------------------------|
-| Narva Linnavolikogu 2006 #30                                       | `estleg:Reg_1013909_Map_2026`     |
-| Tallinna Linnavalitsus 2009 #75 (entered force 2010 — `+1` alt)    | `estleg:Reg_1014396_Map_2026`     |
-| Viimsi Vallavolikogu 2009 #22                                      | `estleg:Reg_1024484_Map_2026`     |
-| Tallinna Linnavolikogu 2008 #30                                    | `estleg:Reg_1014955_Map_2026`     |
-| Kohtla-Järve Linnavolikogu 2018 #24 (entered force 2019 — `+1` alt) | `estleg:Reg_1044438_Map_2026`    |
+| Narva Linnavolikogu 2006 #30                                       | `estleg:Reg_1013909_Map`     |
+| Tallinna Linnavalitsus 2009 #75 (entered force 2010 — `+1` alt)    | `estleg:Reg_1014396_Map`     |
+| Viimsi Vallavolikogu 2009 #22                                      | `estleg:Reg_1024484_Map`     |
+| Tallinna Linnavolikogu 2008 #30                                    | `estleg:Reg_1014955_Map`     |
+| Kohtla-Järve Linnavolikogu 2018 #24 (entered force 2019 — `+1` alt) | `estleg:Reg_1044438_Map`    |
 
 **Realistic expected output:** **5 new `interpretsLaw` edges** to KOV act IRIs (the table above), **29 unresolved entries** in `failure_samples`, **1 ambiguous entry**, **0 RT IV citations** counted.
 
@@ -175,7 +175,7 @@ The KOV act index is keyed on `(issuer_norm, entryIntoForce.year, actNumber)`, w
 
 Two consequences for this PR:
 
-1. **Approximate resolver, deliberate.** The `+1 year` alternate (Section "Citation resolver" below) handles the common adoption-Y / entry-into-force-Y+1 case in one direction. The empirical "Tallinna Linnavalitsus 2009 #75" → `Reg_1014396_Map_2026` (entered force 2010) resolves precisely because of this.
+1. **Approximate resolver, deliberate.** The `+1 year` alternate (Section "Citation resolver" below) handles the common adoption-Y / entry-into-force-Y+1 case in one direction. The empirical "Tallinna Linnavalitsus 2009 #75" → `Reg_1014396_Map` (entered force 2010) resolves precisely because of this.
 2. **Documented miss profile.** The reverse direction — adoption in Y, entry-into-force in Y-1 — is not covered. So is the case where the consolidated KOV peep represents a current redaction whose `entryIntoForce` reflects a later amendment year, not the original adoption year. Of the 29 unresolved citations in the empirical baseline, the dominant cause is this: most are 1990s citations whose original act either no longer exists in the consolidated peep set, or has been re-enacted with a later `entryIntoForce` year. Surfacing them in `failure_samples` is the right outcome — they become the input for a future adoption-date enrichment PR.
 
 The PR explicitly does NOT extract adoption date from XML. That work is out of scope (see Out of scope).
@@ -617,7 +617,7 @@ kov/
     act_b_peep.json
 ```
 
-Fixture content uses a verified-resolving real example with a citation form the regex actually matches — e.g. *"Viimsi Vallavolikogu 13. oktoobri 2009. a määruse nr 22"* (long Estonian-month date form) or the numeric equivalent *"Viimsi Vallavolikogu 13.10.2009 määruse nr 22"* — both resolve to `estleg:Reg_1024484_Map_2026`. (A bare-year form like *"... 2009 määrus nr 22"* does NOT match `PAT_KOV_ACT`; the regex requires either numeric `d.m.y` or long-form `d. <month-genitive> yyyy`. Implementers copying this fixture note must use one of the structured date forms.) The Keila 1999 #55 case is preserved as the unresolved-by-design example (its issuer IS in `known_issuer_norms` per Layer 1, but no peep matches the year+number — same shape as the empirical 29-citation residue).
+Fixture content uses a verified-resolving real example with a citation form the regex actually matches — e.g. *"Viimsi Vallavolikogu 13. oktoobri 2009. a määruse nr 22"* (long Estonian-month date form) or the numeric equivalent *"Viimsi Vallavolikogu 13.10.2009 määruse nr 22"* — both resolve to `estleg:Reg_1024484_Map`. (A bare-year form like *"... 2009 määrus nr 22"* does NOT match `PAT_KOV_ACT`; the regex requires either numeric `d.m.y` or long-form `d. <month-genitive> yyyy`. Implementers copying this fixture note must use one of the structured date forms.) The Keila 1999 #55 case is preserved as the unresolved-by-design example (its issuer IS in `known_issuer_norms` per Layer 1, but no peep matches the year+number — same shape as the empirical 29-citation residue).
 
 Test asserts all of:
 1. Court decision's `estleg:interpretsLaw` contains the resolved KOV act IRI (Viimsi 2009 #22).

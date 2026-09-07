@@ -18,17 +18,13 @@ import os
 import shutil
 import subprocess
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 from unittest import mock
 
 import pytest
 
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import run_all_integration  # noqa: E402  (import after sys.path mutation)
-
+from estleg import run_all_integration
 
 # ---------------------------------------------------------------------------
 # Shared helpers
@@ -403,12 +399,12 @@ class TestDryRunSummary:
 
 
 class TestCombinedOntologyRebuildStep:
-    """``fix_all_issues.py`` must be a DAG step that rebuilds
+    """``build_release_artifacts.py`` must be a DAG step that rebuilds
     ``combined_ontology.jsonld`` (+ ``INDEX.json``) AFTER every enrichment
     step and BEFORE the release validators. Without it the release artifact
     and the Seadusloome sync gate validate the pre-enrichment corpus."""
 
-    REBUILD_STEP = "fix_all_issues.py"
+    REBUILD_STEP = "build_release_artifacts.py"
 
     def _step(self, name: str) -> dict:
         return next(s for s in run_all_integration.STEPS if s["name"] == name)
@@ -416,8 +412,8 @@ class TestCombinedOntologyRebuildStep:
     def test_rebuild_step_is_registered(self) -> None:
         names = [s["name"] for s in run_all_integration.STEPS]
         assert self.REBUILD_STEP in names, (
-            "fix_all_issues.py must be registered as a DAG step so the "
-            "combined ontology is rebuilt after enrichment"
+            "build_release_artifacts.py must be registered as a DAG step so "
+            "the combined ontology is rebuilt after enrichment"
         )
 
     def test_rebuild_step_writes_combined_ontology_and_index(self) -> None:
@@ -1011,3 +1007,21 @@ class TestReleaseInterruptSafety:
             run_all_integration.main()
 
         restore_mock.assert_not_called()
+
+
+def test_resume_precondition_flags_missing_distinctive_writes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#376: --resume-from must not treat a missing report as success."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+    step = {
+        "name": "extract_cross_references.py",
+        "writes": ["*_peep.json", "reports/cross_references_report.json"],
+    }
+    missing = run_all_integration._missing_resume_writes(step)
+    assert missing == ["reports/cross_references_report.json"]
+    (krr / "reports").mkdir()
+    (krr / "reports" / "cross_references_report.json").write_text("{}", encoding="utf-8")
+    assert run_all_integration._missing_resume_writes(step) == []

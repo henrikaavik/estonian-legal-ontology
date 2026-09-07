@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,12 +10,11 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1001280_Map_2026",
+      "@id": "estleg:Reg_1001280_Map",
       "@type": [
         "estleg:Act",
         "estleg:MinisterialRegulation",
-        "estleg:NationalRegulation",
-        "owl:Ontology"
+        "estleg:NationalRegulation"
       ],
       "rdfs:label": "Laeva saabumisest teatamisel esitatavate andmete loetelu (määrus)",
       "dc:source": "Laeva saabumisest teatamisel esitatavate andmete loetelu",
@@ -28,9 +26,6 @@
       "dcterms:source": {
         "@id": "https://www.riigiteataja.ee/akt/121102022004.xml"
       },
-      "owl:sameAs": {
-        "@id": "https://www.riigiteataja.ee/akt/121102022004.xml"
-      },
       "estleg:issuer": "Majandus- ja kommunikatsiooniminister",
       "estleg:actNumber": "81",
       "estleg:globalId": "121102022004",
@@ -38,12 +33,12 @@
       "estleg:preambleText": "Määrus kehtestatakse „ Meresõiduohutuse seaduse ” § 53",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:MSOS_Map_2026"
+          "@id": "estleg:MSOS_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1001280_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1001280_Map_1"
         }
       ],
       "dcterms:subject": [
@@ -71,35 +66,38 @@
         {
           "@id": "estleg:Amendment_Reg_1001280_9c2ca4c1ce"
         }
-      ]
-    },
-    {
-      "@id": "estleg:Regulation_1001280",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_transpordiamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1001280_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1001280"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Laeva saabumisest teate esitamisel tuleb esitada Transpordiametile järgmised and...]",
       "estleg:sourceAct": "Laeva saabumisest teatamisel esitatavate andmete loetelu",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1001280_Map_2026"
+        "@id": "estleg:Reg_1001280_Map"
       },
       "estleg:summary": "Laeva saabumisest teate esitamisel tuleb esitada Transpordiametile järgmised andmed: 1) laeva nimi, laeva kutsung, IMO number või MMSI number; 2) laeva sihtsadam; 3) sihtsadamasse või lootsi laevalemineku ja laevalt mahatuleku kohta jõudmise eeldatav aeg; 4) sihtsadamast või lootsi laevalemineku ja laevalt mahatuleku kohast lahkumise eeldatav aeg; 5) pardal olevate isikute koguarv; 6) eelmine külastussadam ja sellest lahkumise aeg; 7) laeva omaniku, reederi ja prahtija nimi, IMO number ja kodako",
       "estleg:legalText": "Laeva saabumisest teate esitamisel tuleb esitada Transpordiametile järgmised andmed: 1) laeva nimi, laeva kutsung, IMO number või MMSI number; 2) laeva sihtsadam; 3) sihtsadamasse või lootsi laevalemineku ja laevalt mahatuleku kohta jõudmise eeldatav aeg; 4) sihtsadamast või lootsi laevalemineku ja laevalt mahatuleku kohast lahkumise eeldatav aeg; 5) pardal olevate isikute koguarv; 6) eelmine külastussadam ja sellest lahkumise aeg; 7) laeva omaniku, reederi ja prahtija nimi, IMO number ja kodakondsus või selle puudumisel elukoha aadress ning juriidilise isiku korral asukoha aadress riigi täpsusega; 8) laeva klassifikatsiooniühingu nimi; 9) majandus- ja kommunikatsiooniministri 14. juuli 2011. a määruse nr 74 „Ohtlikust lastist teavitamise kord” § 9 lõikes 1 sätestatud teave pardal veetava ohtliku lasti kohta.",
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -117,24 +115,30 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1001280_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1001280"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Edastatud andmete muutumise korral peab reeder, kapten või laevaagent viivitamat...]",
       "estleg:sourceAct": "Laeva saabumisest teatamisel esitatavate andmete loetelu",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1001280_Map_2026"
+        "@id": "estleg:Reg_1001280_Map"
       },
       "estleg:summary": "Edastatud andmete muutumise korral peab reeder, kapten või laevaagent viivitamatult tegema vastava muudatuse elektroonilises mereinfosüsteemis.",
       "estleg:legalText": "Edastatud andmete muutumise korral peab reeder, kapten või laevaagent viivitamatult tegema vastava muudatuse elektroonilises mereinfosüsteemis.",
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
@@ -143,10 +147,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:Citation_Reg_1001280_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1001280_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"

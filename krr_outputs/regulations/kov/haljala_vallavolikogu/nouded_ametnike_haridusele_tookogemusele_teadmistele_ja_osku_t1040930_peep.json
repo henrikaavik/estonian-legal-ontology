@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1040930_Map_2026",
+      "@id": "estleg:Reg_1040930_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Nõuded ametnike haridusele, töökogemusele, teadmistele ja oskustele (määrus)",
       "dc:source": "Nõuded ametnike haridusele, töökogemusele, teadmistele ja oskustele",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/418122020028.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/418122020028.xml"
       },
       "estleg:issuer": "Haljala Vallavolikogu",
@@ -45,12 +40,12 @@
       "estleg:regulationTypeBucket": "teadmistele oskustele",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:AVALIK_Map_2026"
+          "@id": "estleg:AVALIK_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1040930_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1040930_Map_1"
         }
       ],
       "dcterms:subject": [
@@ -63,7 +58,7 @@
       ],
       "estleg:similarAct": [
         {
-          "@id": "estleg:Similarity_Reg_1040930_Map_2026_Reg_1029339_Map_2026"
+          "@id": "estleg:Similarity_Reg_1040930_Map_Reg_1029339_Map"
         }
       ],
       "estleg:entryIntoForce": {
@@ -83,23 +78,26 @@
         {
           "@id": "estleg:Amendment_Reg_1040930_cc02ff2343"
         }
-      ]
-    },
-    {
-      "@id": "estleg:Regulation_1040930",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_haljala_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1040930_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1040930",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -114,11 +112,15 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1040930_Map_2026"
+        "@id": "estleg:Reg_1040930_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -133,13 +135,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1040930_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1040930",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -154,26 +160,36 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1040930_Map_2026"
+        "@id": "estleg:Reg_1040930_Map"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Ametnikul",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1040930_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1040930",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -188,11 +204,15 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1040930_Map_2026"
+        "@id": "estleg:Reg_1040930_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -210,13 +230,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1040930_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1040930",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 4.",
@@ -231,10 +255,12 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1040930_Map_2026"
+        "@id": "estleg:Reg_1040930_Map"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -245,18 +271,26 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Ametnik",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1040930_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1040930",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 5.",
@@ -271,11 +305,11 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1040930_Map_2026"
+        "@id": "estleg:Reg_1040930_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1040930_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1040930_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -287,13 +321,13 @@
       "estleg:citationText": "Määrus kehtestatakse avaliku teenistuse seaduse § 14 lg 3"
     },
     {
-      "@id": "estleg:Similarity_Reg_1040930_Map_2026_Reg_1029339_Map_2026",
+      "@id": "estleg:Similarity_Reg_1040930_Map_Reg_1029339_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1029339_Map_2026"
+        "@id": "estleg:Reg_1029339_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.795",

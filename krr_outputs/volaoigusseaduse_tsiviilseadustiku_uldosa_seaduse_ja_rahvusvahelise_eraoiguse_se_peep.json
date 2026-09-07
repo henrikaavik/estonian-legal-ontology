@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:VOSRS_Map_2026",
+      "@id": "estleg:VOSRS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus teemakaardistus",
       "dc:source": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
-      "dcterms:title": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
+      "dcterms:title": [
+        {
+          "@value": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Law of Obligations Act, Act on the General Part of the Civil Code and Private International Law Act Implementation Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/131122024050.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/131122024050.xml"
       },
       "estleg:kehtiv": {
@@ -59,17 +64,97 @@
           "@id": "http://eurovoc.europa.eu/525"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:references": [
+        {
+          "@id": "estleg:volaoigusseadus_Osa3_Par_323"
+        },
+        {
+          "@id": "estleg:TsUS_Osa2_Par_9"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_1"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_9"
+        },
+        {
+          "@id": "estleg:volaoigusseadus_Osa1_Par_94"
+        },
+        {
+          "@id": "estleg:ES_Par_63"
+        },
+        {
+          "@id": "estleg:volaoigusseadus_Osa3_Par_408"
+        },
+        {
+          "@id": "estleg:volaoigusseadus_Osa4_Par_429"
+        },
+        {
+          "@id": "estleg:volaoigusseadus_Osa9_Par_923"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_25"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOSRS_Par_6"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_10"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_124"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_124_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/514012025001"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:VOSRS_TopicScheme",
@@ -109,10 +194,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_VOSRS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -138,23 +227,27 @@
       "rdfs:label": "2. peatükk – MUUDATUSED ÕIGUSAKTIDES",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_VOSRS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOSRS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse jõustumine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Võlaõigusseadus, tsiviilseadustiku üldosa seadus (RT I 2002, 35, 216) ja rahvusvahelise eraõiguse seadus (RT I 2002, 35, 217) jõustuvad 1. juulil 2002. (2) Võlaõigusseaduse § 323 jõustub 1. juulil 2003. (3) Võlaõigusseaduse 22. peatüki 2. jagu jõustub 1. septembril 2002. (4) Võlaõigusseaduse § 720 lõige 6 jõustub 1. jaanuaril 2003.",
       "estleg:legalText": "(1) Võlaõigusseadus, tsiviilseadustiku üldosa seadus (RT I 2002, 35, 216) ja rahvusvahelise eraõiguse seadus (RT I 2002, 35, 217) jõustuvad 1. juulil 2002. (2) Võlaõigusseaduse § 323 jõustub 1. juulil 2003. (3) Võlaõigusseaduse 22. peatüki 2. jagu jõustub 1. septembril 2002. (4) Võlaõigusseaduse § 720 lõige 6 jõustub 1. jaanuaril 2003.",
@@ -188,7 +281,7 @@
           "@id": "estleg:VOSRS_Par_6"
         },
         {
-          "@id": "estleg:VOSRS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -263,13 +356,13 @@
       "@id": "estleg:VOSRS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Asjaolule või toimingule kohaldatav seadus",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Asjaolule või toimingule, mis on tekkinud või tehtud enne 1. juulit 2002, kohaldatakse asjaolu tekkimise või toimingu tegemise ajal kehtinud seadust, kui käesolevast seadusest ei tulene teisiti.",
       "estleg:legalText": "Asjaolule või toimingule, mis on tekkinud või tehtud enne 1. juulit 2002, kohaldatakse asjaolu tekkimise või toimingu tegemise ajal kehtinud seadust, kui käesolevast seadusest ei tulene teisiti.",
@@ -281,7 +374,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -296,7 +389,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -310,13 +403,13 @@
       "@id": "estleg:VOSRS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Teovõime",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Isiku teovõime määratakse tehingu tegemise ajal kehtinud seaduse kohaselt. (2) Kui isik on enne 1. juulit 2002 omandanud teovõime tsiviilseadustiku üldosa seaduse § 9 lõike 2 või § 10 lõike 3 alusel, säilib tal teovõime omandatud ulatuses ka pärast 1. juulit 2002.",
       "estleg:legalText": "(1) Isiku teovõime määratakse tehingu tegemise ajal kehtinud seaduse kohaselt. (2) Kui isik on enne 1. juulit 2002 omandanud teovõime tsiviilseadustiku üldosa seaduse § 9 lõike 2 või § 10 lõike 3 alusel, säilib tal teovõime omandatud ulatuses ka pärast 1. juulit 2002.",
@@ -335,11 +428,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TsÜS_Osa2_Par_9"
+          "@id": "estleg:TsUS_Osa2_Par_9_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -354,7 +449,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_3_Lg_1",
@@ -367,7 +466,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_3_Lg_2",
@@ -383,21 +491,30 @@
       "rdfs:label": "§ 3 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TsÜS_Osa2_Par_9"
+          "@id": "estleg:TsUS_Osa2_Par_9_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Teovõimet puudutavad kohtuotsused",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Isik, kelle teovõimet on enne 1. juulit 2002 kohtuotsusega piiratud, loetakse alates 1. juulist 2002 teovõimeliseks. Jõustunud kohtuotsus, millega isiku teovõimet on enne 1. juulit 2002 piiratud, loetakse täitedokumendiks, mille alusel on kohtuotsusega eestkostjaks määratud isikul õigus nõuda isiku, kelle teovõimet enne 1. juulit 2002 piirati, töötasunõude või muu püsiva iseloomuga sissetuleku saamisele suunatud nõude arestimist kohtutäituri poolt ja vastavate summade endale väljamaksmist.",
       "estleg:legalText": "(1) Isik, kelle teovõimet on enne 1. juulit 2002 kohtuotsusega piiratud, loetakse alates 1. juulist 2002 teovõimeliseks. Jõustunud kohtuotsus, millega isiku teovõimet on enne 1. juulit 2002 piiratud, loetakse täitedokumendiks, mille alusel on kohtuotsusega eestkostjaks määratud isikul õigus nõuda isiku, kelle teovõimet enne 1. juulit 2002 piirati, töötasunõude või muu püsiva iseloomuga sissetuleku saamisele suunatud nõude arestimist kohtutäituri poolt ja vastavate summade endale väljamaksmist. (2) Kui isik on tunnistatud kohtuotsusega teovõimetuks, loetakse alates 1. juulist 2002, et isik on piiratud teovõimega ja tema üle on seatud eestkoste ning kohtuotsusel on tsiviilkohtumenetluse seadustiku § 526 lõikes 5 nimetatud tagajärjed.",
@@ -416,8 +533,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -437,7 +558,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_4_Lg_1",
@@ -450,7 +575,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_4_Lg_2",
@@ -466,21 +603,30 @@
       "rdfs:label": "§ 4 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:tsiviilkohtumenetluse_seadustik_Osa11_Par_526"
+          "@id": "estleg:tsiviilkohtumenetluse_seadustik_Osa11_Par_526_Lg_5"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Teadmata kadunuks tunnistamise avaldus",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Isiku teadmata kadunuks tunnistamise avaldus loetakse alates 1. juulist 2002 isiku teadmata kadumise fakti tuvastamise avalduseks.",
       "estleg:legalText": "Isiku teadmata kadunuks tunnistamise avaldus loetakse alates 1. juulist 2002 isiku teadmata kadumise fakti tuvastamise avalduseks.",
@@ -492,11 +638,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_5_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_5_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -507,10 +655,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:VOSRS_Par_5_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -518,19 +670,28 @@
       "estleg:legalText": "Isiku teadmata kadunuks tunnistamise avaldus loetakse alates 1. juulist 2002 isiku teadmata kadumise fakti tuvastamise avalduseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_5"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOSRS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Tehingu vorm",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Enne 1. juulit 2002 tehtud kehtiv tehing, mis pärast käesoleva seaduse §-s 1 nimetatud seaduste jõustumist ei vasta seaduses sätestatud vorminõuetele, jääb kehtima.",
       "estleg:legalText": "Enne 1. juulit 2002 tehtud kehtiv tehing, mis pärast käesoleva seaduse §-s 1 nimetatud seaduste jõustumist ei vasta seaduses sätestatud vorminõuetele, jääb kehtima.",
@@ -542,7 +703,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_6_Lg_1"
         }
       ],
       "estleg:references": [
@@ -562,7 +723,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_6_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -581,13 +742,13 @@
       "@id": "estleg:VOSRS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Tehingu tühistamine ja lepingu ühepoolne lõpetamine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Enne 1. juulit 2002 tehtud tehingu saab pärast 1. juulit 2002 tühistada või lepingu ühepoolselt lõpetada üksnes kehtivates seadustes sätestatud korras. Tühistamise ja lõpetamise aluste suhtes kohaldatakse tehingu tegemise ajal kehtinud seadust. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei mõjuta enne 1. juulit 2002 esitatud tehingu kehtetuks tunnistamise või lepingu lõpetamise hagi menetlemist.",
       "estleg:legalText": "(1) Enne 1. juulit 2002 tehtud tehingu saab pärast 1. juulit 2002 tühistada või lepingu ühepoolselt lõpetada üksnes kehtivates seadustes sätestatud korras. Tühistamise ja lõpetamise aluste suhtes kohaldatakse tehingu tegemise ajal kehtinud seadust. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei mõjuta enne 1. juulit 2002 esitatud tehingu kehtetuks tunnistamise või lepingu lõpetamise hagi menetlemist.",
@@ -647,13 +808,13 @@
       "@id": "estleg:VOSRS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Esindamine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Pärast 1. juulit 2002 kohaldatakse esindamisele tsiviilseadustiku üldosa seaduses esindamise kohta sätestatut ka siis, kui esindusõigus on tekkinud enne 1. juulit 2002.",
       "estleg:legalText": "Pärast 1. juulit 2002 kohaldatakse esindamisele tsiviilseadustiku üldosa seaduses esindamise kohta sätestatut ka siis, kui esindusõigus on tekkinud enne 1. juulit 2002.",
@@ -665,7 +826,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_8_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_8_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -675,7 +836,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_8_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_8_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -689,13 +850,13 @@
       "@id": "estleg:VOSRS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Aegumine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Tsiviilseadustiku üldosa seaduses ning võlaõigusseaduses aegumise kohta sätestatut kohaldatakse ka enne 1. juulit 2002 tekkinud aegumata nõuetele. Aegumise algusele, peatumisele ja katkemisele kohaldatakse enne 1. juulit 2002 kehtinud seadust, kui aegumine on alanud, peatunud või katkenud enne 1. juulit 2002. (2) Kui tsiviilseadustiku üldosa seaduse või võlaõigusseaduse kohaselt on aegumistähtaeg lühem kui enne 1. juulit 2002 kehtinud seaduse kohaselt, arvestatakse tsiviilseadustiku üldosa",
       "estleg:legalText": "(1) Tsiviilseadustiku üldosa seaduses ning võlaõigusseaduses aegumise kohta sätestatut kohaldatakse ka enne 1. juulit 2002 tekkinud aegumata nõuetele. Aegumise algusele, peatumisele ja katkemisele kohaldatakse enne 1. juulit 2002 kehtinud seadust, kui aegumine on alanud, peatunud või katkenud enne 1. juulit 2002. (2) Kui tsiviilseadustiku üldosa seaduse või võlaõigusseaduse kohaselt on aegumistähtaeg lühem kui enne 1. juulit 2002 kehtinud seaduse kohaselt, arvestatakse tsiviilseadustiku üldosa seaduses või võlaõigusseaduses sätestatud aegumistähtaega alates 1. juulist 2002. (3) Kui enne 1. juulit 2002 kehtinud seaduses sätestatud aegumistähtaeg on pikem kui tsiviilseadustiku üldosa seaduses või võlaõigusseaduses sätestatud aegumistähtaeg ja selline aegumistähtaeg lõpeks varem kui vastavalt käesoleva paragrahvi lõikele 2 arvestatud aegumistähtaeg, kohaldatakse aegumisele enne 1. juulit 2002 kehtinud seadust. (4) Tsiviilseadustiku üldosa seaduse § 157 lõikes 1 aegumise kohta sätestatut kohaldatakse ka enne 2011. aasta 5. aprilli tekkinud aegumata nõuetele. Kui enne 2011. aasta 5. aprilli kehtinud tsiviilseadustiku üldosa seaduse § 157 lõike 1 kohane aegumistähtaeg lõpeks varem kui käesoleva lõike esimeses lauses nimetatud tähtaeg, siis kohaldatakse aegumisele enne 2011. aasta 5. aprilli kehtinud tsiviilseadustiku üldosa seaduse § 157 lõiget 1. (5) Tsiviilseadustiku üldosa seaduse § 157 lõikes 11 aegumise kohta sätestatut kohaldatakse alates 2019. aasta 1. juulist jõustunud kohtuotsusest, kohtulikust kokkuleppest või muust täitedokumendist tulenevatele nõuetele. (6) Tsiviilseadustiku üldosa seaduse § 157 lõikes 6 aegumise peatumise kohta sätestatut kohaldatakse ka enne 2021. aasta 1. aprilli täitmiseks esitatud nõuetele. (7) Tsiviilseadustiku üldosa seaduse §-s 1601 sätestatut kohaldatakse individuaalsete õiguskaitsevahendite kindlaksmääramise esindushagi esitamisele nende tarbijate ja andmesubjektide nõuete suhtes, mis tulenevad 2023. aasta 25. juunil või hiljem toime pandud tarbijate või andmesubjektide kollektiivseid huve kahjustavast tegevusest.",
@@ -729,14 +890,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:VOSRS_Par_10"
         },
         {
-          "@id": "estleg:VOSRS_Par_10_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_10_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -763,7 +926,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_9_Lg_1",
@@ -818,7 +985,7 @@
       "rdfs:label": "§ 9 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TsÜS_Osa7_Par_157"
+          "@id": "estleg:TsUS_Osa7_Par_157_Lg_1"
         }
       ]
     },
@@ -836,7 +1003,7 @@
       "rdfs:label": "§ 9 lg 5",
       "estleg:references": [
         {
-          "@id": "estleg:TsÜS_Osa7_Par_157"
+          "@id": "estleg:TsUS_Osa7_Par_157"
         }
       ]
     },
@@ -854,7 +1021,7 @@
       "rdfs:label": "§ 9 lg 6",
       "estleg:references": [
         {
-          "@id": "estleg:TsÜS_Osa7_Par_157"
+          "@id": "estleg:TsUS_Osa7_Par_157_Lg_6"
         }
       ]
     },
@@ -869,19 +1036,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 7"
+      "rdfs:label": "§ 9 lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Muud tähtajad",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Käesoleva seaduse § 9 kohaldatakse vastavalt ka tähtaegade suhtes, millega on seotud õiguse maksmapanek, omandamine või lõppemine.",
       "estleg:legalText": "Käesoleva seaduse § 9 kohaldatakse vastavalt ka tähtaegade suhtes, millega on seotud õiguse maksmapanek, omandamine või lõppemine.",
@@ -893,7 +1069,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_10_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_10_Lg_1"
         }
       ],
       "estleg:references": [
@@ -908,7 +1084,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_10_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_10_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -927,13 +1103,13 @@
       "@id": "estleg:VOSRS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Võlasuhetele kohaldatav seadus",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Võlasuhtele, mis on tekkinud enne 1. juulit 2002, kohaldatakse enne käesoleva seaduse jõustumist kehtinud seadust.",
       "estleg:legalText": "Võlasuhtele, mis on tekkinud enne 1. juulit 2002, kohaldatakse enne käesoleva seaduse jõustumist kehtinud seadust.",
@@ -945,7 +1121,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_11_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_11_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -966,7 +1142,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_11_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_11_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -980,13 +1156,13 @@
       "@id": "estleg:VOSRS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Kestvuslepingud",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Enne 1. juulit 2002 sõlmitud kestvuslepingutele kohaldatakse alates 1. juulist 2002 tsiviilseadustiku üldosa seaduses ning võlaõigusseaduses sätestatut. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei välista ega piira lepingupoolte õigusi ja kohustusi, mis on tekkinud enne 1. juulit 2002. Kestvuslepinguga seotud asjaoludele või toimingutele, mis on tekkinud või tehtud enne 1. juulit 2002, kohaldatakse senikehtinud seadust. (3) Kui kestvuslepingu tingimus on pärast käesoleva paragrahvi",
       "estleg:legalText": "(1) Enne 1. juulit 2002 sõlmitud kestvuslepingutele kohaldatakse alates 1. juulist 2002 tsiviilseadustiku üldosa seaduses ning võlaõigusseaduses sätestatut. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei välista ega piira lepingupoolte õigusi ja kohustusi, mis on tekkinud enne 1. juulit 2002. Kestvuslepinguga seotud asjaoludele või toimingutele, mis on tekkinud või tehtud enne 1. juulit 2002, kohaldatakse senikehtinud seadust. (3) Kui kestvuslepingu tingimus on pärast käesoleva paragrahvi lõikes 1 nimetatud seaduste jõustumist vastuolus seaduse sättega, millest ei ole võimalik lepingupoolte kokkuleppel kõrvale kalduda, kohaldatakse lepingutingimuse asemel seaduses sätestatut. (4) Kui käesoleva paragrahvi lõikes 3 nimetatud lepingutingimus sisaldub ühe lepingupoole tüüptingimustes, on tüüptingimuste kasutaja kohustatud viima 2003. aasta 1. jaanuariks lepingu suhtes kehtivad tüüptingimused kooskõlla seadusega.",
@@ -1011,7 +1187,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1027,7 +1205,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_12_Lg_1",
@@ -1079,19 +1261,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 4"
+      "rdfs:label": "§ 12 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Krediidiasutuse tüüptingimuste muutmine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Krediidiasutus või muu finantsteenuse osutaja võib kuni 2003. aasta 1. jaanuarini muuta enda poolt finantsteenuse osutamisel kasutatavaid tüüptingimusi, sõltumata sellest, kas krediidiasutus või muu finantsteenuse osutaja on endale lepingu või tüüptingimustega jätnud tüüptingimuste ühepoolse muutmise õiguse, kui tüüptingimuste muutmine on vajalik nende kooskõlla viimiseks võlaõigusseaduse, tsiviilseadustiku üldosa seaduse või rahvusvahelise eraõiguse seadusega ja krediidiasutus või muu",
       "estleg:legalText": "Krediidiasutus või muu finantsteenuse osutaja võib kuni 2003. aasta 1. jaanuarini muuta enda poolt finantsteenuse osutamisel kasutatavaid tüüptingimusi, sõltumata sellest, kas krediidiasutus või muu finantsteenuse osutaja on endale lepingu või tüüptingimustega jätnud tüüptingimuste ühepoolse muutmise õiguse, kui tüüptingimuste muutmine on vajalik nende kooskõlla viimiseks võlaõigusseaduse, tsiviilseadustiku üldosa seaduse või rahvusvahelise eraõiguse seadusega ja krediidiasutus või muu finantsteenuse osutaja teavitab teist lepingupoolt tingimuste muutmisest ning annab talle õiguse leping muudatustega mittenõustumise korral kohe lõpetada.",
@@ -1103,11 +1294,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_13_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_13_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1121,10 +1314,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:VOSRS_Par_13_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_13_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1132,19 +1329,31 @@
       "estleg:legalText": "Krediidiasutus või muu finantsteenuse osutaja võib kuni 2003. aasta 1. jaanuarini muuta enda poolt finantsteenuse osutamisel kasutatavaid tüüptingimusi, sõltumata sellest, kas krediidiasutus või muu finantsteenuse osutaja on endale lepingu või tüüptingimustega jätnud tüüptingimuste ühepoolse muutmise õiguse, kui tüüptingimuste muutmine on vajalik nende kooskõlla viimiseks võlaõigusseaduse, tsiviilseadustiku üldosa seaduse või rahvusvahelise eraõiguse seadusega ja krediidiasutus või muu finantsteenuse osutaja teavitab teist lepingupoolt tingimuste muutmisest ning annab talle õiguse leping muudatustega mittenõustumise korral kohe lõpetada.",
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_13"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOSRS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Seadusest tulenev intressimäär",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Kuni Eesti liitumiseni Euroopa Liiduga loetakse võlaõigusseaduse § 94 lõikes 1 nimetatud intressimääraks 7% aastas, kui ei ole kokku lepitud teistsuguses intressimääras. Võlaõigusseaduse § 94 lõikes 1 nimetatud intressimäära avaldatakse alates Eesti liitumisest Euroopa Liiduga.",
       "estleg:legalText": "Kuni Eesti liitumiseni Euroopa Liiduga loetakse võlaõigusseaduse § 94 lõikes 1 nimetatud intressimääraks 7% aastas, kui ei ole kokku lepitud teistsuguses intressimääras. Võlaõigusseaduse § 94 lõikes 1 nimetatud intressimäära avaldatakse alates Eesti liitumisest Euroopa Liiduga.",
@@ -1156,12 +1365,12 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_14_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_14_Lg_1"
         }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa1_Par_94"
+          "@id": "estleg:volaoigusseadus_Osa1_Par_94_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1171,7 +1380,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_14_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_14_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1182,7 +1391,7 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa1_Par_94"
+          "@id": "estleg:volaoigusseadus_Osa1_Par_94_Lg_1"
         }
       ]
     },
@@ -1190,13 +1399,13 @@
       "@id": "estleg:VOSRS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Üürilepingu sätetega seonduvad erisused",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Enne 1. juulit 2002 elamuseaduse § 63 alusel moodustatud elamuvaidluskomisjonid loetakse kuni üürivaidluste lahendamist reguleeriva seaduse vastuvõtmiseni või vastavate täienduste tegemiseni tsiviilkohtumenetluse seadustikus üürikomisjonideks võlaõigusseaduse mõttes. (2) Võlaõigusseaduse § 291 lõikes 1 sätestatut kohaldatakse ka ehitise kui vallasasja võõrandamise korral. (3) Enne 1. juulit 2002 sõlmitud tähtajatud eluruumide üürilepingud loetakse sõlmituks viieks aastaks lepingu",
       "estleg:legalText": "(1) Enne 1. juulit 2002 elamuseaduse § 63 alusel moodustatud elamuvaidluskomisjonid loetakse kuni üürivaidluste lahendamist reguleeriva seaduse vastuvõtmiseni või vastavate täienduste tegemiseni tsiviilkohtumenetluse seadustikus üürikomisjonideks võlaõigusseaduse mõttes. (2) Võlaõigusseaduse § 291 lõikes 1 sätestatut kohaldatakse ka ehitise kui vallasasja võõrandamise korral. (3) Enne 1. juulit 2002 sõlmitud tähtajatud eluruumide üürilepingud loetakse sõlmituks viieks aastaks lepingu sõlmimisest. See ei kehti omandireformi aluste seaduse § 18 lõikes 1 nimetatud üürilepingute suhtes. (4) Isikut, kes kasutas enne 1. juulit 2002 elamuseaduse §-s 58 nimetatud eluruumi ja kes vastas enne 1. juulit 2002 elamuseaduse § 60 lõikes 4 nimetatud tingimustele, ei või sellest eluruumist välja tõsta ilma teist eluruumi vastu andmata.",
@@ -1221,11 +1430,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
           "@id": "estleg:ES_Par_63"
+        },
+        {
+          "@id": "estleg:volaoigusseadus_Osa3_Par_291_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1243,7 +1457,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_15_Lg_1",
@@ -1277,7 +1495,7 @@
       "rdfs:label": "§ 15 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa3_Par_291"
+          "@id": "estleg:volaoigusseadus_Osa3_Par_291_Lg_1"
         }
       ]
     },
@@ -1305,19 +1523,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 4"
+      "rdfs:label": "§ 15 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Ostueesõigus",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Võlaõigusseaduses ostueesõiguse kohta sätestatut kohaldatakse juhul, kui ostueesõiguse teostamise avaldus esitatakse pärast 1. juulit 2002. (2) Ehitise, selle mõttelise osa, reaalosana erastatud eluruumi, elamus asuva mitteeluruumi, elamuühistu liikme omandisse antud korteri, endise korteriühingu liikme omandisse antud korteri või kaasomandi lõppemisel tekkinud ehitise reaalosa puhul võib ostueesõigust teostada kahe kuu jooksul pärast võlaõigusseaduse §-s 249 nimetatud teate saamist.",
       "estleg:legalText": "(1) Võlaõigusseaduses ostueesõiguse kohta sätestatut kohaldatakse juhul, kui ostueesõiguse teostamise avaldus esitatakse pärast 1. juulit 2002. (2) Ehitise, selle mõttelise osa, reaalosana erastatud eluruumi, elamus asuva mitteeluruumi, elamuühistu liikme omandisse antud korteri, endise korteriühingu liikme omandisse antud korteri või kaasomandi lõppemisel tekkinud ehitise reaalosa puhul võib ostueesõigust teostada kahe kuu jooksul pärast võlaõigusseaduse §-s 249 nimetatud teate saamist.",
@@ -1345,6 +1575,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1376,19 +1610,26 @@
         {
           "@id": "estleg:volaoigusseadus_Osa2_Par_249"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Tarbijakrediidi sätete kohaldamise erisused",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Hüpoteegiga tagatud krediidilepinguks võlaõigusseaduse 22. peatüki 2. jao mõttes loetakse ka krediidilepingut, mis on tagatud asjaõigusseaduse rakendamise seaduse §-s 132 nimetatud pandilepinguga. (2) Kuni Eesti liitumiseni Euroopa Liiduga võib krediidiandja võlaõigusseaduse § 408 lõikes 8 sätestatud juhul nõuda tarbijalt tagatiste andmist ka siis, kui krediidi netosumma ületab 10 000 eurole vastava summa. (3) Võlaõigusseaduse § 4031 lõiget 81 kohaldatakse krediidilepingutele, mis on",
       "estleg:legalText": "(1) Hüpoteegiga tagatud krediidilepinguks võlaõigusseaduse 22. peatüki 2. jao mõttes loetakse ka krediidilepingut, mis on tagatud asjaõigusseaduse rakendamise seaduse §-s 132 nimetatud pandilepinguga. (2) Kuni Eesti liitumiseni Euroopa Liiduga võib krediidiandja võlaõigusseaduse § 408 lõikes 8 sätestatud juhul nõuda tarbijalt tagatiste andmist ka siis, kui krediidi netosumma ületab 10 000 eurole vastava summa. (3) Võlaõigusseaduse § 4031 lõiget 81 kohaldatakse krediidilepingutele, mis on sõlmitud 2020. aasta 1. veebruaril või hiljem.",
@@ -1410,12 +1651,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa3_Par_408"
+          "@id": "estleg:volaoigusseadus_Osa3_Par_408_Lg_8"
         }
       ],
       "estleg:hasVersion": [
@@ -1442,7 +1687,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_Lg_1",
@@ -1471,9 +1720,24 @@
       "rdfs:label": "§ 17 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa3_Par_408"
+          "@id": "estleg:volaoigusseadus_Osa3_Par_408_Lg_8"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_Lg_3",
@@ -1492,13 +1756,13 @@
       "@id": "estleg:VOSRS_Par_17_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17¹.",
       "rdfs:label": "§ 17¹. Tarbijakrediidilepingutele kohaldatav seadus",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Enne 2011. aasta 1. juulit sõlmitud tähtajatule tarbijakrediidilepingule kohaldatakse alates 2011. aasta 1. juulist kehtiva võlaõigusseaduse §-s 4041, § 407 lõigetes 31 ja 32, lõike 4 teises lauses ja lõikes 41 ning §-des 412, 4141 ja 4142 sätestatut. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei välista ega piira lepingupoolte õigusi ega kohustusi, mis on tekkinud enne 2011. aasta 1. juulit. Tarbijakrediidilepinguga seotud asjaoludele või toimingutele, mis on tekkinud või tehtud enne 2011.",
       "estleg:legalText": "(1) Enne 2011. aasta 1. juulit sõlmitud tähtajatule tarbijakrediidilepingule kohaldatakse alates 2011. aasta 1. juulist kehtiva võlaõigusseaduse §-s 4041, § 407 lõigetes 31 ja 32, lõike 4 teises lauses ja lõikes 41 ning §-des 412, 4141 ja 4142 sätestatut. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei välista ega piira lepingupoolte õigusi ega kohustusi, mis on tekkinud enne 2011. aasta 1. juulit. Tarbijakrediidilepinguga seotud asjaoludele või toimingutele, mis on tekkinud või tehtud enne 2011. aasta 1. juulit, kohaldatakse seni kehtinud seadust. (3) Kui tarbijakrediidilepingu tingimus on pärast käesoleva paragrahvi lõikes 1 nimetatud kuupäeva vastuolus võlaõigusseaduse sättega, mida kohaldatakse vastavalt käesoleva paragrahvi lõikele 1 tagasiulatuvalt enne 2011. aasta 1. juulit sõlmitud krediidilepingutele ja millest ei ole võimalik poolte kokkuleppel kõrvale kalduda, kohaldatakse lepingutingimuse asemel võlaõigusseaduses sätestatut.",
@@ -1520,7 +1784,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1531,7 +1797,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_1_Lg_1",
@@ -1544,7 +1814,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_17_1"
       },
-      "rdfs:label": "§ 17¹ lg 1"
+      "rdfs:label": "§ 17¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_1_Lg_2",
@@ -1557,7 +1836,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_17_1"
       },
-      "rdfs:label": "§ 17¹ lg 2"
+      "rdfs:label": "§ 17¹ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_1_Lg_3",
@@ -1570,19 +1858,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_17_1"
       },
-      "rdfs:label": "§ 17¹ lg 3"
+      "rdfs:label": "§ 17¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17².",
       "rdfs:label": "§ 17². Tarbijakrediidilepingus sisalduvate tüüptingimuste muutmine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Krediidiasutus või muu finantsteenuse osutaja võib kuni 2011. aasta 1. juulini muuta enda poolt finantsteenuse osutamisel kasutatavaid tüüptingimusi, sõltumata sellest, kas krediidiasutus või muu finantsteenuse osutaja on endale lepingu või tüüptingimusega jätnud tingimuste ühepoolse muutmise õiguse, kui tüüptingimuste muutmine on vajalik nende kooskõlla viimiseks käesoleva seaduse § 171 lõikes 1 nimetatud sätetega ning krediidiasutus või muu finantsteenuse osutaja teavitab teist lepingupoolt",
       "estleg:legalText": "Krediidiasutus või muu finantsteenuse osutaja võib kuni 2011. aasta 1. juulini muuta enda poolt finantsteenuse osutamisel kasutatavaid tüüptingimusi, sõltumata sellest, kas krediidiasutus või muu finantsteenuse osutaja on endale lepingu või tüüptingimusega jätnud tingimuste ühepoolse muutmise õiguse, kui tüüptingimuste muutmine on vajalik nende kooskõlla viimiseks käesoleva seaduse § 171 lõikes 1 nimetatud sätetega ning krediidiasutus või muu finantsteenuse osutaja teavitab teist lepingupoolt tingimuste muutmisest ja annab talle õiguse muudatustega mittenõustumise korral leping kohe lõpetada.",
@@ -1594,12 +1891,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_17_2_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_17_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1616,10 +1917,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:VOSRS_Par_17_2_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_17_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1627,19 +1932,31 @@
       "estleg:legalText": "Krediidiasutus või muu finantsteenuse osutaja võib kuni 2011. aasta 1. juulini muuta enda poolt finantsteenuse osutamisel kasutatavaid tüüptingimusi, sõltumata sellest, kas krediidiasutus või muu finantsteenuse osutaja on endale lepingu või tüüptingimusega jätnud tingimuste ühepoolse muutmise õiguse, kui tüüptingimuste muutmine on vajalik nende kooskõlla viimiseks käesoleva seaduse § 171 lõikes 1 nimetatud sätetega ning krediidiasutus või muu finantsteenuse osutaja teavitab teist lepingupoolt tingimuste muutmisest ja annab talle õiguse muudatustega mittenõustumise korral leping kohe lõpetada.",
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_17_2"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOSRS_Par_17_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17³.",
       "rdfs:label": "§ 17³. Kindlustuslepingud",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Võlaõigusseaduse § 429 lõike 2 teist lauset kohaldatakse kindlustuslepingutele, mis on sõlmitud alates 2016. aasta 1. jaanuarist.",
       "estleg:legalText": "Võlaõigusseaduse § 429 lõike 2 teist lauset kohaldatakse kindlustuslepingutele, mis on sõlmitud alates 2016. aasta 1. jaanuarist.",
@@ -1651,12 +1968,12 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_17_3_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_17_3_Lg_1"
         }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa4_Par_429"
+          "@id": "estleg:volaoigusseadus_Osa4_Par_429_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -1674,7 +1991,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_17_3_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_17_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1685,7 +2002,7 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:volaoigusseadus_Osa4_Par_429"
+          "@id": "estleg:volaoigusseadus_Osa4_Par_429_Lg_2"
         }
       ]
     },
@@ -1693,13 +2010,13 @@
       "@id": "estleg:VOSRS_Par_17_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17⁴.",
       "rdfs:label": "§ 17⁴. Elamukinnisvaraga seotud tarbijakrediidilepingute regulatsiooni kohaldamine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Võlaõigusseaduses elamukinnisvaraga seotud tarbijakrediidilepingute kohta sätestatut kohaldatakse elamukinnisvaraga seotud tarbijakrediidilepingutele, mis on sõlmitud alates 2016. aasta 21. märtsist. (2) Võlaõigusseaduse § 4193 lõikes 4 sätestatut kohaldatakse üksnes sellistele lepingutele, mida on pakutud pärast 2014. aasta 20. märtsi.",
       "estleg:legalText": "(1) Võlaõigusseaduses elamukinnisvaraga seotud tarbijakrediidilepingute kohta sätestatut kohaldatakse elamukinnisvaraga seotud tarbijakrediidilepingutele, mis on sõlmitud alates 2016. aasta 21. märtsist. (2) Võlaõigusseaduse § 4193 lõikes 4 sätestatut kohaldatakse üksnes sellistele lepingutele, mida on pakutud pärast 2014. aasta 20. märtsi.",
@@ -1718,7 +2035,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1729,7 +2048,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_4_Lg_1",
@@ -1742,7 +2065,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_17_4"
       },
-      "rdfs:label": "§ 17⁴ lg 1"
+      "rdfs:label": "§ 17⁴ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_17_4_Lg_2",
@@ -1761,13 +2093,13 @@
       "@id": "estleg:VOSRS_Par_17_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17⁵.",
       "rdfs:label": "§ 17⁵. Võlaõigusseaduses krediidiinkassode ja -ostjate seaduse jõustumisega jõustunud muudatuste rakendamine viivituses olevate tarbijakrediidilepingute suhtes",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Krediidiinkassode ja -ostjate seaduse jõustumisega võlaõigusseaduses jõustunud muudatusi ei kohaldata nende tarbijakrediidilepingute või neist tulenevate nõuete suhtes, mis on viivituses, kui krediidiandja on need loovutanud enne krediidiinkassode ja -ostjate seaduse jõustumist.",
       "estleg:legalText": "Krediidiinkassode ja -ostjate seaduse jõustumisega võlaõigusseaduses jõustunud muudatusi ei kohaldata nende tarbijakrediidilepingute või neist tulenevate nõuete suhtes, mis on viivituses, kui krediidiandja on need loovutanud enne krediidiinkassode ja -ostjate seaduse jõustumist.",
@@ -1779,12 +2111,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_17_5_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_17_5_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1798,10 +2134,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:VOSRS_Par_17_5_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_17_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1809,19 +2149,31 @@
       "estleg:legalText": "Krediidiinkassode ja -ostjate seaduse jõustumisega võlaõigusseaduses jõustunud muudatusi ei kohaldata nende tarbijakrediidilepingute või neist tulenevate nõuete suhtes, mis on viivituses, kui krediidiandja on need loovutanud enne krediidiinkassode ja -ostjate seaduse jõustumist.",
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_17_5"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOSRS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Ühise tegutsemise lepingud",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Pärast võlaõigusseaduse jõustumist kohaldatakse enne 1. juulit 2002 sõlmitud ühise tegutsemise lepingutele võlaõigusseaduses seltsingu kohta sätestatut. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei välista ega piira ühise tegutsemise lepingu poolte õigusi ja kohustusi, mis on tekkinud enne 1. juulit 2002. Ühise tegutsemise lepinguga seotud asjaoludele või toimingutele, mis on tekkinud või tehtud enne 1. juulit 2002, kohaldatakse senikehtinud seadust.",
       "estleg:legalText": "(1) Pärast võlaõigusseaduse jõustumist kohaldatakse enne 1. juulit 2002 sõlmitud ühise tegutsemise lepingutele võlaõigusseaduses seltsingu kohta sätestatut. (2) Käesoleva paragrahvi lõikes 1 sätestatu ei välista ega piira ühise tegutsemise lepingu poolte õigusi ja kohustusi, mis on tekkinud enne 1. juulit 2002. Ühise tegutsemise lepinguga seotud asjaoludele või toimingutele, mis on tekkinud või tehtud enne 1. juulit 2002, kohaldatakse senikehtinud seadust.",
@@ -1880,13 +2232,13 @@
       "@id": "estleg:VOSRS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Elektroonilise maksevahendiga seonduvad erisused",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Kui enne 1. juulit 2002 sõlmitud elektroonilise maksevahendi kasutamise leping ei vasta võlaõigusseaduse §-s 739 kehtestatud nõuetele, on maksevahendi väljaja kohustatud viima lepingu seaduses sätestatuga kooskõlla 2003. aasta 1. jaanuariks. (2) Lepingu muutmiseks peab maksevahendi väljaja tegema maksevahendi omajale lepingu muutmise ettepaneku ja andma maksevahendi omajale mõistliku tähtaja ettepaneku vastuvõtmiseks või sellest keeldumiseks.",
       "estleg:legalText": "(1) Kui enne 1. juulit 2002 sõlmitud elektroonilise maksevahendi kasutamise leping ei vasta võlaõigusseaduse §-s 739 kehtestatud nõuetele, on maksevahendi väljaja kohustatud viima lepingu seaduses sätestatuga kooskõlla 2003. aasta 1. jaanuariks. (2) Lepingu muutmiseks peab maksevahendi väljaja tegema maksevahendi omajale lepingu muutmise ettepaneku ja andma maksevahendi omajale mõistliku tähtaja ettepaneku vastuvõtmiseks või sellest keeldumiseks. Kui maksevahendi omaja tähtaja jooksul oma otsusest ei teata, loetakse leping muudetuks. (3) Kui maksevahendi omaja keeldub lepingu muutmisest, on maksevahendi väljajal õigus maksevahendi omajaga sõlmitud elektroonilise maksevahendi kasutamise leping lõpetada. (4) Kuni Eesti liitumiseni Euroopa Liiduga võib võlaõigusseaduse § 742 lõikes 1 sätestatud elektroonilise maksevahendi vargusest ja kaotsiminekust tuleneva maksevahendi omaja omavastutuse piirmäärana kokku leppida võlaõigusseaduse § 742 lõikes 1 sätestatust erineva omavastutuse piirmäära. (5) Tarbijaga sõlmitud lepingus ei või käesoleva paragrahvi lõikes 4 nimetatud omavastutuse piirmäär ületada 10 000 krooni.",
@@ -1914,7 +2266,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1936,7 +2290,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_19_Lg_1",
@@ -1962,7 +2320,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 2"
+      "rdfs:label": "§ 19 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_19_Lg_3",
@@ -1988,7 +2353,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 4"
+      "rdfs:label": "§ 19 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_19_Lg_5",
@@ -2001,19 +2373,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 5"
+      "rdfs:label": "§ 19 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Väärtpaberid",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Võlaõigusseaduses väärtpaberite kohta sätestatut kohaldatakse väärtpaberitele, mis antakse välja pärast 1. juulit 2002. (2) Võlaõigusseaduse § 923 kohaldatakse ka enne 1. juulit 2002 väljaantud väärtpaberitele.",
       "estleg:legalText": "(1) Võlaõigusseaduses väärtpaberite kohta sätestatut kohaldatakse väärtpaberitele, mis antakse välja pärast 1. juulit 2002. (2) Võlaõigusseaduse § 923 kohaldatakse ka enne 1. juulit 2002 väljaantud väärtpaberitele.",
@@ -2077,13 +2461,13 @@
       "@id": "estleg:VOSRS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Käsundita asjaajamine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Võlaõigusseaduses käsundita asjaajamise kohta sätestatut kohaldatakse tegudele, mis on tehtud pärast 1. juulit 2002.",
       "estleg:legalText": "Võlaõigusseaduses käsundita asjaajamise kohta sätestatut kohaldatakse tegudele, mis on tehtud pärast 1. juulit 2002.",
@@ -2095,7 +2479,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_21_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_21_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2105,7 +2489,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_21_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_21_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2119,13 +2503,13 @@
       "@id": "estleg:VOSRS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Kahju õigusvastane tekitamine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Võlaõigusseaduses kahju õigusvastase tekitamise kohta sätestatut kohaldatakse juhul, kui kahju põhjustanud tegu või sündmus pandi toime või leidis aset pärast 1. juulit 2002. (2) Võlaõigusseaduse 53. peatüki 3. jaos sätestatut kohaldatakse üksnes toote suhtes, mis on turule lastud pärast 1. juulit 2002.",
       "estleg:legalText": "(1) Võlaõigusseaduses kahju õigusvastase tekitamise kohta sätestatut kohaldatakse juhul, kui kahju põhjustanud tegu või sündmus pandi toime või leidis aset pärast 1. juulit 2002. (2) Võlaõigusseaduse 53. peatüki 3. jaos sätestatut kohaldatakse üksnes toote suhtes, mis on turule lastud pärast 1. juulit 2002.",
@@ -2179,13 +2563,13 @@
       "@id": "estleg:VOSRS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Alusetu rikastumine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Võlaõigusseaduses alusetu rikastumise kohta sätestatut kohaldatakse juhul, kui alusetu rikastumine toimus pärast 1. juulit 2002.",
       "estleg:legalText": "Võlaõigusseaduses alusetu rikastumise kohta sätestatut kohaldatakse juhul, kui alusetu rikastumine toimus pärast 1. juulit 2002.",
@@ -2197,7 +2581,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_23_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_23_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2207,7 +2591,7 @@
       ]
     },
     {
-      "@id": "estleg:VOSRS_Par_23_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_23_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2221,13 +2605,13 @@
       "@id": "estleg:VOSRS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Rahvusvahelise eraõiguse sätete kohaldamine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Asjaolule, mis on tekkinud pärast 1. juulit 2002, ja toimingule, mis on tehtud pärast 1. juulit 2002, kohaldatav õigus määratakse vastavalt rahvusvahelise eraõiguse seadusele. (2) Pärast 1. juulit 2002 määratakse perekonnaõiguslikele suhetele kohaldatav õigus vastavalt rahvusvahelise eraõiguse seadusele. Kui abielu on sõlmitud enne 1. juulit 2002, loetakse abikaasade varalistele õigustele kohaldatava õiguse määramisel abielu sõlmimise päevaks rahvusvahelise eraõiguse seaduse § 58 lõike 3",
       "estleg:legalText": "(1) Asjaolule, mis on tekkinud pärast 1. juulit 2002, ja toimingule, mis on tehtud pärast 1. juulit 2002, kohaldatav õigus määratakse vastavalt rahvusvahelise eraõiguse seadusele. (2) Pärast 1. juulit 2002 määratakse perekonnaõiguslikele suhetele kohaldatav õigus vastavalt rahvusvahelise eraõiguse seadusele. Kui abielu on sõlmitud enne 1. juulit 2002, loetakse abikaasade varalistele õigustele kohaldatava õiguse määramisel abielu sõlmimise päevaks rahvusvahelise eraõiguse seaduse § 58 lõike 3 mõttes 1. juuli 2002.",
@@ -2281,13 +2665,13 @@
       "@id": "estleg:VOSRS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Kehtivate määruste kooskõlla viimine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "Vabariigi Valitsus ja asjaomased ministrid viivad kehtivad määrused 1. juuliks 2002 kooskõlla võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seadusega.",
       "estleg:legalText": "Vabariigi Valitsus ja asjaomased ministrid viivad kehtivad määrused 1. juuliks 2002 kooskõlla võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seadusega.",
@@ -2299,11 +2683,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOSRS_Par_25_Lg_Unknown_1"
+          "@id": "estleg:VOSRS_Par_25_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2328,10 +2714,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:VOSRS_Par_25_Lg_Unknown_1",
+      "@id": "estleg:VOSRS_Par_25_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2339,19 +2729,28 @@
       "estleg:legalText": "Vabariigi Valitsus ja asjaomased ministrid viivad kehtivad määrused 1. juuliks 2002 kooskõlla võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seadusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_25"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOSRS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26.",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VOSRS_2"
@@ -2370,13 +2769,13 @@
       "@id": "estleg:VOSRS_Par_123",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 123.",
       "rdfs:label": "§ 123. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -2399,13 +2798,13 @@
       "@id": "estleg:VOSRS_Par_124",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_volaoigusseaduse_tsiviilseadustiku_uldosa_seaduse_ja_rahvusvahelise_eraoiguse_se"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 124.",
       "rdfs:label": "§ 124. Seaduse jõustumine",
       "estleg:sourceAct": "Võlaõigusseaduse, tsiviilseadustiku üldosa seaduse ja rahvusvahelise eraõiguse seaduse rakendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VOSRS_Map_2026"
+        "@id": "estleg:VOSRS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus jõustub 1. juulil 2002. (2) Käesoleva seaduse § 25 jõustub seaduse Riigi Teatajas avaldamisele järgneval päeval. (3) Vabariigi Valitsus korraldab kahe nädala jooksul, arvates käesoleva seaduse jõustumisest, võlaõigusseaduse tervikteksti koos kõigi muudatustega avaldamise Riigi Teatajas.",
       "estleg:legalText": "(1) Käesolev seadus jõustub 1. juulil 2002. (2) Käesoleva seaduse § 25 jõustub seaduse Riigi Teatajas avaldamisele järgneval päeval. (3) Vabariigi Valitsus korraldab kahe nädala jooksul, arvates käesoleva seaduse jõustumisest, võlaõigusseaduse tervikteksti koos kõigi muudatustega avaldamise Riigi Teatajas.",
@@ -2427,7 +2826,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -2458,7 +2859,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOSRS_Par_124_Lg_1",
@@ -2502,7 +2907,254 @@
       "estleg:parentProvision": {
         "@id": "estleg:VOSRS_Par_124"
       },
-      "rdfs:label": "§ 124 lg 3"
+      "rdfs:label": "§ 124 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_9_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_9"
+      },
+      "estleg:citationDetail": "TsÜS",
+      "estleg:citationText": "Tsiviilseadustiku üldosa seaduse §-s 1601"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_9_Lg_7_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_9_Lg_7"
+      },
+      "estleg:citationDetail": "TsÜS",
+      "estleg:citationText": "Tsiviilseadustiku üldosa seaduse §-s 1601"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_15_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_15"
+      },
+      "estleg:citationDetail": "ElamuS",
+      "estleg:citationText": "elamuseaduse §-s 58"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_15_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_15"
+      },
+      "estleg:citationDetail": "ElamuS",
+      "estleg:citationText": "elamuseaduse § 60"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_15_Lg_4_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_15_Lg_4"
+      },
+      "estleg:citationDetail": "ElamuS",
+      "estleg:citationText": "elamuseaduse §-s 58"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_15_Lg_4_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_15_Lg_4"
+      },
+      "estleg:citationDetail": "ElamuS",
+      "estleg:citationText": "elamuseaduse § 60"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "Võlaõigusseaduse § 4031"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_Lg_3_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_Lg_3"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "Võlaõigusseaduse § 4031"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_1_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_1"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse §-s 4041"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_1_Lg_1_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_1_Lg_1"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse §-s 4041"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_2_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 171"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_2_Lg_1_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_2_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 171"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_4_13",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_4"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "Võlaõigusseaduse § 4193"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_17_4_Lg_2_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_17_4_Lg_2"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "Võlaõigusseaduse § 4193"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_19_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_19"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse §-s 739"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_19_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_19"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse § 742"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_19_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_19"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse § 742"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_19_Lg_1_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_19_Lg_1"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse §-s 739"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_19_Lg_4_19",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_19_Lg_4"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse § 742"
+    },
+    {
+      "@id": "estleg:Citation_VOSRS_P_19_Lg_4_20",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:VOSRS_Par_19_Lg_4"
+      },
+      "estleg:citationDetail": "VÕS",
+      "estleg:citationText": "võlaõigusseaduse § 742"
     }
   ]
 }

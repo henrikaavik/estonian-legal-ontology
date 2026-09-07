@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RTITIVAKNR_Map_2026",
+      "@id": "estleg:RTITIVAKNR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetava isiku vanuse alammäära konventsiooni (nr 138) ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/12747477.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/12747477.xml"
       },
       "estleg:kehtiv": {
@@ -39,17 +35,28 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_toolevoetava_isiku_vanuse_alammaara_konven",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2006-11-24",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:RTITIVAKNR_TopicScheme",
@@ -81,13 +88,13 @@
       "@id": "estleg:RTITIVAKNR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_toolevoetava_isiku_vanuse_alammaara_konven"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetav...]",
       "estleg:sourceAct": "Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetava isiku vanuse alammäära konventsiooni (nr 138) ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RTITIVAKNR_Map_2026"
+        "@id": "estleg:RTITIVAKNR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetava isiku vanuse alammäära konventsioon (nr 138), mis on vastu võetud 1973. aasta 26. juunil Genfis.",
       "estleg:legalText": "Ratifitseerida juurdelisatud Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetava isiku vanuse alammäära konventsioon (nr 138), mis on vastu võetud 1973. aasta 26. juunil Genfis.",
@@ -96,11 +103,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RTITIVAKNR_Par_1_Lg_Unknown_1"
+          "@id": "estleg:RTITIVAKNR_Par_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -128,10 +137,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RTITIVAKNR_Par_1_Lg_Unknown_1",
+      "@id": "estleg:RTITIVAKNR_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -139,19 +152,28 @@
       "estleg:legalText": "Ratifitseerida juurdelisatud Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetava isiku vanuse alammäära konventsioon (nr 138), mis on vastu võetud 1973. aasta 26. juunil Genfis.",
       "estleg:parentProvision": {
         "@id": "estleg:RTITIVAKNR_Par_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RTITIVAKNR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_toolevoetava_isiku_vanuse_alammaara_konven"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [ILO konventsiooni nr 138 artikli 2 lõike 1 alusel deklareerib Eesti Vabariik, et...]",
       "estleg:sourceAct": "Rahvusvahelise Tööorganisatsiooni (ILO) töölevõetava isiku vanuse alammäära konventsiooni (nr 138) ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RTITIVAKNR_Map_2026"
+        "@id": "estleg:RTITIVAKNR_Map"
       },
       "estleg:summary": "ILO konventsiooni nr 138 artikli 2 lõike 1 alusel deklareerib Eesti Vabariik, et tema territooriumil ja sellel registreeritud sõidukitel töölevõetava isiku vanuse alammäär on 15 aastat.",
       "estleg:legalText": "ILO konventsiooni nr 138 artikli 2 lõike 1 alusel deklareerib Eesti Vabariik, et tema territooriumil ja sellel registreeritud sõidukitel töölevõetava isiku vanuse alammäär on 15 aastat.",
@@ -160,11 +182,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RTITIVAKNR_Par_2_Lg_Unknown_1"
+          "@id": "estleg:RTITIVAKNR_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -192,10 +216,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RTITIVAKNR_Par_2_Lg_Unknown_1",
+      "@id": "estleg:RTITIVAKNR_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -203,6 +231,15 @@
       "estleg:legalText": "ILO konventsiooni nr 138 artikli 2 lõike 1 alusel deklareerib Eesti Vabariik, et tema territooriumil ja sellel registreeritud sõidukitel töölevõetava isiku vanuse alammäär on 15 aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:RTITIVAKNR_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

@@ -27,11 +27,7 @@ from pathlib import Path
 
 import pytest
 
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import run_all_integration as r  # noqa: E402  (import after sys.path mutation)
-
+from estleg import run_all_integration as r
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -112,11 +108,11 @@ class TestDAGValidity:
         assert topo.index("generate_transposition_mapping.py") < topo.index(
             "generate_harmonisation_links.py"
         )
-        # The combined-ontology rebuild (fix_all_issues.py) must be last — it
-        # depends on every enrichment step and regenerates the release
-        # artifact after enrichment (issue #252). The similarity aggregation
-        # runs immediately before it.
-        assert topo[-1] == "fix_all_issues.py"
+        # The combined-ontology rebuild (build_release_artifacts.py) must be
+        # last — it depends on every enrichment step and regenerates the
+        # release artifact after enrichment (issue #252 / #467). The
+        # similarity aggregation runs immediately before it.
+        assert topo[-1] == "build_release_artifacts.py"
         assert topo[-2] == "generate_similarity_index.py"
 
     def test_cyclic_dag_is_rejected(self) -> None:
@@ -417,9 +413,10 @@ class TestParallelWriteDisjointness:
         # identical *_peep.json basenames, this conservatively overlaps the
         # regulations/**/*_peep.json glob ("when in doubt, treat as
         # overlapping"). That is exactly why --parallel is rejected for the
-        # real DAG: classify_eurovoc.py writes both *_peep.json AND
-        # regulations/**/*_peep.json while extract_court_provision_links.py
-        # writes *_peep.json, with no dependency between them.
+        # real DAG: several enrichment steps still write *_peep.json
+        # (extract_court_provision_links, extract_temporal_data, …) with no
+        # dependency between them. classify_eurovoc writes an overlay now
+        # (#463) but the remaining peep writers still block --parallel.
         assert r._globs_can_overlap("*_peep.json", "regulations/**/*_peep.json")
         # Nested fixed prefixes with compatible basenames overlap.
         assert r._globs_can_overlap("a/**/x.json", "a/b/x.json")
@@ -632,8 +629,9 @@ class TestReleaseManifestShape:
         assert manifest["mode"] == "release-build"
         # DAG section: topo order + per-step reads/writes/depends.
         assert manifest["dag"]["topoOrder"][0] == "extract_cross_references.py"
-        # fix_all_issues.py rebuilds combined_ontology.jsonld last (issue #252).
-        assert manifest["dag"]["topoOrder"][-1] == "fix_all_issues.py"
+        # build_release_artifacts.py rebuilds combined_ontology.jsonld last
+        # (issue #252 / #467).
+        assert manifest["dag"]["topoOrder"][-1] == "build_release_artifacts.py"
         assert len(manifest["dag"]["steps"]) == len(r.STEPS)
         sample = manifest["dag"]["steps"][0]
         assert {"name", "dependsOn", "writes", "reads"} <= set(sample)

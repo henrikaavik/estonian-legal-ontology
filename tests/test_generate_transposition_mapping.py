@@ -6,10 +6,8 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import eurlex_common  # noqa: E402
-import generate_transposition_mapping as mod  # noqa: E402
+from estleg import eurlex_common
+from estleg import generate_transposition_mapping as mod
 
 REPO_ROOT_FOR_TESTS = Path(__file__).resolve().parent.parent
 
@@ -43,7 +41,7 @@ def test_law_target_iri_uses_real_ontology_node(tmp_path: Path) -> None:
             "@context": mod.CONTEXT,
             "@graph": [
                 {
-                    "@id": "estleg:AS_Map_2026",
+                    "@id": "estleg:AS_Map",
                     "@type": ["owl:Ontology", "estleg:Act"],
                 },
                 {
@@ -54,7 +52,7 @@ def test_law_target_iri_uses_real_ontology_node(tmp_path: Path) -> None:
         },
     )
 
-    assert mod.get_law_transposition_target_iri(law_path) == "estleg:AS_Map_2026"
+    assert mod.get_law_transposition_target_iri(law_path) == "estleg:AS_Map"
 
 
 def test_build_law_index_filters_missing_files_from_stale_index(
@@ -170,13 +168,13 @@ def test_inverse_transposed_by_links_to_real_law_node(
     monkeypatch.setattr(mod, "EURLEX_DIR", eurlex_dir)
 
     updated = mod.update_directive_file(
-        {"32000L0001": ["estleg:AS_Map_2026"]}
+        {"32000L0001": ["estleg:AS_Map"]}
     )
 
     assert updated == 1
     doc = json.loads(directives_path.read_text(encoding="utf-8"))
     assert doc["@graph"][0]["estleg:transposedBy"] == [
-        {"@id": "estleg:AS_Map_2026"}
+        {"@id": "estleg:AS_Map"}
     ]
 
 
@@ -258,7 +256,8 @@ def test_zero_fetch_without_allow_empty_exits_nonzero(tmp_path, monkeypatch):
     # An existing (legacy) report that must be left untouched on failure.
     legacy = {"generated": "2026-03-21", "source": "x", "total_measures_fetched": 0,
               "matched": 0, "unmatched": 0, "mappings": []}
-    (krr / "transposition_mapping.json").write_text(json.dumps(legacy), encoding="utf-8")
+    (krr / "reports").mkdir()
+    (krr / "reports" / "transposition_mapping.json").write_text(json.dumps(legacy), encoding="utf-8")
 
     monkeypatch.setattr(mod, "KRR_DIR", krr)
     monkeypatch.setattr(mod, "EURLEX_DIR", eurlex)
@@ -269,7 +268,7 @@ def test_zero_fetch_without_allow_empty_exits_nonzero(tmp_path, monkeypatch):
         mod.main()
     assert exc.value.code not in (0, None)
     # Report unchanged.
-    assert json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8")) == legacy
+    assert json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8")) == legacy
 
 
 def test_zero_fetch_with_allow_empty_writes_documented_empty_report(tmp_path, monkeypatch):
@@ -289,7 +288,7 @@ def test_zero_fetch_with_allow_empty_writes_documented_empty_report(tmp_path, mo
     rc = mod.main()
     assert rc in (0, None)
 
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     assert report["documented_empty"] is True
     assert report["mappings"] == []
     assert report["country"] == "EST"
@@ -318,7 +317,7 @@ def test_zero_fetch_allow_empty_partial_exits_two(tmp_path, monkeypatch):
     with pytest.raises(SystemExit) as exc:
         mod.main()
     assert exc.value.code == 2
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     assert report["documented_empty"] is True
     assert report["partial"] is True
 
@@ -439,7 +438,7 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:TUBAKA_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:TUBAKA_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Tubakaseadus"},
             ],
         },
@@ -478,7 +477,7 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
     rc = mod.main()
     assert rc in (0, None)
 
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     assert report["documented_empty"] is False
     assert report["total_measures_fetched"] == 1
     assert len(report["mappings"]) == 1
@@ -493,13 +492,12 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
     # The directive node got estleg:transposedBy + estleg:transpositionDeadline.
     dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
     dir_node = dir_doc["@graph"][0]
-    assert {"@id": "estleg:TUBAKA_Map_2026"} in dir_node["estleg:transposedBy"]
+    assert {"@id": "estleg:TUBAKA_Map"} in dir_node["estleg:transposedBy"]
     assert dir_node["estleg:transpositionDeadline"] == {"@value": "2004-07-31", "@type": "xsd:date"}
 
     # validate_all's gate accepts the populated report (no error recorded).
     import importlib
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    validate_all = importlib.import_module("validate_all")
+    validate_all = importlib.import_module("estleg.validate_all")
     validate_all.errors.clear()
     validate_all.validate_transposition_mapping(krr_dir=krr)
     assert validate_all.errors == []
@@ -730,7 +728,7 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:LIIKLUS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:LIIKLUS_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Liiklusseadus"},
             ],
         },
@@ -741,7 +739,7 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:RAUDTEE_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:RAUDTEE_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Raudteeseadus"},
             ],
         },
@@ -787,10 +785,10 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
     # The directive node is transposedBy BOTH law nodes.
     dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
     transposed_by = {ref["@id"] for ref in dir_doc["@graph"][0]["estleg:transposedBy"]}
-    assert transposed_by == {"estleg:LIIKLUS_Map_2026", "estleg:RAUDTEE_Map_2026"}
+    assert transposed_by == {"estleg:LIIKLUS_Map", "estleg:RAUDTEE_Map"}
 
     # Report records both law-directive pairs.
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     matched_laws = {m["matched_law_name"] for m in report["mappings"]}
     assert matched_laws == {"liiklusseadus", "raudteeseadus"}
 
@@ -1065,7 +1063,7 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:RAUDTEE_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:RAUDTEE_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Raudteeseadus"},
             ],
         },
@@ -1076,7 +1074,7 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
         {
             "@context": mod.CONTEXT,
             "@graph": [
-                {"@id": "estleg:RIIGIL_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:RIIGIL_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "estleg:sourceAct": "Riigilõivuseadus"},
             ],
         },
@@ -1127,10 +1125,10 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
     # Directive is transposedBy ONLY the railway law node.
     dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
     transposed_by = {ref["@id"] for ref in dir_doc["@graph"][0].get("estleg:transposedBy", [])}
-    assert transposed_by == {"estleg:RAUDTEE_Map_2026"}
+    assert transposed_by == {"estleg:RAUDTEE_Map"}
 
     # The report records only the railway pairing.
-    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    report = json.loads((krr / "reports" / "transposition_mapping.json").read_text(encoding="utf-8"))
     matched_laws = {m["matched_law_name"] for m in report["mappings"]}
     assert matched_laws == {"raudteeseadus"}
 
@@ -1217,3 +1215,76 @@ def test_law_matches_directive_subject_short_root_requires_word_anchor() -> None
     # A long root (>= _MIN_DOMAIN_ROOT_LEN) keeps the permissive plain-substring
     # behaviour, so the #388 railway rescue is unchanged.
     assert mod._law_matches_directive_subject("raudteeseadus", _RAILWAY_SUBJECT) is True
+
+
+# ---------------------------------------------------------------------------
+# #319 — do not queue a forward transposesDirective write when the law file
+# has no resolvable act-level IRI (same guard as the inverse transposedBy).
+# ---------------------------------------------------------------------------
+
+
+def test_unresolvable_law_file_is_not_queued_for_forward_link(tmp_path: Path) -> None:
+    """#319: collection must skip a law file that has no Act/Ontology target.
+
+    The old loop appended every matched filepath to ``law_file_directives``
+    and only None-guarded the inverse IRI map. A file whose
+    ``find_law_transposition_target`` result is None must not appear in the
+    forward map either, or ``update_law_file`` would write an unpaired
+    ``estleg:transposesDirective``.
+    """
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    good = "tubakaseadus_peep.json"
+    _write_json(
+        krr / good,
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {
+                    "@id": "estleg:TUBAKA_Map",
+                    "@type": ["owl:Ontology", "estleg:Act"],
+                }
+            ],
+        },
+    )
+    # Empty graph: no Act/Ontology (or any) node, so the target finder
+    # returns None and get_law_transposition_target_iri is None.
+    bad = "orphan_peep.json"
+    _write_json(krr / bad, {"@context": mod.CONTEXT, "@graph": []})
+    assert mod.find_law_transposition_target(
+        json.loads((krr / bad).read_text(encoding="utf-8"))
+    ) is None
+    assert mod.get_law_transposition_target_iri(krr / bad) is None
+
+    law_file_directives: dict[str, list[str]] = {}
+    directive_celex_to_law_iris: dict[str, list[str]] = {}
+    missing_law_iris: list[dict] = []
+    directive_iri = "estleg:EU_32003L0033"
+
+    mod.collect_transposition_file_links(
+        [good, bad],
+        directive_iri=directive_iri,
+        directive_celex="32003L0033",
+        matched_law_name="tubakaseadus",
+        law_file_directives=law_file_directives,
+        directive_celex_to_law_iris=directive_celex_to_law_iris,
+        missing_law_iris=missing_law_iris,
+        krr_dir=krr,
+    )
+
+    good_path = str(krr / good)
+    bad_path = str(krr / bad)
+    # Resolvable file is queued for the forward write and the inverse.
+    assert law_file_directives == {good_path: [directive_iri]}
+    assert directive_celex_to_law_iris == {"32003L0033": ["estleg:TUBAKA_Map"]}
+    # Unresolvable file must not be queued (the old unconditional append
+    # would have inserted ``bad_path`` here).
+    assert bad_path not in law_file_directives
+    assert missing_law_iris == [
+        {
+            "directive_celex": "32003L0033",
+            "law_file": bad,
+            "matched_law_name": "tubakaseadus",
+        }
+    ]

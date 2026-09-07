@@ -32,13 +32,47 @@ self-describing and a consumer can pin/cite it:
 
 - `metadata.jsonld` — the `dcat:Dataset` / `owl:Ontology` dataset header
   (committed; bump by hand when you bump the constant).
-- `combined_ontology.jsonld` — a dataset-level `owl:Ontology` node at
-  `@graph[0]`, re-emitted from `estleg_common.combined_ontology_header()` every
-  time `fix_all_issues.generate_combined_jsonld()` runs (so it survives every
-  rebuild).
+- `combined_ontology.jsonld` — a dataset-level `owl:Ontology` /
+  `void:Dataset` / `dcat:Dataset` node at `@graph[0]`, re-emitted from
+  `estleg_common.combined_ontology_header()` every time
+  `build_release_artifacts.generate_combined_jsonld()` runs (so it survives every
+  rebuild). Other combined `*.jsonld` files get the same in-band license /
+  publisher stamp via `stamp_combined_dataset_head()`.
 
 The `versionIRI` is `https://w3id.org/estleg/<version>` — each
 release is an independently dereferenceable IRI.
+
+A standalone VoID + DCAT descriptor is committed at
+`krr_outputs/void.ttl` (dataset IRI
+`https://w3id.org/estleg/dataset/estonian-legal-ontology`). It
+advertises `void:uriSpace`, an example resource, the GitHub-raw
+combined ontology dump, and linksets to EuroVoc, EUR-Lex/CELLAR, and
+Riigi Teataja. Combined JSON-LD artifacts also carry an in-band Dataset
+head (`dcterms:title` / `publisher` / `license`) so a consumer who
+loads only the graph still sees the compilation-layer CC BY 4.0 offer.
+A SPARQL endpoint is not claimed (that is #474).
+
+### Refresh SLA
+
+Corpus target is **monthly Riigi Teataja consolidation**. `estleg:kehtiv`
+on each act is the snapshot date the committed text is valid as of (not
+`temporalStatus`, not `BUILD_EVALUATION_DATE`). `metadata.jsonld`
+`dcterms:accrualPeriodicity` is
+[`http://purl.org/cld/freq/monthly`](http://purl.org/cld/freq/monthly).
+The content-staleness canary is `python3 scripts/check_rt_staleness.py`
+(offline; compares committed `estleg:kehtiv` on PKS / KarS osa 1 / PS
+against `BUILD_EVALUATION_DATE` with a 45-day lag budget). `--fetch`
+(GET live RT akt XML) is operator-run and is not used in CI. Inter-release
+IRI deltas are published as `krr_outputs/changes-<version>.jsonld` and
+linked from `metadata.jsonld` as a `dcat:distribution`.
+
+The committed tree is recorded in
+`krr_outputs/dataset_build_manifest.json` (dataset version, git SHA,
+pinned `generated` / `evaluationDate`, sample `estleg:kehtiv` dates,
+catalog counts). Regenerate with
+`python3 scripts/write_build_manifest.py`. Immutable GitHub Release
+assets (tagged downloads that replace mutable `/main` distribution
+URLs) are #473 and are not produced by this in-repo record.
 
 **When to bump:**
 
@@ -60,18 +94,31 @@ release is an independently dereferenceable IRI.
 4. After merge, tag the release: `git tag v<version> && git push origin v<version>`,
    and create the GitHub release (this is an outward-facing publish step — do it
    deliberately, not from CI).
+5. Attach `NOTICE`, `LICENSE`, `docs/DATA_RIGHTS.md`, and
+   `docs/DATA_PROTECTION.md` as **release assets** (#684). A downloader who takes
+   only the release tarball must get the layered-rights and personal-data notices
+   with it — CC BY 4.0 covers the compilation layer only, and the court
+   subcorpora carry personal data.
+6. Before relying on a new version IRI, submit the generalised SemVer rule in
+   `w3id/estleg/.htaccess` to `perma-id/w3id.org` and verify it is deployed
+   (#690). This repository contains a staging copy; merging it here does not
+   change the live resolver. Once that upstream change is deployed, a new
+   `https://w3id.org/estleg/<version>` will redirect to `releases/tag/v<version>`
+   without another w3id submission. Verify the redirect for each release.
 
 ---
 
 ## Current Release Snapshot
 
-The 2026-05-26 live-refresh series expanded the release surface to 1,145
-indexed enacted laws / 1,190 law files and 23,112 JSON/JSON-LD files overall.
-The sequential live jobs completed the full law corpus refresh, Riigikohus
-full-text ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
+The current release indexes 1,122 enacted laws (1,195 law files) and
+advertises 27,008 JSON/JSON-LD files overall, matching
+`krr_outputs/INDEX.json` (`total_laws`) and the root README /
+`metadata.jsonld` headline. Sequential live jobs in the 2026-05-26
+refresh completed the full law corpus refresh, Riigikohus full-text
+ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
 PDF-body annotation ingestion. Final local gates passed:
 
-- `python3 -m ruff check scripts/ tests/`
+- `python3 -m ruff check scripts/ src/estleg/ tests/`
 - `python3 -m pytest -q` (`1568 passed, 2 skipped`)
 - `python3 scripts/validate_all.py` (`23,069 files`, zero errors/warnings)
 - `python3 scripts/shacl_validate_all.py --all` (`23,064 files`,
@@ -131,21 +178,22 @@ phase order is preserved exactly.
 
 | # | Step (`scripts/…`) | `depends_on` | Key `writes` (under `krr_outputs/`) |
 |---|---|---|---|
-| 1 | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `cross_references_report.json` |
-| 2 | `generate_inverse_references.py` | `extract_cross_references.py` | `*_peep.json`, `regulations/**/*_peep.json`, `inverse_references_report.json` |
-| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `transposition_mapping.json` |
+| 1 | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
+| 2 | `generate_inverse_references.py` | `extract_cross_references.py` | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
+| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json` |
 | 4 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
-| 5 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `court_provision_links_report.json` |
-| 6 | `classify_eurovoc.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `eurovoc_classification.json` |
-| 7 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `temporal_data_report.json` |
-| 8 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `amendment_history_report.json` |
+| 5 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
+| 6 | `classify_eurovoc.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/eurovoc_classification.json` |
+| 7 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
+| 8 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
 | 9 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
-| 10 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `deontic_classification_report.json` |
-| 11 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `target_group_report.json` |
-| 12 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `institutional_competence_report.json` |
-| 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `sanctions_report.json` |
-| 14 | `extract_draft_impact.py` | — | `*_peep.json`, `draft_impact_report.json` |
-| 15 | `generate_similarity_index.py` | steps 1–14 (all) | `similarity_index.json`, `similarity_report.json` |
+| 10 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
+| 11 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
+| 12 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
+| 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
+| 14 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
+| 15 | `generate_similarity_index.py` | steps 1–14 (all) | `reports/similarity_index.json`, `reports/similarity_report.json` |
+| 16 | `build_release_artifacts.py` | steps 1–15 (all) | `combined_ontology.jsonld`, `INDEX.json` |
 
 `court_provision_links_report.json` includes both raw recall lift and its
 comparable denominator: use
@@ -414,10 +462,10 @@ delete and rebuild).
   `krr_outputs/institutions/`, `krr_outputs/provision_versions/`,
   `krr_outputs/annotations/`, `krr_outputs/harmonisation/`, and
   `krr_outputs/regulations/` (the shaped per-item JSON-LD)
-- the cross-corpus indexes/maps `krr_outputs/similarity_index.json`,
-  `krr_outputs/eurovoc_classification.json`,
-  `krr_outputs/transposition_mapping.json`
-- the per-domain `*_report.json` summaries at the `krr_outputs/` root
+- the cross-corpus indexes/maps `krr_outputs/reports/similarity_index.json`,
+  `krr_outputs/reports/eurovoc_classification.json`,
+  `krr_outputs/reports/transposition_mapping.json`
+- the per-domain `*_report.json` summaries under `krr_outputs/reports/`
   (`cross_references_report.json`, `inverse_references_report.json`,
   `court_provision_links_report.json`, `temporal_data_report.json`,
   `amendment_history_report.json`, `deontic_classification_report.json`,
@@ -426,19 +474,23 @@ delete and rebuild).
   coverage reports under `krr_outputs/reports/kov/*_coverage.json`, plus
   probe reports such as `krr_outputs/reports/annotations_pdf_probe.json`
 - the source-fetch manifests `krr_outputs/generation_manifest_*.json`
+- the committed-tree record `krr_outputs/dataset_build_manifest.json`
+  (issue #548; tagged GitHub Release assets are #473)
 
 The largest generated artifacts are committed through Git LFS:
-`combined_ontology.jsonld`, `similarity_index.json`,
-`eurovoc_classification.json`, `annotations/oiguskantsler_seisukohad.jsonld`,
+`combined_ontology.jsonld`, `reports/similarity_index.json`,
+`reports/eurovoc_classification.json`, `annotations/oiguskantsler_seisukohad.jsonld`,
 `curia/curia_combined.jsonld`, and `eurlex/eurlex_combined.jsonld`. Run
 `git lfs install` before cloning or validating the full release surface.
 
 This release introduces Git LFS for the repository; earlier commits still
-contain these artifacts as normal Git blobs. We are not planning a destructive
-`git lfs migrate import --everything` history rewrite for this release, so
-clone size for historical revisions is unchanged and operators checking out old
-commits should treat those files as regular Git-tracked JSON/JSON-LD rather than
-LFS-managed artifacts.
+contain these artifacts as normal Git blobs. `#480` is **keep-LFS**: we
+are not dropping these blobs from git, not opening a second data remote,
+and not running a destructive `git lfs migrate import --everything`
+history rewrite. Clone size for historical revisions is unchanged;
+operators checking out old commits should treat those files as regular
+Git-tracked JSON/JSON-LD rather than LFS-managed artifacts. See
+`docs/ARCHITECTURE.md`.
 
 The release `contentHash` in `release_manifest.json` is computed over the
 subset highlighted in the manifest (`combined_ontology.jsonld`,
@@ -466,9 +518,19 @@ rebuild; they are not part of the release contract:
 ### Operational rule of thumb
 
 > If `python3 scripts/run_all_integration.py --release` (or the targeted
-> `generate_*` / `fix_all_issues.py` steps) reproduces a file from committed
+> `generate_*` / `build_release_artifacts.py` steps) reproduces a file from committed
 > inputs, it is a **build artifact** — commit it on release for downstream
 > consumers and reviewers, but it is reconstructible. If you *type into* a
 > file by hand, it is **source** and must be committed. Anything written only
 > under `krr_outputs/reports/integration/` or a `.cache/`/`.bak.`/`.failed.`
 > path is **transient** and need not be committed at all.
+
+### From-scratch regen (zero backfill)
+
+A from-scratch `generate_*` run plus `python3 scripts/build_release_artifacts.py`
+must reproduce a validator-clean corpus **without** running
+`scripts/archive/` spent one-shots (`rederive_court_case_types.py`,
+`backfill_eu_provenance.py`, `legacy_repairs.py`, or the IRI migrations).
+Case-type classification and EU CELEX provenance are emitted by the
+generators themselves (#468). `migrate_uris.py` stays live as the URI
+registry owner, not as a post-hoc backfill.

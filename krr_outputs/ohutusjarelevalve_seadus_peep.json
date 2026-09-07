@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:OJS_Map_2026",
+      "@id": "estleg:OJS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Ohutusjärelevalve seaduse teemakaardistus (tehniline ohutus)",
       "dc:description": "Ohutusjärelevalve seaduse põhisambad: tehnilised seadmed, ohutuskontroll ja õnnetuste ärahoidmine.",
@@ -28,16 +27,18 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
-      "estleg:temporalStatus": "unknown"
-    },
-    {
-      "@id": "estleg:LegalProvision_ohutusjarelevalve",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "unknown",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -82,7 +83,7 @@
       "@id": "estleg:OJS_Par_SeadmeKaitluseYldnouded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (tehnilise seadme käitlemise üldnõuded)",
       "rdfs:label": "Tehnilise seadme projekteerimise, paigaldamise ja kasutamise ohutusraam",
@@ -90,16 +91,17 @@
         "@id": "estleg:Cluster_tehnilised_seadmed_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Kehtestab tehniliste seadmete elutsükliülesed ohutusnõuded, et seadme kasutamine ei ohustaks elu, tervist, vara ega keskkonda.",
+      "estleg:legalText": "Kehtestab tehniliste seadmete elutsükliülesed ohutusnõuded, et seadme kasutamine ei ohustaks elu, tervist, vara ega keskkonda.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       }
     },
     {
       "@id": "estleg:OJS_Par_PadevuseJaDokumentatsiooniNouded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (pädevus- ja dokumenteerimiskohustused)",
       "rdfs:label": "Seadme käitleja pädevus ja tehniline dokumentatsioon",
@@ -107,13 +109,18 @@
         "@id": "estleg:Cluster_tehnilised_seadmed_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Nõuab, et tehnilise seadme käitlemine toimuks pädeva isiku või ettevõtja poolt ning et seadmega seotud dokumentatsioon oleks jälgitav ja ajakohane.",
+      "estleg:legalText": "Nõuab, et tehnilise seadme käitlemine toimuks pädeva isiku või ettevõtja poolt ning et seadmega seotud dokumentatsioon oleks jälgitav ja ajakohane.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -122,13 +129,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:OJS_Par_VastavuseTagamineTuruleLaskmisel",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (nõuetele vastavus turule laskmisel ja kasutuselevõtul)",
       "rdfs:label": "Nõuetele vastavuse hindamine enne kasutuselevõttu",
@@ -136,19 +147,24 @@
         "@id": "estleg:Cluster_tehnilised_seadmed_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Reguleerib, et tehniline seade tohib turule tulla ja kasutusse minna üksnes juhul, kui ohutusnõuete täitmine on hinnatud ning tõendatud.",
+      "estleg:legalText": "Reguleerib, et tehniline seade tohib turule tulla ja kasutusse minna üksnes juhul, kui ohutusnõuete täitmine on hinnatud ning tõendatud.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:OJS_Par_OhutusKontrolliKohustus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (kohustuslik ohutuskontroll)",
       "rdfs:label": "Kohustuslik perioodiline ohutuskontroll",
@@ -156,19 +172,24 @@
         "@id": "estleg:Cluster_ohutuskontroll_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Sätestab, millised seadmed peavad läbima kohustusliku perioodilise ohutuskontrolli ning milliste intervallide ja tingimuste alusel kontroll teostatakse.",
+      "estleg:legalText": "Sätestab, millised seadmed peavad läbima kohustusliku perioodilise ohutuskontrolli ning milliste intervallide ja tingimuste alusel kontroll teostatakse.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:OJS_Par_KontrolliTegijaPadevuseNouded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (ohutuskontrolli tegija sõltumatus ja pädevus)",
       "rdfs:label": "Ohutuskontrolli tegija pädevus, sõltumatus ja vastutus",
@@ -176,16 +197,17 @@
         "@id": "estleg:Cluster_ohutuskontroll_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Määrab ohutuskontrolli teostajale sõltumatuse, kutsealase pädevuse ja menetlusnõuete standardi, et tagada kontrolli usaldusväärsus.",
+      "estleg:legalText": "Määrab ohutuskontrolli teostajale sõltumatuse, kutsealase pädevuse ja menetlusnõuete standardi, et tagada kontrolli usaldusväärsus.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       }
     },
     {
       "@id": "estleg:OJS_Par_JarelevalveEttekirjutusJaPiirang",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (järelevalvemeetmed ja ettekirjutused)",
       "rdfs:label": "Järelevalveasutuse ettekirjutused ja kasutuspiirangud",
@@ -193,16 +215,17 @@
         "@id": "estleg:Cluster_ohutuskontroll_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Annab järelevalveasutusele volituse nõuda puuduste kõrvaldamist, piirata ohtliku seadme kasutust või keelata selle käitamine kuni nõuete täitmiseni.",
+      "estleg:legalText": "Annab järelevalveasutusele volituse nõuda puuduste kõrvaldamist, piirata ohtliku seadme kasutust või keelata selle käitamine kuni nõuete täitmiseni.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       }
     },
     {
       "@id": "estleg:OJS_Par_RiskianaluusJaEnnetusmeetmed",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (riskianalüüs ja ennetusmeetmed)",
       "rdfs:label": "Riskide hindamine ja ennetusmeetmete rakendamine",
@@ -210,24 +233,31 @@
         "@id": "estleg:Cluster_onnetuste_arahoidmine_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Kohustab käitlejat tuvastama tehnilisest seadmest lähtuvaid ohte, hindama riske ning rakendama ennetavaid tehnilisi ja korralduslikke meetmeid.",
+      "estleg:legalText": "Kohustab käitlejat tuvastama tehnilisest seadmest lähtuvaid ohte, hindama riske ning rakendama ennetavaid tehnilisi ja korralduslikke meetmeid.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:OJS_Par_IntsidendiTeavitamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (õnnetusest ja ohujuhtumist teavitamine)",
       "rdfs:label": "Õnnetusjuhtumitest ja ohuolukordadest teavitamine",
@@ -235,24 +265,31 @@
         "@id": "estleg:Cluster_onnetuste_arahoidmine_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Nõuab õnnetuste, rikkejuhtumite ja vahetu ohu juhtumite viivitamatut teavitamist pädevale asutusele, et vältida kahju laienemist.",
+      "estleg:legalText": "Nõuab õnnetuste, rikkejuhtumite ja vahetu ohu juhtumite viivitamatut teavitamist pädevale asutusele, et vältida kahju laienemist.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:OJS_Par_ReageerimineJaTaastamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ohutusjarelevalve"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "OhJS (reageerimis- ja taastamiskohustused)",
       "rdfs:label": "Õnnetusjärgne reageerimine, kahju piiramine ja kordumise vältimine",
@@ -260,9 +297,10 @@
         "@id": "estleg:Cluster_onnetuste_arahoidmine_ohutusjarelevalve_seadus_peep"
       },
       "estleg:summary": "Sätestab kohustuse võtta õnnetusjärgsed tõrje- ja taastamismeetmed ning analüüsida juhtumi põhjuseid, et ennetada samalaadseid juhtumeid tulevikus.",
+      "estleg:legalText": "Sätestab kohustuse võtta õnnetusjärgsed tõrje- ja taastamismeetmed ning analüüsida juhtumi põhjuseid, et ennetada samalaadseid juhtumeid tulevikus.",
       "estleg:sourceAct": "Ohutusjärelevalve seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:OJS_Map_2026"
+        "@id": "estleg:OJS_Map"
       }
     },
     {
@@ -301,7 +339,7 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus kaardistuse kohta",
-      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Käesolev versioon on semantiline teemamudel; järgmises iteratsioonis lisada iga kirje juurde täpne §-viide kehtivast Riigi Teataja redaktsioonist."
+      "rdfs:comment": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Käesolev versioon on semantiline teemamudel; järgmises iteratsioonis lisada iga kirje juurde täpne §-viide kehtivast Riigi Teataja redaktsioonist."
     },
     {
       "@id": "estleg:Cluster_tehnilised_seadmed_ohutusjarelevalve_seadus_peep",

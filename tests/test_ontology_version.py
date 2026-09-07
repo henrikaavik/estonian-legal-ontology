@@ -8,13 +8,10 @@ node stops being inert for the closure gate.
 """
 
 import json
-import sys
 import tomllib
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common  # noqa: E402
+from estleg import estleg_common
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -46,7 +43,10 @@ def test_combined_ontology_header_is_wellformed_and_inert():
     graph-closure gate (no NON-exempt ``estleg:`` object references to dangle)."""
     header = estleg_common.combined_ontology_header()
     assert header["@id"] == estleg_common.ONTOLOGY_IRI
-    assert header["@type"] == ["owl:Ontology"]
+    assert "owl:Ontology" in header["@type"]
+    assert "void:Dataset" in header["@type"]
+    assert "dcat:Dataset" in header["@type"]
+    assert header["dcterms:license"]["@id"].endswith("/by/4.0/")
     assert header["owl:versionInfo"] == estleg_common.ONTOLOGY_VERSION
     assert header["owl:versionIRI"]["@id"].endswith(estleg_common.ONTOLOGY_VERSION)
     # #516: under the w3id SLASH namespace the version IRI compacts to
@@ -76,7 +76,7 @@ def test_version_header_is_exempt_from_combined_parity(tmp_path):
     combined, so the parity gate only saw the header on the next rebuild — this
     locks in the exemption so it can't silently regress.
     """
-    import validate_all
+    from estleg import validate_all
 
     # A combined carrying one real source node + the synthesised version header.
     combined = {

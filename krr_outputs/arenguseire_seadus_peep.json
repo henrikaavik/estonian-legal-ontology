@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ASeS_Map_2026",
+      "@id": "estleg:ASeS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Arenguseire seadus teemakaardistus",
       "dc:source": "Arenguseire seadus",
-      "dcterms:title": "Arenguseire seadus",
+      "dcterms:title": [
+        {
+          "@value": "Arenguseire seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Foresight Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/128122017015.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/128122017015.xml"
       },
       "estleg:kehtiv": {
@@ -48,16 +53,103 @@
           "@id": "http://eurovoc.europa.eu/54"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_arenguseire_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/54"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:ASeS_Par_7"
+        },
+        {
+          "@id": "estleg:ASeS_Par_9"
+        },
+        {
+          "@id": "estleg:ASeS_Par_10"
+        },
+        {
+          "@id": "estleg:ASeS_Par_11"
+        },
+        {
+          "@id": "estleg:ASeS_Par_12"
+        },
+        {
+          "@id": "estleg:ASeS_Par_13"
+        },
+        {
+          "@id": "estleg:ASeS_Par_14"
+        },
+        {
+          "@id": "estleg:ASeS_Par_15"
+        },
+        {
+          "@id": "estleg:REELS_Par_56"
+        },
+        {
+          "@id": "estleg:ASeS_Par_22"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASeS_Par_6"
+        },
+        {
+          "@id": "estleg:ASeS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:ASeS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:ASeS_Par_15"
+        },
+        {
+          "@id": "estleg:ASeS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:ASeS_Par_16"
+        },
+        {
+          "@id": "estleg:ASeS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:ASeS_Par_23"
+        },
+        {
+          "@id": "estleg:ASeS_Par_23_Lg_3"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_majandus_ja_kommunikatsiooniministeerium"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2018-03-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/509022018003"
       }
     },
     {
@@ -104,10 +196,14 @@
       "rdfs:label": "1. peatükk – Üldsätted",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ASeS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -133,10 +229,14 @@
       "rdfs:label": "2. peatükk – Arenguseire korraldus",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ASeS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -162,10 +262,14 @@
       "rdfs:label": "3. peatükk – Eesti Arengufondi lõpetamine",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ASeS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -191,23 +295,27 @@
       "rdfs:label": "4. peatükk – Rakendussätted",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_ASeS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:ASeS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "Käesoleva seadusega reguleeritakse arenguseire eesmärk ja korraldus.",
       "estleg:legalText": "Käesoleva seadusega reguleeritakse arenguseire eesmärk ja korraldus.",
@@ -219,7 +327,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASeS_Par_1_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -229,7 +337,7 @@
       ]
     },
     {
-      "@id": "estleg:ASeS_Par_1_Lg_Unknown_1",
+      "@id": "estleg:ASeS_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -243,13 +351,13 @@
       "@id": "estleg:ASeS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Arenguseire",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "Arenguseire on Eesti ühiskonna pikaajaliste arengute tuvastamine ja analüüs ning nende põhjal arengustsenaariumite koostamine koos ühiskonnale avanevate võimaluste ja ohtude eristamisega, arengustsenaariumite realiseerumise jälgimine ning vajaduse korral arengustsenaariumite ja nende järelmite korrigeerimine.",
       "estleg:legalText": "Arenguseire on Eesti ühiskonna pikaajaliste arengute tuvastamine ja analüüs ning nende põhjal arengustsenaariumite koostamine koos ühiskonnale avanevate võimaluste ja ohtude eristamisega, arengustsenaariumite realiseerumise jälgimine ning vajaduse korral arengustsenaariumite ja nende järelmite korrigeerimine.",
@@ -261,7 +369,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASeS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -271,7 +379,7 @@
       ]
     },
     {
-      "@id": "estleg:ASeS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:ASeS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -285,13 +393,13 @@
       "@id": "estleg:ASeS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Arenguseire korraldaja",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Arenguseire korraldamisega tegeleb Arenguseire Keskus (edaspidi keskus), mis moodustatakse Riigikogu Kantselei juurde. (2) Keskus on käesolevas seaduses sätestatud ülesannete täitmisel sõltumatu. (3) Arenguseire eelarve on eraldiseisev osa Riigikogu Kantselei eelarvest. (4) Keskust juhib keskuse juhataja, kes vastutab käesoleva paragrahvi lõikes 3 nimetatud eelarve vahendite sihipärase kasutamise ja eelarve täitmise ning keskuse tegevuse tulemuslikkuse eest.",
       "estleg:legalText": "(1) Arenguseire korraldamisega tegeleb Arenguseire Keskus (edaspidi keskus), mis moodustatakse Riigikogu Kantselei juurde. (2) Keskus on käesolevas seaduses sätestatud ülesannete täitmisel sõltumatu. (3) Arenguseire eelarve on eraldiseisev osa Riigikogu Kantselei eelarvest. (4) Keskust juhib keskuse juhataja, kes vastutab käesoleva paragrahvi lõikes 3 nimetatud eelarve vahendite sihipärase kasutamise ja eelarve täitmise ning keskuse tegevuse tulemuslikkuse eest.",
@@ -316,8 +424,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -337,7 +449,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_3_Lg_1",
@@ -350,7 +466,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_3_Lg_2",
@@ -376,7 +501,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_3_Lg_4",
@@ -389,19 +523,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 4"
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Arenguseire nõukoda",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Arenguseire nõukoda (edaspidi nõukoda) on arenguseire sõltumatuse tagamiseks teadus-, ettevõtlus- ja tehnoloogiavaldkonna tunnustatud asjatundjatest moodustatud kogu, kes: kinnitab arenguseire tegevuskava; teeb ettepanekuid arenguseire põhisuundade ja teemade valikuks; hindab arenguseire tegevuskava täitmist ning eelarvevahendite sihipärast kasutamist; annab hinnangu valminud seiretele ja analüüsidele; annab heakskiidu keskuse juhataja teenistusse võtmiseks ja teenistusest vabastamiseks;",
       "estleg:legalText": "(1) Arenguseire nõukoda (edaspidi nõukoda) on arenguseire sõltumatuse tagamiseks teadus-, ettevõtlus- ja tehnoloogiavaldkonna tunnustatud asjatundjatest moodustatud kogu, kes: kinnitab arenguseire tegevuskava; teeb ettepanekuid arenguseire põhisuundade ja teemade valikuks; hindab arenguseire tegevuskava täitmist ning eelarvevahendite sihipärast kasutamist; annab hinnangu valminud seiretele ja analüüsidele; annab heakskiidu keskuse juhataja teenistusse võtmiseks ja teenistusest vabastamiseks; täidab teisi talle õigusaktidega pandud ülesandeid. (2) Nõukoja koosseisu kuuluvad: üks Riigikogu majanduskomisjoni nimetatud liige; üks Riigikogu majanduskomisjoni määratud ettevõtlusorganisatsiooni nimetatud liige; üks Vabariigi Presidendi nimetatud liige; üks ülikoolide rektoreid ühendava organisatsiooni nimetatud liige; üks Teaduste Akadeemia nimetatud liige. (3) Nõukoja liige peab olema teovõimeline füüsiline isik, kellel on oma ülesannete täitmiseks vajalikud teadmised ja kogemused ning kes ei ole Riigikogu ega Vabariigi Valitsuse liige. (4) Nõukoja liige ei või olla pankrotivõlgnik ja isik, kellel on kehtiv ärikeeld või kellelt on seaduse alusel ära võetud õigus olla ettevõtja, ega isik, kes on eeluurimise või kohtu all süüdistatuna kuriteos, mille eest on seadusega ette nähtud vabadusekaotus, samuti isik, kellel on karistatus ametialase kuriteo eest või tahtlikult toimepandud muu kuriteo eest. (5) Nõukoja liikme seaduse nõuetele vastavuse eest vastutab tema nimetaja. (6) Nõukoja liige nimetatakse neljaks aastaks. Nõukoja liikme volituste tähtaja lõppemisel jätkab nõukoja liige tegevust kuni tema asemele uue liikme nimetamiseni. (7) Nõukoja liikme nimetaja võib enda nimetatud liikme enne volituste tähtaja lõppu tagasi kutsuda. (8) Nõukoja liikme tagasikutsumisel, omal soovil tagasiastumisel, surma tõttu väljalangemisel või käesolevas seaduses sätestatud nõuetele mittevastavuse tekkimisel nimetatakse esimesel võimalusel tema asemele uus nõukoja liige ajani, mis on jäänud asendatava nõukoja liikme volituste lõpuni.",
@@ -438,8 +581,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -453,7 +600,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4_Lg_1",
@@ -466,7 +617,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4_Lg_2",
@@ -479,7 +639,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4_Lg_3",
@@ -492,7 +661,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3"
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4_Lg_4",
@@ -505,7 +689,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 4"
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4_Lg_5",
@@ -544,7 +743,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 7"
+      "rdfs:label": "§ 4 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_4_Lg_8",
@@ -563,13 +769,13 @@
       "@id": "estleg:ASeS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Nõukoja töökorraldus",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Nõukojal on esimees, kelle nõukoda valib oma esimesel koosolekul. Nõukoja esimehe nõukoja liikme volituste ennetähtaegsel lõppemisel valib nõukoda esimesel võimalusel uue esimehe. (2) Nõukoja esimese koosoleku kutsub kokku nõukoja eelmise koosseisu esimees kuu aja jooksul pärast nõukoja uue koosseisu volituste algust. (3) Nõukoda koguneb vastavalt vajadusele, kuid mitte harvem kui kaks korda aastas. (4) Nõukoda teeb otsustusi nõukoja koosseisu häälteenamusega.",
       "estleg:legalText": "(1) Nõukojal on esimees, kelle nõukoda valib oma esimesel koosolekul. Nõukoja esimehe nõukoja liikme volituste ennetähtaegsel lõppemisel valib nõukoda esimesel võimalusel uue esimehe. (2) Nõukoja esimese koosoleku kutsub kokku nõukoja eelmise koosseisu esimees kuu aja jooksul pärast nõukoja uue koosseisu volituste algust. (3) Nõukoda koguneb vastavalt vajadusele, kuid mitte harvem kui kaks korda aastas. (4) Nõukoda teeb otsustusi nõukoja koosseisu häälteenamusega. (5) Nõukoda kehtestab oma töökorra. (6) Nõukoja liikme kuutöötasu on kõrgemate riigiteenijate ametipalkade seaduse § 2 lõikes 1 nimetatud kõrgeima palgamäära, §-s 21 nimetatud kõrgeima palgamäära indeksi ja kordaja 0,04 korrutis. Töötasu maksmise kord sätestatakse nõukoja töökorras. (7) Nõukoja liikmete töötasu kaetakse arenguseire eelarvest. (8) Nõukoja tehnilise teenindamise tagab Riigikogu Kantselei.",
@@ -606,8 +812,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -624,7 +834,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_5_Lg_1",
@@ -637,7 +851,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_5_Lg_2",
@@ -650,7 +873,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_5_Lg_3",
@@ -728,19 +960,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 8"
+      "rdfs:label": "§ 5 lg 8",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Keskuse ülesanded",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "Keskus: koondab arenguseire tegevuskava koostamiseks esitatud ettepanekud; koostab arenguseire tegevuskava käesoleva seaduse § 7 kohaselt; tellib ja koostab uuringuid ning analüüse arenguseire tegevuskava kohaselt; tutvustab valminud uuringuid ja analüüse nõukojale; teeb arenguseire tulemuste kohta avalikkuses aktiivset teavitustööd ja korraldab kord aastas laiapõhjalise kaasamisürituse; esitab Riigikogu majanduskomisjonile ülevaate läbiviidud seiretest ja kavandatavatest tegevustest ning kord",
       "estleg:legalText": "Keskus: koondab arenguseire tegevuskava koostamiseks esitatud ettepanekud; koostab arenguseire tegevuskava käesoleva seaduse § 7 kohaselt; tellib ja koostab uuringuid ning analüüse arenguseire tegevuskava kohaselt; tutvustab valminud uuringuid ja analüüse nõukojale; teeb arenguseire tulemuste kohta avalikkuses aktiivset teavitustööd ja korraldab kord aastas laiapõhjalise kaasamisürituse; esitab Riigikogu majanduskomisjonile ülevaate läbiviidud seiretest ja kavandatavatest tegevustest ning kord aastas kirjaliku aruande käesolevas seaduses sätestatud eesmärkide täitmise kohta; täidab muid nõukoja antud ülesandeid.",
@@ -752,11 +993,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASeS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_6_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -778,10 +1021,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:ASeS_Par_6_Lg_Unknown_1",
+      "@id": "estleg:ASeS_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -794,19 +1041,28 @@
         {
           "@id": "estleg:ASeS_Par_7"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Arenguseire tegevuskava",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Arenguseire tegevuskavas määratakse igal aastal keskuse teostatavad või tellitavad seired. Arenguseire tegevuskava peab sisaldama teostatava või tellitava seire kulude prognoosi. (2) Tegevuskava koostamiseks võivad ettepanekuid esitada Riigikogu komisjonid ja fraktsioonid, ettevõtlusorganisatsioonid, teadus- ja tehnikavaldkonna esindajaid koondavad organisatsioonid ning teised huvitatud isikud. Ettepanekute juurde tuleb lisada põhjendused seire eesmärkide ja vajalikkuse kohta.",
       "estleg:legalText": "(1) Arenguseire tegevuskavas määratakse igal aastal keskuse teostatavad või tellitavad seired. Arenguseire tegevuskava peab sisaldama teostatava või tellitava seire kulude prognoosi. (2) Tegevuskava koostamiseks võivad ettepanekuid esitada Riigikogu komisjonid ja fraktsioonid, ettevõtlusorganisatsioonid, teadus- ja tehnikavaldkonna esindajaid koondavad organisatsioonid ning teised huvitatud isikud. Ettepanekute juurde tuleb lisada põhjendused seire eesmärkide ja vajalikkuse kohta. (3) Keskus kooskõlastab arenguseire tegevuskava enne nõukojale kinnitamiseks esitamist Riigikogu majanduskomisjoniga.",
@@ -828,15 +1084,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:ASeS_Par_6"
         },
         {
-          "@id": "estleg:ASeS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -860,7 +1120,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_7_Lg_1",
@@ -873,7 +1137,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_7_Lg_2",
@@ -886,7 +1157,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_7_Lg_3",
@@ -899,19 +1182,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Eesti Arengufondi lõpetamine ja likvideerimise alustamine",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse jõustumisel lõpetatakse Eesti Arengufondi (edaspidi Arengufond) tegevus ja viiakse läbi Arengufondi likvideerimine käesolevas seaduses sätestatud korras. (2) Tegevuse lõpetamisel lõpetab Arengufond Eesti Arengufondi seaduses (edaspidi Arengufondi seadus) sätestatud ülesannete täitmise, kui käesoleva paragrahvi lõikest 3 ei tulene teisiti. (3) Arengufond jätkab Arengufondi seaduse § 2 lõike 2 punktist 1 tulenevate ülesannete täitmist kuni käesoleva seaduse § 15 lõike 1",
       "estleg:legalText": "(1) Käesoleva seaduse jõustumisel lõpetatakse Eesti Arengufondi (edaspidi Arengufond) tegevus ja viiakse läbi Arengufondi likvideerimine käesolevas seaduses sätestatud korras. (2) Tegevuse lõpetamisel lõpetab Arengufond Eesti Arengufondi seaduses (edaspidi Arengufondi seadus) sätestatud ülesannete täitmise, kui käesoleva paragrahvi lõikest 3 ei tulene teisiti. (3) Arengufond jätkab Arengufondi seaduse § 2 lõike 2 punktist 1 tulenevate ülesannete täitmist kuni käesoleva seaduse § 15 lõike 1 punktides 1–3 nimetatud vara üleandmiseni nimetatud paragrahvis sätestatud korras. Nimetatud ülesannete täitmise suhtes ei kohaldata käesoleva seaduse §-des 9–14 sätestatut ning nende täitmisel on Arengufondi juhatusel ja nõukogul Arengufondi seaduses sätestatud pädevus.",
@@ -978,7 +1270,7 @@
       "rdfs:label": "§ 8 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:ASeS_Par_15"
+          "@id": "estleg:ASeS_Par_15_Lg_1"
         },
         {
           "@id": "estleg:ASeS_Par_9"
@@ -1004,13 +1296,13 @@
       "@id": "estleg:ASeS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Likvideerijad",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Arengufondi likvideerijateks on juhatuse liikmed, kui nõukogu otsusega või kohtulahendiga ei ole ette nähtud teisiti. (2) Nõukogu otsus likvideerija valimise või tagasikutsumise kohta võetakse vastu koosolekust osavõtvate nõukogu liikmete häälteenamusega. Likvideerija valimisel ei pea nõukogu järgima Arengufondi seaduse § 9 lõike 2 punktis 4 juhatuse esimehe ja liikme valimise kohta sätestatut. Nõukogu otsusega võib likvideerija igal ajal tagasi kutsuda, kui likvideerija ei ole nimetatud",
       "estleg:legalText": "(1) Arengufondi likvideerijateks on juhatuse liikmed, kui nõukogu otsusega või kohtulahendiga ei ole ette nähtud teisiti. (2) Nõukogu otsus likvideerija valimise või tagasikutsumise kohta võetakse vastu koosolekust osavõtvate nõukogu liikmete häälteenamusega. Likvideerija valimisel ei pea nõukogu järgima Arengufondi seaduse § 9 lõike 2 punktis 4 juhatuse esimehe ja liikme valimise kohta sätestatut. Nõukogu otsusega võib likvideerija igal ajal tagasi kutsuda, kui likvideerija ei ole nimetatud kohtulahendiga. Likvideerija võib tagasi astuda samas korras nagu juhatuse liige.",
@@ -1029,7 +1321,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1054,7 +1348,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_9_Lg_1",
@@ -1067,7 +1365,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 1"
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_9_Lg_2",
@@ -1080,19 +1387,27 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": "4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Likvideerijate õigused ja kohustused",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Likvideerijad lõpetavad Arengufondi tegevuse, nõuavad sisse võlad, müüvad vara, rahuldavad võlausaldajate nõuded ja korraldavad pärast võlausaldajate nõuete rahuldamist Arengufondi alles jäänud vara üleandmise riigile või teistele õigustatud isikutele. (2) Likvideerijatel on lubatud jätta vara müümata, kui müümine ei ole vajalik võlausaldajate nõuete rahuldamiseks ning müümata jätmiseks annab nõusoleku Arengufondi nõukogu. (3) Kui varast ei jätku Arengufondi võlausaldajate kõigi nõuete",
       "estleg:legalText": "(1) Likvideerijad lõpetavad Arengufondi tegevuse, nõuavad sisse võlad, müüvad vara, rahuldavad võlausaldajate nõuded ja korraldavad pärast võlausaldajate nõuete rahuldamist Arengufondi alles jäänud vara üleandmise riigile või teistele õigustatud isikutele. (2) Likvideerijatel on lubatud jätta vara müümata, kui müümine ei ole vajalik võlausaldajate nõuete rahuldamiseks ning müümata jätmiseks annab nõusoleku Arengufondi nõukogu. (3) Kui varast ei jätku Arengufondi võlausaldajate kõigi nõuete rahuldamiseks, peavad likvideerijad esitama kohtule pankrotiavalduse. (4) Likvideerijad vastutavad Arengufondi likvideerimisega tekitatud kahju eest.",
@@ -1117,8 +1432,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1157,7 +1476,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_10_Lg_1",
@@ -1170,7 +1493,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_10_Lg_2",
@@ -1183,7 +1515,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 2"
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_10_Lg_3",
@@ -1196,7 +1540,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 3"
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_10_Lg_4",
@@ -1215,13 +1574,13 @@
       "@id": "estleg:ASeS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Raamatupidamine likvideerimise ajal",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse jõustumisel lõpeb Arengufondi seni kestnud majandusaasta ning algab uus majandusaasta. Likvideerijad koostavad majandusaasta aruande käesoleva seaduse jõustumisel lõppeva majandusaasta kohta ja esitavad selle Arengufondi nõukogule kinnitamiseks kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Likvideerijad koostavad majandusaasta aruande koosseisu kuuluva bilansi kohta sätestatut järgides likvideerimise algbilansi ja esitavad selle Arengufondi nõukogule",
       "estleg:legalText": "(1) Käesoleva seaduse jõustumisel lõpeb Arengufondi seni kestnud majandusaasta ning algab uus majandusaasta. Likvideerijad koostavad majandusaasta aruande käesoleva seaduse jõustumisel lõppeva majandusaasta kohta ja esitavad selle Arengufondi nõukogule kinnitamiseks kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Likvideerijad koostavad majandusaasta aruande koosseisu kuuluva bilansi kohta sätestatut järgides likvideerimise algbilansi ja esitavad selle Arengufondi nõukogule kinnitamiseks koos käesoleva paragrahvi lõikes 1 nimetatud majandusaasta aruandega. Majandusaasta aruande ja likvideerimise algbilansi õigsust hindab enne nõukogule kinnitamiseks esitamist audiitor.",
@@ -1286,13 +1645,13 @@
       "@id": "estleg:ASeS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Võlausaldajatele teatamine",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse jõustumisel avaldavad likvideerijad viivitamata likvideerimisteate Arengufondi likvideerimismenetluse alustamise kohta ametlikus väljaandes Ametlikud Teadaanded. (2) Teada olevatele võlausaldajatele peavad likvideerijad saatma likvideerimisteate. (3) Likvideerimisteates tuleb märkida, et võlausaldajad esitaksid oma nõuded kahe kuu jooksul teate avaldamisest arvates.",
       "estleg:legalText": "(1) Käesoleva seaduse jõustumisel avaldavad likvideerijad viivitamata likvideerimisteate Arengufondi likvideerimismenetluse alustamise kohta ametlikus väljaandes Ametlikud Teadaanded. (2) Teada olevatele võlausaldajatele peavad likvideerijad saatma likvideerimisteate. (3) Likvideerimisteates tuleb märkida, et võlausaldajad esitaksid oma nõuded kahe kuu jooksul teate avaldamisest arvates.",
@@ -1314,7 +1673,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1334,13 +1695,13 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:MTÜS_Par_47"
+          "@id": "estleg:MTUS_Par_47"
         },
         {
           "@id": "estleg:SAS_Par_53"
         },
         {
-          "@id": "estleg:TÜS_Par_85"
+          "@id": "estleg:TUS_Par_85"
         },
         {
           "@id": "estleg:ariseadustik_Par_375"
@@ -1352,12 +1713,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Likvideerimisteates",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_12_Lg_1",
@@ -1383,7 +1747,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_12_Lg_3",
@@ -1396,19 +1772,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Nõuete esitamine ja rahuldamine",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Võlausaldajad peavad teatama likvideerijatele kahe kuu jooksul teate avaldamisest arvates kõigist oma nõuetest Arengufondi vastu. Teatele lisatakse nõuet tõendavad dokumendid. (2) Likvideerijad rahuldavad Arengufondile teada olevate võlausaldajate põhjendatud nõuded, sõltumata nõuetest teatamisest. (3) Kui Arengufondile teada olev võlausaldaja ei ole nõuet esitanud ja nõuet ei ole Arengufondist sõltumatutel põhjustel võimalik rahuldada, hoiustatakse hoiustamise tingimuste olemasolul",
       "estleg:legalText": "(1) Võlausaldajad peavad teatama likvideerijatele kahe kuu jooksul teate avaldamisest arvates kõigist oma nõuetest Arengufondi vastu. Teatele lisatakse nõuet tõendavad dokumendid. (2) Likvideerijad rahuldavad Arengufondile teada olevate võlausaldajate põhjendatud nõuded, sõltumata nõuetest teatamisest. (3) Kui Arengufondile teada olev võlausaldaja ei ole nõuet esitanud ja nõuet ei ole Arengufondist sõltumatutel põhjustel võimalik rahuldada, hoiustatakse hoiustamise tingimuste olemasolul võlausaldaja nõude rahuldamiseks vajalik raha.",
@@ -1430,7 +1818,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1450,10 +1840,10 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:MTÜS_Par_48"
+          "@id": "estleg:MTUS_Par_48"
         },
         {
-          "@id": "estleg:TÜS_Par_86"
+          "@id": "estleg:TUS_Par_86"
         }
       ],
       "estleg:normativeType": {
@@ -1463,7 +1853,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_13_Lg_1",
@@ -1476,7 +1870,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_13_Lg_2",
@@ -1489,7 +1895,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_13_Lg_3",
@@ -1502,19 +1917,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 3"
+      "rdfs:label": "§ 13 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Lõppbilanss",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Pärast kõigi võlausaldajate nõuete rahuldamist ja teada olevate võlausaldajate nõuete rahuldamiseks raha hoiustamist koostavad likvideerijad lõppbilansi. Lõppbilanssi peab kontrollima audiitor. (2) Likvideerijad esitavad audiitori poolt kontrollitud lõppbilansi nõukogule kinnitamiseks kahe kuu jooksul arvates kõigi võlausaldajate nõuete rahuldamisest ja teada olevate võlausaldajate nõuete rahuldamiseks raha hoiustamisest.",
       "estleg:legalText": "(1) Pärast kõigi võlausaldajate nõuete rahuldamist ja teada olevate võlausaldajate nõuete rahuldamiseks raha hoiustamist koostavad likvideerijad lõppbilansi. Lõppbilanssi peab kontrollima audiitor. (2) Likvideerijad esitavad audiitori poolt kontrollitud lõppbilansi nõukogule kinnitamiseks kahe kuu jooksul arvates kõigi võlausaldajate nõuete rahuldamisest ja teada olevate võlausaldajate nõuete rahuldamiseks raha hoiustamisest.",
@@ -1533,7 +1957,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1562,12 +1988,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Lõppbilanssi",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_14_Lg_1",
@@ -1580,7 +2009,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_14_Lg_2",
@@ -1593,19 +2034,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 2"
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Vara üleandmine",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse §-des 9–14 sätestatut ei kohaldata järgmise vara suhtes: Arengufondi seaduse § 33 lõikes 5 nimetatud fondivalitseja aktsiad; Arengufondi seaduse § 29 lõikes 1 sätestatud investeerimiskapital, selle arvel omandatud osalused, nõuded ja muu vara, samuti sellega seotud lepingud ja kohustused; Arengufondi seaduse § 441 lõike 1 alusel omandatud riskikapitalifondi aktsiad, osakud ja muud samaväärsed õigused; Arengufondi seiretegevust puudutav vara.",
       "estleg:legalText": "(1) Käesoleva seaduse §-des 9–14 sätestatut ei kohaldata järgmise vara suhtes: Arengufondi seaduse § 33 lõikes 5 nimetatud fondivalitseja aktsiad; Arengufondi seaduse § 29 lõikes 1 sätestatud investeerimiskapital, selle arvel omandatud osalused, nõuded ja muu vara, samuti sellega seotud lepingud ja kohustused; Arengufondi seaduse § 441 lõike 1 alusel omandatud riskikapitalifondi aktsiad, osakud ja muud samaväärsed õigused; Arengufondi seiretegevust puudutav vara. (2) Riskikapitalifond käesoleva paragrahvi tähenduses on juriidiline isik või varakogum, millesse on kaasatud ühe või mitme investori kapital eesmärgiga investeerida seda vastavalt kindlaksmääratud investeerimispoliitikale nende investorite kasuks osadesse, aktsiatesse või muudesse kapitaliosalust väljendavatesse õigustesse. (3) Käesoleva paragrahvi lõikes 1 nimetatud vara ei kuulu Arengufondi pankrotivara hulka. (4) Käesoleva paragrahvi lõike 1 punktis 1 nimetatud aktsiad antakse tasuta üle riigi poolt ettevõtlus- ja elamumajanduslaenude tagamiseks asutatud sihtasutusele (edaspidi sihtasutus). (5) Käesoleva paragrahvi lõike 1 punktis 2 nimetatud vara antakse tasuta üle riigile või investeeritakse käesoleva paragrahvi lõike 1 punktis 1 nimetatud fondivalitseja poolt valitsetavasse riskikapitalifondi. Vara investeerimisel riskikapitalifondi antakse riigile tasuta üle selle riskikapitalifondi aktsiad, osakud ja muud samaväärsed õigused. (6) Käesoleva paragrahvi lõike 1 punktis 3 nimetatud riskikapitalifondi aktsiad, osakud ja muud samaväärsed õigused antakse tasuta üle riigile. (7) Riik annab käesoleva paragrahvi lõigetes 5 ja 6 nimetatud vara sihtasutuse kasutusse. (8) Käesoleva paragrahvi lõike 1 punktides 1–3 nimetatud vara sihtasutusele ja riigile üleandmiseks sõlmivad riik, Arengufond ja sihtasutus lepingu, milles tuleb sätestada vähemalt: käesoleva paragrahvi lõikes 4 nimetatud aktsiate Arengufondi poolt sihtasutuse omandisse andmise tingimused; käesoleva paragrahvi lõigetes 5 ja 6 nimetatud vara Arengufondi poolt riigi omandisse tasuta andmise tingimused; käesoleva paragrahvi lõigetes 5 ja 6 nimetatud vara riigi poolt sihtasutuse kasutusse andmise tingimused. (9) Käesoleva paragrahvi lõikes 8 nimetatud lepingu sõlmimisel esindab riiki valdkonna eest vastutav minister. (10) Käesoleva paragrahvi lõigetes 5 ja 6 nimetatud vara ning sellise vara investeerimisfondi paigutamisel saadud investeerimisfondi aktsiate, osakute ja muude samaväärsete õiguste valitseja pärast riigile üleandmist on Majandus- ja Kommunikatsiooniministeerium. Käesolevas lõikes nimetatud vara investeerimise tulem kuulub riigile. (11) Käesoleva paragrahvi lõikes 1 nimetatud vara Arengufondi poolt sihtasutusele või riigile üleandmine ei ole käsitletav Arengufondi likvideerimisjaotise maksmisena või muu sarnase väljamaksena tulumaksuseaduse tähenduses ja seda ei maksustata tulumaksuga. (12) Arengufondi seiretegevusega seotud vara antakse tasuta üle Riigikogu Kantseleile, kui Arengufondi nõukogu ei otsusta likvideerimisprotsessi käigus teisiti. Seiretegevusega seotud vara Riigikogu Kantselei omandisse andmine kinnitatakse aktiga, mis sõlmitakse Arengufondi ja seiretegevusega seotud vara omandava isiku vahel ühe kuu jooksul nõukogu poolt Arengufondi lõppbilansi kinnitamisest arvates.",
@@ -1654,8 +2104,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -1685,7 +2139,7 @@
           "@id": "estleg:ASeS_Par_16"
         },
         {
-          "@id": "estleg:ASeS_Par_16_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_16_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1700,7 +2154,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_1",
@@ -1733,7 +2191,16 @@
         {
           "@id": "estleg:ASeS_Par_14"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_2",
@@ -1746,7 +2213,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_3",
@@ -1772,7 +2248,17 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 4"
+      "rdfs:label": "§ 15 lg 4",
+      "estleg:itemNumber": "1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_5",
@@ -1785,7 +2271,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 5"
+      "rdfs:label": "§ 15 lg 5",
+      "estleg:itemNumber": [
+        "2",
+        "1"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_6",
@@ -1798,7 +2297,8 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 6"
+      "rdfs:label": "§ 15 lg 6",
+      "estleg:itemNumber": "3"
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_7",
@@ -1811,7 +2311,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 7"
+      "rdfs:label": "§ 15 lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_8",
@@ -1824,7 +2333,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 8"
+      "rdfs:label": "§ 15 lg 8",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_9",
@@ -1837,7 +2358,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 9"
+      "rdfs:label": "§ 15 lg 9",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_10",
@@ -1863,7 +2393,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 11"
+      "rdfs:label": "§ 15 lg 11",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_15_Lg_12",
@@ -1876,19 +2415,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 12"
+      "rdfs:label": "§ 15 lg 12",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Arengufondi tegevuse lõpetamise tähtaeg",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "Pärast lõppbilansi kinnitamist ja käesoleva seaduse §-s 15 ettenähtud vara üleandmist loetakse Arengufondi tegevus ja tema nõukogu volitused lõppenuks.",
       "estleg:legalText": "Pärast lõppbilansi kinnitamist ja käesoleva seaduse §-s 15 ettenähtud vara üleandmist loetakse Arengufondi tegevus ja tema nõukogu volitused lõppenuks.",
@@ -1900,7 +2448,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASeS_Par_16_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_16_Lg_1"
         }
       ],
       "estleg:references": [
@@ -1915,7 +2463,7 @@
       ]
     },
     {
-      "@id": "estleg:ASeS_Par_16_Lg_Unknown_1",
+      "@id": "estleg:ASeS_Par_16_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1934,13 +2482,13 @@
       "@id": "estleg:ASeS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Arenguseire nõukoja esimene koosseis",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Nõukoja liikmed nimetatakse kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Nõukoja esimese koosoleku kutsub kokku Riigikogu majanduskomisjoni esimees. Esimest koosolekut juhatab kuni esimehe valimiseni nõukoja vanim liige.",
       "estleg:legalText": "(1) Nõukoja liikmed nimetatakse kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Nõukoja esimese koosoleku kutsub kokku Riigikogu majanduskomisjoni esimees. Esimest koosolekut juhatab kuni esimehe valimiseni nõukoja vanim liige.",
@@ -1959,8 +2507,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1985,7 +2537,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_17_Lg_1",
@@ -2011,19 +2567,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 2"
+      "rdfs:label": "§ 17 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Muudatused Arengufondile kavandatud rahalistes vahendites",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "Vabariigi Valitsusel teha riigieelarve seaduse § 56 lõike 2 punkti 3 alusel 2016. aasta riigieelarves Majandus- ja Kommunikatsiooniministeeriumi valitsemisala vahendites Arengufondile kavandatud toetuse administratiivses ja majandusliku sisu järgi liigenduses järgmised muudatused: eraldada Majandus- ja Kommunikatsiooniministeeriumile 50 000 eurot nutika spetsialiseerumise seire finantseerimiseks; eraldada Riigikogu Kantseleile 200 000 eurot arenguseire tegevuse finantseerimiseks.",
       "estleg:legalText": "Vabariigi Valitsusel teha riigieelarve seaduse § 56 lõike 2 punkti 3 alusel 2016. aasta riigieelarves Majandus- ja Kommunikatsiooniministeeriumi valitsemisala vahendites Arengufondile kavandatud toetuse administratiivses ja majandusliku sisu järgi liigenduses järgmised muudatused: eraldada Majandus- ja Kommunikatsiooniministeeriumile 50 000 eurot nutika spetsialiseerumise seire finantseerimiseks; eraldada Riigikogu Kantseleile 200 000 eurot arenguseire tegevuse finantseerimiseks.",
@@ -2035,15 +2603,17 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASeS_Par_18_Lg_Unknown_1"
+          "@id": "estleg:ASeS_Par_18_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:REELS_Par_56"
+          "@id": "estleg:REELS_Par_56_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -2064,10 +2634,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:ASeS_Par_18_Lg_Unknown_1",
+      "@id": "estleg:ASeS_Par_18_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2078,21 +2652,31 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:REELS_Par_56"
+          "@id": "estleg:REELS_Par_56_Lg_2"
         }
-      ]
+      ],
+      "estleg:itemNumber": "3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ASeS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19.",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ASeS_4"
@@ -2111,13 +2695,13 @@
       "@id": "estleg:ASeS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -2148,13 +2732,13 @@
       "@id": "estleg:ASeS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_arenguseire_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Seaduse jõustumine",
       "estleg:sourceAct": "Arenguseire seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASeS_Map_2026"
+        "@id": "estleg:ASeS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. (2) Käesoleva seaduse § 20 punkt 2 jõustub 2017. aasta 1. jaanuaril. (3) Käesoleva seaduse § 22 jõustub 2017. aasta 1. juulil.",
       "estleg:legalText": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. (2) Käesoleva seaduse § 20 punkt 2 jõustub 2017. aasta 1. jaanuaril. (3) Käesoleva seaduse § 22 jõustub 2017. aasta 1. juulil.",
@@ -2210,7 +2794,8 @@
       "estleg:parentProvision": {
         "@id": "estleg:ASeS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 2"
+      "rdfs:label": "§ 23 lg 2",
+      "estleg:itemNumber": "2"
     },
     {
       "@id": "estleg:ASeS_Par_23_Lg_3",
@@ -2229,6 +2814,28 @@
           "@id": "estleg:ASeS_Par_22"
         }
       ]
+    },
+    {
+      "@id": "estleg:Citation_ASeS_P_23_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:ASeS_Par_23"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 20"
+    },
+    {
+      "@id": "estleg:Citation_ASeS_P_23_Lg_2_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:ASeS_Par_23_Lg_2"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 20"
     }
   ]
 }

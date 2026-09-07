@@ -261,7 +261,7 @@ class TestCitationShape:
         # SHACL (avoiding subclass-inference brittleness).
         ok, msg = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationTarget": {"@id": "estleg:Reg_1014955_Par_42"},
             "estleg:citationDetail": "lg 1",
@@ -272,7 +272,7 @@ class TestCitationShape:
     def test_citation_missing_target_fails(self):
         ok, _ = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationDetail": "lg 1",
         })
@@ -293,7 +293,7 @@ class TestCitationShape:
         # citationTarget as a literal (not an IRI) must fail nodeKind.
         ok, _ = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationTarget": "literal-not-iri",
         })
@@ -1117,7 +1117,7 @@ Create `tests/fixtures/kov_layer2a/sample_kov_act.json`:
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_9999_Map_2026",
+      "@id": "estleg:Reg_9999_Map",
       "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
       "rdfs:label": "Test KOV act",
       "dc:source": "Test KOV act",
@@ -1136,7 +1136,7 @@ Create `tests/fixtures/kov_layer2a/sample_kov_act.json`:
       "estleg:legalText": "Korraldaja peab tagama jäätmete kogumise vastavalt määrusele.",
       "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
       "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0784"},
-      "estleg:partOfAct": {"@id": "estleg:Reg_9999_Map_2026"}
+      "estleg:partOfAct": {"@id": "estleg:Reg_9999_Map"}
     }
   ]
 }
@@ -1439,7 +1439,7 @@ class TestReadActMetadataFromPeep:
         meta = _read_act_metadata(FIXTURE)
         assert meta["title"] == "Test KOV act"
         assert meta["source"] == "Test KOV act"
-        assert meta["@id"] == "estleg:Reg_9999_Map_2026"
+        assert meta["@id"] == "estleg:Reg_9999_Map"
 
     def test_returns_none_for_provision_only_file(self, tmp_path):
         # A file with no act-typed node should return None, not crash.
@@ -1464,7 +1464,7 @@ class TestReadActMetadataFromPeep:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Municipalities_Map_2026",
+                {"@id": "estleg:Municipalities_Map",
                  "@type": ["owl:Ontology"],
                  "rdfs:label": "Estonian Municipalities (current EHAK)"},
                 {"@id": "estleg:Municipality_EHAK_0784",
@@ -1482,7 +1482,7 @@ class TestReadActMetadataFromPeep:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Issuers_Kov_Map_2026",
+                {"@id": "estleg:Issuers_Kov_Map",
                  "@type": ["owl:Ontology"],
                  "rdfs:label": "KOV Issuers"},
             ],
@@ -1891,7 +1891,7 @@ class TestPairPeepWithXml:
         peep.write_text(json.dumps({
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
             "@graph": [
-                {"@id": "estleg:Reg_9999_Map_2026",
+                {"@id": "estleg:Reg_9999_Map",
                  "estleg:globalId": "999",
                  "@type": ["estleg:MunicipalRegulation"]}
             ],
@@ -1939,7 +1939,7 @@ class TestPairPeepWithXml:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AlkS_Map_2026",
+                {"@id": "estleg:AlkS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Alkoholiseadus"}
                 # NO estleg:globalId — matches real law peep shape
@@ -1974,7 +1974,7 @@ class TestPairPeepWithXml:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AOS_Osa3_Map_2026",
+                {"@id": "estleg:AOS_Osa3_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]}
             ],
         }), encoding="utf-8")
@@ -2017,7 +2017,7 @@ class TestMainUsesGlobalIdLookup:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_X_Map_2026",
+                {"@id": "estleg:Reg_X_Map",
                  "@type": ["owl:Ontology", "estleg:Act",
                            "estleg:MunicipalRegulation"],
                  "rdfs:label": "Test KOV act",
@@ -2818,7 +2818,7 @@ class TestAmendmentHistoryDiscovery:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_X_Map_2026",
+                {"@id": "estleg:Reg_X_Map",
                  "@type": ["owl:Ontology", "estleg:Act",
                            "estleg:MunicipalRegulation"],
                  "rdfs:label": "Test KOV act",

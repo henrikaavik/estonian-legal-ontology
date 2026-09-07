@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:KrHS_Map_2026",
+      "@id": "estleg:KrHS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Kriminaalhooldusseadus teemakaardistus",
       "dc:source": "Kriminaalhooldusseadus",
-      "dcterms:title": "Kriminaalhooldusseadus",
+      "dcterms:title": [
+        {
+          "@value": "Kriminaalhooldusseadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Probation Supervision Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/114032025025.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/114032025025.xml"
       },
       "estleg:kehtiv": {
@@ -33,22 +38,22 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1009209_Map_2026"
+          "@id": "estleg:Reg_1009209_Map"
         },
         {
-          "@id": "estleg:Reg_153694_Map_2026"
+          "@id": "estleg:Reg_153694_Map"
         },
         {
-          "@id": "estleg:Reg_157694_Map_2026"
+          "@id": "estleg:Reg_157694_Map"
         },
         {
-          "@id": "estleg:Reg_162521_Map_2026"
+          "@id": "estleg:Reg_162521_Map"
         },
         {
-          "@id": "estleg:Reg_305102_Map_2026"
+          "@id": "estleg:Reg_305102_Map"
         },
         {
-          "@id": "estleg:Reg_321644_Map_2026"
+          "@id": "estleg:Reg_321644_Map"
         }
       ],
       "estleg:implementedByCount": 6,
@@ -69,16 +74,88 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_kriminaalhooldusseadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5181"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:KORS_Par_38"
+        },
+        {
+          "@id": "estleg:KORS_Par_39"
+        },
+        {
+          "@id": "estleg:KORS_Par_40"
+        },
+        {
+          "@id": "estleg:KORS_Par_41"
+        },
+        {
+          "@id": "estleg:KrHS_Par_36"
+        },
+        {
+          "@id": "estleg:KrHS_Par_26"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KrHS_Par_36_Lg_10"
+        },
+        {
+          "@id": "estleg:KrHS_Par_23_Lg_2"
+        },
+        {
+          "@id": "estleg:KrHS_Par_38_1"
+        },
+        {
+          "@id": "estleg:KrHS_Par_38_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KrHS_Par_37"
+        },
+        {
+          "@id": "estleg:KrHS_Par_37_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        },
+        {
+          "@id": "estleg:Institution_justiitsminister"
+        },
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/521032025002"
       }
     },
     {
@@ -137,10 +214,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -166,10 +247,14 @@
       "rdfs:label": "2. peatükk – KRIMINAALHOOLDUSOSAKOND",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -195,10 +280,14 @@
       "rdfs:label": "3. peatükk – KRIMINAALHOOLDUSAMETNIK",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -224,10 +313,14 @@
       "rdfs:label": "4. peatükk – KRIMINAALHOOLDUSABILINE",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -253,10 +346,14 @@
       "rdfs:label": "5. peatükk – KRIMINAALHOOLDUSÜHING",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -282,10 +379,14 @@
       "rdfs:label": "6. peatükk – KRIMINAALHOOLDUSE ETTEVALMISTAMINE",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -311,10 +412,14 @@
       "rdfs:label": "7. peatükk – KRIMINAALHOOLDUSE TEOSTAMINE",
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_7"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -340,23 +445,27 @@
       "rdfs:label": "8. peatükk – LÕPPSÄTTED",
       "estleg:chapterNumber": "8",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KrHS_8"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Kriminaalhooldus",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhoolduse käigus valvatakse kriminaalhooldusaluse käitumise ja temale kohtu või prokuröri poolt pandud kohustuste täitmise järele ning soodustatakse kriminaalhooldusaluse sotsiaalset kohanemist eesmärgiga mõjutada teda hoiduma kuritegude toimepanemisest. (2) võib määrusega kehtestada kriminaalhoolduse teostamise nõuded ja korra.",
       "estleg:legalText": "(1) Kriminaalhoolduse käigus valvatakse kriminaalhooldusaluse käitumise ja temale kohtu või prokuröri poolt pandud kohustuste täitmise järele ning soodustatakse kriminaalhooldusaluse sotsiaalset kohanemist eesmärgiga mõjutada teda hoiduma kuritegude toimepanemisest. (2) võib määrusega kehtestada kriminaalhoolduse teostamise nõuded ja korra.",
@@ -375,18 +484,22 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_153694_Map_2026"
+          "@id": "estleg:Reg_153694_Map"
         },
         {
-          "@id": "estleg:Reg_162521_Map_2026"
+          "@id": "estleg:Reg_162521_Map"
         },
         {
-          "@id": "estleg:Reg_305102_Map_2026"
+          "@id": "estleg:Reg_305102_Map"
         }
       ],
       "estleg:implementedByCount": 3,
@@ -422,7 +535,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_1_Lg_1",
@@ -435,7 +552,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_1_Lg_2",
@@ -448,19 +577,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Kriminaalhooldusalune",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusalune on: süüdimõistetu, kelle kohus on seaduses sätestatud korras määranud kriminaalhooldaja järelevalve alla; süüdimõistetu, kelle vangistus on asendatud üldkasuliku tööga või narkomaanide sõltuvusraviga või osaliselt asendatud seksuaalkurjategijate kompleksraviga; isik, kelle suhtes on kriminaalmenetlus lõpetatud ning kellele on prokurör või kohus määranud üldkasuliku töö tegemise või kohustuse alluda karistusseadustiku § 751 lõikes 1 sätestatud alkoholi tarvitamise keelu",
       "estleg:legalText": "Kriminaalhooldusalune on: süüdimõistetu, kelle kohus on seaduses sätestatud korras määranud kriminaalhooldaja järelevalve alla; süüdimõistetu, kelle vangistus on asendatud üldkasuliku tööga või narkomaanide sõltuvusraviga või osaliselt asendatud seksuaalkurjategijate kompleksraviga; isik, kelle suhtes on kriminaalmenetlus lõpetatud ning kellele on prokurör või kohus määranud üldkasuliku töö tegemise või kohustuse alluda karistusseadustiku § 751 lõikes 1 sätestatud alkoholi tarvitamise keelu täitmist kontrolliva elektroonilise seadme valvele; kahtlustatav või süüdistatav, kellel tõkendina kohaldatud vahistamine on asendatud elektroonilisele valvele allumise kohustusega; kahtlustatav, süüdistatav või süüdimõistetu, kellele kohus on kohaldanud elektroonilise valvega ajutist lähenemiskeeldu või lähenemiskeeldu; süüdlane, kelle arest on asendatud üldkasuliku tööga või kellele kohus on määranud üldkasuliku töö tegemise kohustuse karistusseadustiku § 87 alusel; kahtlustatav või süüdistatav, kelle kohta on prokurör või kohus tellinud kohtueelse ettekande.",
@@ -472,12 +608,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -527,10 +667,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -543,19 +687,31 @@
         {
           "@id": "estleg:KARIST_2_Osa1_Par_87"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Kriminaalhooldaja",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldaja on kriminaalhooldusametnik ja kriminaalhooldusabiline. (2) Kriminaalhoolduse ülesanded võib anda ka mittetulundusühingule (kriminaalhooldusühingule), mille üheks põhikirjaliseks tegevuseks on kriminaalhoolduse teostamine. (3) Kriminaalhoolduse ülesandeid võib anda lisaks kriminaalhooldajale ka teistele vangla teenistuses olevatele isikutele, kes vastavad kriminaalhooldajale esitatavatele nõuetele.",
       "estleg:legalText": "(1) Kriminaalhooldaja on kriminaalhooldusametnik ja kriminaalhooldusabiline. (2) Kriminaalhoolduse ülesanded võib anda ka mittetulundusühingule (kriminaalhooldusühingule), mille üheks põhikirjaliseks tegevuseks on kriminaalhoolduse teostamine. (3) Kriminaalhoolduse ülesandeid võib anda lisaks kriminaalhooldajale ka teistele vangla teenistuses olevatele isikutele, kes vastavad kriminaalhooldajale esitatavatele nõuetele.",
@@ -577,7 +733,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "ngo"
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -597,7 +755,11 @@
         {
           "@id": "estleg:TargetGroup_NGO"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_3_Lg_1",
@@ -623,7 +785,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 2"
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_3_Lg_3",
@@ -636,19 +810,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Kriminaalhooldaja õigus saada teavet",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldajal on õigus saada asutustelt ja isikutelt kriminaalhooldusülesannete täitmiseks vajalikku teavet.",
       "estleg:legalText": "Kriminaalhooldajal on õigus saada asutustelt ja isikutelt kriminaalhooldusülesannete täitmiseks vajalikku teavet.",
@@ -660,11 +841,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_4_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_4_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -681,10 +864,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_4_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -692,19 +879,31 @@
       "estleg:legalText": "Kriminaalhooldajal on õigus saada asutustelt ja isikutelt kriminaalhooldusülesannete täitmiseks vajalikku teavet.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_4"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_4_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
       "rdfs:label": "§ 4¹. Isikuandmete töötlemine kriminaalhoolduse ettevalmistamisel ja teostamisel",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhoolduse ettevalmistamiseks ja teostamiseks on kriminaalhooldajal õigus töödelda kriminaalhooldusaluse ning kriminaalhooldusalusega seotud isikute isikuandmeid, sealhulgas seaduses sätestatud juhtudel eriliiki isikuandmeid. (2) Kriminaalhoolduse ettevalmistamisel ja teostamisel loetakse kriminaalhooldaja tegevus õiguskaitseasutuse tegevuseks isikuandmete kaitse seaduse § 13 lõike 2 tähenduses ning isikuandmete töötlemisel lähtutakse õiguskaitseasutustele kehtestatud sätetest.",
       "estleg:legalText": "(1) Kriminaalhoolduse ettevalmistamiseks ja teostamiseks on kriminaalhooldajal õigus töödelda kriminaalhooldusaluse ning kriminaalhooldusalusega seotud isikute isikuandmeid, sealhulgas seaduses sätestatud juhtudel eriliiki isikuandmeid. (2) Kriminaalhoolduse ettevalmistamisel ja teostamisel loetakse kriminaalhooldaja tegevus õiguskaitseasutuse tegevuseks isikuandmete kaitse seaduse § 13 lõike 2 tähenduses ning isikuandmete töötlemisel lähtutakse õiguskaitseasutustele kehtestatud sätetest.",
@@ -723,7 +922,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -734,7 +935,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_4_1_Lg_1",
@@ -747,7 +952,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_4_1"
       },
-      "rdfs:label": "§ 4¹ lg 1"
+      "rdfs:label": "§ 4¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_4_1_Lg_2",
@@ -766,13 +980,13 @@
       "@id": "estleg:KrHS_Par_4_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4².",
       "rdfs:label": "§ 4². Andmesubjekti õigus saada teavet tema isikuandmete töötlemise kohta ja isikuandmete väljastamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Isikuandmete töötlemisel käesoleva seaduse alusel võib vastutav töötleja piirata andmesubjekti isikuandmete kaitse seadusest tulenevaid õigusi, kui see on vajalik süüteo tõkestamiseks, avastamiseks, menetlemiseks või karistuse täideviimiseks, distsiplinaarmenetluse või haldusmenetluse läbiviimiseks, teise isiku või andmesubjekti õiguste ja vabaduste kahjustamise takistamiseks, riigi julgeoleku ohustamise takistamiseks või avaliku korra kaitse tagamiseks.",
       "estleg:legalText": "(1) Isikuandmete töötlemisel käesoleva seaduse alusel võib vastutav töötleja piirata andmesubjekti isikuandmete kaitse seadusest tulenevaid õigusi, kui see on vajalik süüteo tõkestamiseks, avastamiseks, menetlemiseks või karistuse täideviimiseks, distsiplinaarmenetluse või haldusmenetluse läbiviimiseks, teise isiku või andmesubjekti õiguste ja vabaduste kahjustamise takistamiseks, riigi julgeoleku ohustamise takistamiseks või avaliku korra kaitse tagamiseks. (2) Käesoleva paragrahvi lõike 1 alusel võib piirata järgmisi andmesubjekti õigusi: õigust saada teada tema isikuandmete töötlemisest, sealhulgas sellest, milliseid isikuandmeid töödeldakse, samuti töötlemise viisi, meetodit, eesmärki, õiguslikku alust, ulatust või põhjust; õigust saada teada tema isikuandmete vastuvõtjaid ja avaldatavate isikuandmete kategooriaid ning teavet selle kohta, kas tema isikuandmed edastatakse välisriigile või rahvusvahelisele organisatsioonile; õigust nõuda tema isikuandmete töötlemise piiramist; õigust esitada vastuväiteid tema isikuandmete töötlemise kohta; õigust saada teada tema isikuandmetega seotud rikkumisest.",
@@ -791,8 +1005,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -814,7 +1032,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_4_2_Lg_1",
@@ -827,7 +1049,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_4_2"
       },
-      "rdfs:label": "§ 4² lg 1"
+      "rdfs:label": "§ 4² lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_4_2_Lg_2",
@@ -840,19 +1077,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_4_2"
       },
-      "rdfs:label": "§ 4² lg 2"
+      "rdfs:label": "§ 4² lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5.",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KrHS_2"
@@ -862,7 +1111,9 @@
       },
       "estleg:summary": "1(1)Maakohtus on kriminaalhooldusosakond, mille koosseisu kinnitab vastava maakohtu kohtudirektor. Maakohtus on kriminaalhooldusosakond, mille koosseisu kinnitab vastava maakohtu kohtudirektor. 2(2)Justiitsminister võib jätta mõnes maakohtus kriminaalhooldusosakonna loomata, pannes selle ülesanded teise maakohtu kriminaalhooldusosakonnale./dyn=875314&id=798981 . 3(3)Kriminaalhooldusosakond võib jaguneda talitusteks. Kriminaalhooldusosakonna jagunemise talitusteks ning talituse juhataja ametikoha",
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -897,19 +1148,23 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. [Kehtetud -]",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kehtetud -",
       "estleg:legalText": "Kehtetud -",
@@ -935,13 +1190,13 @@
       "@id": "estleg:KrHS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Kriminaalhooldusametnikule esitatavad nõuded",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldusametnikuks võib nimetada isiku, kellel on kriminaalhooldustööks vajalikud kõlbelised omadused ning vastav rakenduslik või akadeemiline kõrgharidus. (2) võib kehtestada täiendavaid kriminaalhooldusametniku, kriminaalhooldusosakonna talituse juhataja ja kriminaalhooldusosakonna juhataja kvalifikatsiooni nõudeid. (2¹) Kriminaalhooldusametnikuks võib nimetada ka välisriigi kutsekvalifikatsiooni omandanud isiku, kui tema kutsekvalifikatsiooni on tunnustatud välisriigi",
       "estleg:legalText": "(1) Kriminaalhooldusametnikuks võib nimetada isiku, kellel on kriminaalhooldustööks vajalikud kõlbelised omadused ning vastav rakenduslik või akadeemiline kõrgharidus. (2) võib kehtestada täiendavaid kriminaalhooldusametniku, kriminaalhooldusosakonna talituse juhataja ja kriminaalhooldusosakonna juhataja kvalifikatsiooni nõudeid. (2¹) Kriminaalhooldusametnikuks võib nimetada ka välisriigi kutsekvalifikatsiooni omandanud isiku, kui tema kutsekvalifikatsiooni on tunnustatud välisriigi kutsekvalifikatsiooni tunnustamise seaduse kohaselt. Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) võib määrusega kehtestada kriminaalhooldusametniku tööülesanded, mida täitval ametnikul ei pea olema käesoleva paragrahvi lõikes 1 nimetatud rakenduslikku või akadeemilist kõrgharidust.",
@@ -966,8 +1221,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -976,7 +1235,7 @@
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_157694_Map_2026"
+          "@id": "estleg:Reg_157694_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -1016,7 +1275,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_13_Lg_1",
@@ -1029,7 +1292,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_13_Lg_2",
@@ -1042,7 +1317,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_13_Lg_2_1",
@@ -1058,9 +1345,21 @@
       "rdfs:label": "§ 13 lg 2¹",
       "estleg:references": [
         {
-          "@id": "estleg:VKT_Par_7"
+          "@id": "estleg:VKT_Par_7_Lg_2"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_13_Lg_3",
@@ -1073,19 +1372,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 3"
+      "rdfs:label": "§ 13 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Kriminaalhooldusametniku katseaeg",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusametnikule kohaldatakse katseaega kuni kuus kuud ametikohale asumisest arvates.",
       "estleg:legalText": "Kriminaalhooldusametnikule kohaldatakse katseaega kuni kuus kuud ametikohale asumisest arvates.",
@@ -1097,7 +1408,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_14_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_14_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1124,7 +1435,7 @@
       ]
     },
     {
-      "@id": "estleg:KrHS_Par_14_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_14_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1138,13 +1449,13 @@
       "@id": "estleg:KrHS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Juhendamiskohustus",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldusametnik on kohustatud kriminaalhooldusosakonna juhataja korraldusel juhendama kriminaalhoolduse praktikanti ja kriminaalhooldusabilist. Kriminaalhooldusametnik ei ole kohustatud juhendama üheaegselt rohkem kui kahte praktikanti ja viit kriminaalhooldusabilist. (2) Kehtetu -",
       "estleg:legalText": "(1) Kriminaalhooldusametnik on kohustatud kriminaalhooldusosakonna juhataja korraldusel juhendama kriminaalhoolduse praktikanti ja kriminaalhooldusabilist. Kriminaalhooldusametnik ei ole kohustatud juhendama üheaegselt rohkem kui kahte praktikanti ja viit kriminaalhooldusabilist. (2) Kehtetu -",
@@ -1163,7 +1474,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1181,12 +1494,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kriminaalhooldusametnik",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_15_Lg_1",
@@ -1199,7 +1515,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_15_Lg_2",
@@ -1218,13 +1546,13 @@
       "@id": "estleg:KrHS_Par_15_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
       "rdfs:label": "§ 15¹. Teavitamiskohustus",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldust teostav ametnik peab teavitama talle ametitegevuse käigus teatavaks saanud kuritegudest ja väärtegudest.",
       "estleg:legalText": "Kriminaalhooldust teostav ametnik peab teavitama talle ametitegevuse käigus teatavaks saanud kuritegudest ja väärtegudest.",
@@ -1236,11 +1564,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_15_1_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_15_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1254,10 +1584,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_15_1_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_15_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1265,19 +1599,31 @@
       "estleg:legalText": "Kriminaalhooldust teostav ametnik peab teavitama talle ametitegevuse käigus teatavaks saanud kuritegudest ja väärtegudest.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_15_1"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_15_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15².",
       "rdfs:label": "§ 15². Ametisaladuse hoidmise kohustus",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusametnik ei tohi avaldada talle seoses teenistusülesannete täitmisega teatavaks saanud asjaolusid ega andmeid, sealhulgas mistahes isikuandmeid ja isikute vahelisi suhteid puudutavaid andmeid. Ametisaladuse hoidmise kohustus on tähtajatu.",
       "estleg:legalText": "Kriminaalhooldusametnik ei tohi avaldada talle seoses teenistusülesannete täitmisega teatavaks saanud asjaolusid ega andmeid, sealhulgas mistahes isikuandmeid ja isikute vahelisi suhteid puudutavaid andmeid. Ametisaladuse hoidmise kohustus on tähtajatu.",
@@ -1289,11 +1635,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_15_2_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_15_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1318,10 +1666,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_15_2_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_15_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1329,19 +1681,31 @@
       "estleg:legalText": "Kriminaalhooldusametnik ei tohi avaldada talle seoses teenistusülesannete täitmisega teatavaks saanud asjaolusid ega andmeid, sealhulgas mistahes isikuandmeid ja isikute vahelisi suhteid puudutavaid andmeid. Ametisaladuse hoidmise kohustus on tähtajatu.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_15_2"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Varalise kahju hüvitamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusametniku teenistusülesannete täitmise tõttu kriminaalhooldusametnikule või tema perekonnaliikmele tahtlikult tekitatud varalise kahju hüvitab riik vangistusseaduse §-s 143 sätestatud korras. Kahjutasu nõutakse sisse süüdiolevalt isikult.",
       "estleg:legalText": "Kriminaalhooldusametniku teenistusülesannete täitmise tõttu kriminaalhooldusametnikule või tema perekonnaliikmele tahtlikult tekitatud varalise kahju hüvitab riik vangistusseaduse §-s 143 sätestatud korras. Kahjutasu nõutakse sisse süüdiolevalt isikult.",
@@ -1353,7 +1717,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_16_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_16_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1372,7 +1736,7 @@
           "@id": "estleg:POLITS_Par_74"
         },
         {
-          "@id": "estleg:PäästeTS_Par_19_1"
+          "@id": "estleg:PaasteTS_Par_19_1"
         },
         {
           "@id": "estleg:VANGIS_Par_143"
@@ -1380,7 +1744,7 @@
       ]
     },
     {
-      "@id": "estleg:KrHS_Par_16_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_16_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1394,13 +1758,13 @@
       "@id": "estleg:KrHS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Kriminaalhooldusabiline",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldusabiline on isik, kes täidab kriminaalhooldusülesandeid oma vabast ajast ja tasu saamata. (2) Kriminaalhooldusabiline tegutseb kriminaalhooldusametniku juhendamisel. (3) Kriminaalhooldusabiline võib olla isik, kes on avaldanud sellekohast soovi ja sobib kriminaalhooldusabilisena tegutsema. Sobivuse hindamisel tutvutakse dokumentide ja vestluse kaudu taotleja isikuomaduste, hariduse, elukäigu ja tööalase tegevusega. (3¹) Hindamisel on lubatud töödelda isiku tuvastamise",
       "estleg:legalText": "(1) Kriminaalhooldusabiline on isik, kes täidab kriminaalhooldusülesandeid oma vabast ajast ja tasu saamata. (2) Kriminaalhooldusabiline tegutseb kriminaalhooldusametniku juhendamisel. (3) Kriminaalhooldusabiline võib olla isik, kes on avaldanud sellekohast soovi ja sobib kriminaalhooldusabilisena tegutsema. Sobivuse hindamisel tutvutakse dokumentide ja vestluse kaudu taotleja isikuomaduste, hariduse, elukäigu ja tööalase tegevusega. (3¹) Hindamisel on lubatud töödelda isiku tuvastamise andmeid, kontaktandmeid, elukoha andmeid, isikut iseloomustavaid andmeid, sealhulgas isikuomadusi, hariduse ja õpingute andmeid, elulookirjelduse andmeid, isiku karistusandmeid ning töökoha ja varasema töökogemuse andmeid. (4) Kriminaalhooldusabiline ei või olla kohtunik ega prokurör, samuti kohtu, prokuratuuri, politsei või kinnipidamiskoha koosseisuline töötaja, kes on avalik teenistuja. (5) Kriminaalhooldusabiline ei tohi avaldada talle seoses ülesannete täitmisega teatavaks saanud asjaolusid ega andmeid, sealhulgas mistahes isikuandmeid ja isikute vahelisi suhteid puudutavaid andmeid. Saladuse hoidmise kohustus on tähtajatu.",
@@ -1431,8 +1795,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1452,7 +1820,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_17_Lg_1",
@@ -1465,7 +1837,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 1"
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_17_Lg_2",
@@ -1491,7 +1872,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 3"
+      "rdfs:label": "§ 17 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_17_Lg_3_1",
@@ -1504,7 +1897,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 3¹"
+      "rdfs:label": "§ 17 lg 3¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_17_Lg_4",
@@ -1517,7 +1922,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 4"
+      "rdfs:label": "§ 17 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_17_Lg_5",
@@ -1530,19 +1950,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 5"
+      "rdfs:label": "§ 17 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Kriminaalhooldusabiliste nimekiri",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldusabilisena võib tegutseda isik, kelle kriminaalhooldusosakonna juhataja on kandnud kriminaalhooldusabiliste nimekirja. (2) Osakonna kriminaalhooldusabiliste nimekirja peab kriminaalhooldusosakonna juhataja, üleriigilist kriminaalhooldusabiliste nimekirja peab Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Kriminaalhooldusabiliste nimekirja",
       "estleg:legalText": "(1) Kriminaalhooldusabilisena võib tegutseda isik, kelle kriminaalhooldusosakonna juhataja on kandnud kriminaalhooldusabiliste nimekirja. (2) Osakonna kriminaalhooldusabiliste nimekirja peab kriminaalhooldusosakonna juhataja, üleriigilist kriminaalhooldusabiliste nimekirja peab Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Kriminaalhooldusabiliste nimekirja märgitakse kriminaalhooldusabilise ees- ja perekonnanimi, elukoht, telefon ja töökoht. Kui kriminaalhooldusabiline eelistab tegelemist kindla isikute rühmaga, tehakse selle kohta nimekirja märge. (4) Isik kustutatakse kriminaalhooldusabiliste nimekirjast, kui ta on rikkunud kriminaalhooldaja kohustusi või muul viisil osutunud sobimatuks kriminaalhooldusabilisena tegutsema või on korduvalt põhjendamatult keeldunud kriminaalhooldusülesannete täitmisest või kui isik ei soovi enam kriminaalhooldusabilisena tegutseda. (5) Kehtetu -",
@@ -1570,8 +2002,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1612,7 +2048,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_18_Lg_1",
@@ -1625,7 +2065,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 1"
+      "rdfs:label": "§ 18 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_18_Lg_2",
@@ -1638,7 +2093,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 2"
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_18_Lg_3",
@@ -1651,7 +2118,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 3"
+      "rdfs:label": "§ 18 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_18_Lg_4",
@@ -1664,7 +2140,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 4"
+      "rdfs:label": "§ 18 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_18_Lg_5",
@@ -1683,13 +2168,13 @@
       "@id": "estleg:KrHS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Kriminaalhooldusabilise väljaõpe",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusosakond tagab kriminaalhooldusabilise väljaõppe enne tema asumist kriminaalhooldusülesannete täitmisele.",
       "estleg:legalText": "Kriminaalhooldusosakond tagab kriminaalhooldusabilise väljaõppe enne tema asumist kriminaalhooldusülesannete täitmisele.",
@@ -1701,7 +2186,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_19_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_19_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1714,7 +2199,7 @@
       ]
     },
     {
-      "@id": "estleg:KrHS_Par_19_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_19_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1728,13 +2213,13 @@
       "@id": "estleg:KrHS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Kriminaalhooldusabilise kulude hüvitamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusabilisele hüvitatakse kriminaalhooldustöö kulud, kuid mitte suurema summa ulatuses kui 10 protsenti kriminaalhooldusametnikule makstavast töötasust.",
       "estleg:legalText": "Kriminaalhooldusabilisele hüvitatakse kriminaalhooldustöö kulud, kuid mitte suurema summa ulatuses kui 10 protsenti kriminaalhooldusametnikule makstavast töötasust.",
@@ -1746,7 +2231,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_20_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_20_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1756,7 +2241,7 @@
       ]
     },
     {
-      "@id": "estleg:KrHS_Par_20_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_20_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1770,13 +2255,13 @@
       "@id": "estleg:KrHS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Kriminaalhooldusühing",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Valdkonna eest vastutav minister võib halduslepingu alusel anda kriminaalhooldusülesannete täitmise osaliselt mõne kohtu tööpiirkonnas selleks sobivale ja vastavat soovi avaldanud mittetulundusühingule. (2) Kriminaalhooldusühing peab tagama ühtse ja otstarbeka kriminaalhoolduse. (3) Kriminaalhooldusühingu kriminaalhooldusega tegelevatele liikmetele kohaldatakse kriminaalhoolduse teostamisel kriminaalhooldusametniku kohta käivaid sätteid.",
       "estleg:legalText": "(1) Valdkonna eest vastutav minister võib halduslepingu alusel anda kriminaalhooldusülesannete täitmise osaliselt mõne kohtu tööpiirkonnas selleks sobivale ja vastavat soovi avaldanud mittetulundusühingule. (2) Kriminaalhooldusühing peab tagama ühtse ja otstarbeka kriminaalhoolduse. (3) Kriminaalhooldusühingu kriminaalhooldusega tegelevatele liikmetele kohaldatakse kriminaalhoolduse teostamisel kriminaalhooldusametniku kohta käivaid sätteid. (4) Kriminaalhooldusühing määrab ühingu liikmed, kes kriminaalhoolduse teostamisel täidavad kriminaalhooldusosakonna juhataja või selle talituse juhataja ülesandeid. (5) Kriminaalhooldusühingu kulude hüvitamise ja rahalise toetuse määramise otsustab valdkonna eest vastutav minister iga-aastase riigieelarve seaduse alusel. (6) Kriminaalhooldusühingu tegevuse järele kriminaalhooldusülesannete täitmisel ja selleks riigi määratud rahalise toetuse kasutamisel valvavad sama piirkonna kriminaalhooldusosakonna juhataja ja valdkonna eest vastutav minister. (7) Kriminaalhooldusosakonna juhataja ja valdkonna eest vastutav minister võivad anda kriminaalhooldusühingule kriminaalhooldusülesannete täitmisel kohustuslikke juhiseid. Valdkonna eest vastutav minister võib kriminaalhooldusühinguga sõlmitud halduslepingu kriminaalhooldusülesannete mittenõuetekohasel täitmisel või kohustuslike juhiste järgimata jätmisel lõpetada halduslepingus sätestatud korras. (7¹) Kriminaalhooldusühingut ei loeta kriminaalhooldusega seotud ülesannete täitmisel õiguskaitseasutuseks isikuandmete kaitse seaduse § 13 lõike 2 tähenduses. Kriminaalhooldusühing on kriminaalhooldusega seotud isikuandmete töötlemisel andmete volitatud töötleja ja on kohustatud isikuandmete töötlemisel järgima vastutava töötleja juhiseid ning isikuandmete kaitse seaduses ning Euroopa Parlamendi ja nõukogu määruses (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) (ELT L 119, 04.05.2016, lk 1–88) volitatud töötlejale kehtestatud nõudeid. (7²) Kriminaalhooldusühing ega selle liikmed ei tohi avaldada neile seoses kriminaalhooldusülesannete täitmisega teatavaks saanud asjaolusid ega andmeid, sealhulgas mistahes isikuandmeid ja isikute vahelisi suhteid puudutavaid andmeid. Saladuse hoidmise kohustus on tähtajatu. (8) Riik soodustab ja toetab eraühingute poolt kriminaalhoolduse teostamist ja nende liikmete väljaõpet.",
@@ -1819,8 +2304,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1841,7 +2330,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kriminaalhooldusühing",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1849,7 +2337,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_1",
@@ -1862,7 +2354,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 1"
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_2",
@@ -1875,7 +2382,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 2"
+      "rdfs:label": "§ 21 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_3",
@@ -1901,7 +2415,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 4"
+      "rdfs:label": "§ 21 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_5",
@@ -1914,7 +2440,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 5"
+      "rdfs:label": "§ 21 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_6",
@@ -1927,7 +2462,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 6"
+      "rdfs:label": "§ 21 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_7",
@@ -1940,7 +2484,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 7"
+      "rdfs:label": "§ 21 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_7_1",
@@ -1953,7 +2509,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 7¹"
+      "rdfs:label": "§ 21 lg 7¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_7_2",
@@ -1966,7 +2534,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 7²"
+      "rdfs:label": "§ 21 lg 7²",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_21_Lg_8",
@@ -1985,13 +2565,13 @@
       "@id": "estleg:KrHS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Kriminaalhooldusühingute esindajate nõupidamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Vähemalt üks kord aastas korraldab valdkonna eest vastutav minister kriminaalhooldusühingute esindajate nõupidamise, millel arutatakse kriminaalhooldusühingute tegevuse finantseerimise ja täiendõppega seotud küsimusi ning kriminaalhoolduse sisulisi küsimusi ning arenguperspektiive.",
       "estleg:legalText": "Vähemalt üks kord aastas korraldab valdkonna eest vastutav minister kriminaalhooldusühingute esindajate nõupidamise, millel arutatakse kriminaalhooldusühingute tegevuse finantseerimise ja täiendõppega seotud küsimusi ning kriminaalhoolduse sisulisi küsimusi ning arenguperspektiive.",
@@ -2003,11 +2583,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_22_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_22_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2021,10 +2603,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_22_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_22_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2032,19 +2618,28 @@
       "estleg:legalText": "Vähemalt üks kord aastas korraldab valdkonna eest vastutav minister kriminaalhooldusühingute esindajate nõupidamise, millel arutatakse kriminaalhooldusühingute tegevuse finantseerimise ja täiendõppega seotud küsimusi ning kriminaalhoolduse sisulisi küsimusi ning arenguperspektiive.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_22"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Kohtueelse ettekande taotlemine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kohtu, prokuröri või vangla taotlusel nimetab kahtlustatava, süüdistatava või süüdimõistetu elukohajärgse kriminaalhooldusosakonna juhataja kriminaalhooldusametniku, kellele teeb ülesandeks kohtueelse ettekande koostamise. (2) Kriminaalhooldusametnik koostab kahtlustatava, süüdistatava või süüdimõistetu kohta käesoleva seaduse § 24 alusel kohtueelse ettekande ning esitab selle kohtule, prokurörile või vanglale nende soovitud tähtaja jooksul.",
       "estleg:legalText": "(1) Kohtu, prokuröri või vangla taotlusel nimetab kahtlustatava, süüdistatava või süüdimõistetu elukohajärgse kriminaalhooldusosakonna juhataja kriminaalhooldusametniku, kellele teeb ülesandeks kohtueelse ettekande koostamise. (2) Kriminaalhooldusametnik koostab kahtlustatava, süüdistatava või süüdimõistetu kohta käesoleva seaduse § 24 alusel kohtueelse ettekande ning esitab selle kohtule, prokurörile või vanglale nende soovitud tähtaja jooksul.",
@@ -2063,8 +2658,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2090,7 +2689,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_23_Lg_1",
@@ -2103,7 +2706,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 1"
+      "rdfs:label": "§ 23 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_23_Lg_2",
@@ -2121,19 +2736,31 @@
         {
           "@id": "estleg:KrHS_Par_24"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Kohtueelne ettekanne",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldusametnik koostab kahtlustatava, süüdistatava või süüdimõistetu kohta kohtueelse ettekande, mis sisaldab kokkuvõtet kahtlustatava või süüdistatava isikuomadustest ja sotsiaalsest olukorrast ning arvamust katseaja ja kahtlustatava, süüdistatava või süüdimõistetu suhtes kohaldatavate kohustuste valiku ja nende kohaldamise tähtaja kohta. (2) Kohtueelne ettekanne koosneb kahtlustatava või süüdistatava eluloolistest faktidest ja psühholoogilis-sotsiaalsest prognoosist.",
       "estleg:legalText": "(1) Kriminaalhooldusametnik koostab kahtlustatava, süüdistatava või süüdimõistetu kohta kohtueelse ettekande, mis sisaldab kokkuvõtet kahtlustatava või süüdistatava isikuomadustest ja sotsiaalsest olukorrast ning arvamust katseaja ja kahtlustatava, süüdistatava või süüdimõistetu suhtes kohaldatavate kohustuste valiku ja nende kohaldamise tähtaja kohta. (2) Kohtueelne ettekanne koosneb kahtlustatava või süüdistatava eluloolistest faktidest ja psühholoogilis-sotsiaalsest prognoosist. (3) Kriminaalhooldusametnik kohtub kahtlustatava või süüdistatavaga, tema lähedastega ja teiste isikutega, sealhulgas alaealise kahtlustatava korral kriminaalmenetluse seadustiku § 352 lõikes 2 nimetatud isikuga, kohtueelse ettekande koostamiseks vajaliku teabe kogumise eesmärgil, tutvub riigi- ja kohaliku omavalitsuse asutuste ning tervishoiuteenuse osutaja andmetega kahtlustatava või süüdistatava kohta, nõuab kahtlustatava või süüdistatava seaduslikult esindajalt, õppeasutuse juhilt ja tööandjalt andmeid kahtlustatava või süüdistatava käitumise ja õppimise kohta. (4) Kahtlustatava või süüdistatava eluloolised faktid peavad põhinema tõendatud andmetel ja sisaldama viiteid allikatele, mis kinnitavad kohtueelses ettekandes esitatud andmeid. (5) Kehtetu - (6) Alaealise kahtlustatava kohta kohtueelse ettekande koostamisel võetakse arvesse tema haavatavust, samuti tema suhtes varem tehtud individuaalsete hindamiste tulemusi. Kui ettekande aluseks olevad asjaolud menetluse kestel oluliselt muutuvad, koostatakse menetleja taotlusel täiendav ettekanne.",
@@ -2164,8 +2791,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2199,7 +2830,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_24_Lg_1",
@@ -2241,9 +2876,21 @@
       "rdfs:label": "§ 24 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:KRIMIN_2_Par_352"
+          "@id": "estleg:KRIMIN_2_Par_352_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_24_Lg_4",
@@ -2256,7 +2903,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 4"
+      "rdfs:label": "§ 24 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_24_Lg_5",
@@ -2288,13 +2942,13 @@
       "@id": "estleg:KrHS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Kriminaalhooldaja nimetamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusosakonda täitmisele saadetud kohtulahendi või prokuröri määruse alusel nimetab kriminaalhooldusosakonna juhataja kriminaalhooldusalusele konkreetse kriminaalhooldaja, lähtudes nimetatava spetsialiseerumisest ja töökoormusest. Võimaluse korral teostab kriminaalhooldust kriminaalhooldusametnik, kes koostas kohtueelse ettekande.",
       "estleg:legalText": "Kriminaalhooldusosakonda täitmisele saadetud kohtulahendi või prokuröri määruse alusel nimetab kriminaalhooldusosakonna juhataja kriminaalhooldusalusele konkreetse kriminaalhooldaja, lähtudes nimetatava spetsialiseerumisest ja töökoormusest. Võimaluse korral teostab kriminaalhooldust kriminaalhooldusametnik, kes koostas kohtueelse ettekande.",
@@ -2306,11 +2960,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_25_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_25_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2327,10 +2983,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_25_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_25_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2338,19 +2998,28 @@
       "estleg:legalText": "Kriminaalhooldusosakonda täitmisele saadetud kohtulahendi või prokuröri määruse alusel nimetab kriminaalhooldusosakonna juhataja kriminaalhooldusalusele konkreetse kriminaalhooldaja, lähtudes nimetatava spetsialiseerumisest ja töökoormusest. Võimaluse korral teostab kriminaalhooldust kriminaalhooldusametnik, kes koostas kohtueelse ettekande.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_25"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Kriminaalhoolduse teostamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhoolduse teostamise käigus valvab kriminaalhooldaja kohtuotsuses märgitud kohustuste täitmise järele, abistab ja nõustab kriminaalhooldusalust nimetatud kohustuste täitmisel ning osutab talle sotsiaalset kohanemist soodustavat abi. (2) Kriminaalhooldusalusele osutatakse katseaja jooksul abi töö, õppimis- ja elukoha leidmisel, samuti teiste isiklike probleemide lahendamisel. (3) Kriminaalhooldaja peab soodustama kriminaalhooldusaluse võimet igapäevases elus iseseisvalt toime tulla.",
       "estleg:legalText": "(1) Kriminaalhoolduse teostamise käigus valvab kriminaalhooldaja kohtuotsuses märgitud kohustuste täitmise järele, abistab ja nõustab kriminaalhooldusalust nimetatud kohustuste täitmisel ning osutab talle sotsiaalset kohanemist soodustavat abi. (2) Kriminaalhooldusalusele osutatakse katseaja jooksul abi töö, õppimis- ja elukoha leidmisel, samuti teiste isiklike probleemide lahendamisel. (3) Kriminaalhooldaja peab soodustama kriminaalhooldusaluse võimet igapäevases elus iseseisvalt toime tulla. (4) Kriminaalhoolduse teostamisel peab kriminaalhooldaja austama kriminaalhooldusaluse väärikust. (5) Kriminaalhoolduse teostamiseks vajalikke andmeid töödeldakse vangistusseaduse §-de 51–54 kohaselt.",
@@ -2382,12 +3051,12 @@
           "@id": "estleg:KrHS_Par_38_1"
         },
         {
-          "@id": "estleg:KrHS_Par_38_1_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_38_1_Lg_1"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1009209_Map_2026"
+          "@id": "estleg:Reg_1009209_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -2420,7 +3089,10 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kriminaalhooldaja"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_Lg_1",
@@ -2459,7 +3131,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 3"
+      "rdfs:label": "§ 26 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_Lg_4",
@@ -2472,7 +3151,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 4"
+      "rdfs:label": "§ 26 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_Lg_5",
@@ -2491,13 +3177,13 @@
       "@id": "estleg:KrHS_Par_26_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26¹.",
       "rdfs:label": "§ 26¹. Kriminaalhooldusalusele keelatud aine tarvitamise kontrollimine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kui kohus on määranud kriminaalhooldusalusele kohustuse mitte tarvitada alkoholi ja narkootikume, on kriminaalhooldajal õigus kontrollida kriminaalhooldusalust ning tuvastada alkoholi ja narkootikumide tarvitamine. Alkoholi või narkootikumide tarvitamise tuvastamisel lähtutakse korrakaitseseaduse §-des 38–41 sätestatud korrast. (2) Kui kriminaalhooldusametnik ei pea vajalikuks muude andmete kogumist ja kriminaalhooldusalune ei nõua alkoholisisalduse kindlaksmääramist veres või",
       "estleg:legalText": "(1) Kui kohus on määranud kriminaalhooldusalusele kohustuse mitte tarvitada alkoholi ja narkootikume, on kriminaalhooldajal õigus kontrollida kriminaalhooldusalust ning tuvastada alkoholi ja narkootikumide tarvitamine. Alkoholi või narkootikumide tarvitamise tuvastamisel lähtutakse korrakaitseseaduse §-des 38–41 sätestatud korrast. (2) Kui kriminaalhooldusametnik ei pea vajalikuks muude andmete kogumist ja kriminaalhooldusalune ei nõua alkoholisisalduse kindlaksmääramist veres või väljahingatavas õhus või narkootikumide tarvitamise tuvastamist verest või bioloogilisest vedelikust võetud prooviga, võib piirduda indikaatorvahendi kasutamisega ning isikul esinevate alkoholi või narkootikumide tarvitamise tunnuste kirjeldusega. (3) Indikaatorvahendi kasutamise ning isikul alkoholi või narkootikumide tarvitamise tunnuste esinemise või puudumise kohta koostab kriminaalhooldusametnik protokolli. Indikaatorvahendi kasutamise ning kriminaalhooldusalusel esinenud alkoholi või narkootikumide tarvitamisele viitavate tunnuste protokolli vormi kehtestab määrusega. (4) Kui kriminaalhooldusalune nõuab alkoholisisalduse kindaksmääramist veres või narkootikumide tarvitamise tuvastamist verest või bioloogilisest vedelikust võetud prooviga, peab kriminaalhooldusalune hüvitama vere- või bioloogilise vedeliku proovi (edaspidi proov) võtmise, säilitamise ja edastamise ning uuringu tegemisega kaasnenud kulutused, välja arvatud juhul, kui proov on negatiivne. Sel juhul kannab kulud vangla. Positiivset proovi kinnitav dokument on täitedokument täitemenetluse seadustiku § 2 lõike 1 punkti 21 tähenduses. (5) Kui proov võetakse tervishoiuteenuse osutaja juures, korraldab kriminaalhooldaja või vangla võetud proovi toimetamise riiklikku ekspertiisiasutusse uuringu tegemiseks ja alkoholi või narkootikumide tarvitamise tuvastamiseks. (6) Kui kriminaalhooldusalune keeldub indikaatorvahendiga kontrollist, proovi andmiseks tervishoiuteenuse osutaja juurde minekust, samuti tervishoiuteenuse osutaja juures proovi andmisest, on tegemist kriminaalhooldaja kontrollile mitteallumisega. Sellisel juhul loeb kriminaalhooldaja kriminaalhooldusaluse tegevuse karistusseadustiku § 75 lõike 1 punkti 3 kohaseks kontrollinõude rikkumiseks.",
@@ -2528,8 +3214,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -2543,6 +3233,12 @@
         },
         {
           "@id": "estleg:KORS_Par_41"
+        },
+        {
+          "@id": "estleg:TMS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KARIST_2_Osa1_Par_75_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2569,7 +3265,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_1_Lg_1",
@@ -2596,7 +3296,16 @@
         {
           "@id": "estleg:KORS_Par_41"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_1_Lg_2",
@@ -2609,7 +3318,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_26_1"
       },
-      "rdfs:label": "§ 26¹ lg 2"
+      "rdfs:label": "§ 26¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_1_Lg_3",
@@ -2622,7 +3343,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_26_1"
       },
-      "rdfs:label": "§ 26¹ lg 3"
+      "rdfs:label": "§ 26¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_1_Lg_4",
@@ -2638,9 +3368,17 @@
       "rdfs:label": "§ 26¹ lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TMS_Par_2"
+          "@id": "estleg:TMS_Par_2_Lg_1"
         }
-      ]
+      ],
+      "estleg:itemNumber": "21",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_26_1_Lg_5",
@@ -2669,21 +3407,22 @@
       "rdfs:label": "§ 26¹ lg 6",
       "estleg:references": [
         {
-          "@id": "estleg:KARIST_2_Osa1_Par_75"
+          "@id": "estleg:KARIST_2_Osa1_Par_75_Lg_1"
         }
-      ]
+      ],
+      "estleg:itemNumber": "3"
     },
     {
       "@id": "estleg:KrHS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Hoolduskava",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Pärast kohtuotsuse jõustumist hindab kriminaalhooldaja kriminaalhooldusaluse kriminogeenseid riske ning koostab neist lähtudes kohtuotsuses märgitud kohustuste täitmise ja kriminaalhoolduse läbiviimise kava (edaspidi hoolduskava). (2) Hoolduskava koostamisel osaleb ka kriminaalhooldusalune. (3) Kriminaalhooldaja hindab kriminaalhooldusaluse kriminogeenseid riske katseaja vältel vähemalt üks kord aastas, teeb hoolduskavasse täitmismärked ning vajaduse korral muudab hoolduskava.",
       "estleg:legalText": "(1) Pärast kohtuotsuse jõustumist hindab kriminaalhooldaja kriminaalhooldusaluse kriminogeenseid riske ning koostab neist lähtudes kohtuotsuses märgitud kohustuste täitmise ja kriminaalhoolduse läbiviimise kava (edaspidi hoolduskava). (2) Hoolduskava koostamisel osaleb ka kriminaalhooldusalune. (3) Kriminaalhooldaja hindab kriminaalhooldusaluse kriminogeenseid riske katseaja vältel vähemalt üks kord aastas, teeb hoolduskavasse täitmismärked ning vajaduse korral muudab hoolduskava. (4) Kehtetu - (5) Kohtule esitatakse hoolduskava ja selle muutmine ning täitmismärked kohtu nõudmisel. (6) Kriminaalhooldusalusele, kellele on määratud või mõistetud üldkasuliku töö tegemine, koostatakse üldkasuliku töö tegemise ajakava.",
@@ -2714,7 +3453,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2737,7 +3478,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_27_Lg_1",
@@ -2802,7 +3547,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_27"
       },
-      "rdfs:label": "§ 27 lg 5"
+      "rdfs:label": "§ 27 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_27_Lg_6",
@@ -2821,13 +3575,13 @@
       "@id": "estleg:KrHS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Sotsiaalne rühmatöö",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldust võib teostada ka sotsiaalse rühmatöö vormis.",
       "estleg:legalText": "Kriminaalhooldust võib teostada ka sotsiaalse rühmatöö vormis.",
@@ -2839,7 +3593,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_28_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_28_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2849,10 +3603,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:KrHS_Par_28_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_28_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2860,19 +3618,26 @@
       "estleg:legalText": "Kriminaalhooldust võib teostada ka sotsiaalse rühmatöö vormis.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_28"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_28_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28¹.",
       "rdfs:label": "§ 28¹. Võrgustikutöö kriminaalhoolduse teostamisel",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldust võib teostada võrgustikutöö vormis nii kriminaalhooldusaluste kui ka kriminaalhooldusalusega seotud isikute puhul, kelle abistamine on vajalik juhtumikorralduse põhimõttel võrgustikutöö raames. (2) Kriminaalhooldajal on kriminaalhoolduse ja võrgustikutöö teostamiseks õigus kaasata asjaomaseid asutusi ja spetsialiste. Õigus võrgustikutööks vajalikke andmeid töödelda on ka võrgustikutöösse kaasatud osapooltel. (3) Kriminaalhooldajal on õigus võrgustikutöösse kaasata järgmisi",
       "estleg:legalText": "(1) Kriminaalhooldust võib teostada võrgustikutöö vormis nii kriminaalhooldusaluste kui ka kriminaalhooldusalusega seotud isikute puhul, kelle abistamine on vajalik juhtumikorralduse põhimõttel võrgustikutöö raames. (2) Kriminaalhooldajal on kriminaalhoolduse ja võrgustikutöö teostamiseks õigus kaasata asjaomaseid asutusi ja spetsialiste. Õigus võrgustikutööks vajalikke andmeid töödelda on ka võrgustikutöösse kaasatud osapooltel. (3) Kriminaalhooldajal on õigus võrgustikutöösse kaasata järgmisi asutusi ja spetsialiste: Politsei- ja Piirivalveamet; Maksu- ja Tolliamet; kohus; Töötukassa; Sotsiaalkindlustusamet; sotsiaalhoolekandeasutus; kohaliku omavalitsuse üksus; vägivallast või sõltuvusest loobumise toetamise teenuse osutaja; haridusasutus; raviasutus; kohtutäitur; põhjendatud juhul muu asutus või spetsialist.",
@@ -2894,8 +3659,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2912,7 +3681,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_28_1_Lg_1",
@@ -2925,7 +3698,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_28_1"
       },
-      "rdfs:label": "§ 28¹ lg 1"
+      "rdfs:label": "§ 28¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_28_1_Lg_2",
@@ -2938,7 +3723,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_28_1"
       },
-      "rdfs:label": "§ 28¹ lg 2"
+      "rdfs:label": "§ 28¹ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_28_1_Lg_3",
@@ -2951,19 +3745,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_28_1"
       },
-      "rdfs:label": "§ 28¹ lg 3"
+      "rdfs:label": "§ 28¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Kriminaalhooldusaluse kohustused",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2992,13 +3801,13 @@
       "@id": "estleg:KrHS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Korraline ettekanne",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldaja koostab sellise kriminaalhooldusaluse kohta, kelle kriminogeenseid riske ei ole hinnatud, katseaja jooksul korralisi ettekandeid, mis sisaldavad hinnangut senisele katseajale, ülevaadet kohtuotsuse ja hoolduskava täitmisest ning hoolduskava muutmisest. (2) Korraline ettekanne koostatakse vähemalt iga kuue kuu järel. (3) Kehtetu - (4) Korraline ettekanne esitatakse kohtule kohtu nõudmisel. (5) Kriminaalhooldusaluse kohta, kellele on määratud või mõistetud üldkasuliku töö",
       "estleg:legalText": "(1) Kriminaalhooldaja koostab sellise kriminaalhooldusaluse kohta, kelle kriminogeenseid riske ei ole hinnatud, katseaja jooksul korralisi ettekandeid, mis sisaldavad hinnangut senisele katseajale, ülevaadet kohtuotsuse ja hoolduskava täitmisest ning hoolduskava muutmisest. (2) Korraline ettekanne koostatakse vähemalt iga kuue kuu järel. (3) Kehtetu - (4) Korraline ettekanne esitatakse kohtule kohtu nõudmisel. (5) Kriminaalhooldusaluse kohta, kellele on määratud või mõistetud üldkasuliku töö tegemine, koostatakse ning esitatakse korraline ettekanne kohtu või prokuratuuri nõudmisel.",
@@ -3026,7 +3835,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3052,7 +3863,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_30_Lg_1",
@@ -3104,7 +3919,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 4"
+      "rdfs:label": "§ 30 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_30_Lg_5",
@@ -3117,19 +3941,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_30"
       },
-      "rdfs:label": "§ 30 lg 5"
+      "rdfs:label": "§ 30 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_30_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30¹.",
       "rdfs:label": "§ 30¹. Ettekanne kriminaalhoolduse lõppemise kohta",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kui kriminaalhooldus lõpeb või üldkasulik töö on tehtud, koostab kriminaalhooldusametnik ettekande, mis sisaldab ülevaadet kogu katseajast või üldkasuliku töö kohustuse täitmisest ning kontrollnõuete ja kohustuste täitmisest katseajal. (2) Kehtetu - (3) Ettekanne esitatakse kohtule või prokuratuurile selle nõudmisel.",
       "estleg:legalText": "(1) Kui kriminaalhooldus lõpeb või üldkasulik töö on tehtud, koostab kriminaalhooldusametnik ettekande, mis sisaldab ülevaadet kogu katseajast või üldkasuliku töö kohustuse täitmisest ning kontrollnõuete ja kohustuste täitmisest katseajal. (2) Kehtetu - (3) Ettekanne esitatakse kohtule või prokuratuurile selle nõudmisel.",
@@ -3151,7 +3984,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3168,7 +4003,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_30_1_Lg_1",
@@ -3207,19 +4046,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_30_1"
       },
-      "rdfs:label": "§ 30¹ lg 3"
+      "rdfs:label": "§ 30¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Erakorraline ettekanne",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldusametnik esitab kohtule kriminaalhooldusaluse kohta erakorralise ettekande karistusseadustikus või kriminaalmenetluse seadustikus sätestatud juhtudel. (2) Erakorraline ettekanne sisaldab andmeid tuvastatud rikkumise asjaolude kohta, kokkuvõtet kriminaalhooldusaluse seletusest, kriminaalhooldusametniku hinnangut katseaja senisele kulgemisele ning kriminaalhooldusametniku põhjendatud ettepanekut täiendavate kohustuste määramise, käitumiskontrolli tähtaja pikendamise,",
       "estleg:legalText": "(1) Kriminaalhooldusametnik esitab kohtule kriminaalhooldusaluse kohta erakorralise ettekande karistusseadustikus või kriminaalmenetluse seadustikus sätestatud juhtudel. (2) Erakorraline ettekanne sisaldab andmeid tuvastatud rikkumise asjaolude kohta, kokkuvõtet kriminaalhooldusaluse seletusest, kriminaalhooldusametniku hinnangut katseaja senisele kulgemisele ning kriminaalhooldusametniku põhjendatud ettepanekut täiendavate kohustuste määramise, käitumiskontrolli tähtaja pikendamise, alaealisele kriminaalhooldusalusele kohaldatavate mõjutusvahendite liigi muutmise või karistuse täitmisele pööramise kohta. (2¹) Erakorraline ettekanne kahtlustatava, süüdistatava või süüdimõistetu poolt elektroonilisele valvele allumise kohustuse rikkumise kohta sisaldab andmeid tuvastatud rikkumise asjaolude kohta, kriminaalhooldusaluse seletuse kokkuvõtet ning kriminaalhooldusametniku ettepanekut elektroonilise valve kohaldamise lõpetamiseks ning vahistamise kohaldamiseks või elektroonilise valve kohaldamise lõpetamiseks ning vangistuse kohaldamiseks. Vangistuse kohaldamise ettepanekule lisatakse ka elektroonilise valve all viibitud päevade arv. (2²) Kui kriminaalhooldusalune hoidub kõrvale talle määratud narkomaanide sõltuvusravist või seksuaalkurjategijate kompleksravist, esitab selle rikkumise tuvastanud kriminaalhooldusametnik kohtule ettekande, mis sisaldab andmeid rikkumise asjaolude kohta, kokkuvõtet kriminaalhooldusaluse seletusest ning ettepanekut sõltuvusravi või kompleksravi kohaldamise lõpetamiseks ja vangistuse täitmisele pööramiseks. (3) Kui kriminaalhooldusalune hoidub kõrvale talle määratud üldkasuliku töö tegemise kohustuse täitmisest, esitab selle rikkumise tuvastanud kriminaalhooldusametnik prokurörile ettekande, mis sisaldab andmeid rikkumise asjaolude kohta, tehtud üldkasuliku töö tundide arvu ning kokkuvõtet kriminaalhooldusaluse seletusest. (4) Kriminaalhooldusalusele määratud kohustuste kergendamiseks või tühistamiseks, elektroonilise valve tähtaja pikendamiseks või lühendamiseks või esialgu määratud käitumiskontrollist vabastamiseks või selle tähtaja lühendamiseks esitatavas erakorralises ettekandes annab kriminaalhooldusametnik hinnangu katseaja senisele kulgemisele ning esitab põhjendatud ettepaneku. (5) Kriminaalhooldusaluse kohta, kellele on mõistetud või määratud üldkasulik töö, esitatakse kohtule või prokuratuurile erakorraline ettekanne tähtaja kulgemise peatamiseks kriminaalhooldusaluse haiguse või perekondliku olukorra tõttu või ajaks, kui kriminaalhooldusalune on aja-, asendus- või reservteenistuses. Üldkasuliku töö tähtaja kulgemise peatamist käsitlev ettekanne sisaldab andmeid peatamise aluste ja ettepanekut peatamise aja kohta. (6) Kui kahtlustatav, süüdistatav või süüdimõistetu, kellele kohus on kohaldanud elektroonilise valvega ajutist lähenemiskeeldu või lähenemiskeeldu, rikub elektroonilisele valvele allumise kohustust, teavitab kriminaalhooldusametnik viivitamata uurimisasutust või prokuratuuri selle kohustuse rikkumisest. Erakorraline ettekanne rikkumise kohta esitatakse uurimisasutusele või prokuratuurile tema nõudmisel.",
@@ -3256,8 +4104,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3301,7 +4153,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_31_Lg_1",
@@ -3314,7 +4170,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 1"
+      "rdfs:label": "§ 31 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_31_Lg_2",
@@ -3353,7 +4218,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 2²"
+      "rdfs:label": "§ 31 lg 2²",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_31_Lg_3",
@@ -3366,7 +4240,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 3"
+      "rdfs:label": "§ 31 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_31_Lg_4",
@@ -3392,7 +4275,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 5"
+      "rdfs:label": "§ 31 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_31_Lg_6",
@@ -3405,19 +4297,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 6"
+      "rdfs:label": "§ 31 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Kriminaalhooldaja asendamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kriminaalhooldaja asendatakse, kui: kriminaalhooldusametnik vabastatakse ametist või viiakse üle teise kriminaalhooldusosakonna koosseisu; kriminaalhooldusametniku teenistussuhe on peatatud; kriminaalhoolduse eesmärk ja huvid nõuavad senise kriminaalhooldaja asendamist; kriminaalhooldusalune muudab elukohta. (2) Käesoleva paragrahvi lõike 1 punktis 4 nimetatud juhul võib jätta kriminaalhooldaja asendamata, kui asendamine pole vajalik kriminaalhoolduse eesmärkide saavutamise seisukohalt ega",
       "estleg:legalText": "(1) Kriminaalhooldaja asendatakse, kui: kriminaalhooldusametnik vabastatakse ametist või viiakse üle teise kriminaalhooldusosakonna koosseisu; kriminaalhooldusametniku teenistussuhe on peatatud; kriminaalhoolduse eesmärk ja huvid nõuavad senise kriminaalhooldaja asendamist; kriminaalhooldusalune muudab elukohta. (2) Käesoleva paragrahvi lõike 1 punktis 4 nimetatud juhul võib jätta kriminaalhooldaja asendamata, kui asendamine pole vajalik kriminaalhoolduse eesmärkide saavutamise seisukohalt ega ole majanduslikult põhjendatud. (3) Uue kriminaalhooldaja nimetamisel rakendatakse käesoleva seaduse paragrahvis 25 sätestatut. (4) Kehtetu -",
@@ -3442,7 +4343,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3462,7 +4365,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_32_Lg_1",
@@ -3475,7 +4382,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 1"
+      "rdfs:label": "§ 32 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_32_Lg_2",
@@ -3488,7 +4404,15 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 2"
+      "rdfs:label": "§ 32 lg 2",
+      "estleg:itemNumber": "4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_32_Lg_3",
@@ -3520,13 +4444,13 @@
       "@id": "estleg:KrHS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33.",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KrHS_8"
@@ -3545,13 +4469,13 @@
       "@id": "estleg:KrHS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -3574,13 +4498,13 @@
       "@id": "estleg:KrHS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Kriminaalhooldusametniku ametisse nimetamise erisused",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kuni 1999. aasta 31. detsembrini nimetab justiitsminister kriminaalhooldusametnikuks isiku, kes on läbinud justiitsministri kinnitatud koolituse, sooritanud eksami ning kellel on kriminaalhooldustööks vajalikud kõlbelised omadused. (2) Koolitusse valitakse konkursi alusel isikud, kellel on vähemalt keskharidus. (3) Koolitusse võetud isik asub teenistusse kohtu tehnilise sekretäri ametikohale kolmekuulise katseajaga. (4) Koolituse läbinud isik sooritab kriminaalhooldusametniku eksami",
       "estleg:legalText": "(1) Kuni 1999. aasta 31. detsembrini nimetab justiitsminister kriminaalhooldusametnikuks isiku, kes on läbinud justiitsministri kinnitatud koolituse, sooritanud eksami ning kellel on kriminaalhooldustööks vajalikud kõlbelised omadused. (2) Koolitusse valitakse konkursi alusel isikud, kellel on vähemalt keskharidus. (3) Koolitusse võetud isik asub teenistusse kohtu tehnilise sekretäri ametikohale kolmekuulise katseajaga. (4) Koolituse läbinud isik sooritab kriminaalhooldusametniku eksami justiitsministri kinnitatud komisjoni ees. (5) Justiitsminister kinnitab konkursi korras kriminaalhoolduseksami sooritanud isiku kriminaalhooldusametniku ametikohale. (6) Kriminaalhooldusametniku konkursi korra kinnitab justiitsminister. (7) Konkursi läbinud isiku nimetab justiitsminister vastava kohtu kriminaalhooldusametnikuks. (8) Kriminaalhooldusametnik osaleb kutsetöö kõrval Justiitsministeeriumi poolt korraldatavas täiendõppes ning läbib pärast üheaastast koolitust atesteerimise, mille korraldab justiitsministri kinnitatud atesteerimiskomisjon. (9) Kuni kriminaalhooldusametnike ametisse nimetamiseni täidavad kriminaalhooldusametniku ülesandeid käesoleva paragrahvi lõikes 3 nimetatud isikud. (10) Enne 2004. aasta 1. maid ametisse nimetatud kriminaalhooldusametnikele ei laiene käesoleva seaduse § 13 lõike 2 alusel kehtestatavad täiendavad kvalifikatsiooninõuded.",
@@ -3623,8 +4547,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -3655,7 +4583,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_1",
@@ -3668,7 +4600,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 1"
+      "rdfs:label": "§ 36 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_2",
@@ -3681,7 +4622,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 2"
+      "rdfs:label": "§ 36 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_3",
@@ -3694,7 +4644,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 3"
+      "rdfs:label": "§ 36 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_4",
@@ -3707,7 +4666,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 4"
+      "rdfs:label": "§ 36 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_5",
@@ -3720,7 +4688,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 5"
+      "rdfs:label": "§ 36 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_6",
@@ -3746,7 +4723,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 7"
+      "rdfs:label": "§ 36 lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_8",
@@ -3772,7 +4758,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36"
       },
-      "rdfs:label": "§ 36 lg 9"
+      "rdfs:label": "§ 36 lg 9",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_36_Lg_10",
@@ -3788,7 +4783,7 @@
       "rdfs:label": "§ 36 lg 10",
       "estleg:references": [
         {
-          "@id": "estleg:KrHS_Par_13"
+          "@id": "estleg:KrHS_Par_13_Lg_2"
         }
       ]
     },
@@ -3796,13 +4791,13 @@
       "@id": "estleg:KrHS_Par_36_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36¹.",
       "rdfs:label": "§ 36¹. Kriminaalhooldusnõuniku kohustustest vabastamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Kriminaalhooldusametnikud vabastatakse neile pandud täiendavatest kriminaalhooldusnõuniku kohustustest vastava kohtu haldusdirektori käskkirjaga alates 2004. aasta 1. maist.",
       "estleg:legalText": "Kriminaalhooldusametnikud vabastatakse neile pandud täiendavatest kriminaalhooldusnõuniku kohustustest vastava kohtu haldusdirektori käskkirjaga alates 2004. aasta 1. maist.",
@@ -3814,11 +4809,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_36_1_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_36_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3829,10 +4826,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_36_1_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_36_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3840,19 +4841,28 @@
       "estleg:legalText": "Kriminaalhooldusametnikud vabastatakse neile pandud täiendavatest kriminaalhooldusnõuniku kohustustest vastava kohtu haldusdirektori käskkirjaga alates 2004. aasta 1. maist.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_36_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Kriminaalhooldusosakonna ja selle talituse juhataja",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Kuni 2002. aasta 1. jaanuarini nimetab kriminaalhooldusosakonna juhataja ja kriminaalhooldusosakonna talituse juhataja ametisse justiitsminister. (2) Kuni 2002. aasta 1. jaanuarini kohaldatakse kriminaalhooldusosakondade talituste juhatajate ametisse nimetamisel käesoleva seaduse § 36 lõigete 2–6 sätteid. (3) Enne 2006. aasta 1. jaanuarit ametisse nimetatud kriminaalhooldusosakonna juhatajad vormistatakse nende nõusolekul määratud tähtajaks ametisse alates 2006. aasta 1. jaanuarist.",
       "estleg:legalText": "(1) Kuni 2002. aasta 1. jaanuarini nimetab kriminaalhooldusosakonna juhataja ja kriminaalhooldusosakonna talituse juhataja ametisse justiitsminister. (2) Kuni 2002. aasta 1. jaanuarini kohaldatakse kriminaalhooldusosakondade talituste juhatajate ametisse nimetamisel käesoleva seaduse § 36 lõigete 2–6 sätteid. (3) Enne 2006. aasta 1. jaanuarit ametisse nimetatud kriminaalhooldusosakonna juhatajad vormistatakse nende nõusolekul määratud tähtajaks ametisse alates 2006. aasta 1. jaanuarist.",
@@ -3874,16 +4884,18 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:KrHS_Par_36"
+          "@id": "estleg:KrHS_Par_36_Lg_2"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_321644_Map_2026"
+          "@id": "estleg:Reg_321644_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -3914,7 +4926,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_Lg_1",
@@ -3927,7 +4943,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_37"
       },
-      "rdfs:label": "§ 37 lg 1"
+      "rdfs:label": "§ 37 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_Lg_2",
@@ -3943,9 +4968,18 @@
       "rdfs:label": "§ 37 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:KrHS_Par_36"
+          "@id": "estleg:KrHS_Par_36_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_Lg_3",
@@ -3958,19 +4992,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_37"
       },
-      "rdfs:label": "§ 37 lg 3"
+      "rdfs:label": "§ 37 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37¹.",
       "rdfs:label": "§ 37¹. [1 (1) Maakohtute juures asuvad kriminaalhooldusosakonnad korraldatakse ümber ja...]",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "(1) Maakohtute juures asuvad kriminaalhooldusosakonnad korraldatakse ümber ja ühendatakse vanglate kriminaalhooldusosakondadeks alates 2008. aasta 1. juunist. Kriminaalhooldusosakondade ja vanglate ühendamist korraldab justiitsminister. (2) Kriminaalhooldusosakonna teenistujate teenistuse jätkamisel vanglate koosseisus ettenähtud ametikohtadel või nende teenistussuhte lõpetamisel kohaldatakse avaliku teenistuse seaduse § 115 lõikes 2 sätestatut.",
       "estleg:legalText": "(1) Maakohtute juures asuvad kriminaalhooldusosakonnad korraldatakse ümber ja ühendatakse vanglate kriminaalhooldusosakondadeks alates 2008. aasta 1. juunist. Kriminaalhooldusosakondade ja vanglate ühendamist korraldab justiitsminister. (2) Kriminaalhooldusosakonna teenistujate teenistuse jätkamisel vanglate koosseisus ettenähtud ametikohtadel või nende teenistussuhte lõpetamisel kohaldatakse avaliku teenistuse seaduse § 115 lõikes 2 sätestatut. (3) Kriminaalhooldusosakondade teenistujad, kelle teenistusülesanded ja ametinimetus kriminaalhooldusosakondade vanglate osakondadeks muutmise tõttu ei muutu või kelle ametinimetuse muutmisega ei muutu teenistusülesanded, jätkavad teenistust alates 2008. aasta 1. juunist vanglate koosseisus määramata tähtajaga. (4) Justiitsministril ja maakohtute kohtudirektoritel on enne 2008. aasta 1. juunit õigus anda käskkirju teenistujate vabastamiseks koondamise tõttu ja teha riigisekretärile ettepanekuid kuulutada avalik konkurss ametikohtade täitmiseks, lähtudes kriminaalhooldusosakondade struktuurist ja koosseisust. Avaliku teenistuse seaduse § 116 lõike 3 kohase ettepaneku teenistujale asuda teisele ametikohale teeb justiitsminister või tema volitusel maakohtu kohtudirektor või vangla vangladirektor.",
@@ -3995,7 +5038,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4015,7 +5060,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_1_Lg_1",
@@ -4044,9 +5093,18 @@
       "rdfs:label": "§ 37¹ lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:AVALIK_Par_115"
+          "@id": "estleg:AVALIK_Par_115_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_1_Lg_3",
@@ -4059,7 +5117,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_37_1"
       },
-      "rdfs:label": "§ 37¹ lg 3"
+      "rdfs:label": "§ 37¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_37_1_Lg_4",
@@ -4077,19 +5144,28 @@
         {
           "@id": "estleg:AVALIK_Par_116"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Seaduse jõustumise hetkel tingimisi karistust kandvate ja tingimisi enne tähtaega vabastatute suhtes kriminaalhoolduse kohaldamine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Isikud, kelle suhtes on enne käesoleva seaduse jõustumist kohaldatud tingimisi karistamist või tingimisi karistusest enne tähtaega vabastamist ning kelle katseaeg seaduse jõustumise hetkeks ei ole lõppenud, võetakse arvele isikute elukohajärgsetes kriminaalhooldusosakondades ühe aasta jooksul pärast seaduse jõustumist.",
       "estleg:legalText": "Isikud, kelle suhtes on enne käesoleva seaduse jõustumist kohaldatud tingimisi karistamist või tingimisi karistusest enne tähtaega vabastamist ning kelle katseaeg seaduse jõustumise hetkeks ei ole lõppenud, võetakse arvele isikute elukohajärgsetes kriminaalhooldusosakondades ühe aasta jooksul pärast seaduse jõustumist.",
@@ -4101,11 +5177,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_38_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_38_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4116,10 +5194,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_38_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_38_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4127,19 +5209,28 @@
       "estleg:legalText": "Isikud, kelle suhtes on enne käesoleva seaduse jõustumist kohaldatud tingimisi karistamist või tingimisi karistusest enne tähtaega vabastamist ning kelle katseaeg seaduse jõustumise hetkeks ei ole lõppenud, võetakse arvele isikute elukohajärgsetes kriminaalhooldusosakondades ühe aasta jooksul pärast seaduse jõustumist.",
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_38"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KrHS_Par_38_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38¹.",
       "rdfs:label": "§ 38¹. Kriminaalhoolduse teostamiseks vajalike andmete töötlemiseks asutatud kriminaalhooldusregister ja selle andmed",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Enne 2015. aasta 1. juunit käesoleva seaduse § 26 lõike 5 alusel kriminaalhoolduse teostamiseks vajalike andmete töötlemiseks asutatud andmekogu ja selle andmed liidetakse vangistusseaduse § 51 kohaselt asutatava kinnipeetavate, arestialuste, vahistatute ja kriminaalhooldusaluste andmekoguga.",
       "estleg:legalText": "Enne 2015. aasta 1. juunit käesoleva seaduse § 26 lõike 5 alusel kriminaalhoolduse teostamiseks vajalike andmete töötlemiseks asutatud andmekogu ja selle andmed liidetakse vangistusseaduse § 51 kohaselt asutatava kinnipeetavate, arestialuste, vahistatute ja kriminaalhooldusaluste andmekoguga.",
@@ -4151,15 +5242,17 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_38_1_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_38_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:KrHS_Par_26"
+          "@id": "estleg:KrHS_Par_26_Lg_5"
         }
       ],
       "estleg:hasVersion": [
@@ -4171,10 +5264,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KrHS_Par_38_1_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_38_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4185,21 +5282,30 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:KrHS_Par_26"
+          "@id": "estleg:KrHS_Par_26_Lg_5"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KrHS_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kriminaalhooldusseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Seaduse jõustumine",
       "estleg:sourceAct": "Kriminaalhooldusseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KrHS_Map_2026"
+        "@id": "estleg:KrHS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 1998. aasta 1. mail.",
       "estleg:legalText": "Käesolev seadus jõustub 1998. aasta 1. mail.",
@@ -4211,7 +5317,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KrHS_Par_39_Lg_Unknown_1"
+          "@id": "estleg:KrHS_Par_39_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4221,7 +5327,7 @@
       ]
     },
     {
-      "@id": "estleg:KrHS_Par_39_Lg_Unknown_1",
+      "@id": "estleg:KrHS_Par_39_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4230,6 +5336,30 @@
       "estleg:parentProvision": {
         "@id": "estleg:KrHS_Par_39"
       }
+    },
+    {
+      "@id": "estleg:Citation_KrHS_P_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KrHS_Par_2"
+      },
+      "estleg:citationDetail": "KarS",
+      "estleg:citationText": "karistusseadustiku § 751"
+    },
+    {
+      "@id": "estleg:Citation_KrHS_P_2_Lg_1_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KrHS_Par_2_Lg_1"
+      },
+      "estleg:citationDetail": "KarS",
+      "estleg:citationText": "karistusseadustiku § 751"
     }
   ]
 }

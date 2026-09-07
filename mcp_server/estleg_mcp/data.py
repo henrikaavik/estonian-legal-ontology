@@ -22,8 +22,11 @@ Confirmed corpus predicate names (verified by inspecting real law files such as
   ``dcterms:subject`` (EuroVoc IRIs), ``estleg:transposesDirective``,
   ``estleg:affectedBy`` / ``estleg:hasProposedAmendment`` (draft links live on
   the act/map node).
-* Provision node ``@type`` contains a per-law subclass with prefix
-  ``estleg:LegalProvision_`` (NOT the bare ``estleg:LegalProvision``); carries
+* Provision node ``@type`` contains the bare ``estleg:LegalProvision``
+  class (issue #434 onwards; municipal-regulation sections additionally carry
+  ``estleg:KovProvision``, and legacy peeps used a per-law
+  ``estleg:LegalProvision_<abbrev>`` subclass -- :func:`_is_provision` accepts
+  all three). It carries
   ``estleg:paragrahv`` ("§ 1."), ``rdfs:label``, ``estleg:summary``,
   ``estleg:legalText``, ``estleg:references``, ``estleg:referencedBy``,
   ``estleg:interpretedBy`` (court-decision IRIs), ``estleg:competentAuthority``
@@ -33,6 +36,7 @@ Confirmed corpus predicate names (verified by inspecting real law files such as
 
 from __future__ import annotations
 
+import ast
 import json
 import os
 import re
@@ -41,6 +45,7 @@ from datetime import date
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 # ---------------------------------------------------------------------------
 # Types
@@ -337,7 +342,7 @@ def _records_by_slug() -> dict[str, LawRecord]:
         # ``karistusseadustik_eriosa_owl`` / ``tsus_osa7_138_169_owl``, whose
         # files are ``*_owl.jsonld``). Those carry an owl:Class / estleg:Section
         # TBox shape rather than the per-law ``*_peep.json`` instance graph this
-        # layer reads: they expose zero ``estleg:LegalProvision_*`` provisions
+        # layer reads: they expose zero provision instances
         # and must never surface to a lawmaker as a queryable "law" (they would
         # otherwise pollute search_laws/resolve_law for KarS / TsÜS).
         if files and not any(f.endswith("_peep.json") for f in files):
@@ -451,19 +456,183 @@ def resolve_law(query: str) -> LawRecord | None:
     return None
 
 
+# One group: (query-side labels, haystack terms = labels + keywords).
+_EurovocGroup = tuple[tuple[str, ...], tuple[str, ...]]
+
+
+def _folded_terms(*values: Any) -> list[str]:
+    """Fold string values (and lists/tuples of them) into unique non-empty terms."""
+    out: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        items = value if isinstance(value, (list, tuple)) else _as_list(value)
+        for item in items:
+            if not isinstance(item, str):
+                continue
+            term = _fold(item.strip())
+            if term and term not in seen:
+                seen.add(term)
+                out.append(term)
+    return out
+
+
+# Where the classifier's ``EUROVOC_DOMAINS`` table lives, newest location
+# first. Issue #472 moved the implementation into the package and left
+# ``scripts/classify_eurovoc.py`` as a nine-line runpy shim with no table in
+# it, which silently emptied the keyword expansion here.
+_EUROVOC_TABLE_RELPATHS = (
+    ("src", "estleg", "classify_eurovoc.py"),
+    ("scripts", "classify_eurovoc.py"),
+)
+
+
+def _eurovoc_domains_literal(path: Path) -> dict[Any, Any] | None:
+    """Read the literal ``EUROVOC_DOMAINS`` table out of a module, without importing it.
+
+    Parses the file with :mod:`ast` and literal-evaluates the assignment, so a
+    corpus script is never executed. Returns ``None`` when the file is absent,
+    unparseable, or carries no literal ``EUROVOC_DOMAINS`` (e.g. the runpy
+    shim), which lets the caller fall through to the next candidate path.
+    """
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError, ValueError):
+        return None
+    for node in tree.body:
+        target = None
+        value = None
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            target, value = node.target.id, node.value
+        elif (
+            isinstance(node, ast.Assign)
+            and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Name)
+        ):
+            target, value = node.targets[0].id, node.value
+        if target == "EUROVOC_DOMAINS" and value is not None:
+            try:
+                raw = ast.literal_eval(value)
+            except (ValueError, TypeError):
+                return None
+            return raw if isinstance(raw, dict) else None
+    return None
+
+
+@lru_cache(maxsize=1)
+def _eurovoc_keywords_by_id() -> dict[str, tuple[str, ...]]:
+    """Optional keyword lists from the classifier's ``EUROVOC_DOMAINS`` table.
+
+    ``data/eurovoc_domain_mapping.json`` stores verified EN/ET labels but not
+    the classifier's Estonian stems. When the classifier module is present we
+    read the literal ``EUROVOC_DOMAINS`` table (no import) and key it by
+    descriptor id so a search for ``criminal law`` can also hit a title that
+    only contains ``karistus``. Tries ``src/estleg/classify_eurovoc.py`` first
+    and the older ``scripts/`` path second; no table anywhere yields ``{}``.
+    """
+    try:
+        root = corpus_root()
+    except FileNotFoundError:
+        return {}
+    raw: dict[Any, Any] | None = None
+    for relpath in _EUROVOC_TABLE_RELPATHS:
+        raw = _eurovoc_domains_literal(root.joinpath(*relpath))
+        if raw is not None:
+            break
+    if not raw:
+        return {}
+    out: dict[str, tuple[str, ...]] = {}
+    for code, spec in raw.items():
+        if not isinstance(spec, (list, tuple)) or len(spec) < 4:
+            continue
+        kws = [
+            kw
+            for kw in spec[3]
+            if isinstance(kw, str) and kw.strip() and not kw.startswith("r:")
+        ]
+        if kws:
+            out[str(code)] = tuple(kws)
+    return out
+
+
+@lru_cache(maxsize=1)
+def _eurovoc_expansion_groups() -> tuple[_EurovocGroup, ...]:
+    """Load EuroVoc synonym groups from ``data/eurovoc_domain_mapping.json``.
+
+    Each group is ``(labels, terms)`` with already-folded strings. ``labels``
+    are the English and Estonian domain labels used to recognise a query
+    phrase; ``terms`` are those labels plus any domain keywords (optional
+    ``keywords`` field on the mapping entry, else the classifier stems for
+    ``newId``). Returns ``()`` when the corpus or mapping is missing.
+    """
+    try:
+        doc = _load_json(corpus_root() / "data" / "eurovoc_domain_mapping.json")
+    except FileNotFoundError:
+        return ()
+    if not isinstance(doc, list):
+        return ()
+    kw_by_id = _eurovoc_keywords_by_id()
+    groups: list[_EurovocGroup] = []
+    for entry in doc:
+        if not isinstance(entry, dict):
+            continue
+        labels = tuple(_folded_terms(entry.get("labelEn"), entry.get("labelEt")))
+        extra = entry.get("keywords")
+        if extra is None:
+            mapped_kws = kw_by_id.get(str(entry.get("newId") or ""))
+        else:
+            mapped_kws = extra
+        terms = tuple(_folded_terms(*labels, mapped_kws))
+        if labels:
+            groups.append((labels, terms or labels))
+    return tuple(groups)
+
+
+def _eurovoc_query_parts(needle: str) -> tuple[list[tuple[str, ...]], list[str]]:
+    """Split a folded query into EuroVoc synonym-groups and leftover AND tokens.
+
+    A complete English or Estonian domain label (casefolded) is consumed as a
+    phrase, longest first, and replaced by its synonym group. Tokens that are
+    not a domain label stay required — token-AND is not widened into OR.
+    """
+    groups = _eurovoc_expansion_groups()
+    if not needle or not groups:
+        return [], []
+    leftover = f" {needle} "
+    matched: list[tuple[str, ...]] = []
+    pairs: list[tuple[str, tuple[str, ...]]] = []
+    seen: set[str] = set()
+    for labels, terms in groups:
+        for lab in labels:
+            if lab and lab not in seen:
+                seen.add(lab)
+                pairs.append((lab, terms))
+    pairs.sort(key=lambda p: len(p[0]), reverse=True)
+    for lab, terms in pairs:
+        wrapped = f" {lab} "
+        if wrapped in leftover:
+            matched.append(terms)
+            leftover = leftover.replace(wrapped, " ")
+    return matched, leftover.split()
+
+
 def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
     """Return laws whose title, abbreviation, or slug contains ``query``.
 
     Substring match is accent-insensitive and also covers the *conventional*
     human abbreviation (``KarS``, ``VÕS``, ``TLS``, ``PS``, ...), which the
     registry does not store -- so ``search_laws`` honours the same title/
-    abbreviation contract as ``resolve_law``. Results are sorted with exact
-    title/abbrev matches first, then by title. An empty ``query`` returns ``[]``.
+    abbreviation contract as ``resolve_law``. Multi-token queries are AND
+    (every token must hit). A token that is a EuroVoc domain label (English
+    or Estonian, from ``data/eurovoc_domain_mapping.json``) also matches if
+    the haystack contains the other-language label or a domain keyword.
+    Results are sorted with exact title/abbrev matches first, then by title.
+    An empty ``query`` returns ``[]``.
     """
     if not query or not query.strip():
         return []
     needle = _fold(query.strip())
     tokens = [t for t in needle.split() if t]
+    ev_groups, ev_leftover = _eurovoc_query_parts(needle)
     records = _records_by_slug()
     human = _slug_to_human_abbrev()
     scored: list[tuple[int, str, LawRecord]] = []
@@ -474,12 +643,16 @@ def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
         hay_slug = _fold(rec.name)
         hay_all = f"{hay_title} {hay_abbrev} {hay_human} {hay_slug}"
         token_hit = bool(tokens) and all(t in hay_all for t in tokens)
+        ev_hit = bool(ev_groups) and all(
+            any(term in hay_all for term in terms) for terms in ev_groups
+        ) and all(t in hay_all for t in ev_leftover)
         if (
             needle in hay_title
             or needle in hay_abbrev
             or (hay_human and needle in hay_human)
             or needle in hay_slug
             or token_hit
+            or ev_hit
         ):
             if needle in (hay_title, hay_abbrev, hay_human):
                 rank = 0
@@ -524,11 +697,15 @@ def laws_for_subject(subject: str, limit: int = 20) -> list[dict[str, str]]:
 
 
 def define_term(term: str, limit: int = 10) -> list[dict[str, str]]:
-    """Lookup ``estleg:LegalConcept`` / Concept nodes by prefLabel (#501)."""
+    """Lookup ``estleg:LegalConcept`` / Concept nodes by prefLabel (#501/#540).
+
+    Reads ``krr_outputs/concepts/concepts_combined.jsonld`` via the overlay
+    loader -- not the law peeps.
+    """
     if not term or not term.strip() or limit <= 0:
         return []
     needle = _fold(term.strip())
-    graph = _graph_of(krr_dir() / "concepts" / "concepts_combined.jsonld")
+    graph = overlay_graph("concepts")
     out: list[dict[str, str]] = []
     for node in graph:
         types = _types_of(node)
@@ -611,16 +788,40 @@ def act_node(graph: Graph) -> Node | None:
     return candidates[0]
 
 
+# The §-node classes the corpus stamps. Since issue #434 the generators write
+# the bare ``estleg:LegalProvision``; municipal-regulation sections carry
+# ``estleg:KovProvision`` as well, and legacy peeps used a per-law
+# ``estleg:LegalProvision_<abbrev>`` subclass. Requiring only the legacy prefix
+# is what made every provision-backed tool return empty (issue #678).
+_PROVISION_TYPES = frozenset({"estleg:LegalProvision", "estleg:KovProvision"})
+_LEGACY_PROVISION_PREFIX = "estleg:LegalProvision_"
+
+
+def _types_are_provision(types: list[str]) -> bool:
+    """True when a node's ``@type`` list marks it as a § (any stamped form)."""
+    return any(
+        t in _PROVISION_TYPES or t.startswith(_LEGACY_PROVISION_PREFIX) for t in types
+    )
+
+
 def _is_provision(node: Node) -> bool:
-    return any(t.startswith("estleg:LegalProvision_") for t in _types_of(node))
+    """True when ``node`` is a section (§) instance.
+
+    Accepts the bare ``estleg:LegalProvision``, the municipal
+    ``estleg:KovProvision``, and the legacy per-law
+    ``estleg:LegalProvision_<abbrev>`` subclass. A node carrying two of those
+    at once is still one provision.
+    """
+    return _types_are_provision(_types_of(node))
 
 
 def provision_nodes(graph: Graph) -> list[Node]:
     """Return all provision (§) nodes of a law graph.
 
-    A provision is any node whose ``@type`` carries a per-law subclass with the
-    ``estleg:LegalProvision_`` prefix (the bare ``estleg:LegalProvision`` class
-    is never stamped on instances).
+    A provision is any node whose ``@type`` marks it as one -- see
+    :func:`_is_provision` for the accepted classes. Every provision-backed tool
+    filters through here, so :func:`provision_detection_check` guards this
+    against a silent upstream retype.
     """
     return [n for n in graph if _is_provision(n)]
 
@@ -628,6 +829,38 @@ def provision_nodes(graph: Graph) -> list[Node]:
 def chapter_nodes(graph: Graph) -> list[Node]:
     """Return all chapter (peatükk) nodes of a law graph."""
     return [n for n in graph if "estleg:Chapter" in _types_of(n)]
+
+
+def provision_detection_check() -> dict[str, Any]:
+    """Self-test that the corpus's § nodes are still detected as provisions (#678).
+
+    ``get_provision``, ``provision_history``, ``who_references``,
+    ``references_of``, ``court_decisions_for_law``,
+    ``competent_authority_for_law`` and every ``num_provisions`` count filter
+    the law graph through :func:`provision_nodes`. A generator change that
+    retypes § nodes breaks no import and loses no file -- the tools simply go
+    quiet and answer "none" with full confidence. Counting the Penal Code's
+    sections is a cheap canary for that, checked at boot by ``server.main()``
+    and reported by :func:`layers_available`.
+
+    Returns ``{"law", "abbrev", "provisions", "ok"}``. ``ok`` is False when the
+    reference law cannot be resolved, its files are unreadable, or not one node
+    in its graph is recognised as a provision.
+    """
+    law, abbrev = "karistusseadustik", "KarS"
+    try:
+        rec = resolve_law(abbrev)
+        if rec is None:
+            return {"law": law, "abbrev": abbrev, "provisions": 0, "ok": False}
+        count = len(provision_nodes(load_law_graph(rec)))
+    except OSError:  # includes FileNotFoundError from corpus_root()
+        return {"law": law, "abbrev": abbrev, "provisions": 0, "ok": False}
+    return {
+        "law": rec.name,
+        "abbrev": display_abbrev(rec) or abbrev,
+        "provisions": count,
+        "ok": count > 0,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -662,21 +895,98 @@ def act_kehtiv_date(node: Node | None) -> str:
     return val if isinstance(val, str) else ""
 
 
+_RT_HOST = "riigiteataja.ee"
+
+
+def _host_of(url: str) -> str:
+    """Lower-cased hostname of an absolute URL ("" for a CURIE or a bare string)."""
+    try:
+        parsed = urlsplit(url)
+        host = parsed.hostname or ""
+        # Accessing port also validates malformed / out-of-range ports.
+        parsed.port
+    except ValueError:
+        return ""
+    if (
+        parsed.scheme not in {"http", "https"}
+        or parsed.username is not None
+        or parsed.password is not None
+        or any(c.isspace() for c in url)
+        # Browsers treat backslashes as URL separators, unlike urlsplit.
+        # C0 controls may also be stripped before navigation. Never return
+        # a citation whose browser host can differ from the parsed host.
+        or "\\" in url
+        or any(ord(c) < 32 or ord(c) == 127 for c in url)
+    ):
+        return ""
+    return host.lower().rstrip(".")
+
+
+def _is_rt_host(url: str) -> bool:
+    """True when ``url`` is served by riigiteataja.ee or a subdomain of it."""
+    host = _host_of(url)
+    return host == _RT_HOST or host.endswith("." + _RT_HOST)
+
+
 def rt_url(node: Node | None) -> str:
-    """Derive the human riigiteataja.ee URL for an act/law node.
+    """Derive the human riigiteataja.ee URL for an act / law / regulation node.
 
     Reads ``dcterms:source`` ({"@id": "https://www.riigiteataja.ee/akt/<id>.xml"})
-    and strips the trailing ``.xml`` to yield the human-facing act URL. Falls
-    back to ``owl:sameAs``. Returns "" when no resolvable source exists.
+    and strips the trailing ``.xml`` to yield the human-facing act URL; an
+    ``owl:sameAs`` is accepted only as a fallback.
+
+    The returned URL is **always** on riigiteataja.ee (issue #680). Some acts
+    carry no ``dcterms:source`` at all and only an ``owl:sameAs`` Wikidata IRI
+    (KarS, VÕS), which the old fallback happily returned under a field every
+    tool documents as *the official riigiteataja.ee URL*. Those now yield ""
+    -- an honest gap -- and the Wikidata IRI is surfaced by
+    :func:`external_ids` instead. ``dc:source`` holds the act title, not a URL,
+    and is deliberately not consulted.
     """
     if not isinstance(node, dict):
         return ""
-    src = _id_of(node.get("dcterms:source")) or _id_of(node.get("owl:sameAs"))
-    if not src:
-        return ""
-    if src.endswith(".xml"):
-        src = src[: -len(".xml")]
-    return src
+    for key in ("dcterms:source", "owl:sameAs"):
+        for iri in _ids_of(node.get(key)):
+            if not _is_rt_host(iri):
+                continue
+            return iri[: -len(".xml")] if iri.endswith(".xml") else iri
+    return ""
+
+
+def _external_id_family(url: str) -> str:
+    """Short key for an external identifier IRI (``wikidata`` for wikidata.org)."""
+    host = _host_of(url)
+    if host.startswith("www."):
+        host = host[4:]
+    return host.split(".")[0]
+
+
+def external_ids(node: Node | None) -> dict[str, str]:
+    """Identifiers an act node links itself to outside riigiteataja.ee (#680).
+
+    :func:`rt_url` now returns riigiteataja.ee URLs only, so the ``owl:sameAs``
+    IRIs a few acts carry would otherwise be dropped entirely -- including the
+    two (KarS, VÕS) that used to leak a wikidata.org URL into ``rt_url``. They
+    are returned here keyed by host family, e.g.
+    ``{"wikidata": "http://www.wikidata.org/entity/Q2352833"}``, with the first
+    IRI per family winning.
+
+    No ELI identifier is emitted: no act node in this corpus carries an
+    ``estleg:eli`` predicate, and ``eli:is_about`` holds EuroVoc subject IRIs
+    (already surfaced as ``eurovoc_subjects``) rather than an identifier for
+    the act itself. Returns ``{}`` for a missing node or one with nothing
+    external.
+    """
+    if not isinstance(node, dict):
+        return {}
+    out: dict[str, str] = {}
+    for iri in _ids_of(node.get("owl:sameAs")):
+        if _is_rt_host(iri):
+            continue
+        family = _external_id_family(iri)
+        if family:
+            out.setdefault(family, iri)
+    return out
 
 
 @lru_cache(maxsize=256)
@@ -699,6 +1009,22 @@ def eurlex_url(celex: str) -> str:
     if not celex:
         return ""
     return f"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:{celex}"
+
+
+def normalize_celex(raw: str) -> str:
+    """Normalise a CELEX query the same way the EU tools accept one.
+
+    Strips surrounding whitespace and internal spaces, drops a leading
+    ``CELEX:`` wrapper, and uppercases. ``32000 L0060`` and ``celex:32000l0060``
+    both become ``32000L0060``. Returns ``""`` for an empty input.
+    """
+    text = (raw or "").strip()
+    if not text:
+        return ""
+    text = re.sub(r"\s+", "", text)
+    if text[:6].upper() == "CELEX:":
+        text = text[6:]
+    return text.upper()
 
 
 # ---------------------------------------------------------------------------
@@ -1024,7 +1350,7 @@ def _sanction_graph_for(record: LawRecord) -> Graph:
 @lru_cache(maxsize=1)
 def _transposition_mappings() -> list[Node]:
     """Return the ``mappings`` list from ``transposition_mapping.json``."""
-    doc = _load_json(krr_dir() / "transposition_mapping.json")
+    doc = _load_json(krr_dir() / "reports" / "transposition_mapping.json")
     if isinstance(doc, dict):
         mappings = doc.get("mappings")
         if isinstance(mappings, list):
@@ -1230,7 +1556,9 @@ def version_coverage_span(index: dict[str, list[dict[str, Any]]]) -> tuple[str, 
 # ``estleg:implementsCitation`` (in-file ``estleg:Citation`` nodes whose
 # ``estleg:citationText`` is the statutory basis), ``estleg:temporalStatus``,
 # ``estleg:terviktekstId`` / ``estleg:globalId`` and ``dcterms:source`` (the
-# riigiteataja .xml IRI). Provisions are typed ``estleg:Regulation_<id>``.
+# riigiteataja .xml IRI). Sections are typed ``estleg:LegalProvision`` like a
+# law's (municipal ones additionally ``estleg:KovProvision``); legacy files
+# used a per-regulation ``estleg:Regulation_<id>`` subclass.
 # ---------------------------------------------------------------------------
 class RegulationRecord:
     """A resolved regulation: core metadata + parent-statute / issuer links."""
@@ -1297,6 +1625,20 @@ def _strip_map_suffix(body: str) -> str:
     return re.sub(r"(_Map_\d+|_ProcedureMap_\d+|_Ontology.*)$", "", body)
 
 
+def _types_are_regulation_provision(types: list[str]) -> bool:
+    """True when a regulation-file node's ``@type`` marks it as a section.
+
+    Regulation peeps type their sections exactly like a law's since issue #434
+    (bare ``estleg:LegalProvision``, plus ``estleg:KovProvision`` on municipal
+    ones); older files used a per-regulation ``estleg:Regulation_<id>``
+    subclass. A KOV section carries two of those classes at once, so this is a
+    per-node predicate and never double-counts.
+    """
+    return _types_are_provision(types) or any(
+        t.startswith("estleg:Regulation_") for t in types
+    )
+
+
 def _regulation_record_from_graph(
     graph: Graph, file_rel: str, municipality: str
 ) -> RegulationRecord | None:
@@ -1304,7 +1646,8 @@ def _regulation_record_from_graph(
 
     The act/map node is the single ``estleg:Act`` node in a regulation file;
     in-file ``estleg:Citation`` nodes supply the ``implementsCitation`` texts and
-    ``estleg:Regulation_<id>``-typed nodes are the sections (counted, not loaded).
+    the section nodes are counted, not loaded (see
+    :func:`_types_are_regulation_provision` for the classes that count).
     Returns ``None`` for a file with no act node.
     """
     map_node: Node | None = None
@@ -1318,7 +1661,7 @@ def _regulation_record_from_graph(
             cid = node.get("@id")
             if isinstance(cid, str):
                 citation_text[cid] = _text(node.get("estleg:citationText"))
-        if any(t.startswith("estleg:Regulation_") for t in types):
+        if _types_are_regulation_provision(types):
             num_provisions += 1
     if map_node is None:
         return None
@@ -1515,45 +1858,405 @@ def regulations_by_issuer(institution: str) -> list[RegulationRecord]:
     return matched
 
 
+# ---------------------------------------------------------------------------
+# Overlay sidecars (#540) -- concepts + per-CELEX harmonisation
+#
+# MCP already reads sanctions / amendments / regulations / provision_versions
+# per law. These two extra loaders open the remaining high-value sidecars
+# *when asked* (one concepts file, or one harm_<celex>.json) instead of
+# merging the whole enrichment tree.
+# ---------------------------------------------------------------------------
+def overlay_path(layer: str, key: str = "") -> Path | None:
+    """Resolve a sidecar overlay file. Unknown layer or empty key -> ``None``."""
+    name = (layer or "").strip().lower()
+    if name == "concepts":
+        return krr_dir() / "concepts" / "concepts_combined.jsonld"
+    if name in {"harmonisation", "harmonization"}:
+        celex = normalize_celex(key)
+        if not celex:
+            return None
+        return (
+            krr_dir()
+            / "harmonisation"
+            / "harmonisation_by_directive"
+            / f"harm_{celex}.json"
+        )
+    return None
+
+
+@lru_cache(maxsize=64)
+def overlay_graph(layer: str, key: str = "") -> tuple[Node, ...]:
+    """``@graph`` of an overlay sidecar, or ``()`` when the file is missing."""
+    path = overlay_path(layer, key)
+    if path is None:
+        return ()
+    return tuple(_graph_of(path))
+
+
+def harmonisation_for_directive(celex: str, limit: int = 20) -> list[dict[str, str]]:
+    """Member-state / EE harmonisation rows for one directive CELEX (#540).
+
+    Opens ``harmonisation/harmonisation_by_directive/harm_<celex>.json`` via
+    :func:`overlay_graph`. Returns ``[]`` when the CELEX is empty, ``limit``
+    is not positive, or no harm file exists.
+    """
+    if limit <= 0:
+        return []
+    needle = normalize_celex(celex)
+    if not needle:
+        return []
+    rows: list[dict[str, str]] = []
+    for node in overlay_graph("harmonisation", needle):
+        if "estleg:HarmonisationLink" not in _types_of(node):
+            continue
+        rows.append(
+            {
+                "id": node.get("@id", "") if isinstance(node.get("@id"), str) else "",
+                "label": _text(node.get("rdfs:label")),
+                "member_state": _text(node.get("estleg:memberStateCode")),
+                "national_celex": _text(node.get("estleg:nationalCelex")),
+                "harmonises": " ".join(_ids_of(node.get("estleg:harmonises"))),
+            }
+        )
+        if len(rows) >= limit:
+            break
+    return rows
+
+
+def layers_available() -> list[dict[str, str]]:
+    """Which ``krr_outputs/`` sidecars the MCP surface reads (#540).
+
+    ``status`` is ``wired`` (a tool reads it), ``loadable`` (opened on demand
+    via :func:`overlay_graph`), or ``excluded`` (documented gap). ``present``
+    is ``yes``/``no`` for the on-disk path in this clone.
+    """
+    krr = krr_dir()
+
+    def _present(rel: str) -> str:
+        path = krr / rel
+        if any(ch in rel for ch in "*?"):
+            return "yes" if path.parent.is_dir() and any(path.parent.glob(path.name)) else "no"
+        if path.is_dir():
+            return "yes" if any(path.iterdir()) else "no"
+        return "yes" if path.is_file() else "no"
+
+    rows = (
+        (
+            "laws",
+            "*_peep.json",
+            "INDEX.json",
+            "wired",
+            "search_laws, get_law, get_provision",
+            "Per-law peeps; never combined_ontology.jsonld",
+        ),
+        (
+            "concepts",
+            "concepts/concepts_combined.jsonld",
+            "concepts/concepts_combined.jsonld",
+            "wired",
+            "define_term",
+            "LegalConcept / Concept prefLabels via overlay_graph",
+        ),
+        (
+            "harmonisation",
+            "harmonisation/harmonisation_by_directive/harm_*.json",
+            "harmonisation/harmonisation_by_directive/harm_*.json",
+            "loadable",
+            "harmonisation_for_directive",
+            "One harm_<celex>.json when asked; not a full-layer scan",
+        ),
+        (
+            "sanctions",
+            "sanctions/sanctions_*.json",
+            "sanctions",
+            "wired",
+            "sanctions_for_law",
+            "",
+        ),
+        (
+            "amendments",
+            "amendments/amendments_*.json",
+            "amendments",
+            "wired",
+            "amendment_history, drafts_affecting_law",
+            "",
+        ),
+        (
+            "regulations",
+            "regulations/riik + regulations/kov",
+            "regulations",
+            "wired",
+            "regulations_for_law, get_regulation, regulations_by_issuer",
+            "",
+        ),
+        (
+            "provision_versions",
+            "provision_versions/*.jsonld",
+            "provision_versions",
+            "wired",
+            "get_provision(as_of), provision_history, get_law(as_of)",
+            "",
+        ),
+        (
+            "riigikohus",
+            "riigikohus/riigikohus_*_peep.json",
+            "riigikohus",
+            "wired",
+            "court_decisions_for_law",
+            "",
+        ),
+        (
+            "curia",
+            "curia/curia_*_peep.json",
+            "curia",
+            "wired",
+            "eu_case_law_for_directive",
+            "No interprets edges (#418); CELEX substring match",
+        ),
+        (
+            "eelnoud",
+            "eelnoud/eelnoud_*_peep.json",
+            "eelnoud",
+            "wired",
+            "drafts_affecting_law",
+            "",
+        ),
+        (
+            "institutions",
+            "institutions/institution_*.json",
+            "institutions",
+            "wired",
+            "competent_authority_for_law",
+            "",
+        ),
+        (
+            "transposition",
+            "reports/transposition_mapping.json",
+            "reports/transposition_mapping.json",
+            "wired",
+            "transposition",
+            "",
+        ),
+        (
+            "eurlex",
+            "eurlex/*_peep.json",
+            "eurlex",
+            "excluded",
+            "",
+            "Reached via transposition + CELEX URLs, not the eurlex peeps",
+        ),
+        (
+            "annotations",
+            "annotations/",
+            "annotations",
+            "excluded",
+            "",
+            "MCP does not load the annotations sidecar",
+        ),
+        (
+            "similarity",
+            "reports/similarity_index.json",
+            "reports/similarity_index.json",
+            "excluded",
+            "",
+            "Git LFS pointer; no semantic-search tool in v1",
+        ),
+        (
+            "combined_ontology",
+            "combined_ontology.jsonld",
+            "combined_ontology.jsonld",
+            "excluded",
+            "",
+            "Git LFS; MCP never loads the aggregate graph",
+        ),
+        (
+            "concept_crossref",
+            "concepts/concept_crossref_report.json",
+            "concepts/concept_crossref_report.json",
+            "excluded",
+            "",
+            "Build report only; define_term reads concepts_combined",
+        ),
+    )
+    out: list[dict[str, str]] = []
+    for layer, display, check, status, tools, note in rows:
+        out.append(
+            {
+                "layer": layer,
+                "path": f"krr_outputs/{display}",
+                "status": status,
+                "tools": tools,
+                "present": _present(check),
+                "note": note,
+            }
+        )
+    # Not a sidecar but a runtime invariant, reported in the same table: the
+    # provision-backed tools all filter through provision_nodes(), so an
+    # upstream retype of the § class empties them without any file going
+    # missing (issue #678). ``present`` is the live detection result, not a
+    # path test, so the regression is visible from the tool itself.
+    detection = provision_detection_check()
+    out.insert(
+        1,
+        {
+            "layer": "provision_detection",
+            "path": "krr_outputs/*_peep.json (§ node @type)",
+            "status": "wired",
+            "tools": (
+                "get_provision, provision_history, who_references, "
+                "references_of, court_decisions_for_law, "
+                "competent_authority_for_law"
+            ),
+            "present": "yes" if detection["ok"] else "no",
+            "note": (
+                f"{detection['abbrev']} resolves {detection['provisions']} "
+                "§ nodes"
+                + ("" if detection["ok"] else "; § @type changed upstream (#678)")
+            ),
+        },
+    )
+    return out
+
+
+# ---------------------------------------------------------------------------
+# CURIA decisions for a directive CELEX (#505)
+# ---------------------------------------------------------------------------
+def _curia_peep_paths() -> list[Path]:
+    """Committed CURIA peeps (not the combined / schema / INDEX artifacts)."""
+    curia = krr_dir() / "curia"
+    if not curia.is_dir():
+        return []
+    return sorted(curia.glob("curia_*_peep.json"))
+
+
+@lru_cache(maxsize=1)
+def _curia_decisions() -> tuple[Node, ...]:
+    """All ``estleg:EUCourtDecision`` nodes from the CURIA peeps.
+
+    Cached for the process lifetime. Tests should monkeypatch this (or
+    :func:`_curia_peep_paths`) rather than parse the ~22k-decision corpus.
+    """
+    out: list[Node] = []
+    for path in _curia_peep_paths():
+        for node in _graph_of(path):
+            if "estleg:EUCourtDecision" in _types_of(node):
+                out.append(node)
+    return tuple(out)
+
+
+def _node_mentions_celex(node: Node, celex: str) -> bool:
+    """True when label / celexNumber / sameAs / source / text mention ``celex``.
+
+    CURIA has no ``estleg:interprets`` edges (#418), so a CELEX substring on
+    those fields is the join the MCP surface can actually evaluate.
+    """
+    if not celex:
+        return False
+    needle = celex.casefold()
+    for field in (
+        "estleg:celexNumber",
+        "rdfs:label",
+        "estleg:legalText",
+        "estleg:summary",
+        "dcterms:title",
+        "dc:description",
+    ):
+        if needle in _text(node.get(field)).casefold():
+            return True
+    for field in ("owl:sameAs", "dcterms:source", "dc:source"):
+        if needle in _text(node.get(field)).casefold():
+            return True
+        for iri in _ids_of(node.get(field)):
+            if needle in iri.casefold():
+                return True
+    return False
+
+
+def _curia_or_eurlex_url(node: Node) -> str:
+    """Prefer ``estleg:eurLexLink``, then legacy ``estleg:curiaLink``, else CELEX URL."""
+    for field in ("estleg:eurLexLink", "estleg:curiaLink"):
+        link = _text(node.get(field)) or _id_of(node.get(field))
+        if link:
+            return link
+    own = _text(node.get("estleg:celexNumber"))
+    return eurlex_url(own) if own else ""
+
+
+def eu_case_law_for_directive(celex: str, limit: int = 20) -> list[dict[str, str]]:
+    """CURIA decisions whose metadata mentions a directive CELEX (#505).
+
+    Empty CELEX or ``limit`` <= 0 yields ``[]`` (the server wraps a miss as
+    ``[{note}]``). Hits are ``{ecli_or_celex, title, curia_or_eurlex_url}``.
+    """
+    if limit <= 0:
+        return []
+    needle = normalize_celex(celex)
+    if not needle:
+        return []
+    cap = max(0, int(limit))
+    rows: list[dict[str, str]] = []
+    for node in _curia_decisions():
+        if not _node_mentions_celex(node, needle):
+            continue
+        ecli = _text(node.get("estleg:ecliIdentifier"))
+        own_celex = _text(node.get("estleg:celexNumber"))
+        rows.append(
+            {
+                "ecli_or_celex": ecli or own_celex,
+                "title": _text(node.get("rdfs:label")) or _text(node.get("dcterms:title")),
+                "curia_or_eurlex_url": _curia_or_eurlex_url(node),
+            }
+        )
+        if len(rows) >= cap:
+            break
+    return rows
+
+
 __all__ = [
+    "Graph",
     "LawRecord",
     "Node",
-    "Graph",
+    "RegulationRecord",
+    "_law_slug_from_iri",
+    "act_kehtiv_date",
+    "act_node",
+    "act_title",
+    "amendment_events",
+    "amendment_link_drafts",
+    "chapter_nodes",
+    "clean_display",
     "corpus_root",
-    "krr_dir",
-    "ontology_version",
-    "resolve_law",
-    "search_law_records",
-    "laws_for_subject",
+    "count_provisions_in_force",
+    "court_decision",
     "define_term",
     "display_abbrev",
-    "_law_slug_from_iri",
-    "load_law_graph",
-    "act_node",
-    "provision_nodes",
-    "chapter_nodes",
+    "draft_info",
+    "eu_case_law_for_directive",
+    "eurlex_url",
     "find_provision",
+    "harmonisation_for_directive",
+    "institution_label",
+    "krr_dir",
+    "law_version_index",
+    "laws_for_subject",
+    "layers_available",
+    "load_law_graph",
+    "normalize_celex",
+    "normalize_iso_date",
+    "ontology_version",
+    "overlay_graph",
+    "overlay_path",
     "provision_label",
-    "clean_display",
-    "act_title",
-    "act_kehtiv_date",
+    "provision_nodes",
+    "provision_version_timeline",
+    "regulations_by_issuer",
+    "regulations_for_law",
+    "resolve_law",
+    "resolve_regulation",
     "rt_url",
     "rt_url_for_slug",
-    "eurlex_url",
-    "court_decision",
-    "institution_label",
-    "draft_info",
-    "amendment_link_drafts",
-    "amendment_events",
+    "search_law_records",
     "transposition_matches",
-    "provision_version_timeline",
-    "normalize_iso_date",
-    "version_in_force_on",
-    "law_version_index",
-    "count_provisions_in_force",
     "version_coverage_span",
-    "RegulationRecord",
-    "regulations_for_law",
-    "resolve_regulation",
-    "regulations_by_issuer",
+    "version_in_force_on",
 ]

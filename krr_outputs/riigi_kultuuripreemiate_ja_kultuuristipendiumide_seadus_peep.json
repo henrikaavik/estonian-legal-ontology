@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RKPSS_Map_2026",
+      "@id": "estleg:RKPSS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus teemakaardistus",
       "dc:source": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
-      "dcterms:title": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
+      "dcterms:title": [
+        {
+          "@value": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "State Cultural Awards and Grants Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/12787653.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/12787653.xml"
       },
       "estleg:kehtiv": {
@@ -48,16 +53,70 @@
           "@id": "http://eurovoc.europa.eu/517"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/668"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:RKPSS_Par_10"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RKPSS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:RKPSS_Par_11"
+        },
+        {
+          "@id": "estleg:RKPSS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:RKPSS_Par_15_Lg_4"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kultuuriminister"
+        },
+        {
+          "@id": "estleg:Institution_kultuuriministeerium"
+        },
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        },
+        {
+          "@id": "estleg:Institution_teadusminister"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2007-02-07",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/511112014004"
       }
     },
     {
@@ -101,10 +160,14 @@
       "rdfs:label": "1. peatükk – RIIGI KULTUURIPREEMIAD",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKPSS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -130,10 +193,14 @@
       "rdfs:label": "2. peatükk – RIIGI KULTUURISTIPENDIUMID",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKPSS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -159,23 +226,27 @@
       "rdfs:label": "3. peatükk – RIIGI KEELEAUHIND",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKPSS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKPSS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Riigi kultuuripreemiad",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "Eesti Vabariigi kultuuripreemiad (edaspidi preemia) määratakse väljapaistvate loominguliste saavutuste eest kultuuri alal. Preemia määratakse füüsilisele isikule.",
       "estleg:legalText": "Eesti Vabariigi kultuuripreemiad (edaspidi preemia) määratakse väljapaistvate loominguliste saavutuste eest kultuuri alal. Preemia määratakse füüsilisele isikule.",
@@ -187,11 +258,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKPSS_Par_1_Lg_Unknown_1"
+          "@id": "estleg:RKPSS_Par_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -213,10 +286,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKPSS_Par_1_Lg_Unknown_1",
+      "@id": "estleg:RKPSS_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -224,19 +301,28 @@
       "estleg:legalText": "Eesti Vabariigi kultuuripreemiad (edaspidi preemia) määratakse väljapaistvate loominguliste saavutuste eest kultuuri alal. Preemia määratakse füüsilisele isikule.",
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKPSS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Preemiate arv ja liigid",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Igal aastal määratakse: kolm preemiat pikaajalise väljapaistva loomingulise tegevuse eest; viis preemiat eelmisel kalendriaastal avalikkuseni jõudnud väljapaistvate tööde eest. (2) Preemiaga kaasnevad tunnistus ja mälestusmedal. (3) Riigi kultuuripreemia antakse haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras, kui käesolev seadus ei näe ette teisiti.",
       "estleg:legalText": "(1) Igal aastal määratakse: kolm preemiat pikaajalise väljapaistva loomingulise tegevuse eest; viis preemiat eelmisel kalendriaastal avalikkuseni jõudnud väljapaistvate tööde eest. (2) Preemiaga kaasnevad tunnistus ja mälestusmedal. (3) Riigi kultuuripreemia antakse haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras, kui käesolev seadus ei näe ette teisiti.",
@@ -312,13 +398,13 @@
       "@id": "estleg:RKPSS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Preemia suurus",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "Preemia suurus määratakse igal aastal riigieelarves.",
       "estleg:legalText": "Preemia suurus määratakse igal aastal riigieelarves.",
@@ -330,7 +416,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKPSS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:RKPSS_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -348,7 +434,7 @@
       ]
     },
     {
-      "@id": "estleg:RKPSS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:RKPSS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -362,13 +448,13 @@
       "@id": "estleg:RKPSS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Ettepanekute esitamine preemia määramiseks",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Ettepanekuid preemia määramiseks võivad esitada: loomeliidud; teised juriidilised isikud, kelle põhikirjas on sätestatud kultuuri- ja haridusalane tegevus; preemia senised laureaadid; kohalikud omavalitsused. (2) Ettepanekud esitatakse kultuuripreemiate komisjonile iga aasta 10. jaanuariks.",
       "estleg:legalText": "(1) Ettepanekuid preemia määramiseks võivad esitada: loomeliidud; teised juriidilised isikud, kelle põhikirjas on sätestatud kultuuri- ja haridusalane tegevus; preemia senised laureaadid; kohalikud omavalitsused. (2) Ettepanekud esitatakse kultuuripreemiate komisjonile iga aasta 10. jaanuariks.",
@@ -387,8 +473,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -407,7 +497,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_4_Lg_1",
@@ -420,7 +514,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_4_Lg_2",
@@ -439,13 +545,13 @@
       "@id": "estleg:RKPSS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Kultuuripreemiate komisjon",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Vabariigi Valitsus moodustab kultuuripreemiate komisjoni (edaspidi komisjon) ja kinnitab selle koosseisu kolmeks aastaks. Komisjoni esimees on ametikoha järgi valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „kultuuriminister“ sõnadega „valdkonna eest vastutav minister“. (2) Komisjoni pädevuses on käesoleva seaduse §-s 4 nimetatud ettepanekute läbiarutamine, esitatud töödega tutvumine ning ettepaneku tegemine",
       "estleg:legalText": "(1) Vabariigi Valitsus moodustab kultuuripreemiate komisjoni (edaspidi komisjon) ja kinnitab selle koosseisu kolmeks aastaks. Komisjoni esimees on ametikoha järgi valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „kultuuriminister“ sõnadega „valdkonna eest vastutav minister“. (2) Komisjoni pädevuses on käesoleva seaduse §-s 4 nimetatud ettepanekute läbiarutamine, esitatud töödega tutvumine ning ettepaneku tegemine Vabariigi Valitsusele preemiate määramiseks. Komisjoni töökorra (3) Komisjon avalikustab nõuetekohaselt esitatud ettepanekud ja nende esitajad üleriigilise levikuga ajalehe kaudu hiljemalt iga aasta 1. veebruariks.",
@@ -467,8 +573,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -514,7 +624,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_5_Lg_1",
@@ -527,7 +641,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_5_Lg_2",
@@ -545,7 +671,16 @@
         {
           "@id": "estleg:RKPSS_Par_4"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_5_Lg_3",
@@ -564,13 +699,13 @@
       "@id": "estleg:RKPSS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Preemiate määramine ja üleandmine",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Preemiad määrab Vabariigi Valitsus komisjoni esimehe ettepaneku alusel. (2) Preemiad antakse üle Eesti Vabariigi aastapäeval.",
       "estleg:legalText": "(1) Preemiad määrab Vabariigi Valitsus komisjoni esimehe ettepaneku alusel. (2) Preemiad antakse üle Eesti Vabariigi aastapäeval.",
@@ -589,7 +724,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -614,7 +751,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_6_Lg_1",
@@ -627,7 +768,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_6_Lg_2",
@@ -646,13 +796,13 @@
       "@id": "estleg:RKPSS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Riigi kultuuristipendiumid",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "Eesti Vabariigi kultuuristipendiumid (edaspidi stipendium) määratakse riikliku kultuuripoliitika seisukohalt oluliste kultuuriprojektide ja loominguliste tellimuste toetamiseks või õppetoetustena õpinguiks välismaa kõrgkoolides või teadusasutustes. Stipendiumi võib määrata füüsilisele isikule, juriidilisele isikule või asutusele.",
       "estleg:legalText": "Eesti Vabariigi kultuuristipendiumid (edaspidi stipendium) määratakse riikliku kultuuripoliitika seisukohalt oluliste kultuuriprojektide ja loominguliste tellimuste toetamiseks või õppetoetustena õpinguiks välismaa kõrgkoolides või teadusasutustes. Stipendiumi võib määrata füüsilisele isikule, juriidilisele isikule või asutusele.",
@@ -664,12 +814,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKPSS_Par_7_Lg_Unknown_1"
+          "@id": "estleg:RKPSS_Par_7_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -692,10 +846,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKPSS_Par_7_Lg_Unknown_1",
+      "@id": "estleg:RKPSS_Par_7_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -703,19 +861,34 @@
       "estleg:legalText": "Eesti Vabariigi kultuuristipendiumid (edaspidi stipendium) määratakse riikliku kultuuripoliitika seisukohalt oluliste kultuuriprojektide ja loominguliste tellimuste toetamiseks või õppetoetustena õpinguiks välismaa kõrgkoolides või teadusasutustes. Stipendiumi võib määrata füüsilisele isikule, juriidilisele isikule või asutusele.",
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_7"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKPSS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Stipendiumide arv ja suurus",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Igal aastal määratakse 20 stipendiumi. (2) Stipendiumi suurus määratakse igal aastal riigieelarves. (3) Riigi kultuuristipendium antakse haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras, kui käesolev seadus ei näe ette teisiti.",
       "estleg:legalText": "(1) Igal aastal määratakse 20 stipendiumi. (2) Stipendiumi suurus määratakse igal aastal riigieelarves. (3) Riigi kultuuristipendium antakse haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras, kui käesolev seadus ei näe ette teisiti.",
@@ -796,13 +969,13 @@
       "@id": "estleg:RKPSS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Ettepanekute ja taotluste esitamine",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "Ettepanekuid ja taotlusi stipendiumide määramiseks võivad esitada: loomeliidud; teised juriidilised isikud ja asutused, kelle põhikirjas või põhimääruses on sätestatud kultuuri- ja haridusalane tegevus; kohalikud omavalitsused.",
       "estleg:legalText": "Ettepanekuid ja taotlusi stipendiumide määramiseks võivad esitada: loomeliidud; teised juriidilised isikud ja asutused, kelle põhikirjas või põhimääruses on sätestatud kultuuri- ja haridusalane tegevus; kohalikud omavalitsused.",
@@ -814,12 +987,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKPSS_Par_9_Lg_Unknown_1"
+          "@id": "estleg:RKPSS_Par_9_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -838,10 +1015,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKPSS_Par_9_Lg_Unknown_1",
+      "@id": "estleg:RKPSS_Par_9_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -849,19 +1030,31 @@
       "estleg:legalText": "Ettepanekuid ja taotlusi stipendiumide määramiseks võivad esitada: loomeliidud; teised juriidilised isikud ja asutused, kelle põhikirjas või põhimääruses on sätestatud kultuuri- ja haridusalane tegevus; kohalikud omavalitsused.",
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_9"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKPSS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Stipendiumi määramine",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Stipendiumi määrab valdkonna eest vastutav minister oma käskkirjaga, kus näidatakse ära stipendiumi kasutamise eesmärk. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „kultuuriminister“ sõnadega „valdkonna eest vastutav minister“. (2) Kultuuriministeerium avalikustab stipendiumide määramise otsused üleriigilise levikuga ajalehe kaudu.",
       "estleg:legalText": "(1) Stipendiumi määrab valdkonna eest vastutav minister oma käskkirjaga, kus näidatakse ära stipendiumi kasutamise eesmärk. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „kultuuriminister“ sõnadega „valdkonna eest vastutav minister“. (2) Kultuuriministeerium avalikustab stipendiumide määramise otsused üleriigilise levikuga ajalehe kaudu.",
@@ -880,8 +1073,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -932,7 +1129,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_10_Lg_1",
@@ -945,7 +1146,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_10_Lg_2",
@@ -964,13 +1177,13 @@
       "@id": "estleg:RKPSS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Aruande esitamine ja avalikustamine",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Stipendiumi saaja on kohustatud esitama Kultuuriministeeriumile stipendiumi kasutamise aruande. (2) Stipendiumide kasutamise aruanded avalikustatakse käesoleva seaduse § 10 lõikes 2 sätestatud korras.",
       "estleg:legalText": "(1) Stipendiumi saaja on kohustatud esitama Kultuuriministeeriumile stipendiumi kasutamise aruande. (2) Stipendiumide kasutamise aruanded avalikustatakse käesoleva seaduse § 10 lõikes 2 sätestatud korras.",
@@ -989,11 +1202,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:RKPSS_Par_10"
+          "@id": "estleg:RKPSS_Par_10_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -1017,7 +1232,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_11_Lg_1",
@@ -1030,7 +1249,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_11_Lg_2",
@@ -1046,7 +1277,7 @@
       "rdfs:label": "§ 11 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:RKPSS_Par_10"
+          "@id": "estleg:RKPSS_Par_10_Lg_2"
         }
       ]
     },
@@ -1054,13 +1285,13 @@
       "@id": "estleg:RKPSS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Riigi keeleauhind",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Riigi F. J. Wiedemanni keeleauhind (edaspidi auhind) määratakse igal aastal ühele füüsilisele isikule väljapaistvate teenete eest eesti keele uurimisel, korraldamisel, õpetamisel, propageerimisel või kasutamisel. (2) Auhinnaga kaasneb tunnistus. (3) Auhind antakse haldusmenetluse seaduses (RT I 2001, 58, 354; 2002, 53, 336; 61, 375; 2003, 20, 117) sätestatud korras, kui käesolev seadus ei näe ette teisiti.",
       "estleg:legalText": "(1) Riigi F. J. Wiedemanni keeleauhind (edaspidi auhind) määratakse igal aastal ühele füüsilisele isikule väljapaistvate teenete eest eesti keele uurimisel, korraldamisel, õpetamisel, propageerimisel või kasutamisel. (2) Auhinnaga kaasneb tunnistus. (3) Auhind antakse haldusmenetluse seaduses (RT I 2001, 58, 354; 2002, 53, 336; 61, 375; 2003, 20, 117) sätestatud korras, kui käesolev seadus ei näe ette teisiti.",
@@ -1082,7 +1313,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1093,7 +1326,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_12_Lg_1",
@@ -1106,7 +1343,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_12_Lg_2",
@@ -1138,13 +1384,13 @@
       "@id": "estleg:RKPSS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Auhinna suurus",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "Auhinna suurus määratakse igal aastal riigieelarves.",
       "estleg:legalText": "Auhinna suurus määratakse igal aastal riigieelarves.",
@@ -1156,7 +1402,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKPSS_Par_13_Lg_Unknown_1"
+          "@id": "estleg:RKPSS_Par_13_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1177,7 +1423,7 @@
       ]
     },
     {
-      "@id": "estleg:RKPSS_Par_13_Lg_Unknown_1",
+      "@id": "estleg:RKPSS_Par_13_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1191,13 +1437,13 @@
       "@id": "estleg:RKPSS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Ettepanekute esitamine auhinna määramiseks",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Ettepanekuid auhinna määramiseks võivad esitada: juriidilised isikud, mille põhikirjas või põhimääruses on sätestatud eesti keele või kultuuri alane tegevus; Haridus- ja Teadusministeerium; isikud, kellele on antud F. J. Wiedemanni keeleauhind. (2) Ettepanekud esitatakse keeleauhinna komisjonile iga aasta 10. jaanuariks. (3) Keeleauhinna komisjon avalikustab nõuetekohaselt esitatud ettepanekud ja nende esitajad üleriigilise levikuga päevalehes hiljemalt iga aasta 1. veebruariks.",
       "estleg:legalText": "(1) Ettepanekuid auhinna määramiseks võivad esitada: juriidilised isikud, mille põhikirjas või põhimääruses on sätestatud eesti keele või kultuuri alane tegevus; Haridus- ja Teadusministeerium; isikud, kellele on antud F. J. Wiedemanni keeleauhind. (2) Ettepanekud esitatakse keeleauhinna komisjonile iga aasta 10. jaanuariks. (3) Keeleauhinna komisjon avalikustab nõuetekohaselt esitatud ettepanekud ja nende esitajad üleriigilise levikuga päevalehes hiljemalt iga aasta 1. veebruariks.",
@@ -1219,8 +1465,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1248,7 +1498,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_14_Lg_1",
@@ -1261,7 +1515,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_14_Lg_2",
@@ -1293,13 +1556,13 @@
       "@id": "estleg:RKPSS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Keeleauhinna komisjon",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Vabariigi Valitsus moodustab keeleauhinna komisjoni (edaspidi komisjon) ja kinnitab selle koosseisu valdkonna eest vastutava ministri ettepanekul kolmeks aastaks. Komisjon on 9-liikmeline. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „haridus- ja teadusministri“ sõnadega „valdkonna eest vastutava ministri“. (2) Valdkonna eest vastutav minister teeb ettepaneku komisjoni koosseisu kinnitamiseks, arvestades järgmisi kriteeriume: , Vabariigi",
       "estleg:legalText": "(1) Vabariigi Valitsus moodustab keeleauhinna komisjoni (edaspidi komisjon) ja kinnitab selle koosseisu valdkonna eest vastutava ministri ettepanekul kolmeks aastaks. Komisjon on 9-liikmeline. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „haridus- ja teadusministri“ sõnadega „valdkonna eest vastutava ministri“. (2) Valdkonna eest vastutav minister teeb ettepaneku komisjoni koosseisu kinnitamiseks, arvestades järgmisi kriteeriume: , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „Haridus- ja teadusminister“ sõnadega „Valdkonna eest vastutav minister“. komisjoni igas järgmises koosseisus peab olema vähemalt ühe kolmandiku ulatuses uusi liikmeid; üks ja sama isik ei tohi olla komisjoni liige rohkem kui kuus aastat järjest. (3) Komisjoni esimees on ametikoha järgi valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „haridus- ja teadusminister“ sõnadega „valdkonna eest vastutav minister“. (4) Komisjoni pädevuses on käesoleva seaduse §-s 14 nimetatud ettepanekute läbiarutamine, kandidaatide eesti keele alase tegevusega tutvumine ning ettepanekute tegemine Vabariigi Valitsusele auhinna määramiseks. Komisjoni töökorra",
@@ -1324,8 +1587,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1362,7 +1629,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_15_Lg_1",
@@ -1375,7 +1646,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_15_Lg_2",
@@ -1388,7 +1668,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_15_Lg_3",
@@ -1401,7 +1696,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 3"
+      "rdfs:label": "§ 15 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_15_Lg_4",
@@ -1419,19 +1726,28 @@
         {
           "@id": "estleg:RKPSS_Par_14"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigi_kultuuripreemiate_ja_kultuuristipendiumide_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Auhinna määramine ja üleandmine",
       "estleg:sourceAct": "Riigi kultuuripreemiate ja kultuuristipendiumide seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKPSS_Map_2026"
+        "@id": "estleg:RKPSS_Map"
       },
       "estleg:summary": "(1) Auhinna määrab Vabariigi Valitsus komisjoni ettepaneku alusel. (2) Auhind antakse üle Eesti Vabariigi aastapäeval.",
       "estleg:legalText": "(1) Auhinna määrab Vabariigi Valitsus komisjoni ettepaneku alusel. (2) Auhind antakse üle Eesti Vabariigi aastapäeval.",
@@ -1450,7 +1766,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1475,7 +1793,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_16_Lg_1",
@@ -1488,7 +1810,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKPSS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKPSS_Par_16_Lg_2",

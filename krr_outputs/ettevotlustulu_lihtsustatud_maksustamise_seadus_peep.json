@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ELMS_Map_2026",
+      "@id": "estleg:ELMS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Ettevõtlustulu lihtsustatud maksustamise seadus teemakaardistus",
       "dc:source": "Ettevõtlustulu lihtsustatud maksustamise seadus",
-      "dcterms:title": "Ettevõtlustulu lihtsustatud maksustamise seadus",
+      "dcterms:title": [
+        {
+          "@value": "Ettevõtlustulu lihtsustatud maksustamise seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Simplified Business Income Taxation Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/118122025016.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/118122025016.xml"
       },
       "estleg:kehtiv": {
@@ -61,16 +66,88 @@
         {
           "@id": "estleg:AmendmentLink_Draft_RAM24_0182_ELMS"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/1021"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3151"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KoPS_Par_6"
+        },
+        {
+          "@id": "estleg:KoPS_Par_9"
+        },
+        {
+          "@id": "estleg:ELMS_Par_1"
+        },
+        {
+          "@id": "estleg:MKS_Par_17"
+        },
+        {
+          "@id": "estleg:ELMS_Par_4"
+        },
+        {
+          "@id": "estleg:TULUMA_Par_5"
+        },
+        {
+          "@id": "estleg:SMS_Par_10"
+        },
+        {
+          "@id": "estleg:KoPS_Par_12"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ELMS_Par_5"
+        },
+        {
+          "@id": "estleg:ELMS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:ELMS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:ELMS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:ELMS_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:ELMS_Par_8"
+        },
+        {
+          "@id": "estleg:ELMS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:ELMS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:ELMS_Par_7_1_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/517122025005"
       }
     },
     {
@@ -103,13 +180,13 @@
       "@id": "estleg:ELMS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Maksu objekt",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Füüsiline isik võib avada ettevõtluskonto, millele laekunud summalt makstakse maksu käesoleva seaduse alusel (edaspidi ettevõtlustulu maks). (2) Ettevõtluskonto on füüsilise isiku nimel Euroopa Majanduspiirkonna lepinguriigi residendist krediidiasutuses või krediidiasutuse lepinguriigis asuvas püsivas tegevuskohas (edaspidi krediidiasutus) avatud konto, millele kantakse käesoleva paragrahvi lõikes 3 nimetatud summad, mille kohta on kontoomanik andnud krediidiasutusele juhise broneerida",
       "estleg:legalText": "(1) Füüsiline isik võib avada ettevõtluskonto, millele laekunud summalt makstakse maksu käesoleva seaduse alusel (edaspidi ettevõtlustulu maks). (2) Ettevõtluskonto on füüsilise isiku nimel Euroopa Majanduspiirkonna lepinguriigi residendist krediidiasutuses või krediidiasutuse lepinguriigis asuvas püsivas tegevuskohas (edaspidi krediidiasutus) avatud konto, millele kantakse käesoleva paragrahvi lõikes 3 nimetatud summad, mille kohta on kontoomanik andnud krediidiasutusele juhise broneerida kontol ettevõtlustulu maksu määrale vastav summa Maksu- ja Tolliameti kasuks ja see üle kanda Maksu- ja Tolliametile. (3) Ettevõtluskontole kantakse üksnes teenuse osutamisest ja kauba müügist saadud summa eurodes.",
@@ -128,8 +205,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -163,7 +244,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_1_Lg_1",
@@ -176,7 +261,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_1_Lg_2",
@@ -189,7 +286,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_1_Lg_3",
@@ -208,13 +317,13 @@
       "@id": "estleg:ELMS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Maksu maksja",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Ettevõtlustulu maksu maksja (edaspidi maksumaksja) on ettevõtluskontot omav füüsiline isik. (2) Maksumaksja ei või olla käibemaksukohustuslane ega tegutseda füüsilisest isikust ettevõtjana samal või sarnasel tegevusalal.",
       "estleg:legalText": "(1) Ettevõtlustulu maksu maksja (edaspidi maksumaksja) on ettevõtluskontot omav füüsiline isik. (2) Maksumaksja ei või olla käibemaksukohustuslane ega tegutseda füüsilisest isikust ettevõtjana samal või sarnasel tegevusalal.",
@@ -230,8 +339,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -248,7 +361,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_2_Lg_1",
@@ -261,7 +378,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_2_Lg_2",
@@ -274,19 +403,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Maksustamisperiood",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "Ettevõtlustulu maksu maksustamisperiood on kalendrikuu.",
       "estleg:legalText": "Ettevõtlustulu maksu maksustamisperiood on kalendrikuu.",
@@ -295,7 +436,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ELMS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:ELMS_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -305,7 +446,7 @@
       ]
     },
     {
-      "@id": "estleg:ELMS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:ELMS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -319,13 +460,13 @@
       "@id": "estleg:ELMS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Maksu määr",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Ettevõtlustulu maksu määr on 20 protsenti ettevõtluskontole laekunud summast. (2) Kui maksumaksja on kogumispensionide seaduse § 6 tähenduses kohustatud isik, suureneb käesoleva paragrahvi lõikes 1 nimetatud maksumäär kogumispensionide seaduse §-s 9 sätestatud määra võrra.",
       "estleg:legalText": "(1) Ettevõtlustulu maksu määr on 20 protsenti ettevõtluskontole laekunud summast. (2) Kui maksumaksja on kogumispensionide seaduse § 6 tähenduses kohustatud isik, suureneb käesoleva paragrahvi lõikes 1 nimetatud maksumäär kogumispensionide seaduse §-s 9 sätestatud määra võrra.",
@@ -341,8 +482,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -378,7 +523,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_4_Lg_1",
@@ -412,19 +561,28 @@
         {
           "@id": "estleg:KoPS_Par_9"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Ettevõtluskonto avamise lepingu sõlmimine ja lõpetamine",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Maksumaksja sõlmib ettevõtluskonto avamise lepingu enne käesoleva seaduse § 1 lõikes 3 nimetatud esimese summa laekumist. (2) Maksumaksja võib ettevõtluskonto sulgeda ja selle aluseks oleva lepingu lõpetada võlaõigusseaduses ette nähtud korras. Ettevõtluskonto aluseks olev leping lõpeb ka juhul, kui maksumaksja võtab tagasi käesoleva seaduse § 1 lõikes 2 nimetatud juhise. (3) Krediidiasutus esitab viivitamata Maksu- ja Tolliametile elektroonsel kujul andmed füüsilise isiku kohta, kes on",
       "estleg:legalText": "(1) Maksumaksja sõlmib ettevõtluskonto avamise lepingu enne käesoleva seaduse § 1 lõikes 3 nimetatud esimese summa laekumist. (2) Maksumaksja võib ettevõtluskonto sulgeda ja selle aluseks oleva lepingu lõpetada võlaõigusseaduses ette nähtud korras. Ettevõtluskonto aluseks olev leping lõpeb ka juhul, kui maksumaksja võtab tagasi käesoleva seaduse § 1 lõikes 2 nimetatud juhise. (3) Krediidiasutus esitab viivitamata Maksu- ja Tolliametile elektroonsel kujul andmed füüsilise isiku kohta, kes on ettevõtluskonto avamise lepingu sõlminud, selle lõpetanud või käesoleva seaduse § 1 lõikes 2 nimetatud juhise tagasi võtnud.",
@@ -443,12 +601,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_1"
+          "@id": "estleg:ELMS_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:ELMS_Par_1_Lg_2"
         }
       ],
       "estleg:referencedBy": [
@@ -477,7 +642,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_5_Lg_1",
@@ -493,9 +662,18 @@
       "rdfs:label": "§ 5 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_1"
+          "@id": "estleg:ELMS_Par_1_Lg_3"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_5_Lg_2",
@@ -511,9 +689,21 @@
       "rdfs:label": "§ 5 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_1"
+          "@id": "estleg:ELMS_Par_1_Lg_2"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_5_Lg_3",
@@ -529,21 +719,33 @@
       "rdfs:label": "§ 5 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_1"
+          "@id": "estleg:ELMS_Par_1_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Ettevõtlustulu maksu tasumine",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Maksukohustuse suuruse arvutamiseks esitab krediidiasutus viivitamata Maksu- ja Tolliametile elektroonsel kujul andmed iga maksumaksja ja iga tema ettevõtluskontole laekunud summa kohta. Maksu- ja Tolliamet arvutab ettevõtlustulu maksu summa ja edastab selle viivitamata elektroonselt krediidiasutusele. (2) Krediidiasutus broneerib Maksu- ja Tolliametilt saadud informatsiooni alusel maksumaksja ettevõtluskontol maksukohustuse suurusele vastava summa.",
       "estleg:legalText": "(1) Maksukohustuse suuruse arvutamiseks esitab krediidiasutus viivitamata Maksu- ja Tolliametile elektroonsel kujul andmed iga maksumaksja ja iga tema ettevõtluskontole laekunud summa kohta. Maksu- ja Tolliamet arvutab ettevõtlustulu maksu summa ja edastab selle viivitamata elektroonselt krediidiasutusele. (2) Krediidiasutus broneerib Maksu- ja Tolliametilt saadud informatsiooni alusel maksumaksja ettevõtluskontol maksukohustuse suurusele vastava summa. (3) Krediidiasutus kannab käesoleva paragrahvi lõike 2 alusel maksustamisperioodil broneeritud ettevõtlustulu maksu Maksu- ja Tolliameti kontole maksustamisperioodile järgneva kalendrikuu 10. kuupäevaks. (4) Ettevõtluskonto aluseks oleva lepingu lõpetamise või käesoleva seaduse § 1 lõikes 2 nimetatud juhise tagasivõtmise korral kannab krediidiasutus Maksu- ja Tolliameti kontole käesoleva paragrahvi lõike 3 kohaselt ettevõtluskonto aluseks oleva lepingu lõppemiseni broneeritud ettevõtlustulu maksu.",
@@ -565,8 +767,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -586,7 +792,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_6_Lg_1",
@@ -599,7 +809,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_6_Lg_2",
@@ -612,7 +834,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 2"
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_6_Lg_3",
@@ -625,7 +859,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 3"
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_6_Lg_4",
@@ -641,21 +887,33 @@
       "rdfs:label": "§ 6 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_1"
+          "@id": "estleg:ELMS_Par_1_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Maksumaksja registreerimine töötamise registris",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -663,7 +921,9 @@
         "@id": "estleg:Cluster_ELMS_default"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -677,19 +937,23 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_7_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
       "rdfs:label": "§ 7¹. Ettevõtlustulu maksu andmekogu",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Ettevõtlustulu maksu andmekogu on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registri alamregister, mille pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Ettevõtlustulu maksu andmekogu eesmärk on ettevõtlustulu maksu haldamiseks vajalike käesoleva seaduse § 5 lõikes 3 nimetatud füüsilise isiku ja tema ettevõtluskonto andmete ning § 6 lõigetes 1, 3 ja 4 nimetatud summade andmete töötlemine.",
       "estleg:legalText": "(1) Ettevõtlustulu maksu andmekogu on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registri alamregister, mille pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Ettevõtlustulu maksu andmekogu eesmärk on ettevõtlustulu maksu haldamiseks vajalike käesoleva seaduse § 5 lõikes 3 nimetatud füüsilise isiku ja tema ettevõtluskonto andmete ning § 6 lõigetes 1, 3 ja 4 nimetatud summade andmete töötlemine. (3) Ettevõtlustulu maksu andmekogusse kantakse: andmed ettevõtluskonto ja selle omaniku kohta; andmed ettevõtluskontole laekunud summade kohta; andmed arvestatud ja laekunud ettevõtlustulu maksu kohta. (4) Ettevõtlustulu maksu andmekogu andmeid säilitatakse kuni seitse kalendriaastat.",
@@ -711,11 +975,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:MKS_Par_17"
+          "@id": "estleg:MKS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:ELMS_Par_5_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -741,7 +1010,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_7_1_Lg_1",
@@ -757,7 +1030,7 @@
       "rdfs:label": "§ 7¹ lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:MKS_Par_17"
+          "@id": "estleg:MKS_Par_17_Lg_1"
         }
       ]
     },
@@ -775,9 +1048,18 @@
       "rdfs:label": "§ 7¹ lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_5"
+          "@id": "estleg:ELMS_Par_5_Lg_3"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_7_1_Lg_3",
@@ -790,7 +1072,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_7_1"
       },
-      "rdfs:label": "§ 7¹ lg 3"
+      "rdfs:label": "§ 7¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_7_1_Lg_4",
@@ -809,13 +1100,13 @@
       "@id": "estleg:ELMS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Ettevõtlustulu maksu laekumine",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Ettevõtlustulu maks laekub tulumaksuseaduse §-s 5, sotsiaalmaksuseaduse § 10 lõigetes 1–3 ja 4 ning kogumispensionide seaduse §-s 12 sätestatu ning käesoleva paragrahvi lõikes 2 või 3 sätestatud jaotuse kohaselt. (2) Käesoleva seaduse § 4 lõikes 1 nimetatud ettevõtlustulu maksu osa jagatakse järgmiselt: tulumaksu osa on 22/55 ettevõtlustulu maksust; sotsiaalmaksu osa on 33/55 ettevõtlustulu maksust. (3) Kogumispensioni makse osa on käesoleva seaduse § 4 lõikes 2 nimetatud ettevõtlustulu",
       "estleg:legalText": "(1) Ettevõtlustulu maks laekub tulumaksuseaduse §-s 5, sotsiaalmaksuseaduse § 10 lõigetes 1–3 ja 4 ning kogumispensionide seaduse §-s 12 sätestatu ning käesoleva paragrahvi lõikes 2 või 3 sätestatud jaotuse kohaselt. (2) Käesoleva seaduse § 4 lõikes 1 nimetatud ettevõtlustulu maksu osa jagatakse järgmiselt: tulumaksu osa on 22/55 ettevõtlustulu maksust; sotsiaalmaksu osa on 33/55 ettevõtlustulu maksust. (3) Kogumispensioni makse osa on käesoleva seaduse § 4 lõikes 2 nimetatud ettevõtlustulu maksu osa. (4) Tulumaksuseaduse § 5 lõike 1 punktis 1 sätestatud maksumaksja elukohajärgse kohaliku omavalitsuse üksuse tulumaksu osa arvutamisel käsitatakse füüsilise isiku maksustatava tuluna ettevõtluskontole laekunud summat, mida on vähendatud ettevõtlustulu maksu sotsiaalmaksu osa võrra. (5) Maksu- ja Tolliamet edastab maksukohustuslaste registris olevad andmed pensioniregistri pidajale, Tervisekassale ja Sotsiaalkindlustusametile sotsiaalmaksuseaduse § 11 ja kogumispensionide seaduse § 12 sätestatu kohaselt.",
@@ -840,21 +1131,28 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_4"
+          "@id": "estleg:ELMS_Par_4_Lg_1"
         },
         {
-          "@id": "estleg:TULUMA_Par_5"
+          "@id": "estleg:TULUMA_Par_5_Lg_1"
         },
         {
           "@id": "estleg:SMS_Par_10"
         },
         {
           "@id": "estleg:KoPS_Par_12"
+        },
+        {
+          "@id": "estleg:ELMS_Par_4_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -875,7 +1173,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_8_Lg_1",
@@ -915,7 +1217,7 @@
       "rdfs:label": "§ 8 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_4"
+          "@id": "estleg:ELMS_Par_4_Lg_1"
         }
       ]
     },
@@ -933,7 +1235,7 @@
       "rdfs:label": "§ 8 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:ELMS_Par_4"
+          "@id": "estleg:ELMS_Par_4_Lg_2"
         }
       ]
     },
@@ -951,9 +1253,22 @@
       "rdfs:label": "§ 8 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TULUMA_Par_5"
+          "@id": "estleg:TULUMA_Par_5_Lg_1"
         }
-      ]
+      ],
+      "estleg:itemNumber": "1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_8_Lg_5",
@@ -974,19 +1289,28 @@
         {
           "@id": "estleg:KoPS_Par_12"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Ettevõtlustulu maksust sotsiaalkaitseks ette nähtud hüvitiste maksmise ja nende suuruse arvutamise alused",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "(1) Sotsiaalmaksuna perehüvitiste seaduse, riikliku pensionikindlustuse seaduse ja ravikindlustuse seaduse tähenduses käsitatakse ka käesoleva seaduse alusel makstud maksu sotsiaalmaksu osa. (2) Pensioni ja vanemahüvitise määramisele ning maksmisele kohaldatakse riikliku pensionikindlustuse seadust ja perehüvitiste seadust, arvestades käesoleva seaduse erisusi.",
       "estleg:legalText": "(1) Sotsiaalmaksuna perehüvitiste seaduse, riikliku pensionikindlustuse seaduse ja ravikindlustuse seaduse tähenduses käsitatakse ka käesoleva seaduse alusel makstud maksu sotsiaalmaksu osa. (2) Pensioni ja vanemahüvitise määramisele ning maksmisele kohaldatakse riikliku pensionikindlustuse seadust ja perehüvitiste seadust, arvestades käesoleva seaduse erisusi.",
@@ -1002,7 +1326,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1013,7 +1339,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_9_Lg_1",
@@ -1039,19 +1369,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:ELMS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:ELMS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10.",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ELMS_default"
@@ -1067,13 +1406,13 @@
       "@id": "estleg:ELMS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -1093,13 +1432,13 @@
       "@id": "estleg:ELMS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ettevotlustulu_lihtsustatud_maksustamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Seaduse jõustumine",
       "estleg:sourceAct": "Ettevõtlustulu lihtsustatud maksustamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ELMS_Map_2026"
+        "@id": "estleg:ELMS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2018. aasta 1. jaanuaril.",
       "estleg:legalText": "Käesolev seadus jõustub 2018. aasta 1. jaanuaril.",
@@ -1108,7 +1447,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ELMS_Par_20_Lg_Unknown_1"
+          "@id": "estleg:ELMS_Par_20_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1118,7 +1457,7 @@
       ]
     },
     {
-      "@id": "estleg:ELMS_Par_20_Lg_Unknown_1",
+      "@id": "estleg:ELMS_Par_20_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

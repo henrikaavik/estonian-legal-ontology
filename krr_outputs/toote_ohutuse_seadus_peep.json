@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TTeOS_2_Map_2026",
+      "@id": "estleg:TTeOS_2_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Toote ohutuse seadus teemakaardistus",
       "dc:source": "Toote ohutuse seadus",
@@ -36,16 +35,64 @@
           "@id": "http://eurovoc.europa.eu/525"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_TTeOS_2",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2836"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5899"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_7"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_12"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_19"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_10"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_14"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_15"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_21"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2004-05-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -92,15 +139,16 @@
       "@id": "estleg:toote_ohutuse_seadus_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse eesmärk ja reguleerimisala",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Käesoleva seaduse eesmärk on tagada turule lastud toodete ohutus. Käesoleva seaduse eesmärk on tagada turule lastud toodete ohutus. 2 (2) Käesolevas seaduses sätestatakse toote ohutuse tagamise nõuded ning turujärelevalve korraldamise alused. Käesolevas seaduses sätestatakse toote ohutuse tagamise nõuded ning turujärelevalve korraldamise alused. 3 (3) Käesolevat seadust kohaldatakse tootele ja turujärelevalve korraldamisele niivõrd, kuivõrd seda ei ole reguleeritud teiste seadustega. Käeso",
+      "estleg:legalText": "1 (1) Käesoleva seaduse eesmärk on tagada turule lastud toodete ohutus. Käesoleva seaduse eesmärk on tagada turule lastud toodete ohutus. 2 (2) Käesolevas seaduses sätestatakse toote ohutuse tagamise nõuded ning turujärelevalve korraldamise alused. Käesolevas seaduses sätestatakse toote ohutuse tagamise nõuded ning turujärelevalve korraldamise alused. 3 (3) Käesolevat seadust kohaldatakse tootele ja turujärelevalve korraldamisele niivõrd, kuivõrd seda ei ole reguleeritud teiste seadustega. Käeso",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_1"
       },
@@ -123,20 +171,23 @@
       "@id": "estleg:toote_ohutuse_seadus_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Mõisted",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Toode käesoleva seaduse tähenduses on vallasasi, mis on mõeldud tarbijale või mida tarbija võib eeldatavalt mõistlikul viisil kasutada ka juhul, kui see ei ole tarbijale ette nähtud, samuti teenuse osutamise korral tarbijale kättesaadavaks tehtud toode, mida tasu eest või tasuta pakutakse või tehakse kättesaadavaks majandus- või kutsetegevuse käigus, sõltumata sellest, kas toode on uus, kasutatud või parendatud. Toode käesoleva seaduse tähenduses on vallasasi, mis on mõeldud tarbijale või ",
+      "estleg:legalText": "1 (1) Toode käesoleva seaduse tähenduses on vallasasi, mis on mõeldud tarbijale või mida tarbija võib eeldatavalt mõistlikul viisil kasutada ka juhul, kui see ei ole tarbijale ette nähtud, samuti teenuse osutamise korral tarbijale kättesaadavaks tehtud toode, mida tasu eest või tasuta pakutakse või tehakse kättesaadavaks majandus- või kutsetegevuse käigus, sõltumata sellest, kas toode on uus, kasutatud või parendatud. Toode käesoleva seaduse tähenduses on vallasasi, mis on mõeldud tarbijale või ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_1"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -158,21 +209,26 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Ohutuse kindlaksmääramine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Toode on ohutu, kui see mõistlikel kasutustingimustel, arvestades kasutusiga ning asjakohastel juhtudel kasutuselevõtu-, paigaldus- ja hooldusnõuete järgimist, tagab inimese ohutuse ja tervise kaitse. Toode on ohutu, kui see mõistlikel kasutustingimustel, arvestades kasutusiga ning asjakohastel juhtudel kasutuselevõtu-, paigaldus- ja hooldusnõuete järgimist, tagab inimese ohutuse ja tervise kaitse. 2 (2) Ohutuse kindlaksmääramisel võetakse arvesse eelkõige järgmised asjaolud: 1 1) toote om",
+      "estleg:legalText": "1 (1) Toode on ohutu, kui see mõistlikel kasutustingimustel, arvestades kasutusiga ning asjakohastel juhtudel kasutuselevõtu-, paigaldus- ja hooldusnõuete järgimist, tagab inimese ohutuse ja tervise kaitse. Toode on ohutu, kui see mõistlikel kasutustingimustel, arvestades kasutusiga ning asjakohastel juhtudel kasutuselevõtu-, paigaldus- ja hooldusnõuete järgimist, tagab inimese ohutuse ja tervise kaitse. 2 (2) Ohutuse kindlaksmääramisel võetakse arvesse eelkõige järgmised asjaolud: 1 1) toote om",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_1"
       },
@@ -203,20 +259,23 @@
       "@id": "estleg:toote_ohutuse_seadus_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Eksitava välimusega ohtlik toode",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Eksitava välimusega ohtlik toode on toode, mis ei ole söödav, kuid mille suurus, lõhn, värvus, välimus, kuju, pakend või märgistus on selline, et tarbija, eelkõige laps, võib seda ekslikult pidada toiduks ja selle suhupanemine, imemine või allaneelamine võib olla ohtlik ning põhjustada tervisekahjustusi. Eksitava välimusega ohtlik toode on toode, mis ei ole söödav, kuid mille suurus, lõhn, värvus, välimus, kuju, pakend või märgistus on selline, et tarbija, eelkõige laps, võib seda ekslikul",
+      "estleg:legalText": "1 (1) Eksitava välimusega ohtlik toode on toode, mis ei ole söödav, kuid mille suurus, lõhn, värvus, välimus, kuju, pakend või märgistus on selline, et tarbija, eelkõige laps, võib seda ekslikult pidada toiduks ja selle suhupanemine, imemine või allaneelamine võib olla ohtlik ning põhjustada tervisekahjustusi. Eksitava välimusega ohtlik toode on toode, mis ei ole söödav, kuid mille suurus, lõhn, värvus, välimus, kuju, pakend või märgistus on selline, et tarbija, eelkõige laps, võib seda ekslikul",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_1"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -238,27 +297,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Tootja ja levitaja",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Tootja käesoleva seaduse tähenduses on: 1 1) toote valmistaja, kelle tegevuskoht on Euroopa Liidu liikmesriigis, või muu isik, kes esitleb end tootjana ja lisab tootele oma nime, kaubamärgi või muu eraldusmärgi või kes parendab toodet; 2 2) toote valmistaja esindaja, kui toote valmistaja tegevuskoht ei ole Euroopa Liidu liikmesriigis; 3 3) toote importija, kui toote valmistaja esindaja tegevuskoht ei ole Euroopa Liidu liikmesriigis; 4 4) muu isik toote turustusahelas niivõrd, kuivõrd tema ",
+      "estleg:legalText": "1 (1) Tootja käesoleva seaduse tähenduses on: 1 1) toote valmistaja, kelle tegevuskoht on Euroopa Liidu liikmesriigis, või muu isik, kes esitleb end tootjana ja lisab tootele oma nime, kaubamärgi või muu eraldusmärgi või kes parendab toodet; 2 2) toote valmistaja esindaja, kui toote valmistaja tegevuskoht ei ole Euroopa Liidu liikmesriigis; 3 3) toote importija, kui toote valmistaja esindaja tegevuskoht ei ole Euroopa Liidu liikmesriigis; 4 4) muu isik toote turustusahelas niivõrd, kuivõrd tema ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_1"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -280,27 +348,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Toote tarbijalt tagasinõudmine ja turult kõrvaldamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Toote tarbijalt tagasinõudmine käesoleva seaduse tähenduses on iga tegevus, mille eesmärk on saada tagasi tootja või levitaja poolt tarbijale üleantud või kättesaadavaks tehtud ohtlik toode. Toote tarbijalt tagasinõudmine käesoleva seaduse tähenduses on iga tegevus, mille eesmärk on saada tagasi tootja või levitaja poolt tarbijale üleantud või kättesaadavaks tehtud ohtlik toode. 2 (2) Toote tarbijalt tagasinõudmise korral hüvitab tootja või levitaja tagastatud toote müügihinna tarbijale. T",
+      "estleg:legalText": "1 (1) Toote tarbijalt tagasinõudmine käesoleva seaduse tähenduses on iga tegevus, mille eesmärk on saada tagasi tootja või levitaja poolt tarbijale üleantud või kättesaadavaks tehtud ohtlik toode. Toote tarbijalt tagasinõudmine käesoleva seaduse tähenduses on iga tegevus, mille eesmärk on saada tagasi tootja või levitaja poolt tarbijale üleantud või kättesaadavaks tehtud ohtlik toode. 2 (2) Toote tarbijalt tagasinõudmise korral hüvitab tootja või levitaja tagastatud toote müügihinna tarbijale. T",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_1"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -322,21 +399,26 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Ohutuse eeldamine ja hindamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Toote ohutust tuleb eeldada, kui see vastab selle Euroopa Liidu liikmesriigi tervisekaitse- ja ohutusnõuetele, kus toode on turule lastud, ja kui seda valdkonda ei ole reguleeritud toodet või tooteliiki käsitlevate Euroopa Liidu eriaktidega ning juhul, kui selle liikmesriigi vastavad nõuded on kooskõlas Euroopa Ühenduse asutamislepinguga. Toote ohutust tuleb eeldada, kui see vastab selle Euroopa Liidu liikmesriigi tervisekaitse- ja ohutusnõuetele, kus toode on turule lastud, ja kui seda va",
+      "estleg:legalText": "1 (1) Toote ohutust tuleb eeldada, kui see vastab selle Euroopa Liidu liikmesriigi tervisekaitse- ja ohutusnõuetele, kus toode on turule lastud, ja kui seda valdkonda ei ole reguleeritud toodet või tooteliiki käsitlevate Euroopa Liidu eriaktidega ning juhul, kui selle liikmesriigi vastavad nõuded on kooskõlas Euroopa Ühenduse asutamislepinguga. Toote ohutust tuleb eeldada, kui see vastab selle Euroopa Liidu liikmesriigi tervisekaitse- ja ohutusnõuetele, kus toode on turule lastud, ja kui seda va",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_2"
       },
@@ -363,26 +445,33 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Tootja kohustused",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Tootjal on lubatud turule lasta ainult ohutut toodet. Tootjal on lubatud turule lasta ainult ohutut toodet. 2 (2) Tootja on kohustatud andma tarbijale asjakohast teavet, et võimaldada tal hinnata toote võimalikke ohte selle tavalise või mõistliku kasutusea jooksul, kui sellised ohud ei ole vastavate hoiatusteta kohe selged, ning mis võimaldaksid tarbijal võtta kasutusele ettevaatusabinõusid nende ohtude vältimiseks. Tootja on kohustatud andma tarbijale asjakohast teavet, et võimaldada tal ",
+      "estleg:legalText": "1 (1) Tootjal on lubatud turule lasta ainult ohutut toodet. Tootjal on lubatud turule lasta ainult ohutut toodet. 2 (2) Tootja on kohustatud andma tarbijale asjakohast teavet, et võimaldada tal hinnata toote võimalikke ohte selle tavalise või mõistliku kasutusea jooksul, kui sellised ohud ei ole vastavate hoiatusteta kohe selged, ning mis võimaldaksid tarbijal võtta kasutusele ettevaatusabinõusid nende ohtude vältimiseks. Tootja on kohustatud andma tarbijale asjakohast teavet, et võimaldada tal ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_2"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -403,26 +492,35 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Tootja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Levitaja kohustused",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Levitaja on kohustatud tegutsema asjakohaselt, et tagada toote vastavus ohutusnõuetele. Levitajal ei ole lubatud pakkuda toodet, mis tema valduses oleva teabe kohaselt ei vasta ohutusnõuetele või mille mittevastavust ohutusnõuetele oleks pidanud eeldama. Levitaja on kohustatud tegutsema asjakohaselt, et tagada toote vastavus ohutusnõuetele. Levitajal ei ole lubatud pakkuda toodet, mis tema valduses oleva teabe kohaselt ei vasta ohutusnõuetele või mille mittevastavust ohutusnõuetele oleks p",
+      "estleg:legalText": "1 (1) Levitaja on kohustatud tegutsema asjakohaselt, et tagada toote vastavus ohutusnõuetele. Levitajal ei ole lubatud pakkuda toodet, mis tema valduses oleva teabe kohaselt ei vasta ohutusnõuetele või mille mittevastavust ohutusnõuetele oleks pidanud eeldama. Levitaja on kohustatud tegutsema asjakohaselt, et tagada toote vastavus ohutusnõuetele. Levitajal ei ole lubatud pakkuda toodet, mis tema valduses oleva teabe kohaselt ei vasta ohutusnõuetele või mille mittevastavust ohutusnõuetele oleks p",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_2"
       },
@@ -451,26 +549,32 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:dutyHolder": "Levitaja"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Turujärelevalveasutuse teavitamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Kui tootja või levitaja teab või peaks teadma tema valduses oleva teabe põhjal, et tema poolt turule lastud toodet ei saa käesoleva seaduse §-s 7 sätestatu alusel lugeda ohutuks, on ta viivitamatult kohustatud sellest teavitama turujärelevalveasutust, kes vastava tootegrupi järelevalvet teostab. Kui tootja või levitaja teab või peaks teadma tema valduses oleva teabe põhjal, et tema poolt turule lastud toodet ei saa käesoleva seaduse §-s 7 sätestatu alusel lugeda ohutuks, on ta viivitamatul",
+      "estleg:legalText": "1 (1) Kui tootja või levitaja teab või peaks teadma tema valduses oleva teabe põhjal, et tema poolt turule lastud toodet ei saa käesoleva seaduse §-s 7 sätestatu alusel lugeda ohutuks, on ta viivitamatult kohustatud sellest teavitama turujärelevalveasutust, kes vastava tootegrupi järelevalvet teostab. Kui tootja või levitaja teab või peaks teadma tema valduses oleva teabe põhjal, et tema poolt turule lastud toodet ei saa käesoleva seaduse §-s 7 sätestatu alusel lugeda ohutuks, on ta viivitamatul",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_2"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -497,27 +601,36 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Turujärelevalveasutuse pädevus",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Käesolevas seaduses sätestatud nõuete täitmise üle teostab turujärelevalvet Tarbijakaitseamet ning teised ametid ja inspektsioonid oma pädevuse ulatuses. Käesolevas seaduses sätestatud nõuete täitmise üle teostab turujärelevalvet Tarbijakaitseamet ning teised ametid ja inspektsioonid oma pädevuse ulatuses. 2 (2) Turujärelevalveasutuse pädevusse kuulub järelevalve käigus toote ohutuse kontrollimine ning ettekirjutuste ja otsuste tegemine. Turujärelevalveasutuse pädevusse kuulub järelevalve ",
+      "estleg:legalText": "1 (1) Käesolevas seaduses sätestatud nõuete täitmise üle teostab turujärelevalvet Tarbijakaitseamet ning teised ametid ja inspektsioonid oma pädevuse ulatuses. Käesolevas seaduses sätestatud nõuete täitmise üle teostab turujärelevalvet Tarbijakaitseamet ning teised ametid ja inspektsioonid oma pädevuse ulatuses. 2 (2) Turujärelevalveasutuse pädevusse kuulub järelevalve käigus toote ohutuse kontrollimine ning ettekirjutuste ja otsuste tegemine. Turujärelevalveasutuse pädevusse kuulub järelevalve ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -545,26 +658,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Turujärelevalvet teostava ametiisiku õigused ja kohustused",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Turujärelevalvet teostavad ametiisikud kontrollivad toote ohutust: 1 1) plaanipäraselt või, 2 2) kui on kahtlus, et toode ei ole ohutu. Turujärelevalvet teostavad ametiisikud kontrollivad toote ohutust: plaanipäraselt või, kui on kahtlus, et toode ei ole ohutu. 2 (2) Turujärelevalvet teostaval ametiisikul on iga turule lastud toote suhtes õigus: 1 1) kontrollida käesoleva seaduse täitmist takistamatult ja ette teatamata; 2 2) kontrollida toote ohutust vajalikus ulatuses kuni toode ei ole j",
+      "estleg:legalText": "1 (1) Turujärelevalvet teostavad ametiisikud kontrollivad toote ohutust: 1 1) plaanipäraselt või, 2 2) kui on kahtlus, et toode ei ole ohutu. Turujärelevalvet teostavad ametiisikud kontrollivad toote ohutust: plaanipäraselt või, kui on kahtlus, et toode ei ole ohutu. 2 (2) Turujärelevalvet teostaval ametiisikul on iga turule lastud toote suhtes õigus: 1 1) kontrollida käesoleva seaduse täitmist takistamatult ja ette teatamata; 2 2) kontrollida toote ohutust vajalikus ulatuses kuni toode ei ole j",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -594,26 +714,33 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Ohutuse kontrollimine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Turujärelevalveasutusel on turujärelevalve käigus õigus: 1 1) võtta tootjalt või levitajalt turule lastud toote näidis tasuta selle ohutuse kontrollimiseks; 2 2) vajaduse korral tellida toote ohutuse kontrollimiseks ekspertiis. Turujärelevalveasutusel on turujärelevalve käigus õigus: võtta tootjalt või levitajalt turule lastud toote näidis tasuta selle ohutuse kontrollimiseks; vajaduse korral tellida toote ohutuse kontrollimiseks ekspertiis. 2 (2) Ohutuse kontrollimiseks tellitud ekspertii",
+      "estleg:legalText": "1 (1) Turujärelevalveasutusel on turujärelevalve käigus õigus: 1 1) võtta tootjalt või levitajalt turule lastud toote näidis tasuta selle ohutuse kontrollimiseks; 2 2) vajaduse korral tellida toote ohutuse kontrollimiseks ekspertiis. Turujärelevalveasutusel on turujärelevalve käigus õigus: võtta tootjalt või levitajalt turule lastud toote näidis tasuta selle ohutuse kontrollimiseks; vajaduse korral tellida toote ohutuse kontrollimiseks ekspertiis. 2 (2) Ohutuse kontrollimiseks tellitud ekspertii",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -635,26 +762,33 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Turujärelevalve toimingu vastavus ohule",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Turujärelevalveasutus on kohustatud soodustama tootjate ja levitajate toote ohutuse suurendamisele suunatud vabatahtlikke toiminguid, mille kasutamise võimalus on neile käesoleva seadusega ette nähtud. Turujärelevalveasutus on kohustatud soodustama tootjate ja levitajate toote ohutuse suurendamisele suunatud vabatahtlikke toiminguid, mille kasutamise võimalus on neile käesoleva seadusega ette nähtud. 2 (2) Turujärelevalveasutusel on õigus korraldada või nõuda käesoleva seaduse § 12 lõikes ",
+      "estleg:legalText": "1 (1) Turujärelevalveasutus on kohustatud soodustama tootjate ja levitajate toote ohutuse suurendamisele suunatud vabatahtlikke toiminguid, mille kasutamise võimalus on neile käesoleva seadusega ette nähtud. Turujärelevalveasutus on kohustatud soodustama tootjate ja levitajate toote ohutuse suurendamisele suunatud vabatahtlikke toiminguid, mille kasutamise võimalus on neile käesoleva seadusega ette nähtud. 2 (2) Turujärelevalveasutusel on õigus korraldada või nõuda käesoleva seaduse § 12 lõikes ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -686,31 +820,37 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Turujärelevalveasutus",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Toote turule laskmise kitsendustest Euroopa Komisjoni teavitamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Kui toote turule laskmisele kohaldatakse käesoleva seaduse § 12 lõigetes 3–7 loetletud kitsendusi, samuti juhul, kui turujärelevalveasutus rakendab või kavatseb rakendada tootjate ja levitajate suhtes tootest tuleneva tõsise ohu tõttu soovituslikke, kokkuleppelisi või kohustuslikke meetmeid, millega nähakse ette eritingimusi sellise toote võimalikul turule laskmise või kasutamise korral, teavitab asjakohane turujärelevalveasutus sellest Euroopa Komisjoni, kui teavitamise kohustus ei tulene",
+      "estleg:legalText": "1 (1) Kui toote turule laskmisele kohaldatakse käesoleva seaduse § 12 lõigetes 3–7 loetletud kitsendusi, samuti juhul, kui turujärelevalveasutus rakendab või kavatseb rakendada tootjate ja levitajate suhtes tootest tuleneva tõsise ohu tõttu soovituslikke, kokkuleppelisi või kohustuslikke meetmeid, millega nähakse ette eritingimusi sellise toote võimalikul turule laskmise või kasutamise korral, teavitab asjakohane turujärelevalveasutus sellest Euroopa Komisjoni, kui teavitamise kohustus ei tulene",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -734,21 +874,26 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Teabe avalikustamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Toote ohutust puudutava teabe avalikustab turujärelevalveasutus avaliku teabe seaduses (RT I 2000, 92, 597; 2002, 61, 375; 63, 387; 2003, 25, 153; 26, 158; 32, õiend) sätestatud korras käesolevast paragrahvist tulenevate erisustega. Toote ohutust puudutava teabe avalikustab turujärelevalveasutus avaliku teabe seaduses (RT I 2000, 92, 597; 2002, 61, 375; 63, 387; 2003, 25, 153; 26, 158; 32, õiend) sätestatud korras käesolevast paragrahvist tulenevate erisustega. 2 (2) Turujärelevalveasutuse",
+      "estleg:legalText": "1 (1) Toote ohutust puudutava teabe avalikustab turujärelevalveasutus avaliku teabe seaduses (RT I 2000, 92, 597; 2002, 61, 375; 63, 387; 2003, 25, 153; 26, 158; 32, õiend) sätestatud korras käesolevast paragrahvist tulenevate erisustega. Toote ohutust puudutava teabe avalikustab turujärelevalveasutus avaliku teabe seaduses (RT I 2000, 92, 597; 2002, 61, 375; 63, 387; 2003, 25, 153; 26, 158; 32, õiend) sätestatud korras käesolevast paragrahvist tulenevate erisustega. 2 (2) Turujärelevalveasutuse",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
@@ -770,21 +915,26 @@
       "@id": "estleg:toote_ohutuse_seadus_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Ettekirjutus ja toiming",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Käesoleva seaduse või selle alusel kehtestatud õigusaktide nõuete rikkumise lõpetamiseks, sealhulgas nõuetele mittevastava toote turult kõrvaldamiseks või tarbijalt tagasinõudmiseks teeb turujärelevalvet teostav ametiisik ettekirjutuse, milles: 1 1) juhib tähelepanu õigusrikkumisele ja esitab nõude selle lõpetamiseks, 2 2) esitab vajaduse korral nõude õigusrikkumisega seotud tegevuse osaliseks või täielikuks peatamiseks või 3 3) kohustab tegema edasise tegevuse õiguspäraseks jätkamiseks va",
+      "estleg:legalText": "1 (1) Käesoleva seaduse või selle alusel kehtestatud õigusaktide nõuete rikkumise lõpetamiseks, sealhulgas nõuetele mittevastava toote turult kõrvaldamiseks või tarbijalt tagasinõudmiseks teeb turujärelevalvet teostav ametiisik ettekirjutuse, milles: 1 1) juhib tähelepanu õigusrikkumisele ja esitab nõude selle lõpetamiseks, 2 2) esitab vajaduse korral nõude õigusrikkumisega seotud tegevuse osaliseks või täielikuks peatamiseks või 3 3) kohustab tegema edasise tegevuse õiguspäraseks jätkamiseks va",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -815,26 +965,33 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Ettekirjutuse ja toimingu vaidlustamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Turujärelevalvet teostava ametiisiku ettekirjutuse või toiminguga mittenõustumise korral on õigus esitada kirjalik vaie turujärelevalveasutuse peadirektorile 10 tööpäeva jooksul ettekirjutusest või toimingust teadasaamise päevast arvates. Turujärelevalvet teostava ametiisiku ettekirjutuse või toiminguga mittenõustumise korral on õigus esitada kirjalik vaie turujärelevalveasutuse peadirektorile 10 tööpäeva jooksul ettekirjutusest või toimingust teadasaamise päevast arvates. 2 (2) Vaiet ei s",
+      "estleg:legalText": "1 (1) Turujärelevalvet teostava ametiisiku ettekirjutuse või toiminguga mittenõustumise korral on õigus esitada kirjalik vaie turujärelevalveasutuse peadirektorile 10 tööpäeva jooksul ettekirjutusest või toimingust teadasaamise päevast arvates. Turujärelevalvet teostava ametiisiku ettekirjutuse või toiminguga mittenõustumise korral on õigus esitada kirjalik vaie turujärelevalveasutuse peadirektorile 10 tööpäeva jooksul ettekirjutusest või toimingust teadasaamise päevast arvates. 2 (2) Vaiet ei s",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_3"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -865,27 +1022,36 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Nõuetele mittevastava toote turule laskmine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Nõuetele mittevastava toote turule laskmise eest, samuti sellise toote turult kõrvaldamata jätmise või tarbijalt tagasi nõudmata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 200 trahviühikut. Nõuetele mittevastava toote turule laskmise eest, samuti sellise toote turult kõrvaldamata jätmise või tarbijalt tagasi nõudmata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 200 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidili",
+      "estleg:legalText": "1 (1) Nõuetele mittevastava toote turule laskmise eest, samuti sellise toote turult kõrvaldamata jätmise või tarbijalt tagasi nõudmata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 200 trahviühikut. Nõuetele mittevastava toote turule laskmise eest, samuti sellise toote turult kõrvaldamata jätmise või tarbijalt tagasi nõudmata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 200 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidili",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_4"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -897,15 +1063,9 @@
           "@id": "estleg:toote_ohutuse_seadus_Par_19_v735236"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_toote_ohutuse_seadus_Par_19_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:JäätS_Par_122"
+          "@id": "estleg:JaatS_Par_122"
         },
         {
           "@id": "estleg:MSOS_Par_90_7"
@@ -930,38 +1090,45 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_toote_ohutuse_seadus_Par_19_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Toote ohtudest teavitamata jätmine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Turule lastud toodetel ilmnenud ohtudest teavitamata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 100 trahviühikut. Turule lastud toodetel ilmnenud ohtudest teavitamata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 ",
+      "estleg:legalText": "1 (1) Turule lastud toodetel ilmnenud ohtudest teavitamata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 100 trahviühikut. Turule lastud toodetel ilmnenud ohtudest teavitamata jätmise eest tootja või levitaja poolt – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_4"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:toote_ohutuse_seadus_Par_20_v735236"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_toote_ohutuse_seadus_Par_20_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SETS_Par_20"
@@ -986,21 +1153,32 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_toote_ohutuse_seadus_Par_20_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Menetlus",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Käesoleva seaduse §-des 19 ja 20 sätestatud väärtegude menetlemisele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 601; 2004, 7, 40) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590) sätteid. Käesoleva seaduse §-des 19 ja 20 sätestatud väärtegude menetlemisele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 6",
+      "estleg:legalText": "1 (1) Käesoleva seaduse §-des 19 ja 20 sätestatud väärtegude menetlemisele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 601; 2004, 7, 40) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590) sätteid. Käesoleva seaduse §-des 19 ja 20 sätestatud väärtegude menetlemisele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 6",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_4"
       },
@@ -1036,15 +1214,16 @@
       "@id": "estleg:toote_ohutuse_seadus_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Enne käesoleva seaduse jõustumist turule lastud toode",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "Enne käesoleva seaduse jõustumist turule lastud toode ei tohi ohustada inimese tervist ega vara ja peab vastama turule laskmise ajal kehtinud nõuetele, kui seadusest ei tulene teisiti.",
+      "estleg:legalText": "Enne käesoleva seaduse jõustumist turule lastud toode ei tohi ohustada inimese tervist ega vara ja peab vastama turule laskmise ajal kehtinud nõuetele, kui seadusest ei tulene teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_5"
       },
@@ -1069,21 +1248,26 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Seaduste kehtetuks tunnistamine ja täiendamine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "1 (1) Toote ohutuse seadus (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend) tunnistatakse kehtetuks. Toote ohutuse seadus (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend) tunnistatakse kehtetuks. 2 (2) Tehnilise normi ja standardi seadust (RT I 1999, 29, 398; 2000, 29, 169; 78, 495; 2002, 32, 186; 99, 580; 2003, 88, 594; 2004, 2, 8) täiendatakse §-ga 8 1 jär",
+      "estleg:legalText": "1 (1) Toote ohutuse seadus (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend) tunnistatakse kehtetuks. Toote ohutuse seadus (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend) tunnistatakse kehtetuks. 2 (2) Tehnilise normi ja standardi seadust (RT I 1999, 29, 398; 2000, 29, 169; 78, 495; 2002, 32, 186; 99, 580; 2003, 88, 594; 2004, 2, 8) täiendatakse §-ga 8 1 jär",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_5"
       },
@@ -1097,20 +1281,23 @@
       "@id": "estleg:toote_ohutuse_seadus_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Üleminekusäte",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "Toote ohutuse seaduse (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend) § 3 lõike 1 1 alusel antud määrused kehtivad nende kehtetuks tunnistamiseni, kuid mitte kauem kui 2005. aasta 1. jaanuarini.",
+      "estleg:legalText": "Toote ohutuse seaduse (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend) § 3 lõike 1 1 alusel antud määrused kehtivad nende kehtetuks tunnistamiseni, kuid mitte kauem kui 2005. aasta 1. jaanuarini.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_5"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1126,27 +1313,36 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:toote_ohutuse_seadus_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TTeOS_2"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Seaduse jõustumine",
       "estleg:sourceAct": "Toote ohutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TTeOS_2_Map_2026"
+        "@id": "estleg:TTeOS_2_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2004. aasta 1. mail. <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td> </tr> </tbody></table> 1 Euroopa Parlamendi ja EL Nõukogu direktiiv 2001/95/EÜ üldise tooteohutuse kohta (EÜT L 11, 15.01.2002, lk 4–17) ja EÜ Nõukogu direktiiv 87/357/EMÜ tervist või turvalisust ohustavaid eksitava välimusega tooteid käsitlevate liikmesriikide õi",
+      "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 1. mail. <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td> </tr> </tbody></table> 1 Euroopa Parlamendi ja EL Nõukogu direktiiv 2001/95/EÜ üldise tooteohutuse kohta (EÜT L 11, 15.01.2002, lk 4–17) ja EÜ Nõukogu direktiiv 87/357/EMÜ tervist või turvalisust ohustavaid eksitava välimusega tooteid käsitlevate liikmesriikide õi",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTeOS_2_5"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1166,7 +1362,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

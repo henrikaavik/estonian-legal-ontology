@@ -11,17 +11,15 @@ from pathlib import Path
 
 import pytest
 
-from estleg_common import FULLNAME_GENITIVE
-
-import normalize_court_referenced_law as mod
-from normalize_court_referenced_law import (
+from estleg import normalize_court_referenced_law as mod
+from estleg.estleg_common import FULLNAME_GENITIVE
+from estleg.normalize_court_referenced_law import (
     REFERENCED_LAW_KEY,
     normalize_doc,
     normalize_referenced_law_value,
     process_file,
     resolve_referenced_law,
 )
-
 
 # ── resolve_referenced_law ─────────────────────────────────────────────────
 
@@ -158,7 +156,7 @@ def test_process_file_dry_run_does_not_write(tmp_path: Path):
 def test_generator_detect_referenced_laws_resolves_genitives():
     """The generator emit is patched to resolve genitives and drop
     dead-tokens, so a future regen won't reintroduce the defect."""
-    from generate_court_decisions import detect_referenced_laws
+    from estleg.generate_court_decisions import detect_referenced_laws
 
     # genitive resolves to abbrev
     out = detect_referenced_laws("Kohus tugines liiklusseaduse § 20 alusel.")

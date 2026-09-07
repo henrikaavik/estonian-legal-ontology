@@ -2,26 +2,25 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:EKV_Map_2026",
+      "@id": "estleg:EKV_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Euro kasutusele võtmise seadus teemakaardistus",
       "dc:source": "Euro kasutusele võtmise seadus",
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1014033_Map_2026"
+          "@id": "estleg:Reg_1014033_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -52,16 +51,32 @@
         {
           "@id": "estleg:AmendmentLink_Draft_KLIM10_0719_EKV"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_EKV",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:EKV_Par_2"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:EKV_Par_3"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2016-03-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -84,15 +99,16 @@
       "@id": "estleg:EKV_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "Euro kasutusele võtmise seadus reguleerib Eesti Vabariigi rahaseaduse alusel emiteeritud Eesti krooni (edaspidi käesolevas peatükis kroon) eurodeks vahetamist, krooni käibelt kõrvaldamist ning krooni ja euro paralleelkäivet.",
+      "estleg:legalText": "Euro kasutusele võtmise seadus reguleerib Eesti Vabariigi rahaseaduse alusel emiteeritud Eesti krooni (edaspidi käesolevas peatükis kroon) eurodeks vahetamist, krooni käibelt kõrvaldamist ning krooni ja euro paralleelkäivet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_1"
       },
@@ -111,21 +127,26 @@
       "@id": "estleg:EKV_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Euro piiranguteta vastuvõtmise kohustus",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "1 (1) Eesti Pank ja Eestis tegutsevad krediidiasutused on kohustatud euro münte ja pangatähti vastu võtma piiranguteta. Eesti Pank ja Eestis tegutsevad krediidiasutused on kohustatud euro münte ja pangatähti vastu võtma piiranguteta. 2 (2) Käesoleva paragrahvi lõikes 1 nimetamata isikud on kohustatud vastu võtma korraga kuni 50 kehtivat euro münti sõltumata nende väärtusest, pangatähti aga piiranguteta. Käesoleva paragrahvi lõikes 1 nimetamata isikud on kohustatud vastu võtma korraga kuni 50 keh",
+      "estleg:legalText": "1 (1) Eesti Pank ja Eestis tegutsevad krediidiasutused on kohustatud euro münte ja pangatähti vastu võtma piiranguteta. Eesti Pank ja Eestis tegutsevad krediidiasutused on kohustatud euro münte ja pangatähti vastu võtma piiranguteta. 2 (2) Käesoleva paragrahvi lõikes 1 nimetamata isikud on kohustatud vastu võtma korraga kuni 50 kehtivat euro münti sõltumata nende väärtusest, pangatähti aga piiranguteta. Käesoleva paragrahvi lõikes 1 nimetamata isikud on kohustatud vastu võtma korraga kuni 50 keh",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_1"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -158,26 +179,33 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EKV_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Krooni ja euro paralleelkäive",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "1 (1) Käesoleva seaduse jõustumisest arvates 14 päeva jooksul säilitavad kroonis vääringustatud pangatähed ja mündid seadusliku maksevahendi staatuse. Käesoleva seaduse jõustumisest arvates 14 päeva jooksul säilitavad kroonis vääringustatud pangatähed ja mündid seadusliku maksevahendi staatuse. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud perioodil on käesoleva seaduse § 2 lõikes 1 nimetamata isikud kohustatud vastu võtma krooni münte korraga kuni 20 krooni väärtuses, pangatähti aga piirangutet",
+      "estleg:legalText": "1 (1) Käesoleva seaduse jõustumisest arvates 14 päeva jooksul säilitavad kroonis vääringustatud pangatähed ja mündid seadusliku maksevahendi staatuse. Käesoleva seaduse jõustumisest arvates 14 päeva jooksul säilitavad kroonis vääringustatud pangatähed ja mündid seadusliku maksevahendi staatuse. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud perioodil on käesoleva seaduse § 2 lõikes 1 nimetamata isikud kohustatud vastu võtma krooni münte korraga kuni 20 krooni väärtuses, pangatähti aga piirangutet",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_1"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
@@ -198,21 +226,26 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EKV_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Krooni käibelt kõrvaldamine",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "1 (1) Krooni emiteerimine lõpetatakse päevaks, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel (edaspidi käesolevas paragrahvis erandi kehtetuks tunnistamisepäev). Nimetatud päevast alates on Eesti Pangal krooni teenustasuta käibelt kõrvaldamise kohustus. Krooni emiteerimine lõpetatakse päevaks, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses",
+      "estleg:legalText": "1 (1) Krooni emiteerimine lõpetatakse päevaks, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel (edaspidi käesolevas paragrahvis erandi kehtetuks tunnistamisepäev). Nimetatud päevast alates on Eesti Pangal krooni teenustasuta käibelt kõrvaldamise kohustus. Krooni emiteerimine lõpetatakse päevaks, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_1"
       },
@@ -243,21 +276,22 @@
       "@id": "estleg:EKV_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Krooni arvestamine euroks",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "1 (1) Krooni ümberarvestamine euroks toimub euro- ja krooniühiku vahelise ümberarvestuskursi alusel, mis määratakse Euroopa Liidu Nõukogu poolt vastavalt Euroopa Liidu toimimise lepingu artikli 140 lõikele 3. Krooni ümberarvestamine euroks toimub euro- ja krooniühiku vahelise ümberarvestuskursi alusel, mis määratakse Euroopa Liidu Nõukogu poolt vastavalt Euroopa Liidu toimimise lepingu artikli 140 lõikele 3. 2 (2) Käesoleva paragrahvi lõikes 1 sätestatud korras saadud tulem ümardatakse 1 sendi t",
+      "estleg:legalText": "1 (1) Krooni ümberarvestamine euroks toimub euro- ja krooniühiku vahelise ümberarvestuskursi alusel, mis määratakse Euroopa Liidu Nõukogu poolt vastavalt Euroopa Liidu toimimise lepingu artikli 140 lõikele 3. Krooni ümberarvestamine euroks toimub euro- ja krooniühiku vahelise ümberarvestuskursi alusel, mis määratakse Euroopa Liidu Nõukogu poolt vastavalt Euroopa Liidu toimimise lepingu artikli 140 lõikele 3. 2 (2) Käesoleva paragrahvi lõikes 1 sätestatud korras saadud tulem ümardatakse 1 sendi t",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_1"
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1014033_Map_2026"
+          "@id": "estleg:Reg_1014033_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -279,32 +313,34 @@
       "@id": "estleg:EKV_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
-      "estleg:summary": "§ 6."
+      "estleg:summary": "§ 6.",
+      "estleg:legalText": "§ 6."
     },
     {
       "@id": "estleg:EKV_Par_98",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 98.",
       "rdfs:label": "§ 98.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -318,15 +354,16 @@
       "@id": "estleg:EKV_Par_99",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 99.",
       "rdfs:label": "§ 99.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "Kehtetu –",
+      "estleg:legalText": "Kehtetu –",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -340,32 +377,34 @@
       "@id": "estleg:EKV_Par_100",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 100.",
       "rdfs:label": "§ 100.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
-      "estleg:summary": "§ 100."
+      "estleg:summary": "§ 100.",
+      "estleg:legalText": "§ 100."
     },
     {
       "@id": "estleg:EKV_Par_127",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 127.",
       "rdfs:label": "§ 127.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -379,15 +418,16 @@
       "@id": "estleg:EKV_Par_128",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 128.",
       "rdfs:label": "§ 128.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "Kehtetu –",
+      "estleg:legalText": "Kehtetu –",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -401,32 +441,34 @@
       "@id": "estleg:EKV_Par_129",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 129.",
       "rdfs:label": "§ 129.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
-      "estleg:summary": "§ 129."
+      "estleg:summary": "§ 129.",
+      "estleg:legalText": "§ 129."
     },
     {
       "@id": "estleg:EKV_Par_170",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 170.",
       "rdfs:label": "§ 170.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -440,15 +482,16 @@
       "@id": "estleg:EKV_Par_171",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 171.",
       "rdfs:label": "§ 171.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "Kehtetu –",
+      "estleg:legalText": "Kehtetu –",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -462,32 +505,34 @@
       "@id": "estleg:EKV_Par_172",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 172.",
       "rdfs:label": "§ 172.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
-      "estleg:summary": "§ 172."
+      "estleg:summary": "§ 172.",
+      "estleg:legalText": "§ 172."
     },
     {
       "@id": "estleg:EKV_Par_230",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 230.",
       "rdfs:label": "§ 230.",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },
@@ -501,15 +546,16 @@
       "@id": "estleg:EKV_Par_231",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EKV"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 231.",
       "rdfs:label": "§ 231. Seaduse jõustumine",
       "estleg:sourceAct": "Euro kasutusele võtmise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EKV_Map_2026"
+        "@id": "estleg:EKV_Map"
       },
       "estleg:summary": "1 (1) Käesolev seadus jõustub päeval, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel. Käesolev seadus jõustub päeval, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel. 2 (2) –(3) [Käesolevast tekstist v",
+      "estleg:legalText": "1 (1) Käesolev seadus jõustub päeval, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel. Käesolev seadus jõustub päeval, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel. 2 (2) –(3) [Käesolevast tekstist v",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKV_2"
       },

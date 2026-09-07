@@ -1,6 +1,6 @@
 [project]
 name = "estonian-legal-ontology"
-version = "0.11.0"
+version = "1.0.0"
 description = "Generation, enrichment, and validation tooling for the Estonian Legal Ontology corpus."
 requires-python = ">=3.11"
 dependencies = [
@@ -17,35 +17,49 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pytest>=8,<10",
-  "ruff>=0.6,<1",
+  # Pinned to the 0.16 line (#677): the ``[tool.ruff.lint] select`` below
+  # holds the ruleset steady, this holds the minor version steady so a
+  # 0.17 default-behaviour change cannot land unreviewed via CI.
+  "ruff>=0.16,<0.17",
+  "pytest-cov>=5,<8",
 ]
 pdf = [
   "pdfminer.six>=20231228",
 ]
+embeddings = [
+  "sentence-transformers>=3,<4",
+]
+
+[project.scripts]
+estleg-load = "estleg_client.cli:main"
+estleg-generate-laws = "estleg.generate_all_laws:main"
+estleg-run-pipeline = "estleg.run_all_integration:main"
+estleg-validate = "estleg.validate_all:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = [".", "src", "scripts/archive", "examples"]
+
+[tool.coverage.run]
+source = ["estleg", "estleg_client"]
+omit = ["src/estleg/__pycache__/*"]
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
 
+[tool.ruff.lint]
+# Keep the historical pycodestyle+pyflakes default. Ruff 0.16 broadened
+# implicit defaults; this repo is not on that ruleset.
+select = ["E4", "E7", "E9", "F"]
+
 [tool.setuptools]
-# This project ships scripts in ``scripts/`` rather than as an
-# importable package: the entrypoints are CLI scripts that
-# manipulate ``krr_outputs/`` and import each other via
-# ``sys.path`` injection at the top of each test/module. The
-# ``py-modules = []`` declaration tells setuptools to skip
-# package discovery — without it, the editable install would
-# attempt to package every top-level ``.py`` and fail because
-# the layout is not a flat-package.
-#
-# Decision (issue #164 follow-up): keep the ``py-modules = []``
-# policy. Promoting ``scripts/`` to a real package
-# (``packages = ['scripts']`` + ``scripts/__init__.py``) would
-# require updating every ``sys.path`` injection site and every
-# ``from generate_X import Y`` to ``from scripts.generate_X
-# import Y`` — out of scope for the ontology-review remediation.
-# Revisit only if/when the project starts shipping importable
-# helpers to other consumers.
-py-modules = []
+# Producer package under src/estleg (#472) plus the thin read-only
+# consumer package (#551). Integrators ``from estleg_client import
+# load_law``; operators run ``estleg-generate-laws`` /
+# ``estleg-run-pipeline`` / ``estleg-validate``. Do not add
+# ``packages = ['scripts']`` — scripts/ now holds one-release shims.
+packages = ["estleg", "estleg_client"]
+
+[tool.setuptools.package-dir]
+estleg = "src/estleg"

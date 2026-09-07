@@ -26,14 +26,11 @@ exactly as the #562 core-class fold-in was.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import validate_all  # noqa: E402
+from estleg import validate_all
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SHAPES = REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"
@@ -227,7 +224,7 @@ def test_structural_class_declared_in_vocabulary(cls):
 
 _ACT_VALID = {
     "@context": CONTEXT,
-    "@id": "estleg:TESTACT_Map_2026",
+    "@id": "estleg:TESTACT_Map",
     "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
     "rdfs:label": "Test Act (testseadus)",
 }
@@ -263,7 +260,7 @@ class TestActLabelRequirement:
                     "@id": "estleg:Harmonisation_TEST",
                     "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
                     "rdfs:label": "Harmonisation: TEST",
-                    "estleg:harmonises": {"@id": "estleg:SOMEACT_Map_2026"},
+                    "estleg:harmonises": {"@id": "estleg:SOMEACT_Map"},
                 }
             ],
         }

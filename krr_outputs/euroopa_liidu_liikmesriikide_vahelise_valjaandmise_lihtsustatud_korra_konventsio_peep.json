@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map_2026",
+      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Euroopa Liidu liikmesriikide vahelise väljaandmise lihtsustatud korra konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13247498.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/13247498.xml"
       },
       "estleg:kehtiv": {
@@ -42,17 +38,39 @@
           "@id": "http://eurovoc.europa.eu/2162"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_valjaandmise_lihtsustatud_korra_konventsio",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/217"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        },
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2010-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_TopicScheme",
@@ -84,13 +102,13 @@
       "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_valjaandmise_lihtsustatud_korra_konventsio"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Ühinemine",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise väljaandmise lihtsustatud korra konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map_2026"
+        "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1995. aasta 10. märtsil Brüsselis.",
       "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1995. aasta 10. märtsil Brüsselis.",
@@ -99,7 +117,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1_Lg_Unknown_1"
+          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -126,7 +144,7 @@
       ]
     },
     {
-      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1_Lg_Unknown_1",
+      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -140,13 +158,13 @@
       "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_valjaandmise_lihtsustatud_korra_konventsio"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Deklaratsioonid",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise väljaandmise lihtsustatud korra konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map_2026"
+        "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map"
       },
       "estleg:summary": "Eesti Vabariik deklareerib, et artiklite 4–7 tähenduses on pädevad asutused Kaitsepolitseiamet ja politseiasutus. Artiklite 8, 10 ja 14 tähenduses on pädev asutus Justiitsministeerium.",
       "estleg:legalText": "Eesti Vabariik deklareerib, et artiklite 4–7 tähenduses on pädevad asutused Kaitsepolitseiamet ja politseiasutus. Artiklite 8, 10 ja 14 tähenduses on pädev asutus Justiitsministeerium.",
@@ -155,11 +173,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_2_Lg_Unknown_1"
+          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -182,10 +202,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_2_Lg_Unknown_1",
+      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -193,19 +217,28 @@
       "estleg:legalText": "Eesti Vabariik deklareerib, et artiklite 4–7 tähenduses on pädevad asutused Kaitsepolitseiamet ja politseiasutus. Artiklite 8, 10 ja 14 tähenduses on pädev asutus Justiitsministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_valjaandmise_lihtsustatud_korra_konventsio"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Jõustumine",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise väljaandmise lihtsustatud korra konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map_2026"
+        "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
@@ -214,7 +247,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_3_Lg_Unknown_1"
+          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -224,7 +257,7 @@
       ]
     },
     {
-      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_3_Lg_Unknown_1",
+      "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

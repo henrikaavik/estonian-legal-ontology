@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TUIS_Map_2026",
+      "@id": "estleg:TUIS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Töötajate usaldusisiku seadus teemakaardistus",
       "dc:source": "Töötajate usaldusisiku seadus",
-      "dcterms:title": "Töötajate usaldusisiku seadus",
+      "dcterms:title": [
+        {
+          "@value": "Töötajate usaldusisiku seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Employees’ Trustee Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/107012025003.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/107012025003.xml"
       },
       "estleg:kehtiv": {
@@ -54,16 +59,124 @@
           "@id": "http://eurovoc.europa.eu/5181"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_tootajate_usaldusisiku_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/695"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5181"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:volaoigusseadus_Osa1_Par_181"
+        },
+        {
+          "@id": "estleg:TUIS_Par_11"
+        },
+        {
+          "@id": "estleg:TUIS_Par_13"
+        },
+        {
+          "@id": "estleg:TUIS_Par_19"
+        },
+        {
+          "@id": "estleg:RAAMAT_Par_24"
+        },
+        {
+          "@id": "estleg:RAAMAT_Par_3"
+        },
+        {
+          "@id": "estleg:TUIS_Par_20"
+        },
+        {
+          "@id": "estleg:TUIS_Par_9"
+        },
+        {
+          "@id": "estleg:TUIS_Par_17"
+        },
+        {
+          "@id": "estleg:TUIS_Par_24"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TUIS_Par_22"
+        },
+        {
+          "@id": "estleg:TUIS_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_12"
+        },
+        {
+          "@id": "estleg:TUIS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:TUIS_Par_14_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_14_1_Lg_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_22_Lg_2"
+        },
+        {
+          "@id": "estleg:TUIS_Par_15_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_15_1_Lg_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_18"
+        },
+        {
+          "@id": "estleg:TUIS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:TUIS_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:TUIS_Par_26"
+        },
+        {
+          "@id": "estleg:TUIS_Par_26_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-17",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/522012025005"
       }
     },
     {
@@ -122,10 +235,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -151,10 +268,14 @@
       "rdfs:label": "2. peatükk – USALDUSISIKU VALIMINE JA VOLITUSED",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -180,10 +301,14 @@
       "rdfs:label": "3. peatükk – USALDUSISIKU ÕIGUSED JA KOHUSTUSED",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -209,10 +334,14 @@
       "rdfs:label": "4. peatükk – TÖÖANDJA ÕIGUSED JA KOHUSTUSED TEABE ANDMISEL",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -238,10 +367,14 @@
       "rdfs:label": "5. peatükk – INFORMEERIMINE JA KONSULTEERIMINE",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -267,10 +400,14 @@
       "rdfs:label": "6. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -296,10 +433,14 @@
       "rdfs:label": "7. peatükk – VASTUTUS",
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_7"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -325,23 +466,27 @@
       "rdfs:label": "8. peatükk – SEADUSE RAKENDAMINE",
       "estleg:chapterNumber": "8",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TUIS_8"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TUIS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus reguleerib töötajate usaldusisiku (edaspidi usaldusisik) tegevust teda volitanud töötajate ja ametnike (edaspidi töötaja) esindamisel suhetes tööandjaga ja töötajatega. (2) Käesoleva seaduse tähenduses on tööandjaks avalikus teenistuses riigi- või kohaliku omavalitsuse üksuse asutus.",
       "estleg:legalText": "(1) Käesolev seadus reguleerib töötajate usaldusisiku (edaspidi usaldusisik) tegevust teda volitanud töötajate ja ametnike (edaspidi töötaja) esindamisel suhetes tööandjaga ja töötajatega. (2) Käesoleva seaduse tähenduses on tööandjaks avalikus teenistuses riigi- või kohaliku omavalitsuse üksuse asutus.",
@@ -360,8 +505,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -390,7 +539,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_1_Lg_1",
@@ -403,7 +556,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_1_Lg_2",
@@ -416,19 +581,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Usaldusisik",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Usaldusisik on tööandja töötaja, kelle on valinud tööandja töötajate üldkoosolek (edaspidi üldkoosolek) oma esindajaks seadusest tulenevate ülesannete täitmisel suhetes tööandjaga. (2) Usaldusisikut käsitletakse töötajate esindajana Eesti Vabariigi töölepingu seaduse tähenduses.",
       "estleg:legalText": "(1) Usaldusisik on tööandja töötaja, kelle on valinud tööandja töötajate üldkoosolek (edaspidi üldkoosolek) oma esindajaks seadusest tulenevate ülesannete täitmisel suhetes tööandjaga. (2) Usaldusisikut käsitletakse töötajate esindajana Eesti Vabariigi töölepingu seaduse tähenduses.",
@@ -447,8 +624,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -468,7 +649,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_2_Lg_1",
@@ -481,7 +666,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_2_Lg_2",
@@ -494,19 +691,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Usaldusisiku esindusõigus",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Mitme usaldusisiku korral võib iga usaldusisik esindada töötajaid kõigi seadusest tulenevate ülesannete täitmisel, kui üldkoosolek ei ole otsustanud, et usaldusisikud või mõned neist võivad töötajaid esindada ühiselt.",
       "estleg:legalText": "Mitme usaldusisiku korral võib iga usaldusisik esindada töötajaid kõigi seadusest tulenevate ülesannete täitmisel, kui üldkoosolek ei ole otsustanud, et usaldusisikud või mõned neist võivad töötajaid esindada ühiselt.",
@@ -518,11 +724,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -539,10 +747,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -550,19 +762,31 @@
       "estleg:legalText": "Mitme usaldusisiku korral võib iga usaldusisik esindada töötajaid kõigi seadusest tulenevate ülesannete täitmisel, kui üldkoosolek ei ole otsustanud, et usaldusisikud või mõned neist võivad töötajaid esindada ühiselt.",
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_3"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TUIS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Usaldusisiku ja tööandja koostöö",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Usaldusisik ja tööandja peavad tegema koostööd vastastikuse usalduse alusel ja heas usus, võttes arvesse töötajate ja tööandja õigusi, kohustusi ja huve.",
       "estleg:legalText": "Usaldusisik ja tööandja peavad tegema koostööd vastastikuse usalduse alusel ja heas usus, võttes arvesse töötajate ja tööandja õigusi, kohustusi ja huve.",
@@ -574,12 +798,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_4_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_4_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -599,10 +827,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_4_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -610,19 +842,34 @@
       "estleg:legalText": "Usaldusisik ja tööandja peavad tegema koostööd vastastikuse usalduse alusel ja heas usus, võttes arvesse töötajate ja tööandja õigusi, kohustusi ja huve.",
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_4"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TUIS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Üldkoosoleku kokkukutsumine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Üldkoosoleku võib kokku kutsuda: tööandja juures tegutsev ametiühing, enamus tööandja juures töötavatest ametiühingu liikmetest, kui ametiühing ei ole loodud tööandja juures või vähemalt 10 protsenti tööandja töötajatest. (2) Üldkoosoleku kokkukutsuja teatab töötajatele üldkoosoleku kokkukutsumise põhjusest ja toimumise ajast vähemalt kaks nädalat ette.",
       "estleg:legalText": "(1) Üldkoosoleku võib kokku kutsuda: tööandja juures tegutsev ametiühing, enamus tööandja juures töötavatest ametiühingu liikmetest, kui ametiühing ei ole loodud tööandja juures või vähemalt 10 protsenti tööandja töötajatest. (2) Üldkoosoleku kokkukutsuja teatab töötajatele üldkoosoleku kokkukutsumise põhjusest ja toimumise ajast vähemalt kaks nädalat ette.",
@@ -641,8 +888,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -662,7 +913,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_5_Lg_1",
@@ -675,7 +930,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_5_Lg_2",
@@ -688,19 +958,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Üldkoosoleku otsustusvõime",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Üldkoosolek on otsustusvõimeline, kui sellel osalevad vähemalt pooled tööandja töötajatest.",
       "estleg:legalText": "Üldkoosolek on otsustusvõimeline, kui sellel osalevad vähemalt pooled tööandja töötajatest.",
@@ -712,12 +991,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_6_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_6_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -737,10 +1020,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_6_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -748,19 +1035,31 @@
       "estleg:legalText": "Üldkoosolek on otsustusvõimeline, kui sellel osalevad vähemalt pooled tööandja töötajatest.",
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_6"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TUIS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Usaldusisiku valimine ja tagasikutsumine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Üldkoosolek otsustab usaldusisiku valimise ja tagasikutsumise tingimused ning korra. (2) Usaldusisiku valimise ja tagasikutsumise tingimused ning kord peavad tagama kõigile töötajatele võimaluse osaleda usaldusisiku valimisel ja tagasikutsumisel. (3) Usaldusisik valitakse salajasel hääletusel. Usaldusisiku kandidaate võivad esitada kõik töötajad ja tööandja juures tegutsev ametiühing. (4) Üldkoosolek võib kokkuleppel tööandjaga valida mitu usaldusisikut.",
       "estleg:legalText": "(1) Üldkoosolek otsustab usaldusisiku valimise ja tagasikutsumise tingimused ning korra. (2) Usaldusisiku valimise ja tagasikutsumise tingimused ning kord peavad tagama kõigile töötajatele võimaluse osaleda usaldusisiku valimisel ja tagasikutsumisel. (3) Usaldusisik valitakse salajasel hääletusel. Usaldusisiku kandidaate võivad esitada kõik töötajad ja tööandja juures tegutsev ametiühing. (4) Üldkoosolek võib kokkuleppel tööandjaga valida mitu usaldusisikut. (5) Usaldusisikud võivad endi hulgast valida peausaldusisiku, kes korraldab usaldusisikute tegevust. (6) Üldkoosolek teatab tööandjale viivitamatult kirjalikult või kirjalikku taasesitamist võimaldavas vormis usaldusisiku valimisest ja tema volituste kestusest ning usaldusisiku tagasikutsumisest. (7) Üldkoosolek teatab tööandjale kirjalikult või kirjalikku taasesitamist võimaldavas vormis usaldusisikute õigusest töötajaid ühiselt esindada.",
@@ -794,8 +1093,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -818,7 +1121,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_7_Lg_1",
@@ -844,7 +1151,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_7_Lg_3",
@@ -857,7 +1176,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_7_Lg_4",
@@ -870,7 +1201,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 4"
+      "rdfs:label": "§ 7 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_7_Lg_5",
@@ -896,7 +1239,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 6"
+      "rdfs:label": "§ 7 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_7_Lg_7",
@@ -909,19 +1261,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 7"
+      "rdfs:label": "§ 7 lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Usaldusisiku volituse kestus",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Usaldusisiku volitused kehtivad kolm aastat, kui üldkoosolek ei ole otsustanud teisiti. (2) Ettevõtte üleminekul kehtivad usaldusisiku volitused nende lõppemiseni, kuid mitte kauem kui üks aasta üleminekust arvates. (3) Võlaõigusseaduse §-s 181 sätestatud piiranguid usaldusisiku volituste üleminekul ei kohaldata.",
       "estleg:legalText": "(1) Usaldusisiku volitused kehtivad kolm aastat, kui üldkoosolek ei ole otsustanud teisiti. (2) Ettevõtte üleminekul kehtivad usaldusisiku volitused nende lõppemiseni, kuid mitte kauem kui üks aasta üleminekust arvates. (3) Võlaõigusseaduse §-s 181 sätestatud piiranguid usaldusisiku volituste üleminekul ei kohaldata.",
@@ -943,7 +1307,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
@@ -970,7 +1336,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_8_Lg_1",
@@ -996,7 +1366,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 2"
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_8_Lg_3",
@@ -1014,19 +1393,28 @@
         {
           "@id": "estleg:volaoigusseadus_Osa1_Par_181"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Usaldusisiku õigused",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Usaldusisikul on õigus: tutvuda takistamatult töötingimuste, sealhulgas töökorraldusega; saada tööandjalt oma ülesannete täitmiseks vajalikku teavet ning konsulteerida selle teabe alusel tööandjaga; kehtetu - pidada tööandjaga läbirääkimisi kollektiivlepingu sõlmimiseks kollektiivlepingu seaduses sätestatud tingimustel ja korras, kui tööandja juures ei ole ametiühingut või ei tööta ametiühingusse kuuluvaid töötajaid; esindada töötajaid kollektiivse töötüli lahendamisel kollektiivse töötüli",
       "estleg:legalText": "Usaldusisikul on õigus: tutvuda takistamatult töötingimuste, sealhulgas töökorraldusega; saada tööandjalt oma ülesannete täitmiseks vajalikku teavet ning konsulteerida selle teabe alusel tööandjaga; kehtetu - pidada tööandjaga läbirääkimisi kollektiivlepingu sõlmimiseks kollektiivlepingu seaduses sätestatud tingimustel ja korras, kui tööandja juures ei ole ametiühingut või ei tööta ametiühingusse kuuluvaid töötajaid; esindada töötajaid kollektiivse töötüli lahendamisel kollektiivse töötüli lahendamise seaduses sätestatud tingimustel ja korras, kui tööandja juures ei ole ametiühingut või ei tööta ametiühingusse kuuluvaid töötajaid; teavitada huvitatud ametiühingut ning tööandjate ja ametiühingute liitu või keskliitu tööandjapoolsest töötingimuste rikkumisest; pöörduda saadud teabe konfidentsiaalsusest või teabe andmisest keeldumisest tuleneva vaidluse lahendamiseks töövaidlusi lahendavasse organisse; saada koolitust oma ülesannete täitmiseks käesoleva seaduse §-s 14 sätestatud korras; kaasata oma ülesannete täitmiseks eksperte; kokkuleppel tööandjaga kasutada usaldusisiku ülesannete täitmiseks vajalikke tööandja ruume ja muid vahendeid.",
@@ -1038,12 +1426,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_9_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_9_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1077,10 +1469,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_9_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_9_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1093,19 +1489,34 @@
         {
           "@id": "estleg:TUIS_Par_14"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Usaldusisiku kohustused",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Usaldusisik on kohustatud: osalema informeerimisel ja konsulteerimisel; vahendama teavet tööandjale ja töötajatele; jälgima töötingimuste täitmist ning teatama rikkumisest tööandjale ja vajadusel tööandja tegevuskohajärgsele tööinspektorile; töötaja taotlusel esindama töötajat töövaidluses tööandjaga enne töövaidlusi lahendavasse organisse pöördumist; aitama kaasa töörahu hoidmisele, kui kollektiivlepingu on kollektiivlepingu seaduses sätestatud tingimustel ja korras sõlminud usaldusisik;",
       "estleg:legalText": "Usaldusisik on kohustatud: osalema informeerimisel ja konsulteerimisel; vahendama teavet tööandjale ja töötajatele; jälgima töötingimuste täitmist ning teatama rikkumisest tööandjale ja vajadusel tööandja tegevuskohajärgsele tööinspektorile; töötaja taotlusel esindama töötajat töövaidluses tööandjaga enne töövaidlusi lahendavasse organisse pöördumist; aitama kaasa töörahu hoidmisele, kui kollektiivlepingu on kollektiivlepingu seaduses sätestatud tingimustel ja korras sõlminud usaldusisik; tegema koostööd ametiühingu usaldusisiku, töökeskkonna voliniku ja töökeskkonna nõukoguga.",
@@ -1117,12 +1528,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_10_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_10_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1132,7 +1547,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Usaldusisik",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1140,10 +1554,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_10_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_10_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1151,19 +1569,34 @@
       "estleg:legalText": "Usaldusisik on kohustatud: osalema informeerimisel ja konsulteerimisel; vahendama teavet tööandjale ja töötajatele; jälgima töötingimuste täitmist ning teatama rikkumisest tööandjale ja vajadusel tööandja tegevuskohajärgsele tööinspektorile; töötaja taotlusel esindama töötajat töövaidluses tööandjaga enne töövaidlusi lahendavasse organisse pöördumist; aitama kaasa töörahu hoidmisele, kui kollektiivlepingu on kollektiivlepingu seaduses sätestatud tingimustel ja korras sõlminud usaldusisik; tegema koostööd ametiühingu usaldusisiku, töökeskkonna voliniku ja töökeskkonna nõukoguga.",
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_10"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TUIS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Usaldusisiku kohustus hoida konfidentsiaalset teavet",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Usaldusisik ei tohi avaldada kolmandatele isikutele volituste ajal ega pärast volituste lõppemist oma kohustuste täitmisel teatavaks saanud isikuandmeid või tööandja selgelt konfidentsiaalsena antud teavet. (2) Usaldusisik ei tohi kasutada seaduse vastaselt volituste ajal ega pärast volituste lõppemist oma kohustuste täitmisel teatavaks saanud isikuandmeid või tööandja selgelt konfidentsiaalsena antud teavet. (3) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud kohustusi ei kohaldata",
       "estleg:legalText": "(1) Usaldusisik ei tohi avaldada kolmandatele isikutele volituste ajal ega pärast volituste lõppemist oma kohustuste täitmisel teatavaks saanud isikuandmeid või tööandja selgelt konfidentsiaalsena antud teavet. (2) Usaldusisik ei tohi kasutada seaduse vastaselt volituste ajal ega pärast volituste lõppemist oma kohustuste täitmisel teatavaks saanud isikuandmeid või tööandja selgelt konfidentsiaalsena antud teavet. (3) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud kohustusi ei kohaldata usaldusisiku suhtlemisele sama tööandja juures valitud teise usaldusisikuga ja konsulteerimisse kaasatud eksperdiga. (4) Usaldusisik edastab konfidentsiaalsena saadud teabe teisele usaldusisikule või eksperdile selgelt konfidentsiaalsena.",
@@ -1188,7 +1621,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1218,7 +1653,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_11_Lg_1",
@@ -1231,7 +1670,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_11_Lg_2",
@@ -1244,7 +1695,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 2"
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_11_Lg_3",
@@ -1257,7 +1720,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 3"
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_11_Lg_4",
@@ -1276,13 +1748,13 @@
       "@id": "estleg:TUIS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Eksperdi kohustus hoida konfidentsiaalset teavet",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse § 11 lõigetes 1 ja 2 nimetatud kohustustega on seotud konsulteerimisse kaasatud ekspert. (2) Käesoleva seaduse § 11 lõigetes 1 ja 2 nimetatud kohustusi ei kohaldata eksperdi suhtlemisele sama tööandja juures valitud teise usaldusisikuga. (3) Ekspert peab edastama konfidentsiaalsena saadud teabe teisele usaldusisikule selgelt konfidentsiaalsena.",
       "estleg:legalText": "(1) Käesoleva seaduse § 11 lõigetes 1 ja 2 nimetatud kohustustega on seotud konsulteerimisse kaasatud ekspert. (2) Käesoleva seaduse § 11 lõigetes 1 ja 2 nimetatud kohustusi ei kohaldata eksperdi suhtlemisele sama tööandja juures valitud teise usaldusisikuga. (3) Ekspert peab edastama konfidentsiaalsena saadud teabe teisele usaldusisikule selgelt konfidentsiaalsena.",
@@ -1304,7 +1776,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -1319,12 +1793,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Ekspert",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_12_Lg_1",
@@ -1360,7 +1837,16 @@
         {
           "@id": "estleg:TUIS_Par_11"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_12_Lg_3",
@@ -1373,19 +1859,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Usaldusisiku ülesannete täitmise aeg",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Usaldusisiku ülesandeid täidab töötaja kokkuleppel tööandjaga tööajal või väljaspool tööaega. (2) Usaldusisiku ülesannete täitmise tingimused ja kord lepitakse kokku tööandja ja usaldusisiku vahel. (3) Tööandja tagab vähemalt ühele usaldusisikule tema ülesannete täitmiseks tööajal: 5 kuni 100 töötaja esindamise korral vähemalt 4 tundi töönädalas; 101 kuni 300 töötaja esindamise korral vähemalt 8 tundi töönädalas; 301 kuni 500 töötaja esindamise korral vähemalt 16 tundi töönädalas; üle 500",
       "estleg:legalText": "(1) Usaldusisiku ülesandeid täidab töötaja kokkuleppel tööandjaga tööajal või väljaspool tööaega. (2) Usaldusisiku ülesannete täitmise tingimused ja kord lepitakse kokku tööandja ja usaldusisiku vahel. (3) Tööandja tagab vähemalt ühele usaldusisikule tema ülesannete täitmiseks tööajal: 5 kuni 100 töötaja esindamise korral vähemalt 4 tundi töönädalas; 101 kuni 300 töötaja esindamise korral vähemalt 8 tundi töönädalas; 301 kuni 500 töötaja esindamise korral vähemalt 16 tundi töönädalas; üle 500 töötaja esindamise korral vähemalt 40 tundi töönädalas. (4) Kahe või enama usaldusisiku korral tagab tööandja usaldusisikutele ülesannete täitmiseks aja kahele usaldusisikule ettenähtud ulatuses. Usaldusisikud lepivad kokku aja omavahelise jaotamise.",
@@ -1410,15 +1903,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:TUIS_Par_14_1"
         },
         {
-          "@id": "estleg:TUIS_Par_14_1_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_14_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1431,7 +1928,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AÜS_Par_21_1"
+          "@id": "estleg:AUS_Par_21_1"
         }
       ],
       "estleg:targetGroupConcept": [
@@ -1441,7 +1938,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_13_Lg_1",
@@ -1454,7 +1955,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_13_Lg_2",
@@ -1467,7 +1980,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_13_Lg_3",
@@ -1480,7 +2002,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 3"
+      "rdfs:label": "§ 13 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_13_Lg_4",
@@ -1493,19 +2027,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 4"
+      "rdfs:label": "§ 13 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Usaldusisiku koolitus",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Tööandja võimaldab usaldusisikul osaleda tema ülesannete täitmiseks vajalikul koolitusel mõistlikus ulatuses. (2) Pooled võivad kokku leppida, et koolituse kulud kannab tööandja.",
       "estleg:legalText": "(1) Tööandja võimaldab usaldusisikul osaleda tema ülesannete täitmiseks vajalikul koolitusel mõistlikus ulatuses. (2) Pooled võivad kokku leppida, et koolituse kulud kannab tööandja.",
@@ -1524,11 +2067,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
-          "@id": "estleg:TUIS_Par_9_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_9_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1540,7 +2085,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_14_Lg_1",
@@ -1553,7 +2102,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_14_Lg_2",
@@ -1566,19 +2124,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 2"
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_14_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14¹.",
       "rdfs:label": "§ 14¹. Tagatis usaldusisiku ülesannete täitmise ja koolituse ajaks",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Usaldusisikule säilitatakse tema ülesannete täitmise aja eest vastavalt käesoleva seaduse § 13 lõikele 3 ja koolitusel osalemise aja eest keskmine töötasu.",
       "estleg:legalText": "Usaldusisikule säilitatakse tema ülesannete täitmise aja eest vastavalt käesoleva seaduse § 13 lõikele 3 ja koolitusel osalemise aja eest keskmine töötasu.",
@@ -1590,7 +2157,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_14_1_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_14_1_Lg_1"
         }
       ],
       "estleg:references": [
@@ -1605,12 +2172,12 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AÜS_Par_21_2"
+          "@id": "estleg:AUS_Par_21_2"
         }
       ]
     },
     {
-      "@id": "estleg:TUIS_Par_14_1_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_14_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1629,13 +2196,13 @@
       "@id": "estleg:TUIS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Tööandja õigused ja kohustused konfidentsiaalse teabe andmisel",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Konfidentsiaalne on teave, mille tööandja annab usaldusisikule selgelt konfidentsiaalsena. (2) Tööandja peab teabe konfidentsiaalsust põhjendama, kui usaldusisik ei nõustu teabe konfidentsiaalsusega.",
       "estleg:legalText": "(1) Konfidentsiaalne on teave, mille tööandja annab usaldusisikule selgelt konfidentsiaalsena. (2) Tööandja peab teabe konfidentsiaalsust põhjendama, kui usaldusisik ei nõustu teabe konfidentsiaalsusega.",
@@ -1654,7 +2221,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1664,12 +2233,20 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Tööandja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_15_Lg_1",
@@ -1682,7 +2259,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_15_Lg_2",
@@ -1695,19 +2281,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_15_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
       "rdfs:label": "§ 15¹. Tööandja õigused ja kohustused kestlikkusteabe andmisel",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Tööandja, kes on raamatupidamise seaduse § 24 lõikes 2 nimetatud kestlikkusaruande koostaja, teavitab usaldusisikut või töötajate esindajat, kes ei ole usaldusisik, kestlikkusaruande sisust ning selle koostamise protsessist ja kontrollimise vahenditest käesoleva seaduse §-s 19, § 20 lõikes 2 ja §-s 21 sätestatud viisil ning vajaduse korral esitab töötajate arvamuse kestlikkusaruande kohta raamatupidamise seaduse § 3 punktis 12 nimetatud kõrgemale juhtorganile.",
       "estleg:legalText": "Tööandja, kes on raamatupidamise seaduse § 24 lõikes 2 nimetatud kestlikkusaruande koostaja, teavitab usaldusisikut või töötajate esindajat, kes ei ole usaldusisik, kestlikkusaruande sisust ning selle koostamise protsessist ja kontrollimise vahenditest käesoleva seaduse §-s 19, § 20 lõikes 2 ja §-s 21 sätestatud viisil ning vajaduse korral esitab töötajate arvamuse kestlikkusaruande kohta raamatupidamise seaduse § 3 punktis 12 nimetatud kõrgemale juhtorganile.",
@@ -1719,19 +2317,23 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_15_1_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_15_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
           "@id": "estleg:TUIS_Par_19"
         },
         {
-          "@id": "estleg:RAAMAT_Par_24"
+          "@id": "estleg:RAAMAT_Par_24_Lg_2"
         },
         {
           "@id": "estleg:RAAMAT_Par_3"
@@ -1749,10 +2351,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_15_1_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_15_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1766,24 +2372,37 @@
           "@id": "estleg:TUIS_Par_19"
         },
         {
-          "@id": "estleg:RAAMAT_Par_24"
+          "@id": "estleg:RAAMAT_Par_24_Lg_2"
         },
         {
           "@id": "estleg:RAAMAT_Par_3"
         }
-      ]
+      ],
+      "estleg:itemNumber": "12",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Teabe andmisest keeldumine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Tööandja võib keelduda teabe andmisest, kui selle teabe avalikustamine oluliselt kahjustab või võib kahjustada tööandja tegevust. (2) Teabe andmisest keeldumisel esitab tööandja objektiivsetele kriteeriumitele tugineva põhjenduse, miks teabe avaldamine oluliselt kahjustab või võib kahjustada tööandja tegevust. (3) Tööandja ei või keelduda teabe andmisest töötajate arvu kohta.",
       "estleg:legalText": "(1) Tööandja võib keelduda teabe andmisest, kui selle teabe avalikustamine oluliselt kahjustab või võib kahjustada tööandja tegevust. (2) Teabe andmisest keeldumisel esitab tööandja objektiivsetele kriteeriumitele tugineva põhjenduse, miks teabe avaldamine oluliselt kahjustab või võib kahjustada tööandja tegevust. (3) Tööandja ei või keelduda teabe andmisest töötajate arvu kohta.",
@@ -1805,8 +2424,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1823,7 +2446,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_16_Lg_1",
@@ -1836,7 +2463,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_16_Lg_2",
@@ -1849,7 +2488,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_16_Lg_3",
@@ -1862,19 +2513,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 3"
+      "rdfs:label": "§ 16 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Informeerimise ja konsulteerimise kohaldamine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Tööandja, kelle juures töötab vähemalt 30 töötajat, on kohustatud rakendama käesolevas peatükis sätestatud informeerimist ja konsulteerimist. (2) Käesolevas peatükis sätestatut ei kohaldata informeerimisele ja konsulteerimisele avalikus teenistuses.",
       "estleg:legalText": "(1) Tööandja, kelle juures töötab vähemalt 30 töötajat, on kohustatud rakendama käesolevas peatükis sätestatud informeerimist ja konsulteerimist. (2) Käesolevas peatükis sätestatut ei kohaldata informeerimisele ja konsulteerimisele avalikus teenistuses.",
@@ -1893,8 +2559,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1919,7 +2589,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_17_Lg_1",
@@ -1932,7 +2606,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 1"
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_17_Lg_2",
@@ -1951,13 +2640,13 @@
       "@id": "estleg:TUIS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Töötajate arvu määramine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Tööandja määrab töötajate arvu: majandusaasta aruande kinnitamisel; käesoleva seaduse § 20 lõikes 1 nimetatud informeerimise ja konsulteerimise kohustuse tekkimisel. (2) Töötajate arvu määramisel võtab tööandja arvesse kuue kuu keskmise töötajate arvu informeerimise ja konsulteerimise kohustuse tekkimise päevast arvates.",
       "estleg:legalText": "(1) Tööandja määrab töötajate arvu: majandusaasta aruande kinnitamisel; käesoleva seaduse § 20 lõikes 1 nimetatud informeerimise ja konsulteerimise kohustuse tekkimisel. (2) Töötajate arvu määramisel võtab tööandja arvesse kuue kuu keskmise töötajate arvu informeerimise ja konsulteerimise kohustuse tekkimise päevast arvates.",
@@ -1976,12 +2665,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TUIS_Par_20"
+          "@id": "estleg:TUIS_Par_20_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1996,7 +2689,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_18_Lg_1",
@@ -2012,9 +2709,21 @@
       "rdfs:label": "§ 18 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:TUIS_Par_20"
+          "@id": "estleg:TUIS_Par_20_Lg_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_18_Lg_2",
@@ -2027,19 +2736,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 2"
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Informeerimise ja konsulteerimise mõiste",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Informeerimine tähendab usaldusisikule või tema puudumisel töötajatele asjakohasel tasandil teabe edastamist, mis võimaldab töötajatel saada õigeaegselt selget ja piisavalt põhjalikku ülevaadet tööandja struktuurist, majanduslikust ja tööhõive olukorrast ning nende võimalikust arengust ja muudest töötajate huve puudutavatest asjaoludest, samuti saada aru olukorra ja muude asjaolude mõjust töötajatele. (2) Konsulteerimine tähendab usaldusisiku või tema puudumisel töötajate ja tööandja",
       "estleg:legalText": "(1) Informeerimine tähendab usaldusisikule või tema puudumisel töötajatele asjakohasel tasandil teabe edastamist, mis võimaldab töötajatel saada õigeaegselt selget ja piisavalt põhjalikku ülevaadet tööandja struktuurist, majanduslikust ja tööhõive olukorrast ning nende võimalikust arengust ja muudest töötajate huve puudutavatest asjaoludest, samuti saada aru olukorra ja muude asjaolude mõjust töötajatele. (2) Konsulteerimine tähendab usaldusisiku või tema puudumisel töötajate ja tööandja vahelist seisukohtade vahetamist ning dialoogi pidamist asjakohasel tasandil, mis võimaldab usaldusisikul või töötajatel avaldada arvamusi ning saada tööandjalt põhjendatud vastuseid avaldatud arvamustele eesmärgiga jõuda kokkuleppele käesoleva seaduse § 20 lõike 1 punktides 2 ja 3 sätestatu osas.",
@@ -2058,15 +2779,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:TUIS_Par_15_1"
         },
         {
-          "@id": "estleg:TUIS_Par_15_1_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_15_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2086,7 +2811,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_19_Lg_1",
@@ -2099,7 +2828,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 1"
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_19_Lg_2",
@@ -2115,21 +2859,36 @@
       "rdfs:label": "§ 19 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TUIS_Par_20"
+          "@id": "estleg:TUIS_Par_20_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Informeerimise ja konsulteerimise sisu",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Tööandja informeerib ja konsulteerib vähemalt järgmistest töötajaid puudutavatest asjaoludest: tööandja struktuur, töötajate, sealhulgas tööülesandeid renditööna täitvate töötajate koosseis, nende muudatused ja kavandatavad otsused, mis avaldavad olulist mõju tööandja struktuurile ja töötajate koosseisule; kavandatavad otsused, millega tõenäoliselt kaasnevad olulised muudatused töökorralduses; kavandatavad otsused, millega tõenäoliselt kaasnevad olulised muudatused töötajate",
       "estleg:legalText": "(1) Tööandja informeerib ja konsulteerib vähemalt järgmistest töötajaid puudutavatest asjaoludest: tööandja struktuur, töötajate, sealhulgas tööülesandeid renditööna täitvate töötajate koosseis, nende muudatused ja kavandatavad otsused, mis avaldavad olulist mõju tööandja struktuurile ja töötajate koosseisule; kavandatavad otsused, millega tõenäoliselt kaasnevad olulised muudatused töökorralduses; kavandatavad otsused, millega tõenäoliselt kaasnevad olulised muudatused töötajate töölepingulistes suhetes, sealhulgas töösuhete lõpetamine. (2) Tööandja informeerib vastavalt raamatupidamise seadusele koostatud majandusaasta aruandest hiljemalt 14 päeva jooksul pärast majandusaasta aruande kinnitamist.",
@@ -2148,8 +2907,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2177,7 +2940,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_20_Lg_1",
@@ -2190,7 +2957,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 1"
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_20_Lg_2",
@@ -2203,19 +2982,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 2"
+      "rdfs:label": "§ 20 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Informeerimise ja konsulteerimise viis",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Tööandja annab teavet viisil, mis võimaldab teabega põhjalikult tutvuda ja vajaduse korral valmistuda tööandjaga peetavateks konsultatsioonideks. Tööandja annab teavet kirjalikult või kirjalikku taasesitamist võimaldavas vormis, kui poolte vahel ei ole kokku lepitud teisiti. (2) Usaldusisikul või tema puudumisel töötajatel on õigus esitada kirjalik arvamus või teha ettepanek tööandjalt saadud teabe kohta või teatada soovist alustada konsulteerimist 15 tööpäeva jooksul teabe kättesaamisest",
       "estleg:legalText": "(1) Tööandja annab teavet viisil, mis võimaldab teabega põhjalikult tutvuda ja vajaduse korral valmistuda tööandjaga peetavateks konsultatsioonideks. Tööandja annab teavet kirjalikult või kirjalikku taasesitamist võimaldavas vormis, kui poolte vahel ei ole kokku lepitud teisiti. (2) Usaldusisikul või tema puudumisel töötajatel on õigus esitada kirjalik arvamus või teha ettepanek tööandjalt saadud teabe kohta või teatada soovist alustada konsulteerimist 15 tööpäeva jooksul teabe kättesaamisest arvates. Kui tööandja ei arvesta tehtud ettepanekuid, põhjendab ta seda esimesel võimalusel kirjalikult või kirjalikku taasesitamist võimaldavas vormis. (3) Tööandja algatab konsulteerimise seitsme tööpäeva jooksul konsulteerimise sooviavalduse kättesaamisest arvates. (4) Tööandja selgitab konsulteerimisel kavandatavat tegevust ja selle tagajärgi töötajatele. Pooled püüavad jõuda kokkuleppele kavandatavas tegevuses. (5) Usaldusisik või tema puudumisel töötajad võivad konsulteerimisse kaasata eksperte.",
@@ -2243,8 +3031,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2261,7 +3053,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_21_Lg_1",
@@ -2274,7 +3070,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 1"
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_21_Lg_2",
@@ -2287,7 +3092,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 2"
+      "rdfs:label": "§ 21 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_21_Lg_3",
@@ -2300,7 +3120,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 3"
+      "rdfs:label": "§ 21 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_21_Lg_4",
@@ -2313,7 +3142,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 4"
+      "rdfs:label": "§ 21 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_21_Lg_5",
@@ -2326,19 +3167,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 5"
+      "rdfs:label": "§ 21 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Riikliku ja haldusjärelevalve teostamine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 9 punktides 1 ja 2 ning § 13 lõigetes 3 ja 4 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (2) Riiklikku järelevalvet käesoleva seaduse §-des 17, 18 ja 20 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (3) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel",
       "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 9 punktides 1 ja 2 ning § 13 lõigetes 3 ja 4 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (2) Riiklikku järelevalvet käesoleva seaduse §-des 17, 18 ja 20 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (3) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
@@ -2383,7 +3233,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AÜS_Par_24_1"
+          "@id": "estleg:AUS_Par_24_1"
         },
         {
           "@id": "estleg:Jahiseadus_Par_47"
@@ -2406,6 +3256,10 @@
       "estleg:competenceType": "enforcement",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -2466,19 +3320,26 @@
         {
           "@id": "estleg:KORS_Par_32"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TUIS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Ettekirjutuse vaidemenetlus",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2504,13 +3365,13 @@
       "@id": "estleg:TUIS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Informeerimise ja konsulteerimise kohustuse rikkumine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Informeerimise või konsulteerimise kohustuse täitmata jätmise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli vastava kohustuse täitmine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:legalText": "(1) Informeerimise või konsulteerimise kohustuse täitmata jätmise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli vastava kohustuse täitmine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
@@ -2529,7 +3390,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2559,12 +3422,6 @@
           "@id": "estleg:TUIS_Par_24_v129122020027"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_TUIS_Par_24_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TOOLEP_Par_117"
@@ -2589,7 +3446,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TUIS_Par_24_fine"
+        },
+        {
+          "@id": "estleg:Sanction_TUIS_Par_24_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:TUIS_Par_24_Lg_1",
@@ -2602,7 +3472,25 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 1"
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TUIS_Par_24_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:TUIS_Par_24_Lg_2",
@@ -2615,19 +3503,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 2"
+      "rdfs:label": "§ 24 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TUIS_Par_24_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:TUIS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Konfidentsiaalse teabe hoidmise kohustuse rikkumine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Konfidentsiaalse teabe hoidmise kohustuse rikkumise eest usaldusisiku või konsulteerimisse kaasatud eksperdi poolt –karistatakse rahatrahviga kuni 300 trahviühikut.",
       "estleg:legalText": "Konfidentsiaalse teabe hoidmise kohustuse rikkumise eest usaldusisiku või konsulteerimisse kaasatud eksperdi poolt –karistatakse rahatrahviga kuni 300 trahviühikut.",
@@ -2639,7 +3545,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_25_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_25_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2653,12 +3559,6 @@
           "@id": "estleg:TUIS_Par_25_v129122020027"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_TUIS_Par_25_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:AUDIIT_Par_166_2"
@@ -2678,10 +3578,20 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
-      }
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TUIS_Par_25_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
-      "@id": "estleg:TUIS_Par_25_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_25_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2689,19 +3599,32 @@
       "estleg:legalText": "Konfidentsiaalse teabe hoidmise kohustuse rikkumise eest usaldusisiku või konsulteerimisse kaasatud eksperdi poolt –karistatakse rahatrahviga kuni 300 trahviühikut.",
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_25"
-      }
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TUIS_Par_25_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:TUIS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Menetlus",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Käesoleva seaduse §-des 24 ja 25 sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
       "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-des 24 ja 25 sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
@@ -2734,7 +3657,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AÜS_Par_26_8"
+          "@id": "estleg:AUS_Par_26_8"
         },
         {
           "@id": "estleg:KTL_Par_23_4"
@@ -2791,13 +3714,13 @@
       "@id": "estleg:TUIS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Valitud usaldusisikute volituste kehtivus",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Valitud usaldusisikute volitused kehtivad kuni nende tähtaja lõppemiseni, kuid mitte kauem kui üks aasta käesoleva seaduse jõustumisest arvates.",
       "estleg:legalText": "Valitud usaldusisikute volitused kehtivad kuni nende tähtaja lõppemiseni, kuid mitte kauem kui üks aasta käesoleva seaduse jõustumisest arvates.",
@@ -2809,7 +3732,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_27_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_27_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2824,7 +3747,7 @@
       ]
     },
     {
-      "@id": "estleg:TUIS_Par_27_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_27_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2838,13 +3761,13 @@
       "@id": "estleg:TUIS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28.",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TUIS_8"
@@ -2863,13 +3786,13 @@
       "@id": "estleg:TUIS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -2892,13 +3815,13 @@
       "@id": "estleg:TUIS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Töötajate usaldusisiku seaduse kehtetuks tunnistamine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Töötajate usaldusisiku seadus tunnistatakse kehtetuks.",
       "estleg:legalText": "Töötajate usaldusisiku seadus tunnistatakse kehtetuks.",
@@ -2910,11 +3833,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_31_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_31_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2928,10 +3853,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TUIS_Par_31_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_31_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2939,19 +3868,28 @@
       "estleg:legalText": "Töötajate usaldusisiku seadus tunnistatakse kehtetuks.",
       "estleg:parentProvision": {
         "@id": "estleg:TUIS_Par_31"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TUIS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tootajate_usaldusisiku_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Seaduse jõustumine",
       "estleg:sourceAct": "Töötajate usaldusisiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TUIS_Map_2026"
+        "@id": "estleg:TUIS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2007. aasta 1. veebruaril.",
       "estleg:legalText": "Käesolev seadus jõustub 2007. aasta 1. veebruaril.",
@@ -2963,7 +3901,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TUIS_Par_32_Lg_Unknown_1"
+          "@id": "estleg:TUIS_Par_32_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2976,7 +3914,7 @@
       ]
     },
     {
-      "@id": "estleg:TUIS_Par_32_Lg_Unknown_1",
+      "@id": "estleg:TUIS_Par_32_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

@@ -17,7 +17,7 @@ Two tiers, matched to what each CI job has on disk:
 
 * **Default (unmarked).** Load the non-LFS committed artifacts — the
   1,190 ``*_peep.json`` files, ``INDEX.json``,
-  ``transposition_mapping.json``, and the harmonisation report + the law
+  ``reports/transposition_mapping.json``, and the harmonisation report + the law
   peeps PR #633 migrated — and assert real values. These need no git-LFS
   and run in the lightweight ``pytest`` CI job: the first real-artifact
   assertions the default suite has ever carried.
@@ -145,7 +145,7 @@ def test_transposition_mapping_header_matches_body():
     """The exact invariant a manual edit silently broke across PR #633's
     review rounds: the header count must equal the body length, and no
     ``matched_law_name`` may carry a ``_peep`` filename-stem suffix."""
-    tm = _load("transposition_mapping.json")
+    tm = _load("reports/transposition_mapping.json")
     mappings = tm["mappings"]
     assert tm["total_matched"] == len(mappings), (
         f"total_matched={tm['total_matched']} but {len(mappings)} mappings"
@@ -219,6 +219,45 @@ def test_requested_cluster_values_are_estleg_curies():
     assert seen > 0
 
 
+def test_krms_par_provisions_have_requested_cluster():
+    """#364/#555: KrMS `_Par_` provisions carry the chapter TopicCluster.
+
+    Generator already assigns the CHAPTER cluster to jagu paragraphs
+    (``KRIMIN_2_Par_18`` isPartOf ``Division_KRIMIN_2_2_1`` → chapter 2);
+    the committed peep was stale. These facts fail before the #364 backfill.
+    """
+    doc = _load("kriminaalmenetluse_seadustik_peep.json")
+    by_id = {
+        n["@id"]: n
+        for n in doc.get("@graph", [])
+        if isinstance(n, dict) and isinstance(n.get("@id"), str)
+    }
+    par18 = by_id["estleg:KRIMIN_2_Par_18"]
+    assert "estleg:Cluster_KRIMIN_2_2" in _ref_ids(
+        par18.get("estleg:requestedCluster")
+    ), "KRIMIN_2_Par_18 lost the chapter-2 cluster (#364)"
+
+    missing = [
+        nid
+        for nid, node in by_id.items()
+        if "_Par_" in nid
+        and "_Lg_" not in nid
+        and not node.get("estleg:requestedCluster")
+    ]
+    assert not missing, (
+        f"{len(missing)} KrMS _Par_ nodes missing requestedCluster, e.g. {missing[:5]}"
+    )
+
+
+def test_pks_par_1_has_part_of_act():
+    """Published fact: PKS § 1 is joined to the act root via partOfAct."""
+    doc = _load("perekonnaseadus_peep.json")
+    node = next(n for n in doc.get("@graph", []) if n.get("@id") == "estleg:PKS_Par_1")
+    assert "estleg:PKS_Map" in _ref_ids(node.get("estleg:partOfAct")), (
+        "PKS_Par_1 lost estleg:partOfAct to PKS_Map"
+    )
+
+
 def test_vos_osa5_provisions_have_interpreted_by():
     """#300: VÕS osa5 uses _Par_ IRIs and carries court inverses (not LegalPart-only)."""
     doc = _load("volaoigusseadus_osa5_peep.json")
@@ -248,6 +287,93 @@ def test_transposition_inverse_on_directive_and_law():
     assert inverse, "directive peep missing transposedBy for a KarS CELEX (#319)"
 
 
+def test_kars_osa1_root_is_in_force():
+    """Published fact (#555/#445): KarS osa 1 is a Part under KARIST_2_Map."""
+    doc = _load("karistusseadustik_osa1_peep.json")
+    node = next(
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:KARIST_2_Osa1"
+    )
+    types = node.get("@type")
+    if isinstance(types, str):
+        types = [types]
+    assert "estleg:Part" in (types or []), "KARIST_2_Osa1 lost its Part type"
+    assert "estleg:Act" not in (types or []), "KarS osa is no longer a second Act root"
+    assert node.get("estleg:isPartOf", {}).get("@id") == "estleg:KARIST_2_Map"
+    assert node.get("estleg:temporalStatus") == "inForce", (
+        "KarS osa1 root is no longer temporalStatus=inForce"
+    )
+
+
+def test_municipal_regulation_is_not_subclass_of_national_regulation():
+    """Published TBox fact (#424/#555): MunicipalRegulation is a sibling of
+    NationalRegulation under DomesticRegulation, not a subclass of it."""
+    doc = _load("controlled_vocabulary.jsonld")
+    node = next(
+        n
+        for n in doc.get("@graph", [])
+        if n.get("@id") == "estleg:MunicipalRegulation"
+    )
+    parents = _ref_ids(node.get("rdfs:subClassOf"))
+    assert "estleg:DomesticRegulation" in parents, (
+        "MunicipalRegulation lost rdfs:subClassOf DomesticRegulation"
+    )
+    assert "estleg:NationalRegulation" not in parents, (
+        "MunicipalRegulation must not be a subclass of NationalRegulation"
+    )
+
+
+def test_draft_klim23_1259_is_draft_intent():
+    """Published fact (#555): KLIM/23-1259 is a DraftIntent (VTK), not a bill."""
+    doc = _load("eelnoud/eelnoud_publicconsultation_peep.json")
+    node = next(
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:Draft_KLIM23_1259"
+    )
+    assert "estleg:DraftType_DraftIntent" in _ref_ids(node.get("estleg:draftType")), (
+        "Draft_KLIM23_1259 lost draftType DraftType_DraftIntent"
+    )
+
+
+def test_ravs_chapter_5_has_part_par_87():
+    """Published fact (#375/#555): RavS chapter 5 lists § 87 as a direct part."""
+    doc = _load("ravimiseadus_peep.json")
+    node = next(
+        n for n in doc.get("@graph", []) if n.get("@id") == "estleg:Chapter_RavS_5"
+    )
+    assert "estleg:RavS_Par_87" in _ref_ids(node.get("estleg:hasPart")), (
+        "Chapter_RavS_5.hasPart no longer includes RavS_Par_87"
+    )
+
+
+def test_kars_par_121_is_kehaline_vaarkohtlemine():
+    """Published fact (#555): KarS § 121 is Kehaline väärkohtlemine."""
+    doc = _load("karistusseadustik_osa2_peep.json")
+    node = next(
+        n
+        for n in doc.get("@graph", [])
+        if n.get("@id") == "estleg:KARIST_2_Osa2_Par_121"
+    )
+    assert node.get("rdfs:label") == "§ 121. Kehaline väärkohtlemine", (
+        "KarS § 121 title drifted from the published Riigi Teataja heading"
+    )
+
+
+def test_kars_par_121_carries_imprisonment_and_pecuniary_sanctions():
+    """Published fact (#555): KarS § 121 lists both imprisonment and a fine."""
+    doc = _load("karistusseadustik_osa2_peep.json")
+    node = next(
+        n
+        for n in doc.get("@graph", [])
+        if n.get("@id") == "estleg:KARIST_2_Osa2_Par_121"
+    )
+    sanctions = _ref_ids(node.get("estleg:hasSanction"))
+    assert {
+        "estleg:Sanction_KARIST_2_Osa2_Par_121_imprisonment",
+        "estleg:Sanction_KARIST_2_Osa2_Par_121_pecuniary_punishment",
+    } <= sanctions, (
+        "KarS § 121 lost a published hasSanction (imprisonment and/or pecuniary)"
+    )
+
+
 # --------------------------------------------------------------------------- #
 # Opt-in tier — needs the git-LFS combined graph / sweeps the version layer.
 # The json-validation CI job pulls combined and runs `pytest -m corpus`.
@@ -257,7 +383,7 @@ def test_combined_graph_is_closed():
     """The shipped ``combined_ontology.jsonld`` loads standalone with zero
     dangling ``estleg:`` object refs — the real-data check the suite has
     only ever run against synthetic one-node fixtures."""
-    import validate_all
+    from estleg import validate_all
 
     combined = KRR / "combined_ontology.jsonld"
     if not combined.exists() or validate_all._is_lfs_pointer(combined):

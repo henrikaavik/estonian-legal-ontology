@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ENSR_Map_2026",
+      "@id": "estleg:ENSR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Euroopa Nõukogu statuudi ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24459.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/24459.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,25 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_euroopa_noukogu_statuudi_ratifitseerimise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:ENSR_TopicScheme",
@@ -78,13 +82,13 @@
       "@id": "estleg:ENSR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_statuudi_ratifitseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Euroopa Nõukogu statuut./13141852, mis on alla kirj...]",
       "estleg:sourceAct": "Euroopa Nõukogu statuudi ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENSR_Map_2026"
+        "@id": "estleg:ENSR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1949. aasta 5. mail Londonis.",
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1949. aasta 5. mail Londonis.",
@@ -93,7 +97,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ENSR_Par_1_Lg_Unknown_1"
+          "@id": "estleg:ENSR_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -120,7 +124,7 @@
       ]
     },
     {
-      "@id": "estleg:ENSR_Par_1_Lg_Unknown_1",
+      "@id": "estleg:ENSR_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -134,13 +138,13 @@
       "@id": "estleg:ENSR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_statuudi_ratifitseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Käesolev seadus jõustub väljakuulutamise päevast.<table border=\"0\" width=\"85%\">...]",
       "estleg:sourceAct": "Euroopa Nõukogu statuudi ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENSR_Map_2026"
+        "@id": "estleg:ENSR_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub väljakuulutamise päevast.",
       "estleg:legalText": "Käesolev seadus jõustub väljakuulutamise päevast.",
@@ -149,7 +153,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ENSR_Par_2_Lg_Unknown_1"
+          "@id": "estleg:ENSR_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -159,7 +163,7 @@
       ]
     },
     {
-      "@id": "estleg:ENSR_Par_2_Lg_Unknown_1",
+      "@id": "estleg:ENSR_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:eesti_vabariigi_ja_tsehhi_vabariigi_vahe_Map_2026",
+      "@id": "estleg:eesti_vabariigi_ja_tsehhi_vabariigi_vahe_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -21,11 +20,8 @@
       "dc:source": "Eesti Vabariigi ja Tšehhi Vabariigi vahelise investeeringute soodustamise ja vastastikuse kaitse lepingu muutmise ja lõpetamise kokkuleppe ratifitseerimise seadus",
       "dcterms:title": "Eesti Vabariigi ja Tšehhi Vabariigi vahelise investeeringute soodustamise ja vastastikuse kaitse lepingu muutmise ja lõpetamise kokkuleppe ratifitseerimise seadus",
       "estleg:contentStatus": "noStructuredBody",
-      "estleg:contentStatusReason": "No structured paragraph nodes were found in the source XML; the act is modeled at act level to preserve coverage.",
+      "estleg:contentStatusReason": "No structured paragraph nodes were found in the source XML; the act is modeled at act level to preserve coverage Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13285967.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/13285967.xml"
       },
       "estleg:kehtiv": {
@@ -37,7 +33,20 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "unknown"
+      "estleg:temporalStatus": "unknown",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      }
     }
   ]
 }

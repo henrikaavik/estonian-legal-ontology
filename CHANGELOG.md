@@ -4,6 +4,324 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### 2026-09 public-sector readiness — Tier 0 (#676, tickets #677–#690)
+
+Fourteen "stop the bleeding" fixes from the September 2026 public-sector
+readiness review. Each ticket's PR describes the change in full; this is
+the consumer-facing summary.
+
+- **CI gates again.** `ruff` is pinned to the 0.16 line with an explicit
+  `[tool.ruff.lint] select` in both packages (#677). The five tests that read
+  Git LFS artifacts are `corpus`-marked and run in the LFS-materialised
+  `json-validation` job; `test_migrate_uris` no longer depends on a stale
+  dry-run report (#679). The legacy-namespace exclusion list is identical in
+  `validate.yml`, `tests/test_no_legacy_namespace.py` and
+  `src/estleg/migrate_namespace.py`, with a parity test (#687). CODEOWNERS
+  routes the safety-critical entries to the `src/estleg/` modules instead of
+  the `scripts/` shims, enforced by `tests/test_codeowners.py` (#685). The two
+  CodeQL alerts are fixed in code (#688).
+- **MCP tools restored (#678, #680).** `estleg-mcp` accepts the bare
+  `estleg:LegalProvision` / `estleg:KovProvision` classes that the generators
+  have stamped since #434, so `get_provision`, `provision_history`,
+  `who_references`, `references_of`, `court_decisions_for_law`,
+  `competent_authority_for_law` and every provision count return data again;
+  `server.main()` aborts on a zero KarS provision count and
+  `layers_available()` reports the live count. `rt_url` is guarded to
+  riigiteataja.ee; non-RT `owl:sameAs` IRIs surface under `external_ids`.
+- **Personal identification codes are screened out of court text (#683).**
+  `estleg_common.screen_personal_data` masks checksum-valid Estonian
+  `isikukood` runs in `estleg:summary` / `estleg:legalText` before truncation
+  in both court summary writers and at the full-text write site. The committed
+  Riigikohus corpus was backfilled (12,104 nodes
+  scanned, 21 nodes / 27 codes masked), every decision node carries
+  `estleg:personalDataScreened` and `estleg:personalDataMaskedCount`, and
+  `validate_all.py` fails on any surviving code. The masked display forms are
+  in `krr_outputs/reports/personal_data_mask_report.json`.
+- **Lower-court data is a labelled sample (#689).** `krr_outputs/kohtud/`
+  holds one county-court decision flagged `estleg:isSampleData: true` (index:
+  `"sample": true`); the two synthetic `2000000xx` rows are gone.
+- **Sanctions layer rebuilt (#681).** `extract_sanctions` works per lõige,
+  skips the general part (Üldosa) of split codes, adds the
+  `percent_of_turnover` unit and the `confiscation` / `compulsory_dissolution`
+  types, and caps imprisonment at 20 years. The sidecars were regenerated:
+  7,392 sanction records across 464 laws (was 2,550 / 294). The review removed
+  755 false confiscation/dissolution records by requiring operative wording;
+  eligibility conditions and references to confiscated property are excluded.
+  Further review scopes life imprisonment to its operative sentence, preserves
+  superscripted subsections, and keeps corporate penalties without a stated
+  amount free of the natural-person daily-rate default. New SHACL shapes
+  enforce `min ≤ max`, imprisonment ≤ 20 years, arrest ≤ 30 days and ≤ 500
+  daily rates. `estleg:applicableProvision` lost its `rdfs:domain
+  estleg:CourtDecision`, which had phantom-typed every Sanction under RDFS
+  inference and turned the `sidecars` SHACL bucket red.
+- **`temporalStatus` is honest (#682).** An act root with no version evidence
+  is `unknown`, not `inForce`; a deprecated (retired-IRI) root is never
+  `inForce`, enforced by `estleg:DeprecatedActNotInForceShape`. Recomputed
+  over all act roots: 736 `inForce` / 410 `unknown` (was 1,146 `inForce`).
+- **Rights and privacy notices ship with the release (#684).** `NOTICE`,
+  `LICENSE`, `docs/DATA_RIGHTS.md` and `docs/DATA_PROTECTION.md` are release
+  assets (`docs/RELEASE.md` step 5). `CITATION.cff` and `krr_outputs/void.ttl`
+  scope CC BY 4.0 to the `#compilation` subset only.
+- **Catalogue counts regenerated (#686).** `metadata.jsonld` and the nine
+  documents that repeat it now say 1,195 law files, 12,104 Riigikohus
+  decisions and 27,008 JSON/JSON-LD files (were 1,190 / 12,137 / 23,118). Both
+  Riigikohus case-type tables are derived from `RIIGIKOHUS_INDEX.json`
+  (Civil 4,988 · Criminal 3,686 · Administrative 2,434 · Constitutional Review
+  800 · Misdemeanor 107 · Other 89) and pinned by
+  `tests/test_validate_all.py::test_riigikohus_case_type_tables_match_index`.
+- **w3id status corrected (#690).** The PURL has resolved since 2026-08-19;
+  the three documents that still said "404" are fixed, and
+  `w3id/estleg/.htaccess` redirects any SemVer version IRI to its tagged
+  release so a new tag needs no w3id resubmission.
+- **Validation report is honest.** `docs/VALIDATION_REPORT.md` no longer
+  claims 0 errors: it records the 2026-09-07 gate rerun, separates the 3,426
+  stale validator-rule findings (#702) from real findings, and lists the red
+  SHACL buckets that are Tier 1 work.
+
+### Distribution (#480)
+
+- keep-LFS is the committed code/data decision. Regenerable combined
+  files stay in git via LFS. A clone-size prune, a second data remote,
+  and `git lfs migrate` are declined.
+
+## [1.0.0] - 2026-08-19
+
+First public GitHub Release. Combined JSON-LD and the eurlex/curia/eelnoud
+combined files ship as immutable release assets (`#473` / `#548`). Catalog
+`dcat:downloadURL`s for those single-file dumps point at
+`/releases/download/v1.0.0/`. Act work-IRIs are yearless ASCII (`#445`).
+Lower-court ingest sample (`#525`). MIT is software-only; data rights are
+layered (`#545` / `#546`). A Zenodo DOI is not minted in this cut.
+
+### Language-tag policy (#437)
+
+- Every CV `rdfs:label` is bilingual `@et` + `@en`.
+- Law/regulation generators emit new labels and summaries as `@et`
+  via `et_literal`. CONTEXT has no default `@language`.
+
+### Per-document provision classes removed (#434)
+
+- Generators type provisions as `estleg:LegalProvision` (KOV also
+  `estleg:KovProvision`) and no longer mint `LegalProvision_<slug>` /
+  `Regulation_<id>` classes.
+- `remint_per_document_classes` rewrites committed peeps + combined.
+
+### Canonical T-Box in controlled_vocabulary.jsonld (#433)
+
+- CV is the default-graph schema: class hierarchy, ≥95% domain+range,
+  real comments, `owl:Ontology` + `owl:versionInfo`.
+- Junk terms `estleg:jsonld` / `counts` / `note` / `scope` / `title` deleted;
+  ABox uses remapped to `rdfs:comment` / `dcterms:abstract` / `dcterms:title`.
+- `metadata.jsonld` keeps DCAT only (`dcterms:conformsTo` the CV).
+- Unresolved placeholders moved to `krr_outputs/unresolved_references.jsonld`.
+- Four subcorpus schemas are regenerable from the CV.
+
+### State-regulation provision versions (#431)
+
+- `generate_provision_versions --regulations-riik` writes current-snapshot
+  `ProvisionVersion` sidecars from riik peeps (RT `dokument=määrus` is
+  wired for later history fetches). Coverage gate is ≥90%.
+
+### AmendmentEvents join the version layer (#429)
+
+- Distinct `versionValidFrom` dates mint or enrich `AmendmentEvent`s with
+  `resultedInVersion`. Act `lastAmendmentDate` is the max version date.
+  `validate_last_amendment_matches_versions` enforces the join.
+
+### Citations target lõige when named (#512)
+
+- `references` and `interpretsLaw` resolve to `_Par_N_Lg_M` when the
+  citation includes `lg` and that lõige node exists. Otherwise they
+  stay on the §.
+
+### Deontic layer on lõige (#515)
+
+- Classifiers attach `normativeType` / `targetGroup` / `hasSanction` to
+  `estleg:Subsection` from lõige `legalText`. Section-level roll-up stays.
+
+### Lõige IRIs, unresolved cites, punkt markers (#514)
+
+- Unnumbered lõiked mint `_Lg_<sibling-index>` instead of `_Lg_Unknown_N`.
+- Unresolved law citations become `estleg:Citation` nodes with
+  `citationText` / `citationSource` and no `citationTarget`.
+- Lõiked stamp `estleg:itemNumber` from RT `punktNr` or `p N` in text.
+
+### Act roots are not sameAs dated RT XML (#447)
+
+- Law and regulation generators keep `dcterms:source` for the Riigi
+  Teataja XML URL and no longer emit `owl:sameAs` to that file.
+  Wikidata and EU CELLAR sameAs stay. `validate_act_xml_sameas` rejects
+  the FRBR conflation.
+
+### Act roots are not owl:Ontology (#435)
+
+- Law and regulation individuals are typed `estleg:Act` / `estleg:Law` /
+  regulation classes only. `owl:Ontology` stays on dataset/graph headers.
+  Act-root finders use `act_root_node` / `is_domain_individual`.
+
+### Version-layer freshness is interval coverage (#532)
+
+- `validate_version_layer_freshness` errors only when no ProvisionVersion
+  interval contains peep `kehtiv`. An open-ended current redaction that
+  started before the snapshot (2026-05-22 vs kehtiv 2026-05-24) is not a
+  lag. As-of queries already use that contract.
+
+### Catalog URLs pin a content SHA (#548)
+
+- `metadata.jsonld` and `void.ttl` no longer cite mutable `/main`.
+  Tree/archive URLs pin `DATASET_CONTENT_SHA`; combined-file download
+  URLs use `/releases/download/v1.0.0/`. The build manifest records
+  `contentSha` + `catalogModified`; `validate_all` rejects `/main`
+  catalog URLs.
+
+### Classifier assertionConfidence (#456)
+
+- Keyword-derived `normativeType` / `targetGroup` / EuroVoc subjects on
+  peeps carry `estleg:assertionConfidence` (`xsd:decimal`). Scraped
+  `legalText` is not stamped.
+
+### dutyHolder is a TargetGroup IRI (#460)
+
+- `estleg:dutyHolder` is no longer a free string. The deontic extractor
+  only writes values that classify against the target-group lexicon;
+  unmapped sentence-initial junk is dropped. Committed peeps and
+  `combined_ontology.jsonld` were reminted. SHACL `sh:in` matches
+  `targetGroup`.
+
+### Producer package layout (#472)
+
+- Live producer modules live in `src/estleg/`. `pip install -e .` exposes
+  `estleg-generate-laws`, `estleg-run-pipeline`, and `estleg-validate`.
+  `scripts/` keeps one-release shims; `sys.path.insert` hacks are gone.
+
+### INDEX body coverage, version citations, consistency stamp (#507, #524, #522)
+
+- INDEX laws carry `provisionCount` / `legalTextCount` / `stubKind`. 132
+  summary-only peeps now expose `legalText`. Non-treaty empty baseline is 2
+  (`validate_index_body_coverage`, #507).
+- All 124,899 ProvisionVersion nodes have `rtUrl`, `sourceAct`, and
+  `provisionRef` (#524 citation half; embeddings still open).
+- `partOfAct` is functional; TemporalStatus InForce ⊤ Repealed; dataset
+  `consistencyChecked` stamp + `check_tbox_consistency.py` (#522).
+
+### Client, schema.org bridges, non-graph indexes (#551, #543, #462)
+
+- `estleg_client` package: `load_law` / `estleg-load` (#551).
+- `estleg:Act` ⊑ `schema:Legislation`; `legalText` ⊑ `schema:text`;
+  `references` ⊑ `dcterms:references` (#543).
+- KOV similarity JSON and sanction `severity_index` formally documented
+  as non-graph application artifacts (#462).
+
+### Release delta + refresh SLA (#549, #531)
+
+- `krr_outputs/changes-0.11.0.jsonld` is the first published IRI delta
+  (INDEX `deprecated_laws` vs live INDEX laws), linked from
+  `metadata.jsonld` as a `dcat:distribution` (#549).
+- Refresh SLA is monthly RT consolidation. `check_rt_staleness.py` is
+  the offline content-staleness canary on the Monday CI cron; `--fetch`
+  is operator-run. `dcterms:accrualPeriodicity` is monthly (#531).
+
+### Getting started, ELI-DL, concepts, INDEX gaps (#542, #443, #458, #556, #518)
+
+- `examples/quickstart.py` plus a three-command README 5-minute start that
+  prints answered SPARQL sentences (#542).
+- `estleg:DraftLegislation` ⊑ `eli-dl:DraftLegislationWork`; Phase
+  individuals typed `eli-dl:ProcessStage` (#443).
+- Concepts layer: 126 `kehtetu` nodes removed; 12 plural pairs folded;
+  `Concept_5imbsusteem` merged (#458).
+- INDEX multipart gaps are annotated (TsÜS 1/3/5/6, TsMS 8/9, VÕS osa6
+  repealed); unmarked holes fail `validate_all` (#556).
+- Every current municipality has an EHAK `rdfs:seeAlso`; 16 curated
+  Wikidata `owl:sameAs` links (#518 remainder: acts/institutions).
+
+### Chapter / CURIA / EuroVoc identity (#436, #441, #544, #442 remainder)
+
+- Chapters point at their TopicCluster with `dcterms:subject` instead of
+  `owl:sameAs` (3,021 chapters / 351 law peeps; combined rewritten).
+- CURIA decisions `owl:sameAs` both CELLAR PSIs (CELEX + percent-encoded
+  ECLI); missing `euCaseNumber` is derived from CELEX; `curiaLink` is
+  renamed `eurLexLink`.
+- EuroVoc descriptors ship as `krr_outputs/eurovoc_concept_scheme.jsonld`
+  (43 SKOS concepts + one ConceptScheme). Corpus file count is 23,114.
+- Riigikohus nodes carry `rikosUrl` and header-derived `chamber`. Official
+  rikos ECLI scrape remains #442.
+
+### IRI hygiene (#346, #354)
+
+- Migrated leftover `estleg:…__…` @ids (slugify 80-char cut) to a single
+  underscore; combined + peeps now have 0 double-underscore compact IRIs.
+- Concatenated §-range IDs such as `TsK_Par_194` (`§ 1–94`) are now
+  `TsK_Par_1_to_94`. Title-only Division IDs no longer keep a trailing `_`
+  (collision with AutÕS jagu 2¹ uses a numbered fallback).
+- Whitespace `requestedCluster` @ids were already gone; a corpus test
+  keeps them gone.
+
+### Date guards, T-Box, citation, in-band VoID (#352, #359, #446, #508, #517, #547)
+
+- `parse_date` / EUR-Lex ISO dates reject years outside 1900–2100; 17
+  CELLAR sentinel `transpositionDeadline` values removed from the
+  directives peep (#352).
+- Concept-layer T-Box no longer redeclares the 7 CV-owned class/property
+  IRIs (#359).
+- NormType individuals carry `skos:exactMatch` to LegalRuleML; 1,121 law
+  peeps now emit `eli:is_about` next to EuroVoc `dcterms:subject` (#446).
+- Act-root nodes carry rolled-up `references` / `referencedBy` /
+  `interpretedBy` / `competentAuthority` (#508).
+- Every combined `*.jsonld` carries an in-band `void:Dataset` /
+  `dcat:Dataset` head with license and publisher (#517).
+- README How to cite now has APA + BibTeX; `CITATION.cff` stays the
+  machine record. Zenodo DOI remains #473 (#547).
+
+### Shared pipeline helpers (#449, #465, #376, #356, #452, #509)
+
+- One `sanitize_id` in `estleg_common` (numeric §-ranges become `_to_`;
+  Estonian letters transliterate). Generators import it or a `partial`.
+- One JSON-LD `@context` (now also `eli`/`void`/`dcat`/`prov`) and one
+  `PINNED_RUN_TIMESTAMP`.
+- Fetch-then-parse XML rejects DTD/entity payloads; the court HTML
+  fallback no longer uses a backtracking `<tr>` regex.
+- `--resume-from` fails if a skipped step's distinctive writes are missing.
+- Validators share `is_non_data_file` for sidecar reports.
+- SHACL accepts `rdf:langString` titles/labels/summaries (`sh:uniqueLang`
+  on labels).
+- `krr_outputs/void.ttl` is a standalone VoID/DCAT descriptor (#517).
+  Combined `*.jsonld` artifacts now carry an in-band Dataset head
+  (`owl:Ontology` + `void:Dataset` + `dcat:Dataset`, CC BY 4.0 compilation
+  license, publisher github.com/henrikaavik). The flagship file uses
+  `estleg_common.combined_ontology_header()` at `@graph[0]`.
+
+### Repo hygiene (#538, #539)
+
+- Dropped the stale 2.9 MB `docs/eesti-oigusontoloogia-ulevaade.pdf` blob
+  (older than the #378 HTML fix) and ignore `docs/*.pdf`. The HTML ülevaade
+  remains the published overview.
+- Untracked write-only regen artifacts with no production readers:
+  `krr_outputs/similarity/kov_similarity_index.json`,
+  `krr_outputs/concepts/concept_crossref_report.json`,
+  `data/uri_migration_report.json`, and
+  `krr_outputs/reports/multipart_iri_migration_report.json`.
+  `data/migration_state.json` stays tracked as the URI-migration sentinel.
+  Corpus `estleg:totalFiles` / top-level `estleg:fileCount` is now 23,113.
+
+### Review cohort on main (#483–#492)
+
+Already landed on main, previously missing from this changelog:
+
+- **#483** — Tier 0 semantic fixes: EuroVoc remap, similarity strip, proposed
+  amendments, KOV typing, harmonisation direction (#421–#425).
+- **#484** — Deprecate 37 legacy duplicate statute roots in place and re-point
+  inbound refs (#426).
+- **#485** — Unify Constitution provision IRIs and bridge legacy provisions to
+  the canonical family (#427).
+- **#486** — Connect act roots to their provisions via `estleg:partOfAct` (#415).
+- **#487** — Combined ontology as a self-contained graph plus closure gate (#416).
+- **#492** — Carry SHACL-required edges on shaped combined stubs and add the
+  combined-only gate (#488–#491).
+
+Later in-repo review work is also on main: court-citation word-boundary (#350),
+`NormType_Definition` (#461), T-Box / MCP / HTTP allow-list, and typed
+citations / fetched-text hashes / golden facts.
+
 ### Namespace migration (#516)
 
 - **Canonical IRI namespace changed to `https://w3id.org/estleg/`** (w3id.org

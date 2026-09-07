@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:VALISMIN_Map_2026",
+      "@id": "estleg:VALISMIN_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Välisministeeriumi seaduse teemakaardistus (diplomaatia)",
       "dc:description": "Välisministeeriumi seaduse põhisambad: välisteenistus, diplomaatilised suhted ja konsulaarvaldkond.",
@@ -31,16 +30,29 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "unknown"
-    },
-    {
-      "@id": "estleg:LegalProvision_VALISMIN",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "unknown",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_valisminister"
+        },
+        {
+          "@id": "estleg:Institution_valisministeerium"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -78,7 +90,7 @@
       "@id": "estleg:VALISMIN_Par_Valisteenistus_staatus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (välisteenistuse aluste norm)",
       "rdfs:label": "Välisteenistuse eesmärk, koosseis ja toimimise põhimõtted",
@@ -86,24 +98,31 @@
         "@id": "estleg:Cluster_valisteenistus_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Määratleb välisteenistuse ülesanded, teenistuse kandjad ning põhimõtted, mille alusel Eesti välisesindused ja ministeeriumi struktuuriüksused tegutsevad.",
+      "estleg:legalText": "Määratleb välisteenistuse ülesanded, teenistuse kandjad ning põhimõtted, mille alusel Eesti välisesindused ja ministeeriumi struktuuriüksused tegutsevad.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VALISMIN_Par_Valisteenistus_teenistussuhe",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (teenistussuhte norm)",
       "rdfs:label": "Välisteenistujate õigused, kohustused ja rotatsioon",
@@ -111,16 +130,17 @@
         "@id": "estleg:Cluster_valisteenistus_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Reguleerib välisteenistujate ametialaseid kohustusi, teenistuslikke garantiisid, rotatsiooni ning lähetuse korraldust välisesindustes.",
+      "estleg:legalText": "Reguleerib välisteenistujate ametialaseid kohustusi, teenistuslikke garantiisid, rotatsiooni ning lähetuse korraldust välisesindustes.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       }
     },
     {
       "@id": "estleg:VALISMIN_Par_Valisteenistus_juhtimine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (juhtimis- ja pädevusnorm)",
       "rdfs:label": "Välisteenistuse juhtimine ja halduskorraldus",
@@ -128,9 +148,10 @@
         "@id": "estleg:Cluster_valisteenistus_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Sätestab välisministri, kantsleri ja välisesinduste juhtide pädevuse ning vastutuse välisteenistuse töö korraldamisel.",
+      "estleg:legalText": "Sätestab välisministri, kantsleri ja välisesinduste juhtide pädevuse ning vastutuse välisteenistuse töö korraldamisel.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -143,7 +164,7 @@
       "@id": "estleg:VALISMIN_Par_Diplomaatia_esindamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (riigi esindamise norm)",
       "rdfs:label": "Eesti Vabariigi esindamine välissuhtluses",
@@ -151,16 +172,17 @@
         "@id": "estleg:Cluster_diplomaatilised_suhted_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Määrab kindlaks, kuidas ja milliste volituste alusel esindatakse Eesti Vabariiki rahvusvahelistes suhetes ning diplomaatilistes kontaktides.",
+      "estleg:legalText": "Määrab kindlaks, kuidas ja milliste volituste alusel esindatakse Eesti Vabariiki rahvusvahelistes suhetes ning diplomaatilistes kontaktides.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       }
     },
     {
       "@id": "estleg:VALISMIN_Par_Diplomaatia_missioonid",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (välisesinduste norm)",
       "rdfs:label": "Diplomaatiliste esinduste avamine, tegevus ja lõpetamine",
@@ -168,16 +190,17 @@
         "@id": "estleg:Cluster_diplomaatilised_suhted_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Reguleerib diplomaatiliste esinduste moodustamise, tegevusulatuse, staatuse muutmise ja tegevuse lõpetamise õiguslikud alused.",
+      "estleg:legalText": "Reguleerib diplomaatiliste esinduste moodustamise, tegevusulatuse, staatuse muutmise ja tegevuse lõpetamise õiguslikud alused.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       }
     },
     {
       "@id": "estleg:VALISMIN_Par_Diplomaatia_lepingud",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (rahvusvahelise suhtluse koordineerimise norm)",
       "rdfs:label": "Diplomaatiliste suhete ja rahvusvahelise koostöö koordineerimine",
@@ -185,9 +208,10 @@
         "@id": "estleg:Cluster_diplomaatilised_suhted_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Sõnastab välisministeeriumi rolli rahvusvaheliste läbirääkimiste, suhtluskanalite ja riikidevahelise koostöö diplomaatilisel koordineerimisel.",
+      "estleg:legalText": "Sõnastab välisministeeriumi rolli rahvusvaheliste läbirääkimiste, suhtluskanalite ja riikidevahelise koostöö diplomaatilisel koordineerimisel.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -200,7 +224,7 @@
       "@id": "estleg:VALISMIN_Par_Konsulaar_kaitse",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (konsulaarkaitse norm)",
       "rdfs:label": "Konsulaarkaitse osutamine Eesti kodanikele välisriigis",
@@ -208,24 +232,31 @@
         "@id": "estleg:Cluster_konsulaarvaldkond_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Kehtestab konsulaarkaitse osutamise alused Eesti kodanikele ja vajadusel teistele õigustatud isikutele välisriigis viibimisel.",
+      "estleg:legalText": "Kehtestab konsulaarkaitse osutamise alused Eesti kodanikele ja vajadusel teistele õigustatud isikutele välisriigis viibimisel.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VALISMIN_Par_Konsulaar_toimingud",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (konsulaartoimingute norm)",
       "rdfs:label": "Konsulaartoimingud, dokumenteerimine ja teenused",
@@ -233,16 +264,17 @@
         "@id": "estleg:Cluster_konsulaarvaldkond_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Reguleerib konsulaarasutuste toiminguid, sealhulgas dokumentide väljastamist, tõestamistoiminguid ja muid konsulaarteenuseid.",
+      "estleg:legalText": "Reguleerib konsulaarasutuste toiminguid, sealhulgas dokumentide väljastamist, tõestamistoiminguid ja muid konsulaarteenuseid.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       }
     },
     {
       "@id": "estleg:VALISMIN_Par_Konsulaar_hadabi",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VALISMIN"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ (hädaolukorra abi norm)",
       "rdfs:label": "Abi osutamine hädaolukordades ja kriisides välismaal",
@@ -250,18 +282,25 @@
         "@id": "estleg:Cluster_konsulaarvaldkond_valisministeeriumi_seadus_peep"
       },
       "estleg:summary": "Sätestab konsulaarvaldkonna kriisireageerimise alused ning välisriigis hätta sattunud isikute abistamise korra.",
+      "estleg:legalText": "Sätestab konsulaarvaldkonna kriisireageerimise alused ning välisriigis hätta sattunud isikute abistamise korra.",
       "estleg:sourceAct": "Välisministeeriumi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:VALISMIN_Map_2026"
+        "@id": "estleg:VALISMIN_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VALISMIN_NOTE_001",
@@ -269,7 +308,7 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus kaardistuse kohta",
-      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Tegemist on semantilise eelkaardistusega; järgmises iteratsioonis tuleb §-numbrid, pealkirjad ja sõnastused verifitseerida kehtiva redaktsiooni vastu."
+      "rdfs:comment": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Tegemist on semantilise eelkaardistusega; järgmises iteratsioonis tuleb §-numbrid, pealkirjad ja sõnastused verifitseerida kehtiva redaktsiooni vastu."
     },
     {
       "@id": "estleg:Cluster_valisteenistus_valisministeeriumi_seadus_peep",

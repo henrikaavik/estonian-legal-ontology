@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ENFKKUR_Map_2026",
+      "@id": "estleg:ENFKKUR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Euroopa Nõukogu filmialase kaastootmise konventsiooni (uuendatud) ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/217122020003.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/217122020003.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,25 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_euroopa_noukogu_filmialase_kaastootmise_konventsiooni_uuendatud_ratifitseerimise",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2020-12-27",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:ENFKKUR_TopicScheme",
@@ -78,13 +82,13 @@
       "@id": "estleg:ENFKKUR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_filmialase_kaastootmise_konventsiooni_uuendatud_ratifitseerimise"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2020. a...]",
       "estleg:sourceAct": "Euroopa Nõukogu filmialase kaastootmise konventsiooni (uuendatud) ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENFKKUR_Map_2026"
+        "@id": "estleg:ENFKKUR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2020. aasta 8. juulil.",
       "estleg:legalText": "Ratifitseerida juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2020. aasta 8. juulil.",
@@ -101,7 +105,7 @@
           "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1"
         },
         {
-          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi__Par_1"
+          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi_Par_1"
         },
         {
           "@id": "estleg:uhtset_patendikohut_kasitleva_lepingu_ni_Par_2"
@@ -118,13 +122,13 @@
       "@id": "estleg:ENFKKUR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_filmialase_kaastootmise_konventsiooni_uuendatud_ratifitseerimise"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Kooskõlas konventsiooni artikli 5 lõikega 5 määrab pädeva asutuse valdkonna eest...]",
       "estleg:sourceAct": "Euroopa Nõukogu filmialase kaastootmise konventsiooni (uuendatud) ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENFKKUR_Map_2026"
+        "@id": "estleg:ENFKKUR_Map"
       },
       "estleg:summary": "Kooskõlas konventsiooni artikli 5 lõikega 5 määrab pädeva asutuse valdkonna eest vastutav minister käskkirjaga.",
       "estleg:legalText": "Kooskõlas konventsiooni artikli 5 lõikega 5 määrab pädeva asutuse valdkonna eest vastutav minister käskkirjaga.",
@@ -132,8 +136,12 @@
         "@id": "estleg:Cluster_ENFKKUR_default"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -164,7 +172,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

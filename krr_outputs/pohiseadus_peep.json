@@ -2,24 +2,23 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:PS_Map_2026",
+      "@id": "estleg:PS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:eesti_vabariigi_pohiseadus_Map_2026"
+        "@id": "estleg:eesti_vabariigi_pohiseadus_Map"
       },
       "rdfs:label": "Eesti Vabariigi põhiseaduse teemakaardistus (PS)",
       "dc:description": "Põhiseaduse kaardistus kolmes põhiklastris: põhiõigused, riigikorraldus ja põhiseaduse muutmise kord.",
@@ -40,17 +39,44 @@
         {
           "@id": "http://eurovoc.europa.eu/5050"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_PS",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/538"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/695"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1909"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-07-22",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:TopicCluster_pohiseadus",
@@ -87,7 +113,7 @@
       "@id": "estleg:PS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_8"
@@ -100,7 +126,7 @@
       "estleg:summary": "Sätestab sünnijärgse kodakondsuse, kaotatud kodakondsuse taastamise õiguse ning sünnijärgse kodakondsuse äravõtmise keelu.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -112,7 +138,7 @@
       "@id": "estleg:PS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_11"
@@ -125,7 +151,7 @@
       "estleg:summary": "Õigusi ja vabadusi võib piirata üksnes põhiseadusega kooskõlas, demokraatlikus ühiskonnas vajalikult ning olemust moonutamata.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -134,13 +160,17 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:PS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_12"
@@ -153,7 +183,7 @@
       "estleg:summary": "Kehtestab kõigi võrdsuse seaduse ees ning keelab diskrimineerimise ja vihkamise õhutamise.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -165,7 +195,7 @@
       "@id": "estleg:PS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_14"
@@ -178,10 +208,12 @@
       "estleg:summary": "Seadusandlikul, täidesaatval ja kohtuvõimul ning kohalikel omavalitsustel lasub põhiõiguste tagamise kohustus.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -192,13 +224,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_15"
@@ -211,7 +247,7 @@
       "estleg:summary": "Tagab igaühe õiguse pöörduda kohtusse ning nõuda asjassepuutuva normi või toimingu põhiseadusvastaseks tunnistamist.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -223,7 +259,7 @@
       "@id": "estleg:PS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_32"
@@ -236,7 +272,7 @@
       "estleg:summary": "Kaitseb omandit ja pärimisõigust ning lubab sundvõõrandamist üksnes seaduses sätestatud avalikes huvides õiglase hüvitise eest.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -248,7 +284,7 @@
       "@id": "estleg:PS_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_45"
@@ -261,7 +297,7 @@
       "estleg:summary": "Tagab ideede ja informatsiooni vaba levitamise õiguse ning kinnitab tsensuuri keelu.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -273,7 +309,7 @@
       "@id": "estleg:PS_Par_56",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_56"
@@ -286,10 +322,12 @@
       "estleg:summary": "Määratleb, et rahvas teostab kõrgeimat riigivõimu Riigikogu valimiste ja rahvahääletuse kaudu.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -306,13 +344,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_59",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_59"
@@ -325,10 +367,12 @@
       "estleg:summary": "Sätestab, et seadusandlik võim kuulub Riigikogule.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -339,13 +383,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_65",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_65"
@@ -358,10 +406,12 @@
       "estleg:summary": "Loetleb Riigikogu keskse pädevuse: seadusloome, rahvahääletus, eelarve, ametissenimetamised, umbusaldus ja riiklikud eriotsused.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -381,13 +431,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_77",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_77"
@@ -400,7 +454,7 @@
       "estleg:summary": "Määratleb Vabariigi Presidendi Eesti riigipeaks.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -412,7 +466,7 @@
       "@id": "estleg:PS_Par_86",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_86"
@@ -425,10 +479,12 @@
       "estleg:summary": "Sätestab, et täidesaatev riigivõim kuulub Vabariigi Valitsusele.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -439,13 +495,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_102",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_102"
@@ -458,7 +518,7 @@
       "estleg:summary": "Nõuab, et seadused võetaks vastu kooskõlas põhiseadusega.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -470,7 +530,7 @@
       "@id": "estleg:PS_Par_129",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_129"
@@ -483,7 +543,7 @@
       "estleg:summary": "Reguleerib erakorralise seisukorra väljakuulutamist põhiseadusliku korra või julgeoleku tõsise ohu korral.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -495,7 +555,7 @@
       "@id": "estleg:PS_Par_146",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_146"
@@ -508,10 +568,12 @@
       "estleg:summary": "Sätestab, et õigust mõistab ainult kohus ning kohus on oma tegevuses sõltumatu.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -528,13 +590,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_161",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_161"
@@ -547,7 +613,7 @@
       "estleg:summary": "Sätestab, et põhiseaduse muutmine toimub XV peatükis ette nähtud korras.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -559,7 +625,7 @@
       "@id": "estleg:PS_Par_162",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_162"
@@ -572,10 +638,12 @@
       "estleg:summary": "Põhiseaduse muutmist võivad algatada vähemalt viiendik Riigikogu koosseisust või Vabariigi President.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -595,13 +663,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_163",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_163"
@@ -614,7 +686,7 @@
       "estleg:summary": "Muutmise seaduse eelnõu läbib kolm lugemist kindlate ajavahemikega, et tagada läbikaalutud otsustus.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -626,7 +698,7 @@
       "@id": "estleg:PS_Par_164",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_164"
@@ -639,10 +711,12 @@
       "estleg:summary": "Lubab põhiseaduse muutmise seaduse vastuvõtmist rahvahääletusel Riigikogu kvalifitseeritud otsuse alusel.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -659,13 +733,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_165",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_165"
@@ -678,10 +756,12 @@
       "estleg:summary": "Võimaldab põhiseadust muuta kahe järjestikuse koosseisu otsustega, kui teine koosseis kinnitab muutmata eelnõu 3/5 enamusega.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -692,13 +772,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_166",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_166"
@@ -711,10 +795,12 @@
       "estleg:summary": "Kiireloomulise menetluse otsus nõuab 4/5 poolthääli ning lõppvastuvõtmine Riigikogu 2/3 häälteenamust.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -731,13 +817,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PS_Par_167",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_167"
@@ -750,7 +840,7 @@
       "estleg:summary": "Põhiseaduse muutmise seadus kuulutatakse välja ning jõustub selles sätestatud korras.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {
@@ -762,7 +852,7 @@
       "@id": "estleg:PS_Par_168",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PS"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:eesti_vabariigi_pohiseadus_Par_168"
@@ -775,7 +865,7 @@
       "estleg:summary": "I ja XV peatükki ning põhiseaduse täiendamise seadust saab muuta üksnes rahvahääletusega.",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PS_Map_2026"
+        "@id": "estleg:PS_Map"
       },
       "estleg:hasVersion": [
         {

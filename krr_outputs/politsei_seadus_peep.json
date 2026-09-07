@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:POLS_Map_2026",
+      "@id": "estleg:POLS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Politsei seaduse ja avaliku korra teemakaardistus",
       "dc:source": "Politsei ja piirivalve seadus (Riigi Teataja) + Korrakaitseseadus (Riigi Teataja), kehtivad redaktsioonid",
@@ -30,16 +29,26 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "unknown"
-    },
-    {
-      "@id": "estleg:LegalProvision_POLS",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "unknown",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -78,67 +87,84 @@
       "@id": "estleg:POLS_Par_PolitseiStaatusJaEesmArk",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PPVS § 1–§ 3",
       "rdfs:label": "Politsei staatus, eesmärk ja põhiroll",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_politsei_ulesanded_politsei_seadus_peep"
       },
       "estleg:summary": "Sätestab politsei kui täidesaatva riigivõimu asutuse rolli, avaliku korra kaitse üldeesmärgi ning õigusrikkumiste ennetamise ja avastamise põhiülesande.",
+      "estleg:legalText": "Sätestab politsei kui täidesaatva riigivõimu asutuse rolli, avaliku korra kaitse üldeesmärgi ning õigusrikkumiste ennetamise ja avastamise põhiülesande.",
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:POLS_Par_Pohiylesanded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PPVS § 4–§ 7",
       "rdfs:label": "Politsei põhiülesanded",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_politsei_ulesanded_politsei_seadus_peep"
       },
       "estleg:summary": "Kirjeldab politsei ülesandeid avaliku korra kaitsel, ohu ennetamisel ja tõrjumisel, süütegude menetlemise toetamisel ning inimeste õiguste kaitsel koostöös teiste asutustega.",
+      "estleg:legalText": "Kirjeldab politsei ülesandeid avaliku korra kaitsel, ohu ennetamisel ja tõrjumisel, süütegude menetlemise toetamisel ning inimeste õiguste kaitsel koostöös teiste asutustega.",
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:POLS_Par_KoostoOJaEnnetus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PPVS § 8–§ 10",
       "rdfs:label": "Koostöö, ennetus ja teavitustegevus",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_politsei_ulesanded_politsei_seadus_peep"
       },
       "estleg:summary": "Reguleerib politsei koostööd kohaliku omavalitsuse, pääste- ja sotsiaalsüsteemiga ning rõhutab kogukonnapõhist ennetustööd ja ohuolukordadest teavitamist.",
+      "estleg:legalText": "Reguleerib politsei koostööd kohaliku omavalitsuse, pääste- ja sotsiaalsüsteemiga ning rõhutab kogukonnapõhist ennetustööd ja ohuolukordadest teavitamist.",
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -150,41 +176,49 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:POLS_Par_PolitseiYldvolitused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 23–§ 31",
       "rdfs:label": "Korrakaitseorgani üldvolitused",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_politsei_oigused_politsei_seadus_peep"
       },
-      "estleg:summary": "Sätestab korrakaitseorganite, sh politsei õiguse küsida teavet, kontrollida dokumente, anda korraldusi ja võtta seaduses ettenähtud meetmeid avaliku korra tagamiseks."
+      "estleg:summary": "Sätestab korrakaitseorganite, sh politsei õiguse küsida teavet, kontrollida dokumente, anda korraldusi ja võtta seaduses ettenähtud meetmeid avaliku korra tagamiseks.",
+      "estleg:legalText": "Sätestab korrakaitseorganite, sh politsei õiguse küsida teavet, kontrollida dokumente, anda korraldusi ja võtta seaduses ettenähtud meetmeid avaliku korra tagamiseks."
     },
     {
       "@id": "estleg:POLS_Par_IsikuKontrollJaSekkumine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 32–§ 46",
       "rdfs:label": "Isiku kontroll, läbivaatus ja sekkumine",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_politsei_oigused_politsei_seadus_peep"
       },
       "estleg:summary": "Reguleerib tingimusi, mille alusel politsei võib isikut peatada, kontrollida, läbi vaadata, piirata liikumist või rakendada muid vahetuid korrakaitsemeetmeid.",
+      "estleg:legalText": "Reguleerib tingimusi, mille alusel politsei võib isikut peatada, kontrollida, läbi vaadata, piirata liikumist või rakendada muid vahetuid korrakaitsemeetmeid.",
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
@@ -193,138 +227,165 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:POLS_Par_VahenditeKasutamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 75–§ 84",
       "rdfs:label": "Sund ja erivahendite kasutamine",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_politsei_oigused_politsei_seadus_peep"
       },
-      "estleg:summary": "Määrab vahetu sunni, erivahendite ja vajadusel relva kasutamise seaduslikud alused, proportsionaalsuse nõude ning järelkontrolli kohustuse."
+      "estleg:summary": "Määrab vahetu sunni, erivahendite ja vajadusel relva kasutamise seaduslikud alused, proportsionaalsuse nõude ning järelkontrolli kohustuse.",
+      "estleg:legalText": "Määrab vahetu sunni, erivahendite ja vajadusel relva kasutamise seaduslikud alused, proportsionaalsuse nõude ning järelkontrolli kohustuse."
     },
     {
       "@id": "estleg:POLS_Par_AvalikuKorraMoiste",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 4–§ 6",
       "rdfs:label": "Avaliku korra mõiste ja kaitseala",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_avalik_kord_politsei_seadus_peep"
       },
-      "estleg:summary": "Määratleb avaliku korra kui ühiskonna turvalisust, rahu ja õigushüvede kaitset tagava seisundi ning sätestab avaliku korra kaitse üldised lähtekohad."
+      "estleg:summary": "Määratleb avaliku korra kui ühiskonna turvalisust, rahu ja õigushüvede kaitset tagava seisundi ning sätestab avaliku korra kaitse üldised lähtekohad.",
+      "estleg:legalText": "Määratleb avaliku korra kui ühiskonna turvalisust, rahu ja õigushüvede kaitset tagava seisundi ning sätestab avaliku korra kaitse üldised lähtekohad."
     },
     {
       "@id": "estleg:POLS_Par_OhtJaKorrarikkumine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 5, § 28",
       "rdfs:label": "Oht, korrarikkumine ja sekkumise alus",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_avalik_kord_politsei_seadus_peep"
       },
-      "estleg:summary": "Sõnastab ohu ja korrarikkumise mõiste ning seob korrakaitseorgani sekkumise õiguse konkreetse ohu olemasolu või vahetu rikkumisega."
+      "estleg:summary": "Sõnastab ohu ja korrarikkumise mõiste ning seob korrakaitseorgani sekkumise õiguse konkreetse ohu olemasolu või vahetu rikkumisega.",
+      "estleg:legalText": "Sõnastab ohu ja korrarikkumise mõiste ning seob korrakaitseorgani sekkumise õiguse konkreetse ohu olemasolu või vahetu rikkumisega."
     },
     {
       "@id": "estleg:POLS_Par_AvalikYritusJaKoosolek",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 55–§ 62",
       "rdfs:label": "Avalikud üritused ja korra tagamine",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_avalik_kord_politsei_seadus_peep"
       },
       "estleg:summary": "Reguleerib avalikel üritustel korra tagamise kohustusi, korraldaja vastutust ning politsei meetmeid ohu ennetamiseks ja osalejate turvalisuse kaitseks.",
+      "estleg:legalText": "Reguleerib avalikel üritustel korra tagamise kohustusi, korraldaja vastutust ning politsei meetmeid ohu ennetamiseks ja osalejate turvalisuse kaitseks.",
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:POLS_Par_MeetmeValikJaProportsionaalsus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 7–§ 10",
       "rdfs:label": "Korrakaitsemeetme valik, eesmärgipärasus ja proportsionaalsus",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_law_enforcement_politsei_seadus_peep"
       },
       "estleg:summary": "Sätestab, et korrakaitsemeetme rakendamisel tuleb valida eesmärgi saavutamiseks sobiv ja võimalikult vähekoormav sekkumine ning lõpetada meede kohe, kui alus langeb ära.",
+      "estleg:legalText": "Sätestab, et korrakaitsemeetme rakendamisel tuleb valida eesmärgi saavutamiseks sobiv ja võimalikult vähekoormav sekkumine ning lõpetada meede kohe, kui alus langeb ära.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:POLS_Par_KorrakaitsemenetluseToimingud",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "KorS § 11–§ 22",
       "rdfs:label": "Korrakaitsemenetluse toimingud",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_law_enforcement_politsei_seadus_peep"
       },
       "estleg:summary": "Koondab korrakaitsemenetluse aluspõhimõtted: pädevus, dokumenteerimine, isiku ärakuulamine, teavitamine ja toimingute kontrollitavus.",
+      "estleg:legalText": "Koondab korrakaitsemenetluse aluspõhimõtted: pädevus, dokumenteerimine, isiku ärakuulamine, teavitamine ja toimingute kontrollitavus.",
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:POLS_Par_JarelevalveJaVastutus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_POLS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PPVS § 11–§ 15",
       "rdfs:label": "Teenistuslik järelevalve ja vastutus",
       "estleg:partOfAct": {
-        "@id": "estleg:POLS_Map_2026"
+        "@id": "estleg:POLS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_law_enforcement_politsei_seadus_peep"
       },
-      "estleg:summary": "Reguleerib politsei tegevuse sisekontrolli, järelevalve ja vastutuse mehhanisme, et tagada õiguspärane õiguskaitsetegevus ning avalikkuse usaldus."
+      "estleg:summary": "Reguleerib politsei tegevuse sisekontrolli, järelevalve ja vastutuse mehhanisme, et tagada õiguspärane õiguskaitsetegevus ning avalikkuse usaldus.",
+      "estleg:legalText": "Reguleerib politsei tegevuse sisekontrolli, järelevalve ja vastutuse mehhanisme, et tagada õiguspärane õiguskaitsetegevus ning avalikkuse usaldus."
     },
     {
       "@id": "estleg:Concept_PolitseiEnnetusYlesanne",

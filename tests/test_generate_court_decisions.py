@@ -31,16 +31,19 @@ from __future__ import annotations
 
 import json
 import logging
-import sys
 import urllib.parse
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+from estleg import estleg_common as ec
+from estleg import generate_court_decisions as gcd
 
-import generate_court_decisions as gcd
-
+# Issue #683 fixture: a *generated* checksum-valid personal ID code (century
+# digit 3, birth date 1990-01-01, serial 000). Never hardcode a real one — a
+# test fixture is a published file too.
+_SYNTHETIC_BODY = "3900101000"
+SYNTHETIC_ISIKUKOOD = _SYNTHETIC_BODY + str(ec.isikukood_check_digit(_SYNTHETIC_BODY))
 
 # ---------------------------------------------------------------------------
 # classify_case
@@ -300,7 +303,12 @@ class TestParseHtmlTable:
         assert row["decision_type"] == "Kohtuotsus"
         assert row["summary"] == "Keskkonnaameti kassatsioonkaebus"
         assert row["object_id"] == "4567890"
-        assert row["link"].startswith("https://rikos.rik.ee")
+        # CodeQL py/incomplete-url-substring-sanitization: a prefix match on
+        # a URL is satisfied by e.g. https://rikos.rik.ee.evil.test, so assert
+        # on the parsed host and scheme instead of the raw string.
+        parsed = urllib.parse.urlsplit(row["link"])
+        assert parsed.scheme == "https"
+        assert parsed.netloc == "rikos.rik.ee"
 
     def test_row_with_wrong_column_count_is_skipped(
         self, caplog: pytest.LogCaptureFixture
@@ -397,6 +405,13 @@ class TestParseHtmlTable:
         # get_text(" ")) and runs of whitespace are collapsed — never doubled.
         assert regex_rows[0]["case_nr"] == "3 -1-1 1"
         assert regex_rows[0]["object_id"] == "1 0"
+
+
+def test_regex_fallback_does_not_backtrack_on_unclosed_tr() -> None:
+    """#356: unclosed ``<tr>`` must not explode the fallback parser."""
+    html = "<table><tr><td>a</td><td>b</td></tr>" + ("<tr" * 4000)
+    inner = gcd._iter_tag_inner(html, "tr")
+    assert inner == ["<td>a</td><td>b</td>"]
 
 
 # ---------------------------------------------------------------------------
@@ -537,6 +552,58 @@ class TestDecisionToNode:
             "IRI for dec_b flipped between runs — not deterministic"
         )
         assert a_first != b_first
+
+    # --- #683: personal ID code screening at the estleg:summary write site --
+
+    def test_summary_isikukood_is_masked_and_stamped(
+        self, sample_decision: dict
+    ) -> None:
+        sample_decision["summary"] = (
+            f"Hageja U. V (isikukood {SYNTHETIC_ISIKUKOOD}) kaebus."
+        )
+        node = gcd.decision_to_node(sample_decision, 2026, set())
+        assert node is not None
+        summary = node["estleg:summary"]["@value"]
+        assert SYNTHETIC_ISIKUKOOD not in summary
+        assert ec.PERSONAL_CODE_PLACEHOLDER in summary
+        assert node["estleg:summary"]["@language"] == "et"
+        assert node["estleg:personalDataScreened"] is True
+        assert node["estleg:personalDataMaskedCount"] == 1
+
+    def test_screening_runs_before_the_800_char_truncation(
+        self, sample_decision: dict
+    ) -> None:
+        """Truncating first could cut a code in half and leave stray digits."""
+        sample_decision["summary"] = (
+            "a" * 795 + f" isikukood {SYNTHETIC_ISIKUKOOD} lõpp."
+        )
+        node = gcd.decision_to_node(sample_decision, 2026, set())
+        assert node is not None
+        assert node["estleg:personalDataMaskedCount"] == 1
+        assert SYNTHETIC_ISIKUKOOD[:6] not in node["estleg:summary"]["@value"]
+
+    def test_clean_summary_is_stamped_with_zero(
+        self, sample_decision: dict
+    ) -> None:
+        node = gcd.decision_to_node(sample_decision, 2026, set())
+        assert node is not None
+        assert node["estleg:personalDataScreened"] is True
+        assert node["estleg:personalDataMaskedCount"] == 0
+
+    def test_node_without_summary_is_still_stamped(self) -> None:
+        dec = {
+            "case_nr": "3-21-1/2",
+            "object_id": "abc",
+            "summary": "",
+            "date": "",
+            "decision_type": "",
+            "link": "",
+        }
+        node = gcd.decision_to_node(dec, 2026, set())
+        assert node is not None
+        assert "estleg:summary" not in node
+        assert node["estleg:personalDataScreened"] is True
+        assert node["estleg:personalDataMaskedCount"] == 0
 
     def test_referenced_laws_canonicalised(self, sample_decision: dict) -> None:
         node = gcd.decision_to_node(sample_decision, 2026, set())
@@ -950,7 +1017,7 @@ def _stub_fetch_ok(monkeypatch: pytest.MonkeyPatch) -> list[str]:
     """Make ``fetch_decision_text`` return deterministic text; track calls."""
     seen: list[str] = []
 
-    def _fake(case_nr, *, use_cache=True, session_fetched=None):  # noqa: ARG001
+    def _fake(case_nr, *, use_cache=True, session_fetched=None):
         if session_fetched is not None:
             session_fetched[:] = [True]
         seen.append(case_nr)
@@ -1001,6 +1068,65 @@ class TestEnrichFullText:
             decs = [n for n in doc["@graph"] if "estleg:CourtDecision" in n.get("@type", [])]
             assert decs and all(isinstance(n.get("estleg:legalText"), str) for n in decs)
 
+    # --- #683: screening at the estleg:legalText write site ----------------
+
+    def test_fetched_full_text_is_screened_before_it_is_written(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        def _fake(case_nr, *, use_cache=True, session_fetched=None):
+            if session_fetched is not None:
+                session_fetched[:] = [True]
+            return f"Kostja A. B isikukoodiga {SYNTHETIC_ISIKUKOOD} vaidleb."
+
+        monkeypatch.setattr(gcd, "fetch_decision_text", _fake)
+        gcd.enrich_full_text(limit=1)
+
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        node = next(n for n in doc["@graph"] if "estleg:legalText" in n)
+        text = node["estleg:legalText"]
+        # Still a plain string literal — the SHACL shape demands xsd:string.
+        assert isinstance(text, str)
+        assert SYNTHETIC_ISIKUKOOD not in text
+        assert ec.PERSONAL_CODE_PLACEHOLDER in text
+        assert node["estleg:personalDataScreened"] is True
+
+    def test_full_text_masks_add_to_the_summary_count(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """The two write sites run in different passes, so the count adds up."""
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        for node in doc["@graph"]:
+            if node.get("estleg:caseNumber") == "3-26-1/2":
+                node["estleg:personalDataScreened"] = True
+                node["estleg:personalDataMaskedCount"] = 1
+        (_fake_rk_dir / "riigikohus_2026_peep.json").write_text(
+            json.dumps(doc, indent=2) + "\n", encoding="utf-8"
+        )
+
+        def _fake(case_nr, *, use_cache=True, session_fetched=None):
+            if session_fetched is not None:
+                session_fetched[:] = [True]
+            return f"isikukood {SYNTHETIC_ISIKUKOOD}"
+
+        monkeypatch.setattr(gcd, "fetch_decision_text", _fake)
+        gcd.enrich_full_text(limit=1)
+
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        node = next(
+            n for n in doc["@graph"] if n.get("estleg:caseNumber") == "3-26-1/2"
+        )
+        assert node["estleg:personalDataMaskedCount"] == 2
+
+    def test_clean_full_text_is_written_unchanged(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        _stub_fetch_ok(monkeypatch)
+        gcd.enrich_full_text(limit=1)
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        node = next(n for n in doc["@graph"] if "estleg:legalText" in n)
+        assert node["estleg:legalText"].startswith("FULL TEXT FOR 3-26-1/2")
+        assert node["estleg:personalDataMaskedCount"] == 0
+
     def test_already_having_legaltext_is_skipped(
         self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -1024,10 +1150,9 @@ class TestEnrichFullText:
     def test_failed_fetch_does_not_add_property(
         self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        def _fake(case_nr, *, use_cache=True, session_fetched=None):  # noqa: ARG001
+        def _fake(case_nr, *, use_cache=True, session_fetched=None):
             if session_fetched is not None:
                 session_fetched[:] = [True]
-            return None  # simulate a non-decision / transient-failure response
 
         monkeypatch.setattr(gcd, "fetch_decision_text", _fake)
         stats = gcd.enrich_full_text(limit=2)
@@ -1044,7 +1169,7 @@ class TestEnrichFullText:
         called: list[bool] = []
         monkeypatch.setattr(
             gcd, "enrich_full_text",
-            lambda *a, **k: called.append(True) or {},  # noqa: ARG005
+            lambda *a, **k: called.append(True) or {},
         )
         # Stub out the heavy scrape path so plain main() returns fast.
         monkeypatch.setattr(gcd, "fetch_year", lambda *_a, **_k: [])

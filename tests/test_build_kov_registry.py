@@ -9,19 +9,14 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-
-from build_kov_registry import (
+from estleg.build_kov_registry import (
     _on_disk_issuers_json,
     build,
     canonical_issuers_json,
     compute_issuers_sha256,
 )
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer1"

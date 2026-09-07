@@ -12,6 +12,7 @@ on:
       - 'data/**'
       - 'krr_outputs/**'
       - 'scripts/**'
+      - 'src/**'
       - 'tests/**'
       - 'shacl/**'
       - 'mcp_server/**'
@@ -26,6 +27,7 @@ on:
       - 'data/**'
       - 'krr_outputs/**'
       - 'scripts/**'
+      - 'src/**'
       - 'tests/**'
       - 'shacl/**'
       - 'mcp_server/**'
@@ -34,6 +36,12 @@ on:
       - '.github/workflows/**'
       - 'docs/**'
       - 'README.md'
+  # Weekly committed-artifact drift check (#479) and RT content-
+  # staleness canary (#531). Re-runs the same validate/SHACL jobs
+  # against the tree on main; does not fetch Riigi Teataja or run
+  # generate_* ingest. ``check_rt_staleness.py --fetch`` is operator-run.
+  schedule:
+    - cron: "0 6 * * 1"
 
 jobs:
   # Fast docs-only check — markdownlint catches typos in seconds
@@ -92,7 +100,7 @@ jobs:
         # ``mcp_server/`` is a standalone package with its own [tool.ruff]
         # config; ruff applies it hierarchically per file, so a single
         # invocation lints the corpus tooling and the MCP server together.
-        run: python3 -m ruff check scripts/ tests/ mcp_server/
+        run: python3 -m ruff check scripts/ src/estleg/ tests/ mcp_server/
 
   pytest:
     runs-on: ubuntu-latest
@@ -136,6 +144,71 @@ jobs:
         # krr_outputs/INDEX.json from inside the repo checkout.
         run: python3 -m pytest -q mcp_server
 
+  # #479: exercise the integration DAG wiring without running SHACL /
+  # Seadusloome (those live in json-validation). --dry-run never hits
+  # the network.
+  integration-dry-run:
+    name: Integration DAG dry-run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Dry-run release validate-only
+        run: python3 scripts/run_all_integration.py --dry-run --release --validate-only
+
+  # #479: import the ingest generators and exercise the RT-XML canary
+  # plus a focused generate_all_laws slice. No live Riigi Teataja fetch.
+  generator-smoke:
+    name: Generator smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Generator import + fixture smoke
+        run: python3 -m pytest -q tests/test_rt_schema_canary.py tests/test_generate_all_laws.py --tb=line
+
+  # #531: Monday cron also fires this job. Default mode is offline
+  # (committed estleg:kehtiv vs BUILD_EVALUATION_DATE + SLA_MAX_LAG_DAYS).
+  # ``--fetch`` (GET live RT akt XML) is operator-run, not used in CI.
+  rt-staleness:
+    name: RT content-staleness canary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Check committed kehtiv vs SLA
+        run: python3 scripts/check_rt_staleness.py
+
   json-validation:
     runs-on: ubuntu-latest
     steps:
@@ -152,11 +225,12 @@ jobs:
         run: python3 -m pip install -e ".[dev]"
 
       - name: Pull required LFS artifacts
+        id: corpus-lfs
         run: |
           paths=(
             krr_outputs/combined_ontology.jsonld
-            krr_outputs/similarity_index.json
-            krr_outputs/eurovoc_classification.json
+            krr_outputs/reports/similarity_index.json
+            krr_outputs/reports/eurovoc_classification.json
             krr_outputs/annotations/oiguskantsler_seisukohad.jsonld
             krr_outputs/curia/curia_combined.jsonld
             krr_outputs/eurlex/eurlex_combined.jsonld
@@ -182,7 +256,7 @@ jobs:
             ':(exclude)docs/superpowers/plans' \
             ':(exclude)docs/NAMESPACE_MIGRATION.md' \
             ':(exclude)data/namespace_migration_state.json' \
-            ':(exclude)scripts/migrate_namespace.py' \
+            ':(exclude)src/estleg/migrate_namespace.py' \
             ':(exclude)tests/test_no_legacy_namespace.py' \
             ':(exclude)w3id' \
             ':(exclude).github/workflows/validate.yml' || true)
@@ -202,6 +276,10 @@ jobs:
       # on disk, so opt them in here — these are the suite's only assertions
       # against the *shipped* graph rather than synthetic fixtures.
       - name: Real-corpus pytest invariants (materialised combined)
+        # Run even when JSON hygiene or the namespace check failed. Otherwise
+        # the Tier 1 backlog prevents the tiered release invariants from ever
+        # being exercised. Still require successful LFS materialisation.
+        if: ${{ !cancelled() && steps.corpus-lfs.outcome == 'success' }}
         run: python3 -m pytest -q -m corpus
 
   semantic-validation:

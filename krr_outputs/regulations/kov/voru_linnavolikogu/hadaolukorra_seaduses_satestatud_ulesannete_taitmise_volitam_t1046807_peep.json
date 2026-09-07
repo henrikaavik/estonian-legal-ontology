@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1046807_Map_2026",
+      "@id": "estleg:Reg_1046807_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Hädaolukorra seaduses sätestatud ülesannete täitmise volitamine (määrus)",
       "dc:source": "Hädaolukorra seaduses sätestatud ülesannete täitmise volitamine",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/412042019018.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/412042019018.xml"
       },
       "estleg:issuer": "Võru Linnavolikogu",
@@ -56,13 +51,13 @@
       ],
       "estleg:similarAct": [
         {
-          "@id": "estleg:Similarity_Reg_1046807_Map_2026_Reg_1049488_Map_2026"
+          "@id": "estleg:Similarity_Reg_1046807_Map_Reg_1049488_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1046807_Map_2026_Reg_1063006_Map_2026"
+          "@id": "estleg:Similarity_Reg_1046807_Map_Reg_1063006_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1046807_Map_2026_Reg_1061005_Map_2026"
+          "@id": "estleg:Similarity_Reg_1046807_Map_Reg_1061005_Map"
         }
       ],
       "estleg:entryIntoForce": {
@@ -73,23 +68,31 @@
         "@value": "2019-04-12",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1046807",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:references": [
+        {
+          "@id": "estleg:haldusmenetluse_seadus_Par_8"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_voru_linnavalitsus"
+        }
+      ],
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1046807_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1046807",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -104,11 +107,15 @@
         "@id": "estleg:Municipality_EHAK_0919"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1046807_Map_2026"
+        "@id": "estleg:Reg_1046807_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
@@ -131,16 +138,20 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:Similarity_Reg_1046807_Map_2026_Reg_1049488_Map_2026",
+      "@id": "estleg:Similarity_Reg_1046807_Map_Reg_1049488_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1049488_Map_2026"
+        "@id": "estleg:Reg_1049488_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.718",
@@ -149,13 +160,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1046807_Map_2026_Reg_1063006_Map_2026",
+      "@id": "estleg:Similarity_Reg_1046807_Map_Reg_1063006_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1063006_Map_2026"
+        "@id": "estleg:Reg_1063006_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.589",
@@ -164,13 +175,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1046807_Map_2026_Reg_1061005_Map_2026",
+      "@id": "estleg:Similarity_Reg_1046807_Map_Reg_1061005_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1061005_Map_2026"
+        "@id": "estleg:Reg_1061005_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.403",

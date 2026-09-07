@@ -2,15 +2,15 @@
 
 ## Overview
 
-The Estonian Legal Ontology encodes 1,145 enacted laws (1,190 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+The Estonian Legal Ontology encodes 1,122 enacted laws (1,195 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,104 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
 
-> **Maintenance note:** The counts in this guide are sourced from `krr_outputs/INDEX.json`, the per-pipeline reports under `krr_outputs/` (e.g. `amendment_history_report.json`, `institutional_competence_report.json`, `sanctions_report.json`), and `metadata.jsonld` (`estleg:statistics`). Update them from those canonical files when the corpus is regenerated.
+> **Maintenance note:** The counts in this guide are sourced from `krr_outputs/INDEX.json`, the per-pipeline reports under `krr_outputs/reports/` (e.g. `amendment_history_report.json`, `institutional_competence_report.json`, `sanctions_report.json`), and `metadata.jsonld` (`estleg:statistics`). Update them from those canonical files when the corpus is regenerated.
 
 ## Directory Structure
 
 ```
 krr_outputs/
-  *.json              # 1,190 enacted law files (*_peep.json)
+  *.json              # 1,195 enacted law files (*_peep.json)
   amendments/         # 5,647 amendment chain files
   concepts/           # Legal concept graph + report
   curia/              # EU court decisions (CJEU/CURIA)
@@ -18,7 +18,7 @@ krr_outputs/
   eurlex/             # EU legislation (EUR-Lex)
   institutions/       # 113 institutional competence files
   regulations/        # Domestic regulations (maarused)
-    riik/                              # State-level (~3,820 files)
+    riik/                              # State-level (3,812 files)
       *_peep.json                      # One file per regulation
       REGULATIONS_RIIK_INDEX.json      # State regulation registry (byIssuer counts)
     kov/                               # KOV/municipal (opt-in via --kov)
@@ -239,12 +239,18 @@ print(f"Total triples: {len(g)}")
 
 The most powerful way to query this dataset is loading files into a semantic graph database (Apache Jena, Blazegraph, Oxigraph, etc.) and using SPARQL.
 
-> **Which graph to query.** Parent-class membership such as `?x a estleg:LegalProvision`
-> or `?x a estleg:Act` is materialised in the shipped `krr_outputs/combined_ontology.jsonld`,
-> where a build-time type rollup (issue #519) stamps every instance with its entailed
-> superclasses. A single `*_peep.json` only carries the **leaf** type
-> (`estleg:LegalProvision_<law>`), so a bare `a estleg:LegalProvision` query against one peep
-> returns nothing — query the combined graph for those. Types stamped directly on instances
+The in-repo quickstart is Oxigraph via `docker compose up` →
+[http://localhost:7878](http://localhost:7878) (issue #474). Each corpus is a
+named graph (`https://w3id.org/estleg/graph/laws` and siblings). The compose
+file loads `krr_outputs/exports/estleg_all_sample.nq.gz` by default; generate
+the full `krr_outputs/estleg_all.nq.gz` with
+`python3 -m estleg.serialize_named_graphs --write`.
+
+> **Which graph to query.** Provisions are typed `estleg:LegalProvision` on the
+> instance (issue #434), so `?x a estleg:LegalProvision` works on a single peep
+> and on `combined_ontology.jsonld` without RDFS inference. Act-class rollup
+> (`?x a estleg:Act`) is still materialised at combined-build time (issue #519)
+> for the `*Regulation` / `Law` hierarchy. Types stamped directly on instances
 > (`estleg:CourtDecision`, `estleg:Sanction`, `estleg:Institution`, `estleg:EULegislation`,
 > the `*Regulation` act classes, and `estleg:Act` on act roots) match without the combined
 > graph, but each lives in its own subdirectory — load that subcorpus. Several examples below

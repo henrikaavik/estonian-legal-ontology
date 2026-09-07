@@ -9,15 +9,12 @@ unambiguous Roman-numeral Criminal/Civil cases.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import rederive_riigikohus_case_types as red
-from generate_court_decisions import classify_case
+from estleg import rederive_riigikohus_case_types as red
+from estleg.generate_court_decisions import classify_case
 
 CRIMINAL = "estleg:CaseType_Criminal"
 CIVIL = "estleg:CaseType_Civil"

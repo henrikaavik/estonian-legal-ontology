@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TLKR_Map_2026",
+      "@id": "estleg:TLKR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Testamendiregistri loomise konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/210032016001.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/210032016001.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,25 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_testamendiregistri_loomise_konventsiooni_ratifitseerimise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2016-03-20",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:TLKR_TopicScheme",
@@ -78,13 +82,13 @@
       "@id": "estleg:TLKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_testamendiregistri_loomise_konventsiooni_ratifitseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud , mis on Euroopa Nõukogu poolt vastu võetud Baselis...]",
       "estleg:sourceAct": "Testamendiregistri loomise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLKR_Map_2026"
+        "@id": "estleg:TLKR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud , mis on Euroopa Nõukogu poolt vastu võetud Baselis 1972. aasta 16. mail ning millele Eesti Vabariik on alla kirjutanud 2000. aasta 3. oktoobril.",
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on Euroopa Nõukogu poolt vastu võetud Baselis 1972. aasta 16. mail ning millele Eesti Vabariik on alla kirjutanud 2000. aasta 3. oktoobril.",
@@ -118,13 +122,13 @@
       "@id": "estleg:TLKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_testamendiregistri_loomise_konventsiooni_ratifitseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Nimetada käesoleva konventsiooni artikli 3 lõikes 1 sätestatud institutsiooniks...]",
       "estleg:sourceAct": "Testamendiregistri loomise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLKR_Map_2026"
+        "@id": "estleg:TLKR_Map"
       },
       "estleg:summary": "Nimetada käesoleva konventsiooni artikli 3 lõikes 1 sätestatud institutsiooniks Notarite Koda.",
       "estleg:legalText": "Nimetada käesoleva konventsiooni artikli 3 lõikes 1 sätestatud institutsiooniks Notarite Koda.",
@@ -132,7 +136,9 @@
         "@id": "estleg:Cluster_TLKR_default"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -149,7 +155,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

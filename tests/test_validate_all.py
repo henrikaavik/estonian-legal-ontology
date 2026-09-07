@@ -1,13 +1,8 @@
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import estleg_common
-import fix_all_issues
-import validate_all
+from estleg import estleg_common, fix_all_issues, validate_all
 
 
 @pytest.fixture(autouse=True)
@@ -42,7 +37,7 @@ def act_doc(*, provisions: bool = True) -> dict:
         graph.append(
             {
                 "@id": "estleg:Act_1_Par_1",
-                "@type": ["owl:NamedIndividual", "estleg:LegalProvision_Act1"],
+                "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
                 "estleg:paragrahv": "§ 1.",
             }
         )
@@ -594,7 +589,7 @@ def _full_peep(krr: Path, slug: str) -> None:
         krr / f"{slug}_peep.json",
         {
             "@graph": [
-                {"@id": f"estleg:X_{slug}_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                {"@id": f"estleg:X_{slug}_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "dc:source": slug, "estleg:contentStatus": "structuredBody"},
                 {"@id": f"estleg:X_{slug}_Par_1", "@type": ["owl:NamedIndividual"], "estleg:paragrahv": "§ 1."},
             ]
@@ -603,7 +598,7 @@ def _full_peep(krr: Path, slug: str) -> None:
 
 
 def _stub_peep(krr: Path, slug: str, *, content_status: str | None = "noStructuredBody") -> None:
-    ont: dict = {"@id": f"estleg:X_{slug}_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+    ont: dict = {"@id": f"estleg:X_{slug}_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "dc:source": slug}
     if content_status is not None:
         ont["estleg:contentStatus"] = content_status
@@ -747,11 +742,11 @@ def test_act_coverage_reconciliation_accepts_multipart_osa_files(tmp_path):
     krr = tmp_path / "krr_outputs"
     # Multipart law: two osa peep files, one manifest entry.
     write_json(krr / "big_law_osa1_peep.json", {"@graph": [
-        {"@id": "estleg:BIG_Osa1_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+        {"@id": "estleg:BIG_Osa1_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
          "dc:source": "big_law", "estleg:contentStatus": "structuredBody"},
     ]})
     write_json(krr / "big_law_osa2_peep.json", {"@graph": [
-        {"@id": "estleg:BIG_Osa2_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+        {"@id": "estleg:BIG_Osa2_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
          "dc:source": "big_law", "estleg:contentStatus": "structuredBody"},
     ]})
     _laws_manifest(krr, [{"title": "Big Law", "slug": "big_law", "status": "full"}])
@@ -811,7 +806,7 @@ def test_validate_subcorpus_combined_detects_missing_peep_id(tmp_path):
     # The eurlex combined drops that ID entirely.
     write_json(
         krr / "eurlex" / "eurlex_combined.jsonld",
-        {"@graph": [{"@id": "estleg:EURlex_Combined_Map_2026", "@type": ["owl:Ontology"]}]},
+        {"@graph": [{"@id": "estleg:EURlex_Combined_Map", "@type": ["owl:Ontology"]}]},
     )
 
     validate_all.validate_subcorpus_combined_ontologies(krr)
@@ -1070,7 +1065,7 @@ def test_validate_temporal_property_targets_accepts_act_node(tmp_path):
     doc = {
         "@graph": [
             {
-                "@id": "estleg:AlkS_Map_2026",
+                "@id": "estleg:AlkS_Map",
                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                 "estleg:temporalStatus": "inForce",
                 "estleg:entryIntoForce": {"@value": "2003-07-19", "@type": "xsd:date"},
@@ -1138,7 +1133,7 @@ def test_validate_transposition_mapping_rejects_legacy_shape(tmp_path):
     """The legacy `{matched, unmatched, mappings}` report shape fails (#129)."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-03-21",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1160,7 +1155,7 @@ def test_validate_transposition_mapping_rejects_empty_unflagged(tmp_path):
     """Current shape but empty `mappings` and no `documented_empty` -> error."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1185,7 +1180,7 @@ def test_validate_transposition_mapping_accepts_documented_empty(tmp_path):
     """An explicitly flagged empty snapshot passes."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1209,7 +1204,7 @@ def test_validate_transposition_mapping_accepts_populated(tmp_path):
     """A non-empty `mappings` array in the current shape passes."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11",
             "source": "https://publications.europa.eu/webapi/rdf/sparql",
@@ -1236,7 +1231,7 @@ def test_validate_transposition_mapping_flags_stale_count(tmp_path):
     forgets to recompute the header otherwise ships silently."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11", "source": "x", "country": "EST",
             "total_measures_fetched": 5, "total_matched": 5, "total_unmatched": 0,
@@ -1255,7 +1250,7 @@ def test_validate_transposition_mapping_flags_peep_named_law(tmp_path):
     stem (a retarget that used Path(file).stem leaves a trailing '_peep')."""
     krr = tmp_path / "krr_outputs"
     write_json(
-        krr / "transposition_mapping.json",
+        krr / "reports" / "transposition_mapping.json",
         {
             "generated": "2026-05-11", "source": "x", "country": "EST",
             "total_measures_fetched": 1, "total_matched": 1, "total_unmatched": 0,
@@ -1393,10 +1388,8 @@ def test_validate_metadata_catalog_flags_distribution_count_drift(tmp_path, monk
     _minimal_corpus_for_metadata(krr)
     # Build a metadata.jsonld whose statistics block is correct but whose
     # distribution count is wrong.
-    import sys
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    import validate_all as va
+    from estleg import validate_all as va
 
     actual = va.metadata_stats(krr)
     metadata = {
@@ -1423,10 +1416,8 @@ def test_validate_metadata_catalog_passes_when_distribution_counts_agree(tmp_pat
     """Correct `estleg:statistics` AND `dcat:distribution` counts -> no error."""
     krr = tmp_path / "krr_outputs"
     _minimal_corpus_for_metadata(krr)
-    import sys
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    import validate_all as va
+    from estleg import validate_all as va
 
     actual = va.metadata_stats(krr)
     metadata = {
@@ -1462,10 +1453,8 @@ def test_distribution_count_keys_cover_riigikohus_and_kov():
     unnoticed while the catalog validator stays green. Pin that both
     titles are covered and map to real `metadata_stats()` keys.
     """
-    import sys
 
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-    import validate_all as va
+    from estleg import validate_all as va
 
     stats_keys = set(va.metadata_stats(va.KRR_DIR).keys())
     expected = {
@@ -2189,6 +2178,96 @@ def test_regen_pending_guards_never_error_on_missing_artifacts(tmp_path):
     assert len(validate_all.warnings) == 3, validate_all.warnings
 
 
+def _dupn_peep(path: Path, ids: list[str], *, extra_nodes: list[dict] | None = None) -> Path:
+    graph = [{"@id": nid} for nid in ids]
+    if extra_nodes:
+        graph.extend(extra_nodes)
+    write_json(path, {"@graph": graph})
+    return path
+
+
+def test_count_dupn_iris_on_tiny_file_list(tmp_path):
+    """#454: counter uses the supplied file list, not a full corpus walk."""
+    files = [
+        _dupn_peep(
+            tmp_path / "a_peep.json",
+            ["estleg:A_Par_1_Dup2", "estleg:A_Par_2", "estleg:A_Duplicate"],
+        ),
+        _dupn_peep(
+            tmp_path / "b_peep.json",
+            ["estleg:B_Cluster_1_Dup3", "estleg:B_Par_1_Dup2_Lg_1"],
+        ),
+        _dupn_peep(tmp_path / "c_peep.json", ["estleg:C_Par_1_Dup"]),
+    ]
+    assert validate_all.count_dupn_iris(files) == 3
+
+
+def test_count_dupn_iris_ignores_nested_reference_ids(tmp_path):
+    """#454: only graph-node @ids count; nested references do not."""
+    path = _dupn_peep(
+        tmp_path / "ref_peep.json",
+        ["estleg:Keep"],
+        extra_nodes=[
+            {
+                "@id": "estleg:AlsoKeep",
+                "estleg:references": {"@id": "estleg:OnlyRef_Dup2"},
+            }
+        ],
+    )
+    assert validate_all.count_dupn_iris([path]) == 0
+
+
+def test_validate_dupn_iri_baseline_errors_when_count_grows(tmp_path):
+    """#454: a synthetic new _DupN IRI above the pin fails the default gate."""
+    files = [
+        _dupn_peep(tmp_path / "a_peep.json", ["estleg:A_Par_1_Dup2"]),
+        _dupn_peep(tmp_path / "b_peep.json", ["estleg:B_Cluster_1_Dup3"]),
+    ]
+    count = validate_all.validate_dupn_iri_baseline(
+        tmp_path, files=files, baseline=1
+    )
+    assert count == 2
+    assert any(
+        "_DupN IRI count 2 exceeds pinned baseline 1" in err
+        for err in validate_all.errors
+    ), validate_all.errors
+    assert validate_all.warnings == []
+
+
+def test_validate_dupn_iri_baseline_allows_decrease(tmp_path):
+    """#454: remints may shrink the family; only growth is an error."""
+    files = [_dupn_peep(tmp_path / "a_peep.json", ["estleg:A_Par_1_Dup2"])]
+    count = validate_all.validate_dupn_iri_baseline(
+        tmp_path, files=files, baseline=10
+    )
+    assert count == 1
+    assert validate_all.errors == []
+    assert validate_all.warnings == []
+
+
+def test_validate_dupn_iri_baseline_skips_regulation_peeps(tmp_path):
+    """#454: default glob is root law peeps only, not regulations/."""
+    krr = tmp_path / "krr_outputs"
+    _dupn_peep(krr / "law_peep.json", ["estleg:L_Par_1_Dup2"])
+    _dupn_peep(
+        krr / "regulations" / "riik" / "reg_peep.json",
+        ["estleg:R_Par_1_Dup9", "estleg:R_Par_2_Dup10"],
+    )
+    count = validate_all.validate_dupn_iri_baseline(krr, baseline=1)
+    assert count == 1
+    assert validate_all.errors == []
+
+
+def test_dupn_iri_baseline_and_live_count_are_non_negative_ints():
+    """#454: pinned baseline and live root-peep count are ints >= 0."""
+    assert isinstance(validate_all.DUPN_IRI_BASELINE, int)
+    assert validate_all.DUPN_IRI_BASELINE >= 0
+    files = validate_all.root_law_peep_files()
+    count = validate_all.count_dupn_iris(files)
+    assert isinstance(count, int)
+    assert count >= 0
+
+
 class TestCiRegressionGuards:
     """Regression guards for the 3 CI failures fixed on regen/corpus-data:
     LFS-pointer count gates (#400 follow-up), combined graph-closure of the
@@ -2313,7 +2392,7 @@ class TestCiRegressionGuards:
 def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, Path]:
     import json
 
-    import deprecate_legacy_statutes as dls
+    from estleg import deprecate_legacy_statutes as dls
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -2327,7 +2406,7 @@ def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, P
             },
             "@graph": [
                 {
-                    "@id": "estleg:ALKS_Map_2026",
+                    "@id": "estleg:ALKS_Map",
                     "@type": ["owl:Ontology", "estleg:Act"],
                     "rdfs:label": "Legacy stub",
                 }
@@ -2341,9 +2420,9 @@ def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, P
                 "deprecations": [
                     {
                         "file": "alkoholi_seadus_peep.json",
-                        "rootIri": "estleg:ALKS_Map_2026",
+                        "rootIri": "estleg:ALKS_Map",
                         "replacedByFile": "alkoholiseadus_peep.json",
-                        "replacedByIri": "estleg:AS_Map_2026",
+                        "replacedByIri": "estleg:AS_Map",
                     }
                 ]
             }
@@ -2542,6 +2621,33 @@ def test_provision_version_monotonicity_flags_missing_validto(tmp_path):
     assert any("missing-validTo" in e for e in validate_all.errors), validate_all.errors
 
 
+def test_provision_version_encoding_flags_fffd(tmp_path):
+    # #355 gate: U+FFFD in ProvisionVersion versionText must fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        {
+            "@id": "estleg:X_Par_1_v1",
+            "@type": ["estleg:ProvisionVersion"],
+            "estleg:versionText": "v\ufffd\ufffdi",
+        },
+    ]})
+    validate_all.validate_provision_version_encoding(krr)
+    assert any("#355" in e and "U+FFFD" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_version_encoding_passes_clean(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        {
+            "@id": "estleg:X_Par_1_v1",
+            "@type": ["estleg:ProvisionVersion"],
+            "estleg:versionText": "või",
+        },
+    ]})
+    validate_all.validate_provision_version_encoding(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_provision_version_monotonicity_passes_on_exclusive_end(tmp_path):
     # Exclusive end (validTo = day before successor validFrom) → monotone, passes;
     # the successor is the open-ended current version.
@@ -2675,7 +2781,7 @@ def test_harmonisation_symmetry_flags_unbacked_mapping(tmp_path):
         {"@id": "estleg:Harmonisation_32002L0073", "@type": ["estleg:HarmonisationLink"],
          "estleg:harmonises": [{"@id": "estleg:TOOLEP_Map"}]},
     ]})
-    write_json(krr / "transposition_mapping.json", {
+    write_json(krr / "reports" / "transposition_mapping.json", {
         "generated": "x", "source": "x", "country": "EST", "total_measures_fetched": 1,
         "total_matched": 1, "total_unmatched": 0, "unique_directives": 1, "unique_laws": 1,
         "mappings": [{"directive_celex": "32002L0073", "matched_law_name": "vordse_kohtlemise_seadus",
@@ -2701,9 +2807,9 @@ def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
 def test_validate_combined_graph_closure_flags_non_leaf_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     leaky = _court_stub("estleg:RK_1")
-    # estleg:interpretsLaw is NOT a whitelisted shaped-closure edge (#488), so a
-    # stub carrying it is still a stripping regression.
-    leaky["estleg:interpretsLaw"] = {"@id": "estleg:A_1"}
+    # estleg:hasSanction is still not a whitelisted stub edge (#488). #520
+    # now allows interpretsLaw/issuedUnder/transposedBy/governs on stubs.
+    leaky["estleg:hasSanction"] = {"@id": "estleg:Sanction_A_1"}
     _write_combined(
         krr,
         [
@@ -2727,11 +2833,11 @@ def test_validate_combined_graph_closure_allows_resolved_shaped_stub_edge(tmp_pa
         "@id": "estleg:Reg_1_Par_1",
         "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
         "rdfs:label": "§ 1",
-        "estleg:partOfAct": {"@id": "estleg:Reg_1_Map_2026"},
+        "estleg:partOfAct": {"@id": "estleg:Reg_1_Map"},
         estleg_common.STUB_NODE_MARKER: True,
     }
     parent_act = {
-        "@id": "estleg:Reg_1_Map_2026",
+        "@id": "estleg:Reg_1_Map",
         "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
         "rdfs:label": "Määrus",
         estleg_common.STUB_NODE_MARKER: True,
@@ -2759,7 +2865,7 @@ def test_validate_combined_graph_closure_flags_unresolved_shaped_stub_edge(tmp_p
         "@id": "estleg:Reg_2_Par_1",
         "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
         "rdfs:label": "§ 1",
-        "estleg:partOfAct": {"@id": "estleg:Reg_2_Map_2026"},  # absent
+        "estleg:partOfAct": {"@id": "estleg:Reg_2_Map"},  # absent
         estleg_common.STUB_NODE_MARKER: True,
     }
     _write_combined(
@@ -2912,3 +3018,60 @@ def test_iter_node_estleg_refs_canonicalizes_and_attributes_nested_predicate():
         ("estleg:hasVersion", "estleg:B_v1")
     ]
     assert estleg_common.canonical_estleg_ref("http://example.org/x") is None
+
+
+def test_riigikohus_case_type_tables_match_index():
+    """Both Riigikohus case-type tables agree with RIIGIKOHUS_INDEX.json (#686).
+
+    README.md and docs/README.md each carry a case-type breakdown that used to
+    be hand-maintained and disagreed with each other and with the index. Pin
+    every row to ``case_type_counts`` in the committed index, and require the
+    index rows to sum to ``total_decisions``, so a regenerated index cannot
+    leave a stale table behind.
+    """
+    import json
+    import re
+
+    repo_root = Path(__file__).resolve().parent.parent
+    index = json.loads(
+        (repo_root / "krr_outputs" / "riigikohus" / "RIIGIKOHUS_INDEX.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    counts = index["case_type_counts"]
+    assert sum(counts.values()) == index["total_decisions"], (
+        "RIIGIKOHUS_INDEX.json case_type_counts do not sum to total_decisions"
+    )
+
+    # Table row label (parenthetical Estonian gloss stripped) -> index key.
+    labels = {
+        "Civil": "Civil",
+        "Criminal": "Criminal",
+        "Administrative": "Administrative",
+        "Constitutional Review": "ConstitutionalReview",
+        "Misdemeanor": "Misdemeanor",
+        "Other": "Other",
+    }
+    marker = (
+        "<!-- case types: keep in sync with "
+        "krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json case_type_counts"
+    )
+
+    def _table_after_marker(text: str, rel: str) -> dict[str, int]:
+        assert marker in text, f"{rel} lost its case-type sync marker"
+        rows: dict[str, int] = {}
+        in_table = False
+        for line in text.split(marker, 1)[1].splitlines():
+            if line.startswith("|"):
+                in_table = True
+                cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                label = re.sub(r"\s*\([^)]*\)\s*$", "", cells[0])
+                if label in labels and re.fullmatch(r"\d[\d,]*", cells[-1]):
+                    rows[labels[label]] = int(cells[-1].replace(",", ""))
+            elif in_table:
+                break
+        return rows
+
+    for rel in ("README.md", "docs/README.md"):
+        rows = _table_after_marker((repo_root / rel).read_text(encoding="utf-8"), rel)
+        assert rows == counts, f"{rel} case-type table {rows} != index {counts}"

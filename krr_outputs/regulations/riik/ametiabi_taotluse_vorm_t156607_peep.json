@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,12 +10,11 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_156607_Map_2026",
+      "@id": "estleg:Reg_156607_Map",
       "@type": [
         "estleg:Act",
         "estleg:GovernmentRegulation",
-        "estleg:NationalRegulation",
-        "owl:Ontology"
+        "estleg:NationalRegulation"
       ],
       "rdfs:label": "Ametiabi taotluse vorm (määrus)",
       "dc:source": "Ametiabi taotluse vorm",
@@ -26,9 +24,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/600216.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/600216.xml"
       },
       "estleg:issuer": "Vabariigi Valitsus",
@@ -52,29 +47,34 @@
         "@value": "2003-06-20",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_156607",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_peaminister"
+        },
+        {
+          "@id": "estleg:Institution_siseminister"
+        },
+        {
+          "@id": "estleg:Institution_justiitsminister"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_156607_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_156607"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1",
       "rdfs:label": "§ 1 [Kinnitada ametiabi taotluse vorm (lisatud).]",
       "estleg:sourceAct": "Ametiabi taotluse vorm",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_156607_Map_2026"
+        "@id": "estleg:Reg_156607_Map"
       },
       "estleg:summary": "Kinnitada ametiabi taotluse vorm (lisatud).",
       "estleg:legalText": "Kinnitada ametiabi taotluse vorm (lisatud).",
@@ -94,19 +94,23 @@
       "@id": "estleg:Reg_156607_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_156607"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2",
       "rdfs:label": "§ 2 [Määrus jõustub 1. juulil 2003. a. Peaminister Juhan PARTS Siseminister justiitsm...]",
       "estleg:sourceAct": "Ametiabi taotluse vorm",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_156607_Map_2026"
+        "@id": "estleg:Reg_156607_Map"
       },
       "estleg:summary": "Määrus jõustub 1. juulil 2003. a. Peaminister Juhan PARTS Siseminister justiitsministri ülesannetes Margus LEIVO Riigisekretär Aino LEPIK von WIRÉN Vabariigi Valitsuse 17. juuni 2003. a määruse nr 176 «Ametiabi taotluse vorm» lisa AMETIABI TAOTLUS 1. Ametiabi taotluse esitamise kuupäev ........................................................................................................................................ 2. Ametiabi taotleva haldusorgani nimetus ja aadress .......................",
       "estleg:legalText": "Määrus jõustub 1. juulil 2003. a. Peaminister Juhan PARTS Siseminister justiitsministri ülesannetes Margus LEIVO Riigisekretär Aino LEPIK von WIRÉN Vabariigi Valitsuse 17. juuni 2003. a määruse nr 176 «Ametiabi taotluse vorm» lisa AMETIABI TAOTLUS 1. Ametiabi taotluse esitamise kuupäev ........................................................................................................................................ 2. Ametiabi taotleva haldusorgani nimetus ja aadress ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ 3. Haldusorgan, kellelt ametiabi taotletakse, nimetus ja aadress ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ 4. Taotletava ametiabi lühikirjeldus, sh ülesande täitmise eeldatavad kulud juhul, kui ülesande täidaks ametiabi taotlev haldusorgan (v.a «Halduskoostöö seaduse» § 18 lõike 1 punktides 1 ja 3 sätestatud juhul) ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ 5. Ametiabi taotlemise eesmärk: selgitus, miks ei saa ametiabi taotlev haldusorgan ise ülesannet täita ning kelle õiguste või milliste huvide kaitsmiseks on ametiabi vajalik ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ 6. Ametiabi taotlemise õiguspärasus, sh haldusorgani, kellelt ametiabi taotletakse, pädevus anda taotletav haldusakt või sooritada toiming ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ ........................................................................................................................................ 7. Ametiabi taotleva haldusorgani juhi või tema volitatud isiku nimi ja allkiri ........................................................................................................................................ ........................................................................................................................................ Siseminister justiitsministri ülesannetes Margus LEIVO",
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -127,7 +131,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

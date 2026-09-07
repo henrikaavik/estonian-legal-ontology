@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1024169_Map_2026",
+      "@id": "estleg:Reg_1024169_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Rae Vallavalitsuse ametiasutuse struktuuri, teenistuskohtade koosseisu ja jaotuse põhigruppidesse, teenistujate palgaastmete ja nendele vastavate palgamäärade kinnitamine (määrus)",
       "dc:source": "Rae Vallavalitsuse ametiasutuse struktuuri, teenistuskohtade koosseisu ja jaotuse põhigruppidesse, teenistujate palgaastmete ja nendele vastavate palgamäärade kinnitamine",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/430052014053.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/430052014053.xml"
       },
       "estleg:issuer": "Rae Vallavolikogu",
@@ -59,18 +54,18 @@
       "estleg:regulationTypeBucket": "vastavate palgamaarade",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:AVALIK_Map_2026"
+          "@id": "estleg:AVALIK_Map"
         },
         {
-          "@id": "estleg:KOKS_Map_2026"
+          "@id": "estleg:KOKS_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1024169_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1024169_Map_1"
         },
         {
-          "@id": "estleg:Citation_Reg_1024169_Map_2026_2"
+          "@id": "estleg:Citation_Reg_1024169_Map_2"
         }
       ],
       "dcterms:subject": [
@@ -89,16 +84,19 @@
         "@value": "2014-05-30",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1024169",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_rae_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_rae_vallavolikogu"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -141,7 +139,7 @@
       "@id": "estleg:Reg_1024169_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1024169",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -156,10 +154,12 @@
         "@id": "estleg:Municipality_EHAK_0653"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1024169_Map_2026"
+        "@id": "estleg:Reg_1024169_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -171,13 +171,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1024169_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1024169",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -192,11 +196,15 @@
         "@id": "estleg:Municipality_EHAK_0653"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1024169_Map_2026"
+        "@id": "estleg:Reg_1024169_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -211,13 +219,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1024169_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1024169",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -232,11 +244,15 @@
         "@id": "estleg:Municipality_EHAK_0653"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1024169_Map_2026"
+        "@id": "estleg:Reg_1024169_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -251,13 +267,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1024169_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1024169",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 4.",
@@ -272,14 +292,14 @@
         "@id": "estleg:Municipality_EHAK_0653"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1024169_Map_2026"
+        "@id": "estleg:Reg_1024169_Map"
       }
     },
     {
       "@id": "estleg:Reg_1024169_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1024169",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 5.",
@@ -294,11 +314,11 @@
         "@id": "estleg:Municipality_EHAK_0653"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1024169_Map_2026"
+        "@id": "estleg:Reg_1024169_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1024169_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1024169_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -310,7 +330,7 @@
       "estleg:citationText": "Määrus kehtestatakse kohaliku omavalitsuse korralduse seaduse paragrahvi 22 lõike 1 punkti 36"
     },
     {
-      "@id": "estleg:Citation_Reg_1024169_Map_2026_2",
+      "@id": "estleg:Citation_Reg_1024169_Map_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"

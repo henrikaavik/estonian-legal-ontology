@@ -4,7 +4,22 @@
 
 > **Note on terminology.** "Regulation" is overloaded across legal systems. In this ontology **domestic regulations** (Estonian *määrused*, modelled under the common superclass `estleg:DomesticRegulation` with the state-level `estleg:NationalRegulation` and municipal `estleg:MunicipalRegulation` branches) are kept strictly separate from **EU regulations** (modelled as `estleg:EULegislation` with `estleg:euDocumentType estleg:EUDocType_Regulation`). Domestic regulations are issued under an enabling Estonian law by Vabariigi Valitsus, a minister, or a municipal council; EU regulations are EU-level legal acts. Use the dedicated classes for each — see "Domestic Regulation Classes" and "EU Legislation Classes" below.
 
-> **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the intended canonical home for the reusable `estleg:` classes and properties (including the `owl:inverseOf` axioms for the inverse pairs `references`/`referencedBy`, `amendedBy`/`amends`, `interpretsLaw`/`interpretedBy`, `hasVersion`/`versionOf`, and `hasSubsection`/`parentProvision`). Subcorpus schema files (e.g. `riigikohus/riigikohus_schema.json`, `eurlex/eurlex_schema.json`, `eelnoud/eelnoud_schema.json`, `curia/curia_schema.json`) still carry some corpus-specific terms and enum individuals (notably the court-decision `estleg:CaseType_*` / `estleg:DecisionType_*` individuals, which live in `riigikohus_schema.json` and must be loaded alongside the court-decision peeps to resolve `estleg:caseType` / `estleg:decisionType` targets). Consolidating every reusable term into the canonical file is an ongoing effort (issue #291); new reusable terms SHOULD be defined in `controlled_vocabulary.jsonld`.
+> **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the canonical default-graph T-Box (issue #433): classes, class hierarchy, and properties, with an `owl:Ontology` header at `https://w3id.org/estleg/vocabulary`. `metadata.jsonld` is DCAT catalog only (`dcterms:conformsTo` that IRI). Subcorpus `*_schema.json` files (eelnoud, riigikohus, eurlex, curia) are regenerable projections of the CV (`python3 scripts/generate_schemas_from_cv.py --check`). New reusable terms MUST be defined in the CV. Unresolved citation placeholders live in `krr_outputs/unresolved_references.jsonld`, not in the T-Box.
+
+### Language-tag policy
+
+Corpus default language is Estonian (issue #437).
+
+- **T-Box.** Every `rdfs:label` in `krr_outputs/controlled_vocabulary.jsonld` is bilingual `@et` + `@en`. Remint with `python3 scripts/tag_vocabulary_labels.py`.
+- **New ABox.** Law and regulation generators emit `rdfs:label` / `estleg:summary` as `{"@value": "…", "@language": "et"}` via `estleg_common.et_literal`.
+- **Existing peeps.** Committed instance literals may stay plain `xsd:string` until a dedicated remint. `FILTER(lang(?x) = "et")` will not match those.
+- **No default `@language` on `CONTEXT`.** A context-wide `"@language": "et"` would turn SHACL `xsd:string` fields into `rdf:langString`. Human-language properties already accept either (`sh:or` xsd:string / rdf:langString, issue #509 / #305).
+
+Subcorpus `*_schema.json` files also tag `@et`/`@en` on their schema labels.
+
+### Provenance (dataset-level)
+
+Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confidence. `krr_outputs/void.ttl` links the published dataset to `estleg:Activity_CorpusBuild_1_0_0` via `prov:wasGeneratedBy`. `estleg_common.combined_ontology_header()` emits the same edge on combined builds. Keyword-derived assertions (deontic `normativeType`, `targetGroup`, EuroVoc `dcterms:subject`) carry `estleg:assertionConfidence` (`xsd:decimal` in `[0, 1]`). Scraped `estleg:legalText` does not. The RT law generator does not stamp confidence.
 
 ### Classes
 
@@ -16,10 +31,15 @@
 3. **LegalConcept (`estleg:LegalConcept`)**
    - Represents a defined legal concept or term used within the legislation.
 
+> **ELI 1.5 (issue #440).** Estonia has no registered ELI URI template, so instance IRIs stay under `estleg:`. The T-Box maps `estleg:Act` ⊑ `eli:LegalResource`, `estleg:LegalProvision` ⊑ `eli:LegalResourceSubdivision`, and `estleg:ActExpression` / `estleg:ProvisionVersion` ⊑ `eli:LegalExpression`. Dates: `estleg:entryIntoForce` ⊑ `eli:date_entry_in_force`, `estleg:repealDate` ⊑ `eli:date_no_longer_in_force`. `kehtiv` is a snapshot date, not `eli:date_publication`; `temporalStatus` is not mapped to `eli:in_force`.
+>
+> **schema.org (issue #543).** `estleg:Act` is also `rdfs:subClassOf schema:Legislation`; `estleg:legalText` ⊑ `schema:text`; `estleg:references` ⊑ `dcterms:references`. Newly generated act roots are also typed `schema:Legislation`. Existing peeps are not rewritten — RDFS clients load the CV. `entryIntoForce` is not also `schema:legislationDate` (would conflict with the ELI bridge).
+
 #### Draft Legislation Classes (EIS)
 4. **DraftLegislation (`estleg:DraftLegislation`)**
    - Represents a legislative draft (eelnõu) that is in the legislative process but not yet enacted.
    - Source: [EIS – Eelnõude infosüsteem](https://eelnoud.valitsus.ee)
+   - ELI-DL v3: `rdfs:subClassOf eli-dl:DraftLegislationWork` (`http://data.europa.eu/eli/eli-draft-legislation-ontology#`). Phase individuals are additionally typed `eli-dl:ProcessStage` (issue #443). `estleg:amends` / `estleg:enactedAs` are not `eli-dl:foresees_change_of` (effected change and enactment, not a draft-impact forecast).
 5. **LegislativePhase (`estleg:LegislativePhase`)**
    - Represents the current stage of a draft in the legislative pipeline.
    - Phases: `Phase_PublicConsultation`, `Phase_Review`, `Phase_Submission`
@@ -35,11 +55,22 @@
 
 > **Note:** Instance-node labels and summaries are Estonian-only and carry no language tag — `FILTER(lang(?x) = "en")` returns no rows. Bilingual (Estonian/English) labelling is a possible future goal; it is not part of the current corpus and is not enforced by SHACL or CI.
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
-* `estleg:references`: Defines cross-references to other legal provisions or laws.
+* `estleg:references`: Defines cross-references to other legal provisions or laws. Typed sub-properties (`estleg:repeals`, `estleg:isLegalBasisFor`, `estleg:exceptionTo`, `estleg:derogatesFrom`) are emitted when the Estonian verb governing the citation is clear (issue #513); untyped `references` remains so existing queries still work.
 * `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
-* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge.
-* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed) and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
+* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge. Declared in `controlled_vocabulary.jsonld` as `owl:ObjectProperty` + `owl:FunctionalProperty` (domain `LegalProvision` ∪ `Chapter`, range `Act`): a provision belongs to at most one act (issue #522). ABox values stay IRI links; `scripts/check_tbox_consistency.py` flags a node with two distinct `partOfAct` IRIs or a list-valued `temporalStatus` that is both `inForce` and `repealed`. Dataset nodes (`krr_outputs/void.ttl`, `metadata.jsonld`, and future `combined_ontology.jsonld` headers) carry `estleg:consistencyChecked true` (`xsd:boolean`) as that checker stamp — not an owlrl run over the 265 MB combined graph. T-Box individuals `estleg:TemporalStatus_InForce` `owl:disjointWith` `estleg:TemporalStatus_Repealed`; `estleg:temporalStatus` remains a `DatatypeProperty` whose ABox tokens are `inForce` / `repealed` / `unknown`.
+* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed), **not** `eli:date_publication`, and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
+* `estleg:officialEnglishText`: Optional IRI of the official English Riigi Teataja consolidation (`https://www.riigiteataja.ee/en/eli/{tolkeSeosId}`). `owl:ObjectProperty`, `rdfs:subPropertyOf rdfs:seeAlso`, domain `Act` (issue #510). Derived from the RT public metadata field `tolkeSeosId` — **not** from the current Estonian `/akt/{id}.xml` globaalID, which is a different consolidation. Acts with no published English translation omit the property. The Estonian XML stays on `dcterms:source`.
+* `estleg:isRatificationShell`: `xsd:boolean` on treaty/accession *statutes*. These nodes are the Estonian ratifying act (often a one-section shell), **not** the treaty body. RT publishes treaty texts under the separate *välislepingud* register, which this corpus does not ingest (issue #528). `INDEX.json` `stubKind=treaty` is the same distinction for catalog consumers.
+* `estleg:courtLevel` / `estleg:courtKind` / `estleg:courtName`: First- and second-instance decisions (`maakohus`, `halduskohus`, `ringkonnakohus`) live under `krr_outputs/kohtud/` (issue #525). `courtLevel` is `firstInstance` or `appeal`; `courtKind` is `county`, `administrative`, or `circuit`. Riigikohus stays in `krr_outputs/riigikohus/`. The RT search API is `POST /api/v1/kohtuteave/otsing/kohtulahendid`. IDs are `estleg:Kohtuasi_<objektId>`. **The committed `krr_outputs/kohtud/` data is a sample, not a corpus** (issue #689): one capped search page yielding a single county-court decision, with `estleg:isSampleData: true` on the graph header and `"sample": true` in `KOHTUD_INDEX.json`. The three court kinds above describe what the ingest *classifies*, not what is committed.
+* `estleg:isSampleData`: `xsd:boolean` on a graph's `owl:Ontology` header node, marking the file as a demonstration sample rather than a complete subcorpus (issue #689). Currently carried by `krr_outputs/kohtud/kohtud_sample_peep.json`. A consumer that aggregates the corpus should exclude sample graphs from coverage claims.
+* `estleg:governs`: Inverse of `estleg:competentAuthority`, materialized on Institution nodes at combined-build time from act-level authority edges (issue #520). Use this for "which statutes does authority X enforce".
+* `estleg:transposedBy`: Inverse of `estleg:transposesDirective`, materialized on EU directive nodes so "which national law transposes directive X" does not require a full scan (issue #520). Combined also re-asserts dropped forwards `estleg:issuedUnder` (from `implementedBy`) and `estleg:interpretsLaw` (from `interpretedBy`). `estleg:hasVersion` / `estleg:versionOf` stay on the separate `provision_versions/` load surface (#561).
+* `estleg:partOfAct` on subsections: the combined builder walks `parentProvision` / `isPartOf` and asserts a direct `partOfAct` from every lõige to its act root (issue #520). `estleg:isPartOf` is an `owl:TransitiveProperty`.
+* `estleg:inboundCitationCount` / `estleg:interpretationCount` / `estleg:competentAuthorityCount`: integer analytical counts on the same IRIs as the published graph (issue #521). Coverage-gap flags: `estleg:hasNoCompetentAuthority` on statute roots with zero authorities, `estleg:hasNoTransposition` on in-force directives with no Estonian transposing act. Reified similarity scores live in `krr_outputs/analytical/analytical_overlay.jsonld` as `estleg:Similarity` nodes (`similarFrom` / `similarTarget` / `similarityScore`) — not as nested objects on `semanticallySimilarTo` (#422).
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
+
+#### Non-statute RT act kinds (issue #529)
+* `estleg:ParliamentaryResolution` (`Riigikogu otsus`) and `estleg:PresidentialDecree` (`seadlus`) are `Act` subclasses, **not** `Law`. They live under `krr_outputs/resolutions/` and `RESOLUTIONS_INDEX.json`. The law pipeline still queries `dokument=seadus` only.
 
 #### Draft Legislation Properties
 * `estleg:legislativePhase`: Links a draft to its current LegislativePhase.
@@ -198,7 +229,7 @@ SELECT ?draft ?title ?initiator WHERE {
 ## Court Decision Classes
 
 ### CourtDecision (`estleg:CourtDecision`)
-Represents a Supreme Court (Riigikohus) decision. Source: [rikos.rik.ee](https://rikos.rik.ee)
+An Estonian court decision. Riigikohus (Supreme Court) lives under `krr_outputs/riigikohus/` (source: [rikos.rik.ee](https://rikos.rik.ee)). First- and second-instance decisions — maakohus, halduskohus, ringkonnakohus — live under `krr_outputs/kohtud/` (source: [Riigi Teataja kohtulahendid](https://www.riigiteataja.ee/kohtulahendid/), issue #525).
 
 ### CaseType (`estleg:CaseType`)
 Classifies the type of court case.
@@ -218,7 +249,7 @@ Classifies the type of court case.
 |------|----------|
 | `DecisionType_Judgment` | Kohtuotsus |
 | `DecisionType_Ruling` | Kohtumäärus |
-| `DecisionType_Resolution` | Kohtu resolutsioon |
+| `DecisionType_OrderRuling` | Kohtumäärus (määrusmenetlus) |
 
 ### Court Decision Properties
 
@@ -226,10 +257,20 @@ Classifies the type of court case.
 * `estleg:caseType`: Links to CaseType individual — `owl:ObjectProperty`
 * `estleg:decisionType`: Links to DecisionType individual — `owl:ObjectProperty`
 * `estleg:decisionDate`: Date of the decision — `xsd:date`
-* `estleg:decisionLink`: URL to full decision on riigikohus.ee — `xsd:anyURI`
+* `estleg:decisionLink`: URL to the decision (riigikohus.ee or riigiteataja.ee/kohtulahendid/{objektId}) — `xsd:anyURI`
+* `estleg:courtName`: Issuing court as published by Riigi Teataja (`toiminguEsitajaAsutus`) — `xsd:string`
+* `estleg:courtLevel`: `firstInstance` | `appeal` | `supreme` — `xsd:string`
+* `estleg:courtKind`: `county` | `administrative` | `circuit` | `supreme` — `xsd:string`
+* `estleg:rtObjektId`: Riigi Teataja kohtulahendid `objektId` (stable key for lower-court nodes) — `xsd:string`
 * `estleg:rikObjectId`: Internal RIK database object ID — `xsd:string`
+* `estleg:rikosUrl`: Direct rikos.rik.ee document URL from `rikObjectId` — `xsd:anyURI`
+* `estleg:ecliIdentifier`: Official Estonian ECLI (`ECLI:EE:RK:YYYY:` + case number with `-`/`/` as `.`). e-Justice documents this ordinal as the case number (`1-16-2798/84` → `ECLI:EE:RK:2016:1.16.2798.84`). Assigned from H2 2016; **pre-2016 Riigikohus decisions have no official ECLI** (structural gap, not a scrape miss).
+* `estleg:chamber`: Deciding chamber from the `legalText` header — `xsd:string`
+* `estleg:judge`: Panel member names from the header (presiding first) — `xsd:string` (repeatable)
 * `estleg:referencedLaw`: Law abbreviation referenced in the decision — `xsd:string`
 * `estleg:interpretsLaw`: Object property linking to a `LegalProvision` (state-law provision) OR a `MunicipalRegulation` / `Act` (KOV act-level citation) interpreted by this decision — `owl:ObjectProperty`. Range is `owl:unionOf (LegalProvision Act)` since Layer 2c PR #3.
+* `estleg:personalDataScreened`: `xsd:boolean` — the node's text literals were passed through `estleg_common.screen_personal_data`, which replaces Estonian personal identification codes with `[isikukood eemaldatud]` (issue #683). Every Riigikohus decision node carries it. Absence means the node predates screening, not that it is clean.
+* `estleg:personalDataMaskedCount`: `xsd:integer` — how many codes were removed from that node. It accumulates across screening runs rather than overwriting. Across the committed corpus, 21 of 12,104 nodes carry a non-zero count (27 codes total). The masked display forms are recorded in `krr_outputs/reports/personal_data_mask_report.json`; the full codes are never stored.
 
 `estleg:caseType` and `estleg:decisionType` intentionally point at controlled
 enum IRIs whose individuals are not always in the Seadusloome public load graph.
@@ -284,10 +325,10 @@ SELECT ?decision ?label ?date WHERE {
 Estonian domestic regulations (*määrused*) are subordinate legal acts issued under an enabling law. They are produced by `scripts/generate_regulations.py` from Riigi Teataja and stored under `krr_outputs/regulations/riik/` (state-level) and, in Phase 2, `krr_outputs/regulations/kov/` (municipal). Provisions of regulations are subclasses of `estleg:LegalProvision` and therefore reuse the existing provision-level shapes, queries, and integrations.
 
 ### DomesticRegulation (`estleg:DomesticRegulation`)
-Common superclass for any Estonian domestic regulation, regardless of level. `rdfs:subClassOf estleg:Act`. Its two branches — the state-level `estleg:NationalRegulation` and the municipal `estleg:MunicipalRegulation` — are **sibling** subclasses, so no entailment path makes a municipal regulation a state regulation (issue #424). `estleg:DomesticRegulation` is intentionally **never stamped on instances**: membership is left to RDFS subclass entailment, and the shared domestic-regulation SHACL constraints are applied by listing `estleg:NationalRegulation` and `estleg:MunicipalRegulation` as explicit `sh:targetClass` values rather than targeting the superclass.
+Common superclass for any Estonian domestic regulation, regardless of level. `rdfs:subClassOf estleg:Act`. Its two branches — the state-level `estleg:NationalRegulation` and the municipal `estleg:MunicipalRegulation` — are **sibling** subclasses, so no entailment path makes a municipal regulation a state regulation (issue #424). The controlled vocabulary also asserts `estleg:MunicipalRegulation owl:disjointWith estleg:NationalRegulation` (issue #439). `estleg:DomesticRegulation` is intentionally **never stamped on instances**: membership is left to RDFS subclass entailment, and the shared domestic-regulation SHACL constraints are applied by listing `estleg:NationalRegulation` and `estleg:MunicipalRegulation` as explicit `sh:targetClass` values rather than targeting the superclass.
 
 ### NationalRegulation (`estleg:NationalRegulation`)
-State-level Estonian regulation (*riigi tasandi määrus*) issued by a state organ. `rdfs:subClassOf estleg:DomesticRegulation` and superclass of the government and ministerial regulation classes below. **Not** a superclass of `estleg:MunicipalRegulation` — the two are siblings (issue #424). Concrete state-regulation instances carry this type plus exactly one of the more specific subclasses below.
+State-level Estonian regulation (*riigi tasandi määrus*) issued by a state organ. `rdfs:subClassOf estleg:DomesticRegulation` and superclass of the government and ministerial regulation classes below. **Not** a superclass of `estleg:MunicipalRegulation` — the two are siblings (issue #424) and `owl:disjointWith` each other (issue #439). Concrete state-regulation instances carry this type plus exactly one of the more specific subclasses below.
 
 ### GovernmentRegulation (`estleg:GovernmentRegulation`)
 Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subclass of `NationalRegulation`.
@@ -296,13 +337,13 @@ Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subcla
 Regulation issued by an individual minister (e.g. *Sotsiaalminister*, *Justiitsminister*). Subclass of `NationalRegulation`.
 
 ### MunicipalRegulation (`estleg:MunicipalRegulation`)
-Regulation issued by a local government council or government (KOV). `rdfs:subClassOf estleg:DomesticRegulation` — a sibling of `NationalRegulation`, **not** a subclass of it (issue #424; the earlier `subClassOf NationalRegulation` axiom was a logical error that entailed every municipal regulation as state-level). Generated KOV regulation act nodes are typed `estleg:MunicipalRegulation` (plus `estleg:Act`) **only** — the former dual-typing with `estleg:NationalRegulation` was removed and a backfill strips the stray type from all 11,059 KOV files. Shared domestic-regulation SHACL constraints still apply because `MunicipalRegulationShape` names `estleg:MunicipalRegulation` as an explicit `sh:targetClass`, so no OWL/RDFS inference is required at validation time.
+Regulation issued by a local government council or government (KOV). `rdfs:subClassOf estleg:DomesticRegulation` — a sibling of `NationalRegulation`, **not** a subclass of it (issue #424; the earlier `subClassOf NationalRegulation` axiom was a logical error that entailed every municipal regulation as state-level). The T-Box also asserts `owl:disjointWith estleg:NationalRegulation` (issue #439). Generated KOV regulation act nodes are typed `estleg:MunicipalRegulation` (plus `estleg:Act`) **only** — the former dual-typing with `estleg:NationalRegulation` was removed and a backfill strips the stray type from all 11,059 KOV files. Shared domestic-regulation SHACL constraints still apply because `MunicipalRegulationShape` names `estleg:MunicipalRegulation` as an explicit `sh:targetClass`, so no OWL/RDFS inference is required at validation time.
 
 ### Annex (`estleg:Annex`)
 Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
 
-### Per-Regulation Provision Classes (`estleg:Regulation_<terviktekstId>`)
-For each regulation, the generator emits one provision class named `estleg:Regulation_<terviktekstId>` (e.g. `estleg:Regulation_160748`) that is declared as `rdfs:subClassOf estleg:LegalProvision`. Provision instances of that regulation carry both the per-regulation class and `estleg:paragrahv`, so they are validated by the existing `LegalProvisionShape`.
+### Provision typing (issue #434)
+Law and regulation provisions are typed `estleg:LegalProvision` directly. KOV provisions also carry `estleg:KovProvision`. Per-document classes (`estleg:LegalProvision_<slug>`, `estleg:Regulation_<terviktekstId>`) are no longer minted — membership is `estleg:partOfAct` / `estleg:sourceAct`.
 
 ### Domestic Regulation Properties
 
@@ -382,7 +423,7 @@ every consumer for no semantic gain. The overload is therefore a
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_160748_Map_2026",
+      "@id": "estleg:Reg_160748_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:NationalRegulation",
@@ -485,6 +526,7 @@ The four rows above are the most common institutions; `estleg:EUInst_*` is an **
 * `estleg:eliIdentifier`: European Legislation Identifier URI -- `xsd:anyURI`
 * `estleg:documentDate`: Date of the legal act -- `xsd:date`
 * `estleg:inForce`: Whether the act is currently in force -- `xsd:boolean`
+* `estleg:estoniaRelevant`: `xsd:boolean`, present when an Estonian act transposes this instrument (seeded from `krr_outputs/reports/transposition_mapping.json` / `estleg:transposedBy`). The EUR-Lex peeps keep the full CELLAR acquis; `EURLEX_INDEX.json` `lens` is the in-force + Estonia-relevance consumer cut (issue #527).
 
 ### EU Legislation Example
 
@@ -609,10 +651,37 @@ Represents a penalty or sanction defined by a legal provision.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `estleg:sanctionType` | `xsd:string` | Type: imprisonment, pecuniary_punishment, fine, arrest, coercive_payment |
+| `estleg:sanctionType` | `xsd:string` | Type: imprisonment, pecuniary_punishment, fine, arrest, coercive_payment, confiscation, compulsory_dissolution |
 | `estleg:maxPenalty` | `xsd:string` | Maximum penalty (e.g., "5 years", "300 fine units") |
 | `estleg:minPenalty` | `xsd:string` | Minimum penalty if specified |
 | `estleg:applicableProvision` | `owl:ObjectProperty` | IRI of the provision defining this sanction |
+| `estleg:maxPenaltyAmount` | `xsd:decimal` | Numeric value of the maximum penalty; absent when the penalty has no finite amount (e.g. life imprisonment) |
+| `estleg:minPenaltyAmount` | `xsd:decimal` | Numeric value of the minimum penalty; must not exceed `maxPenaltyAmount` |
+| `estleg:maxPenaltyUnit` | `xsd:string` | Unit: years, months, days, daily_rates, fine_units, monetary, percent_of_turnover |
+| `estleg:minPenaltyUnit` | `xsd:string` | Same controlled set as `maxPenaltyUnit` |
+| `estleg:maxPenaltyCurrency` | `xsd:string` | Currency code; present only when the unit is `monetary` |
+| `estleg:minPenaltyCurrency` | `xsd:string` | Currency code; present only when the unit is `monetary` |
+| `estleg:isStatutoryDefault` | `xsd:boolean` | True when the value comes from a statutory ceiling rather than the provision text |
+
+`confiscation` (KarS §§ 83–85) and `compulsory_dissolution` (KarS § 46)
+carry no amount — the offence provision states no ceiling for either.
+Extraction requires operative wording: a sentencing formula ending in
+`sundlõpetamisega`, or an order to confiscate / a court applying confiscation.
+Eligibility conditions, registry fields and references to previously confiscated
+property do not themselves impose these sanctions.
+`percent_of_turnover` expresses a fine as a share of a legal person's
+turnover (KarS § 400 lg 3/lg 4); being relative, it carries no currency.
+
+The `500 daily_rates` statutory fallback applies only to natural-person
+pecuniary punishment. Corporate clauses that state no amount retain the
+sanction type without `maxPenalty`, structured amounts, or `isStatutoryDefault`;
+a corporate ceiling cannot be inferred from the natural-person rule.
+
+Statutory ceilings are enforced by SHACL: imprisonment in years ≤ 20
+(KarS § 45), arrest in days ≤ 30 (KarS § 48), daily rates ≤ 500
+(KarS § 44). The minimum/maximum ordering check compares numeric amounts
+only when their units and currencies agree; mixed-unit ranges require
+normalisation before they can be ordered.
 
 ### Institution (`estleg:Institution`)
 Represents a state institution with legal competences.
@@ -620,11 +689,14 @@ Represents a state institution with legal competences.
 | Property | Type | Description |
 |----------|------|-------------|
 | `estleg:competenceType` | `xsd:string` | Type: supervision, licensing, enforcement, regulation |
+| `estleg:hasCompetence` | `owl:ObjectProperty` | Institution → reified `estleg:Competence` node(s). Inverse of `estleg:institution` on Competence nodes. |
 
-Institution → provision competence links are not modelled with a `hasCompetence`
-property; they are reified as `estleg:Competence` nodes (see below) that carry
-`estleg:grantedBy` / `estleg:appliesToProvision`, and individual provisions point
-back to the institution via `estleg:competentAuthority`.
+Institution → Competence links use `estleg:hasCompetence` (inverse of
+`estleg:institution` on Competence nodes). Competence remains the reified
+aggregate (see below) that carries `estleg:grantedBy` /
+`estleg:appliesToProvision`; individual provisions point back to the institution
+via `estleg:competentAuthority`. There is no direct Institution → provision
+competence property.
 
 ### Competence (`estleg:Competence`)
 Reified institutional competence sidecar node generated under
@@ -640,7 +712,7 @@ Reified institutional competence sidecar node generated under
 | `estleg:competenceArea` | `xsd:string` | Coarse thematic area for overlap/gap analysis across institutions |
 
 ### NormativeType (`estleg:NormativeType`)
-Deontic classification of provisions. Individuals: `NormType_Obligation`, `NormType_Right`, `NormType_Permission`, `NormType_Prohibition`.
+Deontic classification of provisions. Individuals: `NormType_Obligation`, `NormType_Right`, `NormType_Permission`, `NormType_Prohibition`, `NormType_Definition` (heading *mõiste* or first-line *tähendab*/*mõistetakse*; issue #461).
 
 ### Section (`estleg:Section`)
 Represents a section (jagu/peatükk) in the KarS special parts structure, generated by `generate_kars_eriosa_jsonld.py`.
@@ -670,10 +742,10 @@ Represents a section (jagu/peatükk) in the KarS special parts structure, genera
 > RDFS subclass inference at validation time.
 
 ### AmendmentEvent (`estleg:AmendmentEvent`)
-Represents an **effected** amendment event — a change actually applied to an act, derived from Riigi Teataja `<muutmismarge>` markers. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`. Effected events carry `estleg:amends`, `estleg:amendmentDate` / `estleg:entryIntoForce`, and the latest one per act may carry `estleg:isCurrentAmendment`; act roots link to them via `estleg:amendedBy`. Never-enacted draft amendments are **not** modelled with this class — see `estleg:ProposedAmendment` below (issue #423).
+Represents an **effected** amendment event — a change actually applied to an act, derived from Riigi Teataja `<muutmismarge>` markers. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`. Effected events carry `estleg:amends`, `estleg:amendmentDate` / `estleg:entryIntoForce`, and the latest one per act may carry `estleg:isCurrentAmendment`; act roots link to them via `estleg:amendedBy`. Never-enacted draft amendments are **not** modelled with this class — see `estleg:ProposedAmendment` below (issue #423). The controlled vocabulary asserts `estleg:AmendmentEvent owl:disjointWith estleg:ProposedAmendment` (issue #439).
 
 ### ProposedAmendment (`estleg:ProposedAmendment`)
-Represents a **proposed, not-yet-enacted** amendment derived from a draft amendment bill in EIS (Review / Submission / PublicConsultation phase). Because the referenced draft has not been adopted, the node MUST NOT be typed `estleg:AmendmentEvent` and MUST NOT assert effected semantics (issue #423). A `ProposedAmendment` carries proposal-scoped predicates only:
+Represents a **proposed, not-yet-enacted** amendment derived from a draft amendment bill in EIS (Review / Submission / PublicConsultation phase). Because the referenced draft has not been adopted, the node MUST NOT be typed `estleg:AmendmentEvent` and MUST NOT assert effected semantics (issue #423). The T-Box formalises this as `estleg:ProposedAmendment owl:disjointWith estleg:AmendmentEvent` (issue #439). A `ProposedAmendment` carries proposal-scoped predicates only:
 
 * `estleg:proposesToAmend` → the target act/provision (proposal scope; **not** `estleg:amends`, which asserts an effected change).
 * `estleg:publicationDate` → the draft's EIS publication date (**not** `estleg:amendmentDate`, which is reserved for adoption dates).
@@ -699,10 +771,23 @@ These properties enable cross-referencing between different parts of the legal s
 ### Cross-Law References
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:references` | LegalProvision | LegalProvision (IRI) | Cross-reference to another provision |
+| `estleg:references` | LegalProvision | LegalProvision (IRI) | Cross-reference to another provision. **Untyped** in the current corpus: extractors emit a flat `estleg:references` list and do not yet attach `estleg:referenceType`. A later emission pass is required before repeal / legal-basis / exception / derogation queries can distinguish those edges (issue #513; T-Box only in this slice). |
 | `estleg:referencedBy` | LegalProvision | LegalProvision (IRI) | Inverse: provisions referencing this one |
+| `estleg:referenceType` | `Citation` ∪ `rdf:Statement` | `ReferenceType` (`RefType_*` individual) | T-Box qualifier for a reified `estleg:Citation` or an `rdf:Statement` of an `estleg:references` edge (issue #513). Closed individuals: `RefType_Citation`, `RefType_Repeal`, `RefType_LegalBasis`, `RefType_Exception`, `RefType_Derogation`. **Not emitted on existing `estleg:references` edges** until a later pass. |
 | `estleg:semanticallySimilarTo` | LegalProvision | LegalProvision (IRI) | Provisions with similar content from other laws |
 | `estleg:definesTerm` | LegalProvision | LegalConcept (IRI) | Legal concept defined by this provision |
+
+#### Reference types (`estleg:ReferenceType`, issue #513 T-Box)
+
+The citation graph is still a single flat `estleg:references` / `estleg:referencedBy` pair. The controlled vocabulary now declares `estleg:referenceType` and the five `estleg:RefType_*` individuals so a later extractor can classify an edge without inventing new predicates. Until that emission pass, **do not assume** a `references` triple is a repeal, legal basis, exception, or derogation — it is only an untyped mention.
+
+| Individual | Estonian | English |
+|------------|----------|---------|
+| `estleg:RefType_Citation` | Viide | Citation (unspecified mention) |
+| `estleg:RefType_Repeal` | Kehtetuks tunnistamine | Repeal |
+| `estleg:RefType_LegalBasis` | Õiguslik alus | Legal basis |
+| `estleg:RefType_Exception` | Erand | Exception |
+| `estleg:RefType_Derogation` | Derogatsioon | Derogation |
 
 ### Court Decision Links
 | Property | Domain | Range | Description |
@@ -713,10 +798,12 @@ These properties enable cross-referencing between different parts of the legal s
 ### EU Transposition
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law |
+| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law. **This** (and `krr_outputs/reports/transposition_mapping.json`) is Estonian transposition — not the HarmonisationLink layer. |
 | `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian law transposing this directive |
-| `estleg:harmonisedWith` | Act | HarmonisationLink (IRI) | Act → harmonisation record showing parallel transpositions of the same EU directive in other member states. Emitted **only** on law peeps (act-level). Inverse of `estleg:harmonises` (issue #425). |
-| `estleg:harmonises` | HarmonisationLink | Act (IRI) | Inverse: harmonisation record → the Estonian act(s) that transpose the shared directive. Emitted **only** on the aggregate `estleg:Harmonisation_<celex>` nodes in `krr_outputs/harmonisation/harmonisation_by_directive/`. Inverse of `estleg:harmonisedWith` (issue #425). |
+| `estleg:harmonisedWith` | Act | HarmonisationLink (IRI) | Act → neighbour-state comparative NIM record (LV/LT/FI/SE) for the same EU directive. Not Estonian article-level transposition. Emitted **only** on law peeps (act-level). Inverse of `estleg:harmonises` (issue #425). Combined `estleg:HarmonisationLink` objects may be hollow `isStubNode` closure stubs; real neighbour measures live in `krr_outputs/harmonisation/`. |
+| `estleg:harmonises` | HarmonisationLink | Act (IRI) | Inverse: comparative NIM record → the Estonian act(s) that transpose the shared directive. Emitted **only** on the aggregate `estleg:Harmonisation_<celex>` nodes in `krr_outputs/harmonisation/harmonisation_by_directive/`. Inverse of `estleg:harmonisedWith` (issue #425). |
+
+> **Scope (issue #557).** Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state **comparative** NIM measures for LV/LT/FI/SE. They are **not** Estonian article-level transposition. Estonian transposition is `estleg:transposesDirective` / `krr_outputs/reports/transposition_mapping.json`. Combined `estleg:HarmonisationLink` nodes may be hollow `isStubNode` closure stubs; real neighbour measures live in the sidecar.
 
 ### Subject Classification
 | Property | Domain | Range | Description |
@@ -730,7 +817,15 @@ These properties enable cross-referencing between different parts of the legal s
 | `estleg:repealDate` | Act | `xsd:date` | Date when the selected act snapshot was repealed |
 | `estleg:lastAmendmentDate` | Act | `xsd:date` | Most recent amendment date for the selected act snapshot |
 | `estleg:publicationDate` | Act | `xsd:date` | Publication date for the selected act snapshot |
-| `estleg:temporalStatus` | Act | `xsd:string` | Status evaluated against the build's declared temporal evaluation date: inForce, repealed, notYetEffective |
+| `estleg:temporalStatus` | Act | `xsd:string` | Status evaluated against the build's declared temporal evaluation date. ABox tokens: `inForce`, `repealed`, `unknown` (SHACL also allows `notYetEffective`). Corresponding T-Box individuals `estleg:TemporalStatus_*`; the property is not an ObjectProperty (#522). |
+
+> **`unknown` is the honest value, not a gap (#682).** An act root with no
+> version-sidecar evidence for its status is stamped `unknown` rather than being
+> defaulted to `inForce`, and a **deprecated (retired-IRI) act root is never
+> `inForce`** — it carries `unknown`. The new SHACL shape
+> `estleg:DeprecatedActNotInForceShape` enforces that. Act roots currently split
+> 736 `inForce` / 410 `unknown`. Recompute with
+> `python3 -m estleg.derive_act_temporal_status --all --recompute`.
 
 ### Amendment Properties
 
@@ -775,7 +870,7 @@ was in force.
 |----------|--------|-------|-------------|-------------|
 | `estleg:versionOf` | ProvisionVersion | LegalProvision (IRI) | exactly 1 | The provision this version belongs to. Inverse of `estleg:hasVersion`. |
 | `estleg:versionValidFrom` | ProvisionVersion | `xsd:date` | exactly 1 | When this text became effective. |
-| `estleg:versionValidTo` | ProvisionVersion | `xsd:date` | 0–1 | When this text ceased to be in force. Absent ⇒ still current. |
+| `estleg:versionValidTo` | ProvisionVersion | `xsd:date` | 0–1 | Inclusive last in-force day. Absent ⇒ still current. An as-of query for the peep `kehtiv` date uses interval containment (`validFrom <= kehtiv` and no `validTo` or `kehtiv <= validTo`). A current redaction that started before the snapshot (e.g. 2026-05-22 vs kehtiv 2026-05-24) is not a lag (#532). |
 | `estleg:versionText` | ProvisionVersion | `xsd:string` | 1+ | The provision text at this redaction, verbatim. |
 | `estleg:versionRedactionId` | ProvisionVersion | `xsd:string` | 0–1 | The Riigi Teataja `terviktekstID` of the redaction that produced this text. |
 | `estleg:supersededByVersion` | ProvisionVersion | ProvisionVersion (IRI) | 0–1 | The chronologically next version of the same provision. Absent on the current version. |
@@ -796,14 +891,14 @@ Version sidecar node:
 
 ```json
 {
-  "@id": "estleg:LegalProvision_TsÜS_40_v1",
+  "@id": "estleg:LegalProvision_TsUS_40_v1",
   "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
-  "estleg:versionOf": {"@id": "estleg:LegalProvision_TsÜS_40"},
+  "estleg:versionOf": {"@id": "estleg:LegalProvision_TsUS_40"},
   "estleg:versionValidFrom": {"@type": "xsd:date", "@value": "2011-07-01"},
   "estleg:versionValidTo": {"@type": "xsd:date", "@value": "2018-12-31"},
   "estleg:versionText": "§ 40. Tehing on toiming või omavahel seotud toimingute kogum, milles sisaldub kindla õigusliku tagajärje kaasatoomisele suunatud tahteavaldus.",
   "estleg:versionRedactionId": "13335775",
-  "estleg:supersededByVersion": {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
+  "estleg:supersededByVersion": {"@id": "estleg:LegalProvision_TsUS_40_v2"}
 }
 ```
 
@@ -813,7 +908,7 @@ node through `estleg:versionOf`.
 
 ```json
 {
-  "@id": "estleg:LegalProvision_TsÜS_40",
+  "@id": "estleg:LegalProvision_TsUS_40",
   "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
   "estleg:paragrahv": "TsÜS § 40",
   "estleg:summary": "Defines what counts as a transaction (tehing)."
@@ -894,9 +989,9 @@ SHACL: `estleg:AnnotationShape` (`sh:targetClass estleg:Annotation`) requires
 
 ```json
 {
-  "@id": "estleg:Annotation_OK_2020_TsÜS_40",
+  "@id": "estleg:Annotation_OK_2020_TsUS_40",
   "@type": ["owl:NamedIndividual", "estleg:Annotation"],
-  "estleg:annotates": {"@id": "estleg:LegalProvision_TsÜS_40"},
+  "estleg:annotates": {"@id": "estleg:LegalProvision_TsUS_40"},
   "estleg:annotationText": "Õiguskantsler on rõhutanud, et tahteavalduse tuvastamisel tuleb arvestada poolte tegelikku tahet, mitte üksnes sõnastust.",
   "estleg:annotationType": "interpretation",
   "estleg:annotationSource": "Õiguskantsler",
@@ -916,7 +1011,7 @@ omavalitsuse korralduse seadus (KOKS) act node:
 PREFIX estleg: <https://w3id.org/estleg/>
 
 SELECT ?text ?type ?source WHERE {
-  ?ann estleg:annotates       estleg:KOKS_Map_2026 ;
+  ?ann estleg:annotates       estleg:KOKS_Map ;
        estleg:annotationText  ?text ;
        estleg:annotationType  ?type .
   OPTIONAL { ?ann estleg:annotationSource ?source . }
@@ -926,13 +1021,22 @@ SELECT ?text ?type ?source WHERE {
 ### Normative Classification
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:normativeType` | LegalProvision | NormativeType (IRI) | Obligation, right, permission, prohibition |
-| `estleg:dutyHolder` | LegalProvision | `xsd:string` | Who must comply (e.g., "tööandja") |
-| `estleg:targetGroup` | LegalProvision | `xsd:string` enum, multi-valued | Affected group(s): `citizen`, `business`, `public_body`, `official`, `ngo` |
+| `estleg:normativeType` | LegalProvision | NormativeType (IRI) | Obligation, right, permission, prohibition, definition |
+| `estleg:dutyHolder` | LegalProvision | TargetGroup (IRI) | Who must comply. Same closed enum as `targetGroup` (`estleg:TargetGroup_*`). Unmapped sentence-initial phrases are not stored (#460). |
+| `estleg:targetGroup` | LegalProvision | TargetGroup (IRI), multi-valued | Affected group(s): `estleg:TargetGroup_Citizen`, `_Business`, `_PublicBody`, `_Official`, `_NGO` |
+
+Citizen share (#460 sample review): `targetGroup` is not assigned by
+absence-of-others. Weak generic cues (`isik` / `kasutaja` / `valdaja` /
+`omanik`) are dropped when a business or public-body cue is also present.
+Committed samples: `estleg:AS_Par_17` (Alkoholiseadus) is business-only
+(alcohol handler); `estleg:TLS_Par_2` (Töölepingu seadus) is citizen
+(employee). Remaining citizen assignments require an explicit addressee
+cue such as `töötaja` or `füüsiline isik`.
 
 ### Institutional Competence
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
+| `estleg:hasCompetence` | Institution | Competence (IRI) | Institution → its reified Competence aggregates. Inverse of `estleg:institution`. |
 | `estleg:competentAuthority` | LegalProvision | Institution or Issuer (IRI) | Responsible authority — `Institution_*` for state/general detections, `Issuer_*` for KOV-bound matches (see KOV subsection below) |
 | `estleg:competenceType` | Institution | `xsd:string` | Type: supervision, licensing, enforcement |
 | `estleg:grantedBy` | Competence | Act (IRI) | The act under which this competence is granted when a primary source act is derivable |
@@ -1141,10 +1245,29 @@ SELECT ?provision ?label ?type ?maxPenalty WHERE {
 | `extract_draft_impact.py` | Provision-level draft impact analysis | #36 |
 | `classify_eurovoc.py` | Classify laws with EuroVoc subject taxonomy | #37 |
 | `extract_temporal_data.py` | Extract entry-into-force and repeal dates | #38 |
-| `generate_harmonisation_links.py` | Cross-border EU harmonisation links | #39 |
+| `generate_harmonisation_links.py` | Neighbour-state comparative NIM measures (LV/LT/FI/SE); not Estonian article-level transposition | #39 |
 | `classify_deontic.py` | Classify provisions as obligations/rights/permissions/prohibitions | #43 |
 | `extract_institutional_competence.py` | Map institutions to their legal competences | #42 |
 | `extract_sanctions.py` | Extract penalties and sanctions from law text | #41 |
+
+## Non-graph application indexes
+
+Two computed indexes are **non-graph** application artifacts (issue #462).
+They are not RDF; SPARQL over the published graph will not see them.
+
+- **KOV / law similarity JSON** (`krr_outputs/reports/similarity_index.json`,
+  `krr_outputs/reports/similarity_report.json`) is a **tf-idf / application index**
+  (provision-level keyword-Jaccard in the sidecar; the optional KOV
+  act-level pass uses bucketed TF-IDF cosine). SPARQL will not see those
+  pairs unless they were also emitted as `estleg:similarAct` (KOV act-level
+  peers and directed KOV→enabling-act edges) or, for provision-level
+  law/state pairs, as `estleg:semanticallySimilarTo`. Pair scores and the
+  bulk of KOV pairs live only in the JSON sidecars.
+- **EUR-normalized sanction severity scores** in
+  `krr_outputs/reports/sanctions_report.json` (`severity_index`, including
+  `monetary_score` / `max_monetary_eur`) are **not** graph properties.
+  Query `estleg:hasSanction` for the RDF sanctions layer
+  (`estleg:Sanction` nodes with `sanctionType` / `maxPenalty`).
 
 ## Data Sources
 
@@ -1177,7 +1300,7 @@ stubs. See the README "Load surfaces" section.
     - `estleg:NationalRegulation` — state-level
       - `estleg:GovernmentRegulation`
       - `estleg:MinisterialRegulation`
-    - `estleg:MunicipalRegulation` — municipal (KOV); sibling of `NationalRegulation`, not a subclass
+    - `estleg:MunicipalRegulation` — municipal (KOV); sibling of `NationalRegulation`, not a subclass; `owl:disjointWith NationalRegulation` (#439)
 - `estleg:Municipality` — territorial KOV unit (top-level)
 - `estleg:Issuer` — `rdfs:subClassOf estleg:Institution`
 - `estleg:KovProvision` — `rdfs:subClassOf estleg:LegalProvision`
@@ -1192,7 +1315,7 @@ stubs. See the README "Load surfaces" section.
 | `estleg:enactedByMunicipality` | `MunicipalRegulation`, `KovProvision` | `Municipality` | Which KOV unit |
 | `estleg:titleNormalized` | `MunicipalRegulation` | `xsd:string` | Lowercased, transliterated, prefix-stripped title |
 | `estleg:partOfAct` | `KovProvision` | `Act` | IRI link from provision to parent act |
-| `estleg:ehakCode` | `Municipality` | `xsd:string` | Four-digit EHAK code |
+| `estleg:ehakCode` | `Municipality` | `xsd:string` | Four-digit EHAK code; every Municipality also has `rdfs:seeAlso` to the EHAK classifier and curated `owl:sameAs` Wikidata (`data/ehak/municipality_wikidata.json`, #518) |
 | `estleg:county` | `Municipality` | `xsd:string` | Maakond |
 | `estleg:bodyType` | `Issuer` | `xsd:string` | `"volikogu"` \| `"valitsus"` |
 | `estleg:currentMunicipality` | `Issuer` | `Municipality` | Today's successor for legacy issuers |
@@ -1292,18 +1415,18 @@ MinisterialRegulation, MunicipalRegulation)
 
 Identifies the ACT under whose authority this act was issued. For
 municipal regulations, the most common targets are KOKS
-(`estleg:KOKS_Map_2026`), state-regulation acts, or other KOV acts.
+(`estleg:KOKS_Map`), state-regulation acts, or other KOV acts.
 Provision-level granularity (e.g. "issued under § 22 lg 1 p 34") is
 captured separately on `Citation.citationTarget` — see
 `estleg:implementsCitation` below.
 
 ```json
 {
-  "@id": "estleg:Reg_1014955_Map_2026",
-  "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
+  "@id": "estleg:Reg_1014955_Map",
+  "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
   "estleg:issuedUnder": [
-    {"@id": "estleg:KOKS_Map_2026"},
-    {"@id": "estleg:RaamatPS_Map_2026"}
+    {"@id": "estleg:KOKS_Map"},
+    {"@id": "estleg:RaamatPS_Map"}
   ]
 }
 ```
@@ -1328,6 +1451,7 @@ on the source act.
 - `estleg:citationTarget` — provision OR act IRI (cardinality 1)
 - `estleg:citationDetail` — `"lg 1 p 34"` style literal (optional)
 - `estleg:citationText` — original input substring (optional, recommended)
+- `estleg:referenceType` — optional `estleg:RefType_*` individual (issue #513 T-Box). Declared so a later emission pass can type preamble citations; **not** populated on existing `Citation` nodes or on unreified `estleg:references` edges yet.
 
 **IRI pattern:** `estleg:Citation_<source-act-shortid>_<seq>` where
 `<source-act-shortid>` is the source act's @id minus `estleg:` and
@@ -1335,7 +1459,7 @@ on the source act.
 
 ```json
 {
-  "@id": "estleg:Citation_Reg_1014955_Map_2026_1",
+  "@id": "estleg:Citation_Reg_1014955_Map_1",
   "@type": ["owl:NamedIndividual", "estleg:Citation"],
   "estleg:citationTarget": {"@id": "estleg:KOKS_Par_22"},
   "estleg:citationDetail": "lg 1 p 34",
@@ -1359,7 +1483,7 @@ me as their enabling authority" view.
 {
   "@id": "estleg:KOKS_Par_22",
   "estleg:implementedBy": [
-    {"@id": "estleg:Reg_1014955_Map_2026"},
+    {"@id": "estleg:Reg_1014955_Map"},
     {"@id": "estleg:Reg_2034567_Map_2024"}
   ],
   "estleg:implementedByCount": 2

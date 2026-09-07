@@ -1,18 +1,15 @@
 """Discovery and coverage tests for classify_deontic."""
 from __future__ import annotations
 
+import json
 from pathlib import Path
-import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from classify_deontic import (
+from estleg.classify_deontic import (
     _leading_permission_over_condition,
     classify_provision,
     extract_duty_holder,
 )
-from estleg_common import jsonld_text
-
+from estleg.estleg_common import jsonld_text
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE = (Path(__file__).parent / "fixtures" / "kov_layer2a"
@@ -297,11 +294,12 @@ _DEONTIC_SENTENCE = "Korraldaja peab tagama jäätmete kogumise vastavalt määr
 
 
 def _classify_node_summary(node: dict) -> str | None:
-    """Mirror the main()-loop read path: unwrap estleg:summary then classify."""
+    """Mirror the main()-loop read path: unwrap summary + label then classify."""
     summary = jsonld_text(node.get("estleg:summary", ""))
     if not summary:
         return None
-    return classify_provision(summary)
+    heading = jsonld_text(node.get("rdfs:label", ""))
+    return classify_provision(summary, heading=heading)
 
 
 def test_value_object_summary_classifies_like_plain_string() -> None:
@@ -503,3 +501,76 @@ def test_genuine_obligation_without_leading_permission_unaffected() -> None:
         classify_provision("Isik on kohustatud esitama aruande, kui amet seda nõuab.")
         == "estleg:NormType_Obligation"
     )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #461: definition provisions (heading/label ``… mõiste``)
+# must not inherit Permission/Obligation from deontic verbs in the body.
+# ---------------------------------------------------------------------------
+
+_HMS_95_HEADING = "§ 95. Halduslepingu mõiste"
+_HMS_95_BODY = (
+    "Haldusleping on kokkulepe, mis reguleerib haldusõigussuhteid. "
+    "Halduslepingu võib sõlmida kas üksikjuhtumi või piiritlemata "
+    "arvu juhtumite reguleerimiseks."
+)
+_HMS_95_ID = "estleg:haldusmenetluse_seadus_Par_95"
+
+
+def test_definition_heading_with_voib_is_definition() -> None:
+    # HMS §95 is a definition ("Halduslepingu mõiste"); "võib sõlmida" in
+    # the body is illustrative, not a grant of permission.
+    assert (
+        classify_provision(_HMS_95_BODY, heading=_HMS_95_HEADING)
+        == "estleg:NormType_Definition"
+    )
+
+
+def test_non_definition_permission_still_classifies() -> None:
+    assert (
+        classify_provision(
+            "Asutus võib taotluse läbi vaadata.",
+            heading="§ 10. Taotluse läbivaatamine",
+        )
+        == "estleg:NormType_Permission"
+    )
+
+
+def test_midtext_moiste_without_definition_heading_still_classifies() -> None:
+    # A body that merely mentions ``mõiste`` must still classify when the
+    # heading is not a definition title.
+    assert (
+        classify_provision(
+            "Käesoleva seaduse mõiste kohaselt võib asutus loa anda.",
+            heading="§ 10. Loa andmine",
+        )
+        == "estleg:NormType_Permission"
+    )
+
+
+def test_hms_par_95_peep_is_definition() -> None:
+    peep = REPO_ROOT / "krr_outputs" / "haldusmenetluse_seadus_peep.json"
+    doc = json.loads(peep.read_text(encoding="utf-8"))
+    node = next(n for n in doc["@graph"] if n.get("@id") == _HMS_95_ID)
+    assert node.get("estleg:normativeType") == {"@id": "estleg:NormType_Definition"}
+    assert "estleg:dutyHolder" not in node
+
+
+def test_tahendab_first_line_is_definition() -> None:
+    assert (
+        classify_provision(
+            "Käesolevas seaduses tähendab luba kirjalikku haldusakti.",
+            heading="§ 2. Luba",
+        )
+        == "estleg:NormType_Definition"
+    )
+
+
+def test_cv_declares_norm_type_definition() -> None:
+    cv = json.loads(
+        (REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld").read_text(
+            encoding="utf-8"
+        )
+    )
+    ids = {n.get("@id") for n in cv.get("@graph", []) if isinstance(n, dict)}
+    assert "estleg:NormType_Definition" in ids

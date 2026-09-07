@@ -7,10 +7,7 @@ should fail.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
@@ -164,7 +161,7 @@ class TestEndToEndEnrichedKovGraph:
                 },
                 # MunicipalRegulation (act node, directly typed as Act)
                 {
-                    "@id": "estleg:Reg_1014955_Map_2026",
+                    "@id": "estleg:Reg_1014955_Map",
                     "@type": [
                         "owl:Ontology",
                         "estleg:Act",
@@ -194,7 +191,7 @@ class TestEndToEndEnrichedKovGraph:
                     "estleg:enactedByMunicipality": {
                         "@id": "estleg:Municipality_EHAK_0784"
                     },
-                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map_2026"},
+                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map"},
                 },
             ],
         })
@@ -205,11 +202,11 @@ class TestCitationShape:
     def test_valid_citation_passes(self):
         # Minimal graph: Citation pointing to any IRI target. The shape
         # only enforces nodeKind sh:IRI on citationTarget — class-level
-        # range is documented in metadata.jsonld via rdfs:range, not
+        # range is documented in controlled_vocabulary.jsonld via rdfs:range, not
         # SHACL (avoiding subclass-inference brittleness).
         ok, msg = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationTarget": {"@id": "estleg:Reg_1014955_Par_42"},
             "estleg:citationDetail": "lg 1",
@@ -217,14 +214,17 @@ class TestCitationShape:
         })
         assert ok, msg
 
-    def test_citation_missing_target_fails(self):
-        ok, _ = _validate({
+    def test_citation_missing_target_allowed_when_unresolved(self):
+        # #514: unresolved law citations keep citationText / citationSource
+        # and omit citationTarget.
+        ok, msg = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
-            "estleg:citationDetail": "lg 1",
+            "estleg:citationSource": {"@id": "estleg:Reg_1014955_Par_1"},
+            "estleg:citationText": "KarS § 9999",
         })
-        assert not ok
+        assert ok, msg
 
     def test_citation_iri_pattern_enforced(self):
         # Provide a valid citationTarget so the failure can ONLY be the
@@ -241,7 +241,7 @@ class TestCitationShape:
         # citationTarget as a literal (not an IRI) must fail nodeKind.
         ok, _ = _validate({
             "@context": CONTEXT,
-            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@id": "estleg:Citation_1014955_Map_1",
             "@type": ["owl:NamedIndividual", "estleg:Citation"],
             "estleg:citationTarget": "literal-not-iri",
         })

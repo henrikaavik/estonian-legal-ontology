@@ -2,24 +2,23 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
       "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:volaoigusseadus_Osa1_1_207"
+        "@id": "estleg:volaoigusseadus_Osa1"
       },
       "rdfs:label": "VÕS Osa 3 (Lepinguõigus – kohustused ja vastutus) kaardistus",
       "estleg:transpositionStatus": "unknown",
@@ -27,17 +26,22 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_VOS_Osa7_osa3",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:Cluster_PerformanceOfObligations",
@@ -76,7 +80,7 @@
       "@id": "estleg:VOS3_Osa3_Par_76",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_76"
@@ -105,13 +109,16 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kohustus"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_77",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_77"
@@ -127,23 +134,33 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Võlgnik",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_78",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_78"
@@ -159,19 +176,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_82",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_82"
@@ -191,7 +214,7 @@
       "@id": "estleg:VOS3_Osa3_Par_83",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_83"
@@ -207,7 +230,9 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
@@ -216,13 +241,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_84",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_84"
@@ -238,7 +267,9 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
@@ -247,13 +278,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_85",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_85"
@@ -273,7 +308,7 @@
       "@id": "estleg:VOS3_Osa3_Par_100",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_100"
@@ -293,7 +328,7 @@
       "@id": "estleg:VOS3_Osa3_Par_101",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_101"
@@ -309,19 +344,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_102",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_102"
@@ -337,23 +378,33 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Võlgnik",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_103",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_103"
@@ -369,19 +420,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_113",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_113"
@@ -397,7 +454,9 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
@@ -406,13 +465,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_114",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_114"
@@ -428,7 +491,9 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
@@ -437,13 +502,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_119",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_119"
@@ -459,19 +528,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_104",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_104"
@@ -487,19 +562,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_105",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_105"
@@ -515,19 +596,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_106",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_106"
@@ -547,7 +634,7 @@
       "@id": "estleg:VOS3_Osa3_Par_115",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_115"
@@ -564,13 +651,17 @@
       },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_127",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_127"
@@ -586,19 +677,25 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_128",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_128"
@@ -615,13 +712,17 @@
       },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_134",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_134"
@@ -641,7 +742,7 @@
       "@id": "estleg:VOS3_Osa3_Par_136",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_136"
@@ -661,7 +762,7 @@
       "@id": "estleg:VOS3_Osa3_Par_139",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_139"
@@ -677,7 +778,9 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
@@ -686,13 +789,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:VOS3_Osa3_Par_140",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VOS_Osa7_osa3"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:volaoigusseadus_Osa1_Par_140"
@@ -708,7 +815,9 @@
         "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -723,7 +832,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_kohustuste_taitmine_volaigusseadus_osa3_peep",

@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1009615_Map_2026",
+      "@id": "estleg:Reg_1009615_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Puu raiumiseks loa andmise korras sätestatud otsuste tegemiseks volituse andmine (määrus)",
       "dc:source": "Puu raiumiseks loa andmise korras sätestatud otsuste tegemiseks volituse andmine",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/406032013019.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/406032013019.xml"
       },
       "estleg:issuer": "Tartu Linnavalitsus",
@@ -68,23 +63,26 @@
         {
           "@id": "estleg:Amendment_Reg_1009615_ee6a6c925c"
         }
-      ]
-    },
-    {
-      "@id": "estleg:Regulation_1009615",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_tartu_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_tartu_linnavalitsus"
+        }
+      ],
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1009615_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1009615",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -99,11 +97,15 @@
         "@id": "estleg:Municipality_EHAK_0793"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1009615_Map_2026"
+        "@id": "estleg:Reg_1009615_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -121,13 +123,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1009615_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1009615",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -142,7 +148,7 @@
         "@id": "estleg:Municipality_EHAK_0793"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1009615_Map_2026"
+        "@id": "estleg:Reg_1009615_Map"
       }
     }
   ]

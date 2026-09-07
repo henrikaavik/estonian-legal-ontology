@@ -6,12 +6,9 @@ verified independently of the real corpus.
 """
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import eval_harness  # noqa: E402
+from estleg import eval_harness
 
 
 def _write(path: Path, graph: list[dict]) -> None:

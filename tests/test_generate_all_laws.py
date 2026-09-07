@@ -6,14 +6,16 @@ explains which fix it locks down.
 
 from __future__ import annotations
 
+import ast
 import copy
 import json
 import re
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 import pytest
 
-import generate_all_laws
+from estleg import estleg_common, generate_all_laws
 
 _SHAPES_PATH = (
     generate_all_laws.REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"
@@ -540,12 +542,12 @@ class TestParagraphIdSuperscript:
         graph = doc["@graph"]
         assert any(node.get("@id") == "estleg:KORD_Par_26_1" for node in graph)
         assert any(
-            node.get("@id") == "estleg:KORD_Par_26_1_Dup2" for node in graph
+            node.get("@id") == "estleg:KORD_Par_26_1_x2" for node in graph
         )
         assert any(
-            node.get("@id") == "estleg:KORD_Par_26_1_Dup2_Lg_1"
+            node.get("@id") == "estleg:KORD_Par_26_1_x2_Lg_1"
             and node["estleg:parentProvision"] == {
-                "@id": "estleg:KORD_Par_26_1_Dup2"
+                "@id": "estleg:KORD_Par_26_1_x2"
             }
             for node in graph
         )
@@ -676,12 +678,13 @@ class TestParagraphIdSuperscript:
         assert len(ids) == len(set(ids))
         id_set = set(ids)
         assert "estleg:Cluster_KPSA_6" in id_set
-        assert "estleg:Cluster_KPSA_6_Dup2" in id_set
+        assert "estleg:Cluster_KPSA_6_17_17" in id_set
+        assert not any("_Dup" in i for i in id_set)
         # The two paragraphs resolve to the two distinct clusters.
         par16 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:KPSA_Par_16")
         par17 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:KPSA_Par_17")
         assert par16["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6"
-        assert par17["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6_Dup2"
+        assert par17["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6_17_17"
         for node in doc["@graph"]:
             ref = node.get("estleg:requestedCluster")
             if isinstance(ref, dict):
@@ -768,7 +771,7 @@ class TestProvisionSummaryFallback:
             node for node in doc["@graph"]
             if node.get("@id") == "estleg:KTEST_Par_1"
         )
-        assert provision["estleg:summary"] == "§ 1. Rakendussäte"
+        assert estleg_common.jsonld_text(provision["estleg:summary"]) == "§ 1. Rakendussäte"
         assert "estleg:legalText" not in provision
 
     def test_title_only_multipart_paragraph_gets_summary(self):
@@ -796,7 +799,7 @@ class TestProvisionSummaryFallback:
             node for node in by_file["kokkuvotte_multi_osa1_peep.json"]["@graph"]
             if node.get("@id") == "estleg:KMULT_Osa1_Par_2"
         )
-        assert provision["estleg:summary"] == "§ 2. Mõiste"
+        assert estleg_common.jsonld_text(provision["estleg:summary"]) == "§ 2. Mõiste"
         assert "estleg:legalText" not in provision
 
 
@@ -906,10 +909,10 @@ class TestNestedChapterAttribution:
 
         div1 = next(n for n in doc["@graph"]
                     if n.get("@id", "").startswith("estleg:Division_TNXX_")
-                    and "Esimene" in n.get("rdfs:label", ""))
+                    and "Esimene" in estleg_common.jsonld_text(n.get("rdfs:label", "")))
         div2 = next(n for n in doc["@graph"]
                     if n.get("@id", "").startswith("estleg:Division_TNXX_")
-                    and "Teine" in n.get("rdfs:label", ""))
+                    and "Teine" in estleg_common.jsonld_text(n.get("rdfs:label", "")))
 
         par5 = next(n for n in doc["@graph"]
                     if n.get("@id", "").endswith("Par_5"))
@@ -922,7 +925,7 @@ class TestNestedChapterAttribution:
         # (the division is only their isPartOf container).
         chapter = next(n for n in doc["@graph"]
                        if n.get("@id", "").startswith("estleg:Chapter_TNXX_"))
-        cluster_id = chapter["owl:sameAs"]["@id"]
+        cluster_id = chapter["dcterms:subject"]["@id"]
         assert par5["estleg:requestedCluster"]["@id"] == cluster_id
         assert par7["estleg:requestedCluster"]["@id"] == cluster_id
 
@@ -1893,8 +1896,17 @@ class TestFetchXmlCacheThresholdAndValidation:
 
 
 class TestSaveJsonAtomic:
-    """#601 — the local save_json must write atomically (tempfile +
-    os.replace) so a crash mid-dump cannot leave a half-written file."""
+    """#601 / #464 / #376 — ``generate_all_laws.save_json`` is the atomic
+    ``estleg_common.save_json`` (tempfile + os.replace), not a local
+    ``FunctionDef`` that could truncate a peep mid-dump."""
+
+    def test_no_local_save_json_def_uses_estleg_common(self):
+        tree = ast.parse(
+            Path(generate_all_laws.__file__).read_text(encoding="utf-8")
+        )
+        defs = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]
+        assert "save_json" not in defs
+        assert generate_all_laws.save_json is estleg_common.save_json
 
     def test_save_json_roundtrips(self, tmp_path):
         out = tmp_path / "x_peep.json"
@@ -1944,7 +1956,7 @@ class TestStructuralStalenessGuard:
             json.dumps(
                 {
                     "@graph": [
-                        {"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"]},
+                        {"@id": "estleg:X_Map", "@type": ["owl:Ontology"]},
                         {
                             "@id": "estleg:X_Par_1",
                             "@type": ["estleg:LegalProvision"],
@@ -1963,7 +1975,7 @@ class TestStructuralStalenessGuard:
                 {
                     "@graph": [
                         {
-                            "@id": "estleg:X_Map_2026",
+                            "@id": "estleg:X_Map",
                             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                             "estleg:contentStatus": "noStructuredBody",
                         }
@@ -2230,7 +2242,7 @@ class TestKehtivStamping:
 class TestExistingLawIsStale:
     def _stub_doc(self, *, tid="100", kehtiv="2026-05-01"):
         ont = {
-            "@id": "estleg:X_Map_2026",
+            "@id": "estleg:X_Map",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "estleg:terviktekstId": tid,
         }
@@ -2270,7 +2282,7 @@ class TestExistingLawIsStale:
 class TestWriteLawOutput:
     def test_missing_only_skips_fresh(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        doc = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+        doc = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"],
                            "estleg:terviktekstId": "100",
                            "estleg:kehtiv": {"@value": "2026-05-01", "@type": "xsd:date"}}]}
         p.write_text(json.dumps(doc), encoding="utf-8")
@@ -2281,10 +2293,10 @@ class TestWriteLawOutput:
 
     def test_missing_only_refreshes_stale(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        stale = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+        stale = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"],
                              "estleg:terviktekstId": "100",
                              "estleg:kehtiv": {"@value": "2024-01-01", "@type": "xsd:date"}}]}
-        fresh = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+        fresh = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"],
                              "estleg:terviktekstId": "100",
                              "estleg:kehtiv": {"@value": "2026-05-01", "@type": "xsd:date"}}]}
         p.write_text(json.dumps(stale), encoding="utf-8")
@@ -2296,7 +2308,7 @@ class TestWriteLawOutput:
 
     def test_missing_only_new_file(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        doc = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"]}]}
+        doc = {"@graph": [{"@id": "estleg:X_Map", "@type": ["owl:Ontology"]}]}
         status = generate_all_laws.write_law_output(p, doc, mode="missing-only")
         assert status == "newlyGenerated"
         assert p.exists()
@@ -2339,7 +2351,7 @@ class TestEnrichmentPreservation:
         existing = {
             "@graph": [
                 {
-                    "@id": "estleg:X_Map_2026",
+                    "@id": "estleg:X_Map",
                     "@type": ["owl:Ontology"],
                     "rdfs:label": "stale label",
                     "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/1"}],
@@ -2354,7 +2366,7 @@ class TestEnrichmentPreservation:
         fresh = {
             "@graph": [
                 {
-                    "@id": "estleg:X_Map_2026",
+                    "@id": "estleg:X_Map",
                     "@type": ["owl:Ontology"],
                     "rdfs:label": "fresh label",
                     "estleg:contentStatus": "structuredBody",
@@ -3817,14 +3829,14 @@ class TestSubsectionEmission:
         subs = _subsection_nodes(doc["@graph"])
         assert [s["@id"] for s in subs] == [
             "estleg:TDUPX_Par_1_Lg_2",
-            "estleg:TDUPX_Par_1_Lg_2_Dup2",
+            "estleg:TDUPX_Par_1_Lg_2_x2",
         ]
         par1 = next(
             node for node in doc["@graph"] if node.get("@id") == "estleg:TDUPX_Par_1"
         )
         assert par1["estleg:hasSubsection"] == [
             {"@id": "estleg:TDUPX_Par_1_Lg_2"},
-            {"@id": "estleg:TDUPX_Par_1_Lg_2_Dup2"},
+            {"@id": "estleg:TDUPX_Par_1_Lg_2_x2"},
         ]
 
     def test_missing_loige_numbers_get_ordered_fallback_ids(self):
@@ -3850,12 +3862,12 @@ class TestSubsectionEmission:
 
         subs = _subsection_nodes(doc["@graph"])
         assert [s["@id"] for s in subs] == [
-            "estleg:TUNKX_Par_2_Lg_Unknown_1",
-            "estleg:TUNKX_Par_2_Lg_Unknown_2",
+            "estleg:TUNKX_Par_2_Lg_1",
+            "estleg:TUNKX_Par_2_Lg_2",
         ]
         assert [s["estleg:subsectionNumber"] for s in subs] == [
-            "Unknown_1",
-            "Unknown_2",
+            "1",
+            "2",
         ]
 
     def test_multipart_subsection_ids_are_osa_scoped(self):
@@ -4074,7 +4086,7 @@ class TestSubsectionShaclConformance:
             "@id": "estleg:X_Par_14",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
             "estleg:paragrahv": "§ 14",
-            "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:X_Map"},
             "estleg:summary": "Teovõime.",
             "estleg:legalText": "(2) Lõike kaks tekst.",
             "estleg:hasSubsection": [{"@id": "estleg:X_Par_14_Lg_2"}],
@@ -4087,7 +4099,7 @@ class TestSubsectionShaclConformance:
             "@id": "estleg:X_Par_15",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
             "estleg:paragrahv": "§ 15",
-            "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
+            "estleg:partOfAct": {"@id": "estleg:X_Map"},
             "estleg:summary": "Üks lause.",
             "estleg:legalText": "Üks lause vaid.",
         }
@@ -4172,8 +4184,12 @@ class TestCollectTextNoLoigeDuplication:
         prov = next(
             n for n in doc["@graph"] if n.get("@id") == "estleg:DUPX_Par_1"
         )
-        assert prov["estleg:summary"].count("Esimene siduv lause.") == 1
-        assert prov["estleg:summary"].count("Teine siduv lause.") == 1
+        assert estleg_common.jsonld_text(prov["estleg:summary"]).count(
+            "Esimene siduv lause."
+        ) == 1
+        assert estleg_common.jsonld_text(prov["estleg:summary"]).count(
+            "Teine siduv lause."
+        ) == 1
 
 
 # ---------------------------------------------------------------------------
@@ -4234,7 +4250,7 @@ class TestSlugifyTrailingUnderscore:
 
     def test_no_double_underscore_when_suffix_appended(self):
         slug = generate_all_laws.slugify("x" * 79 + " more text here")
-        iri = f"estleg:{slug}_Map_2026"
+        iri = f"estleg:{slug}_Map"
         assert "__" not in iri, iri
 
     def test_short_slug_unaffected(self):
@@ -4255,9 +4271,12 @@ class TestSanitizeIdRangeCanonicalisation:
         assert generate_all_laws.sanitize_id("1−94") == "1_to_94"
 
     def test_ascii_hyphen_unchanged_behaviour(self):
-        # ASCII hyphen is NOT a §-range separator; preserve the prior
-        # strip-to-nothing behaviour so unrelated ids do not shift.
+        # Non-numeric ASCII hyphen is still stripped (#449 only
+        # canonicalises digit-dash-digit ranges).
         assert generate_all_laws.sanitize_id("a-b") == "ab"
+
+    def test_ascii_hyphen_numeric_range_becomes_to(self):
+        assert generate_all_laws.sanitize_id("1-94") == "1_to_94"
 
     def test_plain_number_unchanged(self):
         assert generate_all_laws.sanitize_id("194") == "194"
@@ -4346,7 +4365,7 @@ class TestMultipartActIdStable:
         act = results["kars_osa1_peep.json"]["@graph"][0]
         assert act["@id"] == "estleg:KARSY_Osa1", act["@id"]
         # The §-range survives only in the human-readable label.
-        assert "1–87" in act["rdfs:label"], act["rdfs:label"]
+        assert "1–87" in estleg_common.jsonld_text(act["rdfs:label"]), act["rdfs:label"]
 
     def test_act_id_stable_when_par_range_shifts(self):
         """Inserting/removing a paragraph shifts the §-range but must NOT
@@ -4637,6 +4656,26 @@ class TestChapterHasPartIncludesDirectProvisions:
         ), haspart
         assert f"estleg:{prefix}_Osa1_Par_141" in haspart, haspart
         assert f"estleg:{prefix}_Osa1_Par_142" not in haspart, haspart
+
+    def test_committed_ravimiseadus_chapter5_haspart_lists_direct_provisions(self):
+        """#375 data half — committed ravimiseadus_peep.json must list every
+        provision whose isPartOf is Chapter_RavS_5 in that chapter's hasPart."""
+        peep = generate_all_laws.KRR_DIR / "ravimiseadus_peep.json"
+        doc = json.loads(peep.read_text(encoding="utf-8"))
+        graph = doc["@graph"]
+        chapter_id = "estleg:Chapter_RavS_5"
+        chapter = next(n for n in graph if n.get("@id") == chapter_id)
+        haspart = {x["@id"] for x in chapter.get("estleg:hasPart", [])}
+        direct_provisions = []
+        for node in graph:
+            is_part_of = node.get("estleg:isPartOf")
+            if not (isinstance(is_part_of, dict) and is_part_of.get("@id") == chapter_id):
+                continue
+            types = node.get("@type") or []
+            if any("LegalProvision" in t for t in types):
+                direct_provisions.append(node["@id"])
+        missing = [iri for iri in direct_provisions if iri not in haspart]
+        assert not missing, missing
 
 
 # ---------------------------------------------------------------------------

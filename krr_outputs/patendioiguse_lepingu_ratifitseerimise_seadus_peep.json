@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:PLR_Map_2026",
+      "@id": "estleg:PLR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Patendiõiguse lepingu ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/262118.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/262118.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,30 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_patendioiguse_lepingu_ratifitseerimise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2003-03-14",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:PLR_TopicScheme",
@@ -78,13 +87,13 @@
       "@id": "estleg:PLR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_patendioiguse_lepingu_ratifitseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud patendiõiguse leping./262131, mis on koostatud 2000...]",
       "estleg:sourceAct": "Patendiõiguse lepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PLR_Map_2026"
+        "@id": "estleg:PLR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 2000. aasta 11. mail Genfis.",
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 2000. aasta 11. mail Genfis.",
@@ -93,7 +102,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:PLR_Par_1_Lg_Unknown_1"
+          "@id": "estleg:PLR_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -120,7 +129,7 @@
       ]
     },
     {
-      "@id": "estleg:PLR_Par_1_Lg_Unknown_1",
+      "@id": "estleg:PLR_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -134,13 +143,13 @@
       "@id": "estleg:PLR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_patendioiguse_lepingu_ratifitseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Vabariigi Valitsus tagab patendiõiguse lepingu rakenduseeskirjade ja nendes hilj...]",
       "estleg:sourceAct": "Patendiõiguse lepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PLR_Map_2026"
+        "@id": "estleg:PLR_Map"
       },
       "estleg:summary": "Vabariigi Valitsus tagab patendiõiguse lepingu rakenduseeskirjade ja nendes hiljem tehtavate muudatuste avaldamise Riigi Teatajas.",
       "estleg:legalText": "Vabariigi Valitsus tagab patendiõiguse lepingu rakenduseeskirjade ja nendes hiljem tehtavate muudatuste avaldamise Riigi Teatajas.",
@@ -149,11 +158,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:PLR_Par_2_Lg_Unknown_1"
+          "@id": "estleg:PLR_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -181,10 +192,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:PLR_Par_2_Lg_Unknown_1",
+      "@id": "estleg:PLR_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -192,6 +207,15 @@
       "estleg:legalText": "Vabariigi Valitsus tagab patendiõiguse lepingu rakenduseeskirjade ja nendes hiljem tehtavate muudatuste avaldamise Riigi Teatajas.",
       "estleg:parentProvision": {
         "@id": "estleg:PLR_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

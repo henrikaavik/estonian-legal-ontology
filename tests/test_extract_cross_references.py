@@ -2,13 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
 import pytest
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer2b"
@@ -27,7 +23,7 @@ class TestExtractPreambleCitations:
     @pytest.mark.parametrize("sample", load_preamble_samples(),
                               ids=lambda s: s["id"])
     def test_sample(self, sample):
-        from extract_cross_references import extract_preamble_citations
+        from estleg.extract_cross_references import extract_preamble_citations
 
         cits = extract_preamble_citations(sample["text"])
         assert len(cits) == sample["expected_count"], (
@@ -56,12 +52,12 @@ class TestExtractPreambleCitations:
             assert cits[0]["act_number"] == sample["expected_act_number"]
 
     def test_empty_text_returns_empty(self):
-        from extract_cross_references import extract_preamble_citations
+        from estleg.extract_cross_references import extract_preamble_citations
         assert extract_preamble_citations("") == []
         assert extract_preamble_citations(None) == []
 
     def test_no_match_returns_empty(self):
-        from extract_cross_references import extract_preamble_citations
+        from estleg.extract_cross_references import extract_preamble_citations
         assert extract_preamble_citations("Plain text with no citations.") == []
 
     def test_chain_extension_emits_per_paragraph_citations(self):
@@ -69,7 +65,7 @@ class TestExtractPreambleCitations:
         lg/p detail, not the leading match's. Locks in the critical
         invariant: '§ 6 lg 3 p 2 ja § 22 lg 1 p 34' produces TWO
         citations, the second with its own (lg 1 p 34) detail."""
-        from extract_cross_references import extract_preamble_citations
+        from estleg.extract_cross_references import extract_preamble_citations
         cits = extract_preamble_citations(
             "Määrus kehtestatakse kohaliku omavalitsuse korralduse "
             "seaduse § 6 lg 3 p 2 ja § 22 lg 1 p 34 alusel."
@@ -93,10 +89,10 @@ class TestCanonicalLookups:
         are prefix→act_iri AND act_iri→prefix. The reverse map is
         essential for Task 5's resolver, which needs to derive a prefix
         from an act IRI without splitting on '_' (34 corpus acts have
-        prefixes containing underscores, e.g. 'KARIST_2_Map_2026')."""
-        from extract_cross_references import build_provision_index
-        import estleg_common
-        import extract_cross_references as ecr
+        prefixes containing underscores, e.g. 'KARIST_2_Map')."""
+        from estleg import estleg_common
+        from estleg import extract_cross_references as ecr
+        from estleg.extract_cross_references import build_provision_index
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -105,7 +101,7 @@ class TestCanonicalLookups:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AS_Map_2026",
+                {"@id": "estleg:AS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Alkoholiseadus",
                  "estleg:sourceAct": "Alkoholiseadus"},
@@ -139,11 +135,11 @@ class TestCanonicalLookups:
          prefix_to_act_iri, act_iri_to_prefix) = result
 
         # Prefix → act IRI
-        assert prefix_to_act_iri.get("AS") == "estleg:AS_Map_2026"
+        assert prefix_to_act_iri.get("AS") == "estleg:AS_Map"
         assert prefix_to_act_iri.get("KARIST_2") == "estleg:KARIST_2_Osa1_1_87"
 
         # Reverse direction — exact mirror of prefix_to_act_iri
-        assert act_iri_to_prefix.get("estleg:AS_Map_2026") == "AS"
+        assert act_iri_to_prefix.get("estleg:AS_Map") == "AS"
         # The reverse lookup MUST resolve to the multi-segment prefix,
         # not 'KARIST', because provisions are keyed under 'KARIST_2'.
         assert act_iri_to_prefix.get("estleg:KARIST_2_Osa1_1_87") == "KARIST_2"
@@ -152,9 +148,9 @@ class TestCanonicalLookups:
         """#573: a deprecated/replaced act peep (owl:deprecated + isReplacedBy)
         is excluded from the provision index so its retained provisions never
         shadow the canonical replacement during citation resolution."""
-        from extract_cross_references import build_provision_index
-        import estleg_common
-        import extract_cross_references as ecr
+        from estleg import estleg_common
+        from estleg import extract_cross_references as ecr
+        from estleg.extract_cross_references import build_provision_index
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -163,9 +159,9 @@ class TestCanonicalLookups:
                          "owl": "http://www.w3.org/2002/07/owl#",
                          "dcterms": "http://purl.org/dc/terms/"},
             "@graph": [
-                {"@id": "estleg:PGS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                {"@id": "estleg:PGS_Map", "@type": ["owl:Ontology", "estleg:Act"],
                  "owl:deprecated": True,
-                 "dcterms:isReplacedBy": {"@id": "estleg:POHIKO_Map_2026"}},
+                 "dcterms:isReplacedBy": {"@id": "estleg:POHIKO_Map"}},
                 {"@id": "estleg:PGS_Par_27",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
                  "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus",
@@ -176,7 +172,7 @@ class TestCanonicalLookups:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:POHIKO_Map_2026",
+                {"@id": "estleg:POHIKO_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus"},
                 {"@id": "estleg:POHIKO_Par_27",
@@ -196,7 +192,7 @@ class TestCanonicalLookups:
     def test_genitive_to_act_iri_chains_through_abbrev(self):
         """Build the genitive_law_name → act_iri lookup by chaining
         FULLNAME_GENITIVE → abbrev → source_act_to_prefix → prefix_to_act_iri."""
-        from extract_cross_references import build_genitive_to_act_iri
+        from estleg.extract_cross_references import build_genitive_to_act_iri
 
         # Mock the pieces — we test the chaining logic, not the
         # underlying registries (those are tested in build_provision_index).
@@ -205,8 +201,8 @@ class TestCanonicalLookups:
             "Karistusseadustik": "KARIST",
         }
         prefix_to_act_iri = {
-            "AS": "estleg:AS_Map_2026",
-            "KARIST": "estleg:KARIST_2_Map_2026",
+            "AS": "estleg:AS_Map",
+            "KARIST": "estleg:KARIST_2_Map",
         }
         # FULLNAME_GENITIVE has e.g. "karistusseadustiku" → "KarS"
         # KNOWN_ABBREVIATIONS would map "KarS" → "Karistusseadustik"
@@ -219,14 +215,14 @@ class TestCanonicalLookups:
         # The lookup contains lowercased keys so it can be queried
         # case-insensitively against parser output.
         assert "karistusseadustiku" in result
-        assert result["karistusseadustiku"] == "estleg:KARIST_2_Map_2026"
+        assert result["karistusseadustiku"] == "estleg:KARIST_2_Map"
 
     def test_state_regulation_lookup_reads_adoption_from_xml(self, tmp_path):
         """The corpus has zero estleg:adoptionDate — adoption_date is
         only in XML at <vastuvoetud><aktikuupaev>. The lookup builder
         pairs each peep to its XML via pair_peep_with_xml and reads
         the date from there."""
-        from extract_cross_references import build_state_regulation_lookup
+        from estleg.extract_cross_references import build_state_regulation_lookup
 
         # Stage a state regulation peep with globalId
         riik = tmp_path / "krr_outputs" / "regulations" / "riik"
@@ -265,7 +261,7 @@ class TestCanonicalLookups:
     def test_kov_act_lookup_uses_registry_label(self, tmp_path):
         """Issuer label comes from the registry's rdfs:label, not from
         slug→title-case (which would produce 'Noo' instead of 'Nõo')."""
-        from extract_cross_references import build_kov_act_lookup
+        from estleg.extract_cross_references import build_kov_act_lookup
 
         # Stage a KOV peep + matching XML, plus an issuers registry
         # whose rdfs:label has a diacritic.
@@ -325,7 +321,7 @@ class TestCanonicalLookups:
         issuer can have several acts under the same actNumber across
         historical revisions, and the resolver must see all candidates
         to decide whether the match is unique."""
-        from extract_cross_references import build_kov_act_lookup_by_number
+        from estleg.extract_cross_references import build_kov_act_lookup_by_number
 
         krr = tmp_path / "krr_outputs"
         kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
@@ -352,7 +348,7 @@ class TestCanonicalLookups:
         """When an issuer has reused the same act_number across
         historical revisions, the lookup MUST keep all candidates so
         the resolver can detect ambiguity and abstain."""
-        from extract_cross_references import build_kov_act_lookup_by_number
+        from estleg.extract_cross_references import build_kov_act_lookup_by_number
 
         krr = tmp_path / "krr_outputs"
         kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
@@ -393,7 +389,7 @@ class TestCanonicalLookups:
         must normalise both sides so 'Põlva Vallavalitsus' on the act
         side matches a body-text reference written 'Polva Vallavalitsus'
         (and vice-versa)."""
-        from extract_cross_references import build_kov_act_lookup_by_number
+        from estleg.extract_cross_references import build_kov_act_lookup_by_number
 
         krr = tmp_path / "krr_outputs"
         kov = krr / "regulations" / "kov" / "polva_vallavalitsus"
@@ -418,17 +414,17 @@ class TestCanonicalLookups:
 
 class TestCitationNodeBuilder:
     def test_iri_pattern_matches_shacl(self):
-        from extract_cross_references import build_citation_iri
+        from estleg.extract_cross_references import build_citation_iri
         # Use a corpus-shaped IRI as input — Reg_<id>_Map_<year>
-        iri = build_citation_iri("estleg:Reg_1014955_Map_2026", seq=1)
-        assert iri == "estleg:Citation_Reg_1014955_Map_2026_1"
+        iri = build_citation_iri("estleg:Reg_1014955_Map", seq=1)
+        assert iri == "estleg:Citation_Reg_1014955_Map_1"
         import re
         assert re.match(r"^estleg:Citation_[A-Za-z0-9_]+_[0-9]+$", iri)
 
     def test_citation_node_with_full_detail(self):
-        from extract_cross_references import build_citation_node
+        from estleg.extract_cross_references import build_citation_node
         node = build_citation_node(
-            iri="estleg:Citation_Reg_1014955_Map_2026_1",
+            iri="estleg:Citation_Reg_1014955_Map_1",
             # Corpus shape for provisions is <prefix>_Par_<n> (NOT
             # <prefix>_Map_<year>_Par_<n>). The act IRI carries the
             # _Map_<year> suffix; provisions reuse the bare prefix.
@@ -436,7 +432,7 @@ class TestCitationNodeBuilder:
             citation_detail="lg 1 p 34",
             citation_text="kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34",
         )
-        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_2026_1"
+        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_1"
         assert "estleg:Citation" in node["@type"]
         assert "owl:NamedIndividual" in node["@type"]
         assert node["estleg:citationTarget"] == {"@id": "estleg:KOKS_Par_22"}
@@ -444,9 +440,9 @@ class TestCitationNodeBuilder:
         assert node["estleg:citationText"].startswith("kohaliku omavalitsuse")
 
     def test_citation_node_omits_optional_when_none(self):
-        from extract_cross_references import build_citation_node
+        from estleg.extract_cross_references import build_citation_node
         node = build_citation_node(
-            iri="estleg:Citation_Reg_X_Map_2026_1",
+            iri="estleg:Citation_Reg_X_Map_1",
             target_iri="estleg:Reg_Y_Map_2020",  # act-level when no §
             citation_detail=None,
             citation_text=None,
@@ -464,8 +460,8 @@ class TestResolvePreambleCitation:
         #   provision IRIs: <prefix>_Par_<n>  (NO _Map_<year> in the middle)
         return {
             "genitive_to_act_iri": {
-                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map_2026",
-                "alkoholiseaduse": "estleg:AS_Map_2026",
+                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map",
+                "alkoholiseaduse": "estleg:AS_Map",
                 "karistusseadustiku": "estleg:KARIST_2_Osa1_1_87",
             },
             "prefix_to_provisions": {
@@ -475,8 +471,8 @@ class TestResolvePreambleCitation:
                 "KARIST_2": {"1": "estleg:KARIST_2_Par_1"},
             },
             "act_iri_to_prefix": {
-                "estleg:KOKS_Map_2026": "KOKS",
-                "estleg:AS_Map_2026": "AS",
+                "estleg:KOKS_Map": "KOKS",
+                "estleg:AS_Map": "AS",
                 # Multi-segment prefix — the case the v2 plan got wrong.
                 "estleg:KARIST_2_Osa1_1_87": "KARIST_2",
             },
@@ -492,7 +488,7 @@ class TestResolvePreambleCitation:
 
     def test_law_with_paragraph_returns_act_level_issuedUnder(self, lookups):
         """issuedUnder must be act-level, citation_target is the provision."""
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
         cit = {
             "form": "law-genitive",
             "law_ref": "kohaliku omavalitsuse korralduse seaduse",
@@ -506,11 +502,11 @@ class TestResolvePreambleCitation:
         # Provision-level for citation target — corpus shape is <prefix>_Par_<n>
         assert target_iri == "estleg:KOKS_Par_22"
         # Act-level for issuedUnder — this is the key Layer 2b semantic
-        assert enabling_act_iri == "estleg:KOKS_Map_2026"
+        assert enabling_act_iri == "estleg:KOKS_Map"
 
     def test_law_without_paragraph(self, lookups):
         """When citation has no §, both target and enabling_act are act-level."""
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
         cit = {
             "form": "law-genitive",
             "law_ref": "alkoholiseaduse",
@@ -519,7 +515,7 @@ class TestResolvePreambleCitation:
             "citationText": "alkoholiseaduse",
         }
         result = resolve_preamble_citation(cit, **lookups)
-        assert result == ("estleg:AS_Map_2026", "estleg:AS_Map_2026")
+        assert result == ("estleg:AS_Map", "estleg:AS_Map")
 
     def test_law_with_multipart_prefix_resolves_via_reverse_map(self, lookups):
         """Reverse map (act_iri_to_prefix) MUST be consulted for the
@@ -527,7 +523,7 @@ class TestResolvePreambleCitation:
         'estleg:KARIST_2_Osa1_1_87' and miss the real prefix
         'KARIST_2'. This is the regression that motivated the
         round-3 review (B1)."""
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
         cit = {
             "form": "law-genitive",
             "law_ref": "karistusseadustiku",
@@ -542,7 +538,7 @@ class TestResolvePreambleCitation:
         )
 
     def test_state_regulation(self, lookups):
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
         cit = {
             "form": "state-regulation-date-number",
             "issuer": "Vabariigi Valitsus",
@@ -557,7 +553,7 @@ class TestResolvePreambleCitation:
                           "estleg:Reg_VV251_Map_2007")
 
     def test_kov_regulation(self, lookups):
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
         cit = {
             "form": "kov-regulation-date-number",
             "issuer": "Tallinna Linnavolikogu",
@@ -571,7 +567,7 @@ class TestResolvePreambleCitation:
                           "estleg:Reg_TLN60_Map_2020")
 
     def test_unresolved_returns_none(self, lookups):
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
         cit = {
             "form": "law-genitive",
             "law_ref": "ettetuntmatu_seaduse",
@@ -585,7 +581,7 @@ class TestResolvePreambleCitation:
 
 class TestExtractKovActRefsFromText:
     def test_parses_full_issuer_label(self):
-        from extract_cross_references import extract_kov_act_refs_from_text
+        from estleg.extract_cross_references import extract_kov_act_refs_from_text
         refs = extract_kov_act_refs_from_text(
             "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 lõikele 1 ..."
         )
@@ -595,7 +591,7 @@ class TestExtractKovActRefsFromText:
         assert refs[0]["act_number"] == "15"
 
     def test_parses_generic_body_word_no_place_name(self):
-        from extract_cross_references import extract_kov_act_refs_from_text
+        from estleg.extract_cross_references import extract_kov_act_refs_from_text
         refs = extract_kov_act_refs_from_text(
             "linnavolikogu määrus nr 5 sätestab täpsemad tingimused."
         )
@@ -605,7 +601,7 @@ class TestExtractKovActRefsFromText:
         assert refs[0]["act_number"] == "5"
 
     def test_parses_diacritic_issuer(self):
-        from extract_cross_references import extract_kov_act_refs_from_text
+        from estleg.extract_cross_references import extract_kov_act_refs_from_text
         refs = extract_kov_act_refs_from_text(
             "Põlva Vallavalitsuse määrusega nr 3 kehtestatud korras."
         )
@@ -615,7 +611,7 @@ class TestExtractKovActRefsFromText:
         assert refs[0]["act_number"] == "3"
 
     def test_no_match_returns_empty(self):
-        from extract_cross_references import extract_kov_act_refs_from_text
+        from estleg.extract_cross_references import extract_kov_act_refs_from_text
         assert extract_kov_act_refs_from_text("Plain text.") == []
         assert extract_kov_act_refs_from_text("") == []
 
@@ -623,7 +619,7 @@ class TestExtractKovActRefsFromText:
         """Regression: 'Järva Jaani' is a real two-word KOV name. The
         prefix trimmer must NOT mistakenly drop 'Järva' as a leading
         preamble word — it's part of the place name."""
-        from extract_cross_references import extract_kov_act_refs_from_text
+        from estleg.extract_cross_references import extract_kov_act_refs_from_text
         refs = extract_kov_act_refs_from_text(
             "Vastavalt Järva Jaani Vallavolikogu määruse nr 5 § 2 ..."
         )
@@ -666,7 +662,7 @@ class TestKovBodyTextScope:
         return kov_act_lookup_by_number, issuer_registry
 
     def test_explicit_issuer_in_same_municipality_resolves(self, fixture_data):
-        from extract_cross_references import resolve_kov_internal_act_ref
+        from estleg.extract_cross_references import resolve_kov_internal_act_ref
         lookup, registry = fixture_data
         target = resolve_kov_internal_act_ref(
             source_municipality="estleg:Municipality_tallinn",
@@ -683,7 +679,7 @@ class TestKovBodyTextScope:
     ):
         """Tallinn act citing 'Tartu Linnavolikogu' explicitly is
         cross-municipality — skip rather than resolve."""
-        from extract_cross_references import resolve_kov_internal_act_ref
+        from estleg.extract_cross_references import resolve_kov_internal_act_ref
         lookup, registry = fixture_data
         target = resolve_kov_internal_act_ref(
             source_municipality="estleg:Municipality_tallinn",
@@ -701,7 +697,7 @@ class TestKovBodyTextScope:
         """No explicit issuer → enumerate volikogus in source
         municipality. Tallinn has only one volikogu, so this resolves
         uniquely."""
-        from extract_cross_references import resolve_kov_internal_act_ref
+        from estleg.extract_cross_references import resolve_kov_internal_act_ref
         lookup, registry = fixture_data
         target = resolve_kov_internal_act_ref(
             source_municipality="estleg:Municipality_tallinn",
@@ -717,7 +713,7 @@ class TestKovBodyTextScope:
         """When the issuer has reused the act_number across revisions,
         the resolver MUST abstain rather than pick a 'latest by file
         order' winner."""
-        from extract_cross_references import resolve_kov_internal_act_ref
+        from estleg.extract_cross_references import resolve_kov_internal_act_ref
         lookup, registry = fixture_data
         target = resolve_kov_internal_act_ref(
             source_municipality="estleg:Municipality_polva_vald",
@@ -729,6 +725,125 @@ class TestKovBodyTextScope:
         )
         assert target is None
 
+    def test_path_a_with_prebuilt_indexes_matches_registry_scan(
+        self, fixture_data
+    ):
+        from estleg.extract_cross_references import (
+            index_issuer_registry,
+            resolve_kov_internal_act_ref,
+        )
+        lookup, registry = fixture_data
+        indexes = index_issuer_registry(registry)
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer="tallinna linnavolikogu",
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+            issuer_indexes=indexes,
+        )
+        assert target == "estleg:Reg_TLN15_Map_2020"
+
+    def test_path_a_cross_muni_with_prebuilt_indexes_returns_none(
+        self, fixture_data
+    ):
+        from estleg.extract_cross_references import (
+            index_issuer_registry,
+            resolve_kov_internal_act_ref,
+        )
+        lookup, registry = fixture_data
+        indexes = index_issuer_registry(registry)
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer="tartu linnavolikogu",
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+            issuer_indexes=indexes,
+        )
+        assert target is None
+
+    def test_path_b_with_prebuilt_indexes_matches_registry_scan(
+        self, fixture_data
+    ):
+        from estleg.extract_cross_references import (
+            index_issuer_registry,
+            resolve_kov_internal_act_ref,
+        )
+        lookup, registry = fixture_data
+        indexes = index_issuer_registry(registry)
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer=None,
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+            issuer_indexes=indexes,
+        )
+        assert target == "estleg:Reg_TLN15_Map_2020"
+
+
+class TestIndexIssuerRegistry:
+    def test_groups_labels_by_muni_and_btype(self):
+        from estleg.extract_cross_references import index_issuer_registry
+
+        registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+            "estleg:Issuer_tallinna_linnavalitsus": (
+                "tallinna linnavalitsus",
+                "estleg:Municipality_tallinn", "valitsus",
+            ),
+            "estleg:Issuer_tartu_linnavolikogu": (
+                "tartu linnavolikogu",
+                "estleg:Municipality_tartu", "volikogu",
+            ),
+        }
+        idx = index_issuer_registry(registry)
+
+        assert idx.label_to_muni == {
+            "tallinna linnavolikogu": "estleg:Municipality_tallinn",
+            "tallinna linnavalitsus": "estleg:Municipality_tallinn",
+            "tartu linnavolikogu": "estleg:Municipality_tartu",
+        }
+        assert idx.labels_by_muni_btype == {
+            ("estleg:Municipality_tallinn", "volikogu"): [
+                "tallinna linnavolikogu",
+            ],
+            ("estleg:Municipality_tallinn", "valitsus"): [
+                "tallinna linnavalitsus",
+            ],
+            ("estleg:Municipality_tartu", "volikogu"): [
+                "tartu linnavolikogu",
+            ],
+        }
+        assert idx.labels_by_muni == {
+            "estleg:Municipality_tallinn": [
+                "tallinna linnavolikogu",
+                "tallinna linnavalitsus",
+            ],
+            "estleg:Municipality_tartu": ["tartu linnavolikogu"],
+        }
+
+    def test_first_label_wins_on_duplicate_normalised_labels(self):
+        from estleg.extract_cross_references import index_issuer_registry
+
+        registry = {
+            "estleg:Issuer_a": (
+                "shared label", "estleg:Municipality_a", "volikogu",
+            ),
+            "estleg:Issuer_b": (
+                "shared label", "estleg:Municipality_b", "volikogu",
+            ),
+        }
+        idx = index_issuer_registry(registry)
+        assert idx.label_to_muni["shared label"] == "estleg:Municipality_a"
+
 
 class TestKovBodyTextSavesFile:
     """A KOV peep that gains references ONLY from the new Layer 2b
@@ -737,7 +852,7 @@ class TestKovBodyTextSavesFile:
     in-law branch found nothing."""
 
     def test_kov_only_body_text_triggers_save(self, tmp_path):
-        from extract_cross_references import process_law_file
+        from estleg.extract_cross_references import process_law_file
 
         # Stage a KOV peep whose body text references a same-municipality
         # act by issuer + number, with no in-law citations.
@@ -809,7 +924,7 @@ class TestPreamblePassIdempotency:
         the file was mutated in memory (pop / graph[:]) but NEVER saved
         because the save was gated only on positive output. The fix:
         save when EITHER fresh output OR had_existing."""
-        from extract_cross_references import _process_preamble_for_act
+        from estleg.extract_cross_references import _process_preamble_for_act
 
         # Stage a peep with prior pass output and a preambleText that
         # the parser cannot extract any citation from.
@@ -825,7 +940,7 @@ class TestPreamblePassIdempotency:
                         "Plain text with no citations.",
                     # Prior-pass output the new run must clear:
                     "estleg:issuedUnder": [
-                        {"@id": "estleg:KOKS_Map_2026"}
+                        {"@id": "estleg:KOKS_Map"}
                     ],
                     "estleg:implementsCitation": [
                         {"@id": "estleg:Citation_Reg_TLN_Test_Map_2024_1"}
@@ -887,7 +1002,7 @@ class TestPreamblePassIdempotency:
     def test_no_existing_no_fresh_does_not_save(self, tmp_path):
         """When neither prior output nor fresh output is present,
         the helper must NOT save (no spurious file writes)."""
-        from extract_cross_references import _process_preamble_for_act
+        from estleg.extract_cross_references import _process_preamble_for_act
 
         peep = tmp_path / "empty_preamble_peep.json"
         doc = {
@@ -947,8 +1062,8 @@ class TestIsProvisionNodeHelper:
 
         # Non-provisions — owl:Ontology act nodes, citation nodes,
         # malformed inputs, missing @id.
-        ({"@id": "estleg:KOKS_Map_2026"}, False),
-        ({"@id": "estleg:Citation_KOKS_Map_2026_1"}, False),
+        ({"@id": "estleg:KOKS_Map"}, False),
+        ({"@id": "estleg:Citation_KOKS_Map_1"}, False),
         ({"@id": ""}, False),
         ({}, False),
         # Defensive: non-string @id and non-dict input.
@@ -958,7 +1073,7 @@ class TestIsProvisionNodeHelper:
         ([], False),
     ])
     def test_predicate(self, node, expected):
-        from extract_cross_references import is_provision_node
+        from estleg.extract_cross_references import is_provision_node
         assert is_provision_node(node) is expected
 
 
@@ -970,14 +1085,14 @@ class TestRunInlawCitationPass:
     file IO."""
 
     def test_run_inlaw_citation_pass_produces_correct_references(self):
-        from extract_cross_references import _run_inlaw_citation_pass
+        from estleg.extract_cross_references import _run_inlaw_citation_pass
 
         # A provision whose summary contains a self-reference and a
         # cross-law citation. self_prefix='KARIST_2' matches a real
         # multi-segment corpus prefix; the citation '§ 121' must
         # resolve via the registry.
         graph = [
-            {"@id": "estleg:KARIST_2_Map_2026",
+            {"@id": "estleg:KARIST_2_Map",
              "@type": ["owl:Ontology"]},
             {"@id": "estleg:KARIST_2_Par_1",
              "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1024,7 +1139,7 @@ class TestRunInlawCitationPass:
     def test_inlaw_pass_skips_self_link(self):
         """When the self-reference resolves to the provision itself,
         the helper must drop it (no estleg:references → self)."""
-        from extract_cross_references import _run_inlaw_citation_pass
+        from estleg.extract_cross_references import _run_inlaw_citation_pass
 
         graph = [
             {"@id": "estleg:KOKS_Par_1",
@@ -1055,7 +1170,7 @@ class TestRunKovBodyPass:
     so the assertion isolates the pass from process_law_file."""
 
     def test_run_kov_body_pass_emits_implementsCitation(self):
-        from extract_cross_references import _run_kov_body_pass
+        from estleg.extract_cross_references import _run_kov_body_pass
 
         graph = [
             {"@id": "estleg:Reg_TLN_Test_Map_2024",
@@ -1101,7 +1216,7 @@ class TestRunKovBodyPass:
         The old code stamped ``_layer2b_counted`` on each provision
         which leaked to disk; the new contract returns the set in the
         stats dict and never touches the document."""
-        from extract_cross_references import _run_kov_body_pass
+        from estleg.extract_cross_references import _run_kov_body_pass
 
         graph = [
             {"@id": "estleg:Reg_X_Map_2024",
@@ -1138,7 +1253,7 @@ class TestSelfReferencePrefix:
     incorrect for a few legacy peeps."""
 
     def test_self_reference_prefix_uses_registry_not_string_split(self):
-        from extract_cross_references import _derive_self_prefix
+        from estleg.extract_cross_references import _derive_self_prefix
 
         # Multi-segment prefix corpus shape: an act_iri whose prefix
         # itself contains underscores. The registry-driven path MUST
@@ -1161,10 +1276,10 @@ class TestSelfReferencePrefix:
         """When act_iri_to_prefix is None or doesn't carry the act,
         the helper falls back to _prefix_from_act_iri (suffix-stripper)
         before resorting to the legacy provision-id string split."""
-        from extract_cross_references import _derive_self_prefix
+        from estleg.extract_cross_references import _derive_self_prefix
 
         graph = [
-            {"@id": "estleg:KOKS_Map_2026",
+            {"@id": "estleg:KOKS_Map",
              "@type": ["owl:Ontology"]},
             {"@id": "estleg:KOKS_Par_22",
              "@type": ["owl:NamedIndividual"]},
@@ -1176,7 +1291,7 @@ class TestSelfReferencePrefix:
         """Last-resort path: when the peep has no owl:Ontology node
         (rare legacy fragments), the helper still returns a usable
         prefix from the first provision @id."""
-        from extract_cross_references import _derive_self_prefix
+        from estleg.extract_cross_references import _derive_self_prefix
 
         graph = [
             {"@id": "estleg:LEGACY_Par_1",
@@ -1191,7 +1306,7 @@ class TestSelfReferencePrefix:
         """The orchestrator must consult act_iri_to_prefix when given.
         Ensures the kwarg actually reaches _derive_self_prefix and
         beats the legacy provision-id split path."""
-        from extract_cross_references import process_law_file
+        from estleg.extract_cross_references import process_law_file
 
         # Stage a peep whose act_iri carries a multi-segment prefix
         # but whose ONLY provision is keyed under a different
@@ -1202,7 +1317,7 @@ class TestSelfReferencePrefix:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:KARIST_2_Map_2026",
+                {"@id": "estleg:KARIST_2_Map",
                  "@type": ["owl:Ontology", "estleg:Act"]},
                 {"@id": "estleg:KARIST_2_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1219,7 +1334,7 @@ class TestSelfReferencePrefix:
                 "99": "estleg:KARIST_2_Par_99",
             },
         }
-        act_iri_to_prefix = {"estleg:KARIST_2_Map_2026": "KARIST_2"}
+        act_iri_to_prefix = {"estleg:KARIST_2_Map": "KARIST_2"}
 
         stats = process_law_file(
             peep,
@@ -1245,7 +1360,7 @@ class TestLayer2bMarkerDoesNotLeak:
     tracks counted ids in a local set, never mutating the document."""
 
     def test_layer2b_marker_does_not_leak_to_output(self, tmp_path):
-        from extract_cross_references import process_law_file
+        from estleg.extract_cross_references import process_law_file
 
         peep = tmp_path / "kov_peep.json"
         peep.write_text(json.dumps({
@@ -1307,7 +1422,7 @@ class TestValueObjectTextReads:
         """A provision whose estleg:summary is a {@value,@language} object
         yields the same estleg:references as the plain-string form
         (covers _load_provision_text)."""
-        from extract_cross_references import _run_inlaw_citation_pass
+        from estleg.extract_cross_references import _run_inlaw_citation_pass
 
         summary_text = "Käesoleva seaduse § 121 alusel kohaldatakse VÕS § 208."
         prefix_to_provisions = {
@@ -1347,7 +1462,7 @@ class TestValueObjectTextReads:
     def test_kov_body_pass_handles_value_object_text_fields(self):
         """estleg:legalText / estleg:summary as value objects produce the
         same KOV references as plain strings."""
-        from extract_cross_references import _run_kov_body_pass
+        from estleg.extract_cross_references import _run_kov_body_pass
 
         body = "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 ..."
         kov_lookup = {
@@ -1387,7 +1502,7 @@ class TestValueObjectTextReads:
     def test_build_issuer_registry_handles_value_object_label(self, tmp_path):
         """build_issuer_registry must unwrap a {@value,@language} rdfs:label
         so the normalised label key is the text, not a stringified dict."""
-        from extract_cross_references import build_issuer_registry
+        from estleg.extract_cross_references import build_issuer_registry
 
         issuers = tmp_path / "issuers_kov_peep.json"
         issuers.write_text(json.dumps({
@@ -1422,7 +1537,7 @@ class TestSuperscriptParagraphCitations:
     # -- parser: capture + normalise the superscript ------------------
 
     def test_unicode_superscript_captured_as_suffix_key(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text("AÕS § 158² kohaselt kohaldatakse.")
         assert len(cits) == 1
@@ -1431,7 +1546,7 @@ class TestSuperscriptParagraphCitations:
         assert cits[0]["paragraphs"] == ["158_2"]
 
     def test_sup_markup_superscript_captured_as_suffix_key(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text(
             "AÕS § 158<sup>2</sup> kohaselt kohaldatakse."
@@ -1440,21 +1555,21 @@ class TestSuperscriptParagraphCitations:
         assert cits[0]["paragraphs"] == ["158_2"]
 
     def test_plain_number_unaffected_by_superscript_handling(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text("AÕS § 158 kohaselt kohaldatakse.")
         assert len(cits) == 1
         assert cits[0]["paragraphs"] == ["158"]
 
     def test_range_still_digit_only(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text("VÕS §-de 208-210 alusel.")
         assert len(cits) == 1
         assert cits[0]["paragraphs"] == ["208", "209", "210"]
 
     def test_self_reference_superscript_captured(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text("Käesoleva seaduse § 22¹ kohaselt.")
         assert len(cits) == 1
@@ -1464,17 +1579,17 @@ class TestSuperscriptParagraphCitations:
     # -- _expand_par_range / _normalize_par_number --------------------
 
     def test_expand_par_range_normalizes_unicode_superscript(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         assert _expand_par_range("158²") == ["158_2"]
 
     def test_expand_par_range_normalizes_sup_markup(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         assert _expand_par_range("22<sup>1</sup>") == ["22_1"]
 
     def test_expand_par_range_plain_and_range_unchanged(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         assert _expand_par_range("158") == ["158"]
         assert _expand_par_range("208-210") == ["208", "209", "210"]
@@ -1488,7 +1603,7 @@ class TestSuperscriptParagraphCitations:
         so a superscripted range endpoint is NOT expanded and — crucially —
         is NOT concatenated into a fabricated key ('62¹-65' must not become
         '6265', the #341 anti-fabrication rule). Returns []."""
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         assert _expand_par_range("62¹-65") == []   # superscript start endpoint
         assert _expand_par_range("65-62¹") == []   # superscript end endpoint
@@ -1497,7 +1612,7 @@ class TestSuperscriptParagraphCitations:
         assert _expand_par_range("62¹") == ["62_1"]
 
     def test_normalize_par_number_forms(self):
-        from extract_cross_references import _normalize_par_number
+        from estleg.extract_cross_references import _normalize_par_number
 
         assert _normalize_par_number("158²") == "158_2"
         assert _normalize_par_number("158<sup>2</sup>") == "158_2"
@@ -1509,7 +1624,7 @@ class TestSuperscriptParagraphCitations:
     # -- resolution path: superscript citation -> _Par_158_2 ----------
 
     def test_resolve_citation_superscript_hits_correct_iri(self):
-        from extract_cross_references import resolve_citation
+        from estleg.extract_cross_references import resolve_citation
 
         prefix_to_provisions = {
             "AOS_Osa3": {
@@ -1531,7 +1646,7 @@ class TestSuperscriptParagraphCitations:
     def test_end_to_end_unicode_superscript_resolves_to_158_2(self):
         """Full parse + resolve: ``§ 158²`` in real body text lands on
         ``_Par_158_2``, the superscript IRI that exists on disk."""
-        from extract_cross_references import (
+        from estleg.extract_cross_references import (
             extract_citations_from_text,
             resolve_citation,
         )
@@ -1567,7 +1682,7 @@ class TestSuperscriptXmlKeyBuilder:
     def test_xml_key_builder_keeps_158_and_158_2_distinct_via_ylaindeks(
         self, tmp_path
     ):
-        from extract_cross_references import collect_text_from_xml
+        from estleg.extract_cross_references import collect_text_from_xml
 
         xml = (
             '<akt xmlns="x">'
@@ -1587,7 +1702,7 @@ class TestSuperscriptXmlKeyBuilder:
     def test_xml_key_builder_recovers_superscript_from_kuvatavnr_glyph(
         self, tmp_path
     ):
-        from extract_cross_references import collect_text_from_xml
+        from estleg.extract_cross_references import collect_text_from_xml
 
         xml = (
             '<akt xmlns="x">'
@@ -1603,7 +1718,7 @@ class TestSuperscriptXmlKeyBuilder:
         assert "superscript body" in keys["158_2"]
 
     def test_xml_key_builder_plain_number_unchanged(self, tmp_path):
-        from extract_cross_references import collect_text_from_xml
+        from estleg.extract_cross_references import collect_text_from_xml
 
         xml = (
             '<akt xmlns="x">'
@@ -1618,9 +1733,9 @@ class TestSuperscriptXmlKeyBuilder:
         """The key collect_text_from_xml emits must be the same shape
         _load_provision_text derives from the ``_Par_<suffix>`` IRI, so the
         superscript provision reads its OWN body."""
-        from extract_cross_references import (
-            collect_text_from_xml,
+        from estleg.extract_cross_references import (
             _load_provision_text,
+            collect_text_from_xml,
         )
 
         xml = (
@@ -1644,9 +1759,9 @@ class TestSuperscriptXmlKeyBuilder:
         """End-to-end: with distinct XML keys, the superscript provision
         (_Par_158_2) scans its OWN body and the plain provision (_Par_158)
         scans its own — no last-write-wins collision (#254)."""
-        from extract_cross_references import (
-            collect_text_from_xml,
+        from estleg.extract_cross_references import (
             _run_inlaw_citation_pass,
+            collect_text_from_xml,
         )
 
         # The superscript provision body self-cites § 158 (the plain one);
@@ -1715,8 +1830,8 @@ class TestMultiOsaPrefixAccumulation:
     def test_source_act_to_prefix_accumulates_all_osa_prefixes(
         self, tmp_path, monkeypatch
     ):
-        import estleg_common
-        import extract_cross_references as ecr
+        from estleg import estleg_common
+        from estleg import extract_cross_references as ecr
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -1742,7 +1857,7 @@ class TestMultiOsaPrefixAccumulation:
     def test_resolve_citation_searches_every_osa_prefix(self):
         """A §§ in osa1 and a §§ in osa5 of the SAME law both resolve
         when the abbrev maps to the list of osa prefixes."""
-        from extract_cross_references import resolve_citation
+        from estleg.extract_cross_references import resolve_citation
 
         prefix_to_provisions = {
             "AOS_Osa1": {"1": "estleg:AOS_Osa1_Par_1"},
@@ -1769,7 +1884,7 @@ class TestMultiOsaPrefixAccumulation:
     def test_resolve_citation_tolerates_bare_string_prefix(self):
         """Older callers / fixtures pass a bare string prefix value;
         ``resolve_citation`` must still resolve it (back-compat)."""
-        from extract_cross_references import resolve_citation
+        from estleg.extract_cross_references import resolve_citation
 
         prefix_to_provisions = {"AOS_Osa1": {"1": "estleg:AOS_Osa1_Par_1"}}
         assert resolve_citation(
@@ -1778,7 +1893,7 @@ class TestMultiOsaPrefixAccumulation:
         ) == ["estleg:AOS_Osa1_Par_1"]
 
     def test_build_abbreviation_to_prefix_returns_list_values(self):
-        from extract_cross_references import build_abbreviation_to_prefix
+        from estleg.extract_cross_references import build_abbreviation_to_prefix
 
         # AÕS → Asjaõigusseadus is a real KNOWN_ABBREVIATIONS entry.
         source_act_to_prefix = {
@@ -1801,8 +1916,8 @@ class TestPerProvisionPrefixKeying:
     def test_mixed_prefix_file_keys_each_provision_under_own_prefix(
         self, tmp_path, monkeypatch
     ):
-        import estleg_common
-        import extract_cross_references as ecr
+        from estleg import estleg_common
+        from estleg import extract_cross_references as ecr
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -1810,7 +1925,7 @@ class TestPerProvisionPrefixKeying:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:ERIIGI_DI_Map_2026",
+                {"@id": "estleg:ERIIGI_DI_Map",
                  "@type": ["owl:Ontology"],
                  "estleg:sourceAct": "Erigi seadus"},
                 {"@id": "estleg:ERIIGI_DI_Par_20",
@@ -1847,7 +1962,7 @@ class TestSubsectionLegalTextFallback:
     nodes (which carry both summary and legalText) don't double-count."""
 
     def test_lg_node_uses_legaltext_when_summary_empty(self):
-        from extract_cross_references import _load_provision_text
+        from estleg.extract_cross_references import _load_provision_text
 
         # A subsection node: @id suffix '5_Lg_1' is never an XML key,
         # summary is absent — citable body lives in legalText.
@@ -1863,7 +1978,7 @@ class TestSubsectionLegalTextFallback:
     def test_lg_node_value_object_legaltext(self):
         """legalText may be a language-tagged value object; jsonld_text
         must unwrap it for the fallback."""
-        from extract_cross_references import _load_provision_text
+        from estleg.extract_cross_references import _load_provision_text
 
         node = {
             "@id": "estleg:X_Par_3_Lg_3",
@@ -1878,7 +1993,7 @@ class TestSubsectionLegalTextFallback:
         """A paragraph node with BOTH summary and legalText must scan
         only summary (xml/summary win) so the same citation isn't
         counted twice. legalText is a strict fallback."""
-        from extract_cross_references import _load_provision_text
+        from estleg.extract_cross_references import _load_provision_text
 
         node = {
             "@id": "estleg:X_Par_5",
@@ -1889,7 +2004,7 @@ class TestSubsectionLegalTextFallback:
         assert _load_provision_text(node, {}) == "summary body"
 
     def test_xml_text_still_preferred_over_legaltext(self):
-        from extract_cross_references import _load_provision_text
+        from estleg.extract_cross_references import _load_provision_text
 
         node = {
             "@id": "estleg:X_Par_5",
@@ -1901,7 +2016,7 @@ class TestSubsectionLegalTextFallback:
     def test_lg_node_end_to_end_gets_reference(self):
         """Full in-law pass: a _Lg_ node with a §-citation in legalText
         now resolves to an estleg:references edge (#362)."""
-        from extract_cross_references import _run_inlaw_citation_pass
+        from estleg.extract_cross_references import _run_inlaw_citation_pass
 
         graph = [
             {"@id": "estleg:ETRJS_Par_5",
@@ -1934,7 +2049,7 @@ class TestKoodeksSelfReference:
     / ``koodeksi``."""
 
     def test_koodeksi_genitive_self_ref_matched(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text(
             "Käesoleva koodeksi §§ 112, 113, 114 kohaldatakse."
@@ -1944,14 +2059,14 @@ class TestKoodeksSelfReference:
         assert self_refs[0]["paragraphs"] == ["112"]
 
     def test_koodeks_nominative_self_ref_matched(self):
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text("Käesoleva koodeks § 5 alusel.")
         assert any(c["is_self_ref"] for c in cits)
 
     def test_seaduse_and_seadustiku_self_ref_still_matched(self):
         """The pre-existing seaduse / seadustiku forms must keep working."""
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         for txt in ("Käesoleva seaduse § 5 alusel.",
                     "Käesoleva seadustiku § 5 alusel."):
@@ -1967,25 +2082,25 @@ class TestExpandParRangeOverLimit:
     ranges must return [] instead."""
 
     def test_over_wide_range_returns_empty(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         # span 55 > 50 sanity limit — would have become '459'.
         assert _expand_par_range("4-59") == []
 
     def test_exactly_over_limit_range_returns_empty(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         # span 100 — would have become '100200'.
         assert _expand_par_range("100-200") == []
 
     def test_reversed_range_returns_empty(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         # end < start — would have become '200100'.
         assert _expand_par_range("200-100") == []
 
     def test_in_limit_range_still_expands(self):
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         assert _expand_par_range("208-210") == ["208", "209", "210"]
         # Boundary: span exactly 50 stays valid.
@@ -1994,7 +2109,7 @@ class TestExpandParRangeOverLimit:
     def test_over_wide_range_does_not_concatenate(self):
         """The concrete bug: '1-52' must NOT resolve to the bare key
         '152' (which could hit a real AUDIIT_Par_152)."""
-        from extract_cross_references import _expand_par_range
+        from estleg.extract_cross_references import _expand_par_range
 
         assert _expand_par_range("1-52") == []
         assert "152" not in _expand_par_range("1-52")
@@ -2010,15 +2125,15 @@ class TestHoistedCitationPatterns:
     def test_module_level_patterns_are_compiled(self):
         import re
 
-        import extract_cross_references as ecr
+        from estleg import extract_cross_references as ecr
 
         assert isinstance(ecr._PAT_ABBREV, re.Pattern)
         assert isinstance(ecr._PAT_SELF, re.Pattern)
         assert isinstance(ecr._PAT_FULLNAME, re.Pattern)
 
     def test_abbrev_pattern_built_from_known_abbreviations(self):
-        import extract_cross_references as ecr
-        from estleg_common import KNOWN_ABBREVIATIONS
+        from estleg import extract_cross_references as ecr
+        from estleg.estleg_common import KNOWN_ABBREVIATIONS
 
         # Every known abbreviation is reachable through the hoisted
         # alternation (spot-check a few representative ones).
@@ -2030,7 +2145,7 @@ class TestHoistedCitationPatterns:
     def test_hoisted_patterns_match_old_behaviour(self):
         """The hoisted patterns produce the same citations the old
         per-call build did for representative inputs."""
-        from extract_cross_references import extract_citations_from_text
+        from estleg.extract_cross_references import extract_citations_from_text
 
         cits = extract_citations_from_text(
             "KarS § 121 ja käesoleva seaduse § 5 ning "
@@ -2052,15 +2167,15 @@ class TestCorpusTitleFallback:
     ~236-entry corpus-title map."""
 
     def test_build_law_title_to_iri_lowercases_sourceact(self):
-        from extract_cross_references import build_law_title_to_iri
+        from estleg.extract_cross_references import build_law_title_to_iri
 
         source_act_to_prefix = {"Kaitseliidu seadus": ["KAITSE"]}
-        prefix_to_act_iri = {"KAITSE": "estleg:KAITSE_Map_2026"}
+        prefix_to_act_iri = {"KAITSE": "estleg:KAITSE_Map"}
         out = build_law_title_to_iri(source_act_to_prefix, prefix_to_act_iri)
-        assert out == {"kaitseliidu seadus": "estleg:KAITSE_Map_2026"}
+        assert out == {"kaitseliidu seadus": "estleg:KAITSE_Map"}
 
     def test_build_law_title_to_iri_handles_multi_osa_list(self):
-        from extract_cross_references import build_law_title_to_iri
+        from estleg.extract_cross_references import build_law_title_to_iri
 
         # First prefix with a known act_iri wins.
         source_act_to_prefix = {"Asjaõigusseadus": ["AOS_Osa1", "AOS_Osa5"]}
@@ -2069,7 +2184,7 @@ class TestCorpusTitleFallback:
         assert out["asjaõigusseadus"] == "estleg:AOS_Osa5_X"
 
     def test_genitive_law_ref_to_title_folds_markers(self):
-        from extract_cross_references import _genitive_law_ref_to_title
+        from estleg.extract_cross_references import _genitive_law_ref_to_title
 
         assert _genitive_law_ref_to_title("kaitseliidu seaduse") == \
             "kaitseliidu seadus"
@@ -2083,7 +2198,7 @@ class TestCorpusTitleFallback:
     def test_resolve_preamble_uses_title_fallback_when_genitive_missing(self):
         """The motivating case: 'kaitseliidu seaduse' isn't in
         genitive_to_act_iri but resolves via the corpus-title map."""
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
 
         cit = {
             "form": "law-genitive",
@@ -2099,14 +2214,14 @@ class TestCorpusTitleFallback:
             act_iri_to_prefix={},
             state_reg_lookup={},
             kov_act_lookup={},
-            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map_2026"},
+            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map"},
         )
-        assert result == ("estleg:KAITSE_Map_2026", "estleg:KAITSE_Map_2026")
+        assert result == ("estleg:KAITSE_Map", "estleg:KAITSE_Map")
 
     def test_genitive_chain_still_preferred_over_title_fallback(self):
         """When the genitive IS in the primary chain, that wins — the
         fallback is only consulted on a miss."""
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
 
         cit = {
             "form": "law-genitive",
@@ -2129,7 +2244,7 @@ class TestCorpusTitleFallback:
     def test_no_fallback_when_title_map_absent(self):
         """Without a title map (the default), an unknown genitive still
         returns None — back-compat with existing callers."""
-        from extract_cross_references import resolve_preamble_citation
+        from estleg.extract_cross_references import resolve_preamble_citation
 
         cit = {
             "form": "law-genitive",
@@ -2156,19 +2271,19 @@ class TestPreambleConnectorTrim:
     names where ``ja`` is internal."""
 
     def test_leading_ning_stripped(self):
-        from extract_cross_references import _trim_preamble_prefix
+        from estleg.extract_cross_references import _trim_preamble_prefix
 
         assert _trim_preamble_prefix("ning avaliku teenistuse seaduse") == \
             "avaliku teenistuse seaduse"
 
     def test_leading_ja_stripped(self):
-        from extract_cross_references import _trim_preamble_prefix
+        from estleg.extract_cross_references import _trim_preamble_prefix
 
         assert _trim_preamble_prefix("ja avaliku teabe seaduse") == \
             "avaliku teabe seaduse"
 
     def test_internal_ja_in_multiword_name_preserved(self):
-        from extract_cross_references import _trim_preamble_prefix
+        from estleg.extract_cross_references import _trim_preamble_prefix
 
         # 'ja' is INSIDE the law name — leading token is 'põhikooli-'.
         assert _trim_preamble_prefix("põhikooli- ja gümnaasiumiseaduse") == \
@@ -2180,14 +2295,14 @@ class TestPreambleConnectorTrim:
     def test_leading_connector_not_stripped_without_law_marker(self):
         """A leading 'ning' whose remainder does NOT end in a law marker
         is left untouched (don't over-trim)."""
-        from extract_cross_references import _trim_preamble_prefix
+        from estleg.extract_cross_references import _trim_preamble_prefix
 
         assert _trim_preamble_prefix("ning midagi muud") == "ning midagi muud"
 
     def test_license_verb_then_connector_then_law(self):
         """The connector strip runs AFTER the license-verb strip, so
         'Määrus kehtestatakse ja <law>' yields the bare law name."""
-        from extract_cross_references import _trim_preamble_prefix
+        from estleg.extract_cross_references import _trim_preamble_prefix
 
         assert _trim_preamble_prefix(
             "Määrus kehtestatakse ja avaliku teabe seaduse"
@@ -2201,14 +2316,14 @@ class TestIssuedUnderSelfReferenceGuard:
     still allowed — only the self ``issuedUnder`` is suppressed."""
 
     def test_self_issued_under_suppressed(self, tmp_path):
-        from extract_cross_references import _process_preamble_for_act
+        from estleg.extract_cross_references import _process_preamble_for_act
 
         peep = tmp_path / "self_peep.json"
         doc = {
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:SELF_Map_2026",
+                {"@id": "estleg:SELF_Map",
                  "@type": ["owl:Ontology"],
                  "estleg:preambleText":
                      "Määrus kehtestatakse iseenda seaduse § 5 alusel."},
@@ -2222,14 +2337,14 @@ class TestIssuedUnderSelfReferenceGuard:
             peep, doc,
             genitive_to_act_iri={},
             prefix_to_provisions={"SELF": {"5": "estleg:SELF_Par_5"}},
-            act_iri_to_prefix={"estleg:SELF_Map_2026": "SELF"},
+            act_iri_to_prefix={"estleg:SELF_Map": "SELF"},
             state_reg_lookup={},
             kov_act_lookup={},
             # Title fallback resolves the genitive to the SAME act.
-            law_title_to_iri={"iseenda seadus": "estleg:SELF_Map_2026"},
+            law_title_to_iri={"iseenda seadus": "estleg:SELF_Map"},
         )
         act = next(n for n in doc["@graph"]
-                   if n["@id"] == "estleg:SELF_Map_2026")
+                   if n["@id"] == "estleg:SELF_Map")
         # Self issuedUnder suppressed …
         assert "estleg:issuedUnder" not in act
         # … but the provision-level self-citation node IS emitted.
@@ -2238,14 +2353,14 @@ class TestIssuedUnderSelfReferenceGuard:
 
     def test_cross_act_issued_under_still_emitted(self, tmp_path):
         """Sanity: a DIFFERENT enabling act still produces issuedUnder."""
-        from extract_cross_references import _process_preamble_for_act
+        from estleg.extract_cross_references import _process_preamble_for_act
 
         peep = tmp_path / "cross_peep.json"
         doc = {
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:REG_Map_2026",
+                {"@id": "estleg:REG_Map",
                  "@type": ["owl:Ontology"],
                  # A § is required for the parser to emit a law-genitive
                  # citation; the enabling act differs from this reg.
@@ -2262,11 +2377,11 @@ class TestIssuedUnderSelfReferenceGuard:
             act_iri_to_prefix={},
             state_reg_lookup={},
             kov_act_lookup={},
-            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map_2026"},
+            law_title_to_iri={"kaitseliidu seadus": "estleg:KAITSE_Map"},
         )
         act = next(n for n in doc["@graph"]
-                   if n["@id"] == "estleg:REG_Map_2026")
-        assert act["estleg:issuedUnder"] == [{"@id": "estleg:KAITSE_Map_2026"}]
+                   if n["@id"] == "estleg:REG_Map")
+        assert act["estleg:issuedUnder"] == [{"@id": "estleg:KAITSE_Map"}]
 
 
 class TestAbbreviationMappingReport:
@@ -2283,7 +2398,7 @@ class TestAbbreviationMappingReport:
     """
 
     def test_build_abbreviation_to_prefix_is_list_valued(self):
-        from extract_cross_references import build_abbreviation_to_prefix
+        from estleg.extract_cross_references import build_abbreviation_to_prefix
 
         # Unsorted on purpose to prove the report sorts, not the builder.
         abbrev_to_prefix = build_abbreviation_to_prefix(
@@ -2297,9 +2412,9 @@ class TestAbbreviationMappingReport:
             {"KARIST_2": {}}.get(abbrev_to_prefix["KarS"])  # type: ignore[arg-type]
 
     def test_report_sums_provisions_across_all_prefixes(self):
-        from extract_cross_references import (
-            build_abbreviation_to_prefix,
+        from estleg.extract_cross_references import (
             build_abbreviation_mapping_report,
+            build_abbreviation_to_prefix,
         )
 
         abbrev_to_prefix = build_abbreviation_to_prefix(
@@ -2322,7 +2437,7 @@ class TestAbbreviationMappingReport:
     def test_report_tolerates_bare_string_value_pre_299(self):
         """A pre-#299 single-prefix string value must still work (back-compat
         via ``_iter_prefixes``), not be iterated char-by-char."""
-        from extract_cross_references import build_abbreviation_mapping_report
+        from estleg.extract_cross_references import build_abbreviation_mapping_report
 
         report = build_abbreviation_mapping_report(
             {"KarS": "KARIST_2"},
@@ -2338,19 +2453,85 @@ class TestIssue602SharedMonthTable:
     regex alternation, so the two can never drift apart."""
 
     def test_et_months_aliases_shared_table(self):
-        import estleg_common
-        import extract_cross_references as cr
+        from estleg import estleg_common
+        from estleg import extract_cross_references as cr
 
         assert cr._ET_MONTHS is estleg_common.ESTONIAN_MONTHS_GENITIVE
 
     def test_named_date_regex_matches_all_shared_months(self):
         import re
 
-        import estleg_common
-        import extract_cross_references as cr
+        from estleg import estleg_common
+        from estleg import extract_cross_references as cr
 
         for month, num in estleg_common.ESTONIAN_MONTHS_GENITIVE.items():
             m = re.search(cr._DATE_NAMED, f"19. {month} 2019. a")
             assert m is not None, month
             assert m.group("month") == month
             assert cr._ET_MONTHS[m.group("month")] == num
+
+
+def test_classify_citation_relation_repeal() -> None:
+    from estleg import extract_cross_references as cr
+
+    text = (
+        "otsus tunnistatakse kehtetuks vastavalt käesoleva seaduse § 10 lõikele 1"
+    )
+    start = text.index("käesoleva seaduse")
+    assert cr.classify_citation_relation(text, start) == "estleg:repeals"
+
+
+def test_classify_citation_relation_legal_basis() -> None:
+    from estleg import extract_cross_references as cr
+
+    text = "Määrus kehtestatakse kohaliku omavalitsuse korralduse seaduse § 22 alusel."
+    start = text.index("seaduse")
+    assert cr.classify_citation_relation(text, start) == "estleg:isLegalBasisFor"
+
+
+def test_classify_citation_relation_plain_mention_is_untyped() -> None:
+    from estleg import extract_cross_references as cr
+
+    text = "Menetlus toimub käesoleva seaduse § 5 kohaselt."
+    start = text.index("käesoleva")
+    assert cr.classify_citation_relation(text, start) is None
+
+
+def test_inlaw_pass_emits_repeals_subproperty() -> None:
+    """#513: shipped in-law pass writes estleg:repeals, not only references."""
+    from estleg import extract_cross_references as cr
+
+    text = (
+        "Kui otsus tunnistatakse kehtetuks vastavalt käesoleva seaduse § 10 "
+        "lõikele 1, esitab loomeliit andmed."
+    )
+    graph = [
+        {
+            "@id": "estleg:LOOVIS_Map",
+            "@type": ["owl:Ontology", "estleg:Act"],
+        },
+        {
+            "@id": "estleg:LOOVIS_Par_10",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:paragrahv": "§ 10.",
+            "estleg:summary": "Tunnustamise otsus.",
+        },
+        {
+            "@id": "estleg:LOOVIS_Par_15",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:paragrahv": "§ 15.",
+            "estleg:summary": text,
+            "estleg:legalText": text,
+        },
+    ]
+    stats = cr._run_inlaw_citation_pass(
+        graph,
+        self_prefix="LOOVIS",
+        abbrev_to_prefix={},
+        prefix_to_provisions={"LOOVIS": {"10": "estleg:LOOVIS_Par_10"}},
+        xml_par_texts={},
+    )
+    assert stats["modified"] is True
+    node = next(n for n in graph if n["@id"] == "estleg:LOOVIS_Par_15")
+    assert {"@id": "estleg:LOOVIS_Par_10"} in node["estleg:references"]
+    assert {"@id": "estleg:LOOVIS_Par_10"} in node["estleg:repeals"]

@@ -862,7 +862,7 @@ Create `tests/fixtures/kov_court_provision_links/kov/viimsi_vallavolikogu/maarus
   "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
   "@graph": [
     {
-      "@id": "estleg:Reg_1024484_Map_2026",
+      "@id": "estleg:Reg_1024484_Map",
       "@type": ["owl:Ontology", "estleg:MunicipalRegulation", "estleg:Act"],
       "estleg:actNumber": "22",
       "estleg:documentType": "määrus",
@@ -886,7 +886,7 @@ Create `tests/fixtures/kov_court_provision_links/kov/collision_pair/act_a_peep.j
   "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
   "@graph": [
     {
-      "@id": "estleg:Reg_2000001_Map_2026",
+      "@id": "estleg:Reg_2000001_Map",
       "@type": ["owl:Ontology", "estleg:MunicipalRegulation", "estleg:Act"],
       "estleg:actNumber": "5",
       "estleg:enactedBy": {"@id": "estleg:Issuer_test_vallavolikogu"},
@@ -908,7 +908,7 @@ Create `tests/fixtures/kov_court_provision_links/kov/collision_pair/act_b_peep.j
   "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
   "@graph": [
     {
-      "@id": "estleg:Reg_2000002_Map_2026",
+      "@id": "estleg:Reg_2000002_Map",
       "@type": ["owl:Ontology", "estleg:MunicipalRegulation", "estleg:Act"],
       "estleg:actNumber": "5",
       "estleg:enactedBy": {"@id": "estleg:Issuer_test_vallavolikogu"},
@@ -954,7 +954,7 @@ def test_build_kov_index_resolves_viimsi(monkeypatch) -> None:
     kov_index, collisions, iri_to_file, known_issuers = build_kov_act_index(counters)
 
     assert ("viimsi vallavolikogu", 2009, "22") in kov_index
-    assert kov_index[("viimsi vallavolikogu", 2009, "22")] == "estleg:Reg_1024484_Map_2026"
+    assert kov_index[("viimsi vallavolikogu", 2009, "22")] == "estleg:Reg_1024484_Map"
     assert "viimsi vallavolikogu" in known_issuers
     assert collisions == set()
 
@@ -976,8 +976,8 @@ def test_build_kov_index_detects_collisions(monkeypatch) -> None:
     assert key in collisions
     assert key not in kov_index            # removed on collision detection
     # Both files still recorded in iri_to_file (cleanup pass needs them)
-    assert "estleg:Reg_2000001_Map_2026" in iri_to_file
-    assert "estleg:Reg_2000002_Map_2026" in iri_to_file
+    assert "estleg:Reg_2000001_Map" in iri_to_file
+    assert "estleg:Reg_2000002_Map" in iri_to_file
 ```
 
 - [ ] **Step 3: Run** — Expected: 2 fail (`build_kov_act_index` not defined).
@@ -1103,20 +1103,20 @@ def _kc(municipality="Viimsi ", body="Vallavolikogu", date="13.10.2009", num="22
 
 
 def test_resolver_strict_match() -> None:
-    idx = {("viimsi vallavolikogu", 2009, "22"): "estleg:Reg_1024484_Map_2026"}
+    idx = {("viimsi vallavolikogu", 2009, "22"): "estleg:Reg_1024484_Map"}
     iri, reason = resolve_kov_citation(_kc(), idx, set(), {"viimsi vallavolikogu"})
-    assert iri == "estleg:Reg_1024484_Map_2026"
+    assert iri == "estleg:Reg_1024484_Map"
     assert reason is None
 
 
 def test_resolver_year_plus_one_alternate() -> None:
     # Index has 2010 entry; query year 2009 resolves via +1 alternate.
-    idx = {("tallinna linnavalitsus", 2010, "75"): "estleg:Reg_1014396_Map_2026"}
+    idx = {("tallinna linnavalitsus", 2010, "75"): "estleg:Reg_1014396_Map"}
     iri, reason = resolve_kov_citation(
         _kc(municipality="Tallinna ", body="Linnavalitsus", date="14.05.2009", num="75"),
         idx, set(), {"tallinna linnavalitsus"},
     )
-    assert iri == "estleg:Reg_1014396_Map_2026"
+    assert iri == "estleg:Reg_1014396_Map"
     assert reason is None
 
 
@@ -1980,7 +1980,7 @@ mkdir -p tests/fixtures/kov_court_provision_links/kov/keila_vallavolikogu
   "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
   "@graph": [
     {
-      "@id": "estleg:Reg_9999991_Map_2026",
+      "@id": "estleg:Reg_9999991_Map",
       "@type": ["owl:Ontology", "estleg:MunicipalRegulation", "estleg:Act"],
       "estleg:actNumber": "12",
       "estleg:enactedBy": {"@id": "estleg:Issuer_keila_vallavolikogu"},
@@ -2102,7 +2102,7 @@ def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch
         if n["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
     )
     iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
-    assert "estleg:Reg_1024484_Map_2026" in iris
+    assert "estleg:Reg_1024484_Map" in iris
     # State-law TsMS provision regression check.
     assert "estleg:Tsiviilkohtumenetluse_seadustik_Par_208" in iris
 
@@ -2112,7 +2112,7 @@ def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch
     )
     viimsi_act = next(
         n for n in viimsi_doc["@graph"]
-        if n["@id"] == "estleg:Reg_1024484_Map_2026"
+        if n["@id"] == "estleg:Reg_1024484_Map"
     )
     by = [v["@id"] for v in viimsi_act.get("estleg:interpretedBy", [])]
     assert "estleg:RK_FIXT_VIIMSI_2009" in by
@@ -2445,7 +2445,7 @@ def test_shacl_widened_range_validates() -> None:
                 "estleg:caseType": {"@id": "estleg:CaseType_Other"},
                 "estleg:interpretsLaw": [
                     {"@id": "estleg:Some_Provision_Par_5"},
-                    {"@id": "estleg:Reg_1024484_Map_2026"},
+                    {"@id": "estleg:Reg_1024484_Map"},
                 ],
             },
             {
@@ -2455,7 +2455,7 @@ def test_shacl_widened_range_validates() -> None:
                 "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],
             },
             {
-                "@id": "estleg:Reg_1024484_Map_2026",
+                "@id": "estleg:Reg_1024484_Map",
                 "@type": ["estleg:MunicipalRegulation", "estleg:Act"],
                 "rdfs:label": "Viimsi 2009 #22 (test)",
                 "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],

@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:EVVNKVVMMEKS_Map_2026",
+      "@id": "estleg:EVVNKVVMMEKS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Eesti Vabariigi valitsuse ja Norra Kuningriigi valitsuse vahelise vastastikuse mõistmise memorandumi Eesti kompanii suunamise, positsioonidele asumise ning väljaviimise kohta Norra pataljoni (NORBATT) koosseisus Ühinenud Rahvaste Organisatsiooni ajutistes relvajõududes Liibanonis (UNIFIL) ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25200.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/25200.xml"
       },
       "estleg:kehtiv": {
@@ -39,17 +35,28 @@
           "@id": "http://eurovoc.europa.eu/68"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_eesti_vabariigi_valitsuse_ja_norra_kuningriigi_valitsuse_vahelise_vastastikuse_m",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:EVVNKVVMMEKS_TopicScheme",
@@ -81,13 +88,13 @@
       "@id": "estleg:EVVNKVVMMEKS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_vabariigi_valitsuse_ja_norra_kuningriigi_valitsuse_vahelise_vastastikuse_m"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Eesti Vabariigi valitsuse ja Norra Kuningriigi vali...]",
       "estleg:sourceAct": "Eesti Vabariigi valitsuse ja Norra Kuningriigi valitsuse vahelise vastastikuse mõistmise memorandumi Eesti kompanii suunamise, positsioonidele asumise ning väljaviimise kohta Norra pataljoni (NORBATT) koosseisus Ühinenud Rahvaste Organisatsiooni ajutistes relvajõududes Liibanonis (UNIFIL) ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVVNKVVMMEKS_Map_2026"
+        "@id": "estleg:EVVNKVVMMEKS_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud (UNIFIL), mis on alla kirjutatud 1996. aasta 5. juulil Tallinnas.",
       "estleg:legalText": "Ratifitseerida juurdelisatud (UNIFIL), mis on alla kirjutatud 1996. aasta 5. juulil Tallinnas.",
@@ -96,11 +103,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:EVVNKVVMMEKS_Par_1_Lg_Unknown_1"
+          "@id": "estleg:EVVNKVVMMEKS_Par_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -111,10 +120,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:EVVNKVVMMEKS_Par_1_Lg_Unknown_1",
+      "@id": "estleg:EVVNKVVMMEKS_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -128,13 +141,13 @@
       "@id": "estleg:EVVNKVVMMEKS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_eesti_vabariigi_valitsuse_ja_norra_kuningriigi_valitsuse_vahelise_vastastikuse_m"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table bord...]",
       "estleg:sourceAct": "Eesti Vabariigi valitsuse ja Norra Kuningriigi valitsuse vahelise vastastikuse mõistmise memorandumi Eesti kompanii suunamise, positsioonidele asumise ning väljaviimise kohta Norra pataljoni (NORBATT) koosseisus Ühinenud Rahvaste Organisatsiooni ajutistes relvajõududes Liibanonis (UNIFIL) ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVVNKVVMMEKS_Map_2026"
+        "@id": "estleg:EVVNKVVMMEKS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
@@ -143,7 +156,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:EVVNKVVMMEKS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:EVVNKVVMMEKS_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -153,7 +166,7 @@
       ]
     },
     {
-      "@id": "estleg:EVVNKVVMMEKS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:EVVNKVVMMEKS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

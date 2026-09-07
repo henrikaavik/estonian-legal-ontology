@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:MVS_Map_2026",
+      "@id": "estleg:MVS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Majandusvööndi seadus teemakaardistus",
       "dc:source": "Majandusvööndi seadus",
-      "dcterms:title": "Majandusvööndi seadus",
+      "dcterms:title": [
+        {
+          "@value": "Majandusvööndi seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Exclusive Economic Zone Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/118042025003.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/118042025003.xml"
       },
       "estleg:kehtiv": {
@@ -33,10 +38,10 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1035222_Map_2026"
+          "@id": "estleg:Reg_1035222_Map"
         },
         {
-          "@id": "estleg:Reg_1062345_Map_2026"
+          "@id": "estleg:Reg_1062345_Map"
         }
       ],
       "estleg:implementedByCount": 2,
@@ -57,16 +62,55 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_majandusvoondi_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2825"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:MVS_Par_14"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MVS_Par_14_1"
+        },
+        {
+          "@id": "estleg:MVS_Par_14_1_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-04-19",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/524042025001"
       }
     },
     {
@@ -92,13 +136,13 @@
           "@id": "estleg:Cluster_MVS_V"
         },
         {
-          "@id": "estleg:Cluster_MVS_V_Dup2"
+          "@id": "estleg:Cluster_MVS_V_13_13"
         },
         {
           "@id": "estleg:Cluster_MVS_VI"
         },
         {
-          "@id": "estleg:Cluster_MVS_VI_Dup2"
+          "@id": "estleg:Cluster_MVS_VI_16_16"
         },
         {
           "@id": "estleg:Cluster_MVS_VII"
@@ -128,10 +172,14 @@
       "rdfs:label": "I. peatükk – Üldsätted",
       "estleg:chapterNumber": "I",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_I"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -157,10 +205,14 @@
       "rdfs:label": "II. peatükk – Elusloodusvarade kaitse ja kasutamine",
       "estleg:chapterNumber": "II",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_II"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -186,10 +238,14 @@
       "rdfs:label": "III. peatükk – Teaduslikud mereuuringud",
       "estleg:chapterNumber": "III",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_III"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -215,10 +271,14 @@
       "rdfs:label": "IV. peatükk – Tehissaared, rajatised ja seadmestik",
       "estleg:chapterNumber": "IV",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_IV"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -244,14 +304,18 @@
       "rdfs:label": "V. peatükk – Merekeskkonna kaitse",
       "estleg:chapterNumber": "V",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_V"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MVS_V_Dup2",
+      "@id": "estleg:Cluster_MVS_V_13_13",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -265,7 +329,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MVS_V_Dup2",
+      "@id": "estleg:Chapter_MVS_V_269c5616",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -273,10 +337,14 @@
       "rdfs:label": "V. peatükk – VEEALUSE KULTUURIPÄRANDI KAITSE",
       "estleg:chapterNumber": "V",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MVS_V_Dup2"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MVS_V_13_13"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -302,14 +370,18 @@
       "rdfs:label": "VI. peatükk – Õigusrežiimi tagamine",
       "estleg:chapterNumber": "VI",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_VI"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MVS_VI_Dup2",
+      "@id": "estleg:Cluster_MVS_VI_16_16",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -323,7 +395,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MVS_VI_Dup2",
+      "@id": "estleg:Chapter_MVS_VI_e1dc9a5f",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -331,10 +403,14 @@
       "rdfs:label": "VI. peatükk – VASTUTUS",
       "estleg:chapterNumber": "VI",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MVS_VI_Dup2"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MVS_VI_16_16"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -360,23 +436,27 @@
       "rdfs:label": "VII. peatükk – Lõppsätted",
       "estleg:chapterNumber": "VII",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MVS_VII"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MVS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Majandusvööndi mõiste",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Majandusvöönd on väljaspool territoriaalmerd asuv ja viimasega külgnev mereala, kus riik teostab oma suveräänseid õigusi ja jurisdiktsiooni vastavuses rahvusvahelise mereõiguse üldtunnustatud normidega, Eesti Vabariigi poolt sõlmitud riikidevaheliste lepingutega ning käesoleva seadusega.",
       "estleg:legalText": "Majandusvöönd on väljaspool territoriaalmerd asuv ja viimasega külgnev mereala, kus riik teostab oma suveräänseid õigusi ja jurisdiktsiooni vastavuses rahvusvahelise mereõiguse üldtunnustatud normidega, Eesti Vabariigi poolt sõlmitud riikidevaheliste lepingutega ning käesoleva seadusega.",
@@ -388,7 +468,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_1_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -398,7 +478,7 @@
       ]
     },
     {
-      "@id": "estleg:MVS_Par_1_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -412,13 +492,13 @@
       "@id": "estleg:MVS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Riigi suveräänsed õigused ja jurisdiktsioon majandusvööndis",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "(1) Riigi suveräänseteks õigusteks majandusvööndis on merepõhja katvas vees, merepõhjas ja selle all maapõues asuvate elus ja eluta loodusvarade uurimine, hõlvamine, säilitamine ja haldamine ning muu tegevus majandusvööndi uurimisel ja kasutamisel. (2) Eesti Vabariigi jurisdiktsioonile majandusvööndis on allutatud: teaduslikud mereuuringud; merekeskkonna kaitse; tehissaarte rajamine ja seadmestiku paigaldamine; muu majandustegevus. (3) Merepõhja ja selle all oleva maapõue loodusvarade",
       "estleg:legalText": "(1) Riigi suveräänseteks õigusteks majandusvööndis on merepõhja katvas vees, merepõhjas ja selle all maapõues asuvate elus ja eluta loodusvarade uurimine, hõlvamine, säilitamine ja haldamine ning muu tegevus majandusvööndi uurimisel ja kasutamisel. (2) Eesti Vabariigi jurisdiktsioonile majandusvööndis on allutatud: teaduslikud mereuuringud; merekeskkonna kaitse; tehissaarte rajamine ja seadmestiku paigaldamine; muu majandustegevus. (3) Merepõhja ja selle all oleva maapõue loodusvarade kasutamist ja kaitset reguleerib mandrilava seadus. (4) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
@@ -510,13 +590,13 @@
       "@id": "estleg:MVS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Majandusvööndi välispiir",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Majandusvööndi välispiir määratakse kindlaks Eesti ranniku vastas asuvate või sellega külgnevate riikide ja Eesti Vabariigi vahel sõlmitud lepingutega, mis kuuluvad ratifitseerimisele Riigikogus.",
       "estleg:legalText": "Majandusvööndi välispiir määratakse kindlaks Eesti ranniku vastas asuvate või sellega külgnevate riikide ja Eesti Vabariigi vahel sõlmitud lepingutega, mis kuuluvad ratifitseerimisele Riigikogus.",
@@ -528,11 +608,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -543,10 +625,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MVS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -554,19 +640,28 @@
       "estleg:legalText": "Majandusvööndi välispiir määratakse kindlaks Eesti ranniku vastas asuvate või sellega külgnevate riikide ja Eesti Vabariigi vahel sõlmitud lepingutega, mis kuuluvad ratifitseerimisele Riigikogus.",
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MVS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Vabadused ja piirangud",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "(1) Majandusvööndis on igal riigil laeva- ja lennuliikluse, veealuste kaablite ja torujuhtmete paigaldamise ning mere muu kasutamise vabadus tingimusel, et peetakse kinni käesoleva seaduse ja muu Eesti seadustiku sätetest ning rahvusvahelise õiguse üldtunnustatud normidest. (2) Majandusvööndis kala ja teisi elusloodusvarasid püüda, sellega seotud uurimistöid teha ja muud tegevust arendada võivad välisriikide juriidilised ja füüsilised isikud ainult Eesti Vabariigiga sõlmitud lepingute alusel.",
       "estleg:legalText": "(1) Majandusvööndis on igal riigil laeva- ja lennuliikluse, veealuste kaablite ja torujuhtmete paigaldamise ning mere muu kasutamise vabadus tingimusel, et peetakse kinni käesoleva seaduse ja muu Eesti seadustiku sätetest ning rahvusvahelise õiguse üldtunnustatud normidest. (2) Majandusvööndis kala ja teisi elusloodusvarasid püüda, sellega seotud uurimistöid teha ja muud tegevust arendada võivad välisriikide juriidilised ja füüsilised isikud ainult Eesti Vabariigiga sõlmitud lepingute alusel. (3) Looduskeskkonna või loodusvarade kaitse vajadusel võidakse majandusvööndi üksikutel aladel Vabariigi Valitsuse otsusega kehtestada meresõidu ja majandustegevuse piiranguid. Nende alade piirid, tähistus ja piirangute loetelu avaldatakse väljaandes «Teadaanded meremeestele».",
@@ -588,8 +683,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -606,7 +705,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_4_Lg_1",
@@ -632,7 +735,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_4_Lg_3",
@@ -645,19 +757,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3"
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Elusloodusvarade uurimine, kasutamine ja kaitse",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Majandusvööndi kalavarude ja muude elusloodusvarade uurimist, kasutamist ja kaitset korraldab Eesti Vabariik ainuõiguslikult ja kooskõlas rahvusvaheliste lepingutega.",
       "estleg:legalText": "Majandusvööndi kalavarude ja muude elusloodusvarade uurimist, kasutamist ja kaitset korraldab Eesti Vabariik ainuõiguslikult ja kooskõlas rahvusvaheliste lepingutega.",
@@ -669,7 +790,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_5_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_5_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -679,7 +800,7 @@
       ]
     },
     {
-      "@id": "estleg:MVS_Par_5_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -693,13 +814,13 @@
       "@id": "estleg:MVS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Kalapüügi korraldamine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "(1) Kalavarude otstarbekaks kasutamiseks ja kaitseks Eesti Vabariigi Valitsus: rakendab otstarbeka kalapüügi ja kalavarude kaitse tagamise abinõud, sealhulgas kalapüügilaevade ülevaatuse, kinnipidamise ja arestimise korra; lubab välisriikide füüsilistel ja juriidilistel isikutel majandusvööndis kala püüda nende riikidega sõlmitud kokkulepetes määratud mahus. (2) Välisriikide juriidilised ja füüsilised isikud peavad majandusvööndis järgima käesoleva ja teiste Eesti seadustega ning Vabariigi",
       "estleg:legalText": "(1) Kalavarude otstarbekaks kasutamiseks ja kaitseks Eesti Vabariigi Valitsus: rakendab otstarbeka kalapüügi ja kalavarude kaitse tagamise abinõud, sealhulgas kalapüügilaevade ülevaatuse, kinnipidamise ja arestimise korra; lubab välisriikide füüsilistel ja juriidilistel isikutel majandusvööndis kala püüda nende riikidega sõlmitud kokkulepetes määratud mahus. (2) Välisriikide juriidilised ja füüsilised isikud peavad majandusvööndis järgima käesoleva ja teiste Eesti seadustega ning Vabariigi Valitsuse otsustega määratud elusloodusvarade kaitse nõudeid ja tingimusi.",
@@ -718,15 +839,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1035222_Map_2026"
+          "@id": "estleg:Reg_1035222_Map"
         },
         {
-          "@id": "estleg:Reg_1062345_Map_2026"
+          "@id": "estleg:Reg_1062345_Map"
         }
       ],
       "estleg:implementedByCount": 2,
@@ -757,7 +882,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_6_Lg_1",
@@ -770,7 +899,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_6_Lg_2",
@@ -783,19 +924,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 2"
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Uuringute eeltingimused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "(1) Teaduslikke mereuuringuid tehakse majandusvööndis ainult Vabariigi Valitsuse poolt pädevaks tunnistatud riigiasutuste nõusolekul. (2) Teaduslikke mereuuringuid tehakse eranditult rahumeelsetel eesmärkidel. (3) Teaduslike mereuuringutega ei tohi tekitada õigustamata takistusi riigile tema suveräänsete õiguste ning jurisdiktsiooni teostamiseks majandusvööndis.",
       "estleg:legalText": "(1) Teaduslikke mereuuringuid tehakse majandusvööndis ainult Vabariigi Valitsuse poolt pädevaks tunnistatud riigiasutuste nõusolekul. (2) Teaduslikke mereuuringuid tehakse eranditult rahumeelsetel eesmärkidel. (3) Teaduslike mereuuringutega ei tohi tekitada õigustamata takistusi riigile tema suveräänsete õiguste ning jurisdiktsiooni teostamiseks majandusvööndis.",
@@ -817,7 +970,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -831,7 +986,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_7_Lg_1",
@@ -844,7 +1003,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_7_Lg_2",
@@ -870,19 +1038,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Uurimisloa taotlemine välisorganisatsiooni poolt",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -905,13 +1080,13 @@
       "@id": "estleg:MVS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Kohustused uuringute tegemisel",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -934,13 +1109,13 @@
       "@id": "estleg:MVS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Uuringute peatamine ja keelamine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -966,13 +1141,13 @@
       "@id": "estleg:MVS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Tehissaarte, rajatiste ja seadmestiku paigaldamine, kasutamine ja eemaldamine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "(1) Eestil on oma majandusvööndis ainuõigus ehitada tehissaari, püstitada rajatisi ning paigaldada seadmestikku loodusvarade uurimise ja kasutamise või muul majanduslikul eesmärgil. (2) Kõik majandusvööndis asuvad tehissaared, rajatised ja seadmed kuuluvad Eesti Vabariigi jurisdiktsiooni alla. (3) Pädevad riigiasutused võivad ohutu meresõidu tagamiseks kehtestada tehissaarte, rajatiste ja seadmestiku ümber kuni 500 m ulatusega ohutusvööndeid.",
       "estleg:legalText": "(1) Eestil on oma majandusvööndis ainuõigus ehitada tehissaari, püstitada rajatisi ning paigaldada seadmestikku loodusvarade uurimise ja kasutamise või muul majanduslikul eesmärgil. (2) Kõik majandusvööndis asuvad tehissaared, rajatised ja seadmed kuuluvad Eesti Vabariigi jurisdiktsiooni alla. (3) Pädevad riigiasutused võivad ohutu meresõidu tagamiseks kehtestada tehissaarte, rajatiste ja seadmestiku ümber kuni 500 m ulatusega ohutusvööndeid. (4) Majandusvööndis tehissaarte rajamise, rajatiste ja seadmestiku paigaldamise, korrashoiu ja kasutamise, ohutusvööndite märgistamise ning eelkäsitletuga seotud tööde tingimused ja vastavate lubade väljaandmise korra määrab Vabariigi Valitsus. (5) Kõigi tehissaarte, rajatiste ja seadmestiku paigaldamisest ning eemaldamisest majandusvööndis informeeritakse meresõitjaid väljaandes «Teadaanded Meremeestele». (6) Kõik juriidilised ja füüsilised isikud on kohustatud hoidma nende omanduses, valduses või kasutuses olevate tehissaarte, rajatiste ja seadmestiku ohutust tagavad seadmed ja signalisatsiooni töökorras. (7) Merekeskkonna reostamine üle lubatud määra tehissaartelt, rajatistelt ja seadmestikult on keelatud. Tehissaared, rajatised ja seadmestik tuleb pärast kasutamise lõpetamist merest eemaldada.",
@@ -1006,8 +1181,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1024,7 +1203,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_11_Lg_1",
@@ -1076,7 +1259,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 4"
+      "rdfs:label": "§ 11 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_11_Lg_5",
@@ -1102,7 +1294,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 6"
+      "rdfs:label": "§ 11 lg 6",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_11_Lg_7",
@@ -1115,19 +1319,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 7"
+      "rdfs:label": "§ 11 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MVS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Õiguslikud alused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Merekeskkonna reostuse vältimist, saastekoormuse vähendamist ja kontrolli majandusvööndis teostatakse vastavuses rahvusvaheliste konventsioonidega, millega Eesti on ühinenud, Eesti Vabariigi ja teiste riikide vaheliste lepingutega ja Eesti seadustikuga.",
       "estleg:legalText": "Merekeskkonna reostuse vältimist, saastekoormuse vähendamist ja kontrolli majandusvööndis teostatakse vastavuses rahvusvaheliste konventsioonidega, millega Eesti on ühinenud, Eesti Vabariigi ja teiste riikide vaheliste lepingutega ja Eesti seadustikuga.",
@@ -1139,7 +1350,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_12_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_12_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1149,7 +1360,7 @@
       ]
     },
     {
-      "@id": "estleg:MVS_Par_12_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_12_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1163,13 +1374,13 @@
       "@id": "estleg:MVS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Juriidiliste ja füüsiliste isikute kohustused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad merekeskkonna reostamist vältima. Saasteilmingutest ja õnnetustest tuleb kohe teatada pädevale riigiasutusele ja lähimasse Eesti sadamasse.",
       "estleg:legalText": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad merekeskkonna reostamist vältima. Saasteilmingutest ja õnnetustest tuleb kohe teatada pädevale riigiasutusele ja lähimasse Eesti sadamasse.",
@@ -1181,11 +1392,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_13_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_13_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1199,10 +1412,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MVS_Par_13_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_13_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1210,19 +1427,31 @@
       "estleg:legalText": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad merekeskkonna reostamist vältima. Saasteilmingutest ja õnnetustest tuleb kohe teatada pädevale riigiasutusele ja lähimasse Eesti sadamasse.",
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_13"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MVS_Par_13_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13¹.",
       "rdfs:label": "§ 13¹. Õiguslikud alused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Veealust kultuuripärandit, sealhulgas veealuseid kultuurimälestisi, arheoloogilisi leide ja leiukohti kaitstakse vastavuses Eesti Vabariigi välislepingute, muinsuskaitseseaduse ja teiste Eesti õigusaktidega.",
       "estleg:legalText": "Veealust kultuuripärandit, sealhulgas veealuseid kultuurimälestisi, arheoloogilisi leide ja leiukohti kaitstakse vastavuses Eesti Vabariigi välislepingute, muinsuskaitseseaduse ja teiste Eesti õigusaktidega.",
@@ -1234,7 +1463,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_13_1_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_13_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1247,7 +1476,7 @@
       ]
     },
     {
-      "@id": "estleg:MVS_Par_13_1_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_13_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1261,13 +1490,13 @@
       "@id": "estleg:MVS_Par_13_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13².",
       "rdfs:label": "§ 13². Isikute kohustused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad hoiduma tegevustest, mis võivad kahjustada veealuseid kultuurimälestisi või nende kaitsevööndeid, arheoloogilisi leide ja leiukohti ning sellise tegevuse ilmnemise korral teatama kohe pädevale riigiasutusele.",
       "estleg:legalText": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad hoiduma tegevustest, mis võivad kahjustada veealuseid kultuurimälestisi või nende kaitsevööndeid, arheoloogilisi leide ja leiukohti ning sellise tegevuse ilmnemise korral teatama kohe pädevale riigiasutusele.",
@@ -1279,11 +1508,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_13_2_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_13_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1300,10 +1531,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MVS_Par_13_2_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_13_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1311,19 +1546,31 @@
       "estleg:legalText": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad hoiduma tegevustest, mis võivad kahjustada veealuseid kultuurimälestisi või nende kaitsevööndeid, arheoloogilisi leide ja leiukohti ning sellise tegevuse ilmnemise korral teatama kohe pädevale riigiasutusele.",
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_13_2"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MVS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Ujuvvahendite kinnipidamine ja arestimine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "(1) Pädevatel riigiasutustel on majandusvööndis kooskõlas rahvusvahelise mereõiguse normidega õigus kontrollimise eesmärgil saada ujuvvahenditelt teavet ja vajaduse korral neid kinni pidada. (2) Ujuvvahendi mitteallumisel Eesti ametliku esindaja seaduslikule nõudmisele on viimasel õigus ujuvvahendit jälitada, peatada ja arestida, kui on küllaldaselt tõendeid, et: ujuvvahend on toime pannud lubatust suurema reostuse; on toimunud ebaseaduslik kalapüük või muu loodusvara kogumine; on tehtud",
       "estleg:legalText": "(1) Pädevatel riigiasutustel on majandusvööndis kooskõlas rahvusvahelise mereõiguse normidega õigus kontrollimise eesmärgil saada ujuvvahenditelt teavet ja vajaduse korral neid kinni pidada. (2) Ujuvvahendi mitteallumisel Eesti ametliku esindaja seaduslikule nõudmisele on viimasel õigus ujuvvahendit jälitada, peatada ja arestida, kui on küllaldaselt tõendeid, et: ujuvvahend on toime pannud lubatust suurema reostuse; on toimunud ebaseaduslik kalapüük või muu loodusvara kogumine; on tehtud ebaseaduslikke uuringuid. (3) Ujuvvahendi arestimisest, kohtuasja algatamisest ja eeldatavate süüdlaste vastutuse määrast teatatakse viivitamatult ujuvvahendi lipuriigile. (4) Ujuvvahend ja laevapere vabastatakse küllaldase kautsjoni või muu tagatise saamise korral. See ei välista süüdlaste haldus- või kriminaalvastutust määral, mis on Eesti seadustega ette nähtud selletaoliste õiguserikkumiste eest.",
@@ -1352,7 +1599,7 @@
           "@id": "estleg:MVS_Par_14_1"
         },
         {
-          "@id": "estleg:MVS_Par_14_1_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_14_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1417,13 +1664,13 @@
       "@id": "estleg:MVS_Par_14_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14¹.",
       "rdfs:label": "§ 14¹. Kaitseväe volitused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kaitseväel on lisaks käesoleva seaduse §-s 14 sätestatule majandusvööndis kooskõlas rahvusvahelise õigusega õigus veesõidukist või muust ujuvvahendist lähtuva elutähtsa teenuse toimepidevust tagavat taristut, samuti riigikaitseobjekti, sadamat või muud rajatist või seadmestikku ähvardava ohu ennetamiseks, väljaselgitamiseks ja tõrjumiseks või korrarikkumise kõrvaldamise eesmärgil kohaldada Kaitseväe korralduse seaduses sätestatud meetmeid.",
       "estleg:legalText": "Kaitseväel on lisaks käesoleva seaduse §-s 14 sätestatule majandusvööndis kooskõlas rahvusvahelise õigusega õigus veesõidukist või muust ujuvvahendist lähtuva elutähtsa teenuse toimepidevust tagavat taristut, samuti riigikaitseobjekti, sadamat või muud rajatist või seadmestikku ähvardava ohu ennetamiseks, väljaselgitamiseks ja tõrjumiseks või korrarikkumise kõrvaldamise eesmärgil kohaldada Kaitseväe korralduse seaduses sätestatud meetmeid.",
@@ -1435,7 +1682,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_14_1_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_14_1_Lg_1"
         }
       ],
       "estleg:references": [
@@ -1450,7 +1697,7 @@
       ]
     },
     {
-      "@id": "estleg:MVS_Par_14_1_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_14_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1469,13 +1716,13 @@
       "@id": "estleg:MVS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Vastutus majandusvööndis toimepandud õiguserikkumiste eest",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1498,13 +1745,13 @@
       "@id": "estleg:MVS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Õiguserikkumiste käsitlemine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1530,13 +1777,13 @@
       "@id": "estleg:MVS_Par_16_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16¹.",
       "rdfs:label": "§ 16¹. Majandusvööndi kaitse nõuete rikkumine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1562,13 +1809,13 @@
       "@id": "estleg:MVS_Par_16_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16².",
       "rdfs:label": "§ 16². Menetlus",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1597,13 +1844,13 @@
       "@id": "estleg:MVS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Majandusvööndi kaitsmise korra kehtestamine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Käesoleva seaduse sätetes nimetatud pädevad riigiasutused ja majandusvööndi kaitsmise korra määrab Vabariigi Valitsus.",
       "estleg:legalText": "Käesoleva seaduse sätetes nimetatud pädevad riigiasutused ja majandusvööndi kaitsmise korra määrab Vabariigi Valitsus.",
@@ -1615,11 +1862,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_17_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_17_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1636,10 +1885,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MVS_Par_17_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_17_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1647,19 +1900,28 @@
       "estleg:legalText": "Käesoleva seaduse sätetes nimetatud pädevad riigiasutused ja majandusvööndi kaitsmise korra määrab Vabariigi Valitsus.",
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_17"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MVS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_majandusvoondi_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Majandusvööndi sisepiir",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MVS_Map_2026"
+        "@id": "estleg:MVS_Map"
       },
       "estleg:summary": "Majandusvööndi sisepiiri arvestamise aluse, territoriaalmere lähtejoone koordinaadid, kehtestab Vabariigi Valitsuse ettepanekul Riigikogu.",
       "estleg:legalText": "Majandusvööndi sisepiiri arvestamise aluse, territoriaalmere lähtejoone koordinaadid, kehtestab Vabariigi Valitsuse ettepanekul Riigikogu.",
@@ -1671,11 +1933,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MVS_Par_18_Lg_Unknown_1"
+          "@id": "estleg:MVS_Par_18_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1695,10 +1959,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MVS_Par_18_Lg_Unknown_1",
+      "@id": "estleg:MVS_Par_18_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1706,6 +1974,15 @@
       "estleg:legalText": "Majandusvööndi sisepiiri arvestamise aluse, territoriaalmere lähtejoone koordinaadid, kehtestab Vabariigi Valitsuse ettepanekul Riigikogu.",
       "estleg:parentProvision": {
         "@id": "estleg:MVS_Par_18"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

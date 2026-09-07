@@ -11,20 +11,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-import sys
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import check_numeric_identity_strings as mod
-from check_numeric_identity_strings import (
+from estleg import check_numeric_identity_strings as mod
+from estleg.check_numeric_identity_strings import (
     STRING_IDENTITY_PROPERTIES,
     _is_numeric_typed_object,
     find_violations,
     process_file,
 )
-
 
 # ── _is_numeric_typed_object ───────────────────────────────────────────────
 

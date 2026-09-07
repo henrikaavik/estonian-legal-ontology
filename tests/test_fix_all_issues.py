@@ -8,12 +8,9 @@ JSON-LD allowlist, and must be idempotent across consecutive runs.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import fix_all_issues  # noqa: E402
+from estleg import fix_all_issues
 
 
 def write_json(path: Path, doc: dict) -> None:
@@ -634,16 +631,16 @@ def test_load_deprecated_statutes_filters_by_verdict(tmp_path, monkeypatch):
         [
             {
                 "file": "legacy_a_peep.json",
-                "rootIri": "estleg:A_Map_2026",
+                "rootIri": "estleg:A_Map",
                 "verdict": "deprecate",
                 "replacedByFile": "canonical_a_peep.json",
-                "replacedByIri": "estleg:CanonA_Map_2026",
+                "replacedByIri": "estleg:CanonA_Map",
             },
             {
                 # A "keep" entry must be ignored even if it appears in the
                 # deprecations array shape.
                 "file": "kept_peep.json",
-                "rootIri": "estleg:Kept_Map_2026",
+                "rootIri": "estleg:Kept_Map",
                 "verdict": "keep",
                 "replacedByFile": None,
             },
@@ -682,10 +679,10 @@ def test_generate_index_excludes_deprecated_and_emits_section(tmp_path, monkeypa
         [
             {
                 "file": "legacy_x_peep.json",
-                "rootIri": "estleg:X_Map_2026",
+                "rootIri": "estleg:X_Map",
                 "verdict": "deprecate",
                 "replacedByFile": "law_a_peep.json",
-                "replacedByIri": "estleg:A_Map_2026",
+                "replacedByIri": "estleg:A_Map",
             },
             {
                 "file": "legacy_multi_osa1_peep.json",
@@ -1024,10 +1021,10 @@ def test_detect_duplicates_returns_only_multi_file_ids(tmp_path, monkeypatch):
 
 import importlib  # noqa: E402
 
-import estleg_common  # noqa: E402
+from estleg import estleg_common  # noqa: E402
 
-validate_all = importlib.import_module("validate_all")
-generate_draft_legislation = importlib.import_module("generate_draft_legislation")
+validate_all = importlib.import_module("estleg.validate_all")
+generate_draft_legislation = importlib.import_module("estleg.generate_draft_legislation")
 
 
 # Per-node `validate_all` validators that take (filepath, doc). These are the
@@ -1061,7 +1058,7 @@ def _law_act_doc() -> dict:
     title = "Karistusseadustik"
     rt_url = "https://www.riigiteataja.ee/akt/610920.xml"
     act_node = {
-        "@id": "estleg:KarS_Map_2026",
+        "@id": "estleg:KarS_Map",
         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
         "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
         "estleg:contentStatus": "structuredBody",
@@ -1101,7 +1098,7 @@ def _regulation_doc() -> dict:
     title = "Volitatud asutuste määramine"
     rt_url = "https://www.riigiteataja.ee/akt/610920.xml"
     act_node = {
-        "@id": "estleg:Reg_160748_Map_2026",
+        "@id": "estleg:Reg_160748_Map",
         "@type": ["owl:Ontology", "estleg:Act", "estleg:NationalRegulation", "estleg:GovernmentRegulation"],
         "rdfs:label": f"{title} (määrus)",
         "estleg:documentType": "määrus",
@@ -1158,7 +1155,7 @@ def _draft_doc() -> dict:
         "@context": estleg_common.CONTEXT,
         "@graph": [
             {
-                "@id": "estleg:Eelnoud_Submission_Map_2026",
+                "@id": "estleg:Eelnoud_Submission_Map",
                 "@type": ["owl:Ontology"],
                 "rdfs:label": {"@value": "EIS eelnõud – esitatud", "@language": "et"},
                 "dc:source": "Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee",
@@ -1254,7 +1251,7 @@ def test_intra_file_dedup_is_noop_on_clean_generator_output():
 # #426: generate_combined_jsonld refuses to build over unmarked deprecations
 # ---------------------------------------------------------------------------
 def _deprecation_fixture(tmp_path, monkeypatch):
-    import deprecate_legacy_statutes as dls
+    from estleg import deprecate_legacy_statutes as dls
 
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -1268,7 +1265,7 @@ def _deprecation_fixture(tmp_path, monkeypatch):
                 },
                 "@graph": [
                     {
-                        "@id": "estleg:ALKS_Map_2026",
+                        "@id": "estleg:ALKS_Map",
                         "@type": ["owl:Ontology", "estleg:Act"],
                         "rdfs:label": "Legacy stub",
                     }
@@ -1284,9 +1281,9 @@ def _deprecation_fixture(tmp_path, monkeypatch):
                 "deprecations": [
                     {
                         "file": "alkoholi_seadus_peep.json",
-                        "rootIri": "estleg:ALKS_Map_2026",
+                        "rootIri": "estleg:ALKS_Map",
                         "replacedByFile": "alkoholiseadus_peep.json",
-                        "replacedByIri": "estleg:AS_Map_2026",
+                        "replacedByIri": "estleg:AS_Map",
                     }
                 ]
             }
@@ -1352,6 +1349,22 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
             ]
         },
     )
+    # overlay source (#561 amendments): merged in full, but its forward edge
+    # into the version layer is stripped like estleg:hasVersion (#681).
+    write_json(
+        tmp_path / "amendments" / "amendments_a.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Amendment_A_vf_20240101",
+                    "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+                    "rdfs:label": "Amendment 2024-01-01",
+                    "estleg:amends": {"@id": "estleg:A_1"},
+                    "estleg:resultedInVersion": {"@id": "estleg:A_1_v1"},
+                }
+            ]
+        },
+    )
     # sibling source: only a lightweight stub of this is carried into combined
     write_json(
         tmp_path / "riigikohus" / "rk_2020.jsonld",
@@ -1377,20 +1390,26 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
     assert nodes["estleg:Sanction_A_1_fine"]["rdfs:label"] == "Fine"
     assert nodes["estleg:Sanction_A_1_fine"]["estleg:applicableProvision"] == {"@id": "estleg:A_1"}
 
-    # court decision present only as a graph-closure LEAF stub: marked, carries
-    # label + identifier + link, drops the big text body AND every estleg: ref.
+    # court decision present only as a graph-closure stub: marked, carries
+    # label + identifier + link, drops the big text body. #520 re-asserts
+    # the dropped-forward interpretsLaw from the provision's interpretedBy.
     stub = nodes["estleg:RK_1_2_3_4"]
     assert stub["estleg:isStubNode"] is True
     assert stub["estleg:caseNumber"] == "1-2-3/4"
     assert stub["estleg:decisionLink"] == {"@value": "https://x", "@type": "xsd:anyURI"}
     assert "estleg:summary" not in stub
-    assert "estleg:interpretsLaw" not in stub  # internal ref stripped → leaf
+    assert stub["estleg:interpretsLaw"] == [{"@id": "estleg:A_1"}]
 
     # #561: the hasVersion forward edge is STRIPPED from combined (the version
     # layer is a separate load surface), so neither the edge nor its target
     # appears — combined stays genuinely closed, not dangling-but-exempt.
     assert "estleg:hasVersion" not in nodes["estleg:A_1"]
     assert "estleg:A_1_v1" not in nodes
+    # #681: the same policy covers the amendment layer's forward edge into
+    # the version layer — the AmendmentEvent is merged, the edge is not.
+    event = nodes["estleg:Amendment_A_vf_20240101"]
+    assert event["estleg:amends"] == {"@id": "estleg:A_1"}
+    assert "estleg:resultedInVersion" not in event
 
 
 def test_combined_builder_stub_keeps_external_link_drops_internal_ref(tmp_path):
@@ -1402,7 +1421,7 @@ def test_combined_builder_stub_keeps_external_link_drops_internal_ref(tmp_path):
                 {
                     "@id": "estleg:A_1",
                     "@type": ["estleg:LegalProvision"],
-                    "estleg:implementedBy": {"@id": "estleg:Reg_9_Map_2026"},
+                    "estleg:implementedBy": {"@id": "estleg:Reg_9_Map"},
                 }
             ]
         },
@@ -1412,7 +1431,7 @@ def test_combined_builder_stub_keeps_external_link_drops_internal_ref(tmp_path):
         {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_9_Map_2026",
+                    "@id": "estleg:Reg_9_Map",
                     "@type": ["estleg:Act", "estleg:MunicipalRegulation", "owl:Ontology"],
                     "rdfs:label": "Some municipal regulation",
                     "owl:sameAs": {"@id": "https://www.riigiteataja.ee/akt/9.xml"},
@@ -1424,7 +1443,7 @@ def test_combined_builder_stub_keeps_external_link_drops_internal_ref(tmp_path):
 
     fix_all_issues.generate_combined_jsonld(tmp_path)
     nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
-    stub = nodes["estleg:Reg_9_Map_2026"]
+    stub = nodes["estleg:Reg_9_Map"]
     assert stub["estleg:isStubNode"] is True
     assert stub["owl:sameAs"] == {"@id": "https://www.riigiteataja.ee/akt/9.xml"}
     assert "estleg:hasProvision" not in stub  # internal ref stripped
@@ -1541,7 +1560,7 @@ def test_closure_stub_state_regulation_carries_required_metadata(tmp_path):
                 {
                     "@id": "estleg:A_1",
                     "@type": ["estleg:LegalProvision"],
-                    "estleg:references": {"@id": "estleg:Reg_1000010_Map_2026"},
+                    "estleg:references": {"@id": "estleg:Reg_1000010_Map"},
                 }
             ]
         },
@@ -1551,7 +1570,7 @@ def test_closure_stub_state_regulation_carries_required_metadata(tmp_path):
         {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_1000010_Map_2026",
+                    "@id": "estleg:Reg_1000010_Map",
                     "@type": [
                         "estleg:Act",
                         "estleg:MinisterialRegulation",
@@ -1570,7 +1589,7 @@ def test_closure_stub_state_regulation_carries_required_metadata(tmp_path):
 
     fix_all_issues.generate_combined_jsonld(tmp_path)
     nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
-    stub = nodes["estleg:Reg_1000010_Map_2026"]
+    stub = nodes["estleg:Reg_1000010_Map"]
     assert stub["estleg:isStubNode"] is True
     assert stub["estleg:documentType"] == "määrus"
     assert stub["estleg:terviktekstId"] == "1000010"
@@ -1591,7 +1610,7 @@ def test_closure_stub_municipal_regulation_carries_required_edges(tmp_path):
                 {
                     "@id": "estleg:A_1",
                     "@type": ["estleg:LegalProvision"],
-                    "estleg:references": {"@id": "estleg:Reg_1001517_Map_2026"},
+                    "estleg:references": {"@id": "estleg:Reg_1001517_Map"},
                 }
             ]
         },
@@ -1601,7 +1620,7 @@ def test_closure_stub_municipal_regulation_carries_required_edges(tmp_path):
         {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_1001517_Map_2026",
+                    "@id": "estleg:Reg_1001517_Map",
                     "@type": ["estleg:Act", "estleg:MunicipalRegulation", "owl:Ontology"],
                     "rdfs:label": "Kaugküttepiirkonna määramine Saku vallas (määrus)",
                     "estleg:documentType": "määrus",
@@ -1617,7 +1636,7 @@ def test_closure_stub_municipal_regulation_carries_required_edges(tmp_path):
 
     fix_all_issues.generate_combined_jsonld(tmp_path)
     nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
-    stub = nodes["estleg:Reg_1001517_Map_2026"]
+    stub = nodes["estleg:Reg_1001517_Map"]
     assert stub["estleg:isStubNode"] is True
     assert stub["estleg:documentType"] == "määrus"
     assert stub["estleg:terviktekstId"] == "1001517"
@@ -1666,10 +1685,10 @@ def test_closure_stub_kov_provision_transitively_closes_parent_act(tmp_path):
                     "estleg:summary": "Rakendussäte.",
                     "estleg:enactedBy": {"@id": "estleg:Issuer_saku_vallavolikogu"},
                     "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0681"},
-                    "estleg:partOfAct": {"@id": "estleg:Reg_1001519_Map_2026"},
+                    "estleg:partOfAct": {"@id": "estleg:Reg_1001519_Map"},
                 },
                 {
-                    "@id": "estleg:Reg_1001519_Map_2026",
+                    "@id": "estleg:Reg_1001519_Map",
                     "@type": ["estleg:Act", "estleg:MunicipalRegulation", "owl:Ontology"],
                     "rdfs:label": "Mingi Saku valla määrus",
                     "estleg:documentType": "määrus",
@@ -1689,7 +1708,7 @@ def test_closure_stub_kov_provision_transitively_closes_parent_act(tmp_path):
     assert prov["estleg:isStubNode"] is True
     assert prov["estleg:enactedBy"] == {"@id": "estleg:Issuer_saku_vallavolikogu"}
     assert prov["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0681"}
-    assert prov["estleg:partOfAct"] == {"@id": "estleg:Reg_1001519_Map_2026"}
+    assert prov["estleg:partOfAct"] == {"@id": "estleg:Reg_1001519_Map"}
     # KovProvisionShape — NOT LegalProvisionShape — applies: the stub must not
     # acquire estleg:paragrahv (which would target it with the §-shape and demand
     # a summary it deliberately drops).
@@ -1698,7 +1717,7 @@ def test_closure_stub_kov_provision_transitively_closes_parent_act(tmp_path):
 
     # the parent act, reachable only via partOfAct, is transitively stubbed AND
     # complete (so partOfAct's sh:class estleg:Act target resolves with metadata).
-    parent = nodes["estleg:Reg_1001519_Map_2026"]
+    parent = nodes["estleg:Reg_1001519_Map"]
     assert parent["estleg:isStubNode"] is True
     assert "estleg:Act" in parent["@type"]
     assert parent["estleg:documentType"] == "määrus"
@@ -1777,9 +1796,9 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
                     "@id": "estleg:A_1",
                     "@type": ["estleg:LegalProvision"],
                     "estleg:references": [
-                        {"@id": "estleg:Reg_M_Map_2026"},
+                        {"@id": "estleg:Reg_M_Map"},
                         {"@id": "estleg:Reg_M_Par_1"},
-                        {"@id": "estleg:Reg_N_Map_2026"},
+                        {"@id": "estleg:Reg_N_Map"},
                         {"@id": "estleg:AmendmentLink_Draft_Z_1"},
                     ],
                 }
@@ -1791,7 +1810,7 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
         {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_M_Map_2026",
+                    "@id": "estleg:Reg_M_Map",
                     "@type": ["estleg:Act", "estleg:MunicipalRegulation", "owl:Ontology"],
                     "rdfs:label": "M",
                     "estleg:documentType": "määrus",
@@ -1806,7 +1825,7 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
                     "rdfs:label": "§ 1",
                     "estleg:enactedBy": {"@id": "estleg:Issuer_saku_vallavolikogu"},
                     "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0681"},
-                    "estleg:partOfAct": {"@id": "estleg:Reg_M_Map_2026"},
+                    "estleg:partOfAct": {"@id": "estleg:Reg_M_Map"},
                 },
             ]
         },
@@ -1816,7 +1835,7 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
         {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_N_Map_2026",
+                    "@id": "estleg:Reg_N_Map",
                     "@type": ["estleg:Act", "estleg:NationalRegulation", "owl:Ontology"],
                     "rdfs:label": "N",
                     "estleg:documentType": "määrus",

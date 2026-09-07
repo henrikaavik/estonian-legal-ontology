@@ -10,8 +10,8 @@ from unittest.mock import patch
 
 import pytest
 
-import migrate_uris
-from migrate_uris import (
+from estleg import migrate_uris
+from estleg.migrate_uris import (
     NEW_IRI_FORMAT_RE,
     PAR_NO_UNDERSCORE_RE,
     RENAME_FAMILY_AMENDMENT,
@@ -124,9 +124,9 @@ class TestBuildRenameMap:
 
     def test_long_prefix_renamed(self, sample_registry, tmp_path):
         f = tmp_path / "test.json"
-        f.write_text('{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"}')
+        f.write_text('{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map"}')
         rename_map = build_rename_map(sample_registry, scan_paths=[f])
-        assert rename_map["estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"] == "estleg:ATKE_Map_2026"
+        assert rename_map["estleg:Alkoholi_tubaka_ktuse_ja_Map"] == "estleg:ATKE_Map"
 
     def test_cluster_prefix_renamed(self, sample_registry, tmp_path):
         f = tmp_path / "test.json"
@@ -243,9 +243,9 @@ def _seed_amendments_dir(amendments_dir: Path) -> None:
                 {"@id": "estleg:AmendmentChain_aadressiandmete_susteem_t1052132",
                  "@type": ["owl:Ontology"]},
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_1",
-                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map_2026"}},
+                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map"}},
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_10",
-                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map_2026"}},
+                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map"}},
             ]
         }), encoding="utf-8")
     (amendments_dir / "amendments_abieluvararegistri_seadus.json").write_text(
@@ -254,7 +254,7 @@ def _seed_amendments_dir(amendments_dir: Path) -> None:
                 {"@id": "estleg:AmendmentChain_abieluvararegistri_seadus",
                  "@type": ["owl:Ontology"]},
                 {"@id": "estleg:AmendmentLink_Draft_JDM16_0008_abieluvararegistri_seadus",
-                 "estleg:amends": {"@id": "estleg:AVRS_Map_2026"},
+                 "estleg:amends": {"@id": "estleg:AVRS_Map"},
                  "estleg:amendingDraft": {"@id": "estleg:Draft_JDM16_0008"}},
             ]
         }), encoding="utf-8")
@@ -264,14 +264,14 @@ class TestStemFromAmendsTarget:
     @pytest.mark.parametrize(
         "amends_iri, expected",
         [
-            ("estleg:Reg_1052132_Map_2026", "Reg_1052132"),
-            ("estleg:AVRS_Map_2026", "AVRS"),
+            ("estleg:Reg_1052132_Map", "Reg_1052132"),
+            ("estleg:AVRS_Map", "AVRS"),
             ("estleg:KARIST_2_Osa2_88_451", "KARIST_2"),
-            ("estleg:STS2004_2006_2_Map_2026", "STS2004_2006_2"),
+            ("estleg:STS2004_2006_2_Map", "STS2004_2006_2"),
             ("estleg:VOS_Par_271", "VOS"),
             # Not an estleg: IRI / nothing compact-looking → None.
             ("http://example.org/foo", None),
-            ("estleg:_Map_2026", None),
+            ("estleg:_Map", None),
         ],
     )
     def test_recovers_compact_stem(self, amends_iri, expected):
@@ -303,7 +303,7 @@ class TestBuildAmendmentPrefixMap:
                 {"@id": "estleg:AmendmentChain_xyz", "@type": ["owl:Ontology"]},
                 {"@id": "estleg:Amendment_xyz_1",
                  "estleg:amends": {
-                     "@id": "estleg:a_very_long_slug_that_is_longer_Map_2026"}},
+                     "@id": "estleg:a_very_long_slug_that_is_longer_Map"}},
             ]}), encoding="utf-8")
         prefix_map, skipped = build_amendment_prefix_map({}, amendments_dir=amd)
         assert "xyz" not in prefix_map
@@ -408,7 +408,7 @@ class TestAmendmentInBuildRenameMap:
         # A peep file that references the (still-long) Amendment ids.
         peep = tmp_path / "aadressiandmete_susteem_t1052132_peep.json"
         peep.write_text(json.dumps({"@graph": [
-            {"@id": "estleg:Reg_1052132_Map_2026", "estleg:amendedBy": [
+            {"@id": "estleg:Reg_1052132_Map", "estleg:amendedBy": [
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_1"},
                 {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_10"},
             ]},
@@ -445,7 +445,7 @@ class TestAmendmentInBuildRenameMap:
         amd.mkdir()
         f = tmp_path / "x.json"
         f.write_text(
-            '{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"}', encoding="utf-8"
+            '{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map"}', encoding="utf-8"
         )
         rename_map = build_rename_map(
             {"alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus": {
@@ -465,8 +465,8 @@ class TestAmendmentInBuildRenameMap:
             amendments_dir=amd,
             families=None,
         )
-        assert rename_map_legacy["estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"] == \
-            "estleg:ATKE_Map_2026"
+        assert rename_map_legacy["estleg:Alkoholi_tubaka_ktuse_ja_Map"] == \
+            "estleg:ATKE_Map"
 
     def test_sanctions_long_slug_iri_shortened(self, tmp_path: Path):
         amd = tmp_path / "amendments"
@@ -865,16 +865,16 @@ class TestVerifyMigration:
         """Real-world rt_api abbrevs (TsÜS, ÕÕS, …) must validate."""
         krr_dir = isolated_paths / "krr_outputs"
         (krr_dir / "ok.json").write_text(
-            '{"@id": "estleg:TsÜS_Par_70"} {"@id": "estleg:Cluster_ÕÕS_4"}',
+            '{"@id": "estleg:TsUS_Par_70"} {"@id": "estleg:Cluster_OOS_4"}',
             encoding="utf-8",
         )
-        rename_map = {"estleg:OLD_Par_1": "estleg:TsÜS_Par_70"}
+        rename_map = {"estleg:OLD_Par_1": "estleg:TsUS_Par_70"}
         ok, issues = verify_migration(rename_map)
         assert ok is True, issues
 
     def test_format_pattern_smoke(self) -> None:
         assert NEW_IRI_FORMAT_RE.match("estleg:PKS_Par_1")
-        assert NEW_IRI_FORMAT_RE.match("estleg:TsÜS_Par_70")
+        assert NEW_IRI_FORMAT_RE.match("estleg:TsUS_Par_70")
         assert NEW_IRI_FORMAT_RE.match("estleg:Cluster_ATKE_Aktsiis")
         assert not NEW_IRI_FORMAT_RE.match("estleg:_LeadingUnderscore")
         assert not NEW_IRI_FORMAT_RE.match("estleg:1_LeadingDigit")
@@ -1538,17 +1538,32 @@ class TestRealMigrationStateFile:
             assert _SHA256_HEX_RE.match(state["last_applied_corpus_hash"])
 
     def test_apply_command_recognises_already_migrated_when_in_sync(
-        self, capsys: pytest.CaptureFixture[str]
+        self,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+        capsys: pytest.CaptureFixture[str],
     ) -> None:
         """``migrate_uris.py apply`` no-ops on an already-migrated corpus.
 
         Runs the real ``apply_cmd`` against the real repo. When the committed
         ``migration_state.json`` matches the live registry+corpus the command
-        prints the "already migrated" no-op message and returns. If they have
-        drifted (unrelated scanned-file edits since the backfill) the command
-        instead refuses with a "Corpus has changed"/"missing hash stamps"
-        error — both are correct, neither mutates files, so we accept either.
+        prints the "already migrated" no-op message and returns.
+
+        When they have drifted (unrelated scanned-file edits since the
+        backfill) ``apply_cmd`` falls through to the dry-run report instead.
+        #679: that report lives at the *gitignored* ``data/uri_migration_report
+        .json``, so the assertion used to depend on whether the developer
+        happened to have that untracked file — present, and the command refused
+        on a hash mismatch; absent, and it refused with "Dry-run report not
+        found" and the test failed. Point ``REPORT_PATH`` at ``tmp_path`` and
+        stage a report that is hash-bound to the *current* registry but carries
+        a deliberately stale corpus hash, so the refusal is the same on every
+        machine and still exercises the hash-binding guard. Neither branch
+        mutates the corpus.
         """
+        report_path = tmp_path / "uri_migration_report.json"
+        monkeypatch.setattr(migrate_uris, "REPORT_PATH", report_path)
+
         state = load_migration_state()
         assert state is not None
         in_sync = _already_migrated_per_state(state)
@@ -1558,11 +1573,24 @@ class TestRealMigrationStateFile:
             assert "already migrated per migration_state.json" in out
             assert "nothing to do" in out
         else:
+            assert migrate_uris.REGISTRY_PATH.exists()
+            report_path.write_text(
+                json.dumps(
+                    {
+                        "registry_hash": compute_registry_hash(
+                            migrate_uris.REGISTRY_PATH
+                        ),
+                        # No real corpus can hash to all zeroes, so apply_cmd
+                        # is guaranteed to stop at the corpus-hash guard.
+                        "corpus_hash": "0" * 64,
+                        "collisions": [],
+                        "renames": {},
+                        "files_affected": {},
+                    }
+                ),
+                encoding="utf-8",
+            )
             with pytest.raises(SystemExit):
                 migrate_uris.apply_cmd()
             out = capsys.readouterr().out
-            assert (
-                "Corpus has changed" in out
-                or "missing hash stamps" in out
-                or "different migration is already recorded" in out
-            )
+            assert "Corpus has changed" in out

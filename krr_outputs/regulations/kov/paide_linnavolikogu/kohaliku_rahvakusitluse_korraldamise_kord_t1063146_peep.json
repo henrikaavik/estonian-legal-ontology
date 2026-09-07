@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1063146_Map_2026",
+      "@id": "estleg:Reg_1063146_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Kohaliku rahvaküsitluse korraldamise kord (määrus)",
       "dc:source": "Kohaliku rahvaküsitluse korraldamise kord",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/426032026015.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/426032026015.xml"
       },
       "estleg:issuer": "Paide Linnavolikogu",
@@ -45,12 +40,12 @@
       "estleg:regulationTypeBucket": "korraldamise kord",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:KOKS_Map_2026"
+          "@id": "estleg:KOKS_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1063146_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1063146_Map_1"
         }
       ],
       "dcterms:subject": [
@@ -72,16 +67,16 @@
       ],
       "estleg:similarAct": [
         {
-          "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1060556_Map_2026"
+          "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1060556_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1055680_Map_2026"
+          "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1055680_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1011676_Map_2026"
+          "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1011676_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1035082_Map_2026"
+          "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1035082_Map"
         }
       ],
       "estleg:entryIntoForce": {
@@ -92,23 +87,34 @@
         "@value": "2026-03-26",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1063146",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:references": [
+        {
+          "@id": "estleg:KOKS_Par_32"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_paide_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_paide_linnavalitsus"
+        }
+      ],
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1063146_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -123,22 +129,28 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -153,11 +165,15 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -166,13 +182,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -187,11 +207,15 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -214,13 +238,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 4.",
@@ -235,7 +263,7 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -245,13 +273,17 @@
       "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1063146_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 5.",
@@ -266,11 +298,15 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -285,13 +321,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 6.",
@@ -306,7 +346,7 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -319,7 +359,7 @@
       "@id": "estleg:Reg_1063146_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 7.",
@@ -334,10 +374,12 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -352,13 +394,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 8.",
@@ -373,11 +419,15 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -392,13 +442,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 9.",
@@ -413,10 +467,12 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -428,13 +484,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 10.",
@@ -449,11 +509,15 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -462,13 +526,17 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 11.",
@@ -483,7 +551,7 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -496,7 +564,7 @@
       "@id": "estleg:Reg_1063146_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 12.",
@@ -511,14 +579,14 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       }
     },
     {
       "@id": "estleg:Reg_1063146_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 13.",
@@ -533,7 +601,7 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -543,13 +611,17 @@
       "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1063146_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 14.",
@@ -564,22 +636,28 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 15.",
@@ -594,22 +672,28 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 16.",
@@ -624,14 +708,14 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       }
     },
     {
       "@id": "estleg:Reg_1063146_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 17.",
@@ -646,22 +730,28 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 18.",
@@ -676,10 +766,12 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -697,13 +789,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1063146_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1063146",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 19.",
@@ -718,11 +814,11 @@
         "@id": "estleg:Municipality_EHAK_0567"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1063146_Map_2026"
+        "@id": "estleg:Reg_1063146_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1063146_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1063146_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -733,13 +829,13 @@
       "estleg:citationText": "Määrus kehtestatakse kohaliku omavalitsuse korralduse seaduse § 32"
     },
     {
-      "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1060556_Map_2026",
+      "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1060556_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1060556_Map_2026"
+        "@id": "estleg:Reg_1060556_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.738",
@@ -748,13 +844,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1055680_Map_2026",
+      "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1055680_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1055680_Map_2026"
+        "@id": "estleg:Reg_1055680_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.643",
@@ -763,13 +859,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1011676_Map_2026",
+      "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1011676_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1011676_Map_2026"
+        "@id": "estleg:Reg_1011676_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.641",
@@ -778,13 +874,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1063146_Map_2026_Reg_1035082_Map_2026",
+      "@id": "estleg:Similarity_Reg_1063146_Map_Reg_1035082_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1035082_Map_2026"
+        "@id": "estleg:Reg_1035082_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.568",

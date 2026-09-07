@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:LLTOLRKKR_Map_2026",
+      "@id": "estleg:LLTOLRKKR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Loodusliku loomastiku ja taimestiku ohustatud liikidega rahvusvahelise kaubanduse konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/12812154.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/12812154.xml"
       },
       "estleg:kehtiv": {
@@ -39,17 +35,33 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_loodusliku_loomastiku_ja_taimestiku_ohustatud_liikidega_rahvusvahelise_kaubandus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2007-03-30",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:LLTOLRKKR_TopicScheme",
@@ -81,13 +93,13 @@
       "@id": "estleg:LLTOLRKKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_loodusliku_loomastiku_ja_taimestiku_ohustatud_liikidega_rahvusvahelise_kaubandus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud ja 1975. aasta 1. juulil jõustunud loodusliku looma...]",
       "estleg:sourceAct": "Loodusliku loomastiku ja taimestiku ohustatud liikidega rahvusvahelise kaubanduse konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:LLTOLRKKR_Map_2026"
+        "@id": "estleg:LLTOLRKKR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud ja 1975. aasta 1. juulil jõustunud",
       "estleg:legalText": "Ratifitseerida juurdelisatud ja 1975. aasta 1. juulil jõustunud",
@@ -96,7 +108,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:LLTOLRKKR_Par_1_Lg_Unknown_1"
+          "@id": "estleg:LLTOLRKKR_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -111,7 +123,7 @@
       ]
     },
     {
-      "@id": "estleg:LLTOLRKKR_Par_1_Lg_Unknown_1",
+      "@id": "estleg:LLTOLRKKR_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -125,13 +137,13 @@
       "@id": "estleg:LLTOLRKKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_loodusliku_loomastiku_ja_taimestiku_ohustatud_liikidega_rahvusvahelise_kaubandus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Vabariigi Valitsusel korraldada konventsiooni Sekretariaadi töös osalemine ja li...]",
       "estleg:sourceAct": "Loodusliku loomastiku ja taimestiku ohustatud liikidega rahvusvahelise kaubanduse konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:LLTOLRKKR_Map_2026"
+        "@id": "estleg:LLTOLRKKR_Map"
       },
       "estleg:summary": "Vabariigi Valitsusel korraldada konventsiooni Sekretariaadi töös osalemine ja liikmemaksu tasumine.",
       "estleg:legalText": "Vabariigi Valitsusel korraldada konventsiooni Sekretariaadi töös osalemine ja liikmemaksu tasumine.",
@@ -140,11 +152,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:LLTOLRKKR_Par_2_Lg_Unknown_1"
+          "@id": "estleg:LLTOLRKKR_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -155,10 +169,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:LLTOLRKKR_Par_2_Lg_Unknown_1",
+      "@id": "estleg:LLTOLRKKR_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -166,19 +184,28 @@
       "estleg:legalText": "Vabariigi Valitsusel korraldada konventsiooni Sekretariaadi töös osalemine ja liikmemaksu tasumine.",
       "estleg:parentProvision": {
         "@id": "estleg:LLTOLRKKR_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:LLTOLRKKR_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_loodusliku_loomastiku_ja_taimestiku_ohustatud_liikidega_rahvusvahelise_kaubandus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [Kooskõlas konventsiooni artikli 15 lõikega 3 ja artikli 16 lõikega 2 on valdkonn...]",
       "estleg:sourceAct": "Loodusliku loomastiku ja taimestiku ohustatud liikidega rahvusvahelise kaubanduse konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:LLTOLRKKR_Map_2026"
+        "@id": "estleg:LLTOLRKKR_Map"
       },
       "estleg:summary": "Kooskõlas konventsiooni artikli 15 lõikega 3 ja artikli 16 lõikega 2 on õigus teha ja tagasi võtta reservatsioone I, II või III lisa suhtes, lähtudes Euroopa Komisjoni ohustatud liikidega kauplemise komitee otsusest. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"keskkonnaministril\" sõnadega \"valdkonna eest vastutaval ministril\".",
       "estleg:legalText": "Kooskõlas konventsiooni artikli 15 lõikega 3 ja artikli 16 lõikega 2 on õigus teha ja tagasi võtta reservatsioone I, II või III lisa suhtes, lähtudes Euroopa Komisjoni ohustatud liikidega kauplemise komitee otsusest. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"keskkonnaministril\" sõnadega \"valdkonna eest vastutaval ministril\".",
@@ -187,11 +214,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:LLTOLRKKR_Par_3_Lg_Unknown_1"
+          "@id": "estleg:LLTOLRKKR_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -211,10 +240,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:LLTOLRKKR_Par_3_Lg_Unknown_1",
+      "@id": "estleg:LLTOLRKKR_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -222,6 +255,18 @@
       "estleg:legalText": "Kooskõlas konventsiooni artikli 15 lõikega 3 ja artikli 16 lõikega 2 on õigus teha ja tagasi võtta reservatsioone I, II või III lisa suhtes, lähtudes Euroopa Komisjoni ohustatud liikidega kauplemise komitee otsusest. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"keskkonnaministril\" sõnadega \"valdkonna eest vastutaval ministril\".",
       "estleg:parentProvision": {
         "@id": "estleg:LLTOLRKKR_Par_3"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

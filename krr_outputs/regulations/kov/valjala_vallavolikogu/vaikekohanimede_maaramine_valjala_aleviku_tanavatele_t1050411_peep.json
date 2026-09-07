@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1050411_Map_2026",
+      "@id": "estleg:Reg_1050411_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Väikekohanimede määramine Valjala aleviku tänavatele (määrus)",
       "dc:source": "Väikekohanimede määramine Valjala aleviku tänavatele",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/430102020012.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/430102020012.xml"
       },
       "estleg:issuer": "Valjala Vallavolikogu",
@@ -68,17 +63,8 @@
         {
           "@id": "estleg:Amendment_Reg_1050411_a5e21297ef"
         }
-      ]
-    },
-    {
-      "@id": "estleg:Regulation_1050411",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:municipalityStatus": "abolished"
     },
     {
       "@id": "estleg:Reg_1050411_Annex_1",
@@ -102,7 +88,7 @@
       "@id": "estleg:Reg_1050411_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1050411",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -117,22 +103,28 @@
         "@id": "estleg:Municipality_EHAK_0714"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1050411_Map_2026"
+        "@id": "estleg:Reg_1050411_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1050411_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1050411",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -147,7 +139,7 @@
         "@id": "estleg:Municipality_EHAK_0714"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1050411_Map_2026"
+        "@id": "estleg:Reg_1050411_Map"
       }
     }
   ]

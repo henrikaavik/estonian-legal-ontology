@@ -23,12 +23,13 @@ from pathlib import Path
 
 import pytest
 
-import estleg_common
-import generate_regulations
-import riigiteataja_common
-from generate_regulations import (
+from estleg import estleg_common, generate_regulations, riigiteataja_common
+from estleg.generate_regulations import (
+    REPEALED_BODY_TOMBSTONE,
     _gid_rank,
+    _repealed_as_of,
     _repealed_before_snapshot,
+    _should_tombstone_regulation,
     build_regulation_index,
     build_regulation_jsonld,
     classify_issuer,
@@ -37,17 +38,18 @@ from generate_regulations import (
     provision_summary,
     regulation_file_tid,
     source_removed_files,
+    strip_repealed_provision_bodies,
     summarize_regulation_doc,
+    update_index_repealed_counts,
     write_regulation_output,
 )
-from riigiteataja_common import (
+from estleg.riigiteataja_common import (
     SourceListFetchError,
     fetch_acts,
     iter_peep_files,
     new_page_stats,
     parse_act_metadata,
 )
-
 
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "regulations"
 
@@ -193,10 +195,10 @@ class TestStructuredParsing:
         root = _parse(STRUCTURED_FIXTURE)
         doc, stats = build_regulation_jsonld(STRUCTURED_TITLE, {}, root, is_kov=False)
 
-        # Fixture has 2 paragraphs => N+2 = 4 nodes (1 ontology + 1 class + 2 provisions)
+        # Fixture has 2 paragraphs => 3 nodes (1 ontology + 2 provisions; no per-file class)
         assert stats["paragraphs"] == 2
         assert stats["annexes"] == 0
-        assert len(doc["@graph"]) == 4
+        assert len(doc["@graph"]) == 3
 
     def test_provision_node_shape(self):
         root = _parse(STRUCTURED_FIXTURE)
@@ -208,12 +210,13 @@ class TestStructuredParsing:
         for prov in provisions:
             assert prov["estleg:paragrahv"].startswith("§")
             label = prov["rdfs:label"]
-            assert isinstance(label, str)
-            assert label
+            assert isinstance(label, dict)
+            assert label.get("@language") == "et"
+            assert label.get("@value")
 
             type_list = prov["@type"]
             assert "owl:NamedIndividual" in type_list
-            assert "estleg:Regulation_160748" in type_list
+            assert "estleg:LegalProvision" in type_list
 
     def test_provision_summary_falls_back_to_label_or_source_title(self):
         assert provision_summary("§ 1.", "§ 1. Reguleerimisala", "Testmäärus", "") == "§ 1. Reguleerimisala"
@@ -225,7 +228,8 @@ class TestStructuredParsing:
 
         ontology = doc["@graph"][0]
         type_list = ontology["@type"]
-        assert "owl:Ontology" in type_list
+        assert "owl:Ontology" not in type_list
+        assert "estleg:Act" in type_list
         assert "estleg:NationalRegulation" in type_list
         assert "estleg:GovernmentRegulation" in type_list
 
@@ -388,9 +392,9 @@ class TestIsKovFlag:
         assert "estleg:NationalRegulation" not in type_list
         assert "estleg:GovernmentRegulation" not in type_list
         assert "estleg:MinisterialRegulation" not in type_list
-        # The act still carries the base act/ontology classes so the
-        # estleg:Act SHACL shape and MunicipalRegulationShape both apply.
-        assert "owl:Ontology" in type_list
+        # The act carries estleg:Act so LegalProvision/Act SHACL applies.
+        # owl:Ontology is reserved for graph headers (#435).
+        assert "owl:Ontology" not in type_list
         assert "estleg:Act" in type_list
 
     def test_kov_false_marks_national(self):
@@ -446,8 +450,10 @@ class TestKovTypeContradiction:
         ontology = doc["@graph"][0]
         assert "estleg:Act" in ontology["@type"]
         assert "estleg:MunicipalRegulation" in ontology["@type"]
-        assert isinstance(ontology.get("rdfs:label"), str)
-        assert ontology["rdfs:label"]
+        label = ontology.get("rdfs:label")
+        assert isinstance(label, dict)
+        assert label.get("@language") == "et"
+        assert label.get("@value")
 
 
 # ---------------------------------------------------------------------------
@@ -516,7 +522,7 @@ class TestRegulationIndex:
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": f"estleg:Reg_{idx}_Map_2026",
+                        "@id": f"estleg:Reg_{idx}_Map",
                         "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                         "estleg:issuer": "Vabariigi Valitsus",
                     },
@@ -586,7 +592,7 @@ class TestRegulationIndex:
         current = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_1_Map_2026",
+                    "@id": "estleg:Reg_1_Map",
                     "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                     "estleg:terviktekstId": "1",
                 }
@@ -595,7 +601,7 @@ class TestRegulationIndex:
         removed = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_2_Map_2026",
+                    "@id": "estleg:Reg_2_Map",
                     "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                     "estleg:terviktekstId": "2",
                 }
@@ -616,7 +622,7 @@ class TestRegulationIndex:
         (out_dir / "full_reg_t100_peep.json").write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
-                {"@id": "estleg:Reg_100_Map_2026",
+                {"@id": "estleg:Reg_100_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                  "estleg:issuer": "Vabariigi Valitsus"},
                 {"@id": "estleg:Reg_100_Par_1",
@@ -628,7 +634,7 @@ class TestRegulationIndex:
         (out_dir / "stub_reg_t200_peep.json").write_text(json.dumps({
             "@context": {"estleg": "https://w3id.org/estleg/"},
             "@graph": [
-                {"@id": "estleg:Reg_200_Map_2026",
+                {"@id": "estleg:Reg_200_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                  "estleg:issuer": "Sotsiaalminister",
                  "estleg:contentStatus": "noStructuredBody",
@@ -725,7 +731,7 @@ class TestRepealedBeforeSnapshotGenerator:
         )
         # No provision content is emitted for void law text.
         assert _provisions(doc["@graph"]) == []
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_900_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_900_Map")
         assert ont is not None
         assert ont["estleg:temporalStatus"] == "repealed"
         assert ont["estleg:contentStatus"] == "repealedBeforeSnapshot"
@@ -742,20 +748,79 @@ class TestRepealedBeforeSnapshotGenerator:
             "Aktiivne määrus", {}, root, is_kov=False, kehtiv="2026-05-01"
         )
         assert len(_provisions(doc["@graph"])) == 1
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_800_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_800_Map")
         assert "estleg:temporalStatus" not in ont
         assert ont["estleg:parseMode"] == "structured"
         assert stats["repealed_before_snapshot"] == 0
 
-    def test_repealed_on_snapshot_date_keeps_body(self):
-        # An act repealed *on* the snapshot date is still in force that day.
+    def test_repealed_on_snapshot_date_is_tombstoned_as_currently_repealed(self):
+        # Still in force *on* the snapshot day (predicate is False) but
+        # as of BUILD_EVALUATION_DATE the act is repealed → no body.
         root = _reg_xml("810", "811", repeal="2026-05-01")
-        doc, _stats = build_regulation_jsonld(
+        doc, stats = build_regulation_jsonld(
             "Lõppev määrus", {}, root, is_kov=False, kehtiv="2026-05-01"
         )
+        assert _provisions(doc["@graph"]) == []
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_810_Map")
+        assert ont["estleg:temporalStatus"] == "repealed"
+        assert ont.get("estleg:contentStatus") != "repealedBeforeSnapshot"
+        assert stats["repealed"] == 1
+        assert stats["repealed_before_snapshot"] == 0
+
+    def test_repealed_after_older_snapshot_if_temporal_status_repealed(self):
+        # vangla_sisekorraeeskiri: repeal 2026-05-04, kehtiv 2026-05-01.
+        # Inference against the snapshot date would keep the body; an
+        # explicit temporalStatus=repealed must still tombstone.
+        root = _reg_xml("162619", "120122025019", repeal="2026-05-04")
+        doc, stats = build_regulation_jsonld(
+            "Vangla sisekorraeeskiri",
+            {},
+            root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            temporal_status="repealed",
+            evaluation_date="2026-05-01",
+        )
+        assert _provisions(doc["@graph"]) == []
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_162619_Map")
+        assert ont is not None
+        assert ont["estleg:temporalStatus"] == "repealed"
+        assert ont.get("estleg:contentStatus") != "repealedBeforeSnapshot"
+        assert ont["estleg:repealDate"] == {"@value": "2026-05-04", "@type": "xsd:date"}
+        assert stats["repealed"] == 1
+        assert stats["repealed_before_snapshot"] == 0
+        assert stats["paragraphs"] == 0
+
+    def test_inferred_repealed_as_of_evaluation_date_tombstones(self):
+        root = _reg_xml("162620", "1", repeal="2026-05-04")
+        doc, stats = build_regulation_jsonld(
+            "Vangla sisekorraeeskiri",
+            {},
+            root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            evaluation_date="2026-06-01",
+        )
+        assert _provisions(doc["@graph"]) == []
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_162620_Map")
+        assert ont["estleg:temporalStatus"] == "repealed"
+        assert stats["repealed"] == 1
+
+    def test_future_repeal_after_evaluation_date_keeps_body(self):
+        root = _reg_xml("830", "831", repeal="2026-12-01")
+        doc, stats = build_regulation_jsonld(
+            "Tuleviku määrus",
+            {},
+            root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            evaluation_date="2026-06-01",
+        )
         assert len(_provisions(doc["@graph"])) == 1
-        ont = _node_by_id(doc["@graph"], "estleg:Reg_810_Map_2026")
+        ont = _node_by_id(doc["@graph"], "estleg:Reg_830_Map")
         assert "estleg:temporalStatus" not in ont
+        assert "estleg:legalText" in _provisions(doc["@graph"])[0]
+        assert stats["repealed"] == 0
 
     def test_summarize_classifies_repealed_status(self):
         root = _reg_xml("820", "821", repeal="2025-01-01")
@@ -808,6 +873,168 @@ class TestRepealedBeforeSnapshotIndex:
         assert "issue #374" in repealed_entry["reason"]
         # No void provision text was indexed for the tombstone.
         assert index["totalParagraphs"] == 1
+
+    def test_active_count_excludes_temporal_status_repealed_not_just_pre_snapshot(
+        self, tmp_path
+    ):
+        """activeRegulations drops every temporalStatus=repealed act."""
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        active_root = _reg_xml("700", "701", repeal=None)
+        active_doc, _ = build_regulation_jsonld(
+            "Aktiivne määrus", {}, active_root, is_kov=False, kehtiv="2026-05-01"
+        )
+        (out_dir / "active_t700_peep.json").write_text(
+            json.dumps(active_doc), encoding="utf-8"
+        )
+        # In force at the 2026-05-01 snapshot, repealed afterwards.
+        later_root = _reg_xml("162619", "9", repeal="2026-05-04")
+        later_doc, _ = build_regulation_jsonld(
+            "Vangla sisekorraeeskiri",
+            {},
+            later_root,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            temporal_status="repealed",
+            evaluation_date="2026-05-01",
+        )
+        (out_dir / "vangla_t162619_peep.json").write_text(
+            json.dumps(later_doc), encoding="utf-8"
+        )
+
+        index = build_regulation_index(out_dir, is_kov=False, kehtiv="2026-05-01")
+        assert index["totalRegulations"] == 2
+        assert index["activeRegulations"] == 1
+        assert index["repealedBeforeSnapshotCount"] == 1
+        later_entry = next(
+            a for a in index["acts"] if a["file"] == "vangla_t162619_peep.json"
+        )
+        assert later_entry["status"] == "repealed"
+        assert "issue #374" in later_entry["reason"]
+
+
+class TestRepealedAsOfAndShouldTombstone:
+    """Unit coverage for the as-of / OR-ed tombstone predicate (issue #374)."""
+
+    def test_repealed_as_of_is_inclusive(self):
+        assert _repealed_as_of("2026-05-04", "2026-05-04") is True
+        assert _repealed_as_of("2026-05-04", "2026-05-03") is False
+        assert _repealed_as_of("2026-05-04", "2026-06-01") is True
+
+    def test_explicit_repealed_status_wins_over_older_snapshot(self):
+        assert (
+            _should_tombstone_regulation(
+                "2026-05-04",
+                "2026-05-01",
+                temporal_status="repealed",
+                evaluation_date="2026-05-01",
+            )
+            is True
+        )
+
+    def test_in_force_status_is_not_inferred_away(self):
+        # Caller already classified inForce (e.g. a historical snapshot
+        # rebuild): do not tombstone just because eval date is later.
+        assert (
+            _should_tombstone_regulation(
+                "2026-05-04",
+                "2026-05-01",
+                temporal_status="inForce",
+                evaluation_date="2026-06-01",
+            )
+            is False
+        )
+
+    def test_pre_snapshot_still_tombstones_even_if_marked_in_force(self):
+        assert (
+            _should_tombstone_regulation(
+                "2025-10-24",
+                "2026-05-01",
+                temporal_status="inForce",
+            )
+            is True
+        )
+
+
+class TestStripRepealedProvisionBodies:
+    """Surgical corpus helper: drop legalText/summary, keep identity."""
+
+    def _repealed_doc(self, *, repeal: str, kehtiv: str | None = None) -> dict:
+        act: dict = {
+            "@id": "estleg:Reg_1_Map",
+            "@type": ["owl:Ontology", "estleg:Act"],
+            "estleg:temporalStatus": "repealed",
+            "estleg:repealDate": {"@value": repeal, "@type": "xsd:date"},
+        }
+        if kehtiv:
+            act["estleg:kehtiv"] = {"@value": kehtiv, "@type": "xsd:date"}
+        return {
+            "@graph": [
+                act,
+                {
+                    "@id": "estleg:Reg_1_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:Regulation_1"],
+                    "estleg:paragrahv": "§ 1.",
+                    "rdfs:label": "§ 1. Reguleerimisala",
+                    "estleg:sourceAct": "Test",
+                    "estleg:summary": "Käesolev määrus reguleerib midagi olulist.",
+                    "estleg:legalText": "Käesolev määrus reguleerib midagi olulist ja sisukat.",
+                },
+            ]
+        }
+
+    def test_strip_drops_legal_text_and_replaces_summary(self):
+        doc = self._repealed_doc(repeal="2026-05-04", kehtiv="2026-05-01")
+        stats = strip_repealed_provision_bodies(doc)
+        assert stats["stripped"] == 1
+        prov = doc["@graph"][1]
+        assert "estleg:legalText" not in prov
+        assert prov["estleg:summary"] == REPEALED_BODY_TOMBSTONE
+        assert prov["@id"] == "estleg:Reg_1_Par_1"
+        assert prov["estleg:paragrahv"] == "§ 1."
+        act = doc["@graph"][0]
+        assert act["estleg:temporalStatus"] == "repealed"
+        assert act["estleg:repealDate"]["@value"] == "2026-05-04"
+        assert act.get("estleg:contentStatus") != "repealedBeforeSnapshot"
+
+    def test_strip_sets_pre_snapshot_content_status(self):
+        doc = self._repealed_doc(repeal="2025-10-24", kehtiv="2026-05-01")
+        strip_repealed_provision_bodies(doc)
+        act = doc["@graph"][0]
+        assert act["estleg:contentStatus"] == "repealedBeforeSnapshot"
+        assert "issue #374" in act["estleg:contentStatusReason"]
+
+    def test_strip_is_noop_for_in_force_act(self):
+        doc = self._repealed_doc(repeal="2026-05-04")
+        doc["@graph"][0]["estleg:temporalStatus"] = "inForce"
+        stats = strip_repealed_provision_bodies(doc)
+        assert stats["stripped"] == 0
+        assert "estleg:legalText" in doc["@graph"][1]
+
+    def test_update_index_counts_temporal_status_repealed(self, tmp_path):
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        doc = self._repealed_doc(repeal="2026-05-04", kehtiv="2026-05-01")
+        (out_dir / "later_t1_peep.json").write_text(
+            json.dumps(doc), encoding="utf-8"
+        )
+        (out_dir / "REGULATIONS_RIIK_INDEX.json").write_text(
+            json.dumps(
+                {
+                    "kov": False,
+                    "kehtiv": "2026-05-01",
+                    "totalRegulations": 1,
+                    "files": ["later_t1_peep.json"],
+                }
+            ),
+            encoding="utf-8",
+        )
+        index = update_index_repealed_counts(
+            out_dir, is_kov=False, kehtiv="2026-05-01"
+        )
+        assert index["totalRegulations"] == 1
+        assert index["activeRegulations"] == 0
+        assert index["repealedBeforeSnapshotCount"] == 1
 
 
 # ---------------------------------------------------------------------------
@@ -911,7 +1138,7 @@ class TestExistingIsStale:
 
     def _write_stub(self, path: Path, *, tid: str, kehtiv: str | None) -> None:
         ontology = {
-            "@id": f"estleg:Reg_{tid}_Map_2026",
+            "@id": f"estleg:Reg_{tid}_Map",
             "@type": ["owl:Ontology", "estleg:NationalRegulation"],
             "estleg:terviktekstId": tid,
         }
@@ -977,7 +1204,7 @@ class TestExistingIsStale:
             json.dumps({
                 "@graph": [
                     {
-                        "@id": "estleg:Reg_100_Map_2026",
+                        "@id": "estleg:Reg_100_Map",
                         "@type": ["owl:Ontology"],
                         "estleg:terviktekstId": "100",
                         "estleg:kehtiv": {
@@ -991,7 +1218,7 @@ class TestExistingIsStale:
         new_doc = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_100_Map_2026",
+                    "@id": "estleg:Reg_100_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "100",
                     "estleg:kehtiv": {
@@ -1016,7 +1243,7 @@ class TestExistingIsStale:
         fresh_doc = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_100_Map_2026",
+                    "@id": "estleg:Reg_100_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "100",
                     "estleg:kehtiv": {
@@ -1050,7 +1277,7 @@ class TestDocCacheThreaded:
         cached_doc = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_X_Map_2026",
+                    "@id": "estleg:Reg_X_Map",
                     "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                     "estleg:issuer": "Vabariigi Valitsus",
                 },
@@ -1079,7 +1306,7 @@ class TestDocCacheThreaded:
         cached = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_X_Map_2026",
+                    "@id": "estleg:Reg_X_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "1234",
                 }
@@ -1095,7 +1322,7 @@ class TestDocCacheThreaded:
         cached = {
             "@graph": [
                 {
-                    "@id": "estleg:Reg_X_Map_2026",
+                    "@id": "estleg:Reg_X_Map",
                     "@type": ["owl:Ontology"],
                     "estleg:terviktekstId": "abc",
                 }
@@ -1116,7 +1343,7 @@ class TestGatherRegulationsLimit:
     """
 
     def test_limit_caps_page_size(self, monkeypatch):
-        import generate_regulations as mod
+        from estleg import generate_regulations as mod
 
         captured: dict = {}
 
@@ -1143,7 +1370,7 @@ class TestGatherRegulationsLimit:
         assert len(regs) == 3
 
     def test_no_limit_uses_full_page_size(self, monkeypatch):
-        import generate_regulations as mod
+        from estleg import generate_regulations as mod
 
         captured: dict = {}
 
@@ -1195,7 +1422,7 @@ class TestMissingPartsCli:
         </akt>"""
 
     def test_smoke_no_paragraph_id_collisions_across_parts(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1231,7 +1458,7 @@ class TestMissingPartsCli:
         )
 
     def test_class_iri_does_not_carry_osa7_typo(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1249,18 +1476,24 @@ class TestMissingPartsCli:
             classes = [
                 n for n in doc["@graph"]
                 if "owl:Class" in (n.get("@type") or [])
+                and str(n.get("@id", "")).startswith("estleg:LegalProvision_")
             ]
-            assert classes, f"no class node in {path.name}"
-            for c in classes:
-                # The class IRI must NOT contain the literal Osa7 typo.
-                assert "Osa7" not in c["@id"], c
-                # Expected pattern: estleg:LegalProvision_VOS_osa<N>
-                assert c["@id"] == (
-                    f"estleg:LegalProvision_VOS_osa{osa_nr}"
-                ), c
+            assert classes == [], f"per-document class survived in {path.name}: {classes}"
+            provisions = [
+                n for n in doc["@graph"]
+                if isinstance(n, dict) and "estleg:paragrahv" in n
+            ]
+            assert provisions, f"no provisions in {path.name}"
+            for node in provisions:
+                types = node.get("@type") or []
+                assert "estleg:LegalProvision" in types, node
+                assert not any(
+                    isinstance(item, str) and item.startswith("estleg:LegalProvision_")
+                    for item in types
+                ), node
 
     def test_paragraph_iri_namespaced_per_part(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1288,7 +1521,7 @@ class TestMissingPartsCli:
             assert f"_Osa{osa_nr}_" in iri, (osa_nr, iri)
 
     def test_vos_part_emits_subsections_and_full_legal_text(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")
@@ -1318,7 +1551,7 @@ class TestMissingPartsCli:
         }
 
     def test_vos_part_without_loige_has_legal_text_but_no_subsection(self):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         root = ET.fromstring(
             """<akt><osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
@@ -1345,7 +1578,7 @@ class TestMissingPartsCli:
         )
 
     def test_vos_part_subsection_ids_preserve_superscripts(self):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         root = ET.fromstring(
             """<akt><osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
@@ -1375,7 +1608,7 @@ class TestMissingPartsCli:
         ]
 
     def test_main_returns_int_exit_code(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         # Failure path — a non-existent XML — must return non-zero.
         rc = mod.main([
@@ -1386,7 +1619,7 @@ class TestMissingPartsCli:
         assert rc == 1
 
     def test_select_law_match_picks_max_globalid(self):
-        from generate_missing_parts import _select_law_match
+        from estleg.generate_missing_parts import _select_law_match
 
         rows = [
             {"pealkiri": "Võlaõigusseadus", "globaalID": "12345"},
@@ -1399,7 +1632,7 @@ class TestMissingPartsCli:
         assert match["globaalID"] == "20000"
 
     def test_select_law_match_prefers_exact_over_substring(self):
-        from generate_missing_parts import _select_law_match
+        from estleg.generate_missing_parts import _select_law_match
 
         rows = [
             {"pealkiri": "Võlaõigusseaduse muutmise seadus", "globaalID": "9999"},
@@ -1413,7 +1646,7 @@ class TestMissingPartsCli:
         assert match["pealkiri"] == "Võlaõigusseadus"
 
     def test_argparse_vos_osa_repeatable(self, tmp_path):
-        import generate_missing_parts as mod
+        from estleg import generate_missing_parts as mod
 
         vos_path = tmp_path / "vos.xml"
         vos_path.write_text(self._vos_xml(), encoding="utf-8")

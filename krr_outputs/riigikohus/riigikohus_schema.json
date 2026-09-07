@@ -2,12 +2,16 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -137,6 +141,22 @@
       "estleg:caseTypeCode": "5"
     },
     {
+      "@id": "estleg:CaseType_Other",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:CaseType"
+      ],
+      "rdfs:label": {
+        "@value": "Muu",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Other Case",
+        "@language": "en"
+      },
+      "estleg:caseTypeCode": "Other"
+    },
+    {
       "@id": "estleg:DecisionType_Judgment",
       "@type": [
         "owl:NamedIndividual",
@@ -163,26 +183,6 @@
       },
       "skos:prefLabel": {
         "@value": "Ruling",
-        "@language": "en"
-      }
-    },
-    {
-      "@id": "estleg:DecisionType_Resolution",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:DecisionType"
-      ],
-      "rdfs:label": {
-        "@value": "Kohtu resolutsioon",
-        "@language": "et"
-      },
-      "skos:prefLabel": {
-        "@value": "Resolution",
-        "@language": "en"
-      },
-      "owl:deprecated": true,
-      "rdfs:comment": {
-        "@value": "Deprecated (issue #344): declared but never used in the corpus — the extractor classifies every Riigikohus decision as estleg:DecisionType_Judgment or estleg:DecisionType_Ruling. Retained for backward compatibility; do not emit new references.",
         "@language": "en"
       }
     },
@@ -314,6 +314,43 @@
       }
     },
     {
+      "@id": "estleg:rikosUrl",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "RIKOS URL",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      },
+      "rdfs:comment": {
+        "@value": "Direct rikos.rik.ee document URL derived from rikObjectId (https://rikos.rik.ee/Lahend/Index?id={id}).",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:chamber",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": {
+        "@value": "kolleegium",
+        "@language": "et"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": {
+        "@value": "Deciding chamber extracted from the legalText header (e.g. Halduskolleegium, Kriminaalkolleegium, Erikogu).",
+        "@language": "en"
+      }
+    },
+    {
       "@id": "estleg:decisionLink",
       "@type": [
         "owl:DatatypeProperty"
@@ -327,6 +364,43 @@
       },
       "rdfs:range": {
         "@id": "xsd:anyURI"
+      }
+    },
+    {
+      "@id": "estleg:ecliIdentifier",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "ECLI",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": {
+        "@value": "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). Assigned from H2 2016; derived from case number + decision year. Pre-H2-2016 Riigikohus decisions have no official ECLI.",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:judge",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": {
+        "@value": "kohtunik",
+        "@language": "et"
+      },
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": {
+        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
+        "@language": "en"
       }
     },
     {

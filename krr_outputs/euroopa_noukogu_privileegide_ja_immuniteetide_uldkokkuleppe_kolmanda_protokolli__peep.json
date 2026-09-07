@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ENPIUKPR_Map_2026",
+      "@id": "estleg:ENPIUKPR_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/921880.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/921880.xml"
       },
       "estleg:kehtiv": {
@@ -39,17 +35,33 @@
           "@id": "http://eurovoc.europa.eu/2149"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_euroopa_noukogu_privileegide_ja_immuniteetide_uldkokkuleppe_kolmanda_protokolli_",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maakohus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2006-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:ENPIUKPR_TopicScheme",
@@ -81,13 +93,13 @@
       "@id": "estleg:ENPIUKPR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_privileegide_ja_immuniteetide_uldkokkuleppe_kolmanda_protokolli_"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Euroopa Nõukogu privileegide ja immuniteetide üldko...]",
       "estleg:sourceAct": "Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENPIUKPR_Map_2026"
+        "@id": "estleg:ENPIUKPR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1959. aasta 6. märtsil Strasbourg'is.",
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1959. aasta 6. märtsil Strasbourg'is.",
@@ -96,7 +108,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ENPIUKPR_Par_1_Lg_Unknown_1"
+          "@id": "estleg:ENPIUKPR_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -106,7 +118,7 @@
       ]
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_1_Lg_Unknown_1",
+      "@id": "estleg:ENPIUKPR_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -120,13 +132,13 @@
       "@id": "estleg:ENPIUKPR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_privileegide_ja_immuniteetide_uldkokkuleppe_kolmanda_protokolli_"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Ratifitseerimisel määrata protokolli artikli 3 alusel pädevaks asutuseks Harju M...]",
       "estleg:sourceAct": "Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENPIUKPR_Map_2026"
+        "@id": "estleg:ENPIUKPR_Map"
       },
       "estleg:summary": "Ratifitseerimisel määrata protokolli artikli 3 alusel pädevaks asutuseks Harju Maakohus.",
       "estleg:legalText": "Ratifitseerimisel määrata protokolli artikli 3 alusel pädevaks asutuseks Harju Maakohus.",
@@ -135,11 +147,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ENPIUKPR_Par_2_Lg_Unknown_1"
+          "@id": "estleg:ENPIUKPR_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -161,10 +175,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_2_Lg_Unknown_1",
+      "@id": "estleg:ENPIUKPR_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -172,19 +190,28 @@
       "estleg:legalText": "Ratifitseerimisel määrata protokolli artikli 3 alusel pädevaks asutuseks Harju Maakohus.",
       "estleg:parentProvision": {
         "@id": "estleg:ENPIUKPR_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:ENPIUKPR_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_euroopa_noukogu_privileegide_ja_immuniteetide_uldkokkuleppe_kolmanda_protokolli_"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [Ratifitseerimisel teha protokolli artikli 7 lõigu 4 punktile a reservatsioon, et...]",
       "estleg:sourceAct": "Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ENPIUKPR_Map_2026"
+        "@id": "estleg:ENPIUKPR_Map"
       },
       "estleg:summary": "Ratifitseerimisel teha protokolli artikli 7 lõigu 4 punktile a reservatsioon, et protokolli ratifitseerimine ei kohusta Eesti Vabariiki tagama Euroopa Nõukogu Sotsiaalarengu Fondi väljaantud võlakirjade intressidest või sõlmitud laenulepingutest tuleneva sissetuleku maksudest vabastamist. Mitteametlik tõlge ELS nr 28 Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmas protokoll Koostatud 6. märtsil 1959. a Strasbourg'is Käesolevale protokollile allakirjutanud riigid, olles",
       "estleg:legalText": "Ratifitseerimisel teha protokolli artikli 7 lõigu 4 punktile a reservatsioon, et protokolli ratifitseerimine ei kohusta Eesti Vabariiki tagama Euroopa Nõukogu Sotsiaalarengu Fondi väljaantud võlakirjade intressidest või sõlmitud laenulepingutest tuleneva sissetuleku maksudest vabastamist. Mitteametlik tõlge ELS nr 28 Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmas protokoll Koostatud 6. märtsil 1959. a Strasbourg'is Käesolevale protokollile allakirjutanud riigid, olles Euroopa Nõukogu liikmed, Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppele allakirjutanud riigid või nimetatud üldkokkuleppe pooled ning samal ajal Etniliste Pagulaste ja Ülerahvastatusega Tegeleva Euroopa Nõukogu Ümberasustamisfondi liikmed; pidades silmas eespool nimetatud fondi kokkuleppe artiklite I ja IX (g) sätteid; pidades silmas Euroopa Nõukogu statuudi artiklit 40; soovides määratleda ümberasustamisfondi omandi, varade ja tehingute õiguslikku režiimi ning selle organite ja ametnike õiguslikku staatust; võttes arvesse vajadust hõlbustada fondi põhikirjaliste eesmärkide realiseerimist fondi tehinguid mõjutava otsese või kaudse maksustamise suurima võimaliku vähendamisega, kuna neid kannavad lõpuks fondi tagatud laenusaajad; soovides täiendada Euroopa Nõukogu privileegide ja immuniteetide üldkokkulepet ümberasustamisfondiga, leppisid kokku alljärgnevas:",
@@ -193,48 +220,52 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_1"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_1"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_2"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_2"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_3"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_3"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_4"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_4"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_5"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_5"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_6"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_6"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_7"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_7"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_8"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_8"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_9"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_9"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_10"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_10"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_11"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_11"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_12"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_12"
         },
         {
-          "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_13"
+          "@id": "estleg:ENPIUKPR_Par_3_Lg_13"
         }
       ],
       "estleg:targetGroup": [
-        "official",
-        "ngo"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -248,10 +279,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_1",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -259,10 +294,19 @@
       "estleg:legalText": "Ratifitseerimisel teha protokolli artikli 7 lõigu 4 punktile a reservatsioon, et protokolli ratifitseerimine ei kohusta Eesti Vabariiki tagama Euroopa Nõukogu Sotsiaalarengu Fondi väljaantud võlakirjade intressidest või sõlmitud laenulepingutest tuleneva sissetuleku maksudest vabastamist.",
       "estleg:parentProvision": {
         "@id": "estleg:ENPIUKPR_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_2",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -273,7 +317,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_3",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_3",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -284,7 +328,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_4",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_4",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -295,7 +339,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_5",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_5",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -306,7 +350,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_6",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_6",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -317,7 +361,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_7",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_7",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -328,7 +372,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_8",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_8",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -336,10 +380,19 @@
       "estleg:legalText": "pidades silmas eespool nimetatud fondi kokkuleppe artiklite I ja IX (g) sätteid;",
       "estleg:parentProvision": {
         "@id": "estleg:ENPIUKPR_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_9",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_9",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -350,7 +403,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_10",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_10",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -358,10 +411,19 @@
       "estleg:legalText": "soovides määratleda ümberasustamisfondi omandi, varade ja tehingute õiguslikku režiimi ning selle organite ja ametnike õiguslikku staatust;",
       "estleg:parentProvision": {
         "@id": "estleg:ENPIUKPR_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_11",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_11",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -369,10 +431,19 @@
       "estleg:legalText": "võttes arvesse vajadust hõlbustada fondi põhikirjaliste eesmärkide realiseerimist fondi tehinguid mõjutava otsese või kaudse maksustamise suurima võimaliku vähendamisega, kuna neid kannavad lõpuks fondi tagatud laenusaajad;",
       "estleg:parentProvision": {
         "@id": "estleg:ENPIUKPR_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_12",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_12",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -383,7 +454,7 @@
       }
     },
     {
-      "@id": "estleg:ENPIUKPR_Par_3_Lg_Unknown_13",
+      "@id": "estleg:ENPIUKPR_Par_3_Lg_13",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

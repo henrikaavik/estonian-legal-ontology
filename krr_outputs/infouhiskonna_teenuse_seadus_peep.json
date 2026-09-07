@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:InfoTS_Map_2026",
+      "@id": "estleg:InfoTS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Infoühiskonna teenuse seadus teemakaardistus",
       "dc:source": "Infoühiskonna teenuse seadus",
-      "dcterms:title": "Infoühiskonna teenuse seadus",
+      "dcterms:title": [
+        {
+          "@value": "Infoühiskonna teenuse seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Information Society Services Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/104072024024.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/104072024024.xml"
       },
       "estleg:kehtiv": {
@@ -33,7 +38,7 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_346400_Map_2026"
+          "@id": "estleg:Reg_346400_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -70,16 +75,67 @@
         {
           "@id": "estleg:AmendmentLink_Draft_MKM23_1347_InfoTS"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_infouhiskonna_teenuse_seadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2836"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:volaoigusseadus_Osa8_Par_621"
+        },
+        {
+          "@id": "estleg:KORS_Par_30"
+        },
+        {
+          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_12"
+        },
+        {
+          "@id": "estleg:InfoTS_Par_15"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:InfoTS_Par_16"
+        },
+        {
+          "@id": "estleg:InfoTS_Par_16_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
+        },
+        {
+          "@id": "estleg:Institution_siseministeerium"
+        },
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-07-14",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/503092024004"
       }
     },
     {
@@ -112,13 +168,13 @@
       "@id": "estleg:InfoTS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse ülesanne",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus sätestab nõuded infoühiskonna teenuse osutajale, järelevalve teostamise korralduse ja vastutuse seaduse rikkumise eest. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi. (3) Käesolevas seaduses sätestatut ei kohaldata infoühiskonna teenusega seonduvatele küsimustele, mis on reguleeritud elektroonilise side seaduse, isikuandmete kaitse seaduse ja meediateenuste seadusega.",
       "estleg:legalText": "(1) Käesolev seadus sätestab nõuded infoühiskonna teenuse osutajale, järelevalve teostamise korralduse ja vastutuse seaduse rikkumise eest. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi. (3) Käesolevas seaduses sätestatut ei kohaldata infoühiskonna teenusega seonduvatele küsimustele, mis on reguleeritud elektroonilise side seaduse, isikuandmete kaitse seaduse ja meediateenuste seadusega.",
@@ -137,7 +193,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -180,7 +238,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_1_Lg_1",
@@ -193,7 +255,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_1_Lg_2",
@@ -225,13 +296,13 @@
       "@id": "estleg:InfoTS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Mõisted",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: infoühiskonna teenus – teenus, mida osutatakse majandus- või kutsetegevuse raames teenuse kasutaja otsesel taotlusel ja mille puhul andmeid töödeldakse, säilitatakse ja edastatakse digitaalkujul andmete töötlemiseks ja säilitamiseks mõeldud elektrooniliste vahendite abil, kusjuures osapooled ei viibi üheaegselt samas kohas. Infoühiskonna teenus peab olema täielikult üle kantud, edastatud ja vastu võetud elektrooniliste sidevahendite",
       "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: infoühiskonna teenus – teenus, mida osutatakse majandus- või kutsetegevuse raames teenuse kasutaja otsesel taotlusel ja mille puhul andmeid töödeldakse, säilitatakse ja edastatakse digitaalkujul andmete töötlemiseks ja säilitamiseks mõeldud elektrooniliste vahendite abil, kusjuures osapooled ei viibi üheaegselt samas kohas. Infoühiskonna teenus peab olema täielikult üle kantud, edastatud ja vastu võetud elektrooniliste sidevahendite abil. Infoühiskonna teenus ei ole faksi ega telefonikõne abil edastatud teenus ega televisiooni- või raadioteenus; reguleeritud kutseala – iga kutseala, millel tegutsemiseks on seadusega sätestatud kutsekvalifikatsiooni omamise nõue.",
@@ -240,11 +311,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:InfoTS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:InfoTS_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -264,10 +337,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:InfoTS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:InfoTS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -275,19 +352,31 @@
       "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: infoühiskonna teenus – teenus, mida osutatakse majandus- või kutsetegevuse raames teenuse kasutaja otsesel taotlusel ja mille puhul andmeid töödeldakse, säilitatakse ja edastatakse digitaalkujul andmete töötlemiseks ja säilitamiseks mõeldud elektrooniliste vahendite abil, kusjuures osapooled ei viibi üheaegselt samas kohas. Infoühiskonna teenus peab olema täielikult üle kantud, edastatud ja vastu võetud elektrooniliste sidevahendite abil. Infoühiskonna teenus ei ole faksi ega telefonikõne abil edastatud teenus ega televisiooni- või raadioteenus; reguleeritud kutseala – iga kutseala, millel tegutsemiseks on seadusega sätestatud kutsekvalifikatsiooni omamise nõue.",
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_2"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:InfoTS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Tegevuskoha riigi õiguse kohaldamine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Eestis asuva tegevuskoha kaudu osutatav infoühiskonna teenus (edaspidi teenus) peab vastama Eesti õigusest tulenevatele nõuetele sellest olenemata, millises Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigis teenust osutatakse. (2) Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigis asuva tegevuskoha kaudu osutatava teenuse osutamist Eestis ei piirata kooskõlastatud valdkonna osas, välja arvatud juhul ja ulatuses, mis on õigustatud kõlbluse, avaliku korra, riigi julgeoleku,",
       "estleg:legalText": "(1) Eestis asuva tegevuskoha kaudu osutatav infoühiskonna teenus (edaspidi teenus) peab vastama Eesti õigusest tulenevatele nõuetele sellest olenemata, millises Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigis teenust osutatakse. (2) Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigis asuva tegevuskoha kaudu osutatava teenuse osutamist Eestis ei piirata kooskõlastatud valdkonna osas, välja arvatud juhul ja ulatuses, mis on õigustatud kõlbluse, avaliku korra, riigi julgeoleku, rahva tervise ja tarbija kaitseks. (3) Käesoleva paragrahvi lõikes 2 nimetatud piirang peab vastama järgmistele tingimustele: piirang kehtestatakse konkreetsele teenusele, mis takistab käesoleva paragrahvi lõikes 2 nimetatud kaitse saavutamist või kujutab endast tõsist ohtu selle saavutamisele; piirang on proportsionaalne oma eesmärgiga; enne piirangu kehtestamist on Eesti pädev asutus taotlenud, et tegevuskoha riik kehtestaks piirangu ja viimane pole seda kehtestanud või see on olnud ebapiisav; kavatsusest kehtestada piirang on Eesti pädev asutus teatanud Euroopa Komisjonile ja vastavale liikmesriigile; edasilükkamatu vajaduse korral võib käesoleva lõike punktides 3 ja 4 ettenähtud tingimustest teha erandeid. Edasilükkamatu vajaduse korral tehtud piirangust peab Eesti pädev asutus võimalikult kiiresti teatama Euroopa Komisjonile ja liikmesriigile, tuues välja põhjused, miks juhtumit edasilükkamatuks loetakse; käesoleva lõike punkte 3–5 ei kohaldata kohtumenetlusele. (4) Käesoleva paragrahvi lõikes 2 sätestatut ei kohaldata: osapoolte vabadusele valida nende lepingu suhtes kohaldatav õigus; tarbijalepingutes sisalduvatele lepingulistele kohustustele; autoriõigusele ja sellega kaasnevatele õigustele; pooljuhtide kaitsele; andmebaaside kaitsele; tööstusomandi kaitsele; seadusest tulenevatele vorminõuetele, mis kehtivad kinnisasjaõigustega tehtavate tehingute suhtes; kommertsteadaande lubatavusele elektronposti teel; investeerimisfondide reklaamile; kindlustusandja kohustusele edastada kohustusliku kindlustuse üld- ja eritingimused pädevale asutusele; kindlustusandja asutamisõigusele ja teenuste osutamise vabadusele; kahju- ja elukindlustuslepingutele, mis katavad Euroopa Liidu liikmesriigis eksisteerivaid riske; notarite, kohtutäiturite ja teiste avalik-õiguslikku ametit vaba elukutsena pidavate isikute tegevusele avaliku võimu kandjana; protsessiosalise esindamisele ja tema huvide kaitsele kohtus; loteriidele ja hasartmängudele, sealhulgas rahalise panusega õnnemängudele ja kihlveotehingutele; e-raha väljastamisele äriühingu poolt, kes kasutab makseasutuste ja e-raha asutuste seaduse §-s 12 sätestatud õigust.",
@@ -309,12 +398,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_346400_Map_2026"
+          "@id": "estleg:Reg_346400_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -345,7 +438,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_Lg_1",
@@ -358,7 +455,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_Lg_2",
@@ -371,7 +475,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 2"
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_Lg_3",
@@ -384,7 +500,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_Lg_4",
@@ -402,19 +530,31 @@
         {
           "@id": "estleg:MERA_Par_12"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3¹.",
       "rdfs:label": "§ 3¹. Teavitamine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Komisjoni tuleb teavitada: ettevalmistatavast õigusaktist, mis sisaldab infoühiskonna teenusele kehtestatavat nõuet; väärtpaberibörsi, reguleeritud väärtpaberituru ja väärtpaberiarveldus-süsteemi poolt infoühiskonna teenusele kehtestatavast nõudest. (2) Teavitada ei tule õigusaktist, mis sisaldab: elektroonilise side teenusele esitatavat nõuet, mis on reguleeritud Euroopa Liidu õigusaktidega; finantsteenustele esitatavat nõuet, mis on reguleeritud Euroopa Liidu õigusaktidega ja",
       "estleg:legalText": "(1) Euroopa Komisjoni tuleb teavitada: ettevalmistatavast õigusaktist, mis sisaldab infoühiskonna teenusele kehtestatavat nõuet; väärtpaberibörsi, reguleeritud väärtpaberituru ja väärtpaberiarveldus-süsteemi poolt infoühiskonna teenusele kehtestatavast nõudest. (2) Teavitada ei tule õigusaktist, mis sisaldab: elektroonilise side teenusele esitatavat nõuet, mis on reguleeritud Euroopa Liidu õigusaktidega; finantsteenustele esitatavat nõuet, mis on reguleeritud Euroopa Liidu õigusaktidega ja mille mittetäielik nimekiri on esitatud Euroopa Parlamendi ja nõukogu direktiivi 98/48/EÜ VI lisas (EÜT L 217, 5.8.1998, lk 18–26). (3) Teavitada ei tule õigusakti eelnõust, mis järgib Euroopa Liidu ühtlustamise õigusakti või rahvusvahelistest lepingutest tulenevaid kohustusi, mille tulemusena võetakse Euroopa Liidus vastu ühtne infoühiskonna teenust käsitlev nõue. (4) Teavitamisele kuuluva õigusakti ettevalmistaja esitab õigusakti eelnõu teavitamist koordineerivale asutusele. Õigusakti eelnõu tuleb teavitamisele esitada sellises menetlusetapis, millal on veel võimalik eelnõus muudatusi teha. (5) Infoühiskonna teenusele kehtestatavat nõuet sisaldava õigusakti eelnõust ning väärtpaberibörsi, reguleeritud väärtpaberituru ja väärtpaberiarveldussüsteemi poolt infoühiskonna teenusele kehtestatavast nõudest teavitamise korra ja teabevahetust koordineeriva asutuse määrab",
@@ -439,7 +579,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -452,12 +594,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Euroopa Komisjoni",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_1_Lg_1",
@@ -470,7 +615,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_3_1"
       },
-      "rdfs:label": "§ 3¹ lg 1"
+      "rdfs:label": "§ 3¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_1_Lg_2",
@@ -509,7 +661,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_3_1"
       },
-      "rdfs:label": "§ 3¹ lg 4"
+      "rdfs:label": "§ 3¹ lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_3_1_Lg_5",
@@ -522,19 +686,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_3_1"
       },
-      "rdfs:label": "§ 3¹ lg 5"
+      "rdfs:label": "§ 3¹ lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Teenuse osutaja kohta edastatav teave",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Teenuse osutaja on kohustatud tegema teenuse kasutajale vahetult ja püsivalt kättesaadavaks vähemalt järgmise teabe: teenuse osutaja nime, registrikoodi ja vastava registri nime, teenuse osutaja aadressi ja muud kontaktandmed, sealhulgas elektronposti aadressi; registreeringu numbri, kui vastaval tegevusalal tegutsemiseks on seadusega sätestatud majandustegevuse registris registreerimise nõue, või tegevusloa numbri; viidete puhul teenuse tasu suurusele teabe selle kohta, kas need sisaldavad",
       "estleg:legalText": "(1) Teenuse osutaja on kohustatud tegema teenuse kasutajale vahetult ja püsivalt kättesaadavaks vähemalt järgmise teabe: teenuse osutaja nime, registrikoodi ja vastava registri nime, teenuse osutaja aadressi ja muud kontaktandmed, sealhulgas elektronposti aadressi; registreeringu numbri, kui vastaval tegevusalal tegutsemiseks on seadusega sätestatud majandustegevuse registris registreerimise nõue, või tegevusloa numbri; viidete puhul teenuse tasu suurusele teabe selle kohta, kas need sisaldavad makse ja tarnekulusid; käibemaksukohustuslasena registreerimise numbri, kui teenuse osutaja on käibemaksukohustuslane. (2) Reguleeritud kutsealal tegutsev teenuse osutaja on kohustatud lisaks käesoleva paragrahvi lõikes 1 sätestatule tegema teenuse kasutajale vahetult ja püsivalt kättesaadavaks järgmise teabe: kutseorganisatsiooni või -liidu nimetuse, mille liige ta on seoses osutatava teenusega; kutse ja liikmesriigi nime, kus see omistati; viite teenuse osutaja tegevuskoha liikmesriigis kohaldatavatele kutsealastele nõuetele koos nende nõuete tekstidega tutvumiseks vajalike viidetega.",
@@ -550,8 +723,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -571,7 +748,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_4_Lg_1",
@@ -584,7 +765,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_4_Lg_2",
@@ -597,19 +790,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Kommertsteadaanne",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Kommertsteadaanne on igasugune teave, mis on kavandatud otseselt või kaudselt edendama majandus- või kutsetegevuses osaleva isiku nimel tema kaupade või teenuste pakkumist või tõstma sellise isiku mainet. (2) Kommertsteadaanne peab: olema selgelt tuvastatav kommertsteadaandena; võimaldama selgelt tuvastada isikut, kelle nimel kommertsteadaanne esitatakse; võimaldama selgelt tuvastada müügiedenduspakkumisi, sealhulgas allahindlusi, autasusid ja kingitusi ning müügiedendusvõistlusi- ja mänge;",
       "estleg:legalText": "(1) Kommertsteadaanne on igasugune teave, mis on kavandatud otseselt või kaudselt edendama majandus- või kutsetegevuses osaleva isiku nimel tema kaupade või teenuste pakkumist või tõstma sellise isiku mainet. (2) Kommertsteadaanne peab: olema selgelt tuvastatav kommertsteadaandena; võimaldama selgelt tuvastada isikut, kelle nimel kommertsteadaanne esitatakse; võimaldama selgelt tuvastada müügiedenduspakkumisi, sealhulgas allahindlusi, autasusid ja kingitusi ning müügiedendusvõistlusi- ja mänge; selgelt esitama käesoleva lõike punktis 3 nimetatud müügiedenduspakkumiste ja kaubanduslike loteriide osalemistingimusi. (3) Kommertsteadaanne ei ole: teave, mis võimaldab otsest juurdepääsu füüsilise või juriidilise isiku tegevusele, sealhulgas domeeninimi või elektronposti aadress; teave, mis on esitatud isikust sõltumatult tema maine, pakutava kauba või teenuse kohta.",
@@ -628,8 +833,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -642,7 +851,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kommertsteadaanne",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -650,7 +858,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_5_Lg_1",
@@ -663,7 +875,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_5_Lg_2",
@@ -676,7 +897,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": "3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_5_Lg_3",
@@ -689,19 +923,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 3"
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. [Kehtetu -]",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -724,13 +967,13 @@
       "@id": "estleg:InfoTS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Üldkasutatavate andmesidevahendite vahendusel sõlmitud leping",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Teenuse osutaja ja teenuse kasutaja vahel üldkasutatavate andmesidevahendite vahendusel lepingu sõlmimine osapoolte üheaegse kohalolekuta peab toimuma vastavalt võlaõigusseaduse §-s 621 sätestatule.",
       "estleg:legalText": "Teenuse osutaja ja teenuse kasutaja vahel üldkasutatavate andmesidevahendite vahendusel lepingu sõlmimine osapoolte üheaegse kohalolekuta peab toimuma vastavalt võlaõigusseaduse §-s 621 sätestatule.",
@@ -739,12 +982,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:InfoTS_Par_7_Lg_Unknown_1"
+          "@id": "estleg:InfoTS_Par_7_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -769,10 +1016,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:InfoTS_Par_7_Lg_Unknown_1",
+      "@id": "estleg:InfoTS_Par_7_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -785,19 +1036,31 @@
         {
           "@id": "estleg:volaoigusseadus_Osa8_Par_621"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Vastutuse piirang üksnes teabe edastamise ja üldkasutatavale andmesidevõrgule juurdepääsu pakkumise korral",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -817,13 +1080,13 @@
       "@id": "estleg:InfoTS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Vastutuse piirang andmete vahemällu salvestamise korral",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -843,13 +1106,13 @@
       "@id": "estleg:InfoTS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Vastutuse piirang andmete talletamise teenuse osutamise korral",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -872,13 +1135,13 @@
       "@id": "estleg:InfoTS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Jälgimiskohustuse puudumine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Teenuse osutaja peab esitama prokuratuurile ja uurimisasutusele tõe tuvastamiseks kriminaalmenetluse seadustikus ettenähtud alustel ja korras ning julgeoleku- ja jälitusasutusele seaduses ettenähtud alustel ja korras nende määratud tähtajaks olemasolevat teavet teenuse kasutaja kohta, kellele ta osutab andmete talletamise teenust. (5) Teenuse osutaja peab esitama kohtule tema kirjaliku üksikpäringu alusel tõe tuvastamiseks tsiviilkohtumenetluse",
       "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Teenuse osutaja peab esitama prokuratuurile ja uurimisasutusele tõe tuvastamiseks kriminaalmenetluse seadustikus ettenähtud alustel ja korras ning julgeoleku- ja jälitusasutusele seaduses ettenähtud alustel ja korras nende määratud tähtajaks olemasolevat teavet teenuse kasutaja kohta, kellele ta osutab andmete talletamise teenust. (5) Teenuse osutaja peab esitama kohtule tema kirjaliku üksikpäringu alusel tõe tuvastamiseks tsiviilkohtumenetluse seadustikus ettenähtud alustel ja korras ning kohtu määratud tähtajaks olemasolevat teavet teenuse kasutaja kohta, kellele ta osutab andmete talletamise teenust. Üksikpäring käesoleva paragrahvi mõttes on päring teenuse kasutaja isikuandmete ja teenuse kasutaja edastatud teabe edastamise fakti, kestuse, viisi ja vormi kohta seoses konkreetse elektronkirja, konkreetse elektroonilise kommentaari või muu üksiksõnumi edastamisega seotud sideseansiga.",
@@ -903,8 +1166,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -930,7 +1197,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_11_Lg_1",
@@ -982,7 +1253,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 4"
+      "rdfs:label": "§ 11 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_11_Lg_5",
@@ -995,19 +1278,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 5"
+      "rdfs:label": "§ 11 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Riiklik järelevalve",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Käesolevas seaduses teenuse osutaja kohta antavale teabele sätestatud nõuete järgimise üle teostab riiklikku järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (2) Euroopa Parlamendi ja nõukogu määruses (EL) nr 2019/1150, mis käsitleb õigluse ja läbipaistvuse edendamist veebipõhiste vahendusteenuste ärikasutajate jaoks (ELT L 186, 11.07.2019, lk 57–79), sätestatud nõuete täitmise üle teostab riiklikku järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet.",
       "estleg:legalText": "(1) Käesolevas seaduses teenuse osutaja kohta antavale teabele sätestatud nõuete järgimise üle teostab riiklikku järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (2) Euroopa Parlamendi ja nõukogu määruses (EL) nr 2019/1150, mis käsitleb õigluse ja läbipaistvuse edendamist veebipõhiste vahendusteenuste ärikasutajate jaoks (ELT L 186, 11.07.2019, lk 57–79), sätestatud nõuete täitmise üle teostab riiklikku järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (3) Tarbijakaitse ja Tehnilise Järelevalve Amet on sõltumatu digiteenuste koordinaator Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065, mis käsitleb digiteenuste ühtset turgu ja millega muudetakse direktiivi 2000/31/EÜ (digiteenuste määrus) (ELT L 277, 27.10.2022, lk 1–102), artikli 49 lõike 2 tähenduses. (4) Tarbijakaitse ja Tehnilise Järelevalve Amet teostab riiklikku järelevalvet Euroopa Parlamendi ja nõukogu määruses (EL) 2022/2065 sätestatud nõuete täitmise üle. (5) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784, mis käsitleb võitlemist terroristliku veebisisu levitamise vastu (ELT L 172, 17.05.2021, lk 79–109), artikli 3 lõigetes 3 ja 6, artikli 4 lõigetes 2 ja 7, artikli 6 lõigetes 1 ja 2 ning artikli 14 lõikes 5 sätestatud terroristliku veebisisu eemaldamise ja eemaldamiskorralduse täitmisega seotud meetmete rakendamise üle teostab riiklikku järelevalvet Kaitsepolitseiamet. (6) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artiklis 5, artikli 6 lõikes 3, artiklites 7, 10 ja 11, artikli 15 lõikes 1 ning artiklis 17 sätestatud terroristliku veebisisu levitamist tõkestavate tehniliste nõuete, sisu säilitamise ja aruandlusega seotud meetmete rakendamise üle teostab riiklikku järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet.",
@@ -1035,8 +1333,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1094,7 +1396,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12_Lg_1",
@@ -1107,7 +1413,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12_Lg_2",
@@ -1120,7 +1438,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12_Lg_3",
@@ -1133,7 +1463,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12_Lg_4",
@@ -1146,7 +1488,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 4"
+      "rdfs:label": "§ 12 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12_Lg_5",
@@ -1172,19 +1526,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 6"
+      "rdfs:label": "§ 12 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_12_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12¹.",
       "rdfs:label": "§ 12¹. Piiriülene järelevalvekoostöö",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Tarbijakaitse ja Tehnilise Järelevalve Amet osaleb Euroopa Liidu liikmesriikide digiteenuste koordinaatorite ja Euroopa Komisjoni piiriüleses koostöös Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 IV peatükis sätestatu kohaselt.",
       "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Amet osaleb Euroopa Liidu liikmesriikide digiteenuste koordinaatorite ja Euroopa Komisjoni piiriüleses koostöös Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 IV peatükis sätestatu kohaselt.",
@@ -1193,12 +1559,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:InfoTS_Par_12_1_Lg_Unknown_1"
+          "@id": "estleg:InfoTS_Par_12_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1229,10 +1599,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:InfoTS_Par_12_1_Lg_Unknown_1",
+      "@id": "estleg:InfoTS_Par_12_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1240,19 +1614,31 @@
       "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Amet osaleb Euroopa Liidu liikmesriikide digiteenuste koordinaatorite ja Euroopa Komisjoni piiriüleses koostöös Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 IV peatükis sätestatu kohaselt.",
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_12_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:InfoTS_Par_12_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12².",
       "rdfs:label": "§ 12². Terroristliku veebisisu eemaldamise korraldus",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artiklis 3 sätestatud eemaldamiskorralduse annab ja artiklis 4 sätestatud piiriülest eemaldamiskorraldust kontrollib Kaitsepolitseiamet. (2) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 21 lõikes 1 sätestatud teabe kogub ja esitab Euroopa Komisjonile Siseministeerium.",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artiklis 3 sätestatud eemaldamiskorralduse annab ja artiklis 4 sätestatud piiriülest eemaldamiskorraldust kontrollib Kaitsepolitseiamet. (2) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 21 lõikes 1 sätestatud teabe kogub ja esitab Euroopa Komisjonile Siseministeerium.",
@@ -1323,13 +1709,13 @@
       "@id": "estleg:InfoTS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Riikliku järelevalve erimeetmed",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Pädev korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50, 51 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:legalText": "Pädev korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50, 51 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
@@ -1338,7 +1724,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:InfoTS_Par_13_Lg_Unknown_1"
+          "@id": "estleg:InfoTS_Par_13_Lg_1"
         }
       ],
       "estleg:references": [
@@ -1382,10 +1768,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:InfoTS_Par_13_Lg_Unknown_1",
+      "@id": "estleg:InfoTS_Par_13_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1398,19 +1788,26 @@
         {
           "@id": "estleg:KORS_Par_30"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_13_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13¹.",
       "rdfs:label": "§ 13¹. Tarbijakaitse ja Tehnilise Järelevalve Ameti õigus nõuda infoühiskonna teenuse piiramist",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Kui infoühiskonna teenuse kaudu üldsusele levitatud teabega kihutatakse vihkamisele, vägivallale või diskrimineerimisele kodakondsuse, etnilise päritolu, keele, usutunnistuse või muude Eesti Vabariigi põhiseaduse §-s 12 nimetatud asjaolude tõttu, õhutatakse sõda või õigustatakse sõjakuritegusid ning kui see on vajalik riigi julgeoleku tagamiseks ja sellise teabe levitamise lõpetamiseks ning ohu tõrjumiseks puuduvad muud tõhusad võimalused, on Tarbijakaitse ja Tehnilise Järelevalve Ametil",
       "estleg:legalText": "(1) Kui infoühiskonna teenuse kaudu üldsusele levitatud teabega kihutatakse vihkamisele, vägivallale või diskrimineerimisele kodakondsuse, etnilise päritolu, keele, usutunnistuse või muude Eesti Vabariigi põhiseaduse §-s 12 nimetatud asjaolude tõttu, õhutatakse sõda või õigustatakse sõjakuritegusid ning kui see on vajalik riigi julgeoleku tagamiseks ja sellise teabe levitamise lõpetamiseks ning ohu tõrjumiseks puuduvad muud tõhusad võimalused, on Tarbijakaitse ja Tehnilise Järelevalve Ametil õigus teha infoühiskonna teenuse osutajale ettekirjutus ja nõuda infoühiskonna teenuse kaudu esitatava teabe kõrvaldamist või teabele juurdepääsu piiramist, arvestades käesoleva paragrahvi lõigetes 2 ja 3 sätestatud erisusi. (2) Internetiühendust pakkuv üldkasutatava elektroonilise side teenuse osutaja on kohustatud Tarbijakaitse ja Tehnilise Järelevalve Ameti ettekirjutuse alusel blokeerima ettekirjutuses nimetatud domeeninime talle kuuluvates nimeserverites. (3) Domeeniregistri haldaja ja domeeniregistri pidaja on kohustatud Tarbijakaitse ja Tehnilise Järelevalve Ameti ettekirjutuse alusel blokeerima juurdepääsu domeenile või kustutama ettekirjutuses nimetatud domeeninime registreeringu ning võimaldama ametil see domeeninimi registreerida enda nimele.",
@@ -1429,8 +1826,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
@@ -1449,7 +1850,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_13_1_Lg_1",
@@ -1467,7 +1872,19 @@
         {
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_12"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_13_1_Lg_2",
@@ -1480,7 +1897,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_13_1"
       },
-      "rdfs:label": "§ 13¹ lg 2"
+      "rdfs:label": "§ 13¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_13_1_Lg_3",
@@ -1493,19 +1925,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_13_1"
       },
-      "rdfs:label": "§ 13¹ lg 3"
+      "rdfs:label": "§ 13¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_13_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13².",
       "rdfs:label": "§ 13². Ebaseadusliku sisu vastu meetmete võtmise ja teabe esitamise korraldus",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Korrakaitseorgani korraldus vahendusteenuse osutajale võtta meetmeid ebaseadusliku sisu vastu peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artikli 9 lõikes 2 sätestatud tingimustele. (2) Korrakaitseorgani korraldus vahendusteenuse osutajale anda konkreetset teavet konkreetse teenusesaaja kohta peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artikli 10 lõikes 2 sätestatud tingimustele.",
       "estleg:legalText": "(1) Korrakaitseorgani korraldus vahendusteenuse osutajale võtta meetmeid ebaseadusliku sisu vastu peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artikli 9 lõikes 2 sätestatud tingimustele. (2) Korrakaitseorgani korraldus vahendusteenuse osutajale anda konkreetset teavet konkreetse teenusesaaja kohta peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artikli 10 lõikes 2 sätestatud tingimustele.",
@@ -1527,6 +1974,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1540,7 +1991,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_13_2"
       },
-      "rdfs:label": "§ 13² lg 1"
+      "rdfs:label": "§ 13² lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_13_2_Lg_2",
@@ -1553,19 +2011,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_13_2"
       },
-      "rdfs:label": "§ 13² lg 2"
+      "rdfs:label": "§ 13² lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Sunniraha määr",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär füüsilisele isikule 640 eurot ja juriidilisele isikule 100 000 eurot. (2) Euroopa Parlamendi ja nõukogu määrusest (EL) 2022/2065 tuleneva ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär vahendusteenuse osutajast füüsilisele isikule viis protsenti tema eelmise kalendriaasta keskmisest",
       "estleg:legalText": "(1) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär füüsilisele isikule 640 eurot ja juriidilisele isikule 100 000 eurot. (2) Euroopa Parlamendi ja nõukogu määrusest (EL) 2022/2065 tuleneva ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär vahendusteenuse osutajast füüsilisele isikule viis protsenti tema eelmise kalendriaasta keskmisest päevasest sissetulekust ja juriidilisele isikule viis protsenti tema eelmise majandusaasta keskmisest päevasest ülemaailmsest käibest, arvutatuna alates asjaomases ettekirjutuses märgitud kuupäevast.",
@@ -1581,8 +2046,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1604,12 +2073,6 @@
           "@id": "estleg:InfoTS_Par_14_v121062024004"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_14_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ATMOSF_Par_226"
@@ -1634,7 +2097,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_14_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_14_Lg_1",
@@ -1647,7 +2120,25 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_14_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_14_Lg_2",
@@ -1660,19 +2151,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 2"
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_14_Lg_2_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Nõuetele mittevastava teabe edastamine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Käesolevas seaduses teenuse osutaja kohta antavale teabele, kommertsteadaandele ja selle edastamisele sätestatud nõuetele mittevastava infoühiskonna teenuse osutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 400 000 eurot.",
       "estleg:legalText": "(1) Käesolevas seaduses teenuse osutaja kohta antavale teabele, kommertsteadaandele ja selle edastamisele sätestatud nõuetele mittevastava infoühiskonna teenuse osutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 400 000 eurot.",
@@ -1688,7 +2197,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1715,12 +2226,6 @@
           "@id": "estleg:InfoTS_Par_15_v122062021014"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KaubTS_Par_31"
@@ -1745,7 +2250,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_fine"
+        },
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_Lg_1",
@@ -1758,7 +2276,25 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_Lg_2",
@@ -1771,19 +2307,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
       "rdfs:label": "§ 15¹. [Kehtetu -]",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1806,13 +2360,13 @@
       "@id": "estleg:InfoTS_Par_15_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15².",
       "rdfs:label": "§ 15². Euroopa Parlamendi ja nõukogu määruses (EL) nr 2019/1150 sätestatud nõuete täitmata jätmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) nr 2019/1150 artiklites 11 ja 12 sätestatud nõuete täitmata jätmise eest karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 400 000 eurot.",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) nr 2019/1150 artiklites 11 ja 12 sätestatud nõuete täitmata jätmise eest karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 400 000 eurot.",
@@ -1828,22 +2382,15 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:InfoTS_Par_15_2_v122062021014"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_2_fine"
-        },
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_2_fine_2"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELTS_Par_101_4"
@@ -1868,7 +2415,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_2_fine"
+        },
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_2_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_2_Lg_1",
@@ -1881,7 +2441,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_2"
       },
-      "rdfs:label": "§ 15² lg 1"
+      "rdfs:label": "§ 15² lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_2_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_2_Lg_2",
@@ -1894,19 +2467,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_2"
       },
-      "rdfs:label": "§ 15² lg 2"
+      "rdfs:label": "§ 15² lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_2_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15³.",
       "rdfs:label": "§ 15³. Euroopa Parlamendi ja nõukogu määruses (EL) 2022/2065 sätestatud kohustuste täitmata jätmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artiklites 9–14, 16–18, 20–23, 25–28, 30–32 ja 34–41 sätestatud nõuete täitmata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni kuus protsenti tema eelmise majandusaasta ülemaailmsest käibest.",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artiklites 9–14, 16–18, 20–23, 25–28, 30–32 ja 34–41 sätestatud nõuete täitmata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni kuus protsenti tema eelmise majandusaasta ülemaailmsest käibest.",
@@ -1922,20 +2513,18 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:InfoTS_Par_15_3_v121062024004"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_3_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELTS_Par_101_4"
@@ -1963,7 +2552,17 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_3_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_3_Lg_1",
@@ -1976,7 +2575,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_3"
       },
-      "rdfs:label": "§ 15³ lg 1"
+      "rdfs:label": "§ 15³ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_3_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_3_Lg_2",
@@ -1989,19 +2601,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_3"
       },
-      "rdfs:label": "§ 15³ lg 2"
+      "rdfs:label": "§ 15³ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15⁴.",
       "rdfs:label": "§ 15⁴. Euroopa Parlamendi ja nõukogu määruses (EL) 2022/2065 sätestatud aruandluskohustuse täitmata jätmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artiklites 15, 24 ja 42 sätestatud aruandluskohustuse täitmata jätmise või aruandes ebaõige, mittetäieliku või eksitava teabe esitamise eest –karistatakse rahatrahviga kuni üks protsent selle füüsilise isiku eelmise kalendriaasta sissetulekust. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni üks protsent tema eelmise majandusaasta ülemaailmsest käibest.",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2022/2065 artiklites 15, 24 ja 42 sätestatud aruandluskohustuse täitmata jätmise või aruandes ebaõige, mittetäieliku või eksitava teabe esitamise eest –karistatakse rahatrahviga kuni üks protsent selle füüsilise isiku eelmise kalendriaasta sissetulekust. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni üks protsent tema eelmise majandusaasta ülemaailmsest käibest.",
@@ -2017,8 +2644,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2052,7 +2683,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_4_Lg_1",
@@ -2065,7 +2700,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_4"
       },
-      "rdfs:label": "§ 15⁴ lg 1"
+      "rdfs:label": "§ 15⁴ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_4_Lg_2",
@@ -2078,19 +2725,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_4"
       },
-      "rdfs:label": "§ 15⁴ lg 2"
+      "rdfs:label": "§ 15⁴ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15⁵.",
       "rdfs:label": "§ 15⁵. Euroopa Parlamendi ja nõukogu määruses (EL) 2022/2065 sätestatud nõuete täitmise üle riikliku järelevalve teostamise takistamine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruses (EL) 2022/2065 sätestatud nõuete täitmise üle riikliku järelevalve teostamise takistamise eest, kui sellega ei võimaldata Tarbijakaitse ja Tehnilise Järelevalve Ametile juurdepääsu ruumidele või teabele, või ebaõige, mittetäieliku või eksitava teabe esitamise eest või ebaõigele, mittetäielikule või eksitavale teabele reageerimata jätmise või selle parandamata jätmise eest –karistatakse rahatrahviga kuni üks protsent selle füüsilise isiku eelmise",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruses (EL) 2022/2065 sätestatud nõuete täitmise üle riikliku järelevalve teostamise takistamise eest, kui sellega ei võimaldata Tarbijakaitse ja Tehnilise Järelevalve Ametile juurdepääsu ruumidele või teabele, või ebaõige, mittetäieliku või eksitava teabe esitamise eest või ebaõigele, mittetäielikule või eksitavale teabele reageerimata jätmise või selle parandamata jätmise eest –karistatakse rahatrahviga kuni üks protsent selle füüsilise isiku eelmise kalendriaasta sissetulekust. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni üks protsent tema eelmise majandusaasta ülemaailmsest käibest.",
@@ -2106,8 +2768,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2124,7 +2790,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_5_Lg_1",
@@ -2137,7 +2807,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_5"
       },
-      "rdfs:label": "§ 15⁵ lg 1"
+      "rdfs:label": "§ 15⁵ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_5_Lg_2",
@@ -2150,19 +2835,34 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_5"
       },
-      "rdfs:label": "§ 15⁵ lg 2"
+      "rdfs:label": "§ 15⁵ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15⁶.",
       "rdfs:label": "§ 15⁶. Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 3 lõigetes 3 ja 6 ning artikli 4 lõigetes 2 ja 7 sätestatud nõuete täitmata jätmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 3 lõigetes 3 ja 6 ning artikli 4 lõigetes 2 ja 7 sätestatud nõuete täitmata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 400 000 eurot. (3) Käesoleva paragrahvi lõikes 2 sätestatud teo eest, kui see on pandud toime korduvalt või süstemaatiliselt, –karistatakse rahatrahviga kuni neli protsenti veebimajutusteenuse pakkuja",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 3 lõigetes 3 ja 6 ning artikli 4 lõigetes 2 ja 7 sätestatud nõuete täitmata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 400 000 eurot. (3) Käesoleva paragrahvi lõikes 2 sätestatud teo eest, kui see on pandud toime korduvalt või süstemaatiliselt, –karistatakse rahatrahviga kuni neli protsenti veebimajutusteenuse pakkuja eelmise majandusaasta kogukäibest.",
@@ -2181,19 +2881,15 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:InfoTS_Par_15_6_v104072024024"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_6_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELTS_Par_101_4"
@@ -2218,7 +2914,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_6_fine"
+        },
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_6_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_6_Lg_1",
@@ -2231,7 +2940,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_6"
       },
-      "rdfs:label": "§ 15⁶ lg 1"
+      "rdfs:label": "§ 15⁶ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_6_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_6_Lg_2",
@@ -2244,7 +2966,25 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_6"
       },
-      "rdfs:label": "§ 15⁶ lg 2"
+      "rdfs:label": "§ 15⁶ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_6_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_6_Lg_3",
@@ -2257,19 +2997,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_6"
       },
-      "rdfs:label": "§ 15⁶ lg 3"
+      "rdfs:label": "§ 15⁶ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_15_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15⁷.",
       "rdfs:label": "§ 15⁷. Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 14 lõikes 5 sätestatud nõuete täitmata jätmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 14 lõikes 5 sätestatud nõuete täitmata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1200 eurot.",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 14 lõikes 5 sätestatud nõuete täitmata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1200 eurot.",
@@ -2285,22 +3037,15 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:InfoTS_Par_15_7_v104072024024"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_7_fine"
-        },
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_7_fine_2"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELTS_Par_101_4"
@@ -2325,7 +3070,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_7_fine"
+        },
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_7_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_7_Lg_1",
@@ -2338,7 +3096,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_7"
       },
-      "rdfs:label": "§ 15⁷ lg 1"
+      "rdfs:label": "§ 15⁷ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_7_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_7_Lg_2",
@@ -2351,19 +3122,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_7"
       },
-      "rdfs:label": "§ 15⁷ lg 2"
+      "rdfs:label": "§ 15⁷ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_7_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15⁸.",
       "rdfs:label": "§ 15⁸. Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 5 lõigetes 1–3, 5 ja 6, artikli 6 lõikes 3, artiklites 7, 10 ja 11, artikli 15 lõikes 1 ning artiklis 17 sätestatud nõuete täitmata jätmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 5 lõigetes 1–3, 5 ja 6, artikli 6 lõikes 3, artiklites 7, 10 ja 11, artikli 15 lõikes 1 ning artiklis 17 sätestatud nõuete täitmata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1200 eurot.",
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2021/784 artikli 5 lõigetes 1–3, 5 ja 6, artikli 6 lõikes 3, artiklites 7, 10 ja 11, artikli 15 lõikes 1 ning artiklis 17 sätestatud nõuete täitmata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1200 eurot.",
@@ -2379,19 +3168,15 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:InfoTS_Par_15_8_v104072024024"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_InfoTS_Par_15_8_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELTS_Par_101_4"
@@ -2416,7 +3201,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_8_fine"
+        },
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_8_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_8_Lg_1",
@@ -2429,7 +3227,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_8"
       },
-      "rdfs:label": "§ 15⁸ lg 1"
+      "rdfs:label": "§ 15⁸ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_8_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_15_8_Lg_2",
@@ -2442,19 +3253,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_15_8"
       },
-      "rdfs:label": "§ 15⁸ lg 2"
+      "rdfs:label": "§ 15⁸ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_InfoTS_Par_15_8_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:InfoTS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Menetlus",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Käesoleva seaduse §-des 15, 152–155 ja 158 sätestatud väärtegude kohtuväline menetleja on vastavalt oma pädevusele Tarbijakaitse ja Tehnilise Järelevalve Amet. (3) Käesoleva seaduse §-des 156 ja 157 sätestatud väärtegude kohtuväline menetleja on vastavalt oma pädevusele Kaitsepolitseiamet.",
       "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-des 15, 152–155 ja 158 sätestatud väärtegude kohtuväline menetleja on vastavalt oma pädevusele Tarbijakaitse ja Tehnilise Järelevalve Amet. (3) Käesoleva seaduse §-des 156 ja 157 sätestatud väärtegude kohtuväline menetleja on vastavalt oma pädevusele Kaitsepolitseiamet.",
@@ -2473,8 +3302,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -2549,7 +3382,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_16_Lg_1",
@@ -2580,7 +3417,19 @@
         {
           "@id": "estleg:InfoTS_Par_15"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:InfoTS_Par_16_Lg_3",
@@ -2599,13 +3448,13 @@
       "@id": "estleg:InfoTS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Tehnilise normi ja standardi seaduse muutmine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -2628,13 +3477,13 @@
       "@id": "estleg:InfoTS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_infouhiskonna_teenuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Seaduse jõustumine",
       "estleg:sourceAct": "Infoühiskonna teenuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:InfoTS_Map_2026"
+        "@id": "estleg:InfoTS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2004. aasta 1. mail.",
       "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 1. mail.",
@@ -2643,7 +3492,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:InfoTS_Par_18_Lg_Unknown_1"
+          "@id": "estleg:InfoTS_Par_18_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2656,7 +3505,7 @@
       ]
     },
     {
-      "@id": "estleg:InfoTS_Par_18_Lg_Unknown_1",
+      "@id": "estleg:InfoTS_Par_18_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2665,6 +3514,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:InfoTS_Par_18"
       }
+    },
+    {
+      "@id": "estleg:Citation_InfoTS_P_16_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:InfoTS_Par_16"
+      },
+      "estleg:citationText": "Käesoleva seaduse §-des 156"
+    },
+    {
+      "@id": "estleg:Citation_InfoTS_P_16_Lg_3_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:InfoTS_Par_16_Lg_3"
+      },
+      "estleg:citationText": "Käesoleva seaduse §-des 156"
     }
   ]
 }
