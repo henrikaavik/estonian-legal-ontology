@@ -7,12 +7,12 @@
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `d20d7877a51d10c4cc90182604acf4fd5543d719`, 2026-09-07 12:09 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `00c8e6471330e55737c798e22a4026d30930b773`, 2026-09-07 13:16 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
 | Files validated | 26,961 |
-| Errors | 123 |
+| Errors | 122 |
 | Warnings | 2 |
 | Result | **FAILED** |
 
@@ -23,8 +23,8 @@
 | 27 | @type is not an array |
 | 5 | skos:exactMatch is not an array |
 | 5 | indexed file has no provision nodes and no registry exception |
-| 4 | older than at least one canonical source file |
 | 3 | missing <n> source graph IDs |
+| 3 | older than at least one canonical source file |
 | 2 | <n> shared provision IDs drift from source on SHACL-sensitive fields |
 | 1 | <n> @id values are duplicated across files (semantic collisions) |
 | 1 | <n> predicates, <n> classes |
@@ -402,6 +402,9 @@ re-emitting these dead references.
   axioms behind the `curia` bucket — `celexNumber`, `eurLexLink` and
   `documentDate` (domain `EULegislation`) and `ecliIdentifier` (domain
   `CourtDecision`) — which took that bucket from 66,740 violations to **0**.
+  The combined artifact was rebuilt with the same four widened domains. The
+  corpus regression checks the vocabulary and aggregate under RDFS inference;
+  neither projection infers those sibling classes on an EU court decision.
   The same pattern on `rdfs:range` still keeps `sidecars` and `riigikohus` red.
 - **Aggregates (#705):** `eurlex` / `curia` / `eelnoud` combined files and
   `combined_ontology.{nt,nq,ttl}` are stale relative to their sources; the
