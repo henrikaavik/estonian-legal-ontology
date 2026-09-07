@@ -224,7 +224,8 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
             "note": (
                 "Of citation EDGES that exist, the fraction resolving to a node "
                 "defined in the indexed corpus (validates the #561/#630 closure "
-                "work). This is edge precision, NOT extraction recall — citations "
+                "work). This measures reference integrity, not semantic precision "
+                "or extraction recall — citations "
                 "present in text that never became an edge are not counted here."
             ),
             "edges": crossref_total,
@@ -321,8 +322,8 @@ def render_markdown(report: dict) -> str:
         "## Other fitness metrics",
         "",
         f"- **Cross-reference edge resolution:** {cr['resolved_in_corpus']:,} / {cr['edges']:,} "
-        f"({cr['pct']}%) existing citation edges resolve to an in-corpus node (edge precision, "
-        "not extraction recall).",
+        f"({cr['pct']}%) existing citation edges resolve to an in-corpus node "
+        "(reference integrity, not semantic precision or extraction recall).",
         "- **Point-in-time (two layers, #128):** act-level `temporalStatus` known on "
         f"{pit['act_status_known_pct']}% of laws ({pit['laws_with_known_act_temporalStatus']}); "
         f"provision-level validity via version sidecars on {pit['version_sidecar_pct']}% "

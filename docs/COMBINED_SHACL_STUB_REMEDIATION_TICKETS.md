@@ -1,5 +1,11 @@
 # Combined SHACL Stub Remediation Tickets
 
+> **Historical remediation design.** The failure counts and proposed changes
+> below describe an earlier combined artifact. The builder now preserves
+> shaped closure edges. Current residual failures and ownership are recorded
+> in [VALIDATION_REPORT.md](VALIDATION_REPORT.md); this file is not a live
+> release-status report.
+
 ## Ticket 1: Materialize Required Semantic Edges for Shaped Combined Stubs
 
 ### Problem

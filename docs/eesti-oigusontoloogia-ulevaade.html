@@ -487,17 +487,23 @@
       ministeeriumidele.
     </p>
     <div class="meta">
-      <span class="pill">Seis: 8. mai 2026</span>
-      <span class="pill">Andmesnapshot: 1. mai 2026</span>
+      <span class="pill">Seis: 7. september 2026</span>
+      <span class="pill">Teksti seisukuupäev: aktipõhine</span>
       <span class="pill">Formaat: JSON-LD / RDF</span>
       <span class="pill">Nimeruum: <code>https://w3id.org/estleg/</code></span>
     </div>
     <div class="stats">
-      <div class="stat"><b>1 145 / 1 190</b><span>seaduse registrikirjet / seadusefaili</span></div>
+      <div class="stat"><b>1 122 / 1 195</b><span>seaduse registrikirjet / seadusefaili</span></div>
       <div class="stat"><b>14 871</b><span>riigi ja KOV määrust kokku</span></div>
-      <div class="stat"><b>90 501</b><span>eelnõu, kohtu- ja EL-akti kirjet</span></div>
-      <div class="stat"><b>0 / 0</b><span>valideerimisvigu / hoiatusi viimases raportis</span></div>
+      <div class="stat"><b>90 468</b><span>eelnõu, kohtulahendi ja EL-akti kirjet</span></div>
+      <div class="stat"><b>122 / 2</b><span>JSON-valideerimise vigu / hoiatusi (7.09.2026)</span></div>
     </div>
+    <p class="note warning">
+      Korpus ei läbi veel kõiki kvaliteediväravaid. Tier 0 ja valideerija parandused (#702) on põhiharusse ühendatud,
+      kuid mitmes SHACL-kontrollis on endiselt vead. Täpsed tulemused on
+      <a href="VALIDATION_REPORT.md">valideerimisraportis</a>.
+      Viimane väljalase on 19. augusti <code>v1.0.0</code>; septembri parandustega uut väljalaset veel ei ole.
+    </p>
   </header>
 
   <section>
@@ -515,8 +521,8 @@
     </p>
     <div class="note">
       Repo ei ole ainult ontoloogiafailide kogum. See sisaldab ka generaator- ja rikastusskripte, SHACL-kujusid,
-      valideerimist, indeksifaile ning dokumentatsiooni. Andmed on seega taastoodetavad, mitte käsitsi kokku kleebitud
-      staatiline eksport.
+      valideerimist, indeksifaile ning dokumentatsiooni. Täielik allikatest taastootmine ja kõigi väljundite
+      ühtne väljalase vajavad veel tööd (#697, #704, #705); skriptide olemasolu üksi ei tõenda taastoodetavust.
     </div>
   </section>
 
@@ -568,15 +574,15 @@
       <tbody>
         <tr>
           <td>Riigi Teataja</td>
-          <td>Kehtivad seadused ja nende XML tekstid.</td>
+          <td>Seadused ja nende valitud redaktsioonide XML-tekstid.</td>
           <td><code>https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&amp;dokument=seadus</code>, <code>https://www.riigiteataja.ee/akt/GLOBALID.xml</code></td>
-          <td><code>python3 scripts/generate_all_laws.py --refresh --kehtiv YYYY-MM-DD</code></td>
+          <td><code>python3 scripts/generate_all_laws.py --refresh --kehtiv YYYY-MM-DD</code>; RT API migratsioon #691 on veel avatud.</td>
         </tr>
         <tr>
           <td>Riigi Teataja</td>
           <td>Riigi ja KOV määrused, volitusnormide preambulid, paragrahvid, lisad ja metaandmed.</td>
           <td><code>.../otsi?leht=N&amp;dokument=määrus</code>, sama XML skeem; KOV väljundid <code>krr_outputs/regulations/kov/</code></td>
-          <td><code>python3 scripts/generate_regulations.py --refresh --kehtiv YYYY-MM-DD</code>; KOV jaoks lisa <code>--kov</code></td>
+          <td><code>python3 scripts/generate_regulations.py --refresh --kehtiv YYYY-MM-DD</code>; KOV jaoks lisa <code>--kov</code>. RT API migratsioon #691 on veel avatud.</td>
         </tr>
         <tr>
           <td>EIS ehk eelnõude infosüsteem</td>
@@ -623,13 +629,20 @@
         <tr>
           <td>Kohalikud kureeritud sõnastikud</td>
           <td>Seaduste lühendid, genitiivivormid, URI migratsioonid ja generaatorite ühine JSON-LD kontekst.</td>
-          <td><code>data/law_abbreviations.json</code>, <code>scripts/estleg_common.py</code>, <code>data/uri_migration_report.json</code></td>
+          <td><code>data/law_abbreviations.json</code>, <code>src/estleg/estleg_common.py</code>, <code>data/uri_migration_report.json</code></td>
           <td>Uuenda sõnastikku, käivita vastavad rikastuskihid ja valideeri kogu korpus.</td>
         </tr>
       </tbody>
     </table>
 
-    <h3>Soovitatav täisuuenduse järjestus</h3>
+    <p class="note warning">
+      Tabeli RT aadressid kirjeldavad praeguse koodi pärandliidest. Septembri ülevaatusel tagastas
+      <code>/akt/{id}.xml</code> XML-i asemel HTML-rakenduse. Üleminek aadressile
+      <code>/public-api/api/v1/akt/{id}/xml</code> on töö #691. Allolev järjekord kirjeldab
+      operaatori töövoogu, mitte kinnitatud toimivat täisuuendust. Seadista Python 3.11+ keskkond
+      <a href="../README.md#setup">paigaldusjuhendi</a> järgi.
+    </p>
+    <h3>Täisuuenduse töövoog</h3>
     <div class="flow">
       <div class="step"><strong>1. Snapshot</strong><span>Vali õigusandmete kuupäev, nt <code>2026-05-01</code>, et väljund oleks korratav.</span></div>
       <div class="step"><strong>2. Allikate tõmme</strong><span>Käivita seaduste, määruste, eelnõude, Riigikohtu ja EUR-Lexi generaatorid.</span></div>
@@ -638,7 +651,8 @@
       <div class="step"><strong>5. Kontroll</strong><span>Käivita testid, SHACL ja <code>validate_all.py</code>; uuenda <code>metadata.jsonld</code>.</span></div>
     </div>
 
-    <pre><code># Näidiskäsud täisuuenduseks
+    <pre><code># Operaatori näidiskäsud; RT migratsioon #691 peab esmalt olema lahendatud.
+# Asenda näite 2026-05-01 soovitud seisukuupäevaga.
 python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
 python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01
 python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01 --kov
@@ -650,7 +664,11 @@ python3 scripts/build_kov_registry.py
 python3 scripts/enrich_kov_layer1.py
 python3 scripts/run_all_integration.py --validate-each
 python3 -m pytest -q
-python3 scripts/validate_all.py</code></pre>
+python3 scripts/validate_all.py
+python3 scripts/shacl_validate_all.py --all
+python3 scripts/validate_seadusloome_sync.py
+python3 scripts/generate_validation_report.py
+python3 scripts/generate_duplicate_ids_report.py</code></pre>
   </section>
 
   <section class="band page-break">
@@ -667,7 +685,7 @@ python3 scripts/validate_all.py</code></pre>
         <ul>
           <li><code>estleg:Act</code> on ülene klass Eesti kehtestatud õigusaktidele.</li>
           <li><code>estleg:Law</code> tähistab seadusi; seadusefailides on akti sõlm ja selle sätete sõlmed.</li>
-          <li><code>estleg:NationalRegulation</code> tähistab Eesti määruseid; alamklassid on <code>GovernmentRegulation</code>, <code>MinisterialRegulation</code> ja <code>MunicipalRegulation</code>.</li>
+          <li><code>estleg:DomesticRegulation</code> on määruste ühine ülemklass. <code>NationalRegulation</code> hõlmab riigi määrusi (<code>GovernmentRegulation</code>, <code>MinisterialRegulation</code>); <code>MunicipalRegulation</code> on KOV määruste eraldi haru.</li>
           <li><code>estleg:LegalProvision</code> tähistab sätteid; KOV määruse sätted saavad lisaks tüübi <code>estleg:KovProvision</code>.</li>
           <li>Aktidel on allika- ja pealkirjaprovenants: <code>dcterms:source</code>, <code>dcterms:title</code>, <code>owl:sameAs</code>.</li>
         </ul>
@@ -760,7 +778,7 @@ python3 scripts/validate_all.py</code></pre>
   </section>
 
   <section>
-    <h2>5. Voodiagrammid: Image 2.0</h2>
+    <h2>5. Andmevoog ja graafi struktuur</h2>
     <p>
       Allolevad kaks voodiagrammi kasutavad Image 2.0-ga loodud pildipõhju. Täpsed eestikeelsed sildid on lisatud HTML-i
       eraldi kihina, et vältida pildigeneraatori tekstivigu ja säilitada PDF-is loetavus.
@@ -791,14 +809,14 @@ python3 scripts/validate_all.py</code></pre>
         <div class="label s-core">Keskne <code>estleg</code> teadmusgraaf</div>
         <div class="label s-law">Seadused ja paragrahvid: <code>Law</code>, <code>LegalProvision</code></div>
         <div class="label s-draft">Eelnõud: faas, tüüp, mõjutatud õigusaktid</div>
-        <div class="label s-kov">Määrused ja KOV: <code>NationalRegulation</code>, <code>Municipality</code>, <code>Issuer</code></div>
+        <div class="label s-kov">Määrused ja KOV: <code>DomesticRegulation</code>, <code>Municipality</code>, <code>Issuer</code></div>
         <div class="label s-court">Riigikohus: lahend → tõlgendatav säte või akt</div>
         <div class="label s-eu">EL õigus: CELEX, direktiivid, määrused, ülevõtt</div>
         <div class="label s-eucourt">EL kohtulahendid: ECLI, kohus, lahendi liik</div>
         <div class="label s-ring">Rikastused: EuroVoc, muudatused, sanktsioonid, pädevus, aeg, sarnasus</div>
       </div>
       <div class="legend">
-        <div><strong>Hierarhia</strong><br>Akt → sätteklass → paragrahvisõlm.</div>
+        <div><strong>Hierarhia</strong><br>Säte seotakse aktiga <code>partOfAct</code> kaudu.</div>
         <div><strong>Õiguslik mõju</strong><br>Eelnõu, muudatus ja volitusnorm seotakse olemasoleva aktiga.</div>
         <div><strong>Tõlgendus</strong><br>Kohtulahend viitab normile, mida ta tõlgendab.</div>
         <div><strong>EL seos</strong><br>Direktiivide ja Eesti sätete vahel tekib ülevõtu- või harmoneerimislink.</div>
@@ -811,7 +829,7 @@ python3 scripts/validate_all.py</code></pre>
     <div class="cards">
       <div class="card">
         <h3>Versioneeritud õigusajaloo mudel — juurutatud</h3>
-        <p>Sätte- ja lõikepõhine redaktsioonimudel on juba juurutatud: <code>generate_provision_versions.py</code> tekitab 124 901 <code>ProvisionVersion</code> sõlme (742 seadust), nii et normi kehtivus on päringutav ajateljel, mitte ainult akti snapshot'i tasemel. Edasi saab katvust laiendada ülejäänud aktidele.</p>
+        <p>Sätte- ja lõikepõhine redaktsioonimudel on juurutatud. <code>provision_versions/</code> sisaldab 4 422 ajaloo kõrvalfaili seadustele ja riigi määrustele. Ajaloolise teksti päring vajab neid faile või MCP ajalootööriistu; üksnes koondgraafist ei piisa. Katvus ei hõlma kõiki akte.</p>
       </div>
       <div class="card">
         <h3>Täisteksti sügavam kasutamine</h3>
@@ -819,7 +837,7 @@ python3 scripts/validate_all.py</code></pre>
       </div>
       <div class="card">
         <h3>Graafi-API ja kasutajaliides</h3>
-        <p>Pakkuda SPARQL endpoint, REST/GraphQL teenus ja ametnikele mõeldud otsingu- ning mõjukaardistuse vaated.</p>
+        <p>Juba olemas on 20 MCP-tööriista ja kohalik Oxigraphi/SPARQL näidisseadistus. REST/GraphQL teenust selles repos ei ole; ametnike otsingu- ja mõjukaardistuse vaated jäävad edasiarenduseks.</p>
       </div>
       <div class="card">
         <h3>Kvaliteedi- ja usaldusmudel</h3>
@@ -827,7 +845,7 @@ python3 scripts/validate_all.py</code></pre>
       </div>
       <div class="card">
         <h3>Automaatne väljalasketsükkel</h3>
-        <p>Ehitatav release-DAG võiks tuua allikad, rikastada andmed, jooksutada testid ja avaldada versioonitud andmepaketi.</p>
+        <p>Olemasolev 18-sammuline DAG rikastab kohalikke andmeid, ehitab koondfaili ja käivitab väljalaskekontrollid. Allikate tõmme toimub eraldi; kõigi väljundite taastootmine ja avaldamine vajavad veel ühendamist (#704/#705).</p>
       </div>
       <div class="card">
         <h3>Valdkonnapõhine eksperthooldus</h3>
@@ -884,14 +902,17 @@ python3 scripts/validate_all.py</code></pre>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Valideeritud failid</td><td>23 113</td></tr>
-        <tr><td>JSON/JSON-LD vead</td><td>0</td></tr>
-        <tr><td>Hoiatused</td><td>0</td></tr>
-        <tr><td>SHACL ämbrid</td><td><code>laws</code>, <code>kov</code>, <code>riigikohus</code>, <code>drafts</code>, <code>eurlex</code>, <code>curia</code> kõik PASS</td></tr>
-        <tr><td>Sarnasuse analüüs</td><td>84 527 sätet, 108 684 paari (seadused ja riigi määrused); KOV sarnasus on eraldi kiht, mis on juba juurutatud — 113 513 paari</td></tr>
+        <tr><td>Valideeritud failid</td><td>26 961</td></tr>
+        <tr><td>JSON/JSON-LD vead</td><td>122 (failiaegadel põhinev kontroll võib arvu muuta)</td></tr>
+        <tr><td>Hoiatused</td><td>2</td></tr>
+        <tr><td>SHACL alamkorpused</td><td><code>eurlex</code> ja <code>curia</code> läbivad kontrolli. <code>laws</code>, <code>kov</code>, <code>riigikohus</code>, <code>drafts</code> ja <code>sidecars</code> ei läbi.</td></tr>
+        <tr><td>Seadusloome sünkroonimise värav</td><td>Ei läbi; nõutav on null hoiatust ja rikkumist.</td></tr>
+        <tr><td>Heuristiliste kihtide täpsus</td><td>Katvusraportid on olemas, kuid õigusliku täpsuse mõõdetud lävendid ja kuldandmestikud on veel töö #698.</td></tr>
       </tbody>
     </table>
     <p class="small">
+      Allikas: <a href="VALIDATION_REPORT.md">7. septembri valideerimisraport</a> ja
+      <a href="README.md#project-status">projekti seis</a>. Metaandmete uuendamise kuupäev ei tõenda aktiteksti värskust.
       Põhikontrollid: JSON süntaks, <code>@context</code>, <code>@type</code> kuju, kuupäevad, korduvad ID-d,
       sisemiste <code>estleg:</code> viidete lahenduvus, indeksite ja tegeliku failipuu kooskõla, allika IRI kuju,
       KOV ja riigi määruste registrid ning institutsiooninimede normaliseeritud duplikaadid.

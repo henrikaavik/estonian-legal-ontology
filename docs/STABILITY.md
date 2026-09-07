@@ -20,10 +20,12 @@ entity. On the full load surface the complete node wins; ignore the flag.
 Law/provision local names are frozen for MINOR/PATCH. A rename is MAJOR.
 Do not treat an unversioned `estleg:` IRI as a permanent foreign key
 across untagged `main` clones — pin `owl:versionIRI` first.
-Amendment-family IDs may still be shortened (`Amendment_<ABBREV>_…`)
-before v1.0; after v1.0 that is also MAJOR.
+The project has released v1.0.0. Shortening amendment-family IDs
+(`Amendment_<ABBREV>_…`) is therefore also a MAJOR change.
 
 ## Empty results
 
 Unknown target → `{note}` / `[{note}]`; known target with zero hits → `[]`.
-Never an exception and never a guessed citation.
+These are the MCP no-match conventions. Source URLs may be empty when the
+corpus lacks a verified citation; empty results do not prove absence in law.
+Input, loading, and server failures remain errors.

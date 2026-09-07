@@ -42,7 +42,7 @@ is declined.
 | Surface | What you load | Use for |
 |---|---|---|
 | Combined-only | `krr_outputs/combined_ontology.jsonld` | Law graph + overlay nodes + typed stubs. **No** provision-version text (`hasVersion` is stripped). |
-| Full public RDF | combined + `PUBLIC_LOAD_SUBDIRS` (`eelnoud`, `riigikohus`, `kohtud` (sample, `estleg:isSampleData`), `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`, `provision_versions`, `annotations`, `harmonisation`, `regulations`) + `data/ehak/` | Full bodies, point-in-time, KOV provisions. Seadusloome / Jena path. |
+| Full public RDF | combined + `PUBLIC_LOAD_SUBDIRS` (`eelnoud`, `riigikohus`, `kohtud` (sample, `estleg:isSampleData`), `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`, `provision_versions`, `annotations`, `harmonisation`, `regulations`) + `data/ehak/historical_municipalities.jsonld` | Full bodies, point-in-time, KOV provisions. Seadusloome / Jena path. |
 | Retrieval projection | `krr_outputs/retrieval/` JSONL (derived, not SHACL) | RAG / untruncated § text as of a date. |
 
 Combined is **closed via stubs** (`estleg:isStubNode`). Class queries on
@@ -64,14 +64,15 @@ Amendment nodes are **merged** into combined. Version forward-edges are
   JSONL. Do not hand-edit. Rebuild with `scripts/fix_all_issues.py`
   (combined + INDEX) after enrichment.
 
-Heuristic layers (EuroVoc, deontic, target group, similarity scores)
-currently still mutate peeps. Combined already merges some overlay
-directories at publish time.
+EuroVoc writes `eurovoc/eurovoc_overlay.jsonld` by default; `--write-peeps`
+opts into the legacy in-place path. Deontic, target-group, and some similarity
+passes still mutate peeps. Combined merges selected overlay directories at
+build time; full separation and DAG input coverage remain open (#697/#704).
 
 ## Pipeline
 
 `scripts/run_all_integration.py` is the **enrich + combine + validate**
-DAG (16 steps, serial). It does **not** ingest from Riigi Teataja /
+DAG (18 declared steps, serial by default). It does **not** ingest from Riigi Teataja /
 EUR-Lex. Ingest generators (`generate_all_laws.py`, regulations, courts,
 drafts, EU) are a prior stage. `--release` validates whatever peeps are
 on disk.
@@ -85,7 +86,7 @@ are a documented two-surface policy, not a bug.
 
 | Path | Loads | Audience |
 |---|---|---|
-| MCP (`mcp_server/`) | Per-file peeps + sidecars. Never combined / LFS. | Chat / IDE. Live: `https://estleg.sixtyfour.ee/mcp` |
+| MCP (`mcp_server/`) | Per-file peeps + sidecars. Never the flagship combined graph. | Chat / IDE. Configured endpoint: `https://estleg.sixtyfour.ee/mcp`; deployment revision must be checked separately. |
 | Seadusloome SPARQL | Full public RDF, `inference=none` | Product site |
 | Retrieval JSONL | Flattened provision+version+act | RAG |
 
@@ -93,9 +94,12 @@ They are **not interchangeable**. MCP truncates legal text; combined
 cannot answer `as_of` provision text; SPARQL can join corpora MCP does
 not expose as tools.
 
-## v1 residuals (accepted, not blocking close)
+## Release status and follow-ups
 
-Still-open leftovers after `v1.0.0` (do not treat these as shipped):
+`v1.0.0` was published on 2026-08-19. September Tier 0 and #702 fixes are
+merged to `main`, but are not a new tagged release. Required checks pass on
+the reviewed PRs; full corpus/SHACL conformance remains unresolved. See
+[project status](README.md#project-status) and [validation evidence](VALIDATION_REPORT.md).
 
 - `#473` Zenodo DOI — GitHub Release exists; no DOI yet.
 - `#516` w3id.org PURL — **done**. PR
@@ -105,7 +109,7 @@ Still-open leftovers after `v1.0.0` (do not treat these as shipped):
   (`releases/tag/v1.0.0`). Content negotiation (RDF vs HTML per `Accept`)
   is **not** live — that is `#728`.
 
-New work should not invent a sixth load surface.
+Keep new consumer paths aligned with the three load surfaces above.
 
 ## What not to change without a MAJOR version
 

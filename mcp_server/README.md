@@ -4,7 +4,7 @@ An [MCP](https://modelcontextprotocol.io) server (stdio for local IDE clients,
 or streamable HTTP for a shared remote endpoint) that exposes the **Estonian
 Legal Ontology** corpus as a set of natural-language tools, so you can ask
 plain-language legal questions from Claude, Cursor, or Copilot and get answers
-**grounded in real riigiteataja.ee citations**.
+**linked to source citations when the corpus supplies them**.
 
 Every result that maps to a source carries its canonical URL
 (riigiteataja.ee for laws/provisions, riigikohus.ee for court decisions,
@@ -43,7 +43,7 @@ Or add it to a project-local `.mcp.json`:
 {
   "mcpServers": {
     "estleg": {
-      "command": "estleg-mcp",
+      "command": "/absolute/path/to/estonian-legal-ontology/.venv/bin/estleg-mcp",
       "env": {
         "ESTLEG_CORPUS": "/absolute/path/to/estonian-legal-ontology"
       }
@@ -73,19 +73,19 @@ client; just point each at the console script.
 ```json
 {
   "mcpServers": {
-    "estleg": { "command": "/abs/path/to/mcp_server/.venv/bin/estleg-mcp" }
+    "estleg": { "command": "/abs/path/to/estonian-legal-ontology/.venv/bin/estleg-mcp" }
   }
 }
 ```
 
-On Windows the command is `C:\\...\\mcp_server\\.venv\\Scripts\\estleg-mcp.exe`.
+On Windows the command is `C:\\...\\estonian-legal-ontology\\.venv\\Scripts\\estleg-mcp.exe`.
 
 **VS Code / Visual Studio (GitHub Copilot)** use an `mcp.json` with a top-level
 `servers` key (not `mcpServers`), and the tools appear in Copilot **Agent mode**.
 
 ## Remote deployment (HTTP, e.g. Coolify)
 
-To serve every device from one endpoint instead of installing the ~1.5 GB
+To serve every device from one endpoint instead of installing the multi-gigabyte
 corpus on each machine, run the server over streamable HTTP behind TLS.
 
 ### Configuration (environment)
@@ -160,25 +160,17 @@ claude mcp add --transport http estleg https://estleg.sixtyfour.ee/mcp \
 
 ## Tools
 
-Each tool takes a plain-language law reference (title, official abbreviation
-such as `KarS` / `VÕS` / `PKS`, or corpus slug). Lists are capped by `limit`
-where noted; long legal text is truncated to stay chat-sized. A query that
-matches nothing returns an empty list (or a `note`), never an error.
-Empty lists on `references_of`, `who_references`, `court_decisions_for_law`,
-and `competent_authority_for_law` are **domain sparsity**, not a tool bug:
-most of the ~1,100 statutes have never been cited by a Supreme Court
-judgment, never name a competent authority, and never cite another act.
-Inverse edges live on provision nodes and are also rolled up onto the act
-root (`estleg:references` / `referencedBy` / `interpretedBy` /
-`competentAuthority`, issue #508).
+The server registers **20 tools**. Law tools accept a title, official
+abbreviation such as `KarS` / `VÕS` / `PKS`, or corpus slug; other tools accept
+the term, EuroVoc subject, CELEX, or issuer described below. Lists are capped
+by `limit` where noted, and long legal text is truncated.
 
-That reading is only safe because the failure mode it used to hide is now
-guarded: all four tools read the law graph through provision detection, and
-issue #678 was exactly a retype of the § class that emptied them everywhere
-while looking like sparsity. The server refuses to boot in that state (see
-[Startup check](#startup-check-provision-detection-678)), and
-`layers_available()` reports the live § count, so an empty list here really
-does mean the corpus records nothing.
+An empty list means the loaded corpus returned no matches. It does not
+establish that no real-world citation, authority, or legal obligation exists.
+Unknown targets return a `note`. The [startup check](#startup-check-provision-detection-678)
+catches the known provision-type regression using KarS, but does not certify
+every law or overlay. Inspect `layers_available()` and source coverage when
+assessing an empty result.
 
 | Tool | What it answers | Example question |
 |------|-----------------|------------------|
@@ -190,11 +182,13 @@ does mean the corpus records nothing.
 | `references_of(law, paragraph=None)` | Outgoing references (what this cites) | "What does § 13 of KarS reference?" |
 | `drafts_affecting_law(law, limit=20)` | Pending bills that would change the law | "What pending bills affect the Health Services Organisation Act?" |
 | `court_decisions_for_law(law, limit=20)` | Riigikohus decisions interpreting the law | "Which Supreme Court cases interpret KarS?" |
-| `sanctions_for_law(law)` | Penalties the law defines | "What penalties does KarS define?" |
+| `sanctions_for_law(law, limit=50)` | Recorded penalties for the law | "What penalties does KarS define?" |
 | `competent_authority_for_law(law)` | Which institutions enforce/administer it | "Which authority enforces the Personal Data Protection Act?" |
 | `transposition(query)` | EU directive ↔ Estonian law, both directions | "Which Estonian law transposes EU directive 31990L0314?" (or pass a law name to go the other way) |
 | `eu_case_law_for_directive(celex, limit=20)` | CURIA decisions that mention a directive CELEX | "Which CURIA judgments interpret 32000L0060?" |
 | `define_term(term, limit=10)` | Look up a legal term in the concepts overlay | "What does 'elatis' mean in the ontology?" |
+| `laws_for_subject(subject, limit=20)` | Find laws by EuroVoc subject IRI or keyword | "Which laws are tagged with social security?" |
+| `amendment_history(law, limit=50)` | Recorded effected amendment events | "What amendments has KarS already received?" |
 | `harmonisation_for_directive(celex, limit=20)` | Cross-border measures sharing a directive CELEX | "Which neighbouring states also transposed 32000L0060?" |
 | `layers_available()` | Which sidecars MCP reads vs excludes | "Does MCP load the harmonisation / similarity overlays?" |
 | `regulations_for_law(law, limit=50)` | Regulations (määrused) issued under / implementing a statute | "Which regulations are issued under the Local Government Organisation Act (KOKS)?" |
@@ -213,8 +207,8 @@ does mean the corpus records nothing.
   documents as *the official riigiteataja.ee URL*. An empty string is the
   honest answer. Restoring those sources is a producer-side ticket, so until
   it lands `get_law("KarS")["rt_url"]` and the `rt_url` on every
-  `sanctions_for_law("KarS")` row are `""` while the sanctions themselves are
-  complete.
+  `sanctions_for_law("KarS")` row are `""`. The presence of sanction records
+  does not establish complete extraction coverage.
 - **`external_ids`** — `get_law` and `search_laws` return the non-riigiteataja
   identifiers the act does link to, keyed by host family, e.g.
   `{"wikidata": "http://www.wikidata.org/entity/Q2352833"}`. Nothing is lost

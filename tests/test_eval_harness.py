@@ -112,6 +112,8 @@ def test_render_markdown_runs(tmp_path):
     md = eval_harness.render_markdown(report)
     assert "Fitness-for-purpose evaluation" in md
     assert "Retrievability gap" in md
+    assert "reference integrity, not semantic precision" in md
+    assert "reference integrity, not semantic precision" in report["crossref_edge_resolution"]["note"]
 
 
 def test_gold_set_precision_recall(tmp_path):
