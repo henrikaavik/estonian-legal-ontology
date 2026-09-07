@@ -865,17 +865,20 @@ def write_unresolved(nodes: list[dict], path: Path = UNRESOLVED_PATH) -> None:
     that depended on them dangling (59 `hasSection` edges on `VOS_Part11`
     alone). Merging by ``@id`` makes the builder idempotent; genuinely stale
     entries are caught by validate_all's "stale extra IDs" check rather than by
-    silent deletion here.
+    silent deletion here. Unreadable or malformed saved placeholders must stop
+    consolidation before any of them are overwritten.
     """
     merged: dict[str, dict] = {}
-    if path.is_file():
-        try:
-            existing = load_jsonld(path)
-        except (OSError, ValueError):
-            existing = {}
-        for node in graph_nodes(existing):
-            if isinstance(node.get("@id"), str):
-                merged[node["@id"]] = node
+    try:
+        existing = load_jsonld(path)
+    except FileNotFoundError:
+        existing = {"@graph": []}
+    if not isinstance(existing, dict) or not isinstance(existing.get("@graph"), list):
+        raise ValueError(f"{path}: saved placeholders must contain an @graph array")
+    for node in existing["@graph"]:
+        if not isinstance(node, dict) or not isinstance(node.get("@id"), str) or not node["@id"]:
+            raise ValueError(f"{path}: saved placeholder must have a non-empty string @id")
+        merged[node["@id"]] = node
     for node in nodes:
         if isinstance(node.get("@id"), str):
             merged[node["@id"]] = node
@@ -1149,8 +1152,10 @@ def consolidate(
     if "dcterms" not in new_vocab["@context"]:
         new_vocab["@context"]["dcterms"] = "http://purl.org/dc/terms/"
 
-    dump_jsonld(krr_dir / "controlled_vocabulary.jsonld", new_vocab)
+    # Save the destination before removing relocated individuals from the source.
+    # A read/parse/write failure here must leave the vocabulary intact for retry.
     write_unresolved(unresolved, krr_dir / "unresolved_references.jsonld")
+    dump_jsonld(krr_dir / "controlled_vocabulary.jsonld", new_vocab)
 
     metadata = strip_metadata_tbox(load_jsonld(METADATA_PATH))
     dump_jsonld(METADATA_PATH, metadata)

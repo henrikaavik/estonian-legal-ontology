@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg.consolidate_tbox import (
     FORBIDDEN_NO_AXIOM,
     FORBIDDEN_NO_RANGE,
@@ -28,7 +30,7 @@ from estleg.consolidate_tbox import (
     schema_term_ids,
     strip_metadata_tbox,
 )
-from estleg import validate_all
+from estleg import consolidate_tbox, validate_all
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -225,6 +227,78 @@ class TestUnresolvedPlaceholdersSurviveRerun:
         write_unresolved([{"@id": "estleg:B"}], path)
         graph = json.loads(path.read_text())["@graph"]
         assert [node["@id"] for node in graph] == ["estleg:A", "estleg:B"]
+
+    @pytest.mark.parametrize("failure", [PermissionError, OSError])
+    def test_read_failure_preserves_existing_bytes(self, tmp_path, monkeypatch, failure):
+        path = tmp_path / "unresolved_references.jsonld"
+        consolidate_tbox.write_unresolved([{"@id": "estleg:A"}], path)
+        original = path.read_bytes()
+
+        def fail_read(path):
+            raise failure("cannot read placeholders")
+
+        monkeypatch.setattr(consolidate_tbox, "load_jsonld", fail_read)
+        with pytest.raises(failure, match="cannot read placeholders"):
+            consolidate_tbox.write_unresolved([{"@id": "estleg:B"}], path)
+        assert path.read_bytes() == original
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            '{"@graph": [',
+            '[]',
+            '{}',
+            '{"@graph": {"@id": "estleg:A"}}',
+            '{"@graph": [{"@id": "estleg:A"}, null]}',
+            '{"@graph": [{"@id": "estleg:A"}, {}]}',
+            '{"@graph": [{"@id": "estleg:A"}, {"@id": ""}]}',
+        ],
+    )
+    def test_invalid_saved_document_is_not_overwritten(self, tmp_path, content):
+        path = tmp_path / "unresolved_references.jsonld"
+        path.write_text(content, encoding="utf-8")
+        original = path.read_bytes()
+        with pytest.raises(ValueError):
+            consolidate_tbox.write_unresolved([], path)
+        assert path.read_bytes() == original
+
+    @pytest.mark.parametrize("failure", ["parse", "read", "write"])
+    def test_consolidation_keeps_vocabulary_when_placeholder_save_fails(
+        self, tmp_path, monkeypatch, failure,
+    ):
+        vocab_path = tmp_path / "controlled_vocabulary.jsonld"
+        vocab_path.write_text(json.dumps({"@graph": [{
+            "@id": "estleg:New",
+            "@type": ["owl:NamedIndividual", "estleg:UnresolvedReferencePlaceholder"],
+        }]}))
+        original = vocab_path.read_bytes()
+        unresolved_path = tmp_path / "unresolved_references.jsonld"
+        saved = '{"@graph": [' if failure == "parse" else '{"@graph": [{"@id": "estleg:A"}]}'
+        unresolved_path.write_text(saved)
+        monkeypatch.setattr(consolidate_tbox, "iter_merge_sources", lambda: iter(()))
+        original_load = consolidate_tbox.load_jsonld
+
+        def load(path):
+            if path == unresolved_path and failure == "read":
+                raise PermissionError("cannot read placeholders")
+            return original_load(path)
+
+        monkeypatch.setattr(consolidate_tbox, "load_jsonld", load)
+
+        # Keep this failure-path regression isolated even if consolidation regresses.
+        def unexpected_write(path, doc):
+            if path == unresolved_path and failure == "write":
+                raise PermissionError("cannot write placeholders")
+            pytest.fail("consolidation wrote before validating saved placeholders")
+
+        monkeypatch.setattr(consolidate_tbox, "dump_jsonld", unexpected_write)
+
+        with pytest.raises(ValueError if failure == "parse" else PermissionError):
+            consolidate_tbox.consolidate(
+                krr_dir=tmp_path, patch_combined=False, remap_peeps=False,
+            )
+        assert vocab_path.read_bytes() == original
+        assert unresolved_path.read_text() == saved
 
     def test_committed_placeholders_are_intact(self):
         """The 61 relocated placeholders must stay in the committed artifact."""

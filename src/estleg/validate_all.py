@@ -440,9 +440,7 @@ def validate_multi_valued(filepath: Path, doc: dict):
     if "@graph" not in doc:
         return
     for i, node in enumerate(doc["@graph"]):
-        node_types = node.get("@type", [])
-        if not isinstance(node_types, list):
-            node_types = [node_types]
+        node_types = estleg_common.node_type_list(node)
         for key in node:
             if key in MULTI_VALUED_PROPS:
                 val = node[key]

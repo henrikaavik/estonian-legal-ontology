@@ -3113,6 +3113,27 @@ class TestValidatorShapeRules:
         assert len(validate_all.errors) == 1
         assert "dcterms:subject is not an array" in validate_all.errors[0]
 
+    @pytest.mark.parametrize(
+        "raw_types", [{}, [[]], {"@id": "estleg:Chapter"}, [None, {}, []], 42, None],
+    )
+    def test_malformed_types_do_not_abort_array_validation(self, raw_types):
+        doc = {
+            "@graph": [
+                {"@id": "estleg:Bad", "@type": raw_types, "dcterms:subject": "topic"},
+                {"@id": "estleg:Later", "skos:exactMatch": "estleg:Other"},
+            ],
+        }
+        validate_all.validate_multi_valued(Path("malformed.json"), doc)
+        assert len(validate_all.errors) == 2
+        assert "dcterms:subject is not an array" in validate_all.errors[0]
+        assert "skos:exactMatch is not an array" in validate_all.errors[1]
+
+    @pytest.mark.parametrize("raw_types", ["estleg:Chapter", [None, {}, "estleg:Chapter"]])
+    def test_recognized_chapter_type_retains_subject_exemption(self, raw_types):
+        doc = {"@graph": [{"@type": raw_types, "dcterms:subject": "topic"}]}
+        validate_all.validate_multi_valued(Path("chapter.json"), doc)
+        assert validate_all.errors == []
+
     def test_other_multi_valued_props_are_unaffected_on_chapters(self):
         doc = {
             "@graph": [
