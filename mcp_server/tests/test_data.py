@@ -419,6 +419,9 @@ def test_transposition_empty_query() -> None:
     'javascript://riigiteataja.ee/akt/1',
     'https://user@riigiteataja.ee/akt/1',
     'https://riigiteataja.ee /akt/1',
+    'https://example.com\\.riigiteataja.ee/akt/1',
+    '\x00https://riigiteataja.ee/akt/1',
+    'https://riigiteataja.ee/akt/1\x7f',
 ])
 def test_rt_url_skips_malformed_or_non_web_sources(url: str) -> None:
     fallback = 'https://www.riigiteataja.ee/akt/123'

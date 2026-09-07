@@ -912,6 +912,11 @@ def _host_of(url: str) -> str:
         or parsed.username is not None
         or parsed.password is not None
         or any(c.isspace() for c in url)
+        # Browsers treat backslashes as URL separators, unlike urlsplit.
+        # C0 controls may also be stripped before navigation. Never return
+        # a citation whose browser host can differ from the parsed host.
+        or "\\" in url
+        or any(ord(c) < 32 or ord(c) == 127 for c in url)
     ):
         return ""
     return host.lower().rstrip(".")
