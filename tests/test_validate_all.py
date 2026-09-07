@@ -3018,3 +3018,60 @@ def test_iter_node_estleg_refs_canonicalizes_and_attributes_nested_predicate():
         ("estleg:hasVersion", "estleg:B_v1")
     ]
     assert estleg_common.canonical_estleg_ref("http://example.org/x") is None
+
+
+def test_riigikohus_case_type_tables_match_index():
+    """Both Riigikohus case-type tables agree with RIIGIKOHUS_INDEX.json (#686).
+
+    README.md and docs/README.md each carry a case-type breakdown that used to
+    be hand-maintained and disagreed with each other and with the index. Pin
+    every row to ``case_type_counts`` in the committed index, and require the
+    index rows to sum to ``total_decisions``, so a regenerated index cannot
+    leave a stale table behind.
+    """
+    import json
+    import re
+
+    repo_root = Path(__file__).resolve().parent.parent
+    index = json.loads(
+        (repo_root / "krr_outputs" / "riigikohus" / "RIIGIKOHUS_INDEX.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    counts = index["case_type_counts"]
+    assert sum(counts.values()) == index["total_decisions"], (
+        "RIIGIKOHUS_INDEX.json case_type_counts do not sum to total_decisions"
+    )
+
+    # Table row label (parenthetical Estonian gloss stripped) -> index key.
+    labels = {
+        "Civil": "Civil",
+        "Criminal": "Criminal",
+        "Administrative": "Administrative",
+        "Constitutional Review": "ConstitutionalReview",
+        "Misdemeanor": "Misdemeanor",
+        "Other": "Other",
+    }
+    marker = (
+        "<!-- case types: keep in sync with "
+        "krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json case_type_counts"
+    )
+
+    def _table_after_marker(text: str, rel: str) -> dict[str, int]:
+        assert marker in text, f"{rel} lost its case-type sync marker"
+        rows: dict[str, int] = {}
+        in_table = False
+        for line in text.split(marker, 1)[1].splitlines():
+            if line.startswith("|"):
+                in_table = True
+                cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                label = re.sub(r"\s*\([^)]*\)\s*$", "", cells[0])
+                if label in labels and re.fullmatch(r"\d[\d,]*", cells[-1]):
+                    rows[labels[label]] = int(cells[-1].replace(",", ""))
+            elif in_table:
+                break
+        return rows
+
+    for rel in ("README.md", "docs/README.md"):
+        rows = _table_after_marker((repo_root / rel).read_text(encoding="utf-8"), rel)
+        assert rows == counts, f"{rel} case-type table {rows} != index {counts}"

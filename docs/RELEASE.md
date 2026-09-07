@@ -94,13 +94,24 @@ URLs) are #473 and are not produced by this in-repo record.
 4. After merge, tag the release: `git tag v<version> && git push origin v<version>`,
    and create the GitHub release (this is an outward-facing publish step — do it
    deliberately, not from CI).
+5. Attach `NOTICE`, `LICENSE`, `docs/DATA_RIGHTS.md`, and
+   `docs/DATA_PROTECTION.md` as **release assets** (#684). A downloader who takes
+   only the release tarball must get the layered-rights and personal-data notices
+   with it — CC BY 4.0 covers the compilation layer only, and the court
+   subcorpora carry personal data.
+6. Before relying on a new version IRI, submit the generalised SemVer rule in
+   `w3id/estleg/.htaccess` to `perma-id/w3id.org` and verify it is deployed
+   (#690). This repository contains a staging copy; merging it here does not
+   change the live resolver. Once that upstream change is deployed, a new
+   `https://w3id.org/estleg/<version>` will redirect to `releases/tag/v<version>`
+   without another w3id submission. Verify the redirect for each release.
 
 ---
 
 ## Current Release Snapshot
 
-The current release indexes 1,122 enacted laws (1,190 law files) and
-advertises 23,118 JSON/JSON-LD files overall, matching
+The current release indexes 1,122 enacted laws (1,195 law files) and
+advertises 27,008 JSON/JSON-LD files overall, matching
 `krr_outputs/INDEX.json` (`total_laws`) and the root README /
 `metadata.jsonld` headline. Sequential live jobs in the 2026-05-26
 refresh completed the full law corpus refresh, Riigikohus full-text
