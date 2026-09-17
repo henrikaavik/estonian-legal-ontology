@@ -16,7 +16,7 @@ requires-python = ">=3.11"
 # also the first release whose ``streamable_http_app()`` the HTTP transport
 # needs (``server._build_http_app``).
 dependencies = [
-  "mcp>=1.14.0,<2",
+  "mcp>=1.14.0,<3",
 ]
 
 [project.optional-dependencies]
@@ -25,6 +25,7 @@ http = [
 ]
 dev = [
   "pytest>=8,<10",
+  "httpx>=0.27,<1",  # Starlette TestClient, independent of the MCP SDK's HTTP client.
   # Pinned to the 0.16 line (#677): the ``[tool.ruff.lint] select`` below
   # holds the ruleset steady, this holds the minor version steady so a
   # 0.17 default-behaviour change cannot land unreviewed via CI.
