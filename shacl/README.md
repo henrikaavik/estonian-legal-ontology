@@ -30,15 +30,18 @@ inference. Keep those axioms off the stub-valued properties listed above.
 
 The same trap applies to **`rdfs:domain` on a property that more than one
 class uses**. A domain axiom types every *subject* of the property into
-that class, so a property shared across classes must carry no domain at
-all. `estleg:applicableProvision` is the worked example: it is used by
+that class, so a shared property must omit a narrow domain or use a common
+superclass such as `owl:Thing`. `estleg:applicableProvision` is the worked example: it is used by
 both `estleg:CourtDecision` and `estleg:Sanction`, and a
 `rdfs:domain estleg:CourtDecision` on it phantom-types every Sanction as a
 court decision under `inference="rdfs"`, after which
 `estleg:CourtDecisionShape` demands `estleg:caseType` and
 `estleg:caseNumber` of it — two violations per sanction node, none of them
 real. Before adding a domain axiom, check every class that writes the
-predicate.
+predicate. #702 applies `owl:Thing` to `celexNumber`, `eurLexLink`,
+`documentDate`, and `ecliIdentifier` in both the vocabulary and combined graph;
+the CURIA bucket now passes. Other buckets retain failures documented in
+[VALIDATION_REPORT.md](../docs/VALIDATION_REPORT.md).
 
 ## One constraint per shape when the message matters
 

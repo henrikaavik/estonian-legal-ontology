@@ -1,5 +1,9 @@
 # Ontology Improvement Plan (2026-06-10 full review)
 
+> **Historical plan.** Issue states and measurements below belong to the June
+> review. Current work is tracked in [epic #676](https://github.com/henrikaavik/estonian-legal-ontology/issues/676);
+> see [project status](README.md#project-status) and [VALIDATION_REPORT.md](VALIDATION_REPORT.md).
+
 **Source:** 11-agent full review of the ontology, structure, and architecture, executed 2026-06-10.
 Review scopes: T-Box, law instance corpus, court/EU corpora, temporal model, enrichment layers,
 SHACL/validators, generation pipeline, enrichment pipeline, repo/distribution, external standards

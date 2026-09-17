@@ -8,14 +8,18 @@ Fixes #
 
 ## Validation gates
 
-<!-- All must pass locally before review. CI runs the same set. -->
+<!-- Follow CONTRIBUTING.md: run relevant checks and report existing failures
+     below. A data release requires all release gates to pass. -->
 
-- [ ] `python3 -m ruff check scripts/ tests/ mcp_server/`
+- [ ] `python3 -m ruff check scripts/ src/estleg/ tests/ mcp_server/`
 - [ ] `python3 -m pytest -q`
+- [ ] `python3 -m pytest -q mcp_server/tests`
+- [ ] For documentation: `npx --yes markdownlint-cli@0.41.0 'docs/*.md' README.md`
 - [ ] `python3 scripts/validate_all.py`
 - [ ] `python3 scripts/shacl_validate_all.py --all`
 - [ ] `python3 scripts/validate_seadusloome_sync.py`
 - [ ] If `combined_ontology.jsonld` was regenerated: `python3 -m pytest -q -m corpus`
+- [ ] If corpus measurements changed: regenerate validation/duplicate reports and run both generators with `--check`
 
 ## Generated artifacts
 

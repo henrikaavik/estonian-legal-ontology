@@ -1,5 +1,9 @@
 # Open-issue validation audit — 2026-06-10/11
 
+> **Historical audit.** The issue verdicts below describe the June tree, not
+> today's GitHub states. See [project status](README.md#project-status) and
+> [VALIDATION_REPORT.md](VALIDATION_REPORT.md) for current evidence.
+
 Companion to `docs/ONTOLOGY_IMPROVEMENT_PLAN.md`. All 102 issues open at the start of the
 2026-06-10 full review (#270–#404) were re-validated against the repo at `c81a8a164a`:
 each issue's core claim was spot-verified (in-code issue-number comments, targeted greps,

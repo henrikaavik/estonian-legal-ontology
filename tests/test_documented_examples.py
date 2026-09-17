@@ -8,8 +8,8 @@ lang-tagged literals the data stores plain, and cross-subcorpus joins the prose
 never told you to co-load). This module parses every fenced ``sparql`` / ``python``
 block straight out of those two docs (so the gate tracks the docs, not a
 hard-coded copy) and runs each one, failing on a zero-row SPARQL result or a
-Python exception. A genuine 0 here is a real regression — the documented example
-no longer matches the shipped data.
+Python exception or empty printed output. A genuine 0 here is a real regression —
+the documented example no longer matches the shipped data.
 
 Design (mirrors ``tests/test_readme_sparql_examples.py``):
 
@@ -18,12 +18,10 @@ Design (mirrors ``tests/test_readme_sparql_examples.py``):
   *minimal* committed subcorpus it joins onto — the explicit ``files`` a query
   needs, then (as a resilience fallback) the matching ``globs`` one file at a
   time until the first row. Peak graph size stays small.
-* **Materialised parent types without the combined surface.** The two
-  ``?x a estleg:LegalProvision`` examples need the build-time type rollup that
-  ships only inside the combined graph (#519). Instead of loading that graph we
-  reuse the builder's single source of truth — ``fix_all_issues._materialize_supertypes``
-  — to stamp the entailed supertypes onto a 1-file fixture as it is parsed,
-  reproducing exactly what combined would answer at a fraction of the cost.
+* **Parent-type compatibility without the combined surface.** Current peeps
+  type provisions directly as ``estleg:LegalProvision`` (#434). Selected specs
+  also reuse ``fix_all_issues._materialize_supertypes`` for historical inputs
+  that need the builder's parent-type rollup (#519), without loading combined.
 * **LFS / corpus safety.** Any individual input that is an un-materialised git-LFS
   pointer or absent is skipped via ``validate_all._is_lfs_pointer`` (the guard the
   corpus-invariant suite uses). The corpus-touching tests are ``@pytest.mark.corpus``
@@ -38,6 +36,7 @@ import os
 import re
 from contextlib import redirect_stdout
 from dataclasses import dataclass
+from io import StringIO
 from pathlib import Path
 
 import pytest
@@ -109,9 +108,9 @@ class _SparqlSpec:
     ``krr_outputs/``) are walked one file at a time, re-running the query after
     each, only if ``files`` did not already yield a row — a pure speed/resilience
     knob, never a correctness one. ``rollup`` applies the #519 supertype
-    materialisation as the file is parsed (needed for the bare
-    ``a estleg:LegalProvision`` queries, whose per-file inputs carry only the leaf
-    ``LegalProvision_<law>`` type). ``reverse`` orders the globs newest-first.
+    materialisation as the file is parsed (compatibility with historical inputs
+    carrying only a leaf ``LegalProvision_<law>`` type).
+    ``reverse`` orders the globs newest-first.
     """
 
     marker: str
@@ -146,7 +145,7 @@ SPARQL_SPECS: dict[str, tuple[_SparqlSpec, ...]] = {
         ),
         _SparqlSpec(
             marker="estleg:entryIntoForce ?entry",
-            name="government regulations in force",
+            name="government regulations with no recorded repeal date",
             files=(
                 "regulations/riik/"
                 "abielu_solmimise_ja_lahutamise_kinnitamise_padevuse_saamisek_t343620_peep.json",
@@ -202,9 +201,9 @@ SPARQL_SPECS: dict[str, tuple[_SparqlSpec, ...]] = {
             files=("alaealise_mojutusvahendite_seadus_peep.json",),
         ),
         _SparqlSpec(
-            marker='dcterms:title "Töölepingu seadus"',
+            marker='FILTER(STR(?title) = "Perekonnaseadus")',
             name="EuroVoc subject classification (reverse)",
-            files=("toolepingu_seadus_peep.json",),
+            files=("perekonnaseadus_peep.json",),
         ),
     ),
     "SCHEMA_REFERENCE.md": (
@@ -473,7 +472,7 @@ def test_documented_sparql_returns_rows(doc_name: str, spec: _SparqlSpec):
 
 
 # --------------------------------------------------------------------------- #
-# Python loader snippets must execute without raising.
+# Python loader snippets must execute and demonstrate results.
 # --------------------------------------------------------------------------- #
 
 _PATH_LITERAL = re.compile(r"""["'](krr_outputs/[^"'*]+\.jsonl?d?)["']""")
@@ -490,12 +489,14 @@ def _python_cases() -> list[_Block]:
     ids=[f"API_GUIDE.md:L{b.line}" for b in _python_cases()],
 )
 def test_documented_python_executes(block: _Block):
-    """Every documented Python loader snippet runs without raising (#506).
+    """Every documented Python loader snippet runs and prints results (#506).
 
     The snippets read real ``krr_outputs/`` files with relative paths, so they are
     executed with the repo root as CWD. Any static file literal that is missing or
     an un-materialised LFS pointer skips the case (corpus convention); a genuine
     exception (e.g. the old ``entry.get("file")`` ``AttributeError``) fails.
+    Empty output also fails: a glob matching no sidecar files otherwise appears
+    to succeed while silently demonstrating nothing.
     """
     for rel in _PATH_LITERAL.findall(block.body):
         path = REPO_ROOT / rel
@@ -503,9 +504,14 @@ def test_documented_python_executes(block: _Block):
             pytest.skip(f"L{block.line}: input missing or LFS pointer: {rel}")
 
     prev_cwd = Path.cwd()
+    output = StringIO()
     os.chdir(REPO_ROOT)
     try:
-        with open(os.devnull, "w") as devnull, redirect_stdout(devnull):
+        with redirect_stdout(output):
             exec(compile(block.body, f"API_GUIDE.md:L{block.line}", "exec"), {})
     finally:
         os.chdir(prev_cwd)
+    assert output.getvalue().strip(), (
+        f"API_GUIDE.md L{block.line} printed no results — check the documented "
+        f"file paths and glob patterns.\n{block.body}"
+    )

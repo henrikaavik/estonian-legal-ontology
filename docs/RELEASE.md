@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. The 15 enrichment steps are declared as an explicit,
+release build. Its 18 steps (enrichment plus aggregate rebuilds) form an explicit,
 declarative directed acyclic graph (DAG); the runner topologically sorts it,
 runs it (serially by default), then — in `--release` mode — runs the three
 release validators and writes a release-wide manifest aggregating everything.
@@ -50,7 +50,8 @@ combined ontology dump, and linksets to EuroVoc, EUR-Lex/CELLAR, and
 Riigi Teataja. Combined JSON-LD artifacts also carry an in-band Dataset
 head (`dcterms:title` / `publisher` / `license`) so a consumer who
 loads only the graph still sees the compilation-layer CC BY 4.0 offer.
-A SPARQL endpoint is not claimed (that is #474).
+This descriptor does not advertise a public SPARQL service. The local
+Oxigraph sample setup from #474 is documented in [API_GUIDE.md](API_GUIDE.md).
 
 ### Refresh SLA
 
@@ -65,6 +66,12 @@ against `BUILD_EVALUATION_DATE` with a 45-day lag budget). `--fetch`
 (GET live RT akt XML) is operator-run and is not used in CI. Inter-release
 IRI deltas are published as `krr_outputs/changes-<version>.jsonld` and
 linked from `metadata.jsonld` as a `dcat:distribution`.
+
+The default evaluation date remains pinned to `2026-06-01` (#693); default
+success does not establish freshness today. Use
+`python3 scripts/check_rt_staleness.py --evaluation-date "$(date -u +%F)"`
+for a current comparison. RT fetching still needs the public-API migration
+in #691. The committed IRI delta is for 0.11.0, not every subsequent commit.
 
 The committed tree is recorded in
 `krr_outputs/dataset_build_manifest.json` (dataset version, git SHA,
@@ -110,33 +117,28 @@ URLs) are #473 and are not produced by this in-repo record.
 
 ## Current Release Snapshot
 
-The current release indexes 1,122 enacted laws (1,195 law files) and
-advertises 27,008 JSON/JSON-LD files overall, matching
-`krr_outputs/INDEX.json` (`total_laws`) and the root README /
-`metadata.jsonld` headline. Sequential live jobs in the 2026-05-26
-refresh completed the full law corpus refresh, Riigikohus full-text
-ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
-PDF-body annotation ingestion. Final local gates passed:
+As of **2026-09-07**, the latest published tag is
+[v1.0.0](https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v1.0.0)
+(2026-08-19). The September Tier 0 and #702 fixes are merged to `main`
+at `0cb9ac91bc`; there is no newer tagged release containing those fixes.
 
-- `python3 -m ruff check scripts/ src/estleg/ tests/`
-- `python3 -m pytest -q` (`1568 passed, 2 skipped`)
-- `python3 scripts/validate_all.py` (`23,069 files`, zero errors/warnings)
-- `python3 scripts/shacl_validate_all.py --all` (`23,064 files`,
-  `7,117,928` triples, PASS)
-- `python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl`
-  (`21,874` JSON-LD inputs, `7,127,720` data triples, PASS, `real 518.46`)
+The reviewed tree indexes 1,122 enacted laws (1,195 law files) and advertises
+27,008 JSON/JSON-LD files. Its generated JSON validation report records
+**26,961 files / 122 errors / 2 warnings**. CURIA and EUR-Lex pass their
+bucket checks, while the broader corpus and consumer-sync gates still fail.
+See [VALIDATION_REPORT.md](VALIDATION_REPORT.md) for measured evidence and
+remaining work. The old 2026-05-26 all-green statement is not a conformance
+claim for the current corpus.
 
-Õiguskantsler PDF handling remains pdfminer-only for this release: the 10-PDF
-probe accepted 10/10 text layers, and the full scrape accepted 4,045/4,052 PDF
-text layers with six unusable/scanned PDFs and one fetch failure. OCR is not
-part of the release dependency set.
+The required merge checks are `lint`, `pytest`, and `estleg-mcp tests`.
+They are distinct from the full release gates below. Passing them permits
+reviewed incremental fixes; it does not make a data release SHACL-conformant.
+Bulk `.nt`/`.nq`/`.ttl` dumps and other release assets are not all rebuilt by
+the current DAG; reconcile them with the chosen JSON-LD revision (#705).
 
-Operator-facing behavior changes in this refresh:
-
-- `scripts/generate_annotations.py --scrape --limit 0` now means full archive
-  scrape. Use a positive `--limit` for a bounded recent-opinion sample.
-- Repeated subsection suffixes are now emitted with stable `_DupN` IRIs instead
-  of aborting generation, so duplicated source lõige numbering stays citable.
+Õiguskantsler PDF extraction uses pdfminer; OCR is not in the dependency set.
+`generate_annotations.py --scrape --limit 0` means a full archive scrape.
+Use a positive limit for a bounded sample.
 
 ---
 
@@ -176,24 +178,31 @@ phase order is preserved exactly.
 
 ### Steps, dependencies, and outputs
 
-| # | Step (`scripts/…`) | `depends_on` | Key `writes` (under `krr_outputs/`) |
+| # | Step (`STEPS` name) | `depends_on` | Declared `writes` (under `krr_outputs/`) |
 |---|---|---|---|
 | 1 | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
 | 2 | `generate_inverse_references.py` | `extract_cross_references.py` | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
-| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json` |
-| 4 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
-| 5 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
-| 6 | `classify_eurovoc.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/eurovoc_classification.json` |
-| 7 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
-| 8 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
-| 9 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
-| 10 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
-| 11 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
-| 12 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
-| 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
-| 14 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
-| 15 | `generate_similarity_index.py` | steps 1–14 (all) | `reports/similarity_index.json`, `reports/similarity_report.json` |
-| 16 | `build_release_artifacts.py` | steps 1–15 (all) | `combined_ontology.jsonld`, `INDEX.json` |
+| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json`, `eurlex/eurlex_combined.jsonld` |
+| 4 | `rebuild_eurlex_combined` | `generate_transposition_mapping.py` | `eurlex/eurlex_combined.jsonld` |
+| 5 | `link_curia_eu_legislation.py` | `rebuild_eurlex_combined` | `curia/*_peep.json`, `curia/curia_combined.jsonld`, `curia/curia_eu_link_report.json` |
+| 6 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
+| 7 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
+| 8 | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
+| 9 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
+| 10 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
+| 11 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
+| 12 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
+| 13 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
+| 14 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
+| 15 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
+| 16 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
+| 17 | `generate_similarity_index.py` | The 14 enrichment dependencies listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
+| 18 | `build_release_artifacts.py` | All preceding 17 steps | `combined_ontology.jsonld`, `INDEX.json` |
+
+`rebuild_eurlex_combined` invokes `generate_eu_legislation.py` with
+`--rebuild-combined-from-peeps`. This table reflects the declarations in
+`src/estleg/run_all_integration.py:STEPS`; full input/output coverage remains
+work under #704.
 
 `court_provision_links_report.json` includes both raw recall lift and its
 comparable denominator: use
@@ -201,24 +210,9 @@ comparable denominator: use
 so decisions without summaries do not skew the per-decision lift. If
 `decisions_with_summary_baseline` is zero, report the ratio as not applicable.
 
-ASCII view of the dependency edges (everything not shown is a no-dependency
-root that the topo sort places in source order; step 15 fans in from all
-prior steps):
-
-```
-extract_cross_references.py ──▶ generate_inverse_references.py ──┐
-generate_transposition_mapping.py ──▶ generate_harmonisation_links.py ──┤
-extract_court_provision_links.py ───────────────────────────────────────┤
-classify_eurovoc.py ────────────────────────────────────────────────────┤
-extract_temporal_data.py ───────────────────────────────────────────────┤
-generate_amendment_history.py ──────────────────────────────────────────┼─▶ generate_similarity_index.py
-extract_legal_concepts.py ──────────────────────────────────────────────┤
-classify_deontic.py ────────────────────────────────────────────────────┤
-classify_target_group.py ────────────────────────────────────────────────┤
-extract_institutional_competence.py ────────────────────────────────────┤
-extract_sanctions.py ───────────────────────────────────────────────────┤
-extract_draft_impact.py ────────────────────────────────────────────────┘
-```
+The EU branch rebuilds EUR-Lex after transposition before linking CURIA.
+The final release builder depends on every preceding step. Use the dry-run
+commands below to inspect the complete topological order.
 
 ### Why serial by default
 
@@ -270,7 +264,7 @@ This is the **unified release command**. It:
 1. Validates the DAG (exit 2 on a structural problem).
 2. Takes an atomic rename-aside snapshot of `krr_outputs/` (unless
    `--no-restore-on-failure`).
-3. Runs all 15 steps in topo order. A failed step skips its dependents; the
+3. Runs all 18 steps in topo order. A failed step skips its dependents; the
    first hard failure stops the run and the snapshot is restored.
 4. If — and only if — every step succeeded, runs the three release
    validators in order:
@@ -278,7 +272,7 @@ This is the **unified release command**. It:
    - `python3 scripts/shacl_validate_all.py --all` — full-corpus SHACL conformance
    - `python3 scripts/validate_seadusloome_sync.py` — Seadusloome zero-warning gate
 5. Writes `krr_outputs/reports/integration/release_manifest.json`.
-6. Exits **0 only if `release_ok`** — i.e. all 15 steps succeeded **and**
+6. Exits **0 only if `release_ok`** — i.e. all 18 steps succeeded **and**
    all three validators passed **and** no release-surface artifact is
    missing (`releaseArtifacts.missing` is empty; see
    [the manifest schema](#the-release_manifestjson-schema)). Otherwise exit 1.
@@ -352,7 +346,7 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
                                                 // validation_failed
     ...
   ],
-  "stepSummary": { "totalSteps": 15, "succeeded": 15, "failed": 0,
+  "stepSummary": { "totalSteps": 18, "succeeded": 18, "failed": 0,
                    "skipped": 0, "planned": 0 },
 
   "validators": [

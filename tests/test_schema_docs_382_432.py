@@ -13,14 +13,16 @@ def _schema_text() -> str:
     return SCHEMA.read_text(encoding="utf-8")
 
 
-def test_schema_reference_instance_labels_are_plain_estonian() -> None:
-    """#382: do not document language-tagged et/en instance labels as current."""
+def test_schema_reference_instance_labels_follow_current_language_policy() -> None:
+    """#437/#509 supersede #382: plain legacy strings and new @et coexist."""
     text = _schema_text()
     match = re.search(r"`rdfs:label`:[^\n]*", text)
     assert match, "SCHEMA_REFERENCE.md must document rdfs:label"
-    # Include the following bilingual-is-future note when present.
+    # Include the literal policy immediately following the property entries.
     window = text[match.start() : match.start() + 700]
-    assert "no language tag" in window or "Estonian plain string" in window, window
+    assert "xsd:string" in window and "rdf:langString" in window, window
+    assert "new generators use `@et`" in window, window
+    assert "English translations are not guaranteed" in window, window
     assert not re.search(
         r"language-tagged\s+(Estonian/?English|et/?en)",
         window,

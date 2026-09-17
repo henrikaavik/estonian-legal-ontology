@@ -460,16 +460,16 @@ def audit_duplicate_ids(krr_dir: Path | None = None):
 
     if duplicates:
         print(f"  Found {len(duplicates)} IDs appearing in multiple files")
-        # Write report
-        report_path = REPO_ROOT / "docs" / "DUPLICATE_IDS_REPORT.md"
-        report_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(report_path, "w", encoding="utf-8") as f:
-            f.write("# Duplicate @id Report\n\n")
-            f.write(f"Found {len(duplicates)} @id values appearing in multiple files.\n\n")
-            f.write("| @id | Files |\n|-----|-------|\n")
-            for nid, files in sorted(duplicates):
-                f.write(f"| `{nid}` | {', '.join(sorted(set(files)))} |\n")
-        print("  Report written to docs/DUPLICATE_IDS_REPORT.md")
+        # This audit no longer writes docs/DUPLICATE_IDS_REPORT.md (#702).
+        # It used to write that path unconditionally from REPO_ROOT, ignoring
+        # the `krr_dir` it was handed. Any caller pointed at a temporary
+        # directory -- notably tests/test_fix_all_issues.py, which monkeypatches
+        # KRR_DIR to a tmp_path -- therefore overwrote the committed corpus
+        # report with fixture output, which is how the shipped report came to
+        # cite `root_a_peep.json`, a file that exists only inside a test.
+        # The report is now produced by scripts/generate_duplicate_ids_report.py,
+        # which always reads the real corpus and is checked in CI.
+        print("  Run scripts/generate_duplicate_ids_report.py to refresh the report")
     else:
         print("  No cross-file duplicate IDs found")
 

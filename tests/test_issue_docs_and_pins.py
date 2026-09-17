@@ -15,7 +15,8 @@ def test_architecture_doc_exists_and_names_surfaces():
     assert "Load surfaces" in text
     assert "combined_ontology.jsonld" in text
     assert "mcp_server" in text
-    assert "v1 residuals" in text
+    assert "Release status and follow-ups" in text
+    assert "VALIDATION_REPORT.md" in text
     assert "release-asset-first" in text
     assert "keep-LFS" in text
     assert "measurably smaller clone" in text

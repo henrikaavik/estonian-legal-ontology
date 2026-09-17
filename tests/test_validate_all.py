@@ -3075,3 +3075,157 @@ def test_riigikohus_case_type_tables_match_index():
     for rel in ("README.md", "docs/README.md"):
         rows = _table_after_marker((repo_root / rel).read_text(encoding="utf-8"), rel)
         assert rows == counts, f"{rel} case-type table {rows} != index {counts}"
+
+
+class TestValidatorShapeRules:
+    """#702 — the two shape rules that produced 96% of the gate's errors.
+
+    Before this, `validate_multi_valued` demanded an array for every
+    `dcterms:subject` (3,021 errors, one per chapter) and `dcterms:title`
+    rejected the bilingual lists introduced by #437 (405 errors). Both were
+    validator bugs, not data bugs, and they buried the 123 real findings.
+    """
+
+    def test_chapter_may_carry_a_single_subject(self):
+        doc = {
+            "@graph": [
+                {
+                    "@id": "estleg:Chapter_X_1",
+                    "@type": ["owl:NamedIndividual", "estleg:Chapter"],
+                    "dcterms:subject": {"@id": "estleg:Cluster_X_1"},
+                }
+            ]
+        }
+        validate_all.validate_multi_valued(Path("chapter.json"), doc)
+        assert validate_all.errors == []
+
+    def test_non_chapter_still_requires_an_array_subject(self):
+        doc = {
+            "@graph": [
+                {
+                    "@id": "estleg:Act_X",
+                    "@type": ["owl:NamedIndividual", "estleg:Act"],
+                    "dcterms:subject": {"@id": "estleg:Cluster_X_1"},
+                }
+            ]
+        }
+        validate_all.validate_multi_valued(Path("act.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "dcterms:subject is not an array" in validate_all.errors[0]
+
+    @pytest.mark.parametrize(
+        "raw_types", [{}, [[]], {"@id": "estleg:Chapter"}, [None, {}, []], 42, None],
+    )
+    def test_malformed_types_do_not_abort_array_validation(self, raw_types):
+        doc = {
+            "@graph": [
+                {"@id": "estleg:Bad", "@type": raw_types, "dcterms:subject": "topic"},
+                {"@id": "estleg:Later", "skos:exactMatch": "estleg:Other"},
+            ],
+        }
+        validate_all.validate_multi_valued(Path("malformed.json"), doc)
+        assert len(validate_all.errors) == 2
+        assert "dcterms:subject is not an array" in validate_all.errors[0]
+        assert "skos:exactMatch is not an array" in validate_all.errors[1]
+
+    @pytest.mark.parametrize("raw_types", ["estleg:Chapter", [None, {}, "estleg:Chapter"]])
+    def test_recognized_chapter_type_retains_subject_exemption(self, raw_types):
+        doc = {"@graph": [{"@type": raw_types, "dcterms:subject": "topic"}]}
+        validate_all.validate_multi_valued(Path("chapter.json"), doc)
+        assert validate_all.errors == []
+
+    def test_other_multi_valued_props_are_unaffected_on_chapters(self):
+        doc = {
+            "@graph": [
+                {
+                    "@id": "estleg:Chapter_X_1",
+                    "@type": ["owl:NamedIndividual", "estleg:Chapter"],
+                    "skos:exactMatch": {"@id": "estleg:Other"},
+                }
+            ]
+        }
+        validate_all.validate_multi_valued(Path("chapter.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "skos:exactMatch is not an array" in validate_all.errors[0]
+
+    @pytest.mark.parametrize(
+        "title",
+        [
+            "Ühetaoline pealkiri",
+            {"@value": "Pealkiri", "@language": "et"},
+            {"@value": "Pealkiri"},
+            {"@value": "Pealkiri", "@type": "xsd:string"},
+            {"@value": "Pealkiri", "@type": "http://www.w3.org/2001/XMLSchema#string"},
+            {"@value": "Title", "@language": "en", "@direction": "ltr"},
+            [
+                {"@value": "Pealkiri", "@language": "et"},
+                {"@value": "Title", "@language": "en"},
+            ],
+            ["Pealkiri", "Title"],
+        ],
+    )
+    def test_accepted_title_shapes(self, title):
+        doc = {"@graph": [{"@id": "estleg:Act_X", "dcterms:title": title}]}
+        validate_all.validate_source_provenance(Path("act.json"), doc)
+        assert validate_all.errors == []
+
+    @pytest.mark.parametrize("title", [[], 42, ["ok", 42], None])
+    def test_rejected_title_shapes(self, title):
+        doc = {"@graph": [{"@id": "estleg:Act_X", "dcterms:title": title}]}
+        validate_all.validate_source_provenance(Path("act.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "dcterms:title" in validate_all.errors[0]
+
+    @pytest.mark.parametrize("in_list", [False, True])
+    @pytest.mark.parametrize(
+        "value",
+        [
+            {},
+            {"@id": "estleg:NotATitle"},
+            {"@value": 42},
+            {"@value": None},
+            {"@value": "Title", "@id": "estleg:NotATitle"},
+            {"@value": "42", "@type": "xsd:integer"},
+            {"@value": "Title", "@type": []},
+            {"@value": "Title", "@language": 42},
+            {"@value": "Title", "@language": ""},
+            {"@value": "Title", "@language": "en", "@type": "xsd:string"},
+            {"@value": "Title", "@direction": "invalid"},
+        ],
+    )
+    def test_rejects_non_string_value_objects(self, value, in_list):
+        title = ["Valid title", value] if in_list else value
+        doc = {"@graph": [{"@id": "estleg:Act_X", "dcterms:title": title}]}
+        validate_all.validate_source_provenance(Path("act.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "dcterms:title" in validate_all.errors[0]
+
+
+class TestGateWiring:
+    """#702 — both checks existed as scripts nothing called."""
+
+    def test_tbox_consistency_runs_inside_the_gate(self):
+        doc = {
+            "@graph": [
+                {
+                    "@id": "estleg:Act_X",
+                    "estleg:temporalStatus": ["inForce", "repealed"],
+                }
+            ]
+        }
+        validate_all.validate_tbox_consistency(Path("act.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "temporalStatus" in validate_all.errors[0]
+
+    def test_numeric_identity_strings_run_inside_the_gate(self):
+        doc = {
+            "@graph": [
+                {
+                    "@id": "estleg:Act_X_Par_1",
+                    "estleg:sectionNumber": {"@value": "1", "@type": "xsd:integer"},
+                }
+            ]
+        }
+        validate_all.validate_numeric_identity_strings(Path("act.json"), doc)
+        assert len(validate_all.errors) == 1
+        assert "plain strings" in validate_all.errors[0]

@@ -50,11 +50,11 @@ jobs:
     name: Docs lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Detect docs-only changes
         id: filter
-        uses: dorny/paths-filter@v3
+        uses: dorny/paths-filter@v4
         with:
           filters: |
             docs:
@@ -63,7 +63,7 @@ jobs:
 
       - name: Set up Node
         if: steps.filter.outputs.docs == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '20'
 
@@ -81,7 +81,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -105,7 +105,7 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -124,7 +124,7 @@ jobs:
     name: estleg-mcp tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -151,7 +151,7 @@ jobs:
     name: Integration DAG dry-run
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -172,7 +172,7 @@ jobs:
     name: Generator smoke
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -194,7 +194,7 @@ jobs:
     name: RT content-staleness canary
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -212,7 +212,7 @@ jobs:
   json-validation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -234,6 +234,10 @@ jobs:
             krr_outputs/annotations/oiguskantsler_seisukohad.jsonld
             krr_outputs/curia/curia_combined.jsonld
             krr_outputs/eurlex/eurlex_combined.jsonld
+            # #702: the overlay is LFS-tracked but was not pulled here, so
+            # this gate validated a smaller corpus than a local run and
+            # never saw the 37 in-file duplicate @ids it carries.
+            krr_outputs/analytical/analytical_overlay.jsonld
           )
           include=$(IFS=,; echo "${paths[*]}")
           git lfs pull --include="$include" --exclude=""
@@ -268,6 +272,21 @@ jobs:
 
       - name: Validate JSON-LD hygiene
         run: python3 scripts/validate_all.py
+
+      # #702: docs/VALIDATION_REPORT.md and docs/DUPLICATE_IDS_REPORT.md used
+      # to be maintained by hand, and both drifted into publishing false
+      # statements (a "PASSED / 0 errors" conformance claim against a red gate,
+      # and a duplicate report generated from a pytest fixture). Both are now
+      # generated; these checks fail the build if the committed numbers no
+      # longer match the corpus. `if: always()` so the Tier 1 error backlog
+      # above does not mask a stale report.
+      - name: Validation report is current
+        if: always()
+        run: python3 scripts/generate_validation_report.py --check
+
+      - name: Duplicate-@id report is current
+        if: always()
+        run: python3 scripts/generate_duplicate_ids_report.py --check
 
       # #591: the default `pytest` job runs without git-LFS, so the
       # `corpus`-marked real-artifact tests (combined-graph closure, version
@@ -308,7 +327,7 @@ jobs:
         # ``estleg:Institution`` shaped nodes (issue #106).
         bucket: [riigikohus, drafts, eurlex, curia, laws, kov, sidecars]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -339,7 +358,7 @@ jobs:
     name: Seadusloome zero-warning gate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -380,7 +399,7 @@ jobs:
 
       - name: Upload SHACL report on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: seadusloome-shacl-report
           path: seadusloome-shacl-report.ttl

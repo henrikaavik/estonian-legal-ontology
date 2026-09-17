@@ -24,6 +24,11 @@ python3 scripts/eval_harness.py          # rewrites fitness_report.json + FITNES
 The report's `generated` stamp is pinned to `estleg_common.BUILD_EVALUATION_DATE`
 (deterministic, no wall-clock churn — issue #295). Regenerate after any change
 that alters the corpus, and commit the diff so the baseline trends over time.
+That stamp is the configured evaluation date, not proof of a recent source
+fetch. `ontology_version` likewise identifies the schema version, not an exact
+Git revision. The report was regenerated from the merged September 7 tree
+(`0cb9ac91bc`) during the documentation review; current release status is in
+[docs/README.md](../docs/README.md#project-status).
 
 This is a **report, not a gate** — it never fails on a low number, and it is
 **not wired into the blocking CI gates** (the user's guidance on #617: keep the
