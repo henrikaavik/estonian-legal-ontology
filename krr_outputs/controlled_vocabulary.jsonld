@@ -1246,13 +1246,18 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Links an enacted act to a draft bill that proposes to amend it.",
+      "rdfs:comment": "Links a ProposedAmendment to the draft bill that proposes it.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "estleg:ProposedAmendment"
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:DraftLegislation"
+        }
+      ]
     },
     {
       "@id": "estleg:amendmentDate",
@@ -1322,7 +1327,12 @@
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:annexNumber",
@@ -1754,7 +1764,7 @@
       ],
       "rdfs:comment": "Type of change a draft proposes: amends, repeals, supplements, or enacts. SHACL-shaped as xsd:string; T-Box node added for issue #341.11.",
       "rdfs:domain": {
-        "@id": "estleg:ProposedAmendment"
+        "@id": "estleg:DraftLegislation"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -1822,8 +1832,16 @@
         "@id": "estleg:Citation"
       },
       "rdfs:range": {
-        "@id": "estleg:LegalProvision"
-      }
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        },
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:citationText",
@@ -2222,8 +2240,13 @@
       ],
       "rdfs:comment": "Links an estleg:LegalProvision to the latest estleg:ProvisionVersion in its text history (the one with no estleg:versionValidTo and no estleg:supersededByVersion). Convenience pointer so consumers do not have to scan the whole estleg:hasVersion set.",
       "rdfs:domain": {
-        "@id": "estleg:LegalProvision"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "rdfs:range": {
         "@id": "estleg:ProvisionVersion"
       }
@@ -2334,11 +2357,16 @@
       ],
       "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the canonical estleg:Concept node for that term — the hub link that replaces the former O(k²) skos:exactMatch clique.",
       "rdfs:domain": {
-        "@id": "estleg:LegalProvision"
+        "@id": "estleg:LegalConcept"
       },
       "rdfs:range": {
-        "@id": "estleg:LegalConcept"
-      }
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Concept"
+        }
+      ]
     },
     {
       "@id": "estleg:definesTerm",
@@ -2383,7 +2411,7 @@
       ],
       "rdfs:comment": "Number of provision-local definitions aggregated by a canonical estleg:Concept node. Range: xsd:integer.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "estleg:Concept"
       },
       "rdfs:range": {
         "@id": "xsd:integer"
@@ -2406,7 +2434,7 @@
       ],
       "rdfs:comment": "Total number of distinct definition wordings observed for a canonical estleg:Concept node when only a capped subset is emitted as skos:definition. Range: xsd:integer.",
       "rdfs:domain": {
-        "@id": "estleg:LegalConcept"
+        "@id": "estleg:Concept"
       },
       "rdfs:range": {
         "@id": "xsd:integer"
@@ -2690,7 +2718,12 @@
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:enactedBy",
@@ -2707,8 +2740,16 @@
       ],
       "rdfs:comment": "The Issuer that enacted this MunicipalRegulation or KovProvision.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Act"
+        },
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "rdfs:range": {
         "@id": "estleg:Issuer"
       }
@@ -2728,8 +2769,16 @@
       ],
       "rdfs:comment": "The current Municipality whose Issuer enacted this MunicipalRegulation or KovProvision.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Act"
+        },
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "rdfs:range": {
         "@id": "estleg:Municipality"
       }
@@ -3179,6 +3228,11 @@
       "rdfs:domain": {
         "@id": "estleg:Act"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:HarmonisationLink"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:harmonises"
       }
@@ -3202,6 +3256,11 @@
       "rdfs:domain": {
         "@id": "estleg:HarmonisationLink"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:harmonisedWith"
       }
@@ -3295,7 +3354,7 @@
       ],
       "rdfs:comment": "Links a canonical estleg:Concept node to every provision-local definition node (estleg:LegalConcept) that defines that term. Inverse of estleg:definesConcept. Introduced (#134, Finding F3) as a property distinct from estleg:definedIn so the latter's owl:inverseOf estleg:definesTerm axiom does not falsely conclude that a LegalConcept estleg:definesTerm a Concept.",
       "rdfs:domain": {
-        "@id": "estleg:LegalConcept"
+        "@id": "estleg:Concept"
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
@@ -3442,8 +3501,13 @@
         "@id": "estleg:Act"
       },
       "rdfs:range": {
-        "@id": "estleg:ProposedAmendment"
+        "@id": "rdfs:Resource"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:ProposedAmendment"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:proposesToAmend"
       }
@@ -3573,6 +3637,16 @@
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:ProvisionVersion"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:versionOf"
       }
@@ -3613,11 +3687,24 @@
       ],
       "rdfs:comment": "Act → acts enacted under this act. Filtered projection of preamble enabling-link inverses (issuedUnder + Citation.citationTarget). Range: Act. Layer 2b populates.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Act"
+        },
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "rdfs:range": {
         "@id": "rdfs:Resource"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:implementedByCount",
@@ -3634,8 +3721,16 @@
       ],
       "rdfs:comment": "Aggregate count of implementedBy entries on an act or provision. Layer 2b populates.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Act"
+        },
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:integer"
       }
@@ -3935,7 +4030,12 @@
       "rdfs:comment": "Links an estleg:EUCourtDecision to an estleg:EULegislation node named in the decision label (CELEX/directive/regulation citation). Domain may be estleg:EUCourtDecision. Deliberately NO rdfs:range — objects are often bare estleg:EU_* stubs inside the curia SHACL bucket; a range would phantom-type them as EULegislation under inference=rdfs.",
       "rdfs:domain": {
         "@id": "estleg:EUCourtDecision"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:EULegislation"
+        }
+      ]
     },
     {
       "@id": "estleg:interpretsLaw",
@@ -3957,18 +4057,16 @@
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
-        "@type": "owl:Class",
-        "owl:unionOf": {
-          "@list": [
-            {
-              "@id": "estleg:LegalProvision"
-            },
-            {
-              "@id": "estleg:Act"
-            }
-          ]
-        }
+        "@id": "rdfs:Resource"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        },
+        {
+          "@id": "estleg:Act"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:interpretedBy"
       }
@@ -3993,8 +4091,13 @@
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
-        "@id": "estleg:ProvisionVersion"
-      }
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:ProvisionVersion"
+        }
+      ]
     },
     {
       "@id": "estleg:isCurrentAmendment",
@@ -4209,7 +4312,12 @@
       },
       "rdfs:range": {
         "@id": "rdfs:Resource"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:issuer",
@@ -4736,8 +4844,16 @@
       ],
       "rdfs:comment": "EHAK status of a KOV issuer or municipal regulation: current vs abolished (2017 haldusreform). Issue #526.",
       "rdfs:domain": {
-        "@id": "estleg:Municipality"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:MunicipalRegulation"
+        },
+        {
+          "@id": "estleg:Issuer"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:string"
       }
@@ -4759,7 +4875,7 @@
       ],
       "rdfs:comment": "The Estonian local-government unit type of an estleg:HistoricalMunicipality. SHACL constrains it to one of: \"vald\" (rural municipality) or \"linn\" (town/city). Derived from the unit-type word in the pre-merger name; omitted if not derivable.",
       "rdfs:domain": {
-        "@id": "estleg:Municipality"
+        "@id": "estleg:HistoricalMunicipality"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -4920,8 +5036,13 @@
         }
       },
       "rdfs:range": {
-        "@id": "estleg:Act"
-      }
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:personalDataMaskedCount",
@@ -5041,8 +5162,13 @@
         "@id": "estleg:ProposedAmendment"
       },
       "rdfs:range": {
-        "@id": "estleg:Act"
+        "@id": "rdfs:Resource"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:hasProposedAmendment"
       }
@@ -5087,7 +5213,7 @@
       ],
       "rdfs:comment": "Number of provisions represented by a generated topic cluster.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "estleg:TopicCluster"
       },
       "rdfs:range": {
         "@id": "xsd:integer"
@@ -5616,8 +5742,13 @@
       ],
       "rdfs:comment": "Heuristic similarity link between two acts or provisions.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "rdfs:range": {
         "@id": "rdfs:Resource"
       }
@@ -5640,7 +5771,12 @@
       "rdfs:comment": "The EU directive that multiple member states have transposed. Folded into the controlled vocabulary for issue #563. NB: deliberately carries NO rdfs:range estleg:EULegislation — in the eurlex/harmonisation SHACL bucket the directive objects are bare cross-reference IRIs whose full, labelled node lives in the eurlex corpus; under rdfs inference an rdfs:range would RDFS-type those stubs as estleg:EULegislation and trip the EULegislationShape requirements.",
       "rdfs:domain": {
         "@id": "estleg:HarmonisationLink"
-      }
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:EULegislation"
+        }
+      ]
     },
     {
       "@id": "estleg:similarAct",
@@ -5708,8 +5844,16 @@
         "@id": "estleg:Similarity"
       },
       "rdfs:range": {
-        "@id": "estleg:Act"
-      }
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        },
+        {
+          "@id": "estleg:Act"
+        }
+      ]
     },
     {
       "@id": "estleg:similarityModel",
@@ -6169,8 +6313,13 @@
       ],
       "rdfs:comment": "Count of AmendmentEvent nodes recorded for an act.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "owl:Ontology"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:integer"
       }
@@ -6192,8 +6341,13 @@
       ],
       "rdfs:comment": "Count of LegalConcept nodes extracted from an act.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "owl:Ontology"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:integer"
       }
@@ -6217,6 +6371,11 @@
       "rdfs:domain": {
         "@id": "estleg:EULegislation"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Act"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:transposesDirective"
       }
@@ -6240,6 +6399,11 @@
       "rdfs:domain": {
         "@id": "estleg:Act"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:EULegislation"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:transposedBy"
       }
@@ -6261,7 +6425,7 @@
       ],
       "rdfs:comment": "Deadline by which EU member states must transpose an EU directive into national law (from cdm:directive_date_transposition). Present only on directive nodes that declare one.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "estleg:EULegislation"
       },
       "rdfs:range": {
         "@id": "xsd:date"
@@ -6310,8 +6474,13 @@
         "@id": "estleg:ProvisionVersion"
       },
       "rdfs:range": {
-        "@id": "estleg:LegalProvision"
+        "@id": "rdfs:Resource"
       },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
       "owl:inverseOf": {
         "@id": "estleg:hasVersion"
       }

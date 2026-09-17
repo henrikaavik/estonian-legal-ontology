@@ -43,6 +43,56 @@ predicate. #702 applies `owl:Thing` to `celexNumber`, `eurLexLink`,
 the CURIA bucket now passes. Other buckets retain failures documented in
 [VALIDATION_REPORT.md](../docs/VALIDATION_REPORT.md).
 
+### Checking an axiom before pyshacl does
+
+`scripts/check_phantom_typing.py` reads the JSON-LD directly and reports every
+`rdfs:domain` / `rdfs:range` axiom that types a node into a shaped class which
+no file in the same bucket declares it to be. It covers all seven buckets in
+about half a minute and names the axiom; the pyshacl run needs up to half an
+hour per bucket and reports only the downstream `sh:minCount` symptoms. CI
+runs it ahead of each bucket's SHACL step, and
+`tests/test_issue_709_phantom_typing.py` runs it under `pytest -m corpus`.
+
+```bash
+python3 scripts/check_phantom_typing.py --all
+python3 scripts/check_phantom_typing.py --bucket riigikohus
+```
+
+It is not a substitute for SHACL: it is silent about a node that carries a
+type honestly and still breaks that type's shape.
+
+One entailment is tolerated rather than reported. A multipart act is split into
+one file per osa, each rooted in an `estleg:Part` node that points at the act
+with `estleg:isPartOf` and repeats the act's metadata, so the `estleg:Act`-domain
+properties type 34 part roots as acts. All 34 pass the Act shapes. The repair is
+the `Part` / `LegalPart` modelling still open under #709, not an axiom, and any
+other `Part` that picks up an Act-domain property is still reported.
+
+### Repairing an axiom (#709)
+
+The vocabulary is its own build input, so a corrected row in
+`consolidate_tbox.DOMAIN_RANGE` never reaches it: that table only backfills an
+axiom that is absent, and the stale one is already there. Put the correction in
+`OVERWRITE_DOMAIN` / `OVERWRITE_RANGE`, keep the `DOMAIN_RANGE` row in
+agreement (a test enforces it), and re-run `scripts/consolidate_tbox.py`.
+
+Choose the replacement from what the corpus and the owning shape show:
+
+- **One subject class** — name it. `estleg:changeType` sits in
+  `DraftLegislationShape` and is written only by drafts; its guessed
+  `ProposedAmendment` domain was the whole `drafts` bucket failure.
+- **Several subject classes** — `owl:Thing`, as for `estleg:enactedBy`, which
+  municipal acts and their provisions both carry.
+- **Objects declared on another load surface** — `rdfs:Resource`.
+  `estleg:interpretsVersion` points from `riigikohus/` into
+  `provision_versions/`; every target is a complete `ProvisionVersion` there
+  and a bare reference here.
+
+An open axiom still says what it stands in for. `DOMAIN_INCLUDES` and
+`RANGE_INCLUDES` emit `schema:domainIncludes` / `schema:rangeIncludes`, which
+carry no RDFS or OWL 2 RL semantics and therefore type nothing. List only the
+classes measured on the shipped corpus.
+
 ## One constraint per shape when the message matters
 
 `sh:message` attaches to a *shape*, not to a constraint, so every

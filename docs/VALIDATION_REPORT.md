@@ -192,35 +192,70 @@ counts against the tree, so a stale catalogue fails the gate.
 ## SHACL Bucket Checks
 
 Per-bucket source validation is `scripts/shacl_validate_all.py --bucket <name>`
-(RDFS inference). File counts below come from the discovery code on the merged
-`0cb9ac91bc` tree. Results are the completed checks on the final #736 head
-`1983c1ca18` in [CI run 34128053943](https://github.com/henrikaavik/estonian-legal-ontology/actions/runs/34128053943).
+(RDFS inference). File counts come from the discovery code on the `884c853967`
+tree. "Before" is [CI run 34837816050](https://github.com/henrikaavik/estonian-legal-ontology/actions/runs/34837816050)
+on `0cb9ac91bc`; "after" is a local pyshacl 0.31.0 run on 2026-09-17 with
+the vocabulary repaired under #709. CI re-measures every bucket on each push.
 
-| Bucket | Files | Result | Status |
-|---|---:|---|---|
-| `laws` | 4,970 | **FAIL** | Remaining corpus and inference findings require follow-up. |
-| `kov` | 11,063 | **FAIL** | Remaining corpus and inference findings require follow-up. |
-| `sidecars` | 10,653 | **FAIL** | Range-axiom typing, missing amendment targets, labels, and other fields remain. |
-| `riigikohus` | 35 | **FAIL** | ProvisionVersion range-axiom typing remains. |
-| `drafts` | 4 | **FAIL** | Remaining corpus and inference findings require follow-up. |
-| `eurlex` | 162 | **PASS** | Source-bucket conformance does not establish aggregate parity. |
-| `curia` | 6 | **PASS** | #702 removed shared-predicate domain axioms that falsely typed EU court nodes. |
-| `--all` | 26,887 | No completed local result | The 2026-09-07 attempt stopped during graph loading at 6 GiB process RSS on a 16 GiB host. |
+| Bucket | Files | Before #709 | After #709 | Status |
+|---|---:|---:|---:|---|
+| `riigikohus` | 35 | 30,426 | **0 — PASS** | All of it was `interpretsVersion` typing `provision_versions/` nodes as bare `ProvisionVersion`. |
+| `drafts` | 4 | 9,482 | **0 — PASS** | All of it was `changeType` typing every draft as a `ProposedAmendment`. |
+| `kov` | 11,063 | 36,511 | **6** | Real: six `Reg_*_Map` acts carry `contentStatus "repealedBeforeSnapshot"`, which `ActTemporalShape`'s value list omits. |
+| `sidecars` | 10,653 | 309,422 | **5,046** | Real: see the list below. |
+| `laws` | 4,970 | 338,909 | **337,335** | `Subsection` × `LegalProvisionShape`; see below. |
+| `eurlex` | 162 | PASS | **PASS** | Source-bucket conformance does not establish aggregate parity. |
+| `curia` | 6 | PASS | **PASS** | #702 removed the shared-predicate domains that typed EU court nodes. |
+| `--all` | 26,887 | — | No completed local result | The 2026-09-07 attempt stopped during graph loading at 6 GiB process RSS on a 16 GiB host. |
 
-Historical diagnostic counts from the original Tier 0 run are **not** current
-measurements: sidecars had 309,422 violations (314,522 before the
-`applicableProvision` domain repair), including 99,981 referenced provision
-IRIs failing three required fields, 4,841 missing amendment targets, 4,433
-missing labels, 179 `versionValidFrom`, 24 `institutionType`, and two annotation
-fields. Riigikohus had roughly 30,000 ProvisionVersion-field violations.
-Vocabulary cleanup remains tracked by #709; #702 itself is closed.
+### What #709 removed
 
-The "phantom typing" pattern is documented in `shacl/README.md`: a class
-`rdfs:domain` / `rdfs:range` on a predicate shared across classes types every
-subject / object into that class under `inference="rdfs"`, after which the
-class's shape demands fields the node was never meant to carry. Narrowing the
-remaining axioms is **#709**. The merged **#702** fixed the CURIA domains and
-two JSON validator rules; it did not resolve every bucket finding.
+The "phantom typing" pattern is documented in `shacl/README.md`: an
+`rdfs:domain` / `rdfs:range` that names a shaped class types every subject /
+object of the property into that class under `inference="rdfs"`, after which
+the class's shape demands fields the node was never meant to carry.
+`scripts/check_phantom_typing.py` finds it from the JSON-LD in about half a
+minute for all seven buckets, and against the pre-#709 vocabulary it reproduces
+the pyshacl focus-node counts below exactly. It now reports none.
+
+| Bucket | Axiom | Nodes typed | As |
+|---|---|---:|---|
+| `riigikohus` | range of `interpretsVersion` | 10,142 | `ProvisionVersion` |
+| `drafts` | domain of `changeType` | 9,482 | `ProposedAmendment` |
+| `kov` | domain of `municipalityStatus` / `municipalityType` | 11,566 | `Municipality` |
+| `kov` | range of `citationTarget` / `similarTarget` | 582 / 61 | `LegalProvision` / `Act` |
+| `kov` | domain of `enactedBy` / `enactedByMunicipality` | 116,708 | `Act` (no violation: `ActShape` happened to pass) |
+| `sidecars` | range of `versionOf`, domain of `definesConcept` | 90,104 + 9,877 | `LegalProvision` |
+| `sidecars` | range of `partOfAct` / `proposesToAmend` | 4,433 | `Act` |
+| `laws` | range of `hasProposedAmendment` | 763 | `ProposedAmendment` |
+| `laws` | domain of `semanticallySimilarTo` | 35,579 | `Act` (no violation) |
+
+Every node the `riigikohus` axiom typed is a complete, correctly typed
+`ProvisionVersion` in `provision_versions/`; none was dangling.
+
+### What remains, and is real
+
+- **`sidecars`, 5,046.** 4,841 version-layer `AmendmentEvent` nodes
+  (`Amendment_*_vf_*`) carry `entryIntoForce` and `resultedInVersion` but no
+  `estleg:amends`, which `AmendmentEventShape` requires. 179 `ProvisionVersion`
+  nodes fail `versionValidFrom` < `versionValidTo`. 24 `Institution` nodes carry
+  `institutionType "minister"`, absent from the shape's value list. Two fields
+  are missing on one Õiguskantsler annotation.
+- **`kov`, 6.** `contentStatus "repealedBeforeSnapshot"`, as in the table.
+- **`laws`.** 111,911 `estleg:Subsection` (lõige) nodes each fail
+  `LegalProvisionShape`'s `paragrahv`, `summary` and `partOfAct` minimums. This
+  is not an axiom defect. #519 declared `Subsection rdfs:subClassOf
+  LegalProvision` while that shape was targeted only by `sh:targetSubjectsOf
+  estleg:paragrahv`; #450 later added `sh:targetClass estleg:LegalProvision`,
+  which reaches every lõige. A lõige carries `legalText` and `parentProvision`
+  by design (#132, `SubsectionShape`). The same nodes are about 89% of the
+  Seadusloome gate's findings, because pyshacl resolves class targets through
+  `rdfs:subClassOf` in the data graph even without inference. Also in `laws`:
+  533 § nodes in the two hand-modelled OWL modules
+  (`karistusseadustik_eriosa_owl.jsonld` 430, `tsus_osa7_138_169_owl.jsonld`
+  103), typed `estleg:Section` / `estleg:LegalProvision` and lacking the three
+  fields, and three duplicate-value findings on `REOS_Map` and `ROS_Map`.
+  111,911 + 533 nodes × 3 fields + 3 = 337,335.
 
 ### Review checks on regenerated data
 
@@ -412,15 +447,17 @@ re-emitting these dead references.
   semantic-collision and registry-drift checks still need the aggregate and
   `estleg:Part` exemptions, so `json-validation` stays red on the remaining ~122
   and is not yet a required check.
-- **T-Box axioms (#709):** `rdfs:range` / `rdfs:domain` on shared predicates
-  phantom-type referenced nodes under RDFS inference. #702 narrowed the four
-  axioms behind the `curia` bucket — `celexNumber`, `eurLexLink` and
-  `documentDate` (domain `EULegislation`) and `ecliIdentifier` (domain
-  `CourtDecision`) — which took that bucket from 66,740 violations to **0**.
-  The combined artifact was rebuilt with the same four widened domains. The
-  corpus regression checks the vocabulary and aggregate under RDFS inference;
-  neither projection infers those sibling classes on an EU court decision.
-  The same pattern on `rdfs:range` still keeps `sidecars` and `riigikohus` red.
+- **T-Box axioms (#709, part 1 — repaired):** `rdfs:range` / `rdfs:domain` on
+  shared predicates phantom-typed referenced nodes under RDFS inference. #702
+  narrowed the four axioms behind the `curia` bucket (66,740 → **0**). #709
+  repaired the rest: `riigikohus` and `drafts` now pass, `kov` and `sidecars`
+  are down to their real findings, and `scripts/check_phantom_typing.py` keeps
+  the pattern from returning. The combined artifact was rebuilt; it differs
+  from the previous one in exactly the 36 property declarations concerned.
+  Still open under #709: the `Subsection` × `LegalProvisionShape` question that
+  owns `laws` and most of the Seadusloome gate (above), and the ticket's
+  standards work (SKOS-typed value families, `targetGroup` as an object
+  property, a punkt class, language tags).
 - **Aggregates (#705):** `eurlex` / `curia` / `eelnoud` combined files and
   `combined_ontology.{nt,nq,ttl}` are stale relative to their sources; the
   Seadusloome gate fails at graph closure on `eurlex_combined.jsonld`.

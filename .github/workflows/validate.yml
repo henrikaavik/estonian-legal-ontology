@@ -354,7 +354,17 @@ jobs:
             exit 1
           fi
 
+      # #709: seconds, not the half hour pyshacl needs, and it names the
+      # rdfs:domain / rdfs:range axiom instead of 300k symptom rows. The
+      # SHACL step still runs so a red bucket keeps its full report.
+      - name: No axiom types a node into a shaped class
+        if: ${{ !cancelled() }}
+        env:
+          BUCKET: ${{ matrix.bucket }}
+        run: python3 scripts/check_phantom_typing.py --bucket "$BUCKET"
+
       - name: Run targeted SHACL validation
+        if: ${{ !cancelled() }}
         env:
           BUCKET: ${{ matrix.bucket }}
         run: python3 scripts/shacl_validate_all.py --bucket "$BUCKET"

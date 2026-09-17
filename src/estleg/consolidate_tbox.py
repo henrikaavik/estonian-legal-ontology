@@ -113,7 +113,9 @@ PREFERRED_KEYS = (
     "rdfs:comment",
     "dc:description",
     "rdfs:domain",
+    "schema:domainIncludes",
     "rdfs:range",
+    "schema:rangeIncludes",
     "owl:inverseOf",
     "owl:FunctionalProperty",
 )
@@ -345,7 +347,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:actNumber": ("estleg:Act", "xsd:string"),
     "estleg:affectedBy": ("estleg:Act", "rdfs:Resource"),
     "estleg:amendedBy": ("estleg:Act", "rdfs:Resource"),
-    "estleg:amendingDraft": ("estleg:Act", "rdfs:Resource"),
+    "estleg:amendingDraft": ("estleg:ProposedAmendment", "rdfs:Resource"),
     "estleg:amendmentDate": ("estleg:AmendmentEvent", "xsd:date"),
     "estleg:amends": ("estleg:AmendmentEvent", "rdfs:Resource"),
     "estleg:annexNumber": ("estleg:Annex", "xsd:string"),
@@ -375,11 +377,11 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:contentStatus": ("estleg:Act", "xsd:string"),
     "estleg:contentStatusReason": ("estleg:Act", "xsd:string"),
     "estleg:isRatificationShell": ("estleg:Act", "xsd:boolean"),
-    "estleg:changeType": ("estleg:ProposedAmendment", "xsd:string"),
+    "estleg:changeType": ("estleg:DraftLegislation", "xsd:string"),
     "estleg:definedIn": ("estleg:LegalConcept", "rdfs:Resource"),
-    "estleg:definesConcept": ("estleg:LegalProvision", "estleg:LegalConcept"),
-    "estleg:definitionCount": ("estleg:Act", "xsd:integer"),
-    "estleg:definitionVariantCount": ("estleg:LegalConcept", "xsd:integer"),
+    "estleg:definesConcept": ("estleg:LegalConcept", "rdfs:Resource"),
+    "estleg:definitionCount": ("estleg:Concept", "xsd:integer"),
+    "estleg:definitionVariantCount": ("estleg:Concept", "xsd:integer"),
     "estleg:documentType": ("owl:Thing", "xsd:string"),
     "estleg:estoniaRelevant": ("estleg:EULegislation", "xsd:boolean"),
     "estleg:entryIntoForce": ("owl:Thing", "xsd:date"),
@@ -388,8 +390,8 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:globalId": ("owl:Thing", "xsd:string"),
     "estleg:grantedBy": ("owl:Thing", "rdfs:Resource"),
     "estleg:hasAnnex": ("estleg:Act", "estleg:Annex"),
-    "estleg:hasDefinitionNode": ("estleg:LegalConcept", "rdfs:Resource"),
-    "estleg:hasProposedAmendment": ("estleg:Act", "estleg:ProposedAmendment"),
+    "estleg:hasDefinitionNode": ("estleg:Concept", "rdfs:Resource"),
+    "estleg:hasProposedAmendment": ("estleg:Act", "rdfs:Resource"),
     "estleg:hasPart": ("owl:Thing", "rdfs:Resource"),
     "estleg:hasSanction": ("owl:Thing", "rdfs:Resource"),
     "estleg:inChapter": ("owl:Thing", "estleg:Chapter"),
@@ -399,7 +401,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:institutionType": ("estleg:Institution", "xsd:string"),
     "estleg:interpretedBy": ("owl:Thing", "rdfs:Resource"),
     "estleg:interpretsLaw": ("estleg:CourtDecision", "rdfs:Resource"),
-    "estleg:interpretsVersion": ("estleg:CourtDecision", "estleg:ProvisionVersion"),
+    "estleg:interpretsVersion": ("estleg:CourtDecision", "rdfs:Resource"),
     "estleg:isCurrentAmendment": ("estleg:AmendmentEvent", "xsd:boolean"),
     "estleg:isKov": ("owl:Thing", "xsd:boolean"),
     "estleg:isPartOf": ("owl:Thing", "rdfs:Resource"),
@@ -425,8 +427,8 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:paragrahv": ("estleg:LegalProvision", "xsd:string"),
     "estleg:phaseOrder": ("estleg:LegislativePhase", "xsd:integer"),
     "estleg:preambleText": ("estleg:Act", "xsd:string"),
-    "estleg:proposesToAmend": ("estleg:ProposedAmendment", "estleg:Act"),
-    "estleg:provisionCount": ("estleg:Act", "xsd:integer"),
+    "estleg:proposesToAmend": ("estleg:ProposedAmendment", "rdfs:Resource"),
+    "estleg:provisionCount": ("estleg:TopicCluster", "xsd:integer"),
     "estleg:referencedBy": ("owl:Thing", "rdfs:Resource"),
     "estleg:references": ("owl:Thing", "rdfs:Resource"),
     "estleg:relatesToConcept": ("owl:Thing", "xsd:string"),
@@ -436,7 +438,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:sanctionType": ("estleg:Sanction", "xsd:string"),
     "estleg:schemaVersion": ("owl:Thing", "xsd:string"),
     "estleg:sectionNumber": ("owl:Thing", "xsd:string"),
-    "estleg:semanticallySimilarTo": ("estleg:Act", "rdfs:Resource"),
+    "estleg:semanticallySimilarTo": ("owl:Thing", "rdfs:Resource"),
     "estleg:sourceAct": ("owl:Thing", "xsd:string"),
     "estleg:sourceGlobaalID": ("owl:Thing", "xsd:string"),
     "estleg:sourceStructure": ("owl:Thing", "xsd:string"),
@@ -446,9 +448,9 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:consistencyChecked": ("owl:Thing", "xsd:boolean"),
     "estleg:targetGroup": ("owl:Thing", "xsd:string"),
     "estleg:terviktekstId": ("owl:Thing", "xsd:string"),
-    "estleg:totalAmendments": ("estleg:Act", "xsd:integer"),
-    "estleg:totalConcepts": ("estleg:Act", "xsd:integer"),
-    "estleg:transpositionDeadline": ("estleg:Act", "xsd:date"),
+    "estleg:totalAmendments": ("owl:Thing", "xsd:integer"),
+    "estleg:totalConcepts": ("owl:Thing", "xsd:integer"),
+    "estleg:transpositionDeadline": ("estleg:EULegislation", "xsd:date"),
     "estleg:referenceStatus": ("owl:Thing", "xsd:string"),
     "estleg:similarityScore": ("estleg:Similarity", "xsd:decimal"),
     "estleg:similarityStatus": ("estleg:Similarity", "xsd:string"),
@@ -456,7 +458,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:similarTarget": ("estleg:Similarity", "rdfs:Resource"),
     "estleg:similarityModel": ("estleg:Similarity", "xsd:string"),
     "estleg:regulationTypeBucket": ("estleg:MunicipalRegulation", "xsd:string"),
-    "estleg:versionOf": ("estleg:ProvisionVersion", "estleg:LegalProvision"),
+    "estleg:versionOf": ("estleg:ProvisionVersion", "rdfs:Resource"),
     "estleg:versionValidFrom": ("estleg:ProvisionVersion", "xsd:date"),
     "estleg:versionValidTo": ("estleg:ProvisionVersion", "xsd:date"),
     "estleg:versionText": ("estleg:ProvisionVersion", "xsd:string"),
@@ -465,8 +467,8 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
         "estleg:ProvisionVersion",
         "estleg:ProvisionVersion",
     ),
-    "estleg:hasVersion": ("estleg:LegalProvision", ""),
-    "estleg:currentVersion": ("estleg:LegalProvision", "estleg:ProvisionVersion"),
+    "estleg:hasVersion": ("owl:Thing", ""),
+    "estleg:currentVersion": ("owl:Thing", "estleg:ProvisionVersion"),
     "estleg:subsectionNumber": ("estleg:Subsection", "xsd:string"),
     "estleg:hasSubsection": ("estleg:LegalProvision", "estleg:Subsection"),
     "estleg:parentProvision": ("estleg:Subsection", "estleg:LegalProvision"),
@@ -484,16 +486,16 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     ),
     "estleg:mergedAt": ("estleg:HistoricalMunicipality", "xsd:date"),
     "estleg:mergerEvidence": ("estleg:HistoricalMunicipality", "xsd:string"),
-    "estleg:municipalityType": ("estleg:Municipality", "xsd:string"),
+    "estleg:municipalityType": ("estleg:HistoricalMunicipality", "xsd:string"),
     "estleg:publicationYear": ("owl:Thing", "xsd:gYear"),
     "estleg:enactedAs": ("estleg:DraftLegislation", "rdfs:Resource"),
-    "estleg:municipalityStatus": ("estleg:Municipality", "xsd:string"),
+    "estleg:municipalityStatus": ("owl:Thing", "xsd:string"),
     "estleg:repeals": ("owl:Thing", "rdfs:Resource"),
     "estleg:isLegalBasisFor": ("owl:Thing", "rdfs:Resource"),
     "estleg:exceptionTo": ("owl:Thing", "rdfs:Resource"),
     "estleg:derogatesFrom": ("owl:Thing", "rdfs:Resource"),
-    "estleg:enactedBy": ("estleg:Act", "estleg:Issuer"),
-    "estleg:enactedByMunicipality": ("estleg:Act", "estleg:Municipality"),
+    "estleg:enactedBy": ("owl:Thing", "estleg:Issuer"),
+    "estleg:enactedByMunicipality": ("owl:Thing", "estleg:Municipality"),
     "estleg:titleNormalized": ("estleg:Act", "xsd:string"),
     "estleg:ehakCode": ("estleg:Municipality", "xsd:string"),
     "estleg:county": ("estleg:Municipality", "xsd:string"),
@@ -507,8 +509,8 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:citationText": ("estleg:Citation", "xsd:string"),
     "estleg:issuedUnder": ("estleg:Act", "rdfs:Resource"),
     "estleg:implementsCitation": ("estleg:Act", "estleg:Citation"),
-    "estleg:implementedBy": ("estleg:Act", "rdfs:Resource"),
-    "estleg:implementedByCount": ("estleg:Act", "xsd:integer"),
+    "estleg:implementedBy": ("owl:Thing", "rdfs:Resource"),
+    "estleg:implementedByCount": ("owl:Thing", "xsd:integer"),
     "estleg:enforcedAtLevel": ("owl:Thing", "xsd:string"),
     "estleg:added": ("estleg:ReleaseDelta", "xsd:string"),
     "estleg:removed": ("estleg:ReleaseDelta", "xsd:string"),
@@ -582,6 +584,42 @@ OVERWRITE_DOMAIN: dict[str, str] = {
     # phantom-types EU court decisions as Estonian ones, which then fail
     # caseType / caseNumber -- they carry euCaseNumber instead (#702).
     "estleg:ecliIdentifier": "owl:Thing",
+    # #709: domains the #433 backfill guessed. The shipped data contradicts each
+    # one -- and so does the SHACL shape that owns the property, wherever a
+    # shape does -- so under RDFS inference every real subject was typed as a
+    # sibling shaped class and failed that shape. One true subject class ->
+    # name it.
+    # 9,482 drafts typed ProposedAmendment: the whole `drafts` bucket failure.
+    "estleg:changeType": "estleg:DraftLegislation",
+    "estleg:transpositionDeadline": "estleg:EULegislation",
+    "estleg:provisionCount": "estleg:TopicCluster",
+    "estleg:amendingDraft": "estleg:ProposedAmendment",
+    # The definition layer runs LegalConcept -definesConcept-> Concept and
+    # back via hasDefinitionNode; 9,877 definition nodes were typed
+    # LegalProvision and 2,955 umbrella concepts typed Act.
+    "estleg:definesConcept": "estleg:LegalConcept",
+    "estleg:hasDefinitionNode": "estleg:Concept",
+    "estleg:definitionCount": "estleg:Concept",
+    "estleg:definitionVariantCount": "estleg:Concept",
+    # Several subject classes -> owl:Thing, with the classes in DOMAIN_INCLUDES.
+    # KOV provisions repeat their act's issuer: 116,708 provisions typed Act.
+    "estleg:enactedBy": "owl:Thing",
+    "estleg:enactedByMunicipality": "owl:Thing",
+    "estleg:implementedBy": "owl:Thing",
+    "estleg:implementedByCount": "owl:Thing",
+    "estleg:semanticallySimilarTo": "owl:Thing",
+    # Neither is ever written by a Municipality: municipalityStatus sits on
+    # municipal acts and issuers, municipalityType on historical
+    # municipalities. 11,566 nodes were typed Municipality and then failed
+    # ehakCode / county -- nearly all of the `kov` bucket failure.
+    "estleg:municipalityStatus": "owl:Thing",
+    "estleg:municipalityType": "estleg:HistoricalMunicipality",
+    # True of LegalProvision, but provision_versions/ sidecars carry it on a
+    # bare provision stub, as they do hasVersion above.
+    "estleg:currentVersion": "owl:Thing",
+    # Carried by dataset / amendment-chain header nodes, not acts.
+    "estleg:totalAmendments": "owl:Thing",
+    "estleg:totalConcepts": "owl:Thing",
 }
 OVERWRITE_RANGE: dict[str, str] = {
     "estleg:amendsLaw": "rdfs:Resource",
@@ -595,6 +633,79 @@ OVERWRITE_RANGE: dict[str, str] = {
     "estleg:grantedBy": "rdfs:Resource",
     "estleg:implementedBy": "rdfs:Resource",
     "estleg:issuedUnder": "rdfs:Resource",
+    # #709: edges whose objects are declared on another load surface. A shaped
+    # range types the bare reference in the bucket that holds only the edge,
+    # and the stub then fails a shape its real declaration satisfies.
+    # riigikohus -> provision_versions/: all 30,426 `riigikohus` violations.
+    # The term's own comment has promised "no rdfs:range ProvisionVersion"
+    # since #618; the #433 backfill put it back.
+    "estleg:interpretsVersion": "rdfs:Resource",
+    # provision_versions/ -> law peeps: 90,104 stubs typed LegalProvision.
+    "estleg:versionOf": "rdfs:Resource",
+    "estleg:partOfAct": "rdfs:Resource",
+    "estleg:proposesToAmend": "rdfs:Resource",
+    "estleg:hasProposedAmendment": "rdfs:Resource",
+    # DOMAIN_RANGE has always said rdfs:Resource for these two; the narrower
+    # range on the merged CV copy won because a backfill never overwrites.
+    "estleg:citationTarget": "rdfs:Resource",
+    "estleg:similarTarget": "rdfs:Resource",
+    "estleg:definesConcept": "rdfs:Resource",
+    # Already open, by backfill; pinned so RANGE_INCLUDES may describe them.
+    "estleg:enactedAs": "rdfs:Resource",
+    "estleg:interpretsLaw": "rdfs:Resource",
+}
+
+# Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
+# so like DOMAIN_RANGE it never reaches a term whose comment is already there.
+OVERWRITE_COMMENT: dict[str, str] = {
+    # All 786 subjects are ProposedAmendment nodes pointing at a DraftLegislation.
+    "estleg:amendingDraft": (
+        "Links a ProposedAmendment to the draft bill that proposes it."
+    ),
+}
+
+# What an owl:Thing domain or an open range stands in for. schema:domainIncludes
+# and schema:rangeIncludes carry no RDFS or OWL 2 RL semantics, so they keep the
+# T-Box readable without typing anything. Each entry is the class set measured
+# across the whole shipped corpus, reading a node's type from wherever it is
+# declared (a provision_versions/ stub is a LegalProvision in its law peep). The
+# estleg:Part roots of a multipart act (#566) repeat the act's metadata; they
+# are counted under the Act they belong to, not listed as a class of their own.
+DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
+    "estleg:currentVersion": ("estleg:LegalProvision",),
+    "estleg:enactedBy": ("estleg:Act", "estleg:LegalProvision"),
+    "estleg:enactedByMunicipality": ("estleg:Act", "estleg:LegalProvision"),
+    "estleg:hasVersion": ("estleg:LegalProvision",),
+    "estleg:implementedBy": ("estleg:Act", "estleg:LegalProvision"),
+    "estleg:implementedByCount": ("estleg:Act", "estleg:LegalProvision"),
+    "estleg:municipalityStatus": ("estleg:MunicipalRegulation", "estleg:Issuer"),
+    "estleg:semanticallySimilarTo": ("estleg:LegalProvision",),
+    # Amendment-chain and concept-map header nodes.
+    "estleg:totalAmendments": ("owl:Ontology",),
+    "estleg:totalConcepts": ("owl:Ontology",),
+}
+RANGE_INCLUDES: dict[str, tuple[str, ...]] = {
+    "estleg:amendingDraft": ("estleg:DraftLegislation",),
+    "estleg:amendsLaw": ("estleg:Act",),
+    "estleg:citationTarget": ("estleg:LegalProvision", "estleg:Act"),
+    "estleg:definesConcept": ("estleg:Concept",),
+    "estleg:enactedAs": ("estleg:Act",),
+    "estleg:harmonisedWith": ("estleg:HarmonisationLink",),
+    "estleg:harmonises": ("estleg:Act",),
+    "estleg:hasProposedAmendment": ("estleg:ProposedAmendment",),
+    "estleg:hasVersion": ("estleg:ProvisionVersion",),
+    "estleg:implementedBy": ("estleg:Act",),
+    "estleg:interpretsEULaw": ("estleg:EULegislation",),
+    "estleg:interpretsLaw": ("estleg:LegalProvision", "estleg:Act"),
+    "estleg:interpretsVersion": ("estleg:ProvisionVersion",),
+    "estleg:issuedUnder": ("estleg:Act",),
+    "estleg:partOfAct": ("estleg:Act",),
+    "estleg:proposesToAmend": ("estleg:Act",),
+    "estleg:sharedDirective": ("estleg:EULegislation",),
+    "estleg:similarTarget": ("estleg:LegalProvision", "estleg:Act"),
+    "estleg:transposedBy": ("estleg:Act",),
+    "estleg:transposesDirective": ("estleg:EULegislation",),
+    "estleg:versionOf": ("estleg:LegalProvision",),
 }
 
 
@@ -733,6 +844,9 @@ def apply_comment(node: dict) -> None:
     nid = node.get("@id")
     if not isinstance(nid, str):
         return
+    if nid in OVERWRITE_COMMENT:
+        node["rdfs:comment"] = OVERWRITE_COMMENT[nid]
+        return
     if nid in REAL_COMMENTS and (
         has_placeholder_comment(node) or not comment_text(node)
     ):
@@ -788,6 +902,20 @@ def apply_domain_range(node: dict) -> None:
             node["rdfs:range"] = iri_ref("xsd:string")
 
 
+def apply_includes(node: dict) -> None:
+    """Rebuild the schema.org hints from the tables so a dropped entry goes away."""
+    nid = node.get("@id")
+    if not isinstance(nid, str) or not is_property_node(node):
+        return
+    for key, table in (
+        ("schema:domainIncludes", DOMAIN_INCLUDES),
+        ("schema:rangeIncludes", RANGE_INCLUDES),
+    ):
+        node.pop(key, None)
+        if nid in table:
+            node[key] = [iri_ref(iri) for iri in table[nid]]
+
+
 def iter_merge_sources(krr_dir: Path = KRR_DIR) -> Iterator[dict]:
     metadata = load_jsonld(METADATA_PATH)
     yield from graph_nodes(metadata)
@@ -830,6 +958,7 @@ def build_consolidated_graph(
     for node in index.values():
         apply_comment(node)
         apply_domain_range(node)
+        apply_includes(node)
         apply_class_alignment(node)
 
     classes: list[dict] = []

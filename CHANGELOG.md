@@ -4,6 +4,53 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### 2026-09 public-sector readiness — T-Box axioms (#676, ticket #709, part 1)
+
+Repairs the `rdfs:domain` / `rdfs:range` axioms that manufactured most of the
+red SHACL buckets. No legal data changes; the vocabulary and the combined
+artifact that embeds it are regenerated.
+
+- **Four buckets lose their false violations; two now pass.** Under the
+  buckets' RDFS inference an axiom naming a shaped class types every subject or
+  object of the property as that class, and the shape then fails on nodes that
+  never claimed it. `riigikohus` 30,426 → **0** and `drafts` 9,482 → **0**, both
+  passing; `kov` 36,511 → **6** and `sidecars` 309,422 → **5,046**, where every
+  remaining result is a real finding that the false ones had buried (listed in
+  `docs/VALIDATION_REPORT.md`).
+- **The wrong axioms came from one table.** The #433 `DOMAIN_RANGE` backfill
+  filled in domains nothing had checked. In every repaired case the corpus,
+  the vocabulary's own `rdfs:comment` and — where one exists — the SHACL shape
+  that owns the property agreed with each other and contradicted the guess:
+  `estleg:changeType` sits in
+  `DraftLegislationShape` and is written only by drafts, yet its domain was
+  `ProposedAmendment`; `estleg:interpretsVersion` has promised "no `rdfs:range
+  ProvisionVersion`" in its comment since #618, and the backfill restored it.
+  All 10,142 nodes it typed are complete `ProvisionVersion` nodes in
+  `provision_versions/` — none was dangling.
+- **An open axiom still says what it stands for.** Where several classes write
+  a property, or its objects are declared on another load surface, the axiom
+  becomes `owl:Thing` / `rdfs:Resource` and the measured classes move to
+  `schema:domainIncludes` / `schema:rangeIncludes`, which carry no RDFS or
+  OWL 2 RL semantics. Where one class writes it, the domain names that class.
+- **`scripts/check_phantom_typing.py`** finds this defect from the JSON-LD in
+  about half a minute for all seven buckets and names the axiom; pyshacl needs
+  up to half an hour per bucket and reports only `sh:minCount` symptoms.
+  Against the previous vocabulary it reproduces the pyshacl focus-node counts
+  exactly. CI runs it ahead of each bucket's SHACL step, and it is a
+  `pytest -m corpus` invariant.
+- **`estleg:partOfAct` keeps its target class, non-entailingly.** Its
+  `rdfs:range estleg:Act` is true of all 15,077 targets in the corpus, but the
+  `provision_versions/` sidecars reference act roots that are declared in the
+  law peeps, and the range typed those 4,418 bare references as acts. Following
+  the existing policy in `shacl/README.md`, the range is open and
+  `schema:rangeIncludes estleg:Act` records the class; the #522 T-Box test now
+  asserts that form. The rebuilt combined artifact differs from the previous
+  one in exactly the 36 property declarations this change touches.
+- Not addressed here: `laws` (338,909 → 337,335) and the Seadusloome gate are
+  dominated by `estleg:Subsection` nodes meeting `LegalProvisionShape`, which
+  is a shape and modelling question rather than an axiom defect. See the
+  validation report.
+
 ### Documentation audit — 2026-09-07
 
 - Align setup, MCP tool documentation, schema references, the release DAG, and

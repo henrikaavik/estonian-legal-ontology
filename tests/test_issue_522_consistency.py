@@ -63,7 +63,11 @@ def test_partofact_is_functional_property() -> None:
     node = _vocab_index()["estleg:partOfAct"]
     assert _has_type(node, "owl:ObjectProperty")
     assert _has_type(node, "owl:FunctionalProperty")
-    assert "estleg:Act" in _as_ids(node.get("rdfs:range"))
+    # #709: the target class is still declared, but non-entailingly. The
+    # provision_versions/ sidecars point at act roots declared in the law
+    # peeps, and an rdfs:range typed those 4,418 bare references as acts.
+    assert _as_ids(node.get("rdfs:range")) == {"rdfs:Resource"}
+    assert "estleg:Act" in _as_ids(node.get("schema:rangeIncludes"))
     domain_ids = _as_ids(node.get("rdfs:domain"))
     assert "estleg:LegalProvision" in domain_ids
 
