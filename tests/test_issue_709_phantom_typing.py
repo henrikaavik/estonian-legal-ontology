@@ -210,6 +210,56 @@ def test_an_axiom_declared_in_a_corpus_file_types_nodes_too(tmp_path, monkeypatc
     assert (finding.prop, finding.nodes) == ("estleg:localProp", ("estleg:Stub_X",))
 
 
+@pytest.mark.parametrize("prefix", ["rdfs:", "http://www.w3.org/2000/01/rdf-schema#"])
+def test_subproperty_axioms_in_corpus_files_are_loaded(tmp_path, monkeypatch, prefix):
+    module = {"@graph": [
+        {"@id": "estleg:localProp", prefix + "subPropertyOf": {"@id": "estleg:superProp"}},
+        {"@id": "estleg:superProp", prefix + "range": {"@id": "estleg:LocalAct"}},
+        {"@id": "estleg:LocalAct", prefix + "subClassOf": {"@id": "estleg:Act"}},
+        {"@id": "estleg:Doc_1", "estleg:localProp": {"@id": "estleg:Stub_X"}},
+    ]}
+    krr = _bucket(tmp_path, monkeypatch, {"module.json": json.dumps(module)}, vocab=[])
+    (finding,) = cpt.scan_bucket("curia", krr=krr)
+    assert (finding.prop, finding.nodes) == ("estleg:localProp", ("estleg:Stub_X",))
+
+
+def test_corpus_subproperty_without_other_axioms_is_loaded(tmp_path, monkeypatch):
+    module = {"@graph": [
+        {"@id": "estleg:localProp", "rdfs:subPropertyOf": {"@id": "estleg:superProp"}},
+        {"@id": "estleg:Doc_1", "estleg:localProp": {"@id": "estleg:Stub_X"}},
+    ]}
+    krr = _bucket(tmp_path, monkeypatch, {"module.json": json.dumps(module)}, vocab=[
+        _prop("estleg:superProp", range_="estleg:Act"),
+    ])
+    assert len(cpt.scan_bucket("curia", krr=krr)) == 1
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+def test_split_part_declarations_do_not_depend_on_document_order(reverse):
+    docs = [
+        {"@id": "estleg:Part1", "estleg:isPartOf": {"@id": "estleg:Act1"}},
+        {"@id": "estleg:Part1", "@type": "estleg:Part", "estleg:temporalStatus": "inForce"},
+    ]
+    if reverse:
+        docs.reverse()
+    assert _scan([_prop("estleg:temporalStatus", domain="estleg:Act")], *docs) == []
+
+
+@pytest.mark.parametrize("contents", [None, "not valid Turtle"])
+def test_unreadable_shapes_are_scan_errors(tmp_path, monkeypatch, contents):
+    krr = _bucket(tmp_path, monkeypatch, {"module.json": '{"@graph": []}'}, vocab=[])
+    shapes = tmp_path / "shapes.ttl"
+    if contents is not None:
+        shapes.write_text(contents)
+    with pytest.raises(cpt.CannotScan, match="shapes.ttl"):
+        cpt.scan_bucket("curia", krr=krr, shapes=shapes)
+
+
+def test_missing_law_index_is_a_scan_error(tmp_path):
+    with pytest.raises(cpt.CannotScan, match="INDEX.json"):
+        cpt.scan_bucket("laws", krr=tmp_path)
+
+
 @pytest.mark.parametrize(
     ("files", "vocab", "needle"),
     [

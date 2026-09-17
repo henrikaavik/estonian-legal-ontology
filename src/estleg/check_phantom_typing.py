@@ -34,7 +34,9 @@ from estleg.shacl_validate_all import BUCKETS, KRR, SHAPES
 
 VOCAB_NAME = "controlled_vocabulary.jsonld"
 SH_TARGET_CLASS = "http://www.w3.org/ns/shacl#targetClass"
-AXIOM_KEYS = ("rdfs:domain", "rdfs:range", "rdfs:subClassOf")
+AXIOM_KEYS = ("rdfs:domain", "rdfs:range", "rdfs:subClassOf", "rdfs:subPropertyOf")
+RDFS_NS = "http://www.w3.org/2000/01/rdf-schema#"
+AXIOM_NAMES = (*AXIOM_KEYS, *(RDFS_NS + key.split(":")[1] for key in AXIOM_KEYS))
 
 # A multipart act is split into one file per osa, each rooted in an estleg:Part
 # node (#566) that points at the act with estleg:isPartOf and repeats the act's
@@ -77,10 +79,18 @@ def _ref(value: object) -> str | None:
     return (canonical_estleg_ref(value) or value) if isinstance(value, str) else None
 
 
+def _axiom_values(node: dict, key: str) -> list:
+    """Read both legal JSON-LD spellings, including when both are present."""
+    return _as_list(node.get(key)) + _as_list(node.get(RDFS_NS + key.split(":")[1]))
+
+
 def shaped_classes(shapes_path: Path = SHAPES) -> frozenset[str]:
     import rdflib
 
-    shapes = rdflib.Graph().parse(str(shapes_path), format="turtle")
+    try:
+        shapes = rdflib.Graph().parse(str(shapes_path), format="turtle")
+    except Exception as exc:
+        raise CannotScan(f"{shapes_path}: cannot read SHACL shapes ({exc})") from exc
     targets = shapes.objects(None, rdflib.URIRef(SH_TARGET_CLASS))
     return frozenset(filter(None, (canonical_estleg_ref(str(t)) for t in targets)))
 
@@ -93,7 +103,7 @@ class TBox:
         nodes = [n for n in vocab_nodes if isinstance(n, dict)]
         for node in nodes:
             child = _ref(node)
-            for parent in map(_ref, _as_list(node.get("rdfs:subClassOf"))):
+            for parent in map(_ref, _axiom_values(node, "rdfs:subClassOf")):
                 if child and parent:
                     self._parents[child].add(parent)
         # RDFS applies every domain / range a property declares, in any file,
@@ -107,10 +117,10 @@ class TBox:
             prop = _ref(node)
             if prop is None:
                 continue
-            supers[prop].update(filter(None, map(_ref, _as_list(node.get("rdfs:subPropertyOf")))))
+            supers[prop].update(filter(None, map(_ref, _axiom_values(node, "rdfs:subPropertyOf"))))
             for key, table in declared.items():
                 # A union domain is a blank class; RDFS entails no named type from it.
-                for cls in filter(None, map(_ref, _as_list(node.get(key)))):
+                for cls in filter(None, map(_ref, _axiom_values(node, key))):
                     if self.closure([cls]) & shaped:
                         table[prop].add(cls)
         self.domain = self._inherited(declared["rdfs:domain"], supers)
@@ -160,7 +170,7 @@ def scan_documents(bucket: str, docs: Iterable[object], tbox: TBox) -> list[Phan
     """Report each axiom that types a node no document in ``docs`` declares as such."""
     asserted: dict[str, set[str]] = defaultdict(set)
     entailed: dict[tuple[str, str, str], set[str]] = defaultdict(set)
-    part_roots: set[str] = set()
+    part_links: set[str] = set()
     for doc in docs:
         for node in iter_nodes(doc):
             nid = _ref(node)
@@ -168,10 +178,10 @@ def scan_documents(bucket: str, docs: Iterable[object], tbox: TBox) -> list[Phan
                 continue
             types = [t for t in _as_list(node.get("@type")) if isinstance(t, str)]
             asserted[nid] |= tbox.closure(canonical_estleg_ref(t) or t for t in types)
-            if PART_OF_PROP in node and PART_CLASS in asserted[nid]:
-                part_roots.add(nid)
             for raw_key, value in node.items():
                 key = canonical_estleg_ref(raw_key) or raw_key
+                if key == PART_OF_PROP:
+                    part_links.add(nid)
                 for cls in tbox.domain.get(key, ()):
                     entailed["domain", key, cls].add(nid)
                 if key in tbox.range:
@@ -179,6 +189,9 @@ def scan_documents(bucket: str, docs: Iterable[object], tbox: TBox) -> list[Phan
                     for cls in tbox.range[key]:
                         entailed["range", key, cls] |= targets
 
+    # A node's type and its parent edge can be declared in different files.
+    # Decide the exception after collecting all assertions, just as RDF does.
+    part_roots = {nid for nid in part_links if PART_CLASS in asserted[nid]}
     findings = []
     for (axis, prop, cls), nodes in sorted(entailed.items()):
         tolerated = part_roots if cls == TOLERATED_ON_PART_ROOTS else set()
@@ -195,7 +208,7 @@ class CannotScan(Exception):
 def _read(path: Path) -> str:
     try:
         return path.read_text(encoding="utf-8")
-    except OSError as exc:
+    except (OSError, UnicodeError) as exc:
         raise CannotScan(f"{path}: {exc}") from exc
 
 
@@ -212,7 +225,10 @@ def scan_bucket(bucket: str, *, krr: Path = KRR, shapes: Path = SHAPES) -> list[
         raise CannotScan(f"{shapes}: no sh:targetClass found, so no class would count as shaped")
     # Same guard as shacl_validate_all (#338 / #590): the vocabulary rides along
     # in every bucket, so a vanished corpus subdirectory still yields one file.
-    corpus = [path for path in BUCKETS[bucket](krr) if path.name != VOCAB_NAME]
+    try:
+        corpus = [path for path in BUCKETS[bucket](krr) if path.name != VOCAB_NAME]
+    except (OSError, ValueError) as exc:
+        raise CannotScan(f"{bucket}: cannot collect corpus files ({exc})") from exc
     if not corpus:
         raise CannotScan(f"no corpus files collected for the {bucket!r} bucket (vanished/renamed?)")
 
@@ -224,9 +240,9 @@ def scan_bucket(bucket: str, *, krr: Path = KRR, shapes: Path = SHAPES) -> list[
     axioms = list(iter_nodes(vocab))
     for path in corpus:
         text = _read(path)
-        if any(f'"{key}"' in text for key in AXIOM_KEYS):
+        if any(f'"{key}"' in text for key in AXIOM_NAMES):
             nodes = iter_nodes(_parse(path, text))
-            axioms.extend(node for node in nodes if any(key in node for key in AXIOM_KEYS))
+            axioms.extend(node for node in nodes if any(key in node for key in AXIOM_NAMES))
 
     # The vocabulary is scanned too: the enum individuals it declares
     # (NormType_*, CaseType_*, ...) count as declared in every bucket.
