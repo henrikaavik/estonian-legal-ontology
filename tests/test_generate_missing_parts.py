@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-import generate_missing_parts
+from estleg import estleg_common, generate_missing_parts
 
 
 def _node_by_id(doc: dict, node_id: str) -> dict:
@@ -157,7 +157,7 @@ def test_tsus_osa1_flat_marker_falls_through_to_section_scan() -> None:
     provisions = [
         n
         for n in doc["@graph"]
-        if "estleg:LegalProvision_TsUS_osa1" in (n.get("@type") or [])
+        if "estleg:LegalProvision" in (n.get("@type") or []) and "estleg:paragrahv" in n
     ]
     assert len(provisions) == 2, (
         "flat Osa1 marker must fall through to the §§-scan and emit "
@@ -194,7 +194,7 @@ def test_tsus_osa1_act_id_is_snapshot_stable() -> None:
     assert doc is not None
     assert doc["@graph"][0]["@id"] == "estleg:TsUS_Osa1"
     # The §range still appears in the human-readable label.
-    assert "§3" in doc["@graph"][0]["rdfs:label"]
+    assert "§3" in estleg_common.jsonld_text(doc["@graph"][0]["rdfs:label"])
 
 
 def test_vos_act_id_is_snapshot_stable() -> None:
@@ -331,14 +331,14 @@ def test_vos_output_slug_matches_generate_all_laws(tmp_path, monkeypatch) -> Non
     assert "volaigusseadus_osa6_peep.json" not in produced
 
     # Canonical slug must equal generate_all_laws.slugify of the title.
-    from scripts.generate_all_laws import slugify  # noqa: PLC0415
+    from estleg.generate_all_laws import slugify
 
     assert slugify("Võlaõigusseadus") == "volaoigusseadus"
 
 
 def test_helpers_resolve_from_generate_all_laws() -> None:
-    from scripts import generate_all_laws  # noqa: PLC0415
-    from scripts.generate_missing_parts import (  # noqa: PLC0415
+    from estleg import generate_all_laws
+    from estleg.generate_missing_parts import (
         _iter_loiked,
         _loige_numbers,
         _paragraph_id_suffix,
@@ -359,7 +359,12 @@ def test_helpers_resolve_from_generate_all_laws() -> None:
     # ``generate_all_laws`` module while the test imports the package-
     # qualified ``scripts.generate_all_laws``; these are distinct module-
     # cache entries, so compare provenance instead.)
-    assert collect_text.__module__ == "generate_all_laws"
+    assert collect_text.__module__ in {
+        "generate_all_laws",
+        "law_structure",
+        "estleg.generate_all_laws",
+        "estleg.law_structure",
+    }
     assert (
         collect_text.__code__.co_filename
         == generate_all_laws.collect_text.__code__.co_filename
@@ -435,7 +440,7 @@ def test_tsus_requested_cluster_is_iri_reference_not_bare_string() -> None:
     provisions = [
         n
         for n in doc["@graph"]
-        if "estleg:LegalProvision_TsUS_osa1" in (n.get("@type") or [])
+        if "estleg:LegalProvision" in (n.get("@type") or []) and "estleg:paragrahv" in n
     ]
     assert provisions, "expected at least one TsÜS Osa1 provision"
     for provision in provisions:

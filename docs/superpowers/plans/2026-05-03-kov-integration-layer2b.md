@@ -4,7 +4,7 @@
 
 **Goal:** Add preamble citation extraction (`issuedUnder`, `implementsCitation` reified `Citation` instances) and a `implementedBy` / `implementedByCount` inverse projection to the KOV act corpus, plus KOV-aware body-text scoping rules. This is the second of three sub-PRs in the Layer 2 split.
 
-**Architecture:** A new act-level pass scans `estleg:preambleText` on every `MunicipalRegulation`/`NationalRegulation`/`Law` peep file and parses citations using a corpus-aware regex bank that handles real Estonian variation (`§` and `paragrahv`, `lg`/`lõike`/`lõikest`/`lõigete`, `p`/`punkti`/`punkt`, multiword law names like `kohaliku omavalitsuse korralduse seaduse`, both DD.MM.YYYY and `19. detsembri 2019. a` date forms, `määruse nr` and `määrusega nr`). Citations resolve via canonical lookups built once at startup: `genitive_law_name → act_iri`, `genitive_law_name → {par_nr → provision_iri}`, and `(issuer_label, adoption_date, act_number) → regulation_act_iri` keyed by `vastuvoetud/aktikuupaev` from the source XML (the corpus has zero `estleg:adoptionDate` fields — they live only in XML). `issuedUnder` always points to act-level IRIs (e.g. `estleg:AS_Map_2026`, never bare prefix `estleg:AS`); paragraph-level provision detail rides on `Citation.citationTarget`. Body-text references in KOV files use `enactedByMunicipality` first, then issuer body type, then act number — global fallback only on a unique high-confidence match. The inverse generator gains `implementedBy` (filtered projection from preamble enabling-act links — semantically distinct from the existing `referencedBy` body-text inverse) and `implementedByCount` aggregate.
+**Architecture:** A new act-level pass scans `estleg:preambleText` on every `MunicipalRegulation`/`NationalRegulation`/`Law` peep file and parses citations using a corpus-aware regex bank that handles real Estonian variation (`§` and `paragrahv`, `lg`/`lõike`/`lõikest`/`lõigete`, `p`/`punkti`/`punkt`, multiword law names like `kohaliku omavalitsuse korralduse seaduse`, both DD.MM.YYYY and `19. detsembri 2019. a` date forms, `määruse nr` and `määrusega nr`). Citations resolve via canonical lookups built once at startup: `genitive_law_name → act_iri`, `genitive_law_name → {par_nr → provision_iri}`, and `(issuer_label, adoption_date, act_number) → regulation_act_iri` keyed by `vastuvoetud/aktikuupaev` from the source XML (the corpus has zero `estleg:adoptionDate` fields — they live only in XML). `issuedUnder` always points to act-level IRIs (e.g. `estleg:AS_Map`, never bare prefix `estleg:AS`); paragraph-level provision detail rides on `Citation.citationTarget`. Body-text references in KOV files use `enactedByMunicipality` first, then issuer body type, then act number — global fallback only on a unique high-confidence match. The inverse generator gains `implementedBy` (filtered projection from preamble enabling-act links — semantically distinct from the existing `referencedBy` body-text inverse) and `implementedByCount` aggregate.
 
 **Tech Stack:** Python 3.11+, pytest, JSON-LD, SHACL (pyshacl), rdflib. Builds on Layer 2a's `kov_pipeline_coverage`, `build_globalid_xml_lookup`, `pair_peep_with_xml`, and Citation-class declarations.
 
@@ -17,7 +17,7 @@
 
 After 2b lands:
 
-1. **Preamble citations emit triples.** Every KOV act preamble citation that resolves to a known act produces an `estleg:issuedUnder` triple from the act node to the **enabling act-level IRI** (e.g. `estleg:AS_Map_2026`, never bare prefix). Citations carrying paragraph and/or `lg`/`p` detail also produce one `estleg:implementsCitation` reified `estleg:Citation` node per citation, with `citationTarget` (provision IRI when § is present, else act IRI), `citationDetail` (lg/p literal), and `citationText` (original substring) populated.
+1. **Preamble citations emit triples.** Every KOV act preamble citation that resolves to a known act produces an `estleg:issuedUnder` triple from the act node to the **enabling act-level IRI** (e.g. `estleg:AS_Map`, never bare prefix). Citations carrying paragraph and/or `lg`/`p` detail also produce one `estleg:implementsCitation` reified `estleg:Citation` node per citation, with `citationTarget` (provision IRI when § is present, else act IRI), `citationDetail` (lg/p literal), and `citationText` (original substring) populated.
 2. **KOV body-text scoping is municipality-first.** When a KOV act's body text references `Tallinna Linnavolikogu määruse nr 15 § 4` or `vallavolikogu määrus nr 12`, the resolver scopes the search to the same `enactedByMunicipality` first, narrows by issuer body type, then act number. Cross-municipality false matches are skipped.
 3. **Inverse generator emits new properties.** `generate_inverse_references` produces `estleg:implementedBy` (filtered projection — only from `issuedUnder` + `Citation.citationTarget`, NOT from body-text `references`) and `estleg:implementedByCount` aggregate on each enabling act and provision. The existing `estleg:referencedBy` continues unchanged.
 4. **Both pipelines run KOV by default.** `extract_cross_references` and `generate_inverse_references` are unpinned; their three `# DEFERRED to Layer 2b` comments are removed.
@@ -38,8 +38,8 @@ After 2b lands:
 | `tests/test_extract_cross_references.py` | Tests for preamble parser, canonical lookups, body-text scoping, main()-integration. |
 | `tests/test_generate_inverse_references.py` | Tests for `implementedBy` filtered projection, `implementedByCount`, and the body-text-exclusion E2E invariant. |
 | `tests/fixtures/kov_layer2b/sample_kov_preamble_*.txt` | 8 corpus-derived preamble strings exercising real Estonian variation. |
-| `tests/fixtures/kov_layer2b/sample_kov_act_with_preamble.json` | KOV act fixture using corpus-shaped IRIs (`estleg:Reg_<id>_Map_2026`). |
-| `tests/fixtures/kov_layer2b/sample_law_with_provisions.json` | Law fixture using corpus-shaped IRI (`estleg:KOKS_Map_2026`, not bare `estleg:KOKS`). |
+| `tests/fixtures/kov_layer2b/sample_kov_act_with_preamble.json` | KOV act fixture using corpus-shaped IRIs (`estleg:Reg_<id>_Map`). |
+| `tests/fixtures/kov_layer2b/sample_law_with_provisions.json` | Law fixture using corpus-shaped IRI (`estleg:KOKS_Map`, not bare `estleg:KOKS`). |
 | `tests/fixtures/kov_layer2b/sample_state_reg_with_xml.json` + `.xml` | State reg + matching XML so the `vastuvoetud/aktikuupaev`-based adoption-date lookup builder is exercised. |
 | `tests/fixtures/kov_layer2b/sample_kov_with_internal_ref.json` | KOV act whose body text references a same-municipality act. |
 | `krr_outputs/reports/kov/extract_cross_references_coverage.json` | Generated. |
@@ -75,7 +75,7 @@ After 2b lands:
 | `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | many-per-target |
 | `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | exactly one when present |
 
-**IRI scheme for Citation instances:** `estleg:Citation_<source-act-shortid>_<seq>`, where `<source-act-shortid>` is the source act's `@id` minus `estleg:` (e.g. `Reg_1014955_Map_2026`) and `<seq>` is a 1-based per-act counter.
+**IRI scheme for Citation instances:** `estleg:Citation_<source-act-shortid>_<seq>`, where `<source-act-shortid>` is the source act's `@id` minus `estleg:` (e.g. `Reg_1014955_Map`) and `<seq>` is a 1-based per-act counter.
 
 ---
 
@@ -954,11 +954,11 @@ is preserved as the original input substring (quotes intact)."
 - Modify: `scripts/extract_cross_references.py` (extend `build_provision_index`; add 3 new lookup builders)
 - Modify: `tests/test_extract_cross_references.py` (add `TestCanonicalLookups`)
 
-The reviewer's blockers B1, B2, and B3 share a root cause: there's no canonical mapping from the parser's output (a genitive law name like `kohaliku omavalitsuse korralduse seaduse`) to a real act @id in the corpus (like `estleg:KOKS_Map_2026`, NOT bare prefix `estleg:KOKS`). State and KOV regulations have a similar problem: they're keyed by `(issuer, adoption_date, act_number)`, but no act node carries `estleg:adoptionDate` — adoption dates live only inside source XML at `<vastuvoetud><aktikuupaev>`.
+The reviewer's blockers B1, B2, and B3 share a root cause: there's no canonical mapping from the parser's output (a genitive law name like `kohaliku omavalitsuse korralduse seaduse`) to a real act @id in the corpus (like `estleg:KOKS_Map`, NOT bare prefix `estleg:KOKS`). State and KOV regulations have a similar problem: they're keyed by `(issuer, adoption_date, act_number)`, but no act node carries `estleg:adoptionDate` — adoption dates live only inside source XML at `<vastuvoetud><aktikuupaev>`.
 
 This task builds five canonical lookups exposed as functions:
 
-1. **`prefix_to_act_iri`** AND **`act_iri_to_prefix`** — extends `build_provision_index` to also return BOTH directions: `{prefix: act_iri}` and `{act_iri: prefix}`. Read from each scanned peep file's `owl:Ontology` node. The reverse map is essential because the resolver (Task 5) needs to derive a *prefix* from an *act IRI* to look up provisions, and `act_iri.split("_")[0]` breaks for 34 acts in the corpus where the prefix itself contains underscores (e.g. `KARIST_2_Map_2026` — split-on-`_` returns `KARIST`, but provisions live under prefix `KARIST_2`).
+1. **`prefix_to_act_iri`** AND **`act_iri_to_prefix`** — extends `build_provision_index` to also return BOTH directions: `{prefix: act_iri}` and `{act_iri: prefix}`. Read from each scanned peep file's `owl:Ontology` node. The reverse map is essential because the resolver (Task 5) needs to derive a *prefix* from an *act IRI* to look up provisions, and `act_iri.split("_")[0]` breaks for 34 acts in the corpus where the prefix itself contains underscores (e.g. `KARIST_2_Map` — split-on-`_` returns `KARIST`, but provisions live under prefix `KARIST_2`).
 2. **`build_genitive_to_act_iri(...)`** — chains `FULLNAME_GENITIVE` → abbrev → `source_act_to_prefix` → `prefix_to_act_iri`. Returns `{genitive_law_name (lowercased): act_iri}`.
 3. **`build_state_regulation_lookup(riik_root, data_dir)`** — walks state regulation peep files; for each, pairs to its XML via `pair_peep_with_xml(...)` (Layer 2a helper); reads `<vastuvoetud><aktikuupaev>` from the XML; keys the lookup by `(issuer_label_normalized, adoption_date, act_number)`.
 4. **`build_kov_act_lookup(kov_root, data_dir)`** — same shape as state-reg lookup, but for KOV peep files. Issuer label is normalised via `_normalize_issuer_label` (transliterates Estonian diacritics) so the registry-side `"Polva Vallavalitsus"` matches act-side `"Põlva Vallavalitsus"` despite the õ-vs-o mismatch (Layer 1 issuers were derived from URL slugs).
@@ -978,7 +978,7 @@ class TestCanonicalLookups:
         are prefix→act_iri AND act_iri→prefix. The reverse map is
         essential for Task 5's resolver, which needs to derive a prefix
         from an act IRI without splitting on '_' (34 corpus acts have
-        prefixes containing underscores, e.g. 'KARIST_2_Map_2026')."""
+        prefixes containing underscores, e.g. 'KARIST_2_Map')."""
         from extract_cross_references import build_provision_index
         import estleg_common
 
@@ -989,7 +989,7 @@ class TestCanonicalLookups:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:AS_Map_2026",
+                {"@id": "estleg:AS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": "Alkoholiseadus",
                  "dc:source": "Alkoholiseadus"},
@@ -1020,11 +1020,11 @@ class TestCanonicalLookups:
          prefix_to_act_iri, act_iri_to_prefix) = result
 
         # Prefix → act IRI
-        assert prefix_to_act_iri.get("AS") == "estleg:AS_Map_2026"
+        assert prefix_to_act_iri.get("AS") == "estleg:AS_Map"
         assert prefix_to_act_iri.get("KARIST_2") == "estleg:KARIST_2_Osa1_1_87"
 
         # Reverse direction — exact mirror of prefix_to_act_iri
-        assert act_iri_to_prefix.get("estleg:AS_Map_2026") == "AS"
+        assert act_iri_to_prefix.get("estleg:AS_Map") == "AS"
         # The reverse lookup MUST resolve to the multi-segment prefix,
         # not 'KARIST', because provisions are keyed under 'KARIST_2'.
         assert act_iri_to_prefix.get("estleg:KARIST_2_Osa1_1_87") == "KARIST_2"
@@ -1041,8 +1041,8 @@ class TestCanonicalLookups:
             "Karistusseadustik": "KARIST",
         }
         prefix_to_act_iri = {
-            "AS": "estleg:AS_Map_2026",
-            "KARIST": "estleg:KARIST_2_Map_2026",
+            "AS": "estleg:AS_Map",
+            "KARIST": "estleg:KARIST_2_Map",
         }
         # FULLNAME_GENITIVE has e.g. "karistusseadustiku" → "KarS"
         # KNOWN_ABBREVIATIONS would map "KarS" → "Karistusseadustik"
@@ -1055,7 +1055,7 @@ class TestCanonicalLookups:
         # The lookup contains lowercased keys so it can be queried
         # case-insensitively against parser output.
         assert "karistusseadustiku" in result
-        assert result["karistusseadustiku"] == "estleg:KARIST_2_Map_2026"
+        assert result["karistusseadustiku"] == "estleg:KARIST_2_Map"
 
     def test_state_regulation_lookup_reads_adoption_from_xml(self, tmp_path):
         """The corpus has zero estleg:adoptionDate — adoption_date is
@@ -1265,9 +1265,9 @@ The prefix derivation MUST handle 3 act-IRI shapes seen in the corpus:
 
 | Shape | Example | Prefix |
 | --- | --- | --- |
-| `<prefix>_Map_<year>` | `estleg:AS_Map_2026` | `AS` |
+| `<prefix>_Map_<year>` | `estleg:AS_Map` | `AS` |
 | `<prefix>_Osa<N>[_...]` | `estleg:KARIST_2_Osa1_1_87` | `KARIST_2` |
-| `<prefix>` (no suffix; rare legacy) | `estleg:AÕSRS` | `AÕSRS` |
+| `<prefix>` (no suffix; rare legacy) | `estleg:AOSRS` | `AÕSRS` |
 
 A naive `shortid.split("_")[0]` is **wrong** — it returns `KARIST` for the second row (whereas the corpus's provisions live at `estleg:KARIST_2_Par_<n>`). Use the canonical helper below.
 
@@ -1275,7 +1275,7 @@ A naive `shortid.split("_")[0]` is **wrong** — it returns `KARIST` for the sec
 import re as _re_local
 
 _ACT_SUFFIX_PATTERNS = [
-    _re_local.compile(r"_Map_\d{4}$"),                # _Map_2026
+    _re_local.compile(r"_Map_\d{4}$"),                # _Map
     _re_local.compile(r"_Osa\d+(?:_.+)?$"),           # _Osa1, _Osa5_AsjaoigusteKaitse
     _re_local.compile(r"_(?:Procedure|Substantive)Map_\d{4}$"),  # KrMS variants
 ]
@@ -1285,7 +1285,7 @@ def _prefix_from_act_iri(act_iri: str) -> str | None:
     """Derive the provision-keying prefix from a full act @id.
 
     The prefix is the leading segment that all of the act's provisions
-    share (e.g. 'KOKS' for 'estleg:KOKS_Map_2026' whose provisions look
+    share (e.g. 'KOKS' for 'estleg:KOKS_Map' whose provisions look
     like 'estleg:KOKS_Par_22'; 'KARIST_2' for 'estleg:KARIST_2_Osa1_1_87'
     whose provisions look like 'estleg:KARIST_2_Par_1').
     """
@@ -1680,7 +1680,7 @@ Extends build_provision_index to also return prefix_to_act_iri AND
 act_iri_to_prefix (the reverse). The reverse map is essential
 because the Task 5 resolver needs to derive a prefix from an act
 IRI, and naive split-on-underscore breaks for the 34 corpus acts
-whose prefix itself contains an underscore (e.g. KARIST_2_Map_2026
+whose prefix itself contains an underscore (e.g. KARIST_2_Map
 → provisions live at KARIST_2_Par_<n>, not KARIST_Par_<n>).
 
 Adds build_genitive_to_act_iri chaining FULLNAME_GENITIVE through
@@ -1720,15 +1720,15 @@ class TestCitationNodeBuilder:
     def test_iri_pattern_matches_shacl(self):
         from extract_cross_references import build_citation_iri
         # Use a corpus-shaped IRI as input — Reg_<id>_Map_<year>
-        iri = build_citation_iri("estleg:Reg_1014955_Map_2026", seq=1)
-        assert iri == "estleg:Citation_Reg_1014955_Map_2026_1"
+        iri = build_citation_iri("estleg:Reg_1014955_Map", seq=1)
+        assert iri == "estleg:Citation_Reg_1014955_Map_1"
         import re
         assert re.match(r"^estleg:Citation_[A-Za-z0-9_]+_[0-9]+$", iri)
 
     def test_citation_node_with_full_detail(self):
         from extract_cross_references import build_citation_node
         node = build_citation_node(
-            iri="estleg:Citation_Reg_1014955_Map_2026_1",
+            iri="estleg:Citation_Reg_1014955_Map_1",
             # Corpus shape for provisions is <prefix>_Par_<n> (NOT
             # <prefix>_Map_<year>_Par_<n>). The act IRI carries the
             # _Map_<year> suffix; provisions reuse the bare prefix.
@@ -1736,7 +1736,7 @@ class TestCitationNodeBuilder:
             citation_detail="lg 1 p 34",
             citation_text="kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34",
         )
-        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_2026_1"
+        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_1"
         assert "estleg:Citation" in node["@type"]
         assert "owl:NamedIndividual" in node["@type"]
         assert node["estleg:citationTarget"] == {"@id": "estleg:KOKS_Par_22"}
@@ -1746,7 +1746,7 @@ class TestCitationNodeBuilder:
     def test_citation_node_omits_optional_when_none(self):
         from extract_cross_references import build_citation_node
         node = build_citation_node(
-            iri="estleg:Citation_Reg_X_Map_2026_1",
+            iri="estleg:Citation_Reg_X_Map_1",
             target_iri="estleg:Reg_Y_Map_2020",  # act-level when no §
             citation_detail=None,
             citation_text=None,
@@ -1818,7 +1818,7 @@ git commit -m "Add Citation IRI builder + reified Citation node builder"
 - Modify: `scripts/extract_cross_references.py`
 - Modify: `tests/test_extract_cross_references.py`
 
-The reviewer (recommendation 4) flagged that `issuedUnder` should always point to act-level IRIs — provision detail belongs in `Citation.citationTarget`, not in `issuedUnder`. The resolver returns a tuple `(citation_target_iri, enabling_act_iri)`. Both can be different: when a preamble cites `KOKS § 22`, `citation_target_iri` is the provision (`estleg:KOKS_Map_2026_Par_22`) but `enabling_act_iri` is the act (`estleg:KOKS_Map_2026`).
+The reviewer (recommendation 4) flagged that `issuedUnder` should always point to act-level IRIs — provision detail belongs in `Citation.citationTarget`, not in `issuedUnder`. The resolver returns a tuple `(citation_target_iri, enabling_act_iri)`. Both can be different: when a preamble cites `KOKS § 22`, `citation_target_iri` is the provision (`estleg:KOKS_Map_Par_22`) but `enabling_act_iri` is the act (`estleg:KOKS_Map`).
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -1833,8 +1833,8 @@ class TestResolvePreambleCitation:
         #   provision IRIs: <prefix>_Par_<n>  (NO _Map_<year> in the middle)
         return {
             "genitive_to_act_iri": {
-                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map_2026",
-                "alkoholiseaduse": "estleg:AS_Map_2026",
+                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map",
+                "alkoholiseaduse": "estleg:AS_Map",
                 "karistusseadustiku": "estleg:KARIST_2_Osa1_1_87",
             },
             "prefix_to_provisions": {
@@ -1844,8 +1844,8 @@ class TestResolvePreambleCitation:
                 "KARIST_2": {"1": "estleg:KARIST_2_Par_1"},
             },
             "act_iri_to_prefix": {
-                "estleg:KOKS_Map_2026": "KOKS",
-                "estleg:AS_Map_2026": "AS",
+                "estleg:KOKS_Map": "KOKS",
+                "estleg:AS_Map": "AS",
                 # Multi-segment prefix — the case the v2 plan got wrong.
                 "estleg:KARIST_2_Osa1_1_87": "KARIST_2",
             },
@@ -1875,7 +1875,7 @@ class TestResolvePreambleCitation:
         # Provision-level for citation target — corpus shape is <prefix>_Par_<n>
         assert target_iri == "estleg:KOKS_Par_22"
         # Act-level for issuedUnder — this is the key Layer 2b semantic
-        assert enabling_act_iri == "estleg:KOKS_Map_2026"
+        assert enabling_act_iri == "estleg:KOKS_Map"
 
     def test_law_without_paragraph(self, lookups):
         """When citation has no §, both target and enabling_act are act-level."""
@@ -1888,7 +1888,7 @@ class TestResolvePreambleCitation:
             "citationText": "alkoholiseaduse",
         }
         result = resolve_preamble_citation(cit, **lookups)
-        assert result == ("estleg:AS_Map_2026", "estleg:AS_Map_2026")
+        assert result == ("estleg:AS_Map", "estleg:AS_Map")
 
     def test_law_with_multipart_prefix_resolves_via_reverse_map(self, lookups):
         """Reverse map (act_iri_to_prefix) MUST be consulted for the
@@ -2980,7 +2980,7 @@ git commit -m "Unpin extract_cross_references — runs KOV by default"
 - Modify: `scripts/generate_inverse_references.py`
 - Create: `tests/test_generate_inverse_references.py`
 
-`implementedBy` is a filtered projection from `issuedUnder` and `Citation.citationTarget` — explicitly NOT from body-text `references`. Round-3 review item 7 also flagged that `collect_all_references` currently indexes only `_Par_` and `RK_` IRIs in `iri_to_file` (line 152 of `generate_inverse_references.py`), so KOV body-text references that resolve to ACT-LEVEL IRIs like `estleg:Reg_..._Map_2026` produce unresolved warnings and never gain a `referencedBy` triple in the target file. This task fixes both.
+`implementedBy` is a filtered projection from `issuedUnder` and `Citation.citationTarget` — explicitly NOT from body-text `references`. Round-3 review item 7 also flagged that `collect_all_references` currently indexes only `_Par_` and `RK_` IRIs in `iri_to_file` (line 152 of `generate_inverse_references.py`), so KOV body-text references that resolve to ACT-LEVEL IRIs like `estleg:Reg_..._Map` produce unresolved warnings and never gain a `referencedBy` triple in the target file. This task fixes both.
 
 - [ ] **Step 1: Index act-level nodes in `iri_to_file`**
 
@@ -3024,7 +3024,7 @@ is too narrow. Replace with:
 ```python
 class TestActLevelIndex:
     def test_act_level_iri_resolves_in_iri_to_file(self, tmp_path, monkeypatch):
-        """A KOV body-text ref that resolves to estleg:Reg_X_Map_2026
+        """A KOV body-text ref that resolves to estleg:Reg_X_Map
         (an act-level IRI) must be writable as referencedBy on that
         target file. collect_all_references must index act-level
         nodes for this to work."""
@@ -3287,13 +3287,13 @@ class TestImplementedByBodyTextExclusion:
             "@graph": [
                 {"@id": "estleg:Reg_A_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
-                 "estleg:issuedUnder": [{"@id": "estleg:Y_Map_2026"}]},
+                 "estleg:issuedUnder": [{"@id": "estleg:Y_Map"}]},
                 {"@id": "estleg:Reg_A_Par_1",
                  "@type": ["owl:NamedIndividual"],
                  "estleg:paragrahv": "§ 1",
                  # Body-text references to X — must NOT contribute
                  # to implementedBy on X.
-                 "estleg:references": [{"@id": "estleg:X_Map_2026_Par_5"}]}
+                 "estleg:references": [{"@id": "estleg:X_Map_Par_5"}]}
             ],
         }), encoding="utf-8")
 
@@ -3302,9 +3302,9 @@ class TestImplementedByBodyTextExclusion:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:X_Map_2026",
+                {"@id": "estleg:X_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
-                {"@id": "estleg:X_Map_2026_Par_5",
+                {"@id": "estleg:X_Map_Par_5",
                  "@type": ["owl:NamedIndividual"],
                  "estleg:paragrahv": "§ 5"}
             ],
@@ -3315,7 +3315,7 @@ class TestImplementedByBodyTextExclusion:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Y_Map_2026",
+                {"@id": "estleg:Y_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]}
             ],
         }), encoding="utf-8")
@@ -3330,7 +3330,7 @@ class TestImplementedByBodyTextExclusion:
         with open(krr / "x_peep.json", "r", encoding="utf-8") as fh:
             x_doc = json.load(fh)
         x_par_5 = next(n for n in x_doc["@graph"]
-                       if n.get("@id") == "estleg:X_Map_2026_Par_5")
+                       if n.get("@id") == "estleg:X_Map_Par_5")
         # Body-text reference produces referencedBy — that's the
         # existing inverse, unchanged
         assert "estleg:referencedBy" in x_par_5
@@ -3374,7 +3374,7 @@ class TestImplementedByIdempotency:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Stale_Map_2026",
+                {"@id": "estleg:Stale_Map",
                  "@type": ["owl:Ontology", "estleg:Law"],
                  "estleg:implementedBy": [
                      {"@id": "estleg:Reg_GhostSource_Map_2025"}
@@ -3391,7 +3391,7 @@ class TestImplementedByIdempotency:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_Live_Map_2026",
+                {"@id": "estleg:Reg_Live_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]}
             ],
         }), encoding="utf-8")
@@ -3664,7 +3664,7 @@ MinisterialRegulation, MunicipalRegulation)
 
 **Semantics:** Identifies the ACT under whose authority this act was
 issued. For municipal regulations, the most common targets are KOKS
-(`estleg:KOKS_Map_2026`), state-regulation acts, or other KOV acts.
+(`estleg:KOKS_Map`), state-regulation acts, or other KOV acts.
 Provision-level granularity (e.g. "issued under § 22 lg 1 p 34") is
 captured separately on `Citation.citationTarget` — see
 `estleg:implementsCitation` below.
@@ -3672,11 +3672,11 @@ captured separately on `Citation.citationTarget` — see
 **Example:**
 ```json
 {
-  "@id": "estleg:Reg_1014955_Map_2026",
+  "@id": "estleg:Reg_1014955_Map",
   "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
   "estleg:issuedUnder": [
-    {"@id": "estleg:KOKS_Map_2026"},
-    {"@id": "estleg:RaamatPS_Map_2026"}
+    {"@id": "estleg:KOKS_Map"},
+    {"@id": "estleg:RaamatPS_Map"}
   ]
 }
 ```
@@ -3711,7 +3711,7 @@ on the source act.
 
 ```json
 {
-  "@id": "estleg:Citation_Reg_1014955_Map_2026_1",
+  "@id": "estleg:Citation_Reg_1014955_Map_1",
   "@type": ["owl:NamedIndividual", "estleg:Citation"],
   "estleg:citationTarget": {"@id": "estleg:KOKS_Par_22"},
   "estleg:citationDetail": "lg 1 p 34",
@@ -3738,7 +3738,7 @@ strictly the "what acts cite me as their enabling authority" view.
 {
   "@id": "estleg:KOKS_Par_22",
   "estleg:implementedBy": [
-    {"@id": "estleg:Reg_1014955_Map_2026"},
+    {"@id": "estleg:Reg_1014955_Map"},
     {"@id": "estleg:Reg_2034567_Map_2024"}
   ],
   "estleg:implementedByCount": 2
@@ -3956,7 +3956,7 @@ After all 14 tasks complete:
 
 - [ ] **Round-3 review items (1-8 + 3 nice-to-fixes) addressed:**
   - **#1 prefix derivation:** Task 3 returns `act_iri_to_prefix` reverse map; Task 5 resolver uses it (no `split("_")[0]`). Test `test_law_with_multipart_prefix_resolves_via_reverse_map` proves the multi-segment case.
-  - **#2 provision IRI shape:** all fixtures use `estleg:KOKS_Par_22` form (NOT `estleg:KOKS_Map_2026_Par_22`) — Tasks 4, 5 examples corrected.
+  - **#2 provision IRI shape:** all fixtures use `estleg:KOKS_Par_22` form (NOT `estleg:KOKS_Map_Par_22`) — Tasks 4, 5 examples corrected.
   - **#3 FULLNAME_GENITIVE coverage:** M7 in Task 1 adds 20+ genitive→abbrev entries for the most-cited KOV enabling laws (kohanimeseaduse, PGS, koolieelse lasteasutuse seaduse, etc.) plus a verification one-liner that the `dc:source` chain holds end-to-end.
   - **#4 minister regex:** Task 2 has 3 new corpus-derived minister fixtures (numeric-date instrumental, multiword named-month, locative `määruses`); regex extended for multiword/lowercase ministers and locative case.
   - **#5 issuer label diacritic alignment:** `_normalize_issuer_label` transliterates diacritics symmetrically on registry, lookup-construction, and resolver-query sides (Task 3, Task 6).

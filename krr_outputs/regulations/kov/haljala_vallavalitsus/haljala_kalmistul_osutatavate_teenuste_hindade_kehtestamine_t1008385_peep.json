@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1008385_Map_2026",
+      "@id": "estleg:Reg_1008385_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Haljala kalmistul osutatavate teenuste hindade kehtestamine (määrus)",
       "dc:source": "Haljala kalmistul osutatavate teenuste hindade kehtestamine",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/418122012053.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/418122012053.xml"
       },
       "estleg:issuer": "Haljala Vallavalitsus",
@@ -56,23 +51,23 @@
         "@value": "2012-12-18",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1008385",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_haljala_vallavalitsus"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1008385_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1008385",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -87,22 +82,28 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1008385_Map_2026"
+        "@id": "estleg:Reg_1008385_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1008385_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1008385",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -117,10 +118,12 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1008385_Map_2026"
+        "@id": "estleg:Reg_1008385_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -132,13 +135,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1008385_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1008385",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -153,7 +160,7 @@
         "@id": "estleg:Municipality_EHAK_0191"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1008385_Map_2026"
+        "@id": "estleg:Reg_1008385_Map"
       }
     }
   ]

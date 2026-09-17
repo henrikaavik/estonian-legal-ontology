@@ -1,5 +1,7 @@
 # ONTOLOGY_ANALYSIS.md
 
+> Historical 2026-02-28 snapshot. Not current. See `docs/ARCHITECTURE.md` and the root README. #537
+
 Updated: 2026-02-28 08:30 (EET)
 Owner: Peep
 

@@ -2,16 +2,20 @@
 
 A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **domestic regulations (määrused)**, **Supreme Court decisions**, **EU legal acts**, and **EU court decisions** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
 
-**Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid. PDF-versioon: [docs/eesti-oigusontoloogia-ulevaade.pdf](docs/eesti-oigusontoloogia-ulevaade.pdf).
+**Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid.
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,116 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
-release validators intentionally skip. `validate_all.py` currently validates
-23,069 corpus JSON/JSON-LD files; full SHACL loads 23,064 shape-relevant files.
+release validators intentionally skip. On the reviewed 2026-09-07 tree,
+`validate_all.py` validates 26,961 files and reports **122 errors / 2 warnings**;
+SHACL discovery selects 26,887 files. Full SHACL and consumer-sync gates still
+fail. See the measured [validation report](docs/VALIDATION_REPORT.md) and
+[project status](docs/README.md#project-status) before treating an artifact as
+release-ready.
 
-**Query layer:** [`mcp_server/`](mcp_server/) (`estleg-mcp`, 15 tools). Local stdio or `https://estleg.sixtyfour.ee/mcp`. See [`mcp_server/README.md`](mcp_server/README.md). There is no REST `/api` surface; [`docs/API_GUIDE.md`](docs/API_GUIDE.md) is SPARQL/load guidance.
+**Query layer:** [`mcp_server/`](mcp_server/) (`estleg-mcp`, 20 tools). Local stdio or the configured remote endpoint `https://estleg.sixtyfour.ee/mcp`. See [`mcp_server/README.md`](mcp_server/README.md). There is no REST `/api` surface; [`docs/API_GUIDE.md`](docs/API_GUIDE.md) is SPARQL/load guidance.
 
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
 
@@ -29,16 +33,150 @@ Large generated artifacts such as `krr_outputs/combined_ontology.jsonld` are
 stored through LFS; without it, validation commands will see pointer files
 instead of JSON-LD.
 
+Use Python 3.11 or newer. The examples below assume a repository checkout and
+an activated virtual environment:
+
+```bash
+git clone https://github.com/henrikaavik/estonian-legal-ontology.git
+cd estonian-legal-ontology
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
 ## Quick Start
+
+### 5-minute start
+
+Three commands — then answered sentences, not a triple dump:
+
+```bash
+git lfs pull -I krr_outputs/combined_ontology.jsonld
+python3 -m pip install 'rdflib>=7.1,<8'
+python3 examples/quickstart.py
+```
+
+`examples/quickstart.py` prefers `krr_outputs/combined_ontology.jsonld` when
+Git LFS has materialised it. Without LFS it falls back to
+`perekonnaseadus_peep.json` plus `krr_outputs/sanctions/` and still prints
+an answer. Optional: `python3 examples/quickstart.py --graph PATH`.
+
+### Python client
+
+Install the local package first with `python3 -m pip install -e .`.
+
+```python
+from estleg_client import load_law
+
+g = load_law("abipolitseiniku_seadus")  # or "ABIPOL"
+```
+
+`pip install -e .` also installs console scripts: `estleg-load`
+(`estleg-load abipolitseiniku_seadus` prints triple and provision counts),
+`estleg-generate-laws`, `estleg-run-pipeline`, and `estleg-validate`.
+Producer modules live in `src/estleg/`; `scripts/` keeps one-release shims.
 
 ### Load surfaces
 
 The corpus is published as two nested load surfaces — pick the one your query needs:
 
 - **Combined-only surface** — `krr_outputs/combined_ontology.jsonld` loaded alone. A self-contained graph (zero dangling `estleg:` references): all enacted-law nodes, the fully-merged enrichment overlays (sanctions, legal concepts, institutions, annotations, amendments), and the curated TBox. Every cross-corpus entity it references — court decisions, EU acts, drafts, municipal (KOV) regulations, the EHAK municipality registry, and per-provision version history — is present as a **resolvable stub** (label + identifier + the SHACL-required structural edges), *not* its full body. Best for law-centric queries and a quick, single-file load.
-- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
+- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `kohtud/` (sample, `estleg:isSampleData`), `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
 
 A SPARQL example that joins onto a court/EU/KOV/version body needs the full surface; one that stays within laws + overlays works on combined alone.
+
+### RDF serializations
+
+JSON-LD is the source format. Triplestore bulk loaders (Jena `tdbloader`,
+Blazegraph DataLoader, Virtuoso, GraphDB) prefer N-Triples or named-graph
+N-Quads.
+
+**Historical measured load budget** (`combined_ontology.jsonld`, rdflib, ticket #541):
+2,247,778 triples, 44.4 s, peak RSS 3,089 MB (~12.4× the ~250 MB file).
+The combined file is a single top-level `@graph` array (not
+line-streamable), so JSON-LD load is all-or-nothing. These measurements describe
+the #541 artifact, not the current aggregate.
+
+Prefer `.nt` / N-Quads for bulk load. The committed N-Triples dump has
+2,664,215 triples and predates the September JSON-LD fixes; regenerate dumps
+from the same JSON-LD revision before relying on parity (#705).
+Generate with `scripts/serialize_corpus.py` after installing the local package:
+
+```bash
+python3 scripts/serialize_corpus.py \
+  --input krr_outputs/abipolitseiniku_seadus_peep.json \
+  --format nt \
+  --output krr_outputs/exports/abipolitseiniku_seadus.nt
+```
+
+A small committed proof dump is
+`krr_outputs/exports/abipolitseiniku_seadus.nt`. Combined dumps are
+LFS-tracked next to the JSON-LD source:
+
+- `krr_outputs/combined_ontology.nt` — N-Triples (bulk load)
+- `krr_outputs/combined_ontology.nq` — named-graph N-Quads
+- `krr_outputs/combined_ontology.ttl` — Turtle (regenerate if absent)
+
+```bash
+python3 scripts/serialize_corpus.py \
+  --input krr_outputs/combined_ontology.jsonld \
+  --format nq \
+  --output krr_outputs/combined_ontology.nq
+```
+
+N-Quads wrap triples in a named graph
+(`https://w3id.org/estleg/graph/combined` for combined, or
+`https://w3id.org/estleg/graph/<filename-stem>` otherwise).
+
+### SPARQL endpoint (Oxigraph)
+
+One-command load of a **named-graph** dump (#474). Each corpus is a SPARQL
+`GRAPH`: `…/graph/laws`, `/regulations`, `/riigikohus`, `/eurlex`,
+`/curia`, `/drafts`, `/enrichment-layers`.
+
+```bash
+docker compose up
+# SPARQL UI / protocol: http://localhost:7878
+```
+
+The compose file loads `krr_outputs/exports/estleg_all_sample.nq.gz` by
+default (seven graphs, fixture-sized). For the full corpus:
+
+```bash
+python3 -m estleg.serialize_named_graphs --write
+ESTLEG_DUMP=./krr_outputs/estleg_all.nq.gz docker compose up
+```
+
+`estleg_all.nq.gz` is a generated release asset (not Git LFS). Generate it
+locally from the combined JSON-LD / N-Quads sources if you need a dump
+newer than the tagged GitHub Release.
+
+```sparql
+SELECT ?g (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } } GROUP BY ?g
+```
+
+### Tabular export
+
+A star-schema projection for pandas/R lives in
+[`krr_outputs/exports/`](krr_outputs/exports/) (`laws.csv`,
+`provisions.csv`, `citations.csv`, `sanctions.csv`,
+`court_decisions.csv`). The committed CSVs are a small real sample —
+one enacted act, its sanctions sidecar, and one Riigikohus year —
+flattened from those peeps, not from `combined_ontology.jsonld`.
+
+```bash
+# regenerate the committed sample (default globs)
+python3 scripts/serialize_tabular.py --out krr_outputs/exports
+
+# fuller dump (all enacted-law peeps + sanction sidecars + all Riigikohus years)
+python3 scripts/serialize_tabular.py --out /tmp/estleg-tabular \
+  --laws-glob '*_peep.json' \
+  --sanctions-glob 'sanctions/sanctions_*.json' \
+  --court-glob 'riigikohus/riigikohus_*_peep.json'
+```
+
+CSV is always written (stdlib `csv`). Parquet is written when `pyarrow`
+is importable; otherwise the exporter prints a one-line note and
+continues. Do not commit a full-corpus dump.
 
 ### Load a single file with Python (rdflib)
 
@@ -116,7 +254,7 @@ from rdflib import Graph, Namespace
 
 ESTLEG = Namespace("https://w3id.org/estleg/")
 g = Graph()
-g.parse("krr_outputs/karistusseadustik_peep.json", format="json-ld")
+g.parse("krr_outputs/karistusseadustik_osa1_peep.json", format="json-ld")
 
 # Find all provisions this law references in other laws
 for s, p, o in g.triples((None, ESTLEG.references, None)):
@@ -139,10 +277,47 @@ for s, p, o in g.triples((None, ESTLEG.interpretsLaw, None)):
 
 ### How to cite
 
-See [`CITATION.cff`](CITATION.cff). Pin the graph by `owl:versionIRI`
-(`https://w3id.org/estleg/0.11.0`), not an undated clone of `main`.
-Consumer contract: [`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
+Aavik, Henrik. (2026). *Estonian Legal Ontology* (Version 1.0.0) [Data set].
+https://w3id.org/estleg/1.0.0
+
+```bibtex
+@misc{aavik_estonian_legal_ontology_2026,
+  author  = {Aavik, Henrik},
+  title   = {Estonian Legal Ontology},
+  year    = {2026},
+  version = {1.0.0},
+  url     = {https://w3id.org/estleg/1.0.0},
+  note    = {Dataset}
+}
+```
+
+**Primary consumption path:** download the tagged GitHub Release
+[`v1.0.0`](https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v1.0.0)
+(`combined_ontology.jsonld.gz` and the other combined artifacts). Cloning
+the 2.4 GB git tree is for contributors, not for loading the graph.
+
+The latest release is still `v1.0.0`, published on 2026-08-19. The September 7
+Tier 0 and #702 code/data fixes are on `main`; they have not been published as
+a new tagged release. Pin a reviewed commit if you need those fixes, and use
+the [validation report](docs/VALIDATION_REPORT.md) for its known limitations.
+
+See [`CITATION.cff`](CITATION.cff) for the machine-readable record. Pin the
+graph by `owl:versionIRI` (`https://w3id.org/estleg/1.0.0`), not an undated
+clone of `main`. A Zenodo DOI is not yet minted. Consumer contract:
+[`docs/STABILITY.md`](docs/STABILITY.md). Architecture:
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+### Refresh SLA
+
+Corpus target is monthly Riigi Teataja consolidation.
+`estleg:kehtiv` is the snapshot date the committed act text is valid as of.
+`dcterms:accrualPeriodicity` is monthly. The content-staleness canary is
+`python3 scripts/check_rt_staleness.py` (offline; `--fetch` is operator-run).
+Its default evaluation date is still pinned to `2026-06-01` (#693), so a green
+default run does not establish current freshness. For today's comparison use
+`python3 scripts/check_rt_staleness.py --evaluation-date "$(date -u +%F)"`.
+The committed `krr_outputs/changes-0.11.0.jsonld` is a historical IRI delta,
+not a delta for every later commit.
 
 ### Vocabulary cheat-sheet
 
@@ -238,27 +413,18 @@ Coverage is reported at two granularities and they should not be conflated:
   (`noStructuredBodyCount` / the per-act `acts` ledger). A consumer can
   therefore tell a no-body act apart from a parse failure (`status:
   "failed"`) and from an act that simply wasn't selected for
-  regeneration this run (`status: "skipped"`). At present the committed
-  corpus contains no `noStructuredBody` stubs — every act that survived
-  the source `kehtiv` filter parsed into provisions — but the path is
-  exercised on every supervised generator run; consult the manifest for
-  the live count.
+  regeneration this run (`status: "skipped"`). The law-generation manifest is
+  created by an operator run and is not present in the committed tree. Consult
+  the manifest from the run being assessed; an index entry alone does not
+  establish provision-level coverage.
 
 ### Enacted Laws (Riigi Teataja)
 
-| Category | Laws | Examples |
-|----------|------|----------|
-| Civil Law | 7 | TsUS, VOS, AOS, PKS |
-| Commercial & Economic | 6 | AS, PankrS, MKS |
-| Criminal Law | 2 | KarS, KrMS |
-| Administrative Law | 8 | HMS, KOKS, IKS |
-| Procedural Law | 3 | TsMS, TMS |
-| Constitutional | 4 | PS, RVastS |
-| Environmental | 4 | KeUS, JaatS, VeeS |
-| Other | 574+ | PPVS, TLS, AUS, ... |
-
-Counts above are provision-level (acts with a parsed `<paragrahv>`
-body); add the manifest's `counts.stubActs` for the act-level total.
+The registry contains 1,122 enacted-law entries. Representative areas include
+civil law (TsÜS, VÕS, AÕS, PKS), criminal law (KarS, KrMS), administrative law
+(HMS, KOKS, IKS), and procedural law (TsMS, TMS). These examples are not a
+measured partition of the registry. Use `krr_outputs/INDEX.json` for the law
+list and the validation report for multipart and body-coverage limitations.
 
 ### Draft Legislation (EIS)
 
@@ -331,16 +497,18 @@ transposition-mapping) remain laws-and-state-only by design.
 
 ### Supreme Court Decisions (Riigikohus)
 
+<!-- case types: keep in sync with krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json case_type_counts — tests/test_validate_all.py::test_riigikohus_case_type_tables_match_index enforces both this table and the one in docs/README.md -->
+
 | Case Type | Estonian | Count |
 |-----------|----------|-------|
-| Administrative | Haldusasi | 9,561 |
-| Civil | Tsiviilasi | 970 |
-| Criminal | Kriminaalasi | 484 |
-| Constitutional Review | Pohiseaduslikkuse jarelevalve | 336 |
+| Civil | Tsiviilasi | 4,988 |
+| Criminal | Kriminaalasi | 3,686 |
+| Administrative | Haldusasi | 2,434 |
+| Constitutional Review | Pohiseaduslikkuse jarelevalve | 800 |
 | Misdemeanor | Vaarteoasi | 107 |
-| Other | Muu | 679 |
+| Other | Muu | 89 |
 
-Years covered: 1993-2026 (12,137 decisions total)
+Years covered: 1993-2026 (12,104 decisions total)
 
 ### EU Legislation (EUR-Lex)
 
@@ -359,6 +527,7 @@ Source: EUR-Lex SPARQL endpoint (33,242 acts with Estonian translations)
 | AG Opinion | Kohtujuristi ettepanek | 9,952 |
 | Order | Kohtumaarus | 6,619 |
 | Judgment | Kohtuotsus | 5,641 |
+| Other | Muu | 61 |
 | Court Opinion | Kohtu arvamus | 17 |
 
 | Court | Estonian | Count |
@@ -377,10 +546,19 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 | **Riigi Teataja** | https://www.riigiteataja.ee | Domestic regulations (XML API) | `scripts/generate_regulations.py` |
 | **EIS** | https://eelnoud.valitsus.ee | Draft legislation (RSS feeds) | `scripts/generate_draft_legislation.py` |
 | **RIK / Riigikohus** | https://rikos.rik.ee | Supreme Court decisions (HTML search) | `scripts/generate_court_decisions.py` |
+| **RT kohtulahendid** | https://www.riigiteataja.ee/kohtulahendid/ | First/second-instance decisions (maakohus, halduskohus, ringkonnakohus) | `scripts/generate_lower_court_decisions.py` |
 | **EUR-Lex** | https://eur-lex.europa.eu | EU legislation (SPARQL) | `scripts/generate_eu_legislation.py` |
 | **EUR-Lex / CURIA** | https://eur-lex.europa.eu | EU court decisions (SPARQL) | `scripts/generate_eu_court_decisions.py` |
 
 ### API Details
+
+**RT migration status (2026-09-07):** the law/regulation generators still use
+the legacy endpoints below. The September review found `/akt/{id}.xml`
+returning the HTML application shell. Migration to
+`GET https://www.riigiteataja.ee/public-api/api/v1/akt/{id}/xml` is open in
+[#691](https://github.com/henrikaavik/estonian-legal-ontology/issues/691).
+The legacy URLs document the current implementation; they are not a verified
+working refresh recipe.
 
 **Riigi Teataja** (enacted laws):
 - Search: `GET https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&dokument=seadus`
@@ -395,9 +573,15 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 - Review: `GET https://eelnoud.valitsus.ee/main/mount/rss/home/review.rss`
 - Submission: `GET https://eelnoud.valitsus.ee/main/mount/rss/home/submission.rss`
 
-**RIK** (court decisions):
+**RIK** (Supreme Court decisions):
 - Search: `GET https://rikos.rik.ee/?aasta=YYYY&pageSize=100&lk=N`
 - Individual: `https://www.riigikohus.ee/et/lahendid/?asjaNr=CASE_NR`
+
+**Riigi Teataja kohtulahendid** (first/second instance):
+- Search: `POST https://www.riigiteataja.ee/api/v1/kohtuteave/otsing/kohtulahendid`
+- Individual: `https://www.riigiteataja.ee/kohtulahendid/{objektId}`
+- Operator ingest: `python3 -m estleg.generate_lower_court_decisions --fetch --year 2026 --limit 50 --apply`
+- Committed corpus is one capped search page — a single county-court decision, flagged `estleg:isSampleData` (#689)
 
 **EUR-Lex** (EU legislation):
 - SPARQL endpoint: `https://publications.europa.eu/webapi/rdf/sparql` (open, no auth)
@@ -426,6 +610,10 @@ The ontology includes 15 integration layers that connect laws, court decisions, 
 | Institutional competence | `extract_institutional_competence.py` | Maps which institution enforces what |
 | Sanctions | `extract_sanctions.py` | Penalty and sanction cross-reference index |
 | Semantic similarity | `generate_similarity_index.py` | Keyword-based similarity between provisions |
+
+Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state comparative NIM measures (LV/LT/FI/SE); Estonian transposition is `estleg:transposesDirective` / the transposition mapping, not the hollow HarmonisationLink stubs.
+
+`krr_outputs/reports/similarity_index.json` / `similarity_report.json` and the EUR-normalized severity scores in `krr_outputs/reports/sanctions_report.json` are **non-graph** application indexes (issue #462); SPARQL does not see those pairs or scores.
 
 ### Running integration scripts
 
@@ -461,7 +649,7 @@ python3 scripts/generate_similarity_index.py
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (23,116 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (27,008 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry
@@ -482,6 +670,9 @@ python3 scripts/generate_similarity_index.py
 │   │   ├── riigikohus_schema.json        # Schema definitions
 │   │   ├── riigikohus_YYYY_peep.json     # Per-year decisions (1993-2026)
 │   │   └── RIIGIKOHUS_INDEX.json         # Court decision registry
+│   ├── kohtud/               # First/second-instance decisions (#525)
+│   │   ├── kohtud_sample_peep.json       # One-decision sample (county court; estleg:isSampleData)
+│   │   └── KOHTUD_INDEX.json             # Lower-court ingest index
 │   ├── eurlex/               # EU legislation
 │   │   ├── eurlex_schema.json            # Schema definitions
 │   │   ├── eurlex_regulations_peep.json  # EU regulations
@@ -502,19 +693,20 @@ python3 scripts/generate_similarity_index.py
 │   ├── institutions/         # Institutional competence mappings
 │   ├── sanctions/            # Penalty and sanction index
 │   ├── amendments/           # Amendment chain data
-│   ├── cross_references_report.json   # Cross-law reference index
-│   ├── inverse_references_report.json # Bidirectional reference index
-│   ├── court_provision_links_report.json # Court → provision link index
-│   ├── transposition_mapping.json     # EU directive transposition map
 │   ├── transposition_schema.json      # Transposition schema definitions
 │   ├── harmonisation/                 # Cross-border harmonisation links (LV/LT/FI/SE parallel transpositions)
-│   ├── eurovoc_classification.json    # EuroVoc topic classification
-│   ├── amendment_history_report.json  # Amendment history index
-│   ├── deontic_classification_report.json # Deontic classification index
-│   ├── draft_impact_report.json       # Draft impact analysis index
-│   ├── temporal_data_report.json      # Temporal validity index
-│   ├── similarity_index.json          # Semantic similarity index
-│   └── similarity_report.json         # Similarity analysis report
+│   └── reports/              # Report/index/mapping/classification sidecars (#471)
+│       ├── cross_references_report.json
+│       ├── inverse_references_report.json
+│       ├── court_provision_links_report.json
+│       ├── transposition_mapping.json
+│       ├── eurovoc_classification.json
+│       ├── amendment_history_report.json
+│       ├── deontic_classification_report.json
+│       ├── draft_impact_report.json
+│       ├── temporal_data_report.json
+│       ├── similarity_index.json
+│       └── similarity_report.json
 ├── docs/                     # Documentation
 │   ├── README.md             # Full project documentation
 │   ├── API_GUIDE.md          # SPARQL and API usage guide
@@ -523,7 +715,10 @@ python3 scripts/generate_similarity_index.py
 │   ├── INTEGRATION_IDEAS.md  # Integration improvement ideas
 │   └── DUPLICATE_IDS_REPORT.md # Cross-file @id collision audit
 ├── shacl/                    # SHACL validation shapes
-├── scripts/                  # Generation and validation scripts (41 total; representative subset shown below)
+├── src/estleg/               # Producer, enrichment, and validation implementations
+├── estleg_client/            # Read-only Python client
+├── mcp_server/               # MCP server and its separate tests
+├── scripts/                  # Compatibility entry points (representative subset below)
 │   ├── generate_all_laws.py           # Enacted laws generator
 │   ├── generate_draft_legislation.py  # Draft legislation generator
 │   ├── generate_court_decisions.py    # Court decisions generator
@@ -552,12 +747,12 @@ python3 scripts/generate_similarity_index.py
 ├── reviews/                  # Law review request files
 ├── .github/workflows/        # CI pipeline
 ├── CHANGELOG.md              # Version history
-└── LICENSE                   # MIT License
+└── LICENSE                   # MIT for software only — data rights in NOTICE
 ```
 
 ## Schema
 
-The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`) with 28 core classes:
+The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`). Selected core classes:
 
 **Enacted Law:**
 - **`estleg:LegalProvision`** -- Individual legal provisions (paragraphs, sections)
@@ -572,7 +767,8 @@ The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`) with 28 co
 **Domestic Regulations (maarused):**
 - **`estleg:Act`** -- Top-level "any enacted Estonian legal act" (parent class)
 - **`estleg:Law`** -- Statute (seadus); stamped onto every existing law node
-- **`estleg:NationalRegulation`** -- Estonian regulations (umbrella class for state and KOV)
+- **`estleg:DomesticRegulation`** -- Common parent for state and municipal regulations
+- **`estleg:NationalRegulation`** -- State-level regulations
 - **`estleg:GovernmentRegulation`** -- Regulations issued by Vabariigi Valitsus
 - **`estleg:MinisterialRegulation`** -- Regulations issued by individual ministers
 - **`estleg:MunicipalRegulation`** -- KOV (municipal) regulations
@@ -582,7 +778,7 @@ The ontology uses the `estleg` namespace (`https://w3id.org/estleg/`) with 28 co
 - **`estleg:Annex`** -- Regulation annexes (lisad)
 
 **Court Decisions:**
-- **`estleg:CourtDecision`** -- Supreme Court decisions (judgments, rulings)
+- **`estleg:CourtDecision`** -- Estonian court decisions (Riigikohus + first/second instance)
 - **`estleg:CaseType`** -- Criminal, Civil, Administrative, Constitutional Review, Misdemeanor
 - **`estleg:DecisionType`** -- Judgment, Ruling, Resolution
 
@@ -609,28 +805,42 @@ See [docs/SCHEMA_REFERENCE.md](docs/SCHEMA_REFERENCE.md) for full schema documen
 python3 -m pip install -e ".[dev]"
 ```
 
+That install puts `src/estleg/` on the package path and exposes
+`estleg-generate-laws`, `estleg-run-pipeline`, and `estleg-validate`.
+`python3 scripts/<name>.py` remains a shim onto the same modules.
+
 ## Validation
 
 ```bash
 python3 -m pytest -q
-python3 scripts/validate_all.py
+estleg-validate
+# or: python3 scripts/validate_all.py
 ```
 
 CI runs tests and validation for changes to scripts, tests, SHACL, metadata,
 workflow files, docs, and ontology outputs.
+
+The required merge checks are `lint`, `pytest`, and `estleg-mcp tests`.
+The default pytest run skips `@pytest.mark.corpus`; opt in with
+`python3 -m pytest -q -m corpus` after materialising the required LFS inputs.
+Passing the required checks does not establish full corpus or SHACL
+conformance. See [CONTRIBUTING.md](CONTRIBUTING.md) for the development and
+release gates, including generated-report checks.
 
 ### Canonical artifacts
 
 The following artifacts are authoritative for downstream consumers and the
 release pipeline:
 
-- **Source files (edit here):** every root `krr_outputs/*_peep.json` plus
+- **Canonical inputs (update through their generators):** every root `krr_outputs/*_peep.json` plus
   `krr_outputs/controlled_vocabulary.jsonld`,
   `krr_outputs/karistusseadustik_eriosa_owl.jsonld`, and
-  `krr_outputs/tsus_osa7_138_169_owl.jsonld`. These are the canonical
-  per-act mappings.
+  `krr_outputs/tsus_osa7_138_169_owl.jsonld`,
+  `krr_outputs/unresolved_references.jsonld`, and
+  `krr_outputs/act_expressions_combined.jsonld`. The complete allowlist lives
+  in `src/estleg/fix_all_issues.py:COMBINED_ALLOWED_JSONLD`.
 - **Public load-surface directories (edit per generator):**
-  `krr_outputs/eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`,
+  `krr_outputs/eelnoud/`, `riigikohus/`, `kohtud/` (sample), `curia/`, `eurlex/`,
   `concepts/`, `sanctions/`, `amendments/`, `institutions/`,
   `provision_versions/`, `annotations/`, `harmonisation/`, and
   `regulations/`. Seadusloome consumes these alongside the combined
@@ -669,8 +879,10 @@ ontology changes:
 4. Run the Seadusloome zero-warning gate
    (`python3 scripts/validate_seadusloome_sync.py`).
 5. Refresh metadata and documentation counts
-   (`docs/VALIDATION_REPORT.md`, `metadata.jsonld`) if the release
-   artifacts changed.
+   if the release artifacts changed. Generate the validation and duplicate
+   reports with `python3 scripts/generate_validation_report.py` and
+   `python3 scripts/generate_duplicate_ids_report.py`, then run each with
+   `--check`. Do not hand-edit their generated measurements.
 
 ### Seadusloome zero-warning policy
 
@@ -686,6 +898,11 @@ authoritative for class-by-class semantic checks; the new gate is the
 release contract for downstream sync.
 
 ## Refreshing Data
+
+These are operator commands that change the corpus. The RT migration (#691)
+and full ingest/enrichment reproducibility work in #697/#704 remain
+open; a successful process exit alone does not establish a complete refresh.
+Choose the intended snapshot explicitly and inspect the generated manifest.
 
 ```bash
 # Refresh enacted laws from a declared Riigi Teataja snapshot.
@@ -751,9 +968,15 @@ python3 scripts/generate_harmonisation_links.py
 
 1. Fork the repository
 2. Create a feature branch
-3. Ensure `python3 -m pytest -q` and `python3 scripts/validate_all.py` pass
+3. Run the relevant checks and document any existing failures, following [CONTRIBUTING.md](CONTRIBUTING.md)
 4. Submit a pull request
 
 ## License
 
-MIT License -- see [LICENSE](LICENSE) for details.
+The MIT `LICENSE` covers repository **software** only (`scripts/`,
+`mcp_server/`, `tests/`, tooling). It does **not** license the JSON-LD
+corpus under `krr_outputs/`. That corpus is a layered compilation of
+third-party legal texts plus an original compilation layer (draft CC BY
+4.0). See [NOTICE](NOTICE), [docs/DATA_RIGHTS.md](docs/DATA_RIGHTS.md),
+and [docs/DATA_PROTECTION.md](docs/DATA_PROTECTION.md) before
+redistributing data.

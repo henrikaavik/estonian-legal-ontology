@@ -22,13 +22,11 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+import fix_duplicate_ids as fdi
 
-import estleg_common  # noqa: E402
-import fix_duplicate_ids as fdi  # noqa: E402
+from estleg import estleg_common
 
 # Canonical "fully-migrated IRI" grammar from migrate_uris.NEW_IRI_FORMAT_RE
 # (hyphen is NOT allowed). We re-declare it here so the test asserts the same

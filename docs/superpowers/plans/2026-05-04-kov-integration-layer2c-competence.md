@@ -836,7 +836,7 @@ class TestExtractCompetenceWithIssuerBinding:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:KOKS_Map_2026",
+                {"@id": "estleg:KOKS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:KOKS_Par_22",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1121,7 +1121,7 @@ class TestCompetenceIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Stale_Map_2026",
+                {"@id": "estleg:Stale_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Stale_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1218,7 +1218,7 @@ class TestCompetenceIdempotency:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Boring_Map_2026",
+                {"@id": "estleg:Boring_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Boring_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1432,7 +1432,7 @@ class TestStaleInstitutionFileDeletion:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Boring_Map_2026",
+                {"@id": "estleg:Boring_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Boring_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1478,7 +1478,7 @@ class TestStaleInstitutionFileDeletion:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:Active_Map_2026",
+                {"@id": "estleg:Active_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:Active_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1523,7 +1523,7 @@ class TestStaleInstitutionFileDeletion:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:OK_Map_2026",
+                {"@id": "estleg:OK_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:OK_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1891,7 +1891,7 @@ class TestCompetenceCoverageReport:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:State_Map_2026",
+                {"@id": "estleg:State_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:State_Par_1",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
@@ -1994,7 +1994,7 @@ class TestCompetenceCoverageReport:
                 "owl": "http://www.w3.org/2002/07/owl#",
             },
             "@graph": [
-                {"@id": "estleg:KOKS_Map_2026",
+                {"@id": "estleg:KOKS_Map",
                  "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
                 {"@id": "estleg:KOKS_Par_22",
                  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],

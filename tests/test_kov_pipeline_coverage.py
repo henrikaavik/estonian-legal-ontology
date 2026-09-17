@@ -2,23 +2,17 @@
 from __future__ import annotations
 
 import json
-import sys
-from datetime import datetime, timedelta, timezone
-from pathlib import Path
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-
-from kov_pipeline_coverage import (
+from estleg.kov_pipeline_coverage import (
     CoverageReport,
     format_run_timestamp,
     measure_runtime,
     validate_run_timestamp,
     write_coverage_report,
 )
-
 
 # Centralised valid timestamp for placeholder use in CoverageReport
 # fixtures across tests below — keeps the value out of inline
@@ -134,7 +128,7 @@ class TestCoverageReport:
 
 class TestPipelineVersionResolver:
     def test_returns_short_sha(self):
-        from kov_pipeline_coverage import resolve_pipeline_version
+        from estleg.kov_pipeline_coverage import resolve_pipeline_version
         sha = resolve_pipeline_version()
         # 7-char short SHA from `git rev-parse --short HEAD`
         assert len(sha) >= 7
@@ -201,7 +195,7 @@ class TestFormatRunTimestamp:
     """
 
     def test_aware_utc_round_trips(self):
-        when = datetime(2026, 5, 10, 12, 34, 56, tzinfo=timezone.utc)
+        when = datetime(2026, 5, 10, 12, 34, 56, tzinfo=UTC)
         result = format_run_timestamp(when)
         assert validate_run_timestamp(result) == result
 

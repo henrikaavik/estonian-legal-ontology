@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1047196_Map_2026",
+      "@id": "estleg:Reg_1047196_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Kaugküttekorraldus Alutaguse vallas (määrus)",
       "dc:source": "Kaugküttekorraldus Alutaguse vallas",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/411062019005.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/411062019005.xml"
       },
       "estleg:issuer": "Alutaguse Vallavolikogu",
@@ -71,12 +66,12 @@
       "estleg:regulationTypeBucket": "alutaguse vallas",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:KAUGKU_Map_2026"
+          "@id": "estleg:KAUGKU_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1047196_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1047196_Map_1"
         }
       ],
       "dcterms:subject": [
@@ -95,7 +90,7 @@
       ],
       "estleg:similarAct": [
         {
-          "@id": "estleg:Similarity_Reg_1047196_Map_2026_KAUGKU_Map_2026"
+          "@id": "estleg:Similarity_Reg_1047196_Map_KAUGKU_Map"
         }
       ],
       "estleg:entryIntoForce": {
@@ -106,16 +101,16 @@
         "@value": "2019-06-11",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1047196",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_alutaguse_vallavolikogu"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -194,7 +189,7 @@
       "@id": "estleg:Reg_1047196_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -209,22 +204,28 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -239,22 +240,28 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -269,11 +276,15 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -282,13 +293,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 4.",
@@ -303,11 +318,15 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -316,13 +335,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 5.",
@@ -337,11 +360,15 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
@@ -353,13 +380,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 6.",
@@ -374,26 +405,36 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Soojusettevõtja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 7.",
@@ -408,11 +449,15 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -421,13 +466,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1047196_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 8.",
@@ -442,7 +491,7 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       },
       "estleg:competentAuthority": [
         {
@@ -455,7 +504,7 @@
       "@id": "estleg:Reg_1047196_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1047196",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 9.",
@@ -470,11 +519,11 @@
         "@id": "estleg:Municipality_EHAK_0130"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1047196_Map_2026"
+        "@id": "estleg:Reg_1047196_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1047196_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1047196_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -486,13 +535,13 @@
       "estleg:citationText": "Määrus kehtestatakse kaugkütteseaduse § 5 lõigete 2"
     },
     {
-      "@id": "estleg:Similarity_Reg_1047196_Map_2026_KAUGKU_Map_2026",
+      "@id": "estleg:Similarity_Reg_1047196_Map_KAUGKU_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:KAUGKU_Map_2026"
+        "@id": "estleg:KAUGKU_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.466",

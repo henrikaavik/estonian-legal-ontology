@@ -2,69 +2,68 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:IKS_Map_2026",
+      "@id": "estleg:IKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:ISIKUA_Map_2026"
+        "@id": "estleg:ISIKUA_Map"
       },
       "rdfs:label": "Isikuandmete kaitse seaduse teemakaardistus",
       "dc:source": "Isikuandmete kaitse seadus (RT I, 12.07.2025, 14; redaktsioon jõustus 01.10.2025)",
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1035658_Map_2026"
+          "@id": "estleg:Reg_1035658_Map"
         },
         {
-          "@id": "estleg:Reg_1045436_Map_2026"
+          "@id": "estleg:Reg_1045436_Map"
         },
         {
-          "@id": "estleg:Reg_1047031_Map_2026"
+          "@id": "estleg:Reg_1047031_Map"
         },
         {
-          "@id": "estleg:Reg_1047485_Map_2026"
+          "@id": "estleg:Reg_1047485_Map"
         },
         {
-          "@id": "estleg:Reg_1047495_Map_2026"
+          "@id": "estleg:Reg_1047495_Map"
         },
         {
-          "@id": "estleg:Reg_1047619_Map_2026"
+          "@id": "estleg:Reg_1047619_Map"
         },
         {
-          "@id": "estleg:Reg_1047803_Map_2026"
+          "@id": "estleg:Reg_1047803_Map"
         },
         {
-          "@id": "estleg:Reg_1047850_Map_2026"
+          "@id": "estleg:Reg_1047850_Map"
         },
         {
-          "@id": "estleg:Reg_1048108_Map_2026"
+          "@id": "estleg:Reg_1048108_Map"
         },
         {
-          "@id": "estleg:Reg_1049639_Map_2026"
+          "@id": "estleg:Reg_1049639_Map"
         },
         {
-          "@id": "estleg:Reg_1056702_Map_2026"
+          "@id": "estleg:Reg_1056702_Map"
         },
         {
-          "@id": "estleg:Reg_1057509_Map_2026"
+          "@id": "estleg:Reg_1057509_Map"
         },
         {
-          "@id": "estleg:Reg_1060748_Map_2026"
+          "@id": "estleg:Reg_1060748_Map"
         },
         {
-          "@id": "estleg:Reg_1062382_Map_2026"
+          "@id": "estleg:Reg_1062382_Map"
         }
       ],
       "estleg:implementedByCount": 14,
@@ -89,17 +88,23 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_IKS",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/5181"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:Cluster_DataSubjectRights",
@@ -129,7 +134,7 @@
       "@id": "estleg:IKS_Par_AndmesubjektiTeaveJaLabiipaistvus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 22–§ 24",
       "rdfs:label": "Andmesubjekti teavitamine ja juurdepääsuõigus",
@@ -139,22 +144,28 @@
       "estleg:summary": "Sätestab andmesubjektile avaldatava kohustusliku teabe, teavitamiskohustuse sisu ning õiguse saada kinnitust ja juurdepääsu enda kohta töödeldavatele andmetele.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_ParandamineKustutaminePiiramine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 25–§ 27",
       "rdfs:label": "Parandamis-, kustutamis- ja piiramisõigus ning õiguste teostamise kord",
@@ -164,11 +175,15 @@
       "estleg:summary": "Reguleerib andmesubjekti õigust nõuda ebaõigete andmete parandamist, andmete kustutamist või töötlemise piiramist ning määrab vastutava töötleja vastamise tähtajad ja menetlusreeglid.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -177,13 +192,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_Kaebusoigus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 28",
       "rdfs:label": "Andmesubjekti kaebeõigus Andmekaitse Inspektsioonile",
@@ -193,11 +212,15 @@
       "estleg:summary": "Annab andmesubjektile õiguse pöörduda kaebusega Andmekaitse Inspektsiooni poole ning saada teavet kaebuse lahendi ja kohtusse pöördumise võimaluse kohta.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -206,13 +229,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_ErialusedGDPRRaamistikus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 4–§ 11",
       "rdfs:label": "Andmetöötluse erialused (ajakirjandus, teadus, arhiveerimine, erijuhud)",
@@ -222,14 +249,14 @@
       "estleg:summary": "Täpsustab GDPR-i kõrval Eesti õiguses lubatud erialuseid: ajakirjanduslik, akadeemiline ja kunstiline eneseväljendus, teadus- ja ajaloouuringud, statistika, alaealiste andmed, surmajärgne töötlemine, võlasuhete rikkumise andmed ning avalikus kohas jäädvustamine.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       }
     },
     {
       "@id": "estleg:IKS_Par_OiguskaitseasutusteAndmetootlusPohimotted",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 12–§ 21",
       "rdfs:label": "Õiguskaitseasutuste andmetöötluse kohaldamisala ja põhimõtted",
@@ -239,14 +266,14 @@
       "estleg:summary": "Määrab õiguskaitseasutuste andmetöötluse eesmärgid, seaduslikkuse, säilitamise, eriliiki andmete töötlemise tingimused ning automatiseeritud otsuste piirangud süüteomenetluse kontekstis.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       }
     },
     {
       "@id": "estleg:IKS_Par_VastutavJaVolitatudTootlejaKohustused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 29–§ 39",
       "rdfs:label": "Vastutava ja volitatud töötleja kohustused",
@@ -256,22 +283,28 @@
       "estleg:summary": "Sätestab tehnilised ja korralduslikud meetmed, andmetöötluse dokumenteerimise/logimise, andmekaitsealase mõjuhinnangu, varasema konsulteerimise ning andmetöötluse vastutussuhte reeglid.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_TurvameetmedRikkumisedJaEdastamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 43–§ 50",
       "rdfs:label": "Turvameetmed, rikkumiste teavitamine ja kolmandale riigile edastamine",
@@ -281,22 +314,28 @@
       "estleg:summary": "Reguleerib andmeturbe kohustusi, isikuandmetega seotud rikkumiste teavitamist (sh 72 tunni reegel), andmesubjekti teavitamist ning andmete kolmandatesse riikidesse ja rahvusvahelistesse organisatsioonidesse edastamise tingimusi.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_AKIPaadevYksusJaKohtuesindus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 2¹",
       "rdfs:label": "Andmekaitse Inspektsioon kollektiivse esindushagi pädeva üksusena",
@@ -306,11 +345,15 @@
       "estleg:summary": "Määrab Andmekaitse Inspektsiooni pädevaks üksuseks andmesubjektide kollektiivsete huvide kaitsel, sh kollektiivse esindushagi esitamisel riigisiseselt ja piiriüleselt.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -319,13 +362,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_AKIAsutuslikRollJaJuhtimine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 51–§ 55",
       "rdfs:label": "Andmekaitse Inspektsiooni institutsionaalne raamistik",
@@ -335,22 +382,28 @@
       "estleg:summary": "Kehtestab sõltumatu järelevalveasutuse moodustamise, juhi kvalifikatsiooni, julgeolekukontrolli, ametisse nimetamise/ametist vabastamise ning pädevuse sertifitseerimisasutuse akrediteerimisel.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:IKS_Par_AKIJarelevalveVolitused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 56–§ 61",
       "rdfs:label": "Andmekaitse Inspektsiooni riikliku ja haldusjärelevalve volitused",
@@ -360,28 +413,34 @@
       "estleg:summary": "Sätestab Andmekaitse Inspektsiooni pädevuse järelevalve teostamisel, erimeetmed, menetluslikud erisused, sunniraha määra ning kaebuste läbivaatamise tähtaja.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
+      "estleg:targetGroupConcept": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:hasSanction": [
         {
           "@id": "estleg:Sanction_IKS_Par_AKIJarelevalveVolitused_coercive_payment"
         }
       ],
-      "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ]
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:IKS_Par_AKIKorraldusteTagamineJaSanktsioonid",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IKS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "IKS § 69–§ 70",
       "rdfs:label": "Andmekaitse Inspektsiooni korralduste täitmine ja juurdepääsu tagamine",
@@ -391,16 +450,22 @@
       "estleg:summary": "Kirjeldab vastutust Andmekaitse Inspektsiooni korralduse täitmata jätmise ja järelevalvelise juurdepääsu takistamise eest.",
       "estleg:sourceAct": "Isikuandmete kaitse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:IKS_Map_2026"
+        "@id": "estleg:IKS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Concept_AndmesubjektiOigusteTeostamine",

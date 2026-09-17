@@ -2,40 +2,39 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TubS_Map_2026",
+      "@id": "estleg:TubS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:tubakaseadus_Map_2026"
+        "@id": "estleg:tubakaseadus_Map"
       },
       "rdfs:label": "Tubakaseaduse teemakaardistus",
       "dc:description": "Tubakaseaduse kaardistus klastrites: tubakatooted, müügipiirangud ja pakendinõuded.",
       "dc:source": "Tubakaseadus (kehtiv redaktsioon; https://www.riigiteataja.ee/akt/TubS)",
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1023879_Map_2026"
+          "@id": "estleg:Reg_1023879_Map"
         },
         {
-          "@id": "estleg:Reg_1035277_Map_2026"
+          "@id": "estleg:Reg_1035277_Map"
         },
         {
-          "@id": "estleg:Reg_1049777_Map_2026"
+          "@id": "estleg:Reg_1049777_Map"
         },
         {
-          "@id": "estleg:Reg_159071_Map_2026"
+          "@id": "estleg:Reg_159071_Map"
         }
       ],
       "estleg:implementedByCount": 4,
@@ -52,17 +51,31 @@
         {
           "@id": "http://eurovoc.europa.eu/2862"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_TubS",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/10"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5899"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2498"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2862"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_terviseamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:Cluster_Tubakatooted",
@@ -92,7 +105,7 @@
       "@id": "estleg:TubS_Par_TooteMaaratlusedJaLiigitus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 3 ja § 3¹",
       "rdfs:label": "Tubakatoote ja tubakatootega seonduva toote mõisted",
@@ -102,14 +115,14 @@
       "estleg:summary": "Määratleb tubakatoote liigid (suitsetatavad, suitsuvabad, uudsed ja kuumutatud tooted) ning tubakatootega seonduvad tooted, sh elektroonilised sigaretid ja alternatiivsed tooted.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_KoostisePiirangud",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 8 ja § 8¹–§ 8²",
       "rdfs:label": "Tubakatoodete ja e-sigarettide koostisenõuded",
@@ -119,14 +132,14 @@
       "estleg:summary": "Kehtestab tubakatoodete koostise piirangud (nt tõrva/nikotiini/vingugaasi piirid, maitse- ja lisaainete keelud) ning elektrooniliste sigarettide vedelike koostise ja ohutuse tingimused.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_TuruleToomiseTeavitused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 10 ja § 10¹–§ 10³",
       "rdfs:label": "Tooteandmete esitamine enne turuleviimist",
@@ -136,11 +149,15 @@
       "estleg:summary": "Paneb tootjale/importijale kohustuse esitada Terviseametile koosseisu-, eraldiste, toksikoloogia- ja turuandmed enne toote turuleviimist ning oluliste muudatuste korral; hõlmab uudseid tooteid ja e-sigarette.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       },
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -155,13 +172,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TubS_Par_TeatamiskohustusKaubanduses",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 18",
       "rdfs:label": "Teatamiskohustus tubakatoodete müügiga tegelemisel",
@@ -171,14 +192,14 @@
       "estleg:summary": "Nõuab tubakatoodete jae- ja hulgimüügil ning toitlustuses majandustegevusteate esitamist ja tegevuskoha andmete deklareerimist, sh kohaldamist tubakatootega seonduvatele toodetele.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_JaemuugiKeelud",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 22",
       "rdfs:label": "Jaemüügi keelud ja müügiviiside piirangud",
@@ -188,22 +209,28 @@
       "estleg:summary": "Keelab tubakatoodete ja seonduvate toodete jaemüügi teatud asutustes ning müügivormides (nt automaadid, apteegid, kaugmüük), samuti piirab tükimüüki ja avatud pakendist müüki.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TubS_Par_SuitsuvabaTooteKaitlemiseKeeld",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 24",
       "rdfs:label": "Suitsuvaba tubakatoote käitlemise piiramine",
@@ -213,14 +240,14 @@
       "estleg:summary": "Sätestab suitsuvaba tubakatoote käitlemise üldkeelu koos kitsaste eranditega ning eristab uudseid tubakatooteid, millele kohaldatakse teistsugust režiimi.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_VanusepiirangudJaVastutus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 27–§ 28, § 45–§ 48",
       "rdfs:label": "Alaealiste kaitse: vanusepiirangud, keelud ja sanktsioonid",
@@ -230,14 +257,14 @@
       "estleg:summary": "Kehtestab alaealisele tubakatoodete ja seonduvate toodete tarvitamise ning omandamise keelud, müügikeelu alaealisele ja vastutuse vanusepiirangu rikkumise korral.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_PakendiUldnouded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 11",
       "rdfs:label": "Pakendi kuju- ja märgistusnõuded",
@@ -247,14 +274,14 @@
       "estleg:summary": "Keelab eksitava pakendikujunduse ja reklaamiefektiga märgistuse; sätestab pakendi kuju- ja tehnilised põhinõuded ning välistab tarbimist soodustava visuaalse kommunikatsiooni.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_PakendiKohustuslikMargistus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 12 ja § 12¹",
       "rdfs:label": "Pakendi kohustuslikud märgised, kordumatu tunnus ja turvaelement",
@@ -264,14 +291,14 @@
       "estleg:summary": "Nõuab müügi- ja rühmapakendil kohustuslikku teavet, tervisehoiatusi, kordumatut jälgimistunnust ning võltsimiskindlat turvaelementi; reguleerib ka plastisisalduse märgistust.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_TerviseohuHoiatused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 13, § 14¹ ja § 16",
       "rdfs:label": "Tervisehoiatuste sisu, paigutus ja pindala",
@@ -281,14 +308,14 @@
       "estleg:summary": "Määrab suitsetatavate ja uudsete suitsuvabade toodete tervisehoiatuste tekstid, paigutuse, mõõtmed ja minimaalse katvuse pakendipindadel.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {
       "@id": "estleg:TubS_Par_MuugipakendiMahunouded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TubS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "TubS § 17",
       "rdfs:label": "Müügipakendi minimaalne kogus ja e-vedelike mahu piirid",
@@ -298,7 +325,7 @@
       "estleg:summary": "Sätestab sigarettide ja suitsetamistubaka minimaalmahud müügipakendis ning elektrooniliste sigarettide mahutite ja täitevedelike mahupiirangud.",
       "estleg:sourceAct": "Tubakaseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TubS_Map_2026"
+        "@id": "estleg:TubS_Map"
       }
     },
     {

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hmac
 import os
+import sys
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -45,6 +46,11 @@ def _law_not_found(query: str) -> dict[str, Any]:
     }
 
 
+def _law_not_found_list(query: str) -> list[dict[str, Any]]:
+    """List-tool miss: unknown target, same envelope as overflow note objects."""
+    return [{"note": f"law not found: {query}"}]
+
+
 # ---------------------------------------------------------------------------
 # 1. search_laws
 # ---------------------------------------------------------------------------
@@ -53,11 +59,16 @@ def search_laws(query: str, limit: int = 10) -> list[dict[str, Any]]:
     """Find Estonian laws by title, official abbreviation, or slug substring.
 
     Use this first when you are unsure of a law's exact name. Matching is
-    accent-insensitive. Each result carries the canonical riigiteataja.ee URL.
+    accent-insensitive and expands EuroVoc domain labels (English or Estonian)
+    so the other-language label or a domain keyword can also hit. Each result
+    carries the canonical riigiteataja.ee URL.
 
     Example question: "Which Estonian laws mention 'töölepingu' / employment?"
 
-    Returns a list of {name, title, abbrev, rt_url, status}.
+    Returns a list of {name, title, abbrev, rt_url, status, external_ids}.
+    ``rt_url`` is a riigiteataja.ee URL or "" (never another host);
+    ``external_ids`` carries any non-riigiteataja identifier the act links
+    itself to, e.g. {"wikidata": "http://www.wikidata.org/entity/Q2352833"}.
     """
     results: list[dict[str, Any]] = []
     for rec in data.search_law_records(query, limit=limit):
@@ -69,6 +80,7 @@ def search_laws(query: str, limit: int = 10) -> list[dict[str, Any]]:
                 "title": data.act_title(act) or rec.title,
                 "abbrev": data.display_abbrev(rec),
                 "rt_url": data.rt_url(act),
+                "external_ids": data.external_ids(act),
                 "status": data._text(act.get("estleg:temporalStatus")) if act else "",
             }
         )
@@ -93,7 +105,11 @@ def get_law(law: str, as_of: str | None = None) -> dict[str, Any]:
     Example question: "Give me an overview of the Penal Code (Karistusseadustik)."
 
     Returns {title, abbrev, status, consolidated_as_of, rt_url,
-    eurovoc_subjects, num_provisions, num_chapters}. ``status`` is the
+    external_ids, eurovoc_subjects, num_provisions, num_chapters}. ``rt_url``
+    is the act's riigiteataja.ee URL, or "" when the ontology records no
+    riigiteataja source for it (a handful of acts, including KarS and VÕS);
+    ``external_ids`` then still carries what the act does link to, e.g.
+    {"wikidata": "http://www.wikidata.org/entity/Q2352833"}. ``status`` is the
     ontology's ``temporalStatus`` (may be "unknown" for some laws);
     ``consolidated_as_of`` is the date of the consolidated text captured. With
     ``as_of`` it additionally carries {as_of, num_provisions_as_of}; the
@@ -115,6 +131,7 @@ def get_law(law: str, as_of: str | None = None) -> dict[str, Any]:
         "consolidated_as_of": data.act_kehtiv_date(act),
         "ontology_version": data.ontology_version(),
         "rt_url": data.rt_url(act),
+        "external_ids": data.external_ids(act),
         "eurovoc_subjects": subjects,
         "num_provisions": len(data.provision_nodes(graph)),
         "num_chapters": len(data.chapter_nodes(graph)),
@@ -165,7 +182,10 @@ def _law_as_of(
 # ---------------------------------------------------------------------------
 @mcp.tool()
 def get_provision(
-    law: str, paragraph: str, as_of: str | None = None
+    law: str,
+    paragraph: str,
+    as_of: str | None = None,
+    full_text: bool = False,
 ) -> dict[str, Any]:
     """Read a single section (§) of an Estonian law, optionally as of a past date.
 
@@ -175,7 +195,8 @@ def get_provision(
     date (e.g. "2010-06-15") to read the § exactly as it stood on that date: the
     tool selects the historical redaction whose validity window contains the
     date and reports its redaction id and window. Legal text is truncated to
-    ~2000 characters; the rt_url points to the full act on riigiteataja.ee.
+    ~2000 characters; the rt_url points to the full act on riigiteataja.ee (or
+    is "" for the few acts whose ontology node records no riigiteataja source).
 
     Example question: "What did § 13 of the Penal Code (KarS) say on 2010-06-15?"
 
@@ -208,9 +229,8 @@ def get_provision(
         "rt_url": data.rt_url(data.act_node(graph)),
     }
     if as_of is None:
-        result["legal_text"] = _truncate(
-            data.clean_display(data._text(node.get("estleg:legalText")))
-        )
+        raw = data.clean_display(data._text(node.get("estleg:legalText")))
+        result["legal_text"] = raw if full_text else _truncate(raw)
         return result
     return _provision_as_of(rec, node, result, as_of)
 
@@ -265,7 +285,7 @@ def _reference_items(
 ) -> list[dict[str, Any]]:
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
     act = data.act_node(graph)
     rt = data.rt_url(act)
@@ -321,8 +341,8 @@ def who_references(law: str, paragraph: str | None = None) -> list[dict[str, Any
     """Find what cites a law or section (incoming references = legal impact).
 
     This is the impact lens: which provisions point AT the target. Pass a
-    paragraph to scope to one §, or omit it for the whole law. Returns an empty
-    list when nothing references it.
+    paragraph to scope to one §, or omit it for the whole law. Unknown law
+    returns ``[{note}]``; a known law with no incoming references returns ``[]``.
 
     Example question: "Which provisions reference § 60 of the Penal Code (KarS)?"
 
@@ -339,8 +359,8 @@ def references_of(law: str, paragraph: str | None = None) -> list[dict[str, Any]
     """Find what a law or section cites (outgoing references).
 
     The outgoing lens: which other provisions the target points to. Pass a
-    paragraph to scope to one §, or omit it for the whole law. Returns an empty
-    list when it references nothing.
+    paragraph to scope to one §, or omit it for the whole law. Unknown law
+    returns ``[{note}]``; a known law that cites nothing returns ``[]``.
 
     Example question: "What does § 13 of the Penal Code (KarS) reference?"
 
@@ -358,7 +378,8 @@ def drafts_affecting_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
 
     The pending-legislation radar: which bills currently in the legislative
     pipeline propose to amend the target law. Each item links to the draft in
-    EIS (eelnoud.valitsus.ee). Returns an empty list when no drafts affect it.
+    EIS (eelnoud.valitsus.ee). Unknown law returns ``[{note}]``; a known law
+    with no drafts returns ``[]``.
 
     Example question: "What pending bills affect the Health Services Organisation
     Act (Tervishoiuteenuste korraldamise seadus)?"
@@ -367,7 +388,7 @@ def drafts_affecting_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
 
     # Collect draft IRIs from two link shapes, in node order, de-duplicated:
@@ -431,8 +452,8 @@ def court_decisions_for_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
     """Find Supreme Court (Riigikohus) decisions interpreting a law.
 
     The case-law lens: which Riigikohus decisions interpret provisions of the
-    target law. Each item links to the full decision on riigikohus.ee. Returns
-    an empty list when no decisions are linked.
+    target law. Each item links to the full decision on riigikohus.ee. Unknown
+    law returns ``[{note}]``; a known law with no linked decisions returns ``[]``.
 
     Example question: "Which Supreme Court cases interpret the Penal Code (KarS)?"
 
@@ -440,7 +461,7 @@ def court_decisions_for_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
 
     decision_iris: list[str] = []
@@ -478,8 +499,11 @@ def sanctions_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
 
     The enforcement-teeth lens: imprisonment, fines, and other penalties
     attached to the law's provisions, with the § that imposes each. Each item
-    carries the riigiteataja.ee URL of the act. Returns an empty list when the
-    law defines no sanctions. ``limit`` caps the list (KarS has hundreds).
+    carries the riigiteataja.ee URL of the act, or "" for the few acts whose
+    ontology node records no riigiteataja source (KarS is one). Unknown law
+    returns
+    ``[{note}]``; a known law that defines no sanctions returns ``[]``.
+    ``limit`` caps the list (KarS has hundreds).
 
     Example question: "What penalties does the Penal Code (KarS) define?"
 
@@ -487,7 +511,7 @@ def sanctions_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     if limit <= 0:
         return []
     rt = data.rt_url(data.act_node(data.load_law_graph(rec)))
@@ -523,7 +547,8 @@ def competent_authority_for_law(law: str) -> list[dict[str, Any]]:
 
     The who-is-in-charge lens: the institutions named as the competent
     authority on the law's provisions, with how many provisions each one
-    covers. Returns an empty list when no competence links exist.
+    covers. Unknown law returns ``[{note}]``; a known law with no competence
+    links returns ``[]``.
 
     Example question: "Which authority enforces the Personal Data Protection Act
     (Isikuandmete kaitse seadus)?"
@@ -532,7 +557,7 @@ def competent_authority_for_law(law: str) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
     counts: dict[str, int] = {}
     for node in data.provision_nodes(graph):
@@ -589,7 +614,8 @@ def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
     The version-history lens: every recorded redaction of a section, oldest
     first, with the date window each was in force and its text. Pair it with
     ``get_provision(as_of=...)`` to read any single past redaction in full.
-    Returns an empty list when the law/§ is unknown or has no recorded history.
+    Unknown law returns ``[{note}]``; a known law/§ with no recorded history
+    (or an unknown §) returns ``[]``.
 
     Example question: "How has § 13 of the Penal Code (KarS) changed over time?"
 
@@ -600,7 +626,7 @@ def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     graph = data.load_law_graph(rec)
     node = data.find_provision(graph, paragraph)
     if node is None:
@@ -670,8 +696,9 @@ def regulations_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     ``issuedUnder`` / ``implementsCitation`` points at the target law -- the
     secondary legislation enacted on its authority. Each row carries the
     regulation's riigiteataja.ee URL and the statutory citation text(s) it
-    implements. Capped by ``limit`` (a major enabling act has thousands); returns
-    an empty list when none are issued under it.
+    implements. Capped by ``limit`` (a major enabling act has thousands).
+    Unknown law returns ``[{note}]``; a known law with none issued under it
+    returns ``[]``.
 
     Example question: "Which regulations are issued under the Local Government
     Organisation Act (KOKS)?"
@@ -682,7 +709,7 @@ def regulations_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     rows = [_regulation_row(r) for r in data.regulations_for_law(rec.name)]
     return _capped(rows, limit)
 
@@ -802,11 +829,112 @@ def amendment_history(law: str, limit: int = 50) -> list[dict[str, Any]]:
     Example question: "What amendments has KarS already received?"
 
     Returns a list of {event_id, label, amendment_date, entry_into_force, amends}.
+    Unknown law returns ``[{note}]``; a known law with no events returns ``[]``.
     """
     rec = data.resolve_law(law)
     if rec is None:
-        return []
+        return _law_not_found_list(law)
     return data.amendment_events(rec, limit=limit)
+
+
+# ---------------------------------------------------------------------------
+# 18. eu_case_law_for_directive (ticket #505)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def eu_case_law_for_directive(celex: str, limit: int = 20) -> list[dict[str, Any]]:
+    """Find CURIA decisions that mention an EU directive CELEX number.
+
+    The EU-side mirror of ``court_decisions_for_law``: after ``transposition``
+    returns a CELEX (e.g. ``32000L0060``), this searches the committed CURIA
+    peeps for judgments / orders / opinions whose label, ``celexNumber``,
+    ``owl:sameAs``, ``dcterms:source``, or text mention that CELEX. Spaces and
+    a ``CELEX:`` prefix are stripped. The CURIA corpus currently has no
+    ``interprets`` edges (#418), so the join is a CELEX substring match, not a
+    graph walk. Each item carries the CURIA / EUR-Lex URL.
+
+    Example question: "Which CURIA judgments interpret directive 32000L0060?"
+
+    Returns a list of {ecli_or_celex, title, curia_or_eurlex_url}. No matches
+    (or an empty CELEX) yield ``[{note}]``; ``limit`` <= 0 yields ``[]``.
+    """
+    if limit <= 0:
+        return []
+    needle = data.normalize_celex(celex)
+    if not needle:
+        return [{"note": f"No CELEX number in {celex!r}."}]
+    rows = data.eu_case_law_for_directive(needle, limit=limit)
+    if rows:
+        return rows
+    return [
+        {
+            "note": (
+                f"No CURIA decisions mention CELEX {needle!r}. The committed "
+                "CURIA peeps have no interprets edges (#418); matching is a "
+                "CELEX substring on label / celexNumber / owl:sameAs / "
+                "dcterms:source."
+            )
+        }
+    ]
+
+
+# ---------------------------------------------------------------------------
+# 19. harmonisation_for_directive (ticket #540)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def harmonisation_for_directive(celex: str, limit: int = 20) -> list[dict[str, Any]]:
+    """Load the cross-border harmonisation sidecar for one directive CELEX.
+
+    Opens ``krr_outputs/harmonisation/harmonisation_by_directive/harm_<celex>.json``
+    on demand (the overlay loader; not a scan of every harm file). Lists the
+    Estonian act(s) and other member-state measures that share that directive.
+
+    Example question: "Which neighbouring states also transposed 32000L0060?"
+
+    Returns a list of {id, label, member_state, national_celex, harmonises}.
+    Unknown / missing CELEX yields ``[{note}]``; ``limit`` <= 0 yields ``[]``.
+    """
+    if limit <= 0:
+        return []
+    needle = data.normalize_celex(celex)
+    if not needle:
+        return [{"note": f"No CELEX number in {celex!r}."}]
+    rows = data.harmonisation_for_directive(needle, limit=limit)
+    if rows:
+        return rows
+    return [
+        {
+            "note": (
+                f"No harmonisation sidecar for CELEX {needle!r} "
+                "(krr_outputs/harmonisation/harmonisation_by_directive/"
+                f"harm_{needle}.json)."
+            )
+        }
+    ]
+
+
+# ---------------------------------------------------------------------------
+# 20. layers_available (ticket #540)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def layers_available() -> list[dict[str, Any]]:
+    """List which corpus sidecars the MCP surface reads vs excludes.
+
+    Overlay coverage (#540): concepts are wired through ``define_term``;
+    harmonisation is opened per-CELEX by ``harmonisation_for_directive``;
+    sanctions / amendments / regulations / provision versions are already
+    wired. Combined-graph-only and LFS artifacts (similarity,
+    ``combined_ontology.jsonld``, annotations, EUR-Lex peeps) are listed as
+    ``excluded`` so a silent dead layer is documented rather than implied.
+
+    The table also carries a ``provision_detection`` row, which is a live
+    self-test rather than a path check: it reports how many § nodes the Penal
+    Code currently resolves, so an upstream retype of the provision class
+    (which would silently empty half the tool surface) is visible here.
+
+    Returns a list of {layer, path, status, tools, present, note} where
+    ``status`` is ``wired``, ``loadable``, or ``excluded``.
+    """
+    return data.layers_available()
 
 
 def _transport_security() -> TransportSecuritySettings:
@@ -885,6 +1013,41 @@ def _build_http_app():
     return app
 
 
+def check_provision_detection() -> None:
+    """Refuse to boot when the corpus's § nodes are no longer detected (#678).
+
+    A generator change that retypes provisions breaks no import and loses no
+    file: ``get_provision``, ``provision_history``, the reference tools, the
+    court/authority lenses and every ``num_provisions`` count simply return
+    nothing, and a lawmaker reads that as "the corpus says there is nothing".
+    Failing loudly at startup is the only place that regression is cheap to
+    catch. ``ESTLEG_ALLOW_EMPTY_PROVISIONS=1`` downgrades it to a warning for
+    an operator who knowingly wants the remaining tools.
+    """
+    check = data.provision_detection_check()
+    if check["ok"]:
+        return
+    print(
+        f"estleg-mcp: provision detection is dark -- {check['abbrev']} "
+        f"({check['law']}) resolves {check['provisions']} § nodes.\n"
+        "  Every provision-backed tool (get_provision, provision_history, "
+        "who_references, references_of, court_decisions_for_law, "
+        "competent_authority_for_law, num_provisions) would answer empty.\n"
+        "  Check that ESTLEG_CORPUS points at a corpus containing "
+        "krr_outputs/INDEX.json, and that its *_peep.json § nodes still carry "
+        "an estleg:LegalProvision @type (see estleg_mcp.data._is_provision).\n"
+        "  Set ESTLEG_ALLOW_EMPTY_PROVISIONS=1 to start anyway.",
+        file=sys.stderr,
+    )
+    if os.environ.get("ESTLEG_ALLOW_EMPTY_PROVISIONS", "").strip() == "1":
+        print(
+            "estleg-mcp: ESTLEG_ALLOW_EMPTY_PROVISIONS=1 set; starting anyway.",
+            file=sys.stderr,
+        )
+        return
+    raise SystemExit(1)
+
+
 def main() -> None:
     """Run the estleg MCP server.
 
@@ -895,7 +1058,12 @@ def main() -> None:
     token; unset = open) tune it. Behind a reverse proxy, set
     ``ESTLEG_ALLOWED_HOSTS`` to the public host(s) to re-enable DNS-rebinding
     protection (see :func:`_transport_security`).
+
+    Either transport is preceded by :func:`check_provision_detection`, so a
+    corpus whose § nodes stopped being detected fails at boot instead of
+    serving confident empty answers.
     """
+    check_provision_detection()
     transport = os.environ.get("ESTLEG_TRANSPORT", "stdio").strip().lower()
     if transport in ("http", "streamable-http", "streamable_http"):
         import uvicorn

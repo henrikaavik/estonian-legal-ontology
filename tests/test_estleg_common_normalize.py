@@ -1,12 +1,7 @@
 """Tests for common normalization and JSON-LD text helpers."""
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import BODY_CANON, jsonld_text, jsonld_texts, normalize_issuer_name
+from estleg.estleg_common import BODY_CANON, jsonld_text, jsonld_texts, normalize_issuer_name
 
 
 def test_normalize_issuer_lowercase() -> None:

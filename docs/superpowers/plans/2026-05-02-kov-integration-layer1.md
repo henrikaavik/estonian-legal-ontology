@@ -1549,7 +1549,7 @@ class TestEndToEndEnrichedKovGraph:
                 },
                 # MunicipalRegulation (act node, directly typed as Act)
                 {
-                    "@id": "estleg:Reg_1014955_Map_2026",
+                    "@id": "estleg:Reg_1014955_Map",
                     "@type": [
                         "owl:Ontology",
                         "estleg:Act",
@@ -1575,7 +1575,7 @@ class TestEndToEndEnrichedKovGraph:
                     "estleg:enactedByMunicipality": {
                         "@id": "estleg:Municipality_EHAK_0784"
                     },
-                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map_2026"},
+                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map"},
                 },
             ],
         })
@@ -1843,7 +1843,7 @@ def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
     """Build the JSON-LD document containing all Municipality nodes."""
     nodes = [
         {
-            "@id": "estleg:Municipalities_Map_2026",
+            "@id": "estleg:Municipalities_Map",
             "@type": ["owl:Ontology"],
             "rdfs:label": "Estonian Municipalities (current EHAK)",
             "dcterms:source": "https://www.stat.ee/sites/default/files/2020-03/ehak.csv",
@@ -1960,7 +1960,7 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
     """Build the JSON-LD document containing all Issuer nodes."""
     nodes: list[dict] = [
         {
-            "@id": "estleg:Issuers_Kov_Map_2026",
+            "@id": "estleg:Issuers_Kov_Map",
             "@type": ["owl:Ontology"],
             "rdfs:label": "KOV Issuers (volikogu and valitsus bodies)",
         }
@@ -2026,7 +2026,7 @@ Create `tests/fixtures/kov_layer1/sample_kov_act.json` (a small valid KOV peep f
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1014955_Map_2026",
+      "@id": "estleg:Reg_1014955_Map",
       "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
       "rdfs:label": "Tallinna jäätmehoolduseeskiri (määrus)",
       "dc:source": "Tallinna jäätmehoolduseeskiri",
@@ -2097,7 +2097,7 @@ class TestEnrichKovActFile:
         with open(temp_act, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         act = next(n for n in doc["@graph"]
-                   if n["@id"] == "estleg:Reg_1014955_Map_2026")
+                   if n["@id"] == "estleg:Reg_1014955_Map")
         assert act["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
         assert act["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
         assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
@@ -2117,7 +2117,7 @@ class TestEnrichKovActFile:
             assert "estleg:KovProvision" in p["@type"]
             assert p["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
             assert p["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
-            assert p["estleg:partOfAct"] == {"@id": "estleg:Reg_1014955_Map_2026"}
+            assert p["estleg:partOfAct"] == {"@id": "estleg:Reg_1014955_Map"}
 
     def test_idempotent(self, temp_act, issuer):
         from enrich_kov_layer1 import enrich_kov_act_file
@@ -2137,7 +2137,7 @@ class TestEnrichKovActFile:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:NotAnAct_Map_2026",
+                {"@id": "estleg:NotAnAct_Map",
                  "@type": ["owl:Ontology"],
                  "rdfs:label": "garbage"}
             ],
@@ -2155,9 +2155,9 @@ class TestEnrichKovActFile:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
-                {"@id": "estleg:Reg_2_Map_2026",
+                {"@id": "estleg:Reg_2_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
             ],
         }), encoding="utf-8")
@@ -2292,7 +2292,7 @@ Create `tests/fixtures/kov_layer1/sample_law.json`:
   },
   "@graph": [
     {
-      "@id": "estleg:AlkS_Map_2026",
+      "@id": "estleg:AlkS_Map",
       "@type": ["owl:Ontology"],
       "rdfs:label": "Alkoholiseadus teemakaardistus",
       "dc:source": "Alkoholiseadus"
@@ -2366,7 +2366,7 @@ class TestStampActType:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1009410_Map_2026",
+                {"@id": "estleg:Reg_1009410_Map",
                  "@type": ["owl:Ontology", "estleg:NationalRegulation"],
                  "rdfs:label": "test"}
             ],
@@ -2384,7 +2384,7 @@ class TestStampActType:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1_Map_2026",
+                {"@id": "estleg:Reg_1_Map",
                  "@type": ["owl:Ontology", "estleg:GovernmentRegulation"]}
             ],
         }), encoding="utf-8")
@@ -2559,7 +2559,7 @@ class TestOrchestratorEndToEnd:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_1009410_Map_2026",
+                {"@id": "estleg:Reg_1009410_Map",
                  "@type": ["owl:Ontology", "estleg:GovernmentRegulation"],
                  "rdfs:label": "Test government regulation"}
             ],
@@ -2584,7 +2584,7 @@ class TestOrchestratorEndToEnd:
         # KOV act enriched
         kov_doc = json.load(open(kov_dir / "act_peep.json", encoding="utf-8"))
         act = next(n for n in kov_doc["@graph"]
-                   if n["@id"] == "estleg:Reg_1014955_Map_2026")
+                   if n["@id"] == "estleg:Reg_1014955_Map")
         assert "estleg:enactedBy" in act
         assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
 

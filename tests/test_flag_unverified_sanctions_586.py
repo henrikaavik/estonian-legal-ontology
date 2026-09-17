@@ -7,12 +7,7 @@ as municipal peeps are backfilled).
 """
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import flag_unverified_sanctions_586 as flag
+from estleg import flag_unverified_sanctions_586 as flag
 
 NS = "https://w3id.org/estleg/"
 

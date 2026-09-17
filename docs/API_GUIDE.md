@@ -2,23 +2,29 @@
 
 ## Overview
 
-The Estonian Legal Ontology encodes 1,145 enacted laws (1,190 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+This is a guide to local Python loading and SPARQL queries. The repository
+provides [20 MCP tools](../mcp_server/README.md#tools), but no REST `/api`
+implementation. Run Python examples from the repository root after the
+[setup steps](../README.md#setup). Use [project status](README.md#project-status)
+and [VALIDATION_REPORT.md](VALIDATION_REPORT.md) to assess corpus limitations.
 
-> **Maintenance note:** The counts in this guide are sourced from `krr_outputs/INDEX.json`, the per-pipeline reports under `krr_outputs/` (e.g. `amendment_history_report.json`, `institutional_competence_report.json`, `sanctions_report.json`), and `metadata.jsonld` (`estleg:statistics`). Update them from those canonical files when the corpus is regenerated.
+The Estonian Legal Ontology encodes 1,122 enacted laws (1,195 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,104 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+
+> **Maintenance note:** The counts in this guide are sourced from `krr_outputs/INDEX.json`, the per-pipeline reports under `krr_outputs/reports/` (e.g. `amendment_history_report.json`, `institutional_competence_report.json`, `sanctions_report.json`), and `metadata.jsonld` (`estleg:statistics`). Update them from those canonical files when the corpus is regenerated.
 
 ## Directory Structure
 
 ```
 krr_outputs/
-  *.json              # 1,190 enacted law files (*_peep.json)
+  *.json              # 1,195 enacted law files (*_peep.json)
   amendments/         # 5,647 amendment chain files
   concepts/           # Legal concept graph + report
   curia/              # EU court decisions (CJEU/CURIA)
   eelnoud/            # Draft legislation (EIS)
   eurlex/             # EU legislation (EUR-Lex)
-  institutions/       # 113 institutional competence files
+  institutions/       # 117 institutional competence files
   regulations/        # Domestic regulations (maarused)
-    riik/                              # State-level (~3,820 files)
+    riik/                              # State-level (3,812 files)
       *_peep.json                      # One file per regulation
       REGULATIONS_RIIK_INDEX.json      # State regulation registry (byIssuer counts)
     kov/                               # KOV/municipal (opt-in via --kov)
@@ -26,7 +32,7 @@ krr_outputs/
         *_peep.json
       REGULATIONS_KOV_INDEX.json
   riigikohus/         # Supreme Court decisions (1993-2026)
-  sanctions/          # 291 sanction cross-reference files
+  sanctions/          # 464 sanction sidecars
   INDEX.json          # Master registry of all enacted laws
 ```
 
@@ -88,7 +94,7 @@ import json
 with open("krr_outputs/regulations/riik/REGULATIONS_RIIK_INDEX.json") as f:
     index = json.load(f)
 
-print(f"Total state regulations: {index.get('total')}")
+print(f"Total state regulations: {index['totalRegulations']}")
 for issuer, count in index.get("byIssuer", {}).items():
     print(f"  {issuer}: {count}")
 ```
@@ -189,9 +195,9 @@ for node in judgments["@graph"][:3]:
 import json
 from pathlib import Path
 
-# Load all sanction files for a specific law
+# Read three sanction sidecars
 sanctions_dir = Path("krr_outputs/sanctions")
-for f in sorted(sanctions_dir.glob("*_peep.json"))[:3]:
+for f in sorted(sanctions_dir.glob("sanctions_*.json"))[:3]:
     with open(f) as fh:
         data = json.load(fh)
     print(f"{f.name}: {len(data.get('@graph', []))} sanctions")
@@ -217,9 +223,9 @@ for f in sorted(institutions_dir.glob("*.json"))[:3]:
 import json
 from pathlib import Path
 
-# Load amendment history for a specific law
+# Read three amendment-history sidecars
 amendments_dir = Path("krr_outputs/amendments")
-for f in sorted(amendments_dir.glob("*_peep.json"))[:3]:
+for f in sorted(amendments_dir.glob("amendments_*.json"))[:3]:
     with open(f) as fh:
         data = json.load(fh)
     print(f"{f.name}: {len(data.get('@graph', []))} amendment events")
@@ -239,12 +245,18 @@ print(f"Total triples: {len(g)}")
 
 The most powerful way to query this dataset is loading files into a semantic graph database (Apache Jena, Blazegraph, Oxigraph, etc.) and using SPARQL.
 
-> **Which graph to query.** Parent-class membership such as `?x a estleg:LegalProvision`
-> or `?x a estleg:Act` is materialised in the shipped `krr_outputs/combined_ontology.jsonld`,
-> where a build-time type rollup (issue #519) stamps every instance with its entailed
-> superclasses. A single `*_peep.json` only carries the **leaf** type
-> (`estleg:LegalProvision_<law>`), so a bare `a estleg:LegalProvision` query against one peep
-> returns nothing — query the combined graph for those. Types stamped directly on instances
+The in-repo quickstart is Oxigraph via `docker compose up` →
+[http://localhost:7878](http://localhost:7878) (issue #474). Each corpus is a
+named graph (`https://w3id.org/estleg/graph/laws` and siblings). The compose
+file loads `krr_outputs/exports/estleg_all_sample.nq.gz` by default; generate
+the full `krr_outputs/estleg_all.nq.gz` with
+`python3 -m estleg.serialize_named_graphs --write`.
+
+> **Which graph to query.** Provisions are typed `estleg:LegalProvision` on the
+> instance (issue #434), so `?x a estleg:LegalProvision` works on a single peep
+> and on `combined_ontology.jsonld` without RDFS inference. Act-class rollup
+> (`?x a estleg:Act`) is still materialised at combined-build time (issue #519)
+> for the `*Regulation` / `Law` hierarchy. Types stamped directly on instances
 > (`estleg:CourtDecision`, `estleg:Sanction`, `estleg:Institution`, `estleg:EULegislation`,
 > the `*Regulation` act classes, and `estleg:Act` on act roots) match without the combined
 > graph, but each lives in its own subdirectory — load that subcorpus. Several examples below
@@ -255,8 +267,8 @@ The most powerful way to query this dataset is loading files into a semantic gra
 PREFIX estleg: <https://w3id.org/estleg/>
 
 # Topic clusters are per-law concept nodes (estleg:Cluster_<ABBREV>_<n>); a
-# provision links to one via estleg:requestedCluster. The bare type assertion
-# needs the combined graph (see the note above).
+# provision links to one via estleg:requestedCluster. Load
+# krr_outputs/perekonnaseadus_peep.json for this example.
 SELECT ?provision ?text WHERE {
   ?provision a estleg:LegalProvision ;
              estleg:requestedCluster estleg:Cluster_PKS_1 ;
@@ -285,7 +297,12 @@ SELECT ?decision ?provision WHERE {
 }
 ```
 
-### Government Regulations Currently in Force
+### Government Regulations with No Recorded Repeal Date
+
+Load `regulations/riik/*_peep.json`. This query reports the stored entry date
+and absence of a recorded repeal date; neither proves current legal force.
+Check the source consolidation and freshness before relying on that status.
+
 ```sparql
 PREFIX estleg: <https://w3id.org/estleg/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -413,9 +430,9 @@ SELECT ?act ?label WHERE {
 }
 ```
 
-To go the other way — list every EuroVoc subject assigned to a specific act.
-Match the act by its clean title in `dcterms:title` (a plain string); `rdfs:label`
-on an act root is the longer "… teemakaardistus" map label, not the bare title:
+To go the other way, load `perekonnaseadus_peep.json` and list its subjects.
+Titles may be plain strings or language-tagged values (including bilingual
+arrays in JSON-LD). Compare `STR(?title)` so both literal forms match:
 
 ```sparql
 PREFIX estleg: <https://w3id.org/estleg/>
@@ -423,17 +440,20 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT ?subject WHERE {
   ?act a estleg:Act ;
-       dcterms:title "Töölepingu seadus" ;
+       dcterms:title ?title ;
        dcterms:subject ?subject .
+  FILTER(STR(?title) = "Perekonnaseadus")
   FILTER(STRSTARTS(STR(?subject), "http://eurovoc.europa.eu/"))
 }
 ```
 
 For the full list of classes, properties, and SPARQL examples, see [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md).
 
-## REST API Design Suggestions
+## REST API Design Suggestions (not implemented)
 
-If exposing via an API, typical endpoints might include:
+The following paths are proposals only; no server in this repository serves
+them. Current interfaces are MCP and locally loaded RDF/SPARQL. A future API
+could expose:
 
 - `GET /api/provisions/:id` - Returns a specific legal provision and its full text.
 - `GET /api/provisions/:id/references` - Returns cross-references from a provision.

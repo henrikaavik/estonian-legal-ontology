@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1013873_Map_2026",
+      "@id": "estleg:Reg_1013873_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Asjaõigusseaduse rakendamise seaduse § ga 112 ja Vabariigi Valitsuse 2. juuni 2006 määruse nr 133 \"Maa munitsipaalomandisse andmise kord\" § ga 5 ja § 9 lõikega 1 kohaliku omavalitsuse pädevusse antud ülesannete delegeerimine Tallinna Linnavalitsusele (määrus)",
       "dc:source": "Asjaõigusseaduse rakendamise seaduse § ga 112 ja Vabariigi Valitsuse 2. juuni 2006 määruse nr 133 \"Maa munitsipaalomandisse andmise kord\" § ga 5 ja § 9 lõikega 1 kohaliku omavalitsuse pädevusse antud ülesannete delegeerimine Tallinna Linnavalitsusele",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/421052013037.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/421052013037.xml"
       },
       "estleg:issuer": "Tallinna Linnavolikogu",
@@ -45,23 +40,23 @@
       "estleg:regulationTypeBucket": "tallinna linnavalitsusele",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:AÕSRS_Map_2026"
+          "@id": "estleg:AOSRS_Map"
         },
         {
-          "@id": "estleg:KOKS_Map_2026"
+          "@id": "estleg:KOKS_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1013873_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1013873_Map_1"
         },
         {
-          "@id": "estleg:Citation_Reg_1013873_Map_2026_2"
+          "@id": "estleg:Citation_Reg_1013873_Map_2"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1014041_Map_2026"
+          "@id": "estleg:Reg_1014041_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -78,16 +73,16 @@
       ],
       "estleg:similarAct": [
         {
-          "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1016113_Map_2026"
+          "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1016113_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1014945_Map_2026"
+          "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1014945_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1014947_Map_2026"
+          "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1014947_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1011665_Map_2026"
+          "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1011665_Map"
         }
       ],
       "estleg:entryIntoForce": {
@@ -98,23 +93,34 @@
         "@value": "2013-05-21",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1013873",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_25"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
+        }
+      ],
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1013873_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1013873",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -129,10 +135,12 @@
         "@id": "estleg:Municipality_EHAK_0784"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1013873_Map_2026"
+        "@id": "estleg:Reg_1013873_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -144,13 +152,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1013873_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1013873",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -165,10 +177,12 @@
         "@id": "estleg:Municipality_EHAK_0784"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1013873_Map_2026"
+        "@id": "estleg:Reg_1013873_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -183,13 +197,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1013873_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1013873",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -204,10 +222,12 @@
         "@id": "estleg:Municipality_EHAK_0784"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1013873_Map_2026"
+        "@id": "estleg:Reg_1013873_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -230,13 +250,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1013873_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1013873",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 4.",
@@ -251,11 +275,11 @@
         "@id": "estleg:Municipality_EHAK_0784"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1013873_Map_2026"
+        "@id": "estleg:Reg_1013873_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1013873_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1013873_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -267,24 +291,24 @@
       "estleg:citationText": "Määrus kehtestatakse kohaliku omavalitsuse korralduse seaduse § 22 lg 2"
     },
     {
-      "@id": "estleg:Citation_Reg_1013873_Map_2026_2",
+      "@id": "estleg:Citation_Reg_1013873_Map_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
       ],
       "estleg:citationTarget": {
-        "@id": "estleg:AÕSRS_Par_11"
+        "@id": "estleg:AOSRS_Par_11"
       },
       "estleg:citationText": "asjaõigusseaduse rakendamise seaduse § 11"
     },
     {
-      "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1016113_Map_2026",
+      "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1016113_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1016113_Map_2026"
+        "@id": "estleg:Reg_1016113_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.45",
@@ -293,13 +317,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1014945_Map_2026",
+      "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1014945_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1014945_Map_2026"
+        "@id": "estleg:Reg_1014945_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.413",
@@ -308,13 +332,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1014947_Map_2026",
+      "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1014947_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1014947_Map_2026"
+        "@id": "estleg:Reg_1014947_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.393",
@@ -323,13 +347,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1013873_Map_2026_Reg_1011665_Map_2026",
+      "@id": "estleg:Similarity_Reg_1013873_Map_Reg_1011665_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1011665_Map_2026"
+        "@id": "estleg:Reg_1011665_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.347",

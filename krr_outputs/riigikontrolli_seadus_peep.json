@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RKS_Map_2026",
+      "@id": "estleg:RKS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Riigikontrolli seadus teemakaardistus",
       "dc:source": "Riigikontrolli seadus",
-      "dcterms:title": "Riigikontrolli seadus",
+      "dcterms:title": [
+        {
+          "@value": "Riigikontrolli seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "National Audit Office Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/102062021013.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/102062021013.xml"
       },
       "estleg:kehtiv": {
@@ -49,16 +54,88 @@
           "@id": "http://eurovoc.europa.eu/5181"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_riigikontrolli_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5181"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:RKS_Par_17"
+        },
+        {
+          "@id": "estleg:RKS_Par_50"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RKS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:RKS_Par_7_Lg_2_1"
+        },
+        {
+          "@id": "estleg:RKS_Par_7_Lg_5"
+        },
+        {
+          "@id": "estleg:RKS_Par_50_Lg_2_1"
+        },
+        {
+          "@id": "estleg:RKS_Par_21"
+        },
+        {
+          "@id": "estleg:RKS_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:RKS_Par_27_Lg_8"
+        },
+        {
+          "@id": "estleg:RKS_Par_51_Lg_2"
+        },
+        {
+          "@id": "estleg:RKS_Par_55_1"
+        },
+        {
+          "@id": "estleg:RKS_Par_55_1_Lg_2"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_finantsinspektsioon"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2021-06-12",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/530062021004"
       }
     },
     {
@@ -114,10 +191,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -143,10 +224,14 @@
       "rdfs:label": "2. peatükk – RIIGIKONTROLLI ÜLESANDED JA PÄDEVUS",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -172,10 +257,14 @@
       "rdfs:label": "3. peatükk – RIIGIKONTROLÖR",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -201,10 +290,14 @@
       "rdfs:label": "4. peatükk – RIIGIKONTROLLI STRUKTUUR",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -230,10 +323,14 @@
       "rdfs:label": "5. peatükk – TEENISTUS- JA TÖÖSUHTED RIIGIKONTROLLIS",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -259,10 +356,14 @@
       "rdfs:label": "6. peatükk – RIIGIKONTROLLI KONTROLLITEGEVUSE ALUSED",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -310,9 +411,9 @@
       "rdfs:label": "7. peatükk – LÕPPSÄTTED",
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RKS_7"
       },
       "estleg:hasPart": [
@@ -322,19 +423,23 @@
         {
           "@id": "estleg:Division_RKS_7_2"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus määrab kindlaks Riigikontrolli korralduse ja tegevuse alused. (2) Käesolev seadus sätestab Riigikontrolli poolt isikuandmete, sealhulgas eriliiki isikuandmete töötlemise, andmesubjekti õiguste teostamise ning nende piiramise alused.",
       "estleg:legalText": "(1) Käesolev seadus määrab kindlaks Riigikontrolli korralduse ja tegevuse alused. (2) Käesolev seadus sätestab Riigikontrolli poolt isikuandmete, sealhulgas eriliiki isikuandmete töötlemise, andmesubjekti õiguste teostamise ning nende piiramise alused.",
@@ -353,7 +458,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -367,7 +474,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_1_Lg_1",
@@ -393,19 +504,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Riigikontrolli staatus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontroll on oma tegevuses sõltumatu majanduskontrolli teostav riigiorgan.",
       "estleg:legalText": "Riigikontroll on oma tegevuses sõltumatu majanduskontrolli teostav riigiorgan.",
@@ -417,7 +537,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_2_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -432,7 +552,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_2_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -446,13 +566,13 @@
       "@id": "estleg:RKS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Riigikontrolli tegevuse eesmärk",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli tegevuse eesmärk on majanduskontrolli kaudu anda Riigikogule ja avalikkusele kindlustunne, et avaliku sektori vahendeid kasutatakse seaduslikult ning tulemuslikult.",
       "estleg:legalText": "Riigikontrolli tegevuse eesmärk on majanduskontrolli kaudu anda Riigikogule ja avalikkusele kindlustunne, et avaliku sektori vahendeid kasutatakse seaduslikult ning tulemuslikult.",
@@ -464,11 +584,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_3_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -479,10 +601,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_3_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -490,19 +616,28 @@
       "estleg:legalText": "Riigikontrolli tegevuse eesmärk on majanduskontrolli kaudu anda Riigikogule ja avalikkusele kindlustunne, et avaliku sektori vahendeid kasutatakse seaduslikult ning tulemuslikult.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Riigikontrolli kulude katmine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli tegevuseks vajalikud kulud nähakse ette riigieelarves.",
       "estleg:legalText": "Riigikontrolli tegevuseks vajalikud kulud nähakse ette riigieelarves.",
@@ -514,7 +649,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_4_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_4_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -524,7 +659,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_4_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -538,13 +673,13 @@
       "@id": "estleg:RKS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Riigikontrolli tegevuse kontrollimine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli tegevust auditeerib igal aastal Riigikogu poolt rahanduskomisjoni ettepanekul määratud audiitorettevõtja, kellel on Riigikontrolli tegevuse kontrollimiseks samasugused õigused nagu Riigikontrollil kontrollimiste läbiviimiseks.",
       "estleg:legalText": "Riigikontrolli tegevust auditeerib igal aastal Riigikogu poolt rahanduskomisjoni ettepanekul määratud audiitorettevõtja, kellel on Riigikontrolli tegevuse kontrollimiseks samasugused õigused nagu Riigikontrollil kontrollimiste läbiviimiseks.",
@@ -556,11 +691,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_5_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_5_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -580,10 +717,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_5_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -591,19 +732,31 @@
       "estleg:legalText": "Riigikontrolli tegevust auditeerib igal aastal Riigikogu poolt rahanduskomisjoni ettepanekul määratud audiitorettevõtja, kellel on Riigikontrolli tegevuse kontrollimiseks samasugused õigused nagu Riigikontrollil kontrollimiste läbiviimiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_5"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_5_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5¹.",
       "rdfs:label": "§ 5¹. Riigikontrolli registreerimine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontroll registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:legalText": "Riigikontroll registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
@@ -615,11 +768,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_5_1_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_5_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -650,10 +805,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_5_1_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_5_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -661,19 +820,28 @@
       "estleg:legalText": "Riigikontroll registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_5_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Majanduskontroll (audit)",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolli põhiülesanne on majanduskontroll (audit). (2) Auditi käigus võib Riigikontroll hinnata kontrollitavate: sisekontrolli, finantsjuhtimist, finantsarvestust ja finantsaruandeid; majandustegevuse, sealhulgas majandustehingute õiguspärasust; juhtimise, organisatsiooni ja tegevuse tulemuslikkust; infotehnoloogiasüsteemide usaldatavust. (3) Tulemuslikkust hindab Riigikontroll lähtuvalt kontrollitavatele õigusaktidega pandud ülesannetest, riiklike programmide ja arengukavadega",
       "estleg:legalText": "(1) Riigikontrolli põhiülesanne on majanduskontroll (audit). (2) Auditi käigus võib Riigikontroll hinnata kontrollitavate: sisekontrolli, finantsjuhtimist, finantsarvestust ja finantsaruandeid; majandustegevuse, sealhulgas majandustehingute õiguspärasust; juhtimise, organisatsiooni ja tegevuse tulemuslikkust; infotehnoloogiasüsteemide usaldatavust. (3) Tulemuslikkust hindab Riigikontroll lähtuvalt kontrollitavatele õigusaktidega pandud ülesannetest, riiklike programmide ja arengukavadega püstitatud eesmärkidest, heast juhtimistavast ning järgmistest kriteeriumidest: säästlikkus, mis tähendab eesmärkide saavutamiseks tehtavate kulutuste minimeerimist; tõhusus, mis tähendab kulutuste ja nende abil saavutatavate tulemuste suhet; mõjusus, mis tähendab tegevuse tegelikku mõju võrrelduna kavatsetud mõjuga. (4) Kontrollimisel lähtub Riigikontroll audiitori kutsetegevuse üldtunnustatud normidest ja tavadest.",
@@ -715,6 +883,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -741,7 +913,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 2"
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_6_Lg_3",
@@ -754,7 +933,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 3"
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_6_Lg_4",
@@ -773,13 +959,13 @@
       "@id": "estleg:RKS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Kontrollitavad",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontroll teostab majanduskontrolli järgmiste asutuste ja isikute üle: Riigikogu Kantselei, Vabariigi Presidendi Kantselei, kohtud, Eesti Pank, Finantsinspektsioon, Riigikantselei ja Õiguskantsleri Kantselei; valitsusasutused ning nende hallatavad riigiasutused; kohaliku omavalitsuse üksused, arvestades käesoleva paragrahvi lõigetes 2 ja 21 sätestatut; avalik-õiguslikud juriidilised isikud; sihtasutused ja mittetulundusühingud, kelle asutajaks või liikmeks on riik või avalik-õiguslik",
       "estleg:legalText": "(1) Riigikontroll teostab majanduskontrolli järgmiste asutuste ja isikute üle: Riigikogu Kantselei, Vabariigi Presidendi Kantselei, kohtud, Eesti Pank, Finantsinspektsioon, Riigikantselei ja Õiguskantsleri Kantselei; valitsusasutused ning nende hallatavad riigiasutused; kohaliku omavalitsuse üksused, arvestades käesoleva paragrahvi lõigetes 2 ja 21 sätestatut; avalik-õiguslikud juriidilised isikud; sihtasutused ja mittetulundusühingud, kelle asutajaks või liikmeks on riik või avalik-õiguslik juriidiline isik; äriühingud, kus riigil või avalik-õiguslikel juriidilistel isikutel või käesoleva lõike punktis 5 nimetatud sihtasutustel on kas üksi või ühiselt valitsev mõju enamusosaluse kaudu või muul viisil, samuti nende äriühingute tütarettevõtjad; äriühingud, kes on saanud riigilt laenu või kelle laene või muude lepinguliste kohustuste täitmist tagab riik; muud avalik-õiguslike ülesannete täitjad riigi vara kasutamisel ja säilitamisel. (2) Riigikontroll teostab käesoleva seaduse § 6 lõike 2 punktides 1, 2 ja 4 sätestatud ulatuses kontrolli: kohaliku omavalitsuse üksuste üle munitsipaalvara valdamisel, kasutamisel ja käsutamisel; sihtasutuste ja mittetulundusühingute üle, kelle asutajaks või liikmeks on kohaliku omavalitsuse üksus; äriühingute üle, kus kohaliku omavalitsuse üksusel on valitsev mõju enamusosaluse kaudu või muul viisil, samuti nende äriühingute tütarettevõtjate üle. (2¹) Riigikontroll teostab käesoleva seaduse § 6 lõigetes 2 ja 3 sätestatud ulatuses kontrolli kohaliku omavalitsuse üksuse valdusse antud riigi kinnis- ja vallasvara, riigieelarvest antavate sihtotstarbeliste eraldiste, toetuste ning riiklike ülesannete täitmiseks eraldatud raha kasutamise osas. (3) Riigikontroll kontrollib teiste isikute valdusesse antud riigivara kasutamist ja säilimist. Riiklikke toetusi ja sihtotstarbelisi eraldisi saavate isikute puhul on Riigikontrollil õigus teha menetlustoiminguid, et selgitada toetuse või eraldise saamise tingimuseks olevate asjaolude paikapidavust ning toetuse või eraldise kasutamise õiguspärasust. (4) Riigikontroll kontrollib riigi ja kohalike omavalitsuse üksuste vahendusel eraldatud Euroopa Liidu vahendite kasutamist ja selliste vahenditega seoses Euroopa Liidu ees võetud kohustuste täitmist. Euroopa Liidu vahendite lõppkasutajate ja Euroopa Liidu ees kohustusi omavate isikute suhtes on Riigikontrollil õigus teha menetlustoiminguid, selgitamaks Euroopa Liidu vahendite saamise tingimuseks olevate asjaolude paikapidavust ning vahendite kasutamise ja kohustuste täitmise õiguspärasust. (5) Käesoleva seaduse § 6 lõike 2 punktis 3 sätestatud auditi käigus hindab Riigikontroll üksnes Finantsinspektsiooni juhtimise tulemuslikkust.",
@@ -810,8 +996,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -856,7 +1046,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_Lg_1",
@@ -869,7 +1063,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": "5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_Lg_2",
@@ -885,9 +1092,21 @@
       "rdfs:label": "§ 7 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:RKS_Par_6"
+          "@id": "estleg:RKS_Par_6_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_Lg_2_1",
@@ -905,7 +1124,16 @@
         {
           "@id": "estleg:RKS_Par_6"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_Lg_3",
@@ -918,7 +1146,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_Lg_4",
@@ -931,7 +1168,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 4"
+      "rdfs:label": "§ 7 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_Lg_5",
@@ -947,21 +1193,22 @@
       "rdfs:label": "§ 7 lg 5",
       "estleg:references": [
         {
-          "@id": "estleg:RKS_Par_6"
+          "@id": "estleg:RKS_Par_6_Lg_2"
         }
-      ]
+      ],
+      "estleg:itemNumber": "3"
     },
     {
       "@id": "estleg:RKS_Par_7_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
       "rdfs:label": "§ 7¹. Riigi konsolideerimisgrupi audiitor",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigi konsolideerimisgrupi audiitoriks on Riigikontroll. (2) Riigikontroll koordineerib ja juhendab vandeaudiitori kutsetegevusalaste ülesannete täitmist riigi konsolideeritud ja konsolideerimata raamatupidamise aastaaruande auditi ning riigi ja riigiraamatupidamiskohustuslaste, välja arvatud Riigikontrolli tehingute seaduslikkuse kontrolli teostamisel. (3) Riigikontroll määrab kindlaks ja avalikustab õigusaktid ning tehinguklassid, mida riigi konsolideerimisüksuste tehingute seaduslikkuse",
       "estleg:legalText": "(1) Riigi konsolideerimisgrupi audiitoriks on Riigikontroll. (2) Riigikontroll koordineerib ja juhendab vandeaudiitori kutsetegevusalaste ülesannete täitmist riigi konsolideeritud ja konsolideerimata raamatupidamise aastaaruande auditi ning riigi ja riigiraamatupidamiskohustuslaste, välja arvatud Riigikontrolli tehingute seaduslikkuse kontrolli teostamisel. (3) Riigikontroll määrab kindlaks ja avalikustab õigusaktid ning tehinguklassid, mida riigi konsolideerimisüksuste tehingute seaduslikkuse iga-aastase kontrolli käigus vähemalt hõlmatakse. Riigikontrolli määratud ulatuses läbiviidava tehingute seaduslikkuse kontrolli ettenähtud kasutajaks on Riigikontroll.",
@@ -983,7 +1230,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -997,7 +1246,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_7_1_Lg_1",
@@ -1036,19 +1289,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_7_1"
       },
-      "rdfs:label": "§ 7¹ lg 3"
+      "rdfs:label": "§ 7¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Aruannete esitamise kohustus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Avalik-õiguslikud juriidilised isikud on kohustatud kahe nädala jooksul pärast oma majandusaasta aruande kinnitamist, kuid mitte hiljem kui aruandeaastale järgneva aasta 15. märtsiks, saatma selle koopia Riigikontrollile.",
       "estleg:legalText": "Avalik-õiguslikud juriidilised isikud on kohustatud kahe nädala jooksul pärast oma majandusaasta aruande kinnitamist, kuid mitte hiljem kui aruandeaastale järgneva aasta 15. märtsiks, saatma selle koopia Riigikontrollile.",
@@ -1060,12 +1322,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_8_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_8_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1094,10 +1360,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_8_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_8_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1105,19 +1375,34 @@
       "estleg:legalText": "Avalik-õiguslikud juriidilised isikud on kohustatud kahe nädala jooksul pärast oma majandusaasta aruande kinnitamist, kuid mitte hiljem kui aruandeaastale järgneva aasta 15. märtsiks, saatma selle koopia Riigikontrollile.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_8"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Sisekontrolli- ja siseauditialane koostöö",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontroll teeb kohaliku omavalitsuse üksustega ning Vabariigi Valitsusega valitsusasutuste ja valitsusasutuste hallatavate asutuste osas koostööd sisekontrolli ja siseauditi arendamise alal.",
       "estleg:legalText": "Riigikontroll teeb kohaliku omavalitsuse üksustega ning Vabariigi Valitsusega valitsusasutuste ja valitsusasutuste hallatavate asutuste osas koostööd sisekontrolli ja siseauditi arendamise alal.",
@@ -1129,11 +1414,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_9_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_9_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1156,10 +1443,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_9_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_9_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1167,19 +1458,28 @@
       "estleg:legalText": "Riigikontroll teeb kohaliku omavalitsuse üksustega ning Vabariigi Valitsusega valitsusasutuste ja valitsusasutuste hallatavate asutuste osas koostööd sisekontrolli ja siseauditi arendamise alal.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_9"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Riigikontrolli aruanded Riigikogule",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör esitab Riigikogule ülevaate riigi vara kasutamise ja säilimise kohta üheaegselt riigi majandusaasta koondaruande arutamisega Riigikogus. Ülevaade avaldatakse Riigi Teatajas. (2) Riigikontroll esitab Riigikogule oma tegevuse kohta majandusaasta aruande koos vandeaudiitori aruandega kuu aja jooksul pärast vandeaudiitori aruande saamist. Riigikontrolli raamatupidamise aastaaruande audit ja tehingute seaduslikkuse kontroll tuleb lõpetada hiljemalt aruandeaastale järgneva aasta 30.",
       "estleg:legalText": "(1) Riigikontrolör esitab Riigikogule ülevaate riigi vara kasutamise ja säilimise kohta üheaegselt riigi majandusaasta koondaruande arutamisega Riigikogus. Ülevaade avaldatakse Riigi Teatajas. (2) Riigikontroll esitab Riigikogule oma tegevuse kohta majandusaasta aruande koos vandeaudiitori aruandega kuu aja jooksul pärast vandeaudiitori aruande saamist. Riigikontrolli raamatupidamise aastaaruande audit ja tehingute seaduslikkuse kontroll tuleb lõpetada hiljemalt aruandeaastale järgneva aasta 30. juuniks. Riigikontrolli majandusaasta aruanne avalikustatakse koos vandeaudiitori aruandega.",
@@ -1198,7 +1498,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1229,7 +1531,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_10_Lg_1",
@@ -1242,7 +1548,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_10_Lg_2",
@@ -1255,19 +1570,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 2"
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Riigikogu liikme arupärimine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolör vastab Riigikogu liikme arupärimisele seaduses sätestatud korras.",
       "estleg:legalText": "Riigikontrolör vastab Riigikogu liikme arupärimisele seaduses sätestatud korras.",
@@ -1279,11 +1606,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_11_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_11_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1305,10 +1634,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_11_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_11_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1316,19 +1649,28 @@
       "estleg:legalText": "Riigikontrolör vastab Riigikogu liikme arupärimisele seaduses sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_11"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Osalemine õigusloomes",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrollil on õigus teha Riigikogule, Vabariigi Valitsusele ja ministrile, samuti kohaliku omavalitsuse organile ettepanekuid seaduste, määruste ning muude õigusaktide väljatöötamiseks, muutmiseks ja täiendamiseks. (2) Riigikontrollile esitatakse mõistliku aja jooksul enne vastuvõtmist Vabariigi Valitsuse ja ministrite õigustloovate aktide eelnõud, mis käsitlevad finantsjuhtimist, finantsarvestust või aruandlust.",
       "estleg:legalText": "(1) Riigikontrollil on õigus teha Riigikogule, Vabariigi Valitsusele ja ministrile, samuti kohaliku omavalitsuse organile ettepanekuid seaduste, määruste ning muude õigusaktide väljatöötamiseks, muutmiseks ja täiendamiseks. (2) Riigikontrollile esitatakse mõistliku aja jooksul enne vastuvõtmist Vabariigi Valitsuse ja ministrite õigustloovate aktide eelnõud, mis käsitlevad finantsjuhtimist, finantsarvestust või aruandlust.",
@@ -1347,7 +1689,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1373,7 +1717,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_12_Lg_1",
@@ -1386,7 +1734,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_12_Lg_2",
@@ -1399,19 +1759,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Välissuhtlemine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontroll suhtleb iseseisvalt välisriikide kõrgemate kontrolliasutustega ja osaleb nende asutuste rahvusvaheliste organisatsioonide tegevuses. Riigikontroll teeb koostööd Euroopa Kontrollikojaga. (2) Riigikontroll võib koos välisriikide või rahvusvaheliste kontrolliasutustega läbi viia ühiseid kontrollimisi, kui see tuleneb rahvusvahelistest lepingutest või kokkulepetest, ning kontrollida rahvusvahelisi organisatsioone kooskõlas nende organisatsioonide tegevust sätestavate dokumentidega.",
       "estleg:legalText": "(1) Riigikontroll suhtleb iseseisvalt välisriikide kõrgemate kontrolliasutustega ja osaleb nende asutuste rahvusvaheliste organisatsioonide tegevuses. Riigikontroll teeb koostööd Euroopa Kontrollikojaga. (2) Riigikontroll võib koos välisriikide või rahvusvaheliste kontrolliasutustega läbi viia ühiseid kontrollimisi, kui see tuleneb rahvusvahelistest lepingutest või kokkulepetest, ning kontrollida rahvusvahelisi organisatsioone kooskõlas nende organisatsioonide tegevust sätestavate dokumentidega.",
@@ -1430,7 +1799,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1444,7 +1815,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_13_Lg_1",
@@ -1457,7 +1832,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_13_Lg_2",
@@ -1470,19 +1854,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Poliitikasse sekkumise vältimine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontroll ei hinda poliitilisi eesmärke.",
       "estleg:legalText": "Riigikontroll ei hinda poliitilisi eesmärke.",
@@ -1494,7 +1885,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_14_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_14_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1504,7 +1895,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_14_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_14_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1518,13 +1909,13 @@
       "@id": "estleg:RKS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Riigikontrolöri staatus ja ülesanded",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolli juhib riigikontrolör, kellel on oma ametkonna juhtimisel samad õigused, mis on seadusega antud ministrile ministeeriumi juhtimiseks. (2) Riigikontrolör: määrab Riigikontrolli auditiosakondade ja teenistuste arvu, nimetused ja tegevusvaldkonnad, kehtestab auditiosakondade ja teenistuste põhimäärused, määrab ametnike ametikohtade ja töötajate töökohtade arvu; kehtestab Riigikontrolli töökorra, kontrollimisalased juhised, sealhulgas isikuandmete kaitse ja muud Riigikontrolli",
       "estleg:legalText": "(1) Riigikontrolli juhib riigikontrolör, kellel on oma ametkonna juhtimisel samad õigused, mis on seadusega antud ministrile ministeeriumi juhtimiseks. (2) Riigikontrolör: määrab Riigikontrolli auditiosakondade ja teenistuste arvu, nimetused ja tegevusvaldkonnad, kehtestab auditiosakondade ja teenistuste põhimäärused, määrab ametnike ametikohtade ja töötajate töökohtade arvu; kehtestab Riigikontrolli töökorra, kontrollimisalased juhised, sealhulgas isikuandmete kaitse ja muud Riigikontrolli tööks vajalikud eeskirjad; kehtestab teenistusse võtmise ja töölepingu sõlmimise täiendavad nõuded, nimetab ametisse ja vabastab ametist Riigikontrolli ametnikud ning sõlmib töölepingu ja lõpetab töölepingu Riigikontrolli töötajatega; nimetab enda asendajaks ühe Riigikontrolli peakontrolöridest; tagab Riigikontrolli eelarve projekti ja majandusaasta aruande õigeaegse koostamise ning esitamise seaduses sätestatud korras; esindab Riigikontrolli tsiviilõiguslike toimingute tegemisel või volitab Riigikontrolli esindama mõne teise isiku. (3) Käesoleva paragrahvi lõike 2 punktis 2 nimetatud isikuandmete töötlemise juhis peab sisaldama andmesubjekti õiguste teostamise korda, isikuandmete säilitamise tähtaegu, teavet andmete arhiveerimise ja kustutamise kohta ning muid Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) (ELT L 119, 04.05.2016, lk 1–88) artikli 23 lõikes 2 sätestatud tingimusi.",
@@ -1546,8 +1937,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1570,7 +1965,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_15_Lg_1",
@@ -1583,7 +1982,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_15_Lg_2",
@@ -1596,7 +2004,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_15_Lg_3",
@@ -1609,19 +2029,32 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 3"
+      "rdfs:label": "§ 15 lg 3",
+      "estleg:itemNumber": "2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Riigikontrolöri osavõtt Vabariigi Valitsuse istungitest",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör võib oma ülesannetesse kuuluvais asjus sõnaõigusega osa võtta Vabariigi Valitsuse istungitest. (2) Riigikontrolörile saadetakse Vabariigi Valitsuse istungite päevakorrad koos arutusele tulevate õigusaktide eelnõudega.",
       "estleg:legalText": "(1) Riigikontrolör võib oma ülesannetesse kuuluvais asjus sõnaõigusega osa võtta Vabariigi Valitsuse istungitest. (2) Riigikontrolörile saadetakse Vabariigi Valitsuse istungite päevakorrad koos arutusele tulevate õigusaktide eelnõudega.",
@@ -1640,7 +2073,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1662,7 +2097,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_16_Lg_1",
@@ -1675,7 +2114,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_16_Lg_2",
@@ -1688,19 +2139,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Riigikontrolöri ametisse nimetamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolöri nimetab ametisse Riigikogu Vabariigi Presidendi ettepanekul viieks aastaks.",
       "estleg:legalText": "Riigikontrolöri nimetab ametisse Riigikogu Vabariigi Presidendi ettepanekul viieks aastaks.",
@@ -1712,18 +2172,20 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_17_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_17_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:RKS_Par_21"
         },
         {
-          "@id": "estleg:RKS_Par_21_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_21_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1758,10 +2220,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_17_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_17_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1769,19 +2235,28 @@
       "estleg:legalText": "Riigikontrolöri nimetab ametisse Riigikogu Vabariigi Presidendi ettepanekul viieks aastaks.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_17"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Riigikontrolöri kandidaadi julgeolekukontroll",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolöri kandidaat peab enne riigikontrolöriks nimetamist läbima julgeolekukontrolli, välja arvatud juhul, kui ta omab kehtivat juurdepääsuluba täiesti salajase taseme riigisaladusele juurdepääsuks või kui ta on kandidaadiks saamise ajal ametikohal, millel on ametikohajärgne õigus juurdepääsuks kõigile riigisaladuse tasemetele. (2) Riigikontrolöri kandidaadi staatuse omandab isik, kellele Vabariigi President on teinud ametisse kandideerimise ettepaneku ja kes on andnud",
       "estleg:legalText": "(1) Riigikontrolöri kandidaat peab enne riigikontrolöriks nimetamist läbima julgeolekukontrolli, välja arvatud juhul, kui ta omab kehtivat juurdepääsuluba täiesti salajase taseme riigisaladusele juurdepääsuks või kui ta on kandidaadiks saamise ajal ametikohal, millel on ametikohajärgne õigus juurdepääsuks kõigile riigisaladuse tasemetele. (2) Riigikontrolöri kandidaadi staatuse omandab isik, kellele Vabariigi President on teinud ametisse kandideerimise ettepaneku ja kes on andnud kandideerimiseks kirjaliku nõusoleku. (3) Riigikontrolöri kandidaadi julgeolekukontrolli teostab Kaitsepolitseiamet julgeolekuasutuste seaduses ettenähtud korras. (4) Julgeolekukontrolli läbimiseks esitab riigikontrolöri kandidaat Vabariigi Presidendi Kantselei kaudu Kaitsepolitseiametile riigisaladusele juurdepääsu loa taotleja täidetud ankeedi ja kirjaliku nõusoleku, millega lubatakse julgeolekukontrolli teostaval asutusel saada julgeolekukontrolli teostamise ajal tema kohta teavet füüsilistelt ja juriidilistelt isikutelt ning riigi- ja kohaliku omavalitsuse üksuse asutustelt ja organitelt. (5) Kaitsepolitseiamet edastab julgeolekukontrolli tulemusena kogutud andmed Vabariigi Presidendile kolme kuu jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest, lisades oma arvamuse riigikontrolöri kandidaadi vastavuse kohta riigisaladusele juurdepääsu loa saamise tingimustele. (6) Kui riigikontrolöri volitused on lõppenud ennetähtaegselt, tuleb julgeolekukontroll riigikontrolöri kandidaadi suhtes teostada ühe kuu jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest. Vabariigi Valitsuse julgeolekukomisjoni loal võib julgeolekukontrolli teostamise tähtaega pikendada ühe kuu võrra, kui esinevad riigisaladuse ja salastatud välisteabe seaduse § 33 lõike 4 punktis 1 või 2 nimetatud asjaolu või on ühe kuu jooksul võimalik punktis 3 või 4 nimetatud asjaolu ilmnemine. (7) Julgeolekukontrolli käigus kogutud andmetele tuginedes võib riigikontrolöri kandidaadi ametisse nimetada üheksa kuu jooksul alates ajast, kui julgeolekukontrolli teostanud asutus julgeolekukontrolli käigus kogutud teabe Vabariigi Presidendile edastas. Nimetatud tähtajast hiljem võib riigikontrolöri kandidaadi ametisse nimetada pärast uue julgeolekukontrolli läbimist.",
@@ -1815,8 +2290,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1868,7 +2347,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_18_Lg_1",
@@ -1881,7 +2364,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 1"
+      "rdfs:label": "§ 18 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_18_Lg_2",
@@ -1894,7 +2384,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 2"
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_18_Lg_3",
@@ -1920,7 +2419,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 4"
+      "rdfs:label": "§ 18 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_18_Lg_5",
@@ -1946,7 +2457,23 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 6"
+      "rdfs:label": "§ 18 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "3"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_18_Lg_7",
@@ -1959,19 +2486,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 7"
+      "rdfs:label": "§ 18 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Riigikontrolörile esitatavad nõuded",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör peab olema kõrgete kõlbeliste omadustega teovõimeline Eesti kodanik, kes valdab vabalt riigikeelt. (2) Riigikontrolöril peab olema akadeemiline kõrgharidus ning ta peab tundma riigihalduse ja majanduse põhialuseid.",
       "estleg:legalText": "(1) Riigikontrolör peab olema kõrgete kõlbeliste omadustega teovõimeline Eesti kodanik, kes valdab vabalt riigikeelt. (2) Riigikontrolöril peab olema akadeemiline kõrgharidus ning ta peab tundma riigihalduse ja majanduse põhialuseid.",
@@ -1990,7 +2529,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2008,12 +2549,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Riigikontrolör",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_19_Lg_1",
@@ -2026,7 +2570,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 1"
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_19_Lg_2",
@@ -2039,19 +2595,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 2"
+      "rdfs:label": "§ 19 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Riigikontrolöri ametivanne",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör astub ametisse tema nimetamisele järgneval Riigikogu täiskogu töönädalal Riigikogu ees järgmise ametivande andmisega:«Tõotan jääda ustavaks Eesti rahvale, Eesti Vabariigile ja tema põhiseaduslikule korrale ning oma südametunnistuse järgi, kooskõlas põhiseaduse ja seadusega, täita erapooletult kõiki neid kohustusi, milleks amet mind kohustab.» (2) Ametivande tekstile kirjutab riigikontrolör alla ja seda hoitakse riigikontrolöri ametisoleku ajal Riigikogu Kantseleis, pärast",
       "estleg:legalText": "(1) Riigikontrolör astub ametisse tema nimetamisele järgneval Riigikogu täiskogu töönädalal Riigikogu ees järgmise ametivande andmisega:«Tõotan jääda ustavaks Eesti rahvale, Eesti Vabariigile ja tema põhiseaduslikule korrale ning oma südametunnistuse järgi, kooskõlas põhiseaduse ja seadusega, täita erapooletult kõiki neid kohustusi, milleks amet mind kohustab.» (2) Ametivande tekstile kirjutab riigikontrolör alla ja seda hoitakse riigikontrolöri ametisoleku ajal Riigikogu Kantseleis, pärast ametist lahkumist aga Rahvusarhiivis.",
@@ -2070,7 +2633,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2095,7 +2660,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_20_Lg_1",
@@ -2108,7 +2677,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 1"
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_20_Lg_2",
@@ -2121,19 +2699,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 2"
+      "rdfs:label": "§ 20 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Riigikontrolöri volituste lõppemine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolöri volitused loetakse lõppenuks: käesoleva seaduse §-s 17 nimetatud viieaastase tähtaja möödumise päevast; tema ametist tagasiastumise avalduse rahuldamise päevast; tema kestva võimetuse korral üle kuue kuu järjest täita oma ametiülesandeid – Riigikohtu üldkogu otsuse jõustumise päevast; tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast; ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast, kui selle kohtuotsusega",
       "estleg:legalText": "Riigikontrolöri volitused loetakse lõppenuks: käesoleva seaduse §-s 17 nimetatud viieaastase tähtaja möödumise päevast; tema ametist tagasiastumise avalduse rahuldamise päevast; tema kestva võimetuse korral üle kuue kuu järjest täita oma ametiülesandeid – Riigikohtu üldkogu otsuse jõustumise päevast; tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast; ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast, kui selle kohtuotsusega on määratud vabaduskaotuslik karistus; tema surma korral.",
@@ -2145,11 +2732,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_21_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_21_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -2177,17 +2766,21 @@
           "@id": "estleg:OIGUSK_Par_8"
         },
         {
-          "@id": "estleg:VõrdKS_Par_20"
+          "@id": "estleg:VordKS_Par_20"
         }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_21_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_21_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2200,19 +2793,28 @@
         {
           "@id": "estleg:RKS_Par_17"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Riigikontrolöri tagasiastumine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Ametist tagasiastumiseks esitab riigikontrolör kirjaliku avalduse Vabariigi Presidendile, kes teeb Riigikogule ettepaneku riigikontrolör ametist vabastada. Ametist tagasiastumisest teatab riigikontrolör Vabariigi Presidendile vähemalt neli kuud ette.",
       "estleg:legalText": "Ametist tagasiastumiseks esitab riigikontrolör kirjaliku avalduse Vabariigi Presidendile, kes teeb Riigikogule ettepaneku riigikontrolör ametist vabastada. Ametist tagasiastumisest teatab riigikontrolör Vabariigi Presidendile vähemalt neli kuud ette.",
@@ -2224,11 +2826,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_22_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_22_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2250,10 +2854,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_22_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_22_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2261,19 +2869,28 @@
       "estleg:legalText": "Ametist tagasiastumiseks esitab riigikontrolör kirjaliku avalduse Vabariigi Presidendile, kes teeb Riigikogule ettepaneku riigikontrolör ametist vabastada. Ametist tagasiastumisest teatab riigikontrolör Vabariigi Presidendile vähemalt neli kuud ette.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_22"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Riigikontrolöri kestev võimetus täita oma ülesandeid",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Kui riigikontrolör on haiguse tõttu või muul põhjusel kuus kuud järjest kestvalt võimetu täitma oma ametiülesandeid, esitab Vabariigi President Riigikohtule põhjendatud taotluse tunnistada seda oma otsusega. (2) Riigikohtu üldkogu vaatab taotluse läbi ja teeb otsuse viivitamata. (3) Riigikohtu üldkogu otsus, millega riigikontrolör tunnistatakse kestvalt võimetuks täitma oma ametiülesandeid, jõustub väljakuulutamise päeval. (4) Jõustunud Riigikohtu üldkogu otsus vabastab riigikontrolöri",
       "estleg:legalText": "(1) Kui riigikontrolör on haiguse tõttu või muul põhjusel kuus kuud järjest kestvalt võimetu täitma oma ametiülesandeid, esitab Vabariigi President Riigikohtule põhjendatud taotluse tunnistada seda oma otsusega. (2) Riigikohtu üldkogu vaatab taotluse läbi ja teeb otsuse viivitamata. (3) Riigikohtu üldkogu otsus, millega riigikontrolör tunnistatakse kestvalt võimetuks täitma oma ametiülesandeid, jõustub väljakuulutamise päeval. (4) Jõustunud Riigikohtu üldkogu otsus vabastab riigikontrolöri ametist.",
@@ -2298,7 +2915,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2320,7 +2939,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_23_Lg_1",
@@ -2372,19 +2995,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_23"
       },
-      "rdfs:label": "§ 23 lg 4"
+      "rdfs:label": "§ 23 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Riigikontrolöri kriminaalvastutusele võtmine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolöri saab kriminaalvastutusele võtta ainult õiguskantsleri ettepanekul Riigikogu koosseisu enamuse nõusolekul. (2) Riigikontrolöri volitused peatuvad alates päevast, mil Riigikogu teeb otsuse anda nõusolek riigikontrolöri kriminaalvastutusele võtmiseks. (3) Riigikontrolöri volitused taastuvad: õigeksmõistva kohtuotsuse jõustumise päevast; ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast juhul, kui määratud karistuseks ei olnud",
       "estleg:legalText": "(1) Riigikontrolöri saab kriminaalvastutusele võtta ainult õiguskantsleri ettepanekul Riigikogu koosseisu enamuse nõusolekul. (2) Riigikontrolöri volitused peatuvad alates päevast, mil Riigikogu teeb otsuse anda nõusolek riigikontrolöri kriminaalvastutusele võtmiseks. (3) Riigikontrolöri volitused taastuvad: õigeksmõistva kohtuotsuse jõustumise päevast; ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast juhul, kui määratud karistuseks ei olnud vabaduskaotus; tema kriminaalasjas kriminaalmenetluse lõpetamise päevast. (4) Riigikontrolör on ametist tagandatud: tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast; ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast, kui selle kohtuotsusega on määratud vabaduskaotuslik karistus. (5) Riigikontrolöri kriminaalvastutusele võtmise kord on sätestatud Riigikogu liikme, riigikontrolöri, õiguskantsleri, Riigikohtu esimehe ja Riigikohtu liikme kriminaalvastutusele võtmise korra seaduses.",
@@ -2412,7 +3044,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2449,7 +3083,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_24_Lg_1",
@@ -2462,7 +3100,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 1"
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_24_Lg_2",
@@ -2475,7 +3122,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 2"
+      "rdfs:label": "§ 24 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_24_Lg_3",
@@ -2501,7 +3157,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 4"
+      "rdfs:label": "§ 24 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_24_Lg_5",
@@ -2514,19 +3179,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 5"
+      "rdfs:label": "§ 24 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Riigikontrolöri asendamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Kui riigikontrolör ei saa ajutiselt oma ülesandeid täita, lähevad need üle tema poolt riigikontrolöri asendajaks nimetatud peakontrolörile. (2) Riigikontrolöri asendaja täidab riigikontrolöri ülesandeid ka tema volituste lõppemisel kuni uue riigikontrolöri ametisse astumiseni. (3) Kui riigikontrolöri ülesandeid ei saa täita ei riigikontrolör ega tema nimetatud asendaja või kui riigikontrolör ei saa oma ülesandeid täita ja asendajat ei ole nimetatud, täidab neid ealt vanim peakontrolör.",
       "estleg:legalText": "(1) Kui riigikontrolör ei saa ajutiselt oma ülesandeid täita, lähevad need üle tema poolt riigikontrolöri asendajaks nimetatud peakontrolörile. (2) Riigikontrolöri asendaja täidab riigikontrolöri ülesandeid ka tema volituste lõppemisel kuni uue riigikontrolöri ametisse astumiseni. (3) Kui riigikontrolöri ülesandeid ei saa täita ei riigikontrolör ega tema nimetatud asendaja või kui riigikontrolör ei saa oma ülesandeid täita ja asendajat ei ole nimetatud, täidab neid ealt vanim peakontrolör.",
@@ -2602,13 +3276,13 @@
       "@id": "estleg:RKS_Par_25_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25¹.",
       "rdfs:label": "§ 25¹. Riigikontrolöri juurdepääs riigisaladusele ja salastatud välisteabele",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolöril on ametikohajärgne õigus juurdepääsuks riigisaladusele ja salastatud välisteabele Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega talle pandud ülesannete täitmiseks. (2) Kui välislepingu kohaselt on julgeolekukontrolli läbiviimine salastatud välisteabele juurdepääsu õiguse andmise kohustuslik eeltingimus, teostatakse julgeolekukontroll ka riigikontrolöri suhtes. (3) Käesoleva paragrahvi lõikes 2 nimetatud julgeolekukontrolli läbimiseks täidab",
       "estleg:legalText": "(1) Riigikontrolöril on ametikohajärgne õigus juurdepääsuks riigisaladusele ja salastatud välisteabele Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega talle pandud ülesannete täitmiseks. (2) Kui välislepingu kohaselt on julgeolekukontrolli läbiviimine salastatud välisteabele juurdepääsu õiguse andmise kohustuslik eeltingimus, teostatakse julgeolekukontroll ka riigikontrolöri suhtes. (3) Käesoleva paragrahvi lõikes 2 nimetatud julgeolekukontrolli läbimiseks täidab riigikontrolör riigisaladusele juurdepääsu loa taotleja ankeedi ja allkirjastab nõusoleku, millega lubatakse julgeolekukontrolli teostaval asutusel saada julgeolekukontrolli teostamise ajal enda kohta teavet füüsilistelt ja juriidilistelt isikutelt ning riigi- ja kohaliku omavalitsuse asutustelt ja organitelt, ning esitab need Riigikogu julgeolekuasutuste järelevalve komisjonile. (4) Riigikogu julgeolekuasutuste järelevalve komisjon määrab riigikontrolöri suhtes julgeolekukontrolli teostava asutuse, kellele ta edastab käesoleva paragrahvi lõikes 3 nimetatud dokumendid. (5) Julgeolekukontrolli asutus esitab riigikontrolöri suhtes teostatud julgeolekukontrolli käigus kogutud andmed kolme kuu jooksul arvates käesoleva paragrahvi lõikes 3 nimetatud teabekandjate saamisest Riigikogu julgeolekuasutuste järelevalve komisjonile otsustamiseks, kas riigikontrolör on julgeolekukontrolli läbinud. Salastatud välisteabe juurdepääsusertifikaat väljastatakse riigisaladuse ja salastatud välisteabe seaduses ettenähtud korras.",
@@ -2636,8 +3310,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2668,7 +3346,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_25_1_Lg_1",
@@ -2707,7 +3389,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_25_1"
       },
-      "rdfs:label": "§ 25¹ lg 3"
+      "rdfs:label": "§ 25¹ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_25_1_Lg_4",
@@ -2720,7 +3414,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_25_1"
       },
-      "rdfs:label": "§ 25¹ lg 4"
+      "rdfs:label": "§ 25¹ lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_25_1_Lg_5",
@@ -2733,19 +3436,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_25_1"
       },
-      "rdfs:label": "§ 25¹ lg 5"
+      "rdfs:label": "§ 25¹ lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Riigikontrolöri tegevuse piirangud",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör ei tohi ametisoleku ajal: olla mõnes teises riigi-, kohaliku omavalitsuse või avalik-õigusliku juriidilise isiku ametis; kuuluda kohaliku omavalitsuse üksuse volikogusse; osaleda erakonna tegevuses; kuuluda äriühingu juhatusse, nõukogusse või järelevalveorganisse; osaleda ettevõtluses, välja arvatud tema enda isiklikud investeeringud ning nendelt tulu saamine, samuti talle kuuluva vara käsutamisest tulu saamine. (2) Riigikontrolör võib tegeleda teadusliku ja pedagoogilise",
       "estleg:legalText": "(1) Riigikontrolör ei tohi ametisoleku ajal: olla mõnes teises riigi-, kohaliku omavalitsuse või avalik-õigusliku juriidilise isiku ametis; kuuluda kohaliku omavalitsuse üksuse volikogusse; osaleda erakonna tegevuses; kuuluda äriühingu juhatusse, nõukogusse või järelevalveorganisse; osaleda ettevõtluses, välja arvatud tema enda isiklikud investeeringud ning nendelt tulu saamine, samuti talle kuuluva vara käsutamisest tulu saamine. (2) Riigikontrolör võib tegeleda teadusliku ja pedagoogilise tööga, kui see ei takista tema ülesannete täitmist.",
@@ -2764,8 +3476,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2783,7 +3499,7 @@
           "@id": "estleg:OIGUSK_Par_12"
         },
         {
-          "@id": "estleg:VõrdKS_Par_22"
+          "@id": "estleg:VordKS_Par_22"
         }
       ],
       "estleg:competentAuthority": [
@@ -2802,7 +3518,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_26_Lg_1",
@@ -2815,7 +3535,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 1"
+      "rdfs:label": "§ 26 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_26_Lg_2",
@@ -2828,19 +3563,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 2"
+      "rdfs:label": "§ 26 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Riigikontrolöri ametihüved",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolöri ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. (jõustumine muudetud RT I, 29.12.2011, 1) (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (4¹) Kehtetu - (4²) Kehtetu - (4³) Kehtetu - (5) Kehtetu - (6) Kehtetu - (6¹) Kehtetu - (7) Kehtetu - (7¹) Riigikontrolörile makstakse iga kuu 20 protsenti ametipalgast esinduskuludeks. (8) Riigikontrolöril, kelle volitused on lõppenud käesoleva seaduse § 21 punkti 1 ja haiguse tõttu punkti 3 alusel, on õigus hüvitisele",
       "estleg:legalText": "(1) Riigikontrolöri ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. (jõustumine muudetud RT I, 29.12.2011, 1) (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (4¹) Kehtetu - (4²) Kehtetu - (4³) Kehtetu - (5) Kehtetu - (6) Kehtetu - (6¹) Kehtetu - (7) Kehtetu - (7¹) Riigikontrolörile makstakse iga kuu 20 protsenti ametipalgast esinduskuludeks. (8) Riigikontrolöril, kelle volitused on lõppenud käesoleva seaduse § 21 punkti 1 ja haiguse tõttu punkti 3 alusel, on õigus hüvitisele kuue kuu ametipalga määra ulatuses.",
@@ -2930,6 +3672,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -3104,19 +3850,30 @@
         {
           "@id": "estleg:RKS_Par_21"
         }
-      ]
+      ],
+      "estleg:itemNumber": [
+        "1",
+        "3"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Riigikontrolli struktuuriüksused",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolli struktuuriüksused on auditiosakonnad ja teenistused. (2) Auditiosakonnad on Riigikontrolli põhitegevusega tegelevad struktuuriüksused. (3) Teenistused on auditiosakondi abistavaid ülesandeid täitvad struktuuriüksused.",
       "estleg:legalText": "(1) Riigikontrolli struktuuriüksused on auditiosakonnad ja teenistused. (2) Auditiosakonnad on Riigikontrolli põhitegevusega tegelevad struktuuriüksused. (3) Teenistused on auditiosakondi abistavaid ülesandeid täitvad struktuuriüksused.",
@@ -3186,13 +3943,13 @@
       "@id": "estleg:RKS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Peakontrolöri staatus ja ülesanded",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Peakontrolör on Riigikontrolli auditiosakonna juhataja, kelle riigikontrolör nimetab ametisse tähtajatult. (2) Peakontrolör: juhib auditiosakonda; määrab Riigikontrolli tööplaanis ettenähtud kontrollimist teostavad ametnikud; väljastab kontrollimiseks vajaliku teabe kogumiseks menetlusteate; tagab kontrollimiste läbiviimise kooskõlas seaduste ja muude õigusaktidega; kirjutab alla kontrolliaruandele; esindab Riigikontrolli riigikontrolöri määratud pädevuse piires; täidab muid seadusest",
       "estleg:legalText": "(1) Peakontrolör on Riigikontrolli auditiosakonna juhataja, kelle riigikontrolör nimetab ametisse tähtajatult. (2) Peakontrolör: juhib auditiosakonda; määrab Riigikontrolli tööplaanis ettenähtud kontrollimist teostavad ametnikud; väljastab kontrollimiseks vajaliku teabe kogumiseks menetlusteate; tagab kontrollimiste läbiviimise kooskõlas seaduste ja muude õigusaktidega; kirjutab alla kontrolliaruandele; esindab Riigikontrolli riigikontrolöri määratud pädevuse piires; täidab muid seadusest tulenevaid või riigikontrolöri antud ülesandeid.",
@@ -3211,7 +3968,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3222,7 +3981,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_29_Lg_1",
@@ -3235,7 +3998,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 1"
+      "rdfs:label": "§ 29 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_29_Lg_2",
@@ -3248,19 +4020,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 2"
+      "rdfs:label": "§ 29 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Riigikontrollis töötavad isikud",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrollis töötavad ametnikud ja töötajad. Töötajad võetakse tööle töölepinguga.",
       "estleg:legalText": "Riigikontrollis töötavad ametnikud ja töötajad. Töötajad võetakse tööle töölepinguga.",
@@ -3272,12 +4053,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_30_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_30_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3294,10 +4079,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_30_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_30_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3305,19 +4094,31 @@
       "estleg:legalText": "Riigikontrollis töötavad ametnikud ja töötajad. Töötajad võetakse tööle töölepinguga.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_30"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_30_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30¹.",
       "rdfs:label": "§ 30¹. Riigikontrolli ametnikule esitatavad nõuded",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli ametnik on avaliku teenistuse seaduse kohaselt ametisse nimetatud isik, kellel on akadeemiline kõrgharidus.",
       "estleg:legalText": "Riigikontrolli ametnik on avaliku teenistuse seaduse kohaselt ametisse nimetatud isik, kellel on akadeemiline kõrgharidus.",
@@ -3329,12 +4130,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_30_1_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_30_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3348,10 +4153,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_30_1_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_30_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3359,19 +4168,31 @@
       "estleg:legalText": "Riigikontrolli ametnik on avaliku teenistuse seaduse kohaselt ametisse nimetatud isik, kellel on akadeemiline kõrgharidus.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_30_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Avaliku teenistuse seaduse kohaldamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli ametnikele, samuti riigikontrolörile kohaldatakse avaliku teenistuse seadust käesolevas seaduses sätestatud erisustega.",
       "estleg:legalText": "Riigikontrolli ametnikele, samuti riigikontrolörile kohaldatakse avaliku teenistuse seadust käesolevas seaduses sätestatud erisustega.",
@@ -3383,11 +4204,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_31_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_31_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3406,10 +4229,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_31_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_31_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3417,19 +4244,28 @@
       "estleg:legalText": "Riigikontrolli ametnikele, samuti riigikontrolörile kohaldatakse avaliku teenistuse seadust käesolevas seaduses sätestatud erisustega.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_31"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Riigikontrolli teenistujate hindamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3440,7 +4276,9 @@
         "@id": "estleg:Chapter_RKS_5"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3454,19 +4292,23 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Riigikontrolli teenistujate ja kaasatud asjatundjate tasustamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3477,7 +4319,9 @@
         "@id": "estleg:Chapter_RKS_5"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3491,19 +4335,23 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Riigikontrolli teenistujate lisatasud",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3514,7 +4362,9 @@
         "@id": "estleg:Chapter_RKS_5"
       },
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3528,19 +4378,23 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Riigikontrolli peakontrolöri ametipension",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3572,13 +4426,13 @@
       "@id": "estleg:RKS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Ametnike surveaktsioonides osalemine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli ametnikud ei tohi streikida. Samuti ei tohi Riigikontrolli ametnikud osaleda muudes teenistusalastes surveaktsioonides, mis häirivad Riigikontrolli tegevust.",
       "estleg:legalText": "Riigikontrolli ametnikud ei tohi streikida. Samuti ei tohi Riigikontrolli ametnikud osaleda muudes teenistusalastes surveaktsioonides, mis häirivad Riigikontrolli tegevust.",
@@ -3590,11 +4444,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_36_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_36_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3616,10 +4472,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_36_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_36_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3627,19 +4487,31 @@
       "estleg:legalText": "Riigikontrolli ametnikud ei tohi streikida. Samuti ei tohi Riigikontrolli ametnikud osaleda muudes teenistusalastes surveaktsioonides, mis häirivad Riigikontrolli tegevust.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_36"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Riigikontrolli töö kavandamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontroll otsustab iseseisvalt kontrollimiste läbiviimise, aja ja iseloomu. (2) Riigikontrollile ei saa anda kohustuslikke kontrolliülesandeid. (3) Riigikontrolli töö aluseks on riigikontrolöri kinnitatud tööplaan.",
       "estleg:legalText": "(1) Riigikontroll otsustab iseseisvalt kontrollimiste läbiviimise, aja ja iseloomu. (2) Riigikontrollile ei saa anda kohustuslikke kontrolliülesandeid. (3) Riigikontrolli töö aluseks on riigikontrolöri kinnitatud tööplaan.",
@@ -3709,13 +4581,13 @@
       "@id": "estleg:RKS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Kontrollimises osalevad isikud",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Kontrollimise viivad läbi peakontrolöri määratud ametnikud. (2) Riigikontrollil on õigus kontrollimisse kaasata asjatundjaid eriteadmisi nõudvate küsimuste lahendamiseks. (3) Kontrollimise üle teostab järelevalvet peakontrolör. Kui kontrollimisel osalevad mitme auditiosakonna ametnikud, teostab kontrollimise üle järelevalvet tööplaanis määratud osakonna peakontrolör. Kui kontrollimise viib läbi peakontrolör, teostab kontrollimise üle järelevalvet riigikontrolör.",
       "estleg:legalText": "(1) Kontrollimise viivad läbi peakontrolöri määratud ametnikud. (2) Riigikontrollil on õigus kontrollimisse kaasata asjatundjaid eriteadmisi nõudvate küsimuste lahendamiseks. (3) Kontrollimise üle teostab järelevalvet peakontrolör. Kui kontrollimisel osalevad mitme auditiosakonna ametnikud, teostab kontrollimise üle järelevalvet tööplaanis määratud osakonna peakontrolör. Kui kontrollimise viib läbi peakontrolör, teostab kontrollimise üle järelevalvet riigikontrolör.",
@@ -3737,8 +4609,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3755,7 +4631,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_38_Lg_1",
@@ -3768,7 +4648,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_38"
       },
-      "rdfs:label": "§ 38 lg 1"
+      "rdfs:label": "§ 38 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_38_Lg_2",
@@ -3781,7 +4670,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_38"
       },
-      "rdfs:label": "§ 38 lg 2"
+      "rdfs:label": "§ 38 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_38_Lg_3",
@@ -3794,19 +4690,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_38"
       },
-      "rdfs:label": "§ 38 lg 3"
+      "rdfs:label": "§ 38 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Kontrollimises osaleva isiku taandamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Peakontrolör, ametnik või kaasatud asjatundja ei tohi kontrollimises osaleda ning on kohustatud ennast taandama, kui ilmnevad asjaolud, mis annavad põhjust kahelda tema erapooletuses. (2) Käesoleva paragrahvi lõikes 1 nimetatud asjaolude ilmnemise üle otsustab peakontrolör, peakontrolöri erapooletuse hindamise puhul – riigikontrolör.",
       "estleg:legalText": "(1) Peakontrolör, ametnik või kaasatud asjatundja ei tohi kontrollimises osaleda ning on kohustatud ennast taandama, kui ilmnevad asjaolud, mis annavad põhjust kahelda tema erapooletuses. (2) Käesoleva paragrahvi lõikes 1 nimetatud asjaolude ilmnemise üle otsustab peakontrolör, peakontrolöri erapooletuse hindamise puhul – riigikontrolör.",
@@ -3825,8 +4730,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3849,7 +4758,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_39_Lg_1",
@@ -3862,7 +4775,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_39"
       },
-      "rdfs:label": "§ 39 lg 1"
+      "rdfs:label": "§ 39 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_39_Lg_2",
@@ -3881,13 +4806,13 @@
       "@id": "estleg:RKS_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Menetlusteade",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Peakontrolör koostab vastavalt Riigikontrolli tööplaanile kontrollimiseks vajaliku teabe kogumiseks menetlusteate, mis esitatakse isikule või asutusele, kelle suhtes soovitakse menetlustoimingut läbi viia. (2) Vajaduse korral koostab riigikontrolör menetlusteate isiklikult. (3) Menetlusteates sisalduvad menetlustoiminguid tegevate ametnike ja kaasatud asjatundjate nimed, tehtavad menetlustoimingud ning nende läbiviimise aeg.",
       "estleg:legalText": "(1) Peakontrolör koostab vastavalt Riigikontrolli tööplaanile kontrollimiseks vajaliku teabe kogumiseks menetlusteate, mis esitatakse isikule või asutusele, kelle suhtes soovitakse menetlustoimingut läbi viia. (2) Vajaduse korral koostab riigikontrolör menetlusteate isiklikult. (3) Menetlusteates sisalduvad menetlustoiminguid tegevate ametnike ja kaasatud asjatundjate nimed, tehtavad menetlustoimingud ning nende läbiviimise aeg.",
@@ -3909,8 +4834,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3924,7 +4853,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_40_Lg_1",
@@ -3937,7 +4870,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_40"
       },
-      "rdfs:label": "§ 40 lg 1"
+      "rdfs:label": "§ 40 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_40_Lg_2",
@@ -3963,19 +4905,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_40"
       },
-      "rdfs:label": "§ 40 lg 3"
+      "rdfs:label": "§ 40 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41. Riigikontrolli menetlustoimingud",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolli menetlustoimingud on: teabe nõudmine; seletuse võtmine; vaatlus. (2) Õigus menetlustoiminguid teha on kõikidel menetlusteates selleks volitatud isikutel. (3) Riigikontrolöril on õigus menetlusteates ettenähtud menetlustoiminguid teha ka juhul, kui teda ei ole menetlusteates märgitud. (4) Kui menetlustoiminguga soovitakse koguda teavet, mille esitamise nõudmiseks puudub Riigikontrollil õigus, või kui menetlustoiming rikub muul viisil kellegi õigusi, võib isik, kelle õigusi",
       "estleg:legalText": "(1) Riigikontrolli menetlustoimingud on: teabe nõudmine; seletuse võtmine; vaatlus. (2) Õigus menetlustoiminguid teha on kõikidel menetlusteates selleks volitatud isikutel. (3) Riigikontrolöril on õigus menetlusteates ettenähtud menetlustoiminguid teha ka juhul, kui teda ei ole menetlusteates märgitud. (4) Kui menetlustoiminguga soovitakse koguda teavet, mille esitamise nõudmiseks puudub Riigikontrollil õigus, või kui menetlustoiming rikub muul viisil kellegi õigusi, võib isik, kelle õigusi rikutakse, kaevata Riigikontrolli toimingu peale halduskohtule.",
@@ -4000,7 +4951,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4014,7 +4967,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_41_Lg_1",
@@ -4053,7 +5010,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_41"
       },
-      "rdfs:label": "§ 41 lg 3"
+      "rdfs:label": "§ 41 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_41_Lg_4",
@@ -4066,19 +5030,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_41"
       },
-      "rdfs:label": "§ 41 lg 4"
+      "rdfs:label": "§ 41 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
       "rdfs:label": "§ 42. Menetlustoimingute teostamise õigus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontroll teostab menetlustoiminguid kontrollitavate suhtes, kui seadusest ei tulene teisiti.",
       "estleg:legalText": "Riigikontroll teostab menetlustoiminguid kontrollitavate suhtes, kui seadusest ei tulene teisiti.",
@@ -4090,7 +5066,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_42_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_42_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4100,7 +5076,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_42_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_42_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4114,13 +5090,13 @@
       "@id": "estleg:RKS_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
       "rdfs:label": "§ 43. Teabe nõudmine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrollil on õigus tutvuda kogu oma ülesannete täitmiseks vajaliku teabega, sealhulgas juurdepääsupiiranguga teabega. (1¹) Riigikontroll töötleb isikuandmeid, sealhulgas eriliiki isikuandmeid, kui see on vajalik käesoleva seaduse §-des 6–71 sätestatud eesmärkide täitmiseks. (1²) Käesoleva seaduse §-s 6–71 sätestatud eesmärkide täitmiseks kasutatakse võimaluse korral eelkõige pseudonüümitud või samaväärsel andmekaitse tasemel töödeldavaid andmeid.",
       "estleg:legalText": "(1) Riigikontrollil on õigus tutvuda kogu oma ülesannete täitmiseks vajaliku teabega, sealhulgas juurdepääsupiiranguga teabega. (1¹) Riigikontroll töötleb isikuandmeid, sealhulgas eriliiki isikuandmeid, kui see on vajalik käesoleva seaduse §-des 6–71 sätestatud eesmärkide täitmiseks. (1²) Käesoleva seaduse §-s 6–71 sätestatud eesmärkide täitmiseks kasutatakse võimaluse korral eelkõige pseudonüümitud või samaväärsel andmekaitse tasemel töödeldavaid andmeid. (2) Kõik kontrollitavad on kohustatud väljastama Riigikontrollile vajalikku teavet ning võimaldama teha dokumentidest koopiaid, ärakirju ja väljavõtteid. (3) Mõjuvatel põhjustel on Riigikontrollil õigus ära võtta dokumente, samuti kinni pitseerida toimikuid ning dokumentide, raha ja materiaalsete väärtuste hoiukohti. Dokumentide äravõtmise kohta koostatakse protokoll, mille üks eksemplar koos koopiaga äravõetavast dokumendist jääb kontrollitavale. (4) Riigikontrolöril või tema poolt volitatud ametnikul on õigus saada kontrollitavate hulka mittekuuluvalt isikult riigi, kohalike omavalitsuse üksuste ning muude avalik-õiguslike juriidiliste isikute vara kasutamist ja säilimist puudutavate küsimuste kontrollimiseks vajalikke andmeid ja dokumente nendega tutvumiseks ja ärakirjade tegemiseks, samuti saada pankadelt ja teistelt krediidiasutustelt andmeid, õiendeid ning dokumentide ärakirju rahaliste ja muude operatsioonide kohta. (5) Riigikontrollil on oma ülesannete täitmiseks õigus saada tegevusloaga audiitorettevõtjatelt vajalikku teavet ja kontrollitavate siseaudiitoritelt kontrollitavaid puudutavat teavet ning tutvumiseks tööpabereid ja muid dokumente. (6) Riigikontrolli taotlusel abistavad riigiasutused ja kohalikud omavalitsuse üksused Riigikontrolli kontrollimiseks vajalike andmete saamisel. (7) Riigisaladust või salastatud välisteavet sisaldavate teabekandjatega tutvumise õigus on vastava taseme riigisaladusele või salastatud välisteabele juurdepääsu õigust omavatel Riigikontrolli ametnikel vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
@@ -4160,8 +5136,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4193,7 +5173,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_43_Lg_1",
@@ -4206,7 +5190,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 1"
+      "rdfs:label": "§ 43 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_43_Lg_1_1",
@@ -4245,7 +5236,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 2"
+      "rdfs:label": "§ 43 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_43_Lg_3",
@@ -4271,7 +5269,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 4"
+      "rdfs:label": "§ 43 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_43_Lg_5",
@@ -4284,7 +5297,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 5"
+      "rdfs:label": "§ 43 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_43_Lg_6",
@@ -4297,7 +5319,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 6"
+      "rdfs:label": "§ 43 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_43_Lg_7",
@@ -4310,19 +5341,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_43"
       },
-      "rdfs:label": "§ 43 lg 7"
+      "rdfs:label": "§ 43 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
       "rdfs:label": "§ 44. Seletuse võtmine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli nõudmisel on kontrollitav kohustatud andma Riigikontrolli määratud mõistliku tähtaja jooksul kirjalikke ja suulisi seletusi Riigikontrolli esitatud küsimustes. Riigikontroll võib nõuda, et kontrollitava töötaja või teenistuja ilmuks seletust andma Riigikontrolli asukohta.",
       "estleg:legalText": "Riigikontrolli nõudmisel on kontrollitav kohustatud andma Riigikontrolli määratud mõistliku tähtaja jooksul kirjalikke ja suulisi seletusi Riigikontrolli esitatud küsimustes. Riigikontroll võib nõuda, et kontrollitava töötaja või teenistuja ilmuks seletust andma Riigikontrolli asukohta.",
@@ -4334,12 +5377,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_44_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_44_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4356,10 +5403,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_44_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_44_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4367,19 +5418,34 @@
       "estleg:legalText": "Riigikontrolli nõudmisel on kontrollitav kohustatud andma Riigikontrolli määratud mõistliku tähtaja jooksul kirjalikke ja suulisi seletusi Riigikontrolli esitatud küsimustes. Riigikontroll võib nõuda, et kontrollitava töötaja või teenistuja ilmuks seletust andma Riigikontrolli asukohta.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_44"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
       "rdfs:label": "§ 45. Vaatlus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Menetlusteates volitatud isik võib siseneda kontrollitava territooriumile ja objektidele, kontrollida sularaha, väärtpaberite ning muu vara olemit ja vajaduse korral teha inventuure ja kontrollmõõtmisi. Kontrollitav peab tingimusteta ja viivitamata võimaldama juurdepääsu kõigile oma valduses olevatele kontrollimisega seoses tähtsust omavatele asjadele ja paikadele.",
       "estleg:legalText": "Menetlusteates volitatud isik võib siseneda kontrollitava territooriumile ja objektidele, kontrollida sularaha, väärtpaberite ning muu vara olemit ja vajaduse korral teha inventuure ja kontrollmõõtmisi. Kontrollitav peab tingimusteta ja viivitamata võimaldama juurdepääsu kõigile oma valduses olevatele kontrollimisega seoses tähtsust omavatele asjadele ja paikadele.",
@@ -4391,11 +5457,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_45_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_45_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4405,15 +5473,18 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kontrollitav",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_45_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_45_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4421,19 +5492,31 @@
       "estleg:legalText": "Menetlusteates volitatud isik võib siseneda kontrollitava territooriumile ja objektidele, kontrollida sularaha, väärtpaberite ning muu vara olemit ja vajaduse korral teha inventuure ja kontrollmõõtmisi. Kontrollitav peab tingimusteta ja viivitamata võimaldama juurdepääsu kõigile oma valduses olevatele kontrollimisega seoses tähtsust omavatele asjadele ja paikadele.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_45"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
       "rdfs:label": "§ 46. Riigikontrolli tegevuse takistamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolli tegevuse takistamine on: Riigikontrolli eest tema ülesannete täitmiseks vajaliku teabe varjamine, selle andmisest keeldumine või kõrvalehoidumine, samuti võltsitud dokumentide esitamine; seletuse andmisest keeldumine või selle andmisest kõrvalehoidumine, samuti teadvalt väära seletuse andmine; vaatluse takistamine. (2) Riigikontroll teavitab oma tegevuse takistamise juhtudest Riigikogu erikomisjoni.",
       "estleg:legalText": "(1) Riigikontrolli tegevuse takistamine on: Riigikontrolli eest tema ülesannete täitmiseks vajaliku teabe varjamine, selle andmisest keeldumine või kõrvalehoidumine, samuti võltsitud dokumentide esitamine; seletuse andmisest keeldumine või selle andmisest kõrvalehoidumine, samuti teadvalt väära seletuse andmine; vaatluse takistamine. (2) Riigikontroll teavitab oma tegevuse takistamise juhtudest Riigikogu erikomisjoni.",
@@ -4452,7 +5535,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4477,7 +5562,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_46_Lg_1",
@@ -4503,19 +5592,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_46"
       },
-      "rdfs:label": "§ 46 lg 2"
+      "rdfs:label": "§ 46 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Teabe kaitse",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör, Riigikontrolli teenistujad ning kaasatud asjatundjad võivad oma ülesannete täitmisega seoses neile teatavaks saanud avalikkusele mittekättesaadavaid andmeid kasutada vaid Riigikontrolli ülesannete täitmise huvides. (2) Riigikontrolör, Riigikontrolli teenistujad ja kaasatud asjatundjad hoiavad saladuses neile Riigikontrolli ülesannete täitmisega seoses teatavaks saanud riigi-, äri- ja pangasaladust, salastatud välisteavet, Finantsinspektsioonilt saadud konfidentsiaalset",
       "estleg:legalText": "(1) Riigikontrolör, Riigikontrolli teenistujad ning kaasatud asjatundjad võivad oma ülesannete täitmisega seoses neile teatavaks saanud avalikkusele mittekättesaadavaid andmeid kasutada vaid Riigikontrolli ülesannete täitmise huvides. (2) Riigikontrolör, Riigikontrolli teenistujad ja kaasatud asjatundjad hoiavad saladuses neile Riigikontrolli ülesannete täitmisega seoses teatavaks saanud riigi-, äri- ja pangasaladust, salastatud välisteavet, Finantsinspektsioonilt saadud konfidentsiaalset järelevalvealast või finantskriisi ennetamist või lahendamist puudutavat teavet ning kaitstavaid isikuandmeid ka pärast teenistussuhte või lepingu lõppemist.",
@@ -4534,7 +5632,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4557,7 +5657,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_47_Lg_1",
@@ -4570,7 +5674,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_47"
       },
-      "rdfs:label": "§ 47 lg 1"
+      "rdfs:label": "§ 47 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_47_Lg_2",
@@ -4583,19 +5696,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_47"
       },
-      "rdfs:label": "§ 47 lg 2"
+      "rdfs:label": "§ 47 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_48",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
       "rdfs:label": "§ 48. Kontrollitava töösse sekkumise keeld",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontroll ei või häirida kontrollitava tööd rohkem, kui see on vajalik menetlustoiminguteks. Riigikontroll teavitab kontrollitavat kontrollimisest ja selle eesmärkidest mõistliku tähtaja jooksul enne kontrollimise algust. (2) Riigikontroll ei või avalikustada oma seisukohti ega hinnanguid kontrollimise tulemuste kohta enne kontrolliaruande avalikustamist.",
       "estleg:legalText": "(1) Riigikontroll ei või häirida kontrollitava tööd rohkem, kui see on vajalik menetlustoiminguteks. Riigikontroll teavitab kontrollitavat kontrollimisest ja selle eesmärkidest mõistliku tähtaja jooksul enne kontrollimise algust. (2) Riigikontroll ei või avalikustada oma seisukohti ega hinnanguid kontrollimise tulemuste kohta enne kontrolliaruande avalikustamist.",
@@ -4620,6 +5742,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -4633,7 +5759,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 1"
+      "rdfs:label": "§ 48 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_48_Lg_2",
@@ -4646,19 +5779,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_48"
       },
-      "rdfs:label": "§ 48 lg 2"
+      "rdfs:label": "§ 48 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
       "rdfs:label": "§ 49. Menetlustoiminguteks vajalike tingimuste loomise kohustus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Kontrollitav loob menetlustoiminguteks vajalikud tingimused, sealhulgas eraldab selleks vajalikud ruumid ja sidevahendid.",
       "estleg:legalText": "Kontrollitav loob menetlustoiminguteks vajalikud tingimused, sealhulgas eraldab selleks vajalikud ruumid ja sidevahendid.",
@@ -4670,7 +5810,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_49_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_49_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -4680,7 +5820,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_49_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_49_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4694,13 +5834,13 @@
       "@id": "estleg:RKS_Par_50",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
       "rdfs:label": "§ 50. Kontrolliaruande koostamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Kontrolliaruanne võib sisaldada tähelepanekuid, hinnanguid ja ettepanekuid kontrollitavate: sisekontrolli, finantsjuhtimise, finantsarvestuse ja finantsaruannete kohta; majandustegevuse, sealhulgas majandustehingute õiguspärasuse kohta; juhtimise, organisatsiooni ja tegevuse tulemuslikkuse kohta; infotehnoloogiasüsteemide usaldatavuse kohta. (2) Riigikontrollil on kontrolliaruandes õigus teha ettepanekuid kontrollimisel tuvastatud puuduste kõrvaldamiseks ja tulevikus vältimiseks.",
       "estleg:legalText": "(1) Kontrolliaruanne võib sisaldada tähelepanekuid, hinnanguid ja ettepanekuid kontrollitavate: sisekontrolli, finantsjuhtimise, finantsarvestuse ja finantsaruannete kohta; majandustegevuse, sealhulgas majandustehingute õiguspärasuse kohta; juhtimise, organisatsiooni ja tegevuse tulemuslikkuse kohta; infotehnoloogiasüsteemide usaldatavuse kohta. (2) Riigikontrollil on kontrolliaruandes õigus teha ettepanekuid kontrollimisel tuvastatud puuduste kõrvaldamiseks ja tulevikus vältimiseks. (2¹) Kontrolliaruanne ei või sisaldada isikuandmeid, välja arvatud juhul, kui see puudutab kontrolliaruandes sisalduvaid tähelepanekuid, hinnanguid ja ettepanekuid või kui see puudutab isikut, kes tegutseb käesoleva seaduse §-s 7 nimetatud asutuse või isiku nimel. (2²) Kontrolliaruanne võib sisaldada Finantsinspektsioonilt auditi käigus saadud andmeid ainult kokkuvõtetena või sellisel koondkujul, et üksikuid finantsjärelevalve subjekte ei ole võimalik tuvastada ning et ei avaldata ka spetsiifilist järelevalve strateegiat või muud mitte avalikku informatsiooni Finantsinspektsiooni kohta. (3) Kontrolliaruandele kirjutab alla kontrollimise üle järelevalvet teostanud peakontrolör või Riigikontrolli tööplaanis ettenähtud juhtudel riigikontrolör. Kui kontrolliaruandele allakirjutav peakontrolör ei ole avaliku sektori vandeaudiitor audiitortegevuse seaduse tähenduses, peab riigieelarve seaduse § 77 lõikes 2 sätestatud kindlustandvate kutsetegevusalaste ülesannete täitmisel kontrolliaruandele alla kirjutama ka avaliku sektori vandeaudiitor audiitortegevuse seaduse tähenduses. (4) Enne allkirjastamist tutvustatakse kontrolliaruannet asjassepuutuvale ministrile või valla- või linnavalitsusele, samuti teistele isikutele ja organitele, kelle suhtes see sisaldab hinnanguid või ettepanekuid. Aruande saanud isikud ja organid on kohustatud esitama Riigikontrollile kirjalikult oma arvamuse neid puudutavate ettepanekute kohta, samuti teavitama rakendatavatest abinõudest Riigikontrolli tema antud mõistliku tähtaja jooksul. (5) Käesoleva paragrahvi lõikes 4 nimetatud isikute ja organite arvamustega tutvumise järel võib Riigikontroll kontrolliaruandes muudatusi teha.",
@@ -4734,8 +5874,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -4781,7 +5925,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_50_Lg_1",
@@ -4794,7 +5942,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_50"
       },
-      "rdfs:label": "§ 50 lg 1"
+      "rdfs:label": "§ 50 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_50_Lg_2",
@@ -4825,7 +5980,19 @@
         {
           "@id": "estleg:RKS_Par_7"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_50_Lg_2_2",
@@ -4838,7 +6005,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_50"
       },
-      "rdfs:label": "§ 50 lg 2²"
+      "rdfs:label": "§ 50 lg 2²",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_50_Lg_3",
@@ -4854,7 +6028,7 @@
       "rdfs:label": "§ 50 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:REELS_Par_77"
+          "@id": "estleg:REELS_Par_77_Lg_2"
         }
       ]
     },
@@ -4869,7 +6043,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_50"
       },
-      "rdfs:label": "§ 50 lg 4"
+      "rdfs:label": "§ 50 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_50_Lg_5",
@@ -4882,19 +6068,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_50"
       },
-      "rdfs:label": "§ 50 lg 5"
+      "rdfs:label": "§ 50 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_51",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 51.",
       "rdfs:label": "§ 51. Kontrolliaruande avalikustamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontroll on kohustatud kontrolliaruande avalikustama, välja arvatud juhul, kui see sisaldab andmeid riigi-, äri- või pangasaladuse või salastatud välisteabe või Finantsinspektsioonilt saadud konfidentsiaalse järelevalvealase või finantskriisi ennetamist või lahendamist puudutava teabe kohta või kui selle avalikustamine on muul viisil vastuolus õigusaktidega. Sellisel juhul on Riigikontroll kohustatud avaldama kontrolliaruande need osad, mille avalikustamine on lubatud.",
       "estleg:legalText": "(1) Riigikontroll on kohustatud kontrolliaruande avalikustama, välja arvatud juhul, kui see sisaldab andmeid riigi-, äri- või pangasaladuse või salastatud välisteabe või Finantsinspektsioonilt saadud konfidentsiaalse järelevalvealase või finantskriisi ennetamist või lahendamist puudutava teabe kohta või kui selle avalikustamine on muul viisil vastuolus õigusaktidega. Sellisel juhul on Riigikontroll kohustatud avaldama kontrolliaruande need osad, mille avalikustamine on lubatud. (2) Koos aruandega avalikustatakse käesoleva seaduse § 50 lõikes 4 nimetatud isikute ja organite poolt aruande kohta esitatud kirjalikud arvamused. (3) Kuriteo tunnuseid sisaldava õiguserikkumise avastamise kahtluse korral on Riigikontroll kohustatud vastavad materjalid esitama uurimisorganile, kes teatab Riigikontrollile materjalide läbivaatamise tulemustest.",
@@ -4916,7 +6114,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4944,12 +6144,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Riigikontroll",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_51_Lg_1",
@@ -4962,7 +6165,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_51"
       },
-      "rdfs:label": "§ 51 lg 1"
+      "rdfs:label": "§ 51 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_51_Lg_2",
@@ -4978,9 +6188,18 @@
       "rdfs:label": "§ 51 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:RKS_Par_50"
+          "@id": "estleg:RKS_Par_50_Lg_4"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_51_Lg_3",
@@ -4999,13 +6218,13 @@
       "@id": "estleg:RKS_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
       "rdfs:label": "§ 52. Kontrollitulemuste arutamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Riigikontrolör esitab kontrollitulemused Riigikogu vastavale erikomisjonile. (2) Kontrollitulemuste arutamisel erikomisjonis kutsutakse arutelu juurde Riigikontrolli ja kontrollitava esindaja või muu asjassepuutuv isik. (3) Erikomisjonil on kontrollitulemuste arutamisega seoses õigus: kutsuda välja ameti- ja eraisikuid ning saada neilt suulisi ja kirjalikke selgitusi; nõuda asjassepuutuvaid dokumente kõigilt riigi- ja kohalike omavalitsuse üksuste asutustelt, juriidilistelt ja füüsilistelt",
       "estleg:legalText": "(1) Riigikontrolör esitab kontrollitulemused Riigikogu vastavale erikomisjonile. (2) Kontrollitulemuste arutamisel erikomisjonis kutsutakse arutelu juurde Riigikontrolli ja kontrollitava esindaja või muu asjassepuutuv isik. (3) Erikomisjonil on kontrollitulemuste arutamisega seoses õigus: kutsuda välja ameti- ja eraisikuid ning saada neilt suulisi ja kirjalikke selgitusi; nõuda asjassepuutuvaid dokumente kõigilt riigi- ja kohalike omavalitsuse üksuste asutustelt, juriidilistelt ja füüsilistelt isikutelt. (4) Kontrollitulemuste arutamiseks korraldatud erikomisjoni istungid on avalikud. Istungi või selle osa võib komisjoni otsusega kuulutada kinniseks kaitstavate isikuandmete, panga-, äri- või riigisaladuse või salastatud välisteabe kaitseks. (5) Erikomisjon võib kontrollitulemuste arutelu tulemusena esitada järelepärimise Vabariigi Valitsusele. Järelepärimisele peab valitsus vastama ühe kuu jooksul.",
@@ -5033,8 +6252,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5066,7 +6289,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_52_Lg_1",
@@ -5079,7 +6306,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_52"
       },
-      "rdfs:label": "§ 52 lg 1"
+      "rdfs:label": "§ 52 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_52_Lg_2",
@@ -5092,7 +6328,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_52"
       },
-      "rdfs:label": "§ 52 lg 2"
+      "rdfs:label": "§ 52 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_52_Lg_3",
@@ -5105,7 +6350,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_52"
       },
-      "rdfs:label": "§ 52 lg 3"
+      "rdfs:label": "§ 52 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_52_Lg_4",
@@ -5118,7 +6372,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_52"
       },
-      "rdfs:label": "§ 52 lg 4"
+      "rdfs:label": "§ 52 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_52_Lg_5",
@@ -5131,19 +6392,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_52"
       },
-      "rdfs:label": "§ 52 lg 5"
+      "rdfs:label": "§ 52 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_52_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52¹.",
       "rdfs:label": "§ 52¹. Juurdepääs kontrolliaruande aluseks olevatele materjalidele",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Andmesubjekti õigust saada juurdepääs tema kohta töödeldud isikuandmetele võib piirata, kui see võib: kahjustada teise isiku õigusi ja vabadusi; takistada käesoleva seaduse §-des 6–71 sätestatud eesmärkide täitmist.",
       "estleg:legalText": "Andmesubjekti õigust saada juurdepääs tema kohta töödeldud isikuandmetele võib piirata, kui see võib: kahjustada teise isiku õigusi ja vabadusi; takistada käesoleva seaduse §-des 6–71 sätestatud eesmärkide täitmist.",
@@ -5155,11 +6428,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_52_1_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_52_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5173,10 +6448,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_52_1_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_52_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5184,19 +6463,31 @@
       "estleg:legalText": "Andmesubjekti õigust saada juurdepääs tema kohta töödeldud isikuandmetele võib piirata, kui see võib: kahjustada teise isiku õigusi ja vabadusi; takistada käesoleva seaduse §-des 6–71 sätestatud eesmärkide täitmist.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_52_1"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_53",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 53.",
       "rdfs:label": "§ 53. Riigikontrolli ametnikega töölepingu sõlmimine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli ametnikuga, kes töötab käesoleva seaduse jõustumise hetkel ametikohal, mille täitmiseks ei ole riigikontrolöri kinnitatava struktuuriüksuste koosseisu kohaselt vaja ametniku staatust omavat isikut, lõpetatakse kahe kuu jooksul käesoleva seaduse jõustumisest arvates teenistussuhe ning sõlmitakse tööleping, mis näeb ette vähemalt samad õigused ja kohustused, nagu tal olid ametnikuna. Kui ametnik ei ole nõus töölepingu sõlmimisega, vabastatakse ta teenistusest ning makstakse talle",
       "estleg:legalText": "Riigikontrolli ametnikuga, kes töötab käesoleva seaduse jõustumise hetkel ametikohal, mille täitmiseks ei ole riigikontrolöri kinnitatava struktuuriüksuste koosseisu kohaselt vaja ametniku staatust omavat isikut, lõpetatakse kahe kuu jooksul käesoleva seaduse jõustumisest arvates teenistussuhe ning sõlmitakse tööleping, mis näeb ette vähemalt samad õigused ja kohustused, nagu tal olid ametnikuna. Kui ametnik ei ole nõus töölepingu sõlmimisega, vabastatakse ta teenistusest ning makstakse talle ühekordset hüvitist kahe kuu ametipalga ulatuses.",
@@ -5205,12 +6496,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_53_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_53_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5224,10 +6519,14 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_53_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_53_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5235,19 +6534,31 @@
       "estleg:legalText": "Riigikontrolli ametnikuga, kes töötab käesoleva seaduse jõustumise hetkel ametikohal, mille täitmiseks ei ole riigikontrolöri kinnitatava struktuuriüksuste koosseisu kohaselt vaja ametniku staatust omavat isikut, lõpetatakse kahe kuu jooksul käesoleva seaduse jõustumisest arvates teenistussuhe ning sõlmitakse tööleping, mis näeb ette vähemalt samad õigused ja kohustused, nagu tal olid ametnikuna. Kui ametnik ei ole nõus töölepingu sõlmimisega, vabastatakse ta teenistusest ning makstakse talle ühekordset hüvitist kahe kuu ametipalga ulatuses.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_53"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_54",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54.",
       "rdfs:label": "§ 54. Pooleliolevad kontrollimised",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Enne käesoleva seaduse jõustumist alustatud kontrollimised lõpetatakse enne käesoleva seaduse jõustumist kehtinud korras.",
       "estleg:legalText": "Enne käesoleva seaduse jõustumist alustatud kontrollimised lõpetatakse enne käesoleva seaduse jõustumist kehtinud korras.",
@@ -5256,7 +6567,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_54_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_54_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5269,7 +6580,7 @@
           "@id": "estleg:EhSRS_Par_2"
         },
         {
-          "@id": "estleg:TõS_Par_55"
+          "@id": "estleg:ToS_Par_55"
         },
         {
           "@id": "estleg:VOSRS_Par_11"
@@ -5277,7 +6588,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_54_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_54_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5291,13 +6602,13 @@
       "@id": "estleg:RKS_Par_54_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54¹.",
       "rdfs:label": "§ 54¹. Õigus riigikontrolöri ametipensionile",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Õigus riigikontrolöri ametipensionile vanaduspensioniea saabumisel on isikul, kes on: 2013. aasta 1. jaanuariks töötanud riigikontrolörina vähemalt viis aastat; 2013. aasta 1. jaanuaril ametis riigikontrolörina ja kes töötab sellel ametikohal vähemalt viis aastat.",
       "estleg:legalText": "Õigus riigikontrolöri ametipensionile vanaduspensioniea saabumisel on isikul, kes on: 2013. aasta 1. jaanuariks töötanud riigikontrolörina vähemalt viis aastat; 2013. aasta 1. jaanuaril ametis riigikontrolörina ja kes töötab sellel ametikohal vähemalt viis aastat.",
@@ -5306,11 +6617,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_54_1_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_54_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5329,10 +6642,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_54_1_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_54_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5340,19 +6657,28 @@
       "estleg:legalText": "Õigus riigikontrolöri ametipensionile vanaduspensioniea saabumisel on isikul, kes on: 2013. aasta 1. jaanuariks töötanud riigikontrolörina vähemalt viis aastat; 2013. aasta 1. jaanuaril ametis riigikontrolörina ja kes töötab sellel ametikohal vähemalt viis aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_54_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54².",
       "rdfs:label": "§ 54². Õigus riigikontrolöri ülalpeetava toitjakaotuspensionile",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Õigus toitjakaotuspensionile on riigikontrolöri ülalpidamisel olnud töövõimetul pereliikmel 2013. aasta 1. jaanuaril ametis oleva riigikontrolöri surma korral ametis oleku ajal.",
       "estleg:legalText": "Õigus toitjakaotuspensionile on riigikontrolöri ülalpidamisel olnud töövõimetul pereliikmel 2013. aasta 1. jaanuaril ametis oleva riigikontrolöri surma korral ametis oleku ajal.",
@@ -5361,7 +6687,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_54_2_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_54_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5376,7 +6702,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_54_2_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_54_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5390,13 +6716,13 @@
       "@id": "estleg:RKS_Par_54_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54³.",
       "rdfs:label": "§ 54³. Õigus Riigikontrolli peakontrolöri ametipensionile",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Õigus Riigikontrolli peakontrolöri ametipensionile vanaduspensioniea saabumisel on isikul, kes on: 2013. aasta 1. jaanuariks töötanud vähemalt 15 aastat Riigikontrolli peakontrolörina; 2013. aasta 1. jaanuariks töötanud vähemalt 15 aastat riigi- või kohaliku omavalitsuse üksuse ametnikuna, sealhulgas vähemalt viis aastat Riigikontrolli peakontrolörina; 2013. aasta 1. jaanuaril ametis Riigikontrolli peakontrolörina ja kellel on selleks ajaks täitunud vähemalt 50 protsenti käesoleva paragrahvi",
       "estleg:legalText": "Õigus Riigikontrolli peakontrolöri ametipensionile vanaduspensioniea saabumisel on isikul, kes on: 2013. aasta 1. jaanuariks töötanud vähemalt 15 aastat Riigikontrolli peakontrolörina; 2013. aasta 1. jaanuariks töötanud vähemalt 15 aastat riigi- või kohaliku omavalitsuse üksuse ametnikuna, sealhulgas vähemalt viis aastat Riigikontrolli peakontrolörina; 2013. aasta 1. jaanuaril ametis Riigikontrolli peakontrolörina ja kellel on selleks ajaks täitunud vähemalt 50 protsenti käesoleva paragrahvi punktis 1 sätestatud ametipensioni saamiseks vajalikust staažist ning kellel pensionile jäämise ajaks täitub nimetatud staaž; 2013. aasta 1. jaanuaril ametis Riigikontrolli peakontrolörina ja kellel on selleks ajaks täitunud vähemalt 50 protsenti mõlemast käesoleva paragrahvi punktis 2 sätestatud ametipensioni saamiseks vajalikust staažist ning kellel pensionile jäämise ajaks täituvad nimetatud staažid; 2013. aasta 1. jaanuaril riigi- või kohaliku omavalitsuse üksuse ametnik ja kellel on selleks ajaks täitunud vähemalt viieaastane Riigikontrolli peakontrolöri staaž ja vähemalt 50 protsenti 15-aastasest riigi- või kohaliku omavalitsuse üksuse ametniku staažist ning kellel pensionile jäämise ajaks täitub nimetatud staaž.",
@@ -5405,12 +6731,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_54_3_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_54_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5438,10 +6768,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_54_3_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_54_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5449,19 +6783,35 @@
       "estleg:legalText": "Õigus Riigikontrolli peakontrolöri ametipensionile vanaduspensioniea saabumisel on isikul, kes on: 2013. aasta 1. jaanuariks töötanud vähemalt 15 aastat Riigikontrolli peakontrolörina; 2013. aasta 1. jaanuariks töötanud vähemalt 15 aastat riigi- või kohaliku omavalitsuse üksuse ametnikuna, sealhulgas vähemalt viis aastat Riigikontrolli peakontrolörina; 2013. aasta 1. jaanuaril ametis Riigikontrolli peakontrolörina ja kellel on selleks ajaks täitunud vähemalt 50 protsenti käesoleva paragrahvi punktis 1 sätestatud ametipensioni saamiseks vajalikust staažist ning kellel pensionile jäämise ajaks täitub nimetatud staaž; 2013. aasta 1. jaanuaril ametis Riigikontrolli peakontrolörina ja kellel on selleks ajaks täitunud vähemalt 50 protsenti mõlemast käesoleva paragrahvi punktis 2 sätestatud ametipensioni saamiseks vajalikust staažist ning kellel pensionile jäämise ajaks täituvad nimetatud staažid; 2013. aasta 1. jaanuaril riigi- või kohaliku omavalitsuse üksuse ametnik ja kellel on selleks ajaks täitunud vähemalt viieaastane Riigikontrolli peakontrolöri staaž ja vähemalt 50 protsenti 15-aastasest riigi- või kohaliku omavalitsuse üksuse ametniku staažist ning kellel pensionile jäämise ajaks täitub nimetatud staaž.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_3"
+      },
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_54_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54⁴.",
       "rdfs:label": "§ 54⁴. Riigikontrolöri ametipensioni suurus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolöri ametipensioni suurus on: 50 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse, kui isik on töötanud riigikontrolöri ametikohal vähemalt viis aastat; 70 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse, kui isik on töötanud riigikontrolöri ametikohal vähemalt kümme aastat.",
       "estleg:legalText": "Riigikontrolöri ametipensioni suurus on: 50 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse, kui isik on töötanud riigikontrolöri ametikohal vähemalt viis aastat; 70 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse, kui isik on töötanud riigikontrolöri ametikohal vähemalt kümme aastat.",
@@ -5470,11 +6820,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_54_4_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_54_4_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5493,10 +6845,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RKS_Par_54_4_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_54_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5504,19 +6860,28 @@
       "estleg:legalText": "Riigikontrolöri ametipensioni suurus on: 50 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse, kui isik on töötanud riigikontrolöri ametikohal vähemalt viis aastat; 70 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse, kui isik on töötanud riigikontrolöri ametikohal vähemalt kümme aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_4"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RKS_Par_54_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54⁵.",
       "rdfs:label": "§ 54⁵. Riigikontrolöri ülalpeetava toitjakaotuspensioni suurus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Alla kümne aasta riigikontrolörina töötanud riigikontrolöri surma korral igale tema ülalpidamisel olnud töövõimetule pereliikmele makstava toitjakaotuspensioni suurus on 12,5 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates toitjakaotuspension määratakse. Riigikontrolöri pereliikmete toitjakaotuspensionid kokku ei tohi ületada 37,5 protsenti riigikontrolöri ametipalgast nimetatud kuupäeval. (2) Kümme või rohkem aastat riigikontrolörina töötanud riigikontrolöri surma",
       "estleg:legalText": "(1) Alla kümne aasta riigikontrolörina töötanud riigikontrolöri surma korral igale tema ülalpidamisel olnud töövõimetule pereliikmele makstava toitjakaotuspensioni suurus on 12,5 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates toitjakaotuspension määratakse. Riigikontrolöri pereliikmete toitjakaotuspensionid kokku ei tohi ületada 37,5 protsenti riigikontrolöri ametipalgast nimetatud kuupäeval. (2) Kümme või rohkem aastat riigikontrolörina töötanud riigikontrolöri surma korral igale tema ülalpidamisel olnud töövõimetule pereliikmele makstava toitjakaotuspensioni suurus on 17,5 protsenti riigikontrolöri ametipalgast, mis kehtis päeval, millest alates toitjakaotuspension määratakse. Riigikontrolöri pereliikmete toitjakaotuspensionid kokku ei tohi ületada 52,5 protsenti riigikontrolöri ametipalgast nimetatud kuupäeval.",
@@ -5543,6 +6908,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -5556,7 +6925,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_5"
       },
-      "rdfs:label": "§ 54⁵ lg 1"
+      "rdfs:label": "§ 54⁵ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_5_Lg_2",
@@ -5569,19 +6945,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_5"
       },
-      "rdfs:label": "§ 54⁵ lg 2"
+      "rdfs:label": "§ 54⁵ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54⁶.",
       "rdfs:label": "§ 54⁶. Riigikontrolli peakontrolöri ametipensioni suurus",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "Riigikontrolli peakontrolöri ametipensioni suurus on 60 protsenti Riigikontrolli peakontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse.",
       "estleg:legalText": "Riigikontrolli peakontrolöri ametipensioni suurus on 60 protsenti Riigikontrolli peakontrolöri ametipalgast, mis kehtis päeval, millest alates ametipension määratakse.",
@@ -5590,7 +6973,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKS_Par_54_6_Lg_Unknown_1"
+          "@id": "estleg:RKS_Par_54_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5608,7 +6991,7 @@
       ]
     },
     {
-      "@id": "estleg:RKS_Par_54_6_Lg_Unknown_1",
+      "@id": "estleg:RKS_Par_54_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5622,13 +7005,13 @@
       "@id": "estleg:RKS_Par_54_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54⁷.",
       "rdfs:label": "§ 54⁷. Ametipensioni ja toitjakaotuspensioni määramine ning maksmine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Käesolevas seaduses sätestatud pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi. (2) Ametipension ja toitjakaotuspension, välja arvatud jooksva aasta palga alusel arvutatud pension, indekseeritakse iga aasta 1. aprilliks riikliku pensionikindlustuse seaduse § 26 alusel Vabariigi Valitsuse määrusega kinnitatud pensioniindeksiga. (3) Ametipensioni ja toitjakaotuspensioni see osa, mis ületab riikliku pensionikindlustuse seaduse alusel",
       "estleg:legalText": "(1) Käesolevas seaduses sätestatud pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi. (2) Ametipension ja toitjakaotuspension, välja arvatud jooksva aasta palga alusel arvutatud pension, indekseeritakse iga aasta 1. aprilliks riikliku pensionikindlustuse seaduse § 26 alusel Vabariigi Valitsuse määrusega kinnitatud pensioniindeksiga. (3) Ametipensioni ja toitjakaotuspensioni see osa, mis ületab riikliku pensionikindlustuse seaduse alusel arvutatava vanaduspensioni või toitjakaotuspensioni, makstakse riigieelarvest. (4) Ametipensioni ja toitjakaotuspensioni saamise ajal ei ole isikul õigust saada teisi riiklikke pensione. Ametipensioni ei suurendata avaliku teenistuse seaduse § 113 alusel. Kui isikul on õigus saada mitut liiki riiklikku pensioni, määratakse talle üks pension tema valikul. (5) Ametipensioni ei maksta riigikontrolöri ja Riigikontrolli peakontrolöri töötamisel sellele ametipensionile õigust andval ametikohal või Riigikogu liikmena, Vabariigi Presidendina, Vabariigi Valitsuse liikmena, Riigikohtu esimehe või liikmena, kaitseväe juhatajana, õiguskantslerina või Eesti Panga presidendina. (6) Ametipensioni ei maksta riigikontrolöri ametist tagandamisel või Riigikontrolli peakontrolöri ametikohalt vabastamisel avaliku teenistuse seaduse § 91, 92, 94 või 95 alusel, välja arvatud avaliku teenistuse seaduse § 15 punktis 4 sätestatud asjaoludel või süüdimõistva kohtuotsuse jõustumise tõttu. (7) Isik, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse ametipensionile. (8) Kui isikule maksti käesolevas seaduses sätestatud ametipensioni, siis lõpetatakse pensioni maksmine kohtuotsuse jõustumise kuule järgnevast kuust. Ametipensionile õiguse kaotamise korral säilib isikul õigus taotleda pensioni üldistel alustel. (9) Kohus on kohustatud kümne tööpäeva jooksul kohtuotsuse jõustumisest arvates kirjalikult teavitama Sotsiaalkindlustusametit asjaolust, mille tõttu kaob isikul õigus ametipensionile. (10) Käesoleva paragrahvi lõikes 7 sätestatut kohaldatakse isikule, kelle suhtes jõustus süüdimõistev kohtuotsus pärast 2009. aasta 10. märtsi.",
@@ -5668,8 +7051,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5703,7 +7090,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_RKS_Par_54_7_imprisonment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_1",
@@ -5729,7 +7126,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_7"
       },
-      "rdfs:label": "§ 54⁷ lg 2"
+      "rdfs:label": "§ 54⁷ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_3",
@@ -5760,7 +7166,19 @@
         {
           "@id": "estleg:AVALIK_Par_113"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_5",
@@ -5773,7 +7191,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_7"
       },
-      "rdfs:label": "§ 54⁷ lg 5"
+      "rdfs:label": "§ 54⁷ lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_6",
@@ -5794,7 +7224,17 @@
         {
           "@id": "estleg:AVALIK_Par_15"
         }
-      ]
+      ],
+      "estleg:itemNumber": "4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_7",
@@ -5807,7 +7247,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_7"
       },
-      "rdfs:label": "§ 54⁷ lg 7"
+      "rdfs:label": "§ 54⁷ lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_RKS_Par_54_7_Lg_7_imprisonment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_8",
@@ -5820,7 +7275,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_7"
       },
-      "rdfs:label": "§ 54⁷ lg 8"
+      "rdfs:label": "§ 54⁷ lg 8",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_9",
@@ -5833,7 +7297,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_7"
       },
-      "rdfs:label": "§ 54⁷ lg 9"
+      "rdfs:label": "§ 54⁷ lg 9",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_54_7_Lg_10",
@@ -5846,19 +7322,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_54_7"
       },
-      "rdfs:label": "§ 54⁷ lg 10"
+      "rdfs:label": "§ 54⁷ lg 10",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55.",
       "rdfs:label": "§ 55. Riigikontrolli ametniku pension",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse jõustumiseni kehtinud Riigikontrolli seaduse alusel Riigikontrolli ametniku pensioni saaval isikul on õigus pensionile käesoleva seaduse jõustumiseni kehtinud alustel ja suuruses, välja arvatud pensioni arvutamise aluseks oleva ametipalga ja pensioni ümberarvutamise osas. (2) Õigus Riigikontrolli ametniku pensionile käesoleva seaduse jõustumiseni kehtinud alustel ja suuruses, välja arvatud pensioni arvutamise aluseks oleva ametipalga ja pensioni ümberarvutamise osas, on ka",
       "estleg:legalText": "(1) Käesoleva seaduse jõustumiseni kehtinud Riigikontrolli seaduse alusel Riigikontrolli ametniku pensioni saaval isikul on õigus pensionile käesoleva seaduse jõustumiseni kehtinud alustel ja suuruses, välja arvatud pensioni arvutamise aluseks oleva ametipalga ja pensioni ümberarvutamise osas. (2) Õigus Riigikontrolli ametniku pensionile käesoleva seaduse jõustumiseni kehtinud alustel ja suuruses, välja arvatud pensioni arvutamise aluseks oleva ametipalga ja pensioni ümberarvutamise osas, on ka Riigikontrolli ametnikul, kellel on käesoleva seaduse jõustumise hetkeks Riigikontrolli ametniku pensioni saamiseks nõutavast tööstaažist täis vähemalt 70 protsenti, tingimusel, et sellel isikul täitub enne pensionile jäämist Riigikontrolli ametniku pensioni saamiseks nõutav tööstaaž. (3) Riigikontrolli ametniku pension arvutatakse tema viimase Riigikontrolli ametikoha ametipalgast, mis kehtis päeval, millest alates pension määratakse. (4) Riigikontrolli ametniku pension, välja arvatud jooksva aasta palga alusel arvutatud pension, indekseeritakse iga aasta 1. aprilliks riikliku pensionikindlustuse seaduse § 26 alusel Vabariigi Valitsuse määrusega kinnitatud pensioniindeksiga. (5) Riigikontrolli ametniku pension makstakse riigieelarvest.",
@@ -5883,8 +7368,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5907,7 +7396,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55_Lg_1",
@@ -5920,7 +7413,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_55"
       },
-      "rdfs:label": "§ 55 lg 1"
+      "rdfs:label": "§ 55 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55_Lg_2",
@@ -5933,7 +7441,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_55"
       },
-      "rdfs:label": "§ 55 lg 2"
+      "rdfs:label": "§ 55 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55_Lg_3",
@@ -5946,7 +7466,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_55"
       },
-      "rdfs:label": "§ 55 lg 3"
+      "rdfs:label": "§ 55 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55_Lg_4",
@@ -5959,7 +7488,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_55"
       },
-      "rdfs:label": "§ 55 lg 4"
+      "rdfs:label": "§ 55 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55_Lg_5",
@@ -5972,19 +7513,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RKS_Par_55"
       },
-      "rdfs:label": "§ 55 lg 5"
+      "rdfs:label": "§ 55 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RKS_Par_55_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55¹.",
       "rdfs:label": "§ 55¹. Seaduse rakendamine",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "(1) Aruandeperioodidele, mis algasid 2009. aasta 1. jaanuaril või varem, ja nende kohta koostatud aruannetele kohaldatakse käesoleva seaduse sätteid enne 2010. aasta 15. novembrit kehtinud redaktsioonis. (2) Käesoleva seaduse § 50 lõike 3 redaktsiooni, mis jõustus 2011. aasta 1. jaanuaril, kohaldatakse aruandeperioodide kohta, mis algavad 2012. aasta 1. jaanuaril või hiljem.",
       "estleg:legalText": "(1) Aruandeperioodidele, mis algasid 2009. aasta 1. jaanuaril või varem, ja nende kohta koostatud aruannetele kohaldatakse käesoleva seaduse sätteid enne 2010. aasta 15. novembrit kehtinud redaktsioonis. (2) Käesoleva seaduse § 50 lõike 3 redaktsiooni, mis jõustus 2011. aasta 1. jaanuaril, kohaldatakse aruandeperioodide kohta, mis algavad 2012. aasta 1. jaanuaril või hiljem.",
@@ -6001,7 +7551,7 @@
       ],
       "estleg:references": [
         {
-          "@id": "estleg:RKS_Par_50"
+          "@id": "estleg:RKS_Par_50_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -6048,7 +7598,7 @@
       "rdfs:label": "§ 55¹ lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:RKS_Par_50"
+          "@id": "estleg:RKS_Par_50_Lg_3"
         }
       ]
     },
@@ -6056,13 +7606,13 @@
       "@id": "estleg:RKS_Par_56",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56.",
       "rdfs:label": "§ 56.",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Division_RKS_7_2"
@@ -6078,13 +7628,13 @@
       "@id": "estleg:RKS_Par_57",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigikontrolli_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 57.",
       "rdfs:label": "§ 57. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Riigikontrolli seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RKS_Map_2026"
+        "@id": "estleg:RKS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -6102,6 +7652,72 @@
           "@id": "estleg:RKS_Par_57_v112112010004"
         }
       ]
+    },
+    {
+      "@id": "estleg:Citation_RKS_P_43_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:RKS_Par_43"
+      },
+      "estleg:citationText": "käesoleva seaduse §-des 6–71"
+    },
+    {
+      "@id": "estleg:Citation_RKS_P_43_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:RKS_Par_43"
+      },
+      "estleg:citationText": "Käesoleva seaduse §-s 6–71"
+    },
+    {
+      "@id": "estleg:Citation_RKS_P_43_Lg_1_1_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:RKS_Par_43_Lg_1_1"
+      },
+      "estleg:citationText": "käesoleva seaduse §-des 6–71"
+    },
+    {
+      "@id": "estleg:Citation_RKS_P_43_Lg_1_2_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:RKS_Par_43_Lg_1_2"
+      },
+      "estleg:citationText": "Käesoleva seaduse §-s 6–71"
+    },
+    {
+      "@id": "estleg:Citation_RKS_P_52_1_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:RKS_Par_52_1"
+      },
+      "estleg:citationText": "käesoleva seaduse §-des 6–71"
+    },
+    {
+      "@id": "estleg:Citation_RKS_P_52_1_Lg_1_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:RKS_Par_52_1_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse §-des 6–71"
     }
   ]
 }

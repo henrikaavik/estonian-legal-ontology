@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:merealapiiride_seadus_Map_2026",
+      "@id": "estleg:merealapiiride_seadus_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Merealapiiride seadus teemakaardistus",
       "dc:source": "Merealapiiride seadus",
-      "dcterms:title": "Merealapiiride seadus",
+      "dcterms:title": [
+        {
+          "@value": "Merealapiiride seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Maritime Boundaries Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24407.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/24407.xml"
       },
       "estleg:kehtiv": {
@@ -36,16 +41,22 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_merealapiiride_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/508112013008"
       }
     },
     {
@@ -78,13 +89,13 @@
       "@id": "estleg:merealapiiride_seadus_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Merealad on käesoleva seaduse mõistes maismaaga piirnev osa merest, millele laie...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Merealad on käesoleva seaduse mõistes maismaaga piirnev osa merest, millele laieneb Eesti jurisdiktsioon.",
       "estleg:legalText": "Merealad on käesoleva seaduse mõistes maismaaga piirnev osa merest, millele laieneb Eesti jurisdiktsioon.",
@@ -93,7 +104,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_1_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -103,7 +114,7 @@
       ]
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_1_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -117,13 +128,13 @@
       "@id": "estleg:merealapiiride_seadus_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Merealade jaotuse aluseks on Genfi 1958.aasta territoriaalmere ja selle külgvöön...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Merealade jaotuse aluseks on Genfi 1958.aasta territoriaalmere ja selle külgvööndi konventsiooni ning ÜRO 1982. aasta mereõiguse konventsiooni sätted.",
       "estleg:legalText": "Merealade jaotuse aluseks on Genfi 1958.aasta territoriaalmere ja selle külgvööndi konventsiooni ning ÜRO 1982. aasta mereõiguse konventsiooni sätted.",
@@ -132,7 +143,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_2_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -142,7 +153,7 @@
       ]
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_2_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -156,13 +167,13 @@
       "@id": "estleg:merealapiiride_seadus_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [Territoriaalmere lähtejoon on mõtteline joon, mis madalvee puhul ühendab omavahe...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Territoriaalmere lähtejoon on mõtteline joon, mis madalvee puhul ühendab omavahel maismaa, saarte, laidude, kaljude ja veest väljaulatuvate üksikute kivide rannikust kõige kaugemal asuvaid punkte.Territoriaalmere lähtejoone koordinaadid on esitatud lisas 1.",
       "estleg:legalText": "Territoriaalmere lähtejoon on mõtteline joon, mis madalvee puhul ühendab omavahel maismaa, saarte, laidude, kaljude ja veest väljaulatuvate üksikute kivide rannikust kõige kaugemal asuvaid punkte.Territoriaalmere lähtejoone koordinaadid on esitatud lisas 1.",
@@ -171,7 +182,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_3_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -181,7 +192,7 @@
       ]
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_3_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -195,13 +206,13 @@
       "@id": "estleg:merealapiiride_seadus_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. [Sisemeri on mereala, mis asub territoriaalmere lähtejoone ja ranniku vahel. Sise...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Sisemeri on mereala, mis asub territoriaalmere lähtejoone ja ranniku vahel.",
       "estleg:legalText": "Sisemeri on mereala, mis asub territoriaalmere lähtejoone ja ranniku vahel.",
@@ -210,7 +221,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_4_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_4_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -220,7 +231,7 @@
       ]
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_4_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -234,13 +245,13 @@
       "@id": "estleg:merealapiiride_seadus_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. [Territoriaalmeri on sisemerega külgnev mereala, mille välispiir on määratud käes...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Territoriaalmeri on sisemerega külgnev mereala, mille välispiir on määratud käesoleva seadusega.Territoriaalmere piiri koordinaadid on esitatud lisas 2.",
       "estleg:legalText": "Territoriaalmeri on sisemerega külgnev mereala, mille välispiir on määratud käesoleva seadusega.Territoriaalmere piiri koordinaadid on esitatud lisas 2.",
@@ -249,7 +260,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_5_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_5_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -259,7 +270,7 @@
       ]
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_5_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -273,13 +284,13 @@
       "@id": "estleg:merealapiiride_seadus_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. [Territoriaalmere laius on 12 meremiili. Territoriaalmere laiuse osas võib teha e...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Territoriaalmere laius on 12 meremiili. Territoriaalmere laiuse osas võib teha erandeid, lähtudes rahvusvahelistest konventsioonidest ja lepingutest naaberriikidega.",
       "estleg:legalText": "Territoriaalmere laius on 12 meremiili. Territoriaalmere laiuse osas võib teha erandeid, lähtudes rahvusvahelistest konventsioonidest ja lepingutest naaberriikidega.",
@@ -288,7 +299,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_6_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -298,10 +309,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_6_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -309,19 +324,26 @@
       "estleg:legalText": "Territoriaalmere laius on 12 meremiili. Territoriaalmere laiuse osas võib teha erandeid, lähtudes rahvusvahelistest konventsioonidest ja lepingutest naaberriikidega.",
       "estleg:parentProvision": {
         "@id": "estleg:merealapiiride_seadus_Par_6"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:merealapiiride_seadus_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_merealapiiride_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. [Majandusvöönd on väljaspool territoriaalmerd asuv ja viimasega külgnev mereala,...]",
       "estleg:sourceAct": "Merealapiiride seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:merealapiiride_seadus_Map_2026"
+        "@id": "estleg:merealapiiride_seadus_Map"
       },
       "estleg:summary": "Majandusvöönd on väljaspool territoriaalmerd asuv ja viimasega külgnev mereala, mille välispiir on määratud naaberriikidega kooskõlastatult.Majandusvööndi piiri koordinaadid on esitatud lisas 3.",
       "estleg:legalText": "Majandusvöönd on väljaspool territoriaalmerd asuv ja viimasega külgnev mereala, mille välispiir on määratud naaberriikidega kooskõlastatult.Majandusvööndi piiri koordinaadid on esitatud lisas 3.",
@@ -330,7 +352,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:merealapiiride_seadus_Par_7_Lg_Unknown_1"
+          "@id": "estleg:merealapiiride_seadus_Par_7_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -340,7 +362,7 @@
       ]
     },
     {
-      "@id": "estleg:merealapiiride_seadus_Par_7_Lg_Unknown_1",
+      "@id": "estleg:merealapiiride_seadus_Par_7_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

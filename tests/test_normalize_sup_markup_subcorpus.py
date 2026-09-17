@@ -9,17 +9,15 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from generate_all_laws import _sup_to_unicode
-
-import normalize_sup_markup_subcorpus as mod
-from normalize_sup_markup_subcorpus import (
+from estleg import normalize_sup_markup_subcorpus as mod
+from estleg.generate_all_laws import _sup_to_unicode
+from estleg.normalize_sup_markup_subcorpus import (
     SUBCORPUS_DIRS,
     iter_subcorpus_files,
     normalize_doc,
     normalize_value,
     process_file,
 )
-
 
 # ── normalize_value ────────────────────────────────────────────────────────
 

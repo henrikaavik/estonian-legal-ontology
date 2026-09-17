@@ -15,15 +15,18 @@ from pathlib import Path
 
 import pytest
 
-import generate_provision_versions as gpv
-from generate_provision_versions import (
+from estleg import generate_provision_versions as gpv
+from estleg.generate_provision_versions import (
     LawTarget,
     Redaction,
     build_law_target,
     build_provision_backlinks,
+    decode_rt_xml_bytes,
     extract_provision_texts,
     fetch_current_redaction,
     fetch_redaction_chain,
+    fetch_redaction_xml,
+    missing_law_target_error,
     select_law_slugs,
     synthesise_versions,
     write_sidecar,
@@ -539,7 +542,7 @@ class _FakeResponse:
     def __init__(self, payload: dict):
         self._payload = payload
 
-    def raise_for_status(self) -> None:  # noqa: D401 - mimic requests.Response
+    def raise_for_status(self) -> None:
         return None
 
     def json(self) -> dict:
@@ -573,7 +576,7 @@ def test_fetch_redaction_chain_sorted_oldest_to_newest_with_dates(monkeypatch: p
         ]
     }
 
-    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+    def fake_get(url, params=None, timeout=None):
         assert url == gpv.SEARCH_URL
         if params and params.get("kehtiv"):
             return _FakeResponse(current_payload)
@@ -630,7 +633,7 @@ def test_fetch_redaction_chain_handles_t_time_and_negative_offsets(
         ]
     }
 
-    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+    def fake_get(url, params=None, timeout=None):
         if params and params.get("kehtiv"):
             return _FakeResponse(current_payload)
         return _FakeResponse(full_payload)
@@ -681,7 +684,7 @@ def test_fetch_redaction_chain_retains_edition_ending_on_run_date(
         ]
     }
 
-    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+    def fake_get(url, params=None, timeout=None):
         if params and params.get("kehtiv"):
             return _FakeResponse(current_payload)
         return _FakeResponse(full_payload)
@@ -749,7 +752,7 @@ def test_fetch_current_redaction_tiebreak_is_deterministic(monkeypatch: pytest.M
 
 def _write_peep(krr: Path, slug: str, prefix: str, par_suffixes: list[str], *, title: str) -> None:
     graph = [
-        {"@id": f"estleg:{prefix}_Map_2026", "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+        {"@id": f"estleg:{prefix}_Map", "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
          "rdfs:label": f"{title} kaardistus", "dc:source": title},
         {"@id": f"estleg:LegalProvision_{prefix}", "@type": ["owl:Class"]},
     ]
@@ -779,6 +782,135 @@ def test_build_law_target_reads_prefix_and_provisions_from_peep(tmp_path: Path):
         "2": "estleg:NAIDIS_Par_2",
         "5": "estleg:NAIDIS_Par_5",
     }
+
+
+def test_existing_peep_without_numeric_provisions_is_not_no_peep(tmp_path: Path):
+    """#430: a on-disk peep with no ``_Par_<n>`` IRIs is not ``"no peep"``."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    graph = [
+        {
+            "@id": "estleg:GENEVA_Map",
+            "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+            "rdfs:label": "Genfi konventsioonide ratifitseerimise seadus",
+            "dc:source": "Genfi konventsioonide ratifitseerimise seadus",
+        },
+        {
+            "@id": "estleg:GENEVA_Art_1",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision_GENEVA"],
+            "estleg:paragrahv": "Artikkel 1.",
+        },
+    ]
+    (krr / "geneva_convention_peep.json").write_text(
+        json.dumps({"@context": {"estleg": gpv.CONTEXT["estleg"]}, "@graph": graph},
+                   ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    assert build_law_target("geneva_convention", krr_dir=krr) is None
+    assert missing_law_target_error("geneva_convention", krr_dir=krr) == (
+        "no_numeric_provisions"
+    )
+    assert missing_law_target_error("geneva_convention", krr_dir=krr) != "no peep"
+    # A genuinely missing peep still uses the reserved "no peep" code.
+    assert missing_law_target_error("puudub_seadus", krr_dir=krr) == "no peep"
+
+
+def test_main_existing_peep_without_par_nodes_is_not_labeled_no_peep(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    """#430 end-to-end: report error for a treaty-shell peep is not ``no peep``."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    graph = [
+        {
+            "@id": "estleg:GENEVA_Map",
+            "@type": ["estleg:Act", "estleg:Law", "owl:Ontology"],
+            "rdfs:label": "Genfi konventsioonide ratifitseerimise seadus",
+            "dc:source": "Genfi konventsioonide ratifitseerimise seadus",
+        },
+    ]
+    (krr / "geneva_convention_peep.json").write_text(
+        json.dumps({"@context": {"estleg": gpv.CONTEXT["estleg"]}, "@graph": graph},
+                   ensure_ascii=False),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(gpv, "KRR_DIR", krr)
+    monkeypatch.setattr(gpv, "VERSIONS_DIR", krr / "provision_versions")
+    monkeypatch.setattr(
+        gpv,
+        "COVERAGE_PATH",
+        krr / "reports" / "kov" / "extract_provision_versions_coverage.json",
+    )
+    monkeypatch.setattr(gpv, "iter_peep_files", lambda *a, **k: list(krr.glob("*_peep.json")))
+
+    def _boom(*a, **k):
+        raise AssertionError("ineligible peep must not hit the network")
+
+    monkeypatch.setattr(gpv.requests, "get", _boom)
+
+    assert gpv.main(["--law", "geneva_convention", "--no-sleep"]) == 0
+    law_report = json.loads(
+        (krr / "reports" / "provision_versions_report.json").read_text("utf-8")
+    )
+    assert law_report["rows"][0]["slug"] == "geneva_convention"
+    assert law_report["rows"][0]["error"] != "no peep"
+    assert law_report["rows"][0]["error"] == "no_numeric_provisions"
+
+
+def test_reclassify_report_rewrites_stale_no_peep(tmp_path: Path) -> None:
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "geneva_convention_peep.json").write_text(
+        json.dumps({
+            "@context": {"estleg": gpv.CONTEXT["estleg"]},
+            "@graph": [{
+                "@id": "estleg:GENEVA_Map",
+                "@type": ["estleg:Act", "owl:Ontology"],
+            }],
+        }),
+        encoding="utf-8",
+    )
+    report = {
+        "rows": [
+            {"slug": "geneva_convention", "error": "no peep", "warnings": ["no peep"]},
+            {"slug": "puudub_seadus", "error": "no peep", "warnings": ["no peep"]},
+            {"slug": "ok_law", "error": None},
+        ]
+    }
+    gpv.reclassify_report_missing_peep_rows(report, krr_dir=krr)
+    by_slug = {r["slug"]: r for r in report["rows"]}
+    assert by_slug["geneva_convention"]["error"] == "no_numeric_provisions"
+    assert by_slug["puudub_seadus"]["error"] == "no peep"
+    assert by_slug["ok_law"]["error"] is None
+
+
+def test_committed_version_report_no_peep_rows_have_no_peep_file() -> None:
+    """#430: committed report must not label an existing peep as ``no peep``."""
+    path = (
+        gpv.REPO_ROOT / "krr_outputs" / "reports" / "provision_versions_report.json"
+    )
+    if not path.is_file():
+        pytest.skip("provision_versions_report.json not committed")
+    report = json.loads(path.read_text(encoding="utf-8"))
+    krr = gpv.REPO_ROOT / "krr_outputs"
+    stale = []
+    for row in report.get("rows") or []:
+        if row.get("error") != "no peep":
+            continue
+        slug = row.get("slug") or ""
+        if gpv._peep_files_for_slug(slug, krr):
+            stale.append(slug)
+    assert stale == [], (
+        f"{len(stale)} report rows still say 'no peep' but a peep exists: "
+        f"{stale[:8]}"
+    )
+    cov = json.loads(
+        (krr / "reports" / "kov" / "extract_provision_versions_coverage.json").read_text(
+            "utf-8"
+        )
+    )
+    assert cov["files_processed_kov"] == 0
 
 
 def test_build_law_target_merges_multipart_osa_peeps(tmp_path: Path):
@@ -1231,6 +1363,81 @@ def test_shacl_rejects_provision_version_missing_required_property(drop_prop: st
 # ---------------------------------------------------------------------------
 
 
+def test_synthesise_repairs_fffd_in_version_text() -> None:
+    """#355: versionText is repaired when a redaction still carries U+FFFD."""
+    target = _make_target(par_suffixes=("1",))
+    chain = [
+        (
+            Redaction("111", "2010-01-01", None, "/akt/111.xml"),
+            {"1": "hoida v\ufffd\ufffdi ladustada."},
+        ),
+    ]
+    nodes = synthesise_versions(target, chain)
+    assert nodes[0]["estleg:versionText"] == "hoida või ladustada."
+    assert "\ufffd" not in nodes[0]["estleg:versionText"]
+
+
+def test_fetch_redaction_xml_decodes_windows_1257(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Fetch must use decode_rt_xml_bytes, not a forced UTF-8 ``resp.text``."""
+    xml = (
+        '<?xml version="1.0" encoding="windows-1257"?>'
+        "<akt><metaandmed><pealkiri>Fikseeritud seadus ajalooline redaktsioon</pealkiri>"
+        "</metaandmed><paragrahv><paragrahvNr>1</paragrahvNr>"
+        "<paragrahvPealkiri>Üldsätted käesoleva seaduse tähenduses</paragrahvPealkiri>"
+        "<loige><loigeNr>1</loigeNr>"
+        "<lauseOsa>Käesoleva seaduse tähenduses on või määrus kohaldatav.</lauseOsa>"
+        "</loige></paragrahv></akt>"
+    )
+    data = xml.encode("windows-1257")
+    assert "\ufffd" in data.decode("utf-8", errors="replace")
+
+    class _Resp:
+        content = data
+        encoding = "ISO-8859-1"
+        apparent_encoding = "ISO-8859-1"
+
+        def raise_for_status(self) -> None:
+            return None
+
+        @property
+        def text(self) -> str:
+            # Old generator path: forced UTF-8. Must not be used.
+            return self.content.decode("utf-8", errors="replace")
+
+    monkeypatch.setattr(gpv, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(gpv.requests, "get", lambda *a, **k: _Resp())
+    redaction = Redaction("999", "2010-01-01", None, "/akt/999.xml")
+    root = fetch_redaction_xml("fixture_law", redaction, sleep=0.0)
+    assert root is not None
+    texts = extract_provision_texts(root)
+    assert any("või" in t for t in texts.values())
+    assert all("\ufffd" not in t for t in texts.values())
+    # Cached copy is UTF-8 of the correctly decoded text.
+    cached = next(tmp_path.joinpath("provision_versions").glob("*.xml")).read_text(
+        encoding="utf-8"
+    )
+    assert "või" in cached
+    assert "\ufffd" not in cached
+    # The shipped decoder, called on the same bytes, matches the fetch result.
+    assert "või määrus" in decode_rt_xml_bytes(data)
+
+
+def test_version_node_is_self_citing_524() -> None:
+    """#524: a ProvisionVersion carries an RT URL and denormalised act/§."""
+    target = _make_target()
+    target.act_iri = "estleg:FIX_Map"
+    nodes = synthesise_versions(target, _three_redaction_chain())
+    assert nodes
+    first = nodes[0]
+    assert first["estleg:rtUrl"] == "https://www.riigiteataja.ee/akt/111"
+    assert first["estleg:sourceAct"] == "Fikseeritud seadus"
+    assert first["estleg:provisionRef"] == "FIX § 1"
+    assert first["estleg:partOfAct"] == {"@id": "estleg:FIX_Map"}
+    assert "estleg:paragrahv" not in first
+
+
 def test_main_processes_law_with_mocked_fetches(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     krr = tmp_path / "krr_outputs"
     krr.mkdir()
@@ -1419,7 +1626,7 @@ def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, 
     monkeypatch.setattr(gpv, "COVERAGE_PATH", krr / "reports" / "kov" / "extract_provision_versions_coverage.json")
     monkeypatch.setattr(gpv, "iter_peep_files", lambda *a, **k: [])
 
-    def _boom(*a, **k):  # noqa: ANN001
+    def _boom(*a, **k):
         raise AssertionError("--limit 0 must not hit the network")
 
     monkeypatch.setattr(gpv.requests, "get", _boom)

@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TOKPRKNSKKRK_Map_2026",
+      "@id": "estleg:TOKPRKNSKKRK_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Teatavate ohtlike kemikaalide ja pestitsiididega rahvusvaheliseks kauplemiseks nõusoleku saamise korda käsitleva Rotterdami konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13227893.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/13227893.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,30 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_teatavate_ohtlike_kemikaalide_ja_pestitsiididega_rahvusvaheliseks_kauplemiseks_n",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_terviseamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2010-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:TOKPRKNSKKRK_TopicScheme",
@@ -78,13 +87,13 @@
       "@id": "estleg:TOKPRKNSKKRK_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_teatavate_ohtlike_kemikaalide_ja_pestitsiididega_rahvusvaheliseks_kauplemiseks_n"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Konventsiooniga ühinemine",
       "estleg:sourceAct": "Teatavate ohtlike kemikaalide ja pestitsiididega rahvusvaheliseks kauplemiseks nõusoleku saamise korda käsitleva Rotterdami konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TOKPRKNSKKRK_Map_2026"
+        "@id": "estleg:TOKPRKNSKKRK_Map"
       },
       "estleg:summary": "Ühineda (edaspidikonventsioon), mis on vastu võetud 1998. aasta 10. septembril Rotterdamis.",
       "estleg:legalText": "Ühineda (edaspidikonventsioon), mis on vastu võetud 1998. aasta 10. septembril Rotterdamis.",
@@ -93,7 +102,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TOKPRKNSKKRK_Par_1_Lg_Unknown_1"
+          "@id": "estleg:TOKPRKNSKKRK_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -103,7 +112,7 @@
       ]
     },
     {
-      "@id": "estleg:TOKPRKNSKKRK_Par_1_Lg_Unknown_1",
+      "@id": "estleg:TOKPRKNSKKRK_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -117,13 +126,13 @@
       "@id": "estleg:TOKPRKNSKKRK_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_teatavate_ohtlike_kemikaalide_ja_pestitsiididega_rahvusvaheliseks_kauplemiseks_n"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Asutus",
       "estleg:sourceAct": "Teatavate ohtlike kemikaalide ja pestitsiididega rahvusvaheliseks kauplemiseks nõusoleku saamise korda käsitleva Rotterdami konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TOKPRKNSKKRK_Map_2026"
+        "@id": "estleg:TOKPRKNSKKRK_Map"
       },
       "estleg:summary": "Pädev riigiasutus konventsiooni artikli 4 lõike 1 tähenduses on Terviseamet.",
       "estleg:legalText": "Pädev riigiasutus konventsiooni artikli 4 lõike 1 tähenduses on Terviseamet.",
@@ -132,11 +141,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TOKPRKNSKKRK_Par_2_Lg_Unknown_1"
+          "@id": "estleg:TOKPRKNSKKRK_Par_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -164,10 +175,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TOKPRKNSKKRK_Par_2_Lg_Unknown_1",
+      "@id": "estleg:TOKPRKNSKKRK_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -175,19 +190,28 @@
       "estleg:legalText": "Pädev riigiasutus konventsiooni artikli 4 lõike 1 tähenduses on Terviseamet.",
       "estleg:parentProvision": {
         "@id": "estleg:TOKPRKNSKKRK_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TOKPRKNSKKRK_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_teatavate_ohtlike_kemikaalide_ja_pestitsiididega_rahvusvaheliseks_kauplemiseks_n"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Deklaratsioon",
       "estleg:sourceAct": "Teatavate ohtlike kemikaalide ja pestitsiididega rahvusvaheliseks kauplemiseks nõusoleku saamise korda käsitleva Rotterdami konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TOKPRKNSKKRK_Map_2026"
+        "@id": "estleg:TOKPRKNSKKRK_Map"
       },
       "estleg:summary": "Eesti Vabariik deklareerib, et ta tunnustab konventsiooni tõlgendamise või kohaldamisega seotud vaidluse korral artikli 20 lõikes 2 sätestatud mõlemat vaidluse lahendamise meedet kohustuslikuna konventsiooniosalise suhtes, kes võtab endale sama kohustuse.",
       "estleg:legalText": "Eesti Vabariik deklareerib, et ta tunnustab konventsiooni tõlgendamise või kohaldamisega seotud vaidluse korral artikli 20 lõikes 2 sätestatud mõlemat vaidluse lahendamise meedet kohustuslikuna konventsiooniosalise suhtes, kes võtab endale sama kohustuse.",
@@ -196,7 +220,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TOKPRKNSKKRK_Par_3_Lg_Unknown_1"
+          "@id": "estleg:TOKPRKNSKKRK_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -211,7 +235,7 @@
       ]
     },
     {
-      "@id": "estleg:TOKPRKNSKKRK_Par_3_Lg_Unknown_1",
+      "@id": "estleg:TOKPRKNSKKRK_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

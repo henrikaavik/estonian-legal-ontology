@@ -23,7 +23,7 @@ def _stage(tmp_path: Path) -> Path:
 
 
 def _patch(monkeypatch, tmp_path: Path) -> None:
-    import verify_layer1 as mod
+    from estleg import verify_layer1 as mod
 
     monkeypatch.setattr(mod, "REPO", tmp_path)
     monkeypatch.setattr(mod, "KRR", tmp_path / "krr_outputs")
@@ -46,7 +46,7 @@ def test_check_laws_passes_when_stampable_roots_carry_law_and_act(
     _write_peep(
         krr / "alks_peep.json",
         {
-            "@id": "estleg:AlkS_Map_2026",
+            "@id": "estleg:AlkS_Map",
             "@type": ["owl:Ontology", "estleg:Law", "estleg:Act"],
         },
     )
@@ -55,7 +55,7 @@ def test_check_laws_passes_when_stampable_roots_carry_law_and_act(
         encoding="utf-8",
     )
     _patch(monkeypatch, tmp_path)
-    import verify_layer1 as mod
+    from estleg import verify_layer1 as mod
 
     ok, detail = mod.check_laws()
     assert ok is True
@@ -68,14 +68,14 @@ def test_check_laws_fails_when_stampable_root_missing_law_type(
     krr = _stage(tmp_path)
     _write_peep(
         krr / "alks_peep.json",
-        {"@id": "estleg:AlkS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"]},
+        {"@id": "estleg:AlkS_Map", "@type": ["owl:Ontology", "estleg:Act"]},
     )
     (krr / "INDEX.json").write_text(
         json.dumps({"laws": [{"name": "alks", "files": ["alks_peep.json"]}]}),
         encoding="utf-8",
     )
     _patch(monkeypatch, tmp_path)
-    import verify_layer1 as mod
+    from estleg import verify_layer1 as mod
 
     ok, detail = mod.check_laws()
     assert ok is False
@@ -87,7 +87,7 @@ def test_check_laws_skips_regulation_roots(tmp_path: Path, monkeypatch: pytest.M
     _write_peep(
         krr / "reg_peep.json",
         {
-            "@id": "estleg:Reg_1_Map_2026",
+            "@id": "estleg:Reg_1_Map",
             "@type": ["owl:Ontology", "estleg:NationalRegulation"],
         },
     )
@@ -96,7 +96,7 @@ def test_check_laws_skips_regulation_roots(tmp_path: Path, monkeypatch: pytest.M
         encoding="utf-8",
     )
     _patch(monkeypatch, tmp_path)
-    import verify_layer1 as mod
+    from estleg import verify_layer1 as mod
 
     ok, detail = mod.check_laws()
     assert ok is True
@@ -107,7 +107,7 @@ def test_enrich_main_calls_check_laws_after_stamp(monkeypatch) -> None:
     """#333: dead stamped<expected comparison replaced by check_laws()."""
     import inspect
 
-    import enrich_kov_layer1 as ekl
+    from estleg import enrich_kov_layer1 as ekl
 
     src = inspect.getsource(ekl.main)
     assert "check_laws" in src
@@ -122,12 +122,12 @@ def test_check_state_regulations_requires_act_on_regulation_root(
     _write_peep(
         riik / "ok_t1_peep.json",
         {
-            "@id": "estleg:Reg_1_Map_2026",
+            "@id": "estleg:Reg_1_Map",
             "@type": ["owl:Ontology", "estleg:NationalRegulation", "estleg:Act"],
         },
     )
     _patch(monkeypatch, tmp_path)
-    import verify_layer1 as mod
+    from estleg import verify_layer1 as mod
 
     ok, detail = mod.check_state_regulations()
     assert ok is True
@@ -136,7 +136,7 @@ def test_check_state_regulations_requires_act_on_regulation_root(
     _write_peep(
         riik / "bad_t2_peep.json",
         {
-            "@id": "estleg:Reg_2_Map_2026",
+            "@id": "estleg:Reg_2_Map",
             "@type": ["owl:Ontology", "estleg:MinisterialRegulation"],
         },
     )

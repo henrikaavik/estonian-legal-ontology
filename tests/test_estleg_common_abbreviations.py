@@ -14,12 +14,9 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-
-from estleg_common import FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS, slugify
+from estleg.estleg_common import FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS, slugify
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -122,7 +119,7 @@ def test_docstring_corpus_count_matches_metadata_total_files() -> None:
     total_files = _find_total_files(metadata)
     assert total_files is not None, "metadata.jsonld lacks estleg:totalFiles"
 
-    source = (REPO_ROOT / "scripts" / "estleg_common.py").read_text(
+    source = (REPO_ROOT / "src" / "estleg" / "estleg_common.py").read_text(
         encoding="utf-8"
     )
     # Every "(currently <N>)" baseline in the file must equal totalFiles.
@@ -227,7 +224,7 @@ def test_363_no_duplicate_full_names_break_reverse_lookup() -> None:
 def test_346_slugify_strips_trailing_underscore_after_truncation() -> None:
     """A title that slugifies to exactly max_len chars ending in '_'
     must not leave the trailing '_' once truncated — otherwise appending
-    a suffix ('_Map_2026', '_Par_N') yields double-underscore IRIs (#346).
+    a suffix ('_Map', '_Par_N') yields double-underscore IRIs (#346).
     """
     # 78 'a' chars + a space + a word: the run of 'a' fills up to the
     # boundary, the non-alnum boundary becomes '_' exactly at index 80.
@@ -236,7 +233,7 @@ def test_346_slugify_strips_trailing_underscore_after_truncation() -> None:
     assert len(slug) <= 80
     assert not slug.endswith("_"), slug
     # Appending a standard suffix must NOT produce '__'.
-    assert "__" not in f"{slug}_Map_2026"
+    assert "__" not in f"{slug}_Map"
 
 
 def test_346_slugify_real_konventsioon_title_no_double_underscore() -> None:

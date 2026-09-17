@@ -2,24 +2,23 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TLS_Map_2026",
+      "@id": "estleg:TLS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:TOOLEP_Map_2026"
+        "@id": "estleg:TOOLEP_Map"
       },
       "rdfs:label": "Töölepingu seaduse teemakaardistus (TLS)",
       "estleg:transpositionStatus": "unknown",
@@ -33,17 +32,23 @@
         {
           "@id": "http://eurovoc.europa.eu/5899"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_toolepinguseadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5899"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:Cluster_Toolepingud",
@@ -81,7 +86,7 @@
       "@id": "estleg:TLS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_1"
@@ -94,11 +99,15 @@
       "estleg:summary": "Määratleb töölepingu tunnused: töötaja teeb tööd tööandja juhtimise ja kontrolli all ning tööandja maksab tasu.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -107,13 +116,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_2"
@@ -126,22 +139,28 @@
       "estleg:summary": "Töötaja kahjuks kõrvalekalduvad kokkulepped on üldjuhul tühised, kui seadus ei luba teisiti.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_4"
@@ -154,14 +173,14 @@
       "estleg:summary": "Tööleping sõlmitakse kirjalikult, kuid vorminõude rikkumine ei muuda lepingut automaatselt tühiseks.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_5"
@@ -174,11 +193,15 @@
       "estleg:summary": "Loetleb kohustuslikud töötingimuste andmed, mida tööandja peab töötajale kirjalikult esitama.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
@@ -190,13 +213,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_6"
@@ -209,22 +236,28 @@
       "estleg:summary": "Täiendavad teavituskohustused tähtajalise lepingu, renditöö, kaugtöö, summeeritud tööaja ja välislähetuse puhul.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_9"
@@ -237,22 +270,28 @@
       "estleg:summary": "Reguleerib katseaja kestust ja eesmärki töötaja sobivuse hindamisel.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_10"
@@ -265,17 +304,21 @@
       "estleg:summary": "Tähtajaline tööleping on lubatud üksnes mõjuval põhjusel, mis tuleneb töö ajutisest iseloomust.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TLS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_11"
@@ -288,14 +331,14 @@
       "estleg:summary": "Piirab tähtajaliste lepingute kuritarvitamist järjestikuse sõlmimise või pikendamisega.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_43"
@@ -308,11 +351,15 @@
       "estleg:summary": "Määratleb tööaja mõiste ja seob selle ajaga, mil töötaja täidab tööülesandeid tööandja kasuks.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -321,13 +368,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_44"
@@ -340,14 +391,14 @@
       "estleg:summary": "Ületunnitöö on kokkuleppeline ja üldreeglina ajutise töövajaduse katmiseks.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_46"
@@ -360,11 +411,15 @@
       "estleg:summary": "Tööandja korraldab tööaega, arvestades seadust, kokkuleppeid ja töötaja teavitamiskohustust.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -373,13 +428,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_47"
@@ -392,14 +451,14 @@
       "estleg:summary": "Reguleerib valveaja kasutamist ja selle arvestamist tööaja ning hüvitamise kontekstis.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_51",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_51"
@@ -412,22 +471,28 @@
       "estleg:summary": "Tagab töötajale tööpäevade vahel minimaalse järjestikuse puhkeaja.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_52"
@@ -440,22 +505,28 @@
       "estleg:summary": "Sätestab töötajale minimaalse nädalase puhkeaja nõude.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_55",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_55"
@@ -468,14 +539,14 @@
       "estleg:summary": "Sätestab põhipuhkuse õiguse ja minimaalse kestuse.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_68",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_68"
@@ -488,11 +559,15 @@
       "estleg:summary": "Tööandja koostab puhkuste ajakava ja arvestab seejuures töötaja õigustatud huve.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -501,13 +576,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_28"
@@ -520,26 +599,36 @@
       "estleg:summary": "Tööandja peab maksma töötasu kokkulepitud tingimustel ning tagama töötaja õigused töösuhtes.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Tööandja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_29"
@@ -552,14 +641,14 @@
       "estleg:summary": "Reguleerib töötasu kokkuleppimist, alammäära järgimist ja tasu maksmise üldpõhimõtteid.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_33"
@@ -572,22 +661,28 @@
       "estleg:summary": "Tööandja kannab ettevõtlusriski; töö puudumine tööandja poolel ei vabasta üldjuhul töötasu maksmisest.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_35"
@@ -600,14 +695,14 @@
       "estleg:summary": "Määrab keskmise töötasu arvestamise alused juhtudel, kui hüvitis sõltub keskmisest tasust.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_38"
@@ -620,14 +715,14 @@
       "estleg:summary": "Töötasu makstakse vähemalt kord kuus kokkulepitud palgapäeval ning üldjuhul pangaülekandega.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_57",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_57"
@@ -640,14 +735,14 @@
       "estleg:summary": "Puhkuse ajaks makstakse puhkusetasu seaduses sätestatud korras ja tähtajal.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       }
     },
     {
       "@id": "estleg:TLS_Par_100",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_100"
@@ -660,7 +755,7 @@
       "estleg:summary": "Määrab korralise ülesütlemise etteteatamistähtajad sõltuvalt töösuhte kestusest.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:semanticallySimilarTo": [
         {
@@ -672,7 +767,7 @@
       "@id": "estleg:TLS_Par_109",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_109"
@@ -685,22 +780,28 @@
       "estleg:summary": "Sätestab hüvitise alused, kui tööandja ütleb lepingu üles või rikub ülesütlemise nõudeid.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_12"
@@ -713,26 +814,36 @@
       "estleg:summary": "Töötaja peab täitma töökohustusi hoolsalt ning järgima tööohutuse ja töötervishoiu nõudeid.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Töötaja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_13"
@@ -745,26 +856,36 @@
       "estleg:summary": "Töötaja peab hoiduma tööandja huve kahjustavast tegevusest, sh töökeskkonna ohtude eiramisest.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Töötaja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_15"
@@ -777,26 +898,36 @@
       "estleg:summary": "Töötaja peab täitma seaduslikke töökorraldusi, sealhulgas ohutust tagavaid juhiseid.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Töötaja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_28_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28",
       "rdfs:label": "§ 28. Tööandja kohustus tagada ohutu töökeskkond",
@@ -806,26 +937,36 @@
       "estleg:summary": "Tööandja peab tagama töötervishoiu ja tööohutuse nõuetele vastavad töötingimused.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Tööandja",
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_47_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47",
       "rdfs:label": "§ 47. Valveaeg ja puhkeaja kaitse",
@@ -835,10 +976,12 @@
       "estleg:summary": "Valveaja korraldus ei tohi rikkuda töötaja tervisekaitset ega kohustuslikku puhkeaega.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
@@ -847,13 +990,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TLS_Par_88",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_toolepinguseadus"
+        "estleg:LegalProvision"
       ],
       "owl:sameAs": {
         "@id": "estleg:TOOLEP_Par_88"
@@ -866,11 +1013,15 @@
       "estleg:summary": "Võimaldab lepingu erakorralist ülesütlemist mh töötaja terviseseisundi või ohutuse tagamisega seotud takistuste korral seaduses sätestatud tingimustel.",
       "estleg:sourceAct": "Töölepingu seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TLS_Map_2026"
+        "@id": "estleg:TLS_Map"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -879,7 +1030,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_toolepingud_toolepinguseadus_peep",

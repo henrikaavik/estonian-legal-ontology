@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:EVTENLRVVKOO_Map_2026",
+      "@id": "estleg:EVTENLRVVKOO_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus teemakaardistus",
       "dc:source": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus",
@@ -24,31 +23,40 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_EVTENLRVVKOO",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
       }
     },
     {
       "@id": "estleg:EVTENLRVVKOO_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVTENLRVVKOO"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1.",
       "estleg:sourceAct": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVTENLRVVKOO_Map_2026"
+        "@id": "estleg:EVTENLRVVKOO_Map"
       },
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
           "@id": "estleg:EVTENLRVVKOO_Par_1_v22247"
@@ -59,18 +67,23 @@
       "@id": "estleg:EVTENLRVVKOO_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVTENLRVVKOO"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2.",
       "estleg:sourceAct": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVTENLRVVKOO_Map_2026"
+        "@id": "estleg:EVTENLRVVKOO_Map"
       },
       "estleg:summary": "Kui tehing või bilansist bilanssi üleandmine on vastavalt käesoleva seaduse paragrahvile 1 kehtetu, on maa-alade, hoonete või rajatiste praegused valdajad või kasutajad kohustatud selle üle andma Vabariigi Valitsuse poolt määratud riigiasutusele, sõltumata sellest, kellelt ja millise tehinguga ta valduse üle võttis.",
+      "estleg:legalText": "Kui tehing või bilansist bilanssi üleandmine on vastavalt käesoleva seaduse paragrahvile 1 kehtetu, on maa-alade, hoonete või rajatiste praegused valdajad või kasutajad kohustatud selle üle andma Vabariigi Valitsuse poolt määratud riigiasutusele, sõltumata sellest, kellelt ja millise tehinguga ta valduse üle võttis.",
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -84,23 +97,30 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EVTENLRVVKOO_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVTENLRVVKOO"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3.",
       "estleg:sourceAct": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVTENLRVVKOO_Map_2026"
+        "@id": "estleg:EVTENLRVVKOO_Map"
       },
       "estleg:summary": "Käesoleva seaduse paragrahvis 1 nimetatud ning muude tingimuste määramine toimub Vabariigi Valitsuse poolt kehtestatud korras.",
+      "estleg:legalText": "Käesoleva seaduse paragrahvis 1 nimetatud ning muude tingimuste määramine toimub Vabariigi Valitsuse poolt kehtestatud korras.",
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -111,24 +131,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EVTENLRVVKOO_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVTENLRVVKOO"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4.",
       "estleg:sourceAct": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVTENLRVVKOO_Map_2026"
+        "@id": "estleg:EVTENLRVVKOO_Map"
       },
       "estleg:summary": "Heausksete valdajate poolt tehtud kulutuste tasaarveldamise korra kehtestab Vabariigi Valitsus.",
+      "estleg:legalText": "Heausksete valdajate poolt tehtud kulutuste tasaarveldamise korra kehtestab Vabariigi Valitsus.",
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -148,21 +177,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:EVTENLRVVKOO_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVTENLRVVKOO"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5.",
       "estleg:sourceAct": "Eesti Vabariigi territooriumil endise NSV Liidu relvajõudude valduses või kasutuses olnud ja olevate maa-alade, hoonete ja rajatistega sooritatud tehingute kehtetuks tunnistamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVTENLRVVKOO_Map_2026"
+        "@id": "estleg:EVTENLRVVKOO_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub selle Riigi Teatajas avaldamise päevast.",
+      "estleg:legalText": "Käesolev seadus jõustub selle Riigi Teatajas avaldamise päevast.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:EVTENLRVVKOO_Par_5_v22247"

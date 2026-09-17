@@ -1,6 +1,7 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix estleg: <https://w3id.org/estleg/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -99,6 +100,27 @@ estleg:ActTemporalShape
         sh:name "harmonisedWith" ;
         sh:description "Harmonisation record(s) (estleg:HarmonisationLink) for directives this act transposes that a Baltic/Nordic neighbour also transposed (issue #197)" ;
     ] ;
+    sh:property [
+        sh:path estleg:officialEnglishText ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "officialEnglishText" ;
+        sh:description "Optional official English Riigi Teataja URL (#510). Present only when RT publishes a translation (tolkeSeosId)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:competentAuthorityCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "competentAuthorityCount" ;
+        sh:description "Optional analytical count of act-level competentAuthority IRIs (#521)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasNoCompetentAuthority ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "hasNoCompetentAuthority" ;
+        sh:description "Optional coverage-gap flag when competentAuthorityCount is 0 (#521)." ;
+    ] ;
     # Issue #570: every statute root (estleg:Act, including the dual-typed
     # estleg:Law roots) must carry a human-readable rdfs:label. ActTemporalShape
     # was otherwise all-optional, leaving the top-level act node with no enforced
@@ -109,8 +131,15 @@ estleg:ActTemporalShape
     # are deliberately NOT RDFS-typed as estleg:Act — see the note on
     # estleg:harmonises / estleg:transposedBy in controlled_vocabulary.jsonld —
     # so they are not targeted here.)
+    # Issue #509: labels accept xsd:string or rdf:langString so @et/@en
+    # can coexist; sh:uniqueLang forbids two values in the same language.
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every statute root (Act/Law) must have a human-readable label" ;
@@ -123,6 +152,11 @@ estleg:ActExpressionShape
     sh:targetClass estleg:ActExpression ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every ActExpression must have a human-readable label" ;
@@ -154,22 +188,25 @@ estleg:ActExpressionShape
 # Full legal text is optional via `estleg:legalText` (populated for a
 # small subset — most provisions only need the summary for the topic map).
 #
-# This shape uses `sh:targetSubjectsOf estleg:paragrahv` instead of
-# `sh:targetClass estleg:LegalProvision`. That is deliberate: the
-# combined_ontology.jsonld graph contains ~50k per-law-typed instances
-# like `estleg:LegalProvision_KARIST_2` whose classes are
-# declared as `rdfs:subClassOf estleg:LegalProvision` (added in issue
-# #67), but many SHACL engines do not perform subclass inference by
-# default, so targeting the base class would still miss them.
-# Targeting "every node that has `estleg:paragrahv`" catches all
-# provision-like nodes regardless of engine capabilities or whether a
-# new per-law type is added later, and is self-consistent with how
-# consumers actually query the data. This also catches provisions of
-# domestic regulations (määrused) emitted by `generate_regulations.py`
-# under per-regulation classes like `estleg:Regulation_<terviktekstId>`,
-# which are also declared as `rdfs:subClassOf estleg:LegalProvision`.
+# This shape has two targets (SHACL allows both on one NodeShape):
+#   * `sh:targetSubjectsOf estleg:paragrahv` — still needed without RDFS
+#     inference. The combined_ontology.jsonld graph contains ~50k
+#     per-law-typed instances like `estleg:LegalProvision_KARIST_2`
+#     whose classes are declared as `rdfs:subClassOf estleg:LegalProvision`
+#     (issue #67). Many SHACL engines do not infer subclasses by default,
+#     so a class target alone would miss them. This also catches
+#     provisions of domestic regulations (määrused) emitted by
+#     `generate_regulations.py` under per-regulation classes like
+#     `estleg:Regulation_<terviktekstId>`, also `rdfs:subClassOf
+#     estleg:LegalProvision`.
+#   * `sh:targetClass estleg:LegalProvision` — so a node typed as
+#     LegalProvision that is missing `estleg:paragrahv` is still in
+#     scope (issue #450). `sh:targetSubjectsOf` alone is tautological
+#     for the required paragrahv property: nodes without the predicate
+#     never become focus nodes.
 estleg:LegalProvisionShape
     a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
     sh:targetSubjectsOf estleg:paragrahv ;
     sh:property [
         sh:path estleg:paragrahv ;
@@ -181,13 +218,19 @@ estleg:LegalProvisionShape
     sh:property [
         sh:path estleg:summary ;
         sh:minCount 1 ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "summary" ;
         sh:description "Every LegalProvision must have a topic-aware summary. Full legal text is optional via estleg:legalText." ;
     ] ;
     sh:property [
         sh:path estleg:legalText ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "legalText" ;
         sh:description "Optional full legal text. Populated for provisions where the full paragraph was sourced verbatim; most provisions only carry the summary." ;
     ] ;
@@ -259,7 +302,7 @@ estleg:LegalProvisionShape
         estleg:graphClosureExempt true ;
         sh:nodeKind sh:IRI ;
         sh:name "normativeType" ;
-        sh:description "Deontic classification: obligation, right, permission, prohibition" ;
+        sh:description "Deontic classification: obligation, right, permission, prohibition, definition" ;
     ] ;
     sh:property [
         sh:path estleg:competentAuthority ;
@@ -286,6 +329,20 @@ estleg:LegalProvisionShape
         sh:description "Provisions from other laws with similar content" ;
     ] ;
     sh:property [
+        sh:path estleg:inboundCitationCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "inboundCitationCount" ;
+        sh:description "Optional analytical count of referencedBy sources (#521)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:interpretationCount ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "interpretationCount" ;
+        sh:description "Optional analytical count of interpretedBy court IRIs (#521)." ;
+    ] ;
+    sh:property [
         sh:path estleg:definesTerm ;
         sh:nodeKind sh:IRI ;
         sh:name "definesTerm" ;
@@ -299,19 +356,32 @@ estleg:LegalProvisionShape
     ] ;
     sh:property [
         sh:path estleg:dutyHolder ;
-        sh:datatype xsd:string ;
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            estleg:TargetGroup_Citizen
+            estleg:TargetGroup_Business
+            estleg:TargetGroup_PublicBody
+            estleg:TargetGroup_Official
+            estleg:TargetGroup_NGO
+        ) ;
         sh:name "dutyHolder" ;
-        sh:description "Entity responsible for fulfilling the duty" ;
+        sh:description "Entity responsible for fulfilling the duty, as a TargetGroup individual (#460). Unmapped sentence-initial junk is not stored." ;
     ] ;
     sh:property [
         sh:path estleg:targetGroup ;
-        sh:datatype xsd:string ;
-        sh:in ( "citizen" "business" "public_body" "official" "ngo" ) ;
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            estleg:TargetGroup_Citizen
+            estleg:TargetGroup_Business
+            estleg:TargetGroup_PublicBody
+            estleg:TargetGroup_Official
+            estleg:TargetGroup_NGO
+        ) ;
         sh:name "targetGroup" ;
-        sh:description "The bearer(s) of the deontic norm: which group(s) of actors carry the obligation, hold the right, or otherwise receive the norm's effect. Multi-valued because one provision may target several groups." ;
+        sh:description "The bearer(s) of the deontic norm: which group(s) of actors carry the obligation, hold the right, or otherwise receive the norm's effect. Multi-valued because one provision may target several groups. Values are estleg:TargetGroup individuals (#460), not string tokens." ;
     ] ;
     # Issue #609: the reified SKOS counterpart of estleg:targetGroup — IRI(s) into
-    # estleg:TargetGroupScheme, materialized alongside the retained string value.
+    # estleg:TargetGroupScheme, materialized alongside the TargetGroup individual.
     sh:property [
         sh:path estleg:targetGroupConcept ;
         sh:nodeKind sh:IRI ;
@@ -384,7 +454,10 @@ estleg:SubsectionShape
     sh:property [
         sh:path estleg:legalText ;
         sh:minCount 1 ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "legalText" ;
         sh:description "The lõige's own text (the lõige-and-below text, including its (N) punkt markers), mirroring the provision-level estleg:legalText." ;
     ] ;
@@ -398,6 +471,11 @@ estleg:SubsectionShape
     ] ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:name "label" ;
@@ -416,12 +494,21 @@ estleg:TopicClusterShape
     sh:targetClass estleg:TopicCluster ;
     sh:property [
         sh:path skos:prefLabel ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:name "prefLabel" ;
         sh:description "Optional preferred label for the TopicCluster" ;
     ] ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every TopicCluster must have an rdfs:label used as its display name" ;
@@ -438,6 +525,11 @@ estleg:LegalConceptShape
     sh:targetClass estleg:LegalConcept ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every LegalConcept must have a label" ;
@@ -539,6 +631,11 @@ estleg:ConceptShape
     ] ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every Concept must have an rdfs:label" ;
@@ -562,6 +659,11 @@ estleg:SectionShape
     ] ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -572,6 +674,11 @@ estleg:DraftLegislationShape
     sh:targetClass estleg:DraftLegislation ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every DraftLegislation must have a label (draft title)" ;
@@ -609,7 +716,10 @@ estleg:DraftLegislationShape
     sh:property [
         sh:path estleg:initiator ;
         sh:maxCount 1 ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "initiator" ;
         sh:description "Ministry or institution that initiated the draft" ;
     ] ;
@@ -628,7 +738,10 @@ estleg:DraftLegislationShape
     ] ;
     sh:property [
         sh:path estleg:affectedLawName ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "affectedLawName" ;
         sh:description "Name of the law affected by this draft legislation" ;
     ] ;
@@ -637,6 +750,13 @@ estleg:DraftLegislationShape
         sh:datatype xsd:string ;
         sh:name "changeType" ;
         sh:description "Type of change proposed by draft: amends, repeals, supplements, enacts" ;
+    ] ;
+    sh:property [
+        sh:path estleg:enactedAs ;
+        estleg:graphClosureExempt true ;
+        sh:nodeKind sh:IRI ;
+        sh:name "enactedAs" ;
+        sh:description "Enacted act IRI for changeType=enacts drafts (#419). No sh:class — objects are cross-bucket act stubs." ;
     ] .
 
 # Shape for LegislativePhase instances
@@ -645,6 +765,11 @@ estleg:LegislativePhaseShape
     sh:targetClass estleg:LegislativePhase ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every LegislativePhase must have a label" ;
@@ -656,6 +781,11 @@ estleg:DraftTypeShape
     sh:targetClass estleg:DraftType ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every DraftType must have a label" ;
@@ -670,6 +800,11 @@ estleg:CourtDecisionShape
     sh:targetClass estleg:CourtDecision ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every CourtDecision must have a label" ;
@@ -702,7 +837,59 @@ estleg:CourtDecisionShape
         sh:maxCount 1 ;
         sh:datatype xsd:anyURI ;
         sh:name "decisionLink" ;
-        sh:description "Link to the full decision on riigikohus.ee" ;
+        sh:description "Link to the full decision on riigikohus.ee or riigiteataja.ee" ;
+    ] ;
+    sh:property [
+        sh:path estleg:courtName ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "courtName" ;
+        sh:description "Issuing court name for first/second-instance decisions (#525)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:courtLevel ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "firstInstance" "appeal" "supreme" ) ;
+        sh:name "courtLevel" ;
+    ] ;
+    sh:property [
+        sh:path estleg:courtKind ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "county" "administrative" "circuit" "supreme" ) ;
+        sh:name "courtKind" ;
+    ] ;
+    sh:property [
+        sh:path estleg:rtObjektId ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "rtObjektId" ;
+        sh:description "Riigi Teataja kohtulahendid objektId (#525)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:rikosUrl ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "rikosUrl" ;
+        sh:description "Direct rikos.rik.ee document URL derived from rikObjectId (#442)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:chamber ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "chamber" ;
+        sh:description "Optional Riigikohus chamber extracted from the decision header (#442)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:ecliIdentifier ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        # Same ECLI syntax as EUCourtDecisionShape (#392 / #612). No minCount:
+        # ECLI was only assigned from H2 2016, so older decisions stay bare.
+        sh:pattern "^ECLI:[A-Z]{2}:[A-Za-z0-9]{1,7}:[0-9]{4}:[A-Za-z0-9.]{1,25}$" ;
+        sh:name "ecliIdentifier" ;
+        sh:description "ECLI identifier (e.g., ECLI:EE:RK:2016:1.16.2798.84)" ;
     ] ;
     sh:property [
         sh:path estleg:interpretsLaw ;
@@ -747,9 +934,12 @@ estleg:CourtDecisionShape
     sh:property [
         sh:path estleg:legalText ;
         sh:maxCount 1 ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "legalText" ;
-        sh:description "Optional full decision text scraped from the RIK detail page (rikos.rik.ee/?asjaNr=<case_nr>). Populated incrementally by generate_court_decisions.py --fetch-full-text (issue #135); decisions not yet fetched only carry estleg:summary. Plain xsd:string — never language-tagged." ;
+        sh:description "Optional full decision text scraped from the RIK detail page (rikos.rik.ee/?asjaNr=<case_nr>). Populated incrementally by generate_court_decisions.py --fetch-full-text (issue #135); decisions not yet fetched only carry estleg:summary. Accepts a plain string or a language-tagged literal (#509)." ;
     ] ;
     sh:property [
         sh:path estleg:decisionType ;
@@ -765,6 +955,11 @@ estleg:CaseTypeShape
     sh:targetClass estleg:CaseType ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -775,6 +970,11 @@ estleg:DecisionTypeShape
     sh:targetClass estleg:DecisionType ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -785,6 +985,11 @@ estleg:EULegislationShape
     sh:targetClass estleg:EULegislation ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every EULegislation must have a label (Estonian title)" ;
@@ -841,6 +1046,13 @@ estleg:EULegislationShape
         sh:description "Whether the act is currently in force" ;
     ] ;
     sh:property [
+        sh:path estleg:estoniaRelevant ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "estoniaRelevant" ;
+        sh:description "Optional Estonia-pertinence flag seeded from the transposition mapping (#527)." ;
+    ] ;
+    sh:property [
         sh:path estleg:euInstitution ;
         estleg:graphClosureExempt true ;
         sh:nodeKind sh:IRI ;
@@ -852,6 +1064,13 @@ estleg:EULegislationShape
         sh:nodeKind sh:IRI ;
         sh:name "transposedBy" ;
         sh:description "Estonian law that transposes this EU directive" ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasNoTransposition ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "hasNoTransposition" ;
+        sh:description "Optional coverage-gap flag when no Estonian act transposes this directive (#521)." ;
     ] .
 
 # Shape for HarmonisationLink instances (issue #197).
@@ -879,6 +1098,11 @@ estleg:HarmonisationLinkShape
     sh:targetClass estleg:HarmonisationLink ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every HarmonisationLink node must have a human-readable label" ;
@@ -929,6 +1153,11 @@ estleg:EUDocumentTypeShape
     sh:targetClass estleg:EUDocumentType ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -939,6 +1168,11 @@ estleg:EUInstitutionShape
     sh:targetClass estleg:EUInstitution ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -949,6 +1183,11 @@ estleg:EUCourtDecisionShape
     sh:targetClass estleg:EUCourtDecision ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every EUCourtDecision must have a label (Estonian title)" ;
@@ -991,11 +1230,11 @@ estleg:EUCourtDecisionShape
         sh:description "ECLI identifier (e.g., ECLI:EU:C:2016:758)" ;
     ] ;
     sh:property [
-        sh:path estleg:curiaLink ;
+        sh:path estleg:eurLexLink ;
         sh:maxCount 1 ;
         sh:datatype xsd:anyURI ;
-        sh:name "curiaLink" ;
-        sh:description "Link to the decision in EUR-Lex" ;
+        sh:name "eurLexLink" ;
+        sh:description "EUR-Lex ET TXT URL for the decision (#441; formerly misnamed curiaLink)" ;
     ] ;
     sh:property [
         sh:path estleg:documentDate ;
@@ -1009,6 +1248,14 @@ estleg:EUCourtDecisionShape
         sh:datatype xsd:string ;
         sh:name "euCaseNumber" ;
         sh:description "EU case number(s), e.g. C-438/14. Multi-valued for joined cases (#606 item 5: 'Liidetud kohtuasjad C-403/08, C-429/08')." ;
+    ] ;
+    # Issue #455: optional and inference-safe. Curia-bucket objects are often
+    # bare estleg:EU_* stubs — no sh:minCount, no sh:class, no rdfs:range.
+    sh:property [
+        sh:path estleg:interpretsEULaw ;
+        sh:nodeKind sh:IRI ;
+        sh:name "interpretsEULaw" ;
+        sh:description "Optional link from this EU court decision to an EU act named in the decision. Objects may be bare estleg:EU_* stubs; do not constrain with sh:class estleg:EULegislation." ;
     ] .
 
 # Shape for EUCourtDecisionType instances
@@ -1017,6 +1264,11 @@ estleg:EUCourtDecisionTypeShape
     sh:targetClass estleg:EUCourtDecisionType ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -1027,6 +1279,11 @@ estleg:EUCourtShape
     sh:targetClass estleg:EUCourt ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
@@ -1043,6 +1300,11 @@ estleg:AmendmentEventShape
     sh:targetClass estleg:AmendmentEvent ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
     ] ;
@@ -1095,6 +1357,11 @@ estleg:ProposedAmendmentShape
     sh:targetClass estleg:ProposedAmendment ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every ProposedAmendment carries a human-readable label (e.g. 'Eelnõu muudatus: <draft title>')." ;
@@ -1158,6 +1425,11 @@ estleg:ChapterShape
     sh:targetClass estleg:Chapter ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every Chapter must have an rdfs:label (e.g. '1. peatükk – ÜLDSÄTTED')." ;
@@ -1168,6 +1440,20 @@ estleg:ChapterShape
         sh:datatype xsd:string ;
         sh:name "chapterNumber" ;
         sh:description "The chapter number as a display string (e.g. '1'). Optional — a few chapters carry only a label." ;
+    ] ;
+    sh:property [
+        sh:path dcterms:subject ;
+        sh:nodeKind sh:IRI ;
+        sh:name "subject" ;
+        sh:description "Optional TopicCluster this chapter corresponds to (#436). Not owl:sameAs — structure is not identity-equal to the subject node." ;
+    ] ;
+    sh:property [
+        sh:path owl:sameAs ;
+        sh:not [
+            sh:class estleg:TopicCluster
+        ] ;
+        sh:name "sameAs" ;
+        sh:description "A Chapter must not owl:sameAs a TopicCluster (#436). Use dcterms:subject to point at the cluster." ;
     ] .
 
 # Shape for Division (jagu) instances.
@@ -1176,6 +1462,11 @@ estleg:DivisionShape
     sh:targetClass estleg:Division ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every Division must have an rdfs:label (e.g. '1. jagu – ...')." ;
@@ -1197,6 +1488,11 @@ estleg:SanctionShape
     sh:targetClass estleg:Sanction ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every Sanction must have a label" ;
@@ -1205,9 +1501,15 @@ estleg:SanctionShape
         sh:path estleg:sanctionType ;
         sh:minCount 1 ;
         sh:datatype xsd:string ;
-        sh:in ( "imprisonment" "fine" "pecuniary_punishment" "arrest" "coercive_payment" ) ;
+        sh:in (
+            "imprisonment" "fine" "pecuniary_punishment" "arrest" "coercive_payment"
+            # Issue #681: KarS's two remaining "other punishments" —
+            # konfiskeerimine (KarS §§ 83-85) and sundlõpetamine (KarS § 46),
+            # the latter the harshest sanction available against a legal person.
+            "confiscation" "compulsory_dissolution"
+        ) ;
         sh:name "sanctionType" ;
-        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest, coercive_payment" ;
+        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest, coercive_payment, confiscation, compulsory_dissolution" ;
     ] ;
     sh:property [
         sh:path estleg:maxPenalty ;
@@ -1261,18 +1563,43 @@ estleg:SanctionShape
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
-        sh:in ( "years" "months" "days" "daily_rates" "fine_units" "monetary" ) ;
+        sh:in (
+            "years" "months" "days" "daily_rates" "fine_units" "monetary"
+            # Issue #681: a fine capped at a share of a legal person's
+            # turnover (KarS § 400 lg 3/lg 4). Relative, so no currency.
+            "percent_of_turnover"
+        ) ;
         sh:name "maxPenaltyUnit" ;
-        sh:description "Unit of the maximum penalty amount: years/months/days, daily_rates (KarS päevamäär), fine_units (väärteo trahviühik), or monetary (a fixed sum)" ;
+        sh:description "Unit of the maximum penalty amount: years/months/days, daily_rates (KarS päevamäär), fine_units (väärteo trahviühik), monetary (a fixed sum), or percent_of_turnover (a share of a legal person's turnover)" ;
     ] ;
     sh:property [
         sh:path estleg:minPenaltyUnit ;
         sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
-        sh:in ( "years" "months" "days" "daily_rates" "fine_units" "monetary" ) ;
+        sh:in (
+            "years" "months" "days" "daily_rates" "fine_units" "monetary"
+            "percent_of_turnover"
+        ) ;
         sh:name "minPenaltyUnit" ;
         sh:description "Unit of the minimum penalty amount (same controlled set as maxPenaltyUnit)" ;
+    ] ;
+    # Compare amounts only when their units and currencies agree. For example,
+    # 30 days to 1 year is a valid range although the bare numbers are 30 > 1.
+    # Mixed-unit ranges need conversion before ordering can be checked.
+    sh:node [
+        sh:message "Comparable penalty amounts must have minPenaltyAmount <= maxPenaltyAmount (issue #681)." ;
+        sh:or (
+            [ sh:not [ sh:property [
+                sh:path estleg:minPenaltyUnit ;
+                sh:equals estleg:maxPenaltyUnit ] ] ]
+            [ sh:not [ sh:property [
+                sh:path estleg:minPenaltyCurrency ;
+                sh:equals estleg:maxPenaltyCurrency ] ] ]
+            [ sh:property [
+                sh:path estleg:minPenaltyAmount ;
+                sh:lessThanOrEquals estleg:maxPenaltyAmount ] ]
+        ) ;
     ] ;
     sh:property [
         sh:path estleg:maxPenaltyCurrency ;
@@ -1291,12 +1618,105 @@ estleg:SanctionShape
         sh:description "Currency code for a monetary minimum penalty; present only when minPenaltyUnit is 'monetary'" ;
     ] .
 
+# --------------------------------------------------------------------
+# Statutory ceilings on extracted penalties (issue #681)
+#
+# An extracted amount that exceeds what the Penal Code allows is a
+# parser bug, not a law: KarS caps determinate imprisonment at 20 years
+# (§ 45), arrest at 30 days (§ 48) and pecuniary punishment at 500 daily
+# rates (§ 44). Anything above those came from a mis-captured citation
+# year, cross-reference or line-bridged number.
+#
+# Each ceiling gets its own NodeShape so it can carry its own
+# sh:message — sh:message on a shape applies to every constraint of that
+# shape, so three sh:or constraints on one shape could not be told
+# apart. Every constraint is core SHACL (sh:or / sh:not / sh:hasValue /
+# sh:maxInclusive); there is no sh:sparql and no rdfs:range or
+# rdfs:domain, so the shapes behave identically under pyshacl
+# inference="rdfs" and inference="none" as shacl/README.md requires.
+#
+# Read each as: NOT(this sanction type) OR NOT(this unit) OR amount
+# within the ceiling. A Sanction with no estleg:maxPenaltyAmount
+# satisfies the sh:maxInclusive branch vacuously, which is what keeps
+# free-text-only records such as maxPenalty "life" conforming.
+# --------------------------------------------------------------------
+
+estleg:SanctionImprisonmentMaxYearsShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:message "KarS § 45: a determinate term of imprisonment runs from 30 days to 20 years; a longer term can only be life imprisonment, recorded as maxPenalty 'life' with no amount (issue #681)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path estleg:sanctionType ; sh:hasValue "imprisonment" ] ] ]
+        [ sh:not [ sh:property [
+            sh:path estleg:maxPenaltyUnit ; sh:hasValue "years" ] ] ]
+        [ sh:property [
+            sh:path estleg:maxPenaltyAmount ;
+            sh:maxInclusive 20 ] ]
+    ) .
+
+estleg:SanctionArrestMaxDaysShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:message "KarS § 48: arrest for a misdemeanour is at most 30 days (issue #681)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path estleg:sanctionType ; sh:hasValue "arrest" ] ] ]
+        [ sh:not [ sh:property [
+            sh:path estleg:maxPenaltyUnit ; sh:hasValue "days" ] ] ]
+        [ sh:property [
+            sh:path estleg:maxPenaltyAmount ;
+            sh:maxInclusive 30 ] ]
+    ) .
+
+estleg:SanctionDailyRatesMaxShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:message "KarS § 44: a pecuniary punishment is 30 to 500 daily rates (päevamäär); a higher count is a mis-parsed amount (issue #681)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path estleg:maxPenaltyUnit ; sh:hasValue "daily_rates" ] ] ]
+        [ sh:property [
+            sh:path estleg:maxPenaltyAmount ;
+            sh:maxInclusive 500 ] ]
+    ) .
+
+# --------------------------------------------------------------------
+# A retired Act IRI must not claim to be in force (issue #682)
+#
+# When an act IRI is superseded the node is marked owl:deprecated true
+# and its estleg:temporalStatus must fall back to "unknown": the
+# deprecated IRI no longer stands for a specific consolidated text, so
+# asserting "inForce" on it tells consumers a retired identifier is
+# current law. Core SHACL only (sh:or over sh:not-wrapped sh:hasValue),
+# so it is inference-safe under both validator surfaces.
+#
+# owl:deprecated arrives from the JSON-LD as a JSON boolean, i.e.
+# "true"^^xsd:boolean, which is what sh:hasValue true matches.
+# --------------------------------------------------------------------
+
+estleg:DeprecatedActNotInForceShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Act ;
+    sh:message "An Act marked owl:deprecated true must not also carry estleg:temporalStatus \"inForce\"; a retired IRI keeps temporalStatus \"unknown\" (issue #682)." ;
+    sh:or (
+        [ sh:not [ sh:property [
+            sh:path owl:deprecated ; sh:hasValue true ] ] ]
+        [ sh:not [ sh:property [
+            sh:path estleg:temporalStatus ; sh:hasValue "inForce" ] ] ]
+    ) .
+
 # Shape for Institution instances
 estleg:InstitutionShape
     a sh:NodeShape ;
     sh:targetClass estleg:Institution ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every Institution must have a label" ;
@@ -1314,6 +1734,12 @@ estleg:InstitutionShape
         sh:in ( "ministry" "agency" "court" "local_government" "parliament" "head_of_state" "government" ) ;
         sh:name "institutionType" ;
         sh:description "Coarse institution classification (issue #357): one of ministry, agency, court, local_government, parliament, head_of_state, government. Present on every materialised Institution; optional here so a fallback-materialised reference node without it still conforms." ;
+    ] ;
+    sh:property [
+        sh:path estleg:governs ;
+        sh:nodeKind sh:IRI ;
+        sh:name "governs" ;
+        sh:description "Optional inverse of competentAuthority, materialized at combined-build time (#520)." ;
     ] .
 
 # Shape for reified institutional competence instances
@@ -1372,6 +1798,11 @@ estleg:NormativeTypeShape
     sh:targetClass estleg:NormativeType ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Normative type label (obligation, right, permission, prohibition)" ;
@@ -1421,6 +1852,11 @@ estleg:NationalRegulationShape
     sh:targetClass estleg:MunicipalRegulation ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every NationalRegulation must have a label (regulation title)" ;
@@ -1510,6 +1946,11 @@ estleg:GovernmentRegulationShape
     sh:targetClass estleg:GovernmentRegulation ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every GovernmentRegulation must have a label" ;
@@ -1521,6 +1962,11 @@ estleg:MinisterialRegulationShape
     sh:targetClass estleg:MinisterialRegulation ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every MinisterialRegulation must have a label" ;
@@ -1538,6 +1984,11 @@ estleg:MunicipalRegulationShape
     sh:targetClass estleg:MunicipalRegulation ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every MunicipalRegulation must have a label" ;
@@ -1573,6 +2024,11 @@ estleg:AnnexShape
     sh:targetClass estleg:Annex ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every Annex must have a label (annex title)" ;
@@ -1617,8 +2073,12 @@ estleg:MunicipalityShape
     ] ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
-        sh:datatype xsd:string ;
     ] .
 
 estleg:IssuerShape
@@ -1648,9 +2108,20 @@ estleg:IssuerShape
         sh:name "mappingSource" ;
     ] ;
     sh:property [
+        sh:path estleg:municipalityStatus ;
+        sh:maxCount 1 ;
+        sh:in ( "current" "abolished" ) ;
+        sh:name "municipalityStatus" ;
+        sh:description "EHAK status: current municipality vs abolished-2017 issuer (#526)." ;
+    ] ;
+    sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
-        sh:datatype xsd:string ;
     ] .
 
 # HistoricalMunicipalityShape — pre-merger KOV units (issue #130).
@@ -1723,8 +2194,12 @@ estleg:HistoricalMunicipalityShape
     ] ;
     sh:property [
         sh:path rdfs:label ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:uniqueLang true ;
         sh:minCount 1 ;
-        sh:datatype xsd:string ;
     ] .
 
 estleg:MunicipalRegulationLayer1Shape
@@ -1789,15 +2264,17 @@ estleg:KovProvisionShape
 # subclass triples loaded into the data graph to resolve that.
 # Validating only that citationTarget is an IRI (sh:nodeKind sh:IRI)
 # avoids the brittleness; the LegalProvision range constraint is
-# documented via rdfs:range in metadata.jsonld.
+# documented via rdfs:range in controlled_vocabulary.jsonld.
+# Pattern accepts compact `estleg:` and expanded w3id forms, including
+# #514 unresolved-cite IRIs (`Citation_<ABBREV>_P_…`) and Estonian letters.
 estleg:CitationShape
     a sh:NodeShape ;
     sh:targetClass estleg:Citation ;
     sh:nodeKind sh:IRI ;
-    sh:pattern "^https://w3id\\.org/estleg/Citation_[A-Za-z0-9_]+_[0-9]+$" ;
+    sh:pattern "^(estleg:Citation_|https://w3id\\.org/estleg/Citation_).+" ;
     sh:property [
         sh:path estleg:citationTarget ;
-        sh:minCount 1 ;
+        sh:minCount 0 ;
         sh:maxCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "citationTarget" ;
@@ -1880,8 +2357,12 @@ estleg:ProvisionVersionShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:datatype xsd:date ;
+        # Issue #393: interval must be ordered when both ends are present.
+        # sh:lessThan is vacuously true if versionValidTo is absent, so
+        # open-ended current versions remain valid.
+        sh:lessThan estleg:versionValidTo ;
         sh:name "versionValidFrom" ;
-        sh:description "Date this provision text became effective." ;
+        sh:description "Date this provision text became effective. Must precede versionValidTo when both are present (#393)." ;
     ] ;
     sh:property [
         sh:path estleg:versionValidTo ;
@@ -1889,14 +2370,17 @@ estleg:ProvisionVersionShape
         sh:maxCount 1 ;
         sh:datatype xsd:date ;
         sh:name "versionValidTo" ;
-        sh:description "Date this provision text ceased to be in force. Absent ⇒ still current." ;
+        sh:description "Date this provision text ceased to be in force. Absent ⇒ still current. Not required; when present it must be later than versionValidFrom." ;
     ] ;
     sh:property [
         sh:path estleg:versionText ;
         sh:minCount 1 ;
-        sh:datatype xsd:string ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
         sh:name "versionText" ;
-        sh:description "The provision text at this redaction, verbatim." ;
+        sh:description "The provision text at this redaction, verbatim. Accepts a plain string or a language-tagged literal (#509)." ;
     ] ;
     sh:property [
         sh:path estleg:versionRedactionId ;
@@ -1913,6 +2397,37 @@ estleg:ProvisionVersionShape
         sh:nodeKind sh:IRI ;
         sh:name "supersededByVersion" ;
         sh:description "The chronologically next estleg:ProvisionVersion of the same provision (an IRI). Absent on the current version." ;
+    ] ;
+    # Issue #524: optional citation fields so a version node is
+    # self-citing (RT redaction URL + denormalized act). Do not add
+    # estleg:paragrahv here — LegalProvisionShape targets
+    # sh:targetSubjectsOf estleg:paragrahv and would then fire on versions.
+    sh:property [
+        sh:path estleg:rtUrl ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:or ( [ sh:datatype xsd:anyURI ] [ sh:datatype xsd:string ] ) ;
+        sh:name "rtUrl" ;
+        sh:description "Optional Riigi Teataja URL for this redaction. xsd:anyURI when typed, otherwise a plain string." ;
+    ] ;
+    sh:property [
+        sh:path estleg:sourceAct ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:or (
+            [ sh:datatype xsd:string ]
+            [ sh:datatype rdf:langString ]
+        ) ;
+        sh:name "sourceAct" ;
+        sh:description "Optional denormalized human-readable act title for this version (#524)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:partOfAct ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "partOfAct" ;
+        sh:description "Optional IRI of the parent act root for this version (#524)." ;
     ] .
 
 # ============================================================
@@ -1933,10 +2448,9 @@ estleg:AnnotationShape
     sh:property [
         sh:path estleg:annotates ;
         sh:minCount 1 ;
-        sh:maxCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "annotates" ;
-        sh:description "Exactly one legal entity this annotation is about (an IRI)." ;
+        sh:description "One or more legal entities this annotation is about (IRIs)." ;
     ] ;
     sh:property [
         sh:path estleg:annotationText ;
@@ -1977,4 +2491,25 @@ estleg:AnnotationShape
         sh:datatype xsd:date ;
         sh:name "annotationDate" ;
         sh:description "Date the annotation was authored or published." ;
+    ] .
+
+# Closed IRI enum for estleg:referenceType (#513 T-Box).
+# Existing unreified estleg:references edges do not carry this property;
+# the shape only fires when a later emission pass asserts it.
+estleg:ReferenceTypeConstraint
+    a sh:NodeShape ;
+    sh:targetSubjectsOf estleg:referenceType ;
+    sh:property [
+        sh:path estleg:referenceType ;
+        estleg:graphClosureExempt true ;
+        sh:nodeKind sh:IRI ;
+        sh:in (
+            estleg:RefType_Citation
+            estleg:RefType_Repeal
+            estleg:RefType_LegalBasis
+            estleg:RefType_Exception
+            estleg:RefType_Derogation
+        ) ;
+        sh:name "referenceType" ;
+        sh:description "Closed citation/reference-edge type (#513 T-Box). Existing estleg:references edges remain untyped until a later emission pass." ;
     ] .

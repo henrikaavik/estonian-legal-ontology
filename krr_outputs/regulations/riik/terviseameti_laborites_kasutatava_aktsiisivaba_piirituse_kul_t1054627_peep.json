@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,12 +10,11 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1054627_Map_2026",
+      "@id": "estleg:Reg_1054627_Map",
       "@type": [
         "estleg:Act",
         "estleg:MinisterialRegulation",
-        "estleg:NationalRegulation",
-        "owl:Ontology"
+        "estleg:NationalRegulation"
       ],
       "rdfs:label": "Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid (määrus)",
       "dc:source": "Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid",
@@ -26,9 +24,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/119082022010.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/119082022010.xml"
       },
       "estleg:issuer": "Tervise- ja tööminister",
@@ -44,34 +39,34 @@
         "@value": "2022-08-19",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1054627",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_sotsiaalminister"
+        },
+        {
+          "@id": "estleg:Institution_terviseamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1054627_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1054627"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid kehtestataks...]",
       "estleg:sourceAct": "Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1054627_Map_2026"
+        "@id": "estleg:Reg_1054627_Map"
       },
       "estleg:summary": "Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid kehtestatakse sotsiaalministri 6. novembri 2009. a määruse nr 82 „Terviseameti põhimäärus” § 9 punktides 13 ja 17 nimetatud ülesannete täitmiseks järgmiselt:",
       "estleg:legalText": "Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid kehtestatakse sotsiaalministri 6. novembri 2009. a määruse nr 82 „Terviseameti põhimäärus” § 9 punktides 13 ja 17 nimetatud ülesannete täitmiseks järgmiselt:",
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:semanticallySimilarTo": [
         {
@@ -91,24 +86,30 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054627_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1054627"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Tunnistada kehtetuks sotsiaalministri 4. detsembri 2008. a määrus nr 74 „Tervise...]",
       "estleg:sourceAct": "Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1054627_Map_2026"
+        "@id": "estleg:Reg_1054627_Map"
       },
       "estleg:summary": "Tunnistada kehtetuks sotsiaalministri 4. detsembri 2008. a määrus nr 74 „Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid”.",
       "estleg:legalText": "Tunnistada kehtetuks sotsiaalministri 4. detsembri 2008. a määrus nr 74 „Terviseameti laborites kasutatava aktsiisivaba piirituse kulunormid”.",
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -123,7 +124,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

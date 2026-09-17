@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:KTL_Map_2026",
+      "@id": "estleg:KTL_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Kollektiivse töötüli lahendamise seadus teemakaardistus",
       "dc:source": "Kollektiivse töötüli lahendamise seadus",
-      "dcterms:title": "Kollektiivse töötüli lahendamise seadus",
+      "dcterms:title": [
+        {
+          "@value": "Kollektiivse töötüli lahendamise seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Collective Labour Dispute Resolution Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/130062023031.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/130062023031.xml"
       },
       "estleg:kehtiv": {
@@ -70,16 +75,56 @@
         {
           "@id": "estleg:AmendmentLink_Draft_MKM24_0923_KTL"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/668"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AVALIK_Par_43"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kaitseministeerium"
+        },
+        {
+          "@id": "estleg:Institution_kohus"
+        },
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/503072023001"
       }
     },
     {
@@ -99,7 +144,7 @@
           "@id": "estleg:Cluster_KTL_III"
         },
         {
-          "@id": "estleg:Cluster_KTL_III_Dup2"
+          "@id": "estleg:Cluster_KTL_III_23_23"
         },
         {
           "@id": "estleg:Cluster_KTL_IV"
@@ -132,10 +177,14 @@
       "rdfs:label": "I. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "I",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KTL_I"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -161,10 +210,14 @@
       "rdfs:label": "II. peatükk – LEPITAMINE",
       "estleg:chapterNumber": "II",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KTL_II"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -190,14 +243,18 @@
       "rdfs:label": "III. peatükk – STREIK JA TÖÖSULG",
       "estleg:chapterNumber": "III",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KTL_III"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_KTL_III_Dup2",
+      "@id": "estleg:Cluster_KTL_III_23_23",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -211,7 +268,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_KTL_III_Dup2",
+      "@id": "estleg:Chapter_KTL_III_53b54bd9",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -219,10 +276,14 @@
       "rdfs:label": "III. peatükk – VASTUTUS",
       "estleg:chapterNumber": "III",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_KTL_III_Dup2"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_KTL_III_23_23"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -248,10 +309,14 @@
       "rdfs:label": "IV. peatükk – LÕPPSÄTTED",
       "estleg:chapterNumber": "IV",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KTL_IV"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -277,23 +342,27 @@
       "rdfs:label": "V. peatükk – RAKENDUSSÄTTED",
       "estleg:chapterNumber": "V",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KTL_V"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KTL_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse ülesanne",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Käesolev seadus reguleerib kollektiivse töötüli lahendamise ning streigi ja töösulu väljakuulutamise ning korraldamise korda.",
       "estleg:legalText": "Käesolev seadus reguleerib kollektiivse töötüli lahendamise ning streigi ja töösulu väljakuulutamise ning korraldamise korda.",
@@ -305,7 +374,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_1_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -315,7 +384,7 @@
       ]
     },
     {
-      "@id": "estleg:KTL_Par_1_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -329,13 +398,13 @@
       "@id": "estleg:KTL_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Mõisted",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kollektiivne töötüli on lahkarvamus tööandja või tööandjate ühingu või liidu ja töötajate või töötajate ühingu või liidu vahel, mis on tekkinud kollektiivlepingute sõlmimisel ja täitmisel ning uute töötingimuste kehtestamisel. (2) Streik on töökatkestus, mis toimub töötajate või töötajate ühingu või liidu algatusel, saavutamaks tööandjalt või tööandjate ühingult või liidult järeleandmisi seaduslikes tööalastes nõudmistes. (3) Töösulg on töökatkestus tööandja või tööandjate ühingu või liidu",
       "estleg:legalText": "(1) Kollektiivne töötüli on lahkarvamus tööandja või tööandjate ühingu või liidu ja töötajate või töötajate ühingu või liidu vahel, mis on tekkinud kollektiivlepingute sõlmimisel ja täitmisel ning uute töötingimuste kehtestamisel. (2) Streik on töökatkestus, mis toimub töötajate või töötajate ühingu või liidu algatusel, saavutamaks tööandjalt või tööandjate ühingult või liidult järeleandmisi seaduslikes tööalastes nõudmistes. (3) Töösulg on töökatkestus tööandja või tööandjate ühingu või liidu algatusel, saavutamaks töötajatelt või nende ühingult või liidult järeleandmisi seaduslikes tööalastes nõudmistes.",
@@ -357,8 +426,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -372,7 +445,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_2_Lg_1",
@@ -385,7 +462,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_2_Lg_2",
@@ -398,7 +487,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_2_Lg_3",
@@ -411,19 +512,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_2"
       },
-      "rdfs:label": "§ 2 lg 3"
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Kollektiivse töötüli pooled",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kollektiivse töötüli poolteks on tööandja või tööandjate ühing või liit ning töötajad või töötajate ühing või liit. (2) Töötajaid, töötajate ühingut või liitu esindab nende poolt volitatud isik (edaspidi töötajate esindaja). (3) Tööandjat, tööandjate ühingut või liitu esindab nende poolt volitatud isik (edaspidi tööandja).",
       "estleg:legalText": "(1) Kollektiivse töötüli poolteks on tööandja või tööandjate ühing või liit ning töötajad või töötajate ühing või liit. (2) Töötajaid, töötajate ühingut või liitu esindab nende poolt volitatud isik (edaspidi töötajate esindaja). (3) Tööandjat, tööandjate ühingut või liitu esindab nende poolt volitatud isik (edaspidi tööandja).",
@@ -445,8 +558,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -460,7 +577,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_3_Lg_1",
@@ -473,7 +594,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_3_Lg_2",
@@ -486,7 +619,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_3"
       },
-      "rdfs:label": "§ 3 lg 2"
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_3_Lg_3",
@@ -499,19 +644,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Töötajate ja tööandjate nõudmiste esitamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Töötajate ja tööandjate nõudmised esitatakse teisele poolele kirjalikult.",
       "estleg:legalText": "Töötajate ja tööandjate nõudmised esitatakse teisele poolele kirjalikult.",
@@ -523,12 +680,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_4_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_4_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -542,10 +703,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KTL_Par_4_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -553,19 +718,31 @@
       "estleg:legalText": "Töötajate ja tööandjate nõudmised esitatakse teisele poolele kirjalikult.",
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_4"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KTL_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Nõudmiste läbivaatamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Tööandja, samuti töötajate esindaja on kohustatud esitatud nõudmised läbi vaatama seitsme kalendripäeva jooksul nende esitamise päevast arvates ja teatama oma otsusest nõudmiste esitajale kirjalikult järgmisel päeval pärast otsustamist. (2) Nõudmiste läbivaatamise juurde võib kutsuda nõudmisi esitanud poole esindajaid ja välja nõuda asja sisuliseks lahendamiseks vajalikke dokumente.",
       "estleg:legalText": "(1) Tööandja, samuti töötajate esindaja on kohustatud esitatud nõudmised läbi vaatama seitsme kalendripäeva jooksul nende esitamise päevast arvates ja teatama oma otsusest nõudmiste esitajale kirjalikult järgmisel päeval pärast otsustamist. (2) Nõudmiste läbivaatamise juurde võib kutsuda nõudmisi esitanud poole esindajaid ja välja nõuda asja sisuliseks lahendamiseks vajalikke dokumente.",
@@ -584,8 +761,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -602,7 +783,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_5_Lg_1",
@@ -615,7 +800,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_5_Lg_2",
@@ -628,19 +828,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Töötülist teatamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Pooled pöörduvad kirjalikult riikliku lepitaja poole, kui läbirääkimiste käigus kokkulepet ei saavutata ning tekib töörahu katkemise oht.",
       "estleg:legalText": "Pooled pöörduvad kirjalikult riikliku lepitaja poole, kui läbirääkimiste käigus kokkulepet ei saavutata ning tekib töörahu katkemise oht.",
@@ -652,7 +859,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_6_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_6_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -662,7 +869,7 @@
       ]
     },
     {
-      "@id": "estleg:KTL_Par_6_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -676,13 +883,13 @@
       "@id": "estleg:KTL_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Töötüli lahendamine tööandjate liidu ja töötajate liidu poolt",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kollektiivsete töötülide korral võivad tööandja ja töötajate esindaja omavahelise kokkuleppe mittesaavutamisel pöörduda tööandjate liidu ja töötajate liidu poole. (2) Tööandjate liit ja töötajate liit moodustavad töötüli lahendamiseks pariteetsel alusel komisjoni kolme päeva jooksul, arvates avalduse laekumisele järgnevast päevast, millest teatatakse riiklikule lepitajale. (3) Tööandjate liidu ja töötajate liidu vahel saavutatud kokkulepe on vaidlevatele pooltele kohustuslik.",
       "estleg:legalText": "(1) Kollektiivsete töötülide korral võivad tööandja ja töötajate esindaja omavahelise kokkuleppe mittesaavutamisel pöörduda tööandjate liidu ja töötajate liidu poole. (2) Tööandjate liit ja töötajate liit moodustavad töötüli lahendamiseks pariteetsel alusel komisjoni kolme päeva jooksul, arvates avalduse laekumisele järgnevast päevast, millest teatatakse riiklikule lepitajale. (3) Tööandjate liidu ja töötajate liidu vahel saavutatud kokkulepe on vaidlevatele pooltele kohustuslik.",
@@ -704,8 +911,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -722,7 +933,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_7_Lg_1",
@@ -735,7 +950,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_7_Lg_2",
@@ -748,7 +975,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_7_Lg_3",
@@ -761,19 +1000,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Riiklik lepitaja",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Riiklik lepitaja on sõltumatu erapooletu ametiisik, kes aitab töötüli pooltel leida neid rahuldavat lahendust. (2) Riikliku lepitaja põhimääruse kehtestab määrusega. (3) Kehtetu - (3¹) Kehtetu - (4) Kehtetu - (5) Kehtetu -",
       "estleg:legalText": "(1) Riiklik lepitaja on sõltumatu erapooletu ametiisik, kes aitab töötüli pooltel leida neid rahuldavat lahendust. (2) Riikliku lepitaja põhimääruse kehtestab määrusega. (3) Kehtetu - (3¹) Kehtetu - (4) Kehtetu - (5) Kehtetu -",
@@ -804,7 +1055,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -824,7 +1077,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_Lg_1",
@@ -837,7 +1094,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8"
       },
-      "rdfs:label": "§ 8 lg 1"
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_Lg_2",
@@ -908,13 +1174,13 @@
       "@id": "estleg:KTL_Par_8_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
       "rdfs:label": "§ 8¹. Riiklikule lepitajale esitatavad nõuded",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Riikliku lepitajana tegutsev isik peab: olema teovõimeline Eesti Vabariigi kodanik, kelle alaline elukoht on Eesti Vabariigis; olema omandanud kõrghariduse või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 22 tähenduses või sellele vastava välisriigi kvalifikatsiooni; omama kollektiivse töötüli lahendamiseks vajalikke oskusi, kogemusi ja teadmisi, sealhulgas oskusi, kogemusi ja teadmisi tööõigusest ning tööturu ja ettevõtluse toimimisest; valdama keeleseaduse",
       "estleg:legalText": "Riikliku lepitajana tegutsev isik peab: olema teovõimeline Eesti Vabariigi kodanik, kelle alaline elukoht on Eesti Vabariigis; olema omandanud kõrghariduse või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 22 tähenduses või sellele vastava välisriigi kvalifikatsiooni; omama kollektiivse töötüli lahendamiseks vajalikke oskusi, kogemusi ja teadmisi, sealhulgas oskusi, kogemusi ja teadmisi tööõigusest ning tööturu ja ettevõtluse toimimisest; valdama keeleseaduse nõuetest lähtudes riigikeelt vähemalt C1-tasemel.",
@@ -926,11 +1192,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_8_1_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_8_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -944,10 +1212,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KTL_Par_8_1_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_8_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -955,19 +1227,31 @@
       "estleg:legalText": "Riikliku lepitajana tegutsev isik peab: olema teovõimeline Eesti Vabariigi kodanik, kelle alaline elukoht on Eesti Vabariigis; olema omandanud kõrghariduse või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 22 tähenduses või sellele vastava välisriigi kvalifikatsiooni; omama kollektiivse töötüli lahendamiseks vajalikke oskusi, kogemusi ja teadmisi, sealhulgas oskusi, kogemusi ja teadmisi tööõigusest ning tööturu ja ettevõtluse toimimisest; valdama keeleseaduse nõuetest lähtudes riigikeelt vähemalt C1-tasemel.",
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_1"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KTL_Par_8_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8².",
       "rdfs:label": "§ 8². Riikliku lepitaja valimine ja ametisse nimetamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Tööandjate ja ametiühingute keskliidud lepivad riikliku lepitaja kandidaadis kokku: hiljemalt kolm kuud enne ametisoleva riikliku lepitaja ametiaja lõppemist käesoleva seaduse § 83 punktis 1 sätestatud alusel või kolme kuu jooksul pärast riikliku lepitaja ametiaja lõppemist käesoleva seaduse § 83 punktides 2–5 sätestatud alusel. (2) Tööandjate ja ametiühingute keskliidud esitavad kokkuleppe valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele või teavitavad Vabariigi Valitsust",
       "estleg:legalText": "(1) Tööandjate ja ametiühingute keskliidud lepivad riikliku lepitaja kandidaadis kokku: hiljemalt kolm kuud enne ametisoleva riikliku lepitaja ametiaja lõppemist käesoleva seaduse § 83 punktis 1 sätestatud alusel või kolme kuu jooksul pärast riikliku lepitaja ametiaja lõppemist käesoleva seaduse § 83 punktides 2–5 sätestatud alusel. (2) Tööandjate ja ametiühingute keskliidud esitavad kokkuleppe valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele või teavitavad Vabariigi Valitsust tähtaegselt kokkuleppe mittesaavutamisest valdkonna eest vastutava ministri kaudu. Kokkuleppele lisatakse: kandidaadi kirjalik nõusolek asuda riikliku lepitaja ametikohale; dokumendid, mis tõendavad kandidaadi vastavust käesoleva seaduse §-s 81 sätestatud nõuetele. (3) Kui tööandjate ja ametiühingute keskliidud ei saavuta riikliku lepitaja kandidaadi suhtes tähtaegselt kokkulepet, valitakse riikliku lepitaja kandidaat Majandus- ja Kommunikatsiooniministeeriumi korraldatud avaliku konkursi korras. (4) Konkursi komisjon on kolmeliikmeline ning sellesse kuuluvad valdkonna eest vastutav minister, tööandjate keskliidu esindaja ja ametiühingute keskliidu esindaja. Kui ametiühingute või tööandjate keskliite on rohkem kui üks, nimetavad nii ametiühingute keskliidud kui ka tööandjate keskliidud kumbki ühe esindaja. Komisjon langetab otsuse riikliku lepitaja kandidaadi kohta lihthäälteenamusega. (5) Majandus- ja Kommunikatsiooniministeerium teavitab konkursi lõpptulemustest konkursi võitnud isikut ja valituks mitteosutunud kandidaate kirjalikku taasesitamist võimaldavas vormis viie tööpäeva jooksul alates konkursi lõpptulemuste selgumisest. (6) Kui käesoleva paragrahvi lõike 3 alusel ei õnnestu riikliku lepitaja kandidaati valida, esitab riikliku lepitaja kandidaadi Vabariigi Valitsusele valdkonna eest vastutav minister. (7) Vabariigi Valitsus nimetab riikliku lepitaja ametisse viieks aastaks.",
@@ -1001,8 +1285,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1019,7 +1307,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_1",
@@ -1032,7 +1324,17 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 1"
+      "rdfs:label": "§ 8² lg 1",
+      "estleg:itemNumber": "1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_2",
@@ -1045,7 +1347,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 2"
+      "rdfs:label": "§ 8² lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_3",
@@ -1058,7 +1372,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 3"
+      "rdfs:label": "§ 8² lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_4",
@@ -1071,7 +1394,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 4"
+      "rdfs:label": "§ 8² lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_5",
@@ -1084,7 +1419,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 5"
+      "rdfs:label": "§ 8² lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_6",
@@ -1097,7 +1441,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 6"
+      "rdfs:label": "§ 8² lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_2_Lg_7",
@@ -1110,19 +1466,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 7"
+      "rdfs:label": "§ 8² lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8³.",
       "rdfs:label": "§ 8³. Riikliku lepitaja ametiaja lõppemine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Riikliku lepitaja ametiaeg lõpeb: tähtaja möödumise päeval; 30 tööpäeva möödumisel omal soovil ametist lahkumise avalduse esitamisest valdkonna eest vastutavale ministrile; tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päeval; päeval, kui jõustub ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistev kohtuotsus, millega on ette nähtud vabaduskaotuslik karistus; riikliku lepitaja surma korral.",
       "estleg:legalText": "Riikliku lepitaja ametiaeg lõpeb: tähtaja möödumise päeval; 30 tööpäeva möödumisel omal soovil ametist lahkumise avalduse esitamisest valdkonna eest vastutavale ministrile; tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päeval; päeval, kui jõustub ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistev kohtuotsus, millega on ette nähtud vabaduskaotuslik karistus; riikliku lepitaja surma korral.",
@@ -1134,11 +1499,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_8_3_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_8_3_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1147,17 +1514,21 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:VõrdKS_Par_20"
+          "@id": "estleg:VordKS_Par_20"
         }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KTL_Par_8_3_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_8_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1165,19 +1536,28 @@
       "estleg:legalText": "Riikliku lepitaja ametiaeg lõpeb: tähtaja möödumise päeval; 30 tööpäeva möödumisel omal soovil ametist lahkumise avalduse esitamisest valdkonna eest vastutavale ministrile; tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päeval; päeval, kui jõustub ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistev kohtuotsus, millega on ette nähtud vabaduskaotuslik karistus; riikliku lepitaja surma korral.",
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KTL_Par_8_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8⁴.",
       "rdfs:label": "§ 8⁴. Riikliku lepitaja töötingimused",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Riiklikule lepitajale kohaldatakse avaliku teenistuse seaduse § 43 lõikeid 1, 2 ja 4 ning § 62.",
       "estleg:legalText": "Riiklikule lepitajale kohaldatakse avaliku teenistuse seaduse § 43 lõikeid 1, 2 ja 4 ning § 62.",
@@ -1189,7 +1569,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_8_4_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_8_4_Lg_1"
         }
       ],
       "estleg:references": [
@@ -1204,7 +1584,7 @@
       ]
     },
     {
-      "@id": "estleg:KTL_Par_8_4_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_8_4_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1223,13 +1603,13 @@
       "@id": "estleg:KTL_Par_8_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8⁵.",
       "rdfs:label": "§ 8⁵. Riikliku lepitaja asetäitja-nõunik",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Riikliku lepitaja asetäitja-nõunik täidab riikliku lepitaja ülesandeid: riikliku lepitaja ajutisel äraolekul; olukorras, kui riiklik lepitaja on ennast lepitusmenetlusest taandanud; riikliku lepitaja ametiaja lõppemisel kuni uue riikliku lepitaja nimetamiseni. (2) Riikliku lepitaja asetäitja-nõunik peab vastama käesoleva seaduse §-s 81 riiklikule lepitajale esitatud nõuetele. (3) Lisaks töölepingu seaduses sätestatule on riiklikul lepitajal õigus riikliku lepitaja asetäitja-nõunikuga",
       "estleg:legalText": "(1) Riikliku lepitaja asetäitja-nõunik täidab riikliku lepitaja ülesandeid: riikliku lepitaja ajutisel äraolekul; olukorras, kui riiklik lepitaja on ennast lepitusmenetlusest taandanud; riikliku lepitaja ametiaja lõppemisel kuni uue riikliku lepitaja nimetamiseni. (2) Riikliku lepitaja asetäitja-nõunik peab vastama käesoleva seaduse §-s 81 riiklikule lepitajale esitatud nõuetele. (3) Lisaks töölepingu seaduses sätestatule on riiklikul lepitajal õigus riikliku lepitaja asetäitja-nõunikuga tööleping üles öelda 90 kalendripäeva jooksul alates riikliku lepitaja ametisse nimetamisest, teatades töölepingu lõppemisest ette vähemalt 30 kalendripäeva.",
@@ -1257,6 +1637,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1283,7 +1667,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_5"
       },
-      "rdfs:label": "§ 8⁵ lg 2"
+      "rdfs:label": "§ 8⁵ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_5_Lg_3",
@@ -1302,13 +1693,13 @@
       "@id": "estleg:KTL_Par_8_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8⁶.",
       "rdfs:label": "§ 8⁶. Riikliku Lepitaja Kantselei",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Riikliku Lepitaja Kantselei (edaspidi kantselei) on riiklikku lepitajat teenindav asutus. (2) Kantseleid juhib riiklik lepitaja. Riiklik lepitaja sõlmib kantselei töötajatega töölepingud. (3) Riikliku lepitaja asetäitja-nõunik kuulub kantselei koosseisu. (4) Riikliku lepitaja ja kantselei tegevuseks vajalikud kulud kaetakse riigieelarvest. (5) Kantselei registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:legalText": "(1) Riikliku Lepitaja Kantselei (edaspidi kantselei) on riiklikku lepitajat teenindav asutus. (2) Kantseleid juhib riiklik lepitaja. Riiklik lepitaja sõlmib kantselei töötajatega töölepingud. (3) Riikliku lepitaja asetäitja-nõunik kuulub kantselei koosseisu. (4) Riikliku lepitaja ja kantselei tegevuseks vajalikud kulud kaetakse riigieelarvest. (5) Kantselei registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
@@ -1336,8 +1727,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1357,7 +1752,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_6_Lg_1",
@@ -1370,7 +1769,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_6"
       },
-      "rdfs:label": "§ 8⁶ lg 1"
+      "rdfs:label": "§ 8⁶ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_6_Lg_2",
@@ -1383,7 +1791,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_6"
       },
-      "rdfs:label": "§ 8⁶ lg 2"
+      "rdfs:label": "§ 8⁶ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_8_6_Lg_3",
@@ -1422,19 +1839,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_8_6"
       },
-      "rdfs:label": "§ 8⁶ lg 5"
+      "rdfs:label": "§ 8⁶ lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Riikliku lepitaja ülesanne",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Riikliku lepitaja põhiülesanne on kollektiivse töötüli lahendamisele kaasaaitamine lepitusmenetluses. Riiklik lepitaja selgitab välja töötüli põhjused ja asjaolud ning pakub välja lahendusi.",
       "estleg:legalText": "Riikliku lepitaja põhiülesanne on kollektiivse töötüli lahendamisele kaasaaitamine lepitusmenetluses. Riiklik lepitaja selgitab välja töötüli põhjused ja asjaolud ning pakub välja lahendusi.",
@@ -1446,7 +1872,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_9_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_9_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1459,7 +1885,7 @@
       ]
     },
     {
-      "@id": "estleg:KTL_Par_9_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_9_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1473,13 +1899,13 @@
       "@id": "estleg:KTL_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Riikliku lepitaja õigused",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Riiklikul lepitajal on õigus kutsuda pooli osa võtma lepitustoimingutest. (2) Riiklikul lepitajal on õigus kaasata oma töösse asjatundjaid või eksperte ning pädevaid ametiisikuid, kellele põhitööst vabastamise korral hüvitatakse saamata jäänud töötasu seaduses ettenähtud korras.",
       "estleg:legalText": "(1) Riiklikul lepitajal on õigus kutsuda pooli osa võtma lepitustoimingutest. (2) Riiklikul lepitajal on õigus kaasata oma töösse asjatundjaid või eksperte ning pädevaid ametiisikuid, kellele põhitööst vabastamise korral hüvitatakse saamata jäänud töötasu seaduses ettenähtud korras.",
@@ -1498,7 +1924,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1515,7 +1943,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_10_Lg_1",
@@ -1528,7 +1960,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_10_Lg_2",
@@ -1541,19 +1980,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_10"
       },
-      "rdfs:label": "§ 10 lg 2"
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Poolte lepitamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Leppimine toimub riikliku lepitaja vahendusel või riikliku lepitaja omapoolse ettepaneku alusel. Riikliku lepitaja ettepanekule peavad pooled vastama kolme päeva jooksul. (2) Pooled on kohustatud osa võtma lepitustoimingutest, saatma lepitustoimingutele oma täievolilised esindajad ning esitama asja sisuliseks lahendamiseks vajalikud dokumendid riikliku lepitaja poolt määratud ajaks. (3) Leppimine vormistatakse protokolliga, millele kirjutavad alla poolte esindajad ja riiklik lepitaja.",
       "estleg:legalText": "(1) Leppimine toimub riikliku lepitaja vahendusel või riikliku lepitaja omapoolse ettepaneku alusel. Riikliku lepitaja ettepanekule peavad pooled vastama kolme päeva jooksul. (2) Pooled on kohustatud osa võtma lepitustoimingutest, saatma lepitustoimingutele oma täievolilised esindajad ning esitama asja sisuliseks lahendamiseks vajalikud dokumendid riikliku lepitaja poolt määratud ajaks. (3) Leppimine vormistatakse protokolliga, millele kirjutavad alla poolte esindajad ja riiklik lepitaja. Protokoll koostatakse ka siis, kui kokkulepet ei saavutata. (4) Allakirjutatud protokollis sisalduv leppimine on pooltele kohustuslik ja jõustub allakirjutamise hetkest, kui ei ole kokku lepitud teises tähtajas. (5) Riiklik lepitaja ja töötüli lahendamisest osavõtjad peavad hoidma neile lepitustoimingute käigus teatavaks saanud tootmis-, äri- või ametisaladusi.",
@@ -1591,7 +2042,10 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Pooled"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_11_Lg_1",
@@ -1604,7 +2058,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_11_Lg_2",
@@ -1617,7 +2078,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_11"
       },
-      "rdfs:label": "§ 11 lg 2"
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_11_Lg_3",
@@ -1656,19 +2124,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_11"
       },
-      "rdfs:label": "§ 11 lg 5"
+      "rdfs:label": "§ 11 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Töötüli lahendamine kohtus",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kui töötajate ja tööandjate liit kollektiivlepingu täitmisest tulenevas vaidluses kokkulepet ei saavuta, on neil õigus pöörduda vaidluse lahendamiseks töövaidluskomisjoni või kohtusse. (2) Streigi ja töösulu korraldamine on keelatud, arvates töövaidluskomisjoni või kohtusse pöördumise päevast.",
       "estleg:legalText": "(1) Kui töötajate ja tööandjate liit kollektiivlepingu täitmisest tulenevas vaidluses kokkulepet ei saavuta, on neil õigus pöörduda vaidluse lahendamiseks töövaidluskomisjoni või kohtusse. (2) Streigi ja töösulu korraldamine on keelatud, arvates töövaidluskomisjoni või kohtusse pöördumise päevast.",
@@ -1687,8 +2162,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1705,7 +2184,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_12_Lg_1",
@@ -1718,7 +2201,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_12_Lg_2",
@@ -1731,19 +2226,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Streigi ja töösulu õiguse tekkimine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Töötajatel, töötajate ühingul või liidul tekib õigus korraldada töötüli lahendamiseks streik, tööandjal, tööandjate ühingul või liidul aga töösulg üksnes siis, kui töörahu kohustus ei kehti, kui käesolevas seaduses ettenähtud lepitusprotseduurid on täidetud, kuid leppimist ei ole saavutatud või ei peeta saavutatud kokkuleppest kinni või ei täideta kohtuotsust. (2) Streigi või töösulu korral on pooled kohustatud taas alustama läbirääkimisi kollektiivses töötülis kokkuleppele jõudmiseks.",
       "estleg:legalText": "(1) Töötajatel, töötajate ühingul või liidul tekib õigus korraldada töötüli lahendamiseks streik, tööandjal, tööandjate ühingul või liidul aga töösulg üksnes siis, kui töörahu kohustus ei kehti, kui käesolevas seaduses ettenähtud lepitusprotseduurid on täidetud, kuid leppimist ei ole saavutatud või ei peeta saavutatud kokkuleppest kinni või ei täideta kohtuotsust. (2) Streigi või töösulu korral on pooled kohustatud taas alustama läbirääkimisi kollektiivses töötülis kokkuleppele jõudmiseks.",
@@ -1762,8 +2264,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1777,7 +2283,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_13_Lg_1",
@@ -1790,7 +2300,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_13_Lg_2",
@@ -1809,13 +2331,13 @@
       "@id": "estleg:KTL_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Otsuse tegemine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Otsuse streigi korraldamise kohta teeb töötajate üldkoosolek või töötajate ühing või liit. (2) Otsuse töösulu korraldamise kohta teeb tööandja.",
       "estleg:legalText": "(1) Otsuse streigi korraldamise kohta teeb töötajate üldkoosolek või töötajate ühing või liit. (2) Otsuse töösulu korraldamise kohta teeb tööandja.",
@@ -1834,8 +2356,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1849,7 +2375,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_14_Lg_1",
@@ -1862,7 +2392,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_14_Lg_2",
@@ -1875,19 +2417,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_14"
       },
-      "rdfs:label": "§ 14 lg 2"
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Streigist või töösulust etteteatamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kavandatavast streigist või töösulust on streigi või töösulu korraldaja kohustatud teatama teisele poolele, riiklikule lepitajale ja kohalikule omavalitsusele kirjalikult vähemalt kaks nädalat ette. Teates näidatakse streigi või töösulu põhjused, täpne algus ja võimalik ulatus. (2) Streigist või töösulust on tööandja kohustatud informeerima oma lepingupartnereid ning teisi huvitatud ettevõtteid ja asutusi, samuti massiteabevahendite kaudu üldsust.",
       "estleg:legalText": "(1) Kavandatavast streigist või töösulust on streigi või töösulu korraldaja kohustatud teatama teisele poolele, riiklikule lepitajale ja kohalikule omavalitsusele kirjalikult vähemalt kaks nädalat ette. Teates näidatakse streigi või töösulu põhjused, täpne algus ja võimalik ulatus. (2) Streigist või töösulust on tööandja kohustatud informeerima oma lepingupartnereid ning teisi huvitatud ettevõtteid ja asutusi, samuti massiteabevahendite kaudu üldsust.",
@@ -1906,8 +2457,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1924,7 +2479,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_15_Lg_1",
@@ -1937,7 +2496,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_15_Lg_2",
@@ -1950,19 +2521,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Streigi juhtimine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streiki juhib streigi korraldamise otsuse teinud töötajate üldkoosoleku või töötajate ühingu või liidu poolt volitatud isik või isikud (streigijuht). (2) Streigijuht tegutseb Eesti Vabariiki siduvate rahvusvaheliste õigusaktide, Eesti seaduste ja muude õigusaktide ning teda volitanud töötajate üldkoosoleku või töötajate ühingu või liidu otsustega ettenähtud õiguste piires, esindab teda volitanute huve streigi ajal ning informeerib massiteabevahendite kaudu üldsust kollektiivse töötüli",
       "estleg:legalText": "(1) Streiki juhib streigi korraldamise otsuse teinud töötajate üldkoosoleku või töötajate ühingu või liidu poolt volitatud isik või isikud (streigijuht). (2) Streigijuht tegutseb Eesti Vabariiki siduvate rahvusvaheliste õigusaktide, Eesti seaduste ja muude õigusaktide ning teda volitanud töötajate üldkoosoleku või töötajate ühingu või liidu otsustega ettenähtud õiguste piires, esindab teda volitanute huve streigi ajal ning informeerib massiteabevahendite kaudu üldsust kollektiivse töötüli lahendamise käigust. Nimetatud volitused lõpevad, kui pooled on alla kirjutanud leppimisele (kokkuleppele) kollektiivse töötüli reguleerimise kohta, streigi ebaseaduslikuks tunnistamise korral kohtu poolt või streigijuhte volitanute otsuse alusel. (3) Oma volituste täitmisel ei ole streigijuhil õigus vastu võtta otsuseid, mis kuuluvad riigiorganite ja valitsusasutuste ja teiste organisatsioonide ning kollektiivse töötüli teise poole pädevusse. (4) Streigijuht on kohustatud rakendama meetmeid teise poole vara säilimiseks, seaduslikkuse ja avaliku korra tagamiseks ning ta kannab vastutust streigiga kaasnenud õiguserikkumiste ja tekitatud kahjude eest.",
@@ -1987,8 +2570,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2002,7 +2589,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_16_Lg_1",
@@ -2015,7 +2606,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_16_Lg_2",
@@ -2028,7 +2631,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_16_Lg_3",
@@ -2041,7 +2656,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_16"
       },
-      "rdfs:label": "§ 16 lg 3"
+      "rdfs:label": "§ 16 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_16_Lg_4",
@@ -2054,19 +2678,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_16"
       },
-      "rdfs:label": "§ 16 lg 4"
+      "rdfs:label": "§ 16 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Töösulu juhtimine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Töösulgu juhitakse tööandja poolt määratud korras.",
       "estleg:legalText": "Töösulgu juhitakse tööandja poolt määratud korras.",
@@ -2078,11 +2709,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_17_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_17_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2093,10 +2726,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KTL_Par_17_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_17_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2104,19 +2741,28 @@
       "estleg:legalText": "Töösulgu juhitakse tööandja poolt määratud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_17"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KTL_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Hoiatus- ja toetusstreigid",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Töötajatel, nende ühingutel või liitudel on õigus korraldada hoiatusstreike kestusega mitte üle ühe tunni. (2) Streigis osalevate töötajate toetuseks on lubatud korraldada toetusstreike. Streigi kestuse üle otsustab selle korraldamise kohta otsuse teinud töötajate esindaja, ühing või liit. Toetusstreik ei või kesta üle kolme päeva. (3) Kavandatavast hoiatusstreigist on töötajate esindaja, ühing või liit kohustatud teatama tööandjale, tööandjate ühingule või liidule ja kohalikule",
       "estleg:legalText": "(1) Töötajatel, nende ühingutel või liitudel on õigus korraldada hoiatusstreike kestusega mitte üle ühe tunni. (2) Streigis osalevate töötajate toetuseks on lubatud korraldada toetusstreike. Streigi kestuse üle otsustab selle korraldamise kohta otsuse teinud töötajate esindaja, ühing või liit. Toetusstreik ei või kesta üle kolme päeva. (3) Kavandatavast hoiatusstreigist on töötajate esindaja, ühing või liit kohustatud teatama tööandjale, tööandjate ühingule või liidule ja kohalikule omavalitsusele kirjalikult vähemalt kolm päeva ette. (4) Kavandatavast toetusstreigist on töötajate esindaja, ühing või liit kohustatud teatama tööandjale, tööandjate ühingule või liidule ja kohalikule omavalitsusele kirjalikult vähemalt viis tööpäeva ette.",
@@ -2141,8 +2787,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2165,7 +2815,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_18_Lg_1",
@@ -2178,7 +2832,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_18"
       },
-      "rdfs:label": "§ 18 lg 1"
+      "rdfs:label": "§ 18 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_18_Lg_2",
@@ -2191,7 +2860,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_18"
       },
-      "rdfs:label": "§ 18 lg 2"
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_18_Lg_3",
@@ -2204,7 +2888,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_18"
       },
-      "rdfs:label": "§ 18 lg 3"
+      "rdfs:label": "§ 18 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_18_Lg_4",
@@ -2217,19 +2913,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_18"
       },
-      "rdfs:label": "§ 18 lg 4"
+      "rdfs:label": "§ 18 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Streigi ja töösulu edasilükkamine või peatamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streigi või töösulu algust võib edasi lükata üks kord: Vabariigi Valitsus riikliku lepitaja ettepanekul ühe kuu võrra või linna- või vallavalitsus riikliku lepitaja ettepanekul kahe nädala võrra. (2) Loodusõnnetuse ja katastroofi korral või nakkushaiguse leviku tõkestamiseks, samuti erakorralise seisukorra ajal on Vabariigi Valitsusel õigus streik või töösulg peatada.",
       "estleg:legalText": "(1) Streigi või töösulu algust võib edasi lükata üks kord: Vabariigi Valitsus riikliku lepitaja ettepanekul ühe kuu võrra või linna- või vallavalitsus riikliku lepitaja ettepanekul kahe nädala võrra. (2) Loodusõnnetuse ja katastroofi korral või nakkushaiguse leviku tõkestamiseks, samuti erakorralise seisukorra ajal on Vabariigi Valitsusel õigus streik või töösulg peatada.",
@@ -2248,7 +2956,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2274,7 +2984,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_19_Lg_1",
@@ -2287,7 +3001,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_19"
       },
-      "rdfs:label": "§ 19 lg 1"
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_19_Lg_2",
@@ -2300,19 +3026,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_19"
       },
-      "rdfs:label": "§ 19 lg 2"
+      "rdfs:label": "§ 19 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Streigist osavõtu vabadus",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streigist osavõtt on vabatahtlik. Ei ole lubatud takistada streigiga mitteühinenud töötajate tööleasumist. (2) Keelatud on streigi õhutamine isikute poolt, kes ei tööta ettevõttes, asutuses või muus organisatsioonis, kus töötüli on tekkinud, või kes ei esinda töötajaid seadusega ettenähtud korras.",
       "estleg:legalText": "(1) Streigist osavõtt on vabatahtlik. Ei ole lubatud takistada streigiga mitteühinenud töötajate tööleasumist. (2) Keelatud on streigi õhutamine isikute poolt, kes ei tööta ettevõttes, asutuses või muus organisatsioonis, kus töötüli on tekkinud, või kes ei esinda töötajaid seadusega ettenähtud korras.",
@@ -2331,8 +3066,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2349,7 +3088,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_20_Lg_1",
@@ -2362,7 +3105,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_20"
       },
-      "rdfs:label": "§ 20 lg 1"
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_20_Lg_2",
@@ -2375,19 +3130,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_20"
       },
-      "rdfs:label": "§ 20 lg 2"
+      "rdfs:label": "§ 20 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Streigi korraldamise õiguse piiramine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streigid on keelatud: valitsusasutustes ja muudes riigiorganites ning kohalikes omavalitsustes; Kaitseliidus, kohtutes ning päästeasutustes. (1¹) Käesoleva paragrahvi lõiget 1 ei kohaldata isiku suhtes, kes töötab selles lõikes nimetatud asutuses või organisatsioonis töölepingu alusel, välja arvatud päästeasutuses töölepingu alusel töötavad päästetöötajad ning Kaitseministeeriumis, Kaitseressursside Ametis, Kaitseväes ja Kaitseliidus töölepingu alusel töötavad isikud.",
       "estleg:legalText": "(1) Streigid on keelatud: valitsusasutustes ja muudes riigiorganites ning kohalikes omavalitsustes; Kaitseliidus, kohtutes ning päästeasutustes. (1¹) Käesoleva paragrahvi lõiget 1 ei kohaldata isiku suhtes, kes töötab selles lõikes nimetatud asutuses või organisatsioonis töölepingu alusel, välja arvatud päästeasutuses töölepingu alusel töötavad päästetöötajad ning Kaitseministeeriumis, Kaitseressursside Ametis, Kaitseväes ja Kaitseliidus töölepingu alusel töötavad isikud. (2) Käesoleva paragrahvi 1. lõikes nimetatud asutustes ja muudes organisatsioonides lahendatakse kollektiivsed töötülid läbirääkimiste teel riikliku lepitaja vahendusel või kohtus. (3) Elanike ja majanduse esmavajadusi rahuldavates ettevõtetes ja asutustes tagab streigi või töösulu kuulutanud organ hädavajaliku teenindus- või tootmismahu, mis määratakse kindlaks poolte omavahelise kokkuleppega. Lahkarvamuste korral määrab hädavajaliku teenindus- või tootmismahu riiklik lepitaja, kelle otsus on pooltele kohustuslik. (4) Elanike ja majanduse esmavajadusi rahuldavate ettevõtete ja asutuste loetelu kehtestab Vabariigi Valitsus.",
@@ -2415,8 +3182,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2445,7 +3216,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_21_Lg_1",
@@ -2458,7 +3233,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_21"
       },
-      "rdfs:label": "§ 21 lg 1"
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_21_Lg_1_1",
@@ -2471,7 +3258,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_21"
       },
-      "rdfs:label": "§ 21 lg 1¹"
+      "rdfs:label": "§ 21 lg 1¹",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_21_Lg_2",
@@ -2484,7 +3280,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_21"
       },
-      "rdfs:label": "§ 21 lg 2"
+      "rdfs:label": "§ 21 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_21_Lg_3",
@@ -2497,7 +3302,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_21"
       },
-      "rdfs:label": "§ 21 lg 3"
+      "rdfs:label": "§ 21 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_21_Lg_4",
@@ -2510,19 +3327,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_21"
       },
-      "rdfs:label": "§ 21 lg 4"
+      "rdfs:label": "§ 21 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Ebaseaduslikud streigid ja töösulud",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streik ja töösulg kohtu tegevuse mõjutamiseks on ebaseaduslikud. (2) Streik ja töösulg, millele ei ole eelnenud läbirääkimisi ja lepitustoiminguid, on ebaseaduslikud. (3) Streik ja töösulg, mille väljakuulutamisel või korraldamisel on rikutud käesoleva seadusega kehtestatud korda, on ebaseaduslikud.",
       "estleg:legalText": "(1) Streik ja töösulg kohtu tegevuse mõjutamiseks on ebaseaduslikud. (2) Streik ja töösulg, millele ei ole eelnenud läbirääkimisi ja lepitustoiminguid, on ebaseaduslikud. (3) Streik ja töösulg, mille väljakuulutamisel või korraldamisel on rikutud käesoleva seadusega kehtestatud korda, on ebaseaduslikud.",
@@ -2544,7 +3373,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2558,7 +3389,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_22_Lg_1",
@@ -2571,7 +3406,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_22"
       },
-      "rdfs:label": "§ 22 lg 1"
+      "rdfs:label": "§ 22 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_22_Lg_2",
@@ -2603,13 +3447,13 @@
       "@id": "estleg:KTL_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Streigi või töösulu ebaseaduslikuks tunnistamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Otsuse streigi või töösulu ebaseaduslikuks tunnistamise kohta teeb kohus. (2) Kohus teeb oma otsuse teatavaks töötüli pooltele ja massiteabevahendite kaudu üldsusele.",
       "estleg:legalText": "(1) Otsuse streigi või töösulu ebaseaduslikuks tunnistamise kohta teeb kohus. (2) Kohus teeb oma otsuse teatavaks töötüli pooltele ja massiteabevahendite kaudu üldsusele.",
@@ -2628,7 +3472,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2648,7 +3494,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_23_Lg_1",
@@ -2661,7 +3511,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23"
       },
-      "rdfs:label": "§ 23 lg 1"
+      "rdfs:label": "§ 23 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_23_Lg_2",
@@ -2674,19 +3533,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23"
       },
-      "rdfs:label": "§ 23 lg 2"
+      "rdfs:label": "§ 23 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_23_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23¹.",
       "rdfs:label": "§ 23¹. Kollektiivse töötüli läbivaatamise takistamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kollektiivse töötüli läbivaatamise takistamise, selleks vajalike dokumentide või andmete esitamisest keeldumise või esitamata jätmise või riikliku lepitaja poolt määratud ajal lepitustoimingutele mitteilmumise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
       "estleg:legalText": "(1) Kollektiivse töötüli läbivaatamise takistamise, selleks vajalike dokumentide või andmete esitamisest keeldumise või esitamata jätmise või riikliku lepitaja poolt määratud ajal lepitustoimingutele mitteilmumise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
@@ -2705,7 +3573,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2718,12 +3588,6 @@
           "@id": "estleg:KTL_Par_23_1_v126062018021"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_KTL_Par_23_1_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:AUTOVE_Par_72_1"
@@ -2745,7 +3609,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_1_fine"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_1_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_1_Lg_1",
@@ -2758,7 +3635,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23_1"
       },
-      "rdfs:label": "§ 23¹ lg 1"
+      "rdfs:label": "§ 23¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_1_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_1_Lg_2",
@@ -2771,19 +3661,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23_1"
       },
-      "rdfs:label": "§ 23¹ lg 2"
+      "rdfs:label": "§ 23¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_1_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23².",
       "rdfs:label": "§ 23². Ebaseaduslikuks tunnistatud või peatatud streigi või töösulu jätkamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Ebaseaduslikuks tunnistatud või peatatud streigi või töösulu jätkamise, samuti edasilükatud streigi või töösulu määratud ajast varem alustamise või jätkamise eest –karistatakse rahatrahviga kuni 200 trahviühikut või arestiga. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
       "estleg:legalText": "(1) Ebaseaduslikuks tunnistatud või peatatud streigi või töösulu jätkamise, samuti edasilükatud streigi või töösulu määratud ajast varem alustamise või jätkamise eest –karistatakse rahatrahviga kuni 200 trahviühikut või arestiga. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
@@ -2802,7 +3710,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2815,15 +3725,6 @@
           "@id": "estleg:KTL_Par_23_2_v126062018021"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_KTL_Par_23_2_arrest"
-        },
-        {
-          "@id": "estleg:Sanction_KTL_Par_23_2_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Jahiseadus_Par_49"
@@ -2845,7 +3746,23 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_2_arrest"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_2_fine"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_2_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_2_Lg_1",
@@ -2858,7 +3775,23 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23_2"
       },
-      "rdfs:label": "§ 23² lg 1"
+      "rdfs:label": "§ 23² lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_2_Lg_1_arrest"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_2_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_2_Lg_2",
@@ -2871,19 +3804,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23_2"
       },
-      "rdfs:label": "§ 23² lg 2"
+      "rdfs:label": "§ 23² lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_2_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23³.",
       "rdfs:label": "§ 23³. Ebaseaduslikuks tunnistatud või peatatud või edasilükatud streigi või töösulu jätkamise organiseerimine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Ebaseaduslikuks tunnistatud või peatatud, samuti edasilükatud streigi või töösulu määratud ajast varem alustamise või jätkamise organiseerimise eest –karistatakse rahatrahviga kuni 300 trahviühikut või arestiga. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
       "estleg:legalText": "(1) Ebaseaduslikuks tunnistatud või peatatud, samuti edasilükatud streigi või töösulu määratud ajast varem alustamise või jätkamise organiseerimise eest –karistatakse rahatrahviga kuni 300 trahviühikut või arestiga. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
@@ -2902,7 +3853,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2915,15 +3868,6 @@
           "@id": "estleg:KTL_Par_23_3_v126062018021"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_KTL_Par_23_3_arrest"
-        },
-        {
-          "@id": "estleg:Sanction_KTL_Par_23_3_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Jahiseadus_Par_49"
@@ -2939,7 +3883,23 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_3_arrest"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_3_fine"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_3_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_3_Lg_1",
@@ -2952,7 +3912,23 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23_3"
       },
-      "rdfs:label": "§ 23³ lg 1"
+      "rdfs:label": "§ 23³ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_3_Lg_1_arrest"
+        },
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_3_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_3_Lg_2",
@@ -2965,19 +3941,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_23_3"
       },
-      "rdfs:label": "§ 23³ lg 2"
+      "rdfs:label": "§ 23³ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KTL_Par_23_3_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:KTL_Par_23_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23⁴.",
       "rdfs:label": "§ 23⁴. Menetlus",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Käesolevas paragrahvis sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
       "estleg:legalText": "(1) Kehtetu - (2) Käesolevas paragrahvis sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
@@ -3011,7 +4005,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AÜS_Par_26_8"
+          "@id": "estleg:AUS_Par_26_8"
         },
         {
           "@id": "estleg:TOOLEP_Par_130"
@@ -3063,13 +4057,13 @@
       "@id": "estleg:KTL_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Streigist osavõtjate ja töösulu korraldajate õigused ja vastutus",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streigist osavõttu ei käsitleta töölepingu rikkumisena ja sellega ei kaasne töötaja vastutust, välja arvatud, kui töötaja on kohtu poolt ebaseaduslikuks tunnistatud streigi korraldaja. (2) Kehtetu - (3) Streigi ajal on tööandja algatusel töölepingu lõpetamine seaduslikus streigis osalejaga keelatud.",
       "estleg:legalText": "(1) Streigist osavõttu ei käsitleta töölepingu rikkumisena ja sellega ei kaasne töötaja vastutust, välja arvatud, kui töötaja on kohtu poolt ebaseaduslikuks tunnistatud streigi korraldaja. (2) Kehtetu - (3) Streigi ajal on tööandja algatusel töölepingu lõpetamine seaduslikus streigis osalejaga keelatud.",
@@ -3091,8 +4085,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3112,7 +4110,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_24_Lg_1",
@@ -3125,7 +4127,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_24"
       },
-      "rdfs:label": "§ 24 lg 1"
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_24_Lg_2",
@@ -3151,19 +4165,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_24"
       },
-      "rdfs:label": "§ 24 lg 3"
+      "rdfs:label": "§ 24 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Töötasu streigi ja töösulu ajal",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Streigi või töösulu aja eest töötajatele palka ei maksta. (2) Töötajale, kes streigist osa ei võta, kuid kes seetõttu ei saa oma tööd teha, maksab tööandja tasu samadel alustel kui mitte töötaja süü tõttu tekkinud tööseisaku aja eest või kollektiivlepingus ettenähtud ulatuses. (3) Töötaja, kes ei saanud tööd teha ebaseaduslikuks tunnistatud töösulu tõttu, loetakse töölt ebaseaduslikult kõrvaldatuks ja talle makstakse töösulu aja eest keskmist töötasu.",
       "estleg:legalText": "(1) Streigi või töösulu aja eest töötajatele palka ei maksta. (2) Töötajale, kes streigist osa ei võta, kuid kes seetõttu ei saa oma tööd teha, maksab tööandja tasu samadel alustel kui mitte töötaja süü tõttu tekkinud tööseisaku aja eest või kollektiivlepingus ettenähtud ulatuses. (3) Töötaja, kes ei saanud tööd teha ebaseaduslikuks tunnistatud töösulu tõttu, loetakse töölt ebaseaduslikult kõrvaldatuks ja talle makstakse töösulu aja eest keskmist töötasu. (4) Töötajate, töötajate ühingu või liidu nõuete täieliku või osalise rahuldamise korral maksab tööandja streigi väljakuulutanud töötajatele, töötajate ühingule või liidule hüvitist poolte vahel kokkulepitavas suuruses.",
@@ -3188,8 +4211,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3206,7 +4233,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_25_Lg_1",
@@ -3219,7 +4250,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_25"
       },
-      "rdfs:label": "§ 25 lg 1"
+      "rdfs:label": "§ 25 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_25_Lg_2",
@@ -3232,7 +4272,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_25"
       },
-      "rdfs:label": "§ 25 lg 2"
+      "rdfs:label": "§ 25 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_25_Lg_3",
@@ -3245,7 +4297,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_25"
       },
-      "rdfs:label": "§ 25 lg 3"
+      "rdfs:label": "§ 25 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_25_Lg_4",
@@ -3258,19 +4319,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_25"
       },
-      "rdfs:label": "§ 25 lg 4"
+      "rdfs:label": "§ 25 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. [Kehtetu -]",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3296,13 +4369,13 @@
       "@id": "estleg:KTL_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Kulude katmine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Kollektiivse töötüli lahendamisega seotud kulud katab süüdiolev pool või need jaotatakse kokkuleppeliselt poolte vahel.",
       "estleg:legalText": "Kollektiivse töötüli lahendamisega seotud kulud katab süüdiolev pool või need jaotatakse kokkuleppeliselt poolte vahel.",
@@ -3314,7 +4387,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_27_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_27_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3324,7 +4397,7 @@
       ]
     },
     {
-      "@id": "estleg:KTL_Par_27_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_27_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3338,13 +4411,13 @@
       "@id": "estleg:KTL_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Streigi tõttu kaotatud aja tasatöötamine",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "Kollektiivse töötüli poolte kokkuleppel võivad streigist osavõtnud streigi tõttu kaotatud aja tasa töötada väljaspool tööaega. Streigi tõttu kaotatud aja tasatöötamist ei loeta ületunnitööks ega tööks puhkepäevadel või riiklikel pühadel.",
       "estleg:legalText": "Kollektiivse töötüli poolte kokkuleppel võivad streigist osavõtnud streigi tõttu kaotatud aja tasa töötada väljaspool tööaega. Streigi tõttu kaotatud aja tasatöötamist ei loeta ületunnitööks ega tööks puhkepäevadel või riiklikel pühadel.",
@@ -3356,7 +4429,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KTL_Par_28_Lg_Unknown_1"
+          "@id": "estleg:KTL_Par_28_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3366,7 +4439,7 @@
       ]
     },
     {
-      "@id": "estleg:KTL_Par_28_Lg_Unknown_1",
+      "@id": "estleg:KTL_Par_28_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3380,13 +4453,13 @@
       "@id": "estleg:KTL_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kollektiivse_tootuli_lahendamise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Riikliku lepitaja valimise ja ametisse nimetamise erisus",
       "estleg:sourceAct": "Kollektiivse töötüli lahendamise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KTL_Map_2026"
+        "@id": "estleg:KTL_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse § 82 jõustumise ajal ametis olev riiklik lepitaja on ametis kuni ametiaja lõppemiseni. (2) Kui käesoleva seaduse § 82 jõustumise ajal täidab riikliku lepitaja ülesandeid riikliku lepitaja kohusetäitja, lõpeb tema poolt riikliku lepitaja ülesannete täitmine käesolevas seaduses sätestatud alustel ja korras riikliku lepitaja ametisse nimetamisega. Tööandjate ja ametiühingute keskliitudel on nelja kuu jooksul käesoleva seaduse § 82 jõustumisest arvates õigus leppida kokku",
       "estleg:legalText": "(1) Käesoleva seaduse § 82 jõustumise ajal ametis olev riiklik lepitaja on ametis kuni ametiaja lõppemiseni. (2) Kui käesoleva seaduse § 82 jõustumise ajal täidab riikliku lepitaja ülesandeid riikliku lepitaja kohusetäitja, lõpeb tema poolt riikliku lepitaja ülesannete täitmine käesolevas seaduses sätestatud alustel ja korras riikliku lepitaja ametisse nimetamisega. Tööandjate ja ametiühingute keskliitudel on nelja kuu jooksul käesoleva seaduse § 82 jõustumisest arvates õigus leppida kokku riikliku lepitaja kandidaadis. Käesoleva seaduse § 82 lõike 2 alusel esitavad keskliidud kokkuleppe valdkonna eest vastutava ministri kaudu Vabariigi Valitsusele või teavitavad Vabariigi Valitsust tähtaegselt kokkuleppe mittesaavutamisest valdkonna eest vastutava ministri kaudu. Keskliitude kokkuleppe mittesaavutamise korral kohaldatakse käesoleva seaduse § 82 lõikeid 3–7.",
@@ -3405,8 +4478,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3420,7 +4497,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KTL_Par_29_Lg_1",
@@ -3446,7 +4527,217 @@
       "estleg:parentProvision": {
         "@id": "estleg:KTL_Par_29"
       },
-      "rdfs:label": "§ 29 lg 2"
+      "rdfs:label": "§ 29 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 83"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_2_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 83"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_2_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_2"
+      },
+      "estleg:citationText": "käesoleva seaduse §-s 81"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_2_Lg_1_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_2_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 83"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_2_Lg_1_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_2_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 83"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_2_Lg_2_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_2_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse §-s 81"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_5_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_5"
+      },
+      "estleg:citationText": "käesoleva seaduse §-s 81"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_8_5_Lg_2_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_8_5_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse §-s 81"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29"
+      },
+      "estleg:citationText": "käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29"
+      },
+      "estleg:citationText": "käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_13",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29"
+      },
+      "estleg:citationText": "käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_Lg_1_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29_Lg_1"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_Lg_2_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_Lg_2_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_Lg_2_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29_Lg_2"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 82"
+    },
+    {
+      "@id": "estleg:Citation_KTL_P_29_Lg_2_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:KTL_Par_29_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 82"
     }
   ]
 }

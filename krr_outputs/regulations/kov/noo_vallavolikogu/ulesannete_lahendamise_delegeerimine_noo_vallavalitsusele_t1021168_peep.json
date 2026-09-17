@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1021168_Map_2026",
+      "@id": "estleg:Reg_1021168_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Ülesannete lahendamise delegeerimine Nõo Vallavalitsusele (määrus)",
       "dc:source": "Ülesannete lahendamise delegeerimine Nõo Vallavalitsusele",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/405022014031.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/405022014031.xml"
       },
       "estleg:issuer": "Nõo Vallavolikogu",
@@ -45,12 +40,12 @@
       "estleg:regulationTypeBucket": "noo vallavalitsusele",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:KOKS_Map_2026"
+          "@id": "estleg:KOKS_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1021168_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1021168_Map_1"
         }
       ],
       "dcterms:subject": [
@@ -72,23 +67,26 @@
         "@value": "2014-02-05",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:Regulation_1021168",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_noo_vallavalitsus"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1021168_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1021168",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -103,10 +101,12 @@
         "@id": "estleg:Municipality_EHAK_0528"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1021168_Map_2026"
+        "@id": "estleg:Reg_1021168_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -121,13 +121,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1021168_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1021168",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -142,11 +146,11 @@
         "@id": "estleg:Municipality_EHAK_0528"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1021168_Map_2026"
+        "@id": "estleg:Reg_1021168_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1021168_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1021168_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"

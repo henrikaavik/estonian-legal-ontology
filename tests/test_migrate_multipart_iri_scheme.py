@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from migrate_multipart_iri_scheme import (
     OLD_PAR_RE,
     _apply_substitution,
@@ -15,7 +14,6 @@ from migrate_multipart_iri_scheme import (
     execute_plan,
     main,
 )
-
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 

@@ -1,0 +1,40 @@
+# SPARQL quickstart (#474).
+#
+#   docker compose up
+#   open http://localhost:7878
+#
+# Default dump is the committed 7-graph sample. Point ESTLEG_DUMP at a
+# full `krr_outputs/estleg_all.nq.gz` (from
+# `python3 -m estleg.serialize_named_graphs --write`) for the whole corpus.
+services:
+  prepare-dump:
+    image: alpine:3.20
+    volumes:
+      - ${ESTLEG_DUMP:-./krr_outputs/exports/estleg_all_sample.nq.gz}:/in/dump.nq.gz:ro
+      - dumpvol:/out
+    command: ["sh", "-c", "gzip -dc /in/dump.nq.gz > /out/dump.nq"]
+
+  load:
+    image: oxigraph/oxigraph:0.4.11
+    depends_on:
+      prepare-dump:
+        condition: service_completed_successfully
+    volumes:
+      - dumpvol:/import:ro
+      - store:/data
+    command: ["load", "--location", "/data", "--file", "/import/dump.nq"]
+
+  sparql:
+    image: oxigraph/oxigraph:0.4.11
+    depends_on:
+      load:
+        condition: service_completed_successfully
+    ports:
+      - "7878:7878"
+    volumes:
+      - store:/data
+    command: ["serve", "--location", "/data", "--bind", "0.0.0.0:7878"]
+
+volumes:
+  dumpvol:
+  store:

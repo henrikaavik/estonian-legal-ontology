@@ -10,18 +10,15 @@ Covers:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
-from enrich_kov_layer1 import (
+from estleg.enrich_kov_layer1 import (
     build_historical_municipality_doc,
     historical_municipality_iri,
 )
-from kov_registry import extract_historical_municipalities, load_municipalities
+from estleg.kov_registry import extract_historical_municipalities, load_municipalities
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SHAPES = REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"
@@ -71,7 +68,7 @@ class TestBuildHistoricalMunicipalityDoc:
         assert doc["@context"]["estleg"] == "https://w3id.org/estleg/"
         graph = doc["@graph"]
         # First node is the owl:Ontology header.
-        assert graph[0]["@id"] == "estleg:HistoricalMunicipalities_Map_2026"
+        assert graph[0]["@id"] == "estleg:HistoricalMunicipalities_Map"
         assert "owl:Ontology" in graph[0]["@type"]
 
     def test_node_has_required_fields(self):

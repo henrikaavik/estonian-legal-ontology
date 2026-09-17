@@ -2,14 +2,10 @@
 from __future__ import annotations
 
 import json
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
-from extract_draft_impact import affected_law_name_values
+from estleg.extract_draft_impact import affected_law_name_values
 
 
 def test_affected_law_name_values_accepts_canonical_string_array():
@@ -35,7 +31,7 @@ class TestValueObjectFieldReads:
         """The module imports the canonical JSON-LD unwrappers so a
         value-object ``rdfs:label`` / ``estleg:initiator`` is read as text,
         never str()'d into ``{'@value': ...}``."""
-        import extract_draft_impact as mod
+        from estleg import extract_draft_impact as mod
 
         assert hasattr(mod, "jsonld_text")
         assert hasattr(mod, "jsonld_texts")
@@ -43,7 +39,7 @@ class TestValueObjectFieldReads:
     def test_jsonld_text_unwraps_label_value_object(self):
         """A value-object ``rdfs:label`` resolves to its Estonian text
         (the exact call ``main`` makes before change-type classification)."""
-        from extract_draft_impact import jsonld_text
+        from estleg.extract_draft_impact import jsonld_text
 
         label = {"@value": "Riigi Teataja seaduse muutmise seadus", "@language": "et"}
         assert (
@@ -60,7 +56,7 @@ class TestValueObjectFieldReads:
         """A multi-language ``estleg:initiator`` value-object list yields
         only the Estonian ministry names (the exact call ``main`` makes for
         ``pending_changes_by_ministry``)."""
-        from extract_draft_impact import jsonld_texts
+        from estleg.extract_draft_impact import jsonld_texts
 
         initiator = [
             {"@value": "Ministry of Justice", "@language": "en"},
@@ -86,13 +82,13 @@ class TestClassifyChangeTypePriority:
     """
 
     def test_amends_when_only_muutmi(self):
-        from extract_draft_impact import classify_change_type
+        from estleg.extract_draft_impact import classify_change_type
         result = classify_change_type("X seaduse muutmise seadus")
         assert result is not None
         assert result[0] == "amends"
 
     def test_repeals_wins_over_amends_when_both_present(self):
-        from extract_draft_impact import classify_change_type
+        from estleg.extract_draft_impact import classify_change_type
         # Both ``muutmi`` and ``kehtetuks tunnistami`` match. The
         # canonical priority puts repeals first.
         title = "X muutmise ja Y kehtetuks tunnistamise seadus"
@@ -104,7 +100,7 @@ class TestClassifyChangeTypePriority:
         )
 
     def test_enacts_wins_over_amends(self):
-        from extract_draft_impact import classify_change_type
+        from estleg.extract_draft_impact import classify_change_type
         # ``kehtestami`` AND ``muutmi`` both match.
         title = "X seaduse kehtestamise ja Y muutmise seadus"
         result = classify_change_type(title)
@@ -112,7 +108,7 @@ class TestClassifyChangeTypePriority:
         assert result[0] == "enacts"
 
     def test_classify_change_types_returns_all_matches(self):
-        from extract_draft_impact import classify_change_types
+        from estleg.extract_draft_impact import classify_change_types
         title = "X muutmise ja Y kehtetuks tunnistamise seadus"
         result = classify_change_types(title)
         types = {ct for ct, _ in result}
@@ -123,9 +119,9 @@ class TestClassifyChangeTypePriority:
         assert result[0][0] == "repeals"
 
     def test_no_match_returns_none(self):
-        from extract_draft_impact import classify_change_type
+        from estleg.extract_draft_impact import classify_change_type
         assert classify_change_type("Some random title without keywords") is None
-        from extract_draft_impact import classify_change_types
+        from estleg.extract_draft_impact import classify_change_types
         assert classify_change_types("Some random title without keywords") == []
 
 
@@ -135,7 +131,7 @@ class TestBuildLawLookupCollisions:
     """
 
     def test_warn_drops_ambiguous_key(self, capsys):
-        from extract_draft_impact import build_law_lookup
+        from estleg.extract_draft_impact import build_law_lookup
         # Two laws with the same readable form (after _ → space).
         index = {
             "laws": [
@@ -151,7 +147,7 @@ class TestBuildLawLookupCollisions:
         assert "ambiguous" in captured.out.lower()
 
     def test_raise_on_collision(self):
-        from extract_draft_impact import build_law_lookup
+        from estleg.extract_draft_impact import build_law_lookup
         index = {
             "laws": [
                 {"name": "x_seadus", "files": ["a_peep.json"]},
@@ -162,7 +158,7 @@ class TestBuildLawLookupCollisions:
             build_law_lookup(index, on_collision="raise")
 
     def test_no_collision_keeps_both(self):
-        from extract_draft_impact import build_law_lookup
+        from estleg.extract_draft_impact import build_law_lookup
         index = {
             "laws": [
                 {"name": "alkoholiseadus", "files": ["alkoholiseadus_peep.json"]},
@@ -174,7 +170,7 @@ class TestBuildLawLookupCollisions:
         assert "tubakaseadus" in lookup
 
     def test_invalid_on_collision_raises(self):
-        from extract_draft_impact import build_law_lookup
+        from estleg.extract_draft_impact import build_law_lookup
         with pytest.raises(ValueError):
             build_law_lookup({"laws": []}, on_collision="invalid")
 
@@ -186,7 +182,7 @@ class TestResolveLawNameDeterministic:
     """
 
     def test_substring_match_requires_word_boundary(self):
-        from extract_draft_impact import resolve_law_name
+        from estleg.extract_draft_impact import resolve_law_name
         # ``riik`` should NOT match ``riiklik_seadus`` because the
         # tokens don't align as whole words.
         lookup = {
@@ -199,7 +195,7 @@ class TestResolveLawNameDeterministic:
         assert result is None
 
     def test_substring_match_with_word_boundary(self):
-        from extract_draft_impact import resolve_law_name
+        from estleg.extract_draft_impact import resolve_law_name
         lookup = {
             "alkoholiseadus": {"name": "alkoholiseadus",
                                 "files": ["a.json"],
@@ -212,7 +208,7 @@ class TestResolveLawNameDeterministic:
         assert result["slug"] == "alkoholiseadus"
 
     def test_shortest_key_wins_on_tie(self):
-        from extract_draft_impact import resolve_law_name
+        from estleg.extract_draft_impact import resolve_law_name
         # Two entries — both contain 'foo' as a contiguous subsequence.
         # The shorter key should win.
         lookup = {
@@ -227,7 +223,7 @@ class TestResolveLawNameDeterministic:
         assert result["slug"] == "foo"
 
     def test_token_overlap_deterministic(self):
-        from extract_draft_impact import resolve_law_name
+        from estleg.extract_draft_impact import resolve_law_name
         # Two entries with equal token overlap — the shorter key
         # wins under the deterministic tie-break.
         lookup = {
@@ -251,8 +247,8 @@ class TestEelnoudClearingExplicitGlobs:
 
     def test_jsonld_file_processed(self, tmp_path, monkeypatch):
         """A staged ``*.jsonld`` file with stale links is touched."""
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
         eelnoud.mkdir(parents=True)
@@ -299,8 +295,8 @@ class TestEelnoudClearingExplicitGlobs:
         opened by the clearing pass even if they superficially look
         like JSON.
         """
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
         eelnoud.mkdir(parents=True)
@@ -335,8 +331,8 @@ class TestGeneratedDraftValueObjects:
     """
 
     def test_main_unwraps_title_and_initiator_value_objects(self, tmp_path, monkeypatch):
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
 
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
@@ -348,7 +344,7 @@ class TestGeneratedDraftValueObjects:
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": "estleg:RTS_Map_2026",
+                        "@id": "estleg:RTS_Map",
                         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     }
                 ],
@@ -420,9 +416,9 @@ class TestGeneratedDraftValueObjects:
         enriched = json.loads(combined.read_text(encoding="utf-8"))
         draft = enriched["@graph"][0]
         assert draft["estleg:changeType"] == "amends"
-        assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map_2026"}
+        assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map"}
 
-        report = json.loads((krr / "draft_impact_report.json").read_text(encoding="utf-8"))
+        report = json.loads((krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8"))
         assert report["pending_changes_by_ministry"] == {
             "Justiitsministeerium": 1,
             "Rahandusministeerium": 1,
@@ -438,17 +434,17 @@ class TestGeneratedDraftValueObjects:
 
 
 class TestFindActNode:
-    def test_prefers_ontology_act_then_any_act_then_none(self):
-        from extract_draft_impact import find_act_node
+    def test_prefers_first_domain_individual_then_none(self):
+        from estleg.extract_draft_impact import find_act_node
         concept = {"@id": "estleg:C1", "@type": ["estleg:LegalConcept"]}
         plain_act = {"@id": "estleg:A1", "@type": ["estleg:Act"]}
         onto_act = {
             "@id": "estleg:M1",
             "@type": ["owl:Ontology", "estleg:Act"],
         }
-        # owl:Ontology+Act wins even when it is not first.
-        assert find_act_node([concept, plain_act, onto_act]) is onto_act
-        # Falls back to any estleg:Act node.
+        # First Act/regulation individual wins (#435).
+        assert find_act_node([concept, plain_act, onto_act]) is plain_act
+        assert find_act_node([concept, onto_act, plain_act]) is onto_act
         assert find_act_node([concept, plain_act]) is plain_act
         # No act node → None (caller must skip, not stamp graph[0]).
         assert find_act_node([concept]) is None
@@ -459,7 +455,7 @@ class TestFindActNode:
         ) is None
 
     def test_string_type_node_handled(self):
-        from extract_draft_impact import find_act_node
+        from estleg.extract_draft_impact import find_act_node
         assert find_act_node([{"@id": "estleg:A", "@type": "estleg:Act"}]) == {
             "@id": "estleg:A",
             "@type": "estleg:Act",
@@ -473,8 +469,8 @@ class TestInverseLinkSkipsNonActGraph0:
     """
 
     def _run(self, tmp_path, monkeypatch, law_graph):
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
 
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
@@ -571,8 +567,8 @@ class TestInverseLinkSkipsNonActGraph0:
 
 class TestAmendsLawDedup:
     def test_duplicate_resolution_dedups_iri_and_count(self, tmp_path, monkeypatch):
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
 
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
@@ -584,7 +580,7 @@ class TestAmendsLawDedup:
                 "@context": {"estleg": "https://w3id.org/estleg/"},
                 "@graph": [
                     {
-                        "@id": "estleg:RTS_Map_2026",
+                        "@id": "estleg:RTS_Map",
                         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     }
                 ],
@@ -640,7 +636,7 @@ class TestAmendsLawDedup:
         draft = enriched["@graph"][0]
         amends = draft["estleg:amendsLaw"]
         # Single object (deduped), NOT a 2-element list of identical IRIs.
-        assert amends == {"@id": "estleg:RTS_Map_2026"}, amends
+        assert amends == {"@id": "estleg:RTS_Map"}, amends
 
         # The act node's inverse link is deduped to a single draft ref.
         law_doc = json.loads(law_file.read_text(encoding="utf-8"))
@@ -649,7 +645,7 @@ class TestAmendsLawDedup:
         ]
 
         report = json.loads(
-            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8")
         )
         # Resolved counted ONCE per distinct IRI, not once per name string.
         assert report["summary"]["affected_law_names_resolved"] == 1
@@ -662,8 +658,8 @@ class TestAmendsLawDedup:
 
 class TestReportIsByteStable:
     def test_report_has_no_generated_timestamp(self, tmp_path, monkeypatch):
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
 
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
@@ -688,7 +684,7 @@ class TestReportIsByteStable:
         mod.main()
 
         report = json.loads(
-            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8")
         )
         assert "generated" not in report, (
             "draft_impact_report.json must not embed a wall-clock "
@@ -707,8 +703,8 @@ class TestSaveJsonIsAtomic:
     def test_module_save_json_is_estleg_common_atomic(self):
         """``extract_draft_impact.save_json`` must be the imported atomic
         helper, not a shadowing local definition."""
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
 
         assert mod.save_json is estleg_common.save_json
 
@@ -716,7 +712,7 @@ class TestSaveJsonIsAtomic:
         """The atomic writer never leaves a 0-byte file: a failed write
         (non-serialisable payload) preserves the pre-existing content and
         drops no ``.tmp`` litter."""
-        import extract_draft_impact as mod
+        from estleg import extract_draft_impact as mod
 
         target = tmp_path / "out.json"
         target.write_text('{"keep": "me"}\n', encoding="utf-8")
@@ -740,8 +736,8 @@ class TestSaveJsonIsAtomic:
 
 class TestUnresolvedCountMatchesList:
     def test_summary_count_equals_deduped_list_length(self, tmp_path, monkeypatch):
-        import extract_draft_impact as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import extract_draft_impact as mod
 
         krr = tmp_path / "krr_outputs"
         eelnoud = krr / "eelnoud"
@@ -790,7 +786,7 @@ class TestUnresolvedCountMatchesList:
         mod.main()
 
         report = json.loads(
-            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "draft_impact_report.json").read_text(encoding="utf-8")
         )
         summary_count = report["summary"]["affected_law_names_unresolved"]
         list_len = len(report["unresolved_law_names"])

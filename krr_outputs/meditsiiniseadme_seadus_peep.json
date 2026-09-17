@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:MEDITS_Map_2026",
+      "@id": "estleg:MEDITS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Meditsiiniseadme seadus teemakaardistus",
       "dc:source": "Meditsiiniseadme seadus",
-      "dcterms:title": "Meditsiiniseadme seadus",
+      "dcterms:title": [
+        {
+          "@value": "Meditsiiniseadme seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Medical Devices Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072025023.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/112072025023.xml"
       },
       "estleg:kehtiv": {
@@ -33,19 +38,19 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1032471_Map_2026"
+          "@id": "estleg:Reg_1032471_Map"
         },
         {
-          "@id": "estleg:Reg_1055678_Map_2026"
+          "@id": "estleg:Reg_1055678_Map"
         },
         {
-          "@id": "estleg:Reg_1055768_Map_2026"
+          "@id": "estleg:Reg_1055768_Map"
         },
         {
-          "@id": "estleg:Reg_1056413_Map_2026"
+          "@id": "estleg:Reg_1056413_Map"
         },
         {
-          "@id": "estleg:Reg_1061942_Map_2026"
+          "@id": "estleg:Reg_1061942_Map"
         }
       ],
       "estleg:implementedByCount": 5,
@@ -117,16 +122,70 @@
         {
           "@id": "estleg:AmendmentLink_Draft_SOM22_0219_MEDITS"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_meditsiiniseadme_seadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/5899"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/10"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KORS_Par_30"
+        },
+        {
+          "@id": "estleg:KORS_Par_50"
+        },
+        {
+          "@id": "estleg:MEDITS_Par_22"
+        },
+        {
+          "@id": "estleg:MEDITS_Par_29"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MEDITS_Par_35"
+        },
+        {
+          "@id": "estleg:MEDITS_Par_35_Lg_1"
+        },
+        {
+          "@id": "estleg:MEDITS_Par_41_1"
+        },
+        {
+          "@id": "estleg:MEDITS_Par_41_1_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        },
+        {
+          "@id": "estleg:Institution_terviseamet"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-10-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/503102025002"
       }
     },
     {
@@ -146,19 +205,19 @@
           "@id": "estleg:Cluster_MEDITS_3"
         },
         {
-          "@id": "estleg:Cluster_MEDITS_3_Dup2"
+          "@id": "estleg:Cluster_MEDITS_3_32_32"
         },
         {
-          "@id": "estleg:Cluster_MEDITS_3_Dup3"
+          "@id": "estleg:Cluster_MEDITS_3_32_32_2"
         },
         {
-          "@id": "estleg:Cluster_MEDITS_3_Dup4"
+          "@id": "estleg:Cluster_MEDITS_3_32_32_3"
         },
         {
-          "@id": "estleg:Cluster_MEDITS_3_Dup5"
+          "@id": "estleg:Cluster_MEDITS_3_32_32_4"
         },
         {
-          "@id": "estleg:Cluster_MEDITS_3_Dup6"
+          "@id": "estleg:Cluster_MEDITS_3_32_32_5"
         },
         {
           "@id": "estleg:Cluster_MEDITS_4"
@@ -194,10 +253,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MEDITS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -223,10 +286,14 @@
       "rdfs:label": "2. peatükk – MEDITSIINISEADME TURULE LASKMINE JA KASUTUSELEVÕTT",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MEDITS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -252,14 +319,18 @@
       "rdfs:label": "3. peatükk – MEDITSIINISEADME PROFESSIONAALNE KASUTAMINE",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MEDITS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MEDITS_3_Dup2",
+      "@id": "estleg:Cluster_MEDITS_3_32_32",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -273,7 +344,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MEDITS_3_Dup2",
+      "@id": "estleg:Chapter_MEDITS_3_733cb652",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -281,14 +352,18 @@
       "rdfs:label": "3. peatükk – MEDITSIINISEADME MÜÜK MEDITSIINISEADME KAARDI ALUSEL",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MEDITS_3_Dup2"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MEDITS_3_32_32"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MEDITS_3_Dup3",
+      "@id": "estleg:Cluster_MEDITS_3_32_32_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -302,7 +377,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MEDITS_3_Dup3",
+      "@id": "estleg:Chapter_MEDITS_3_43b8ac7a",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -310,14 +385,18 @@
       "rdfs:label": "3. peatükk – VABAMÜÜGI SERTIFIKAAT",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MEDITS_3_Dup3"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MEDITS_3_32_32_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MEDITS_3_Dup4",
+      "@id": "estleg:Cluster_MEDITS_3_32_32_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -331,7 +410,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MEDITS_3_Dup4",
+      "@id": "estleg:Chapter_MEDITS_3_7181c321",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -339,14 +418,18 @@
       "rdfs:label": "3. peatükk – ASUTUSESISESELT VALMISTATAVAD MEDITSIINISEADMED",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MEDITS_3_Dup4"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MEDITS_3_32_32_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MEDITS_3_Dup5",
+      "@id": "estleg:Cluster_MEDITS_3_32_32_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -360,7 +443,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MEDITS_3_Dup5",
+      "@id": "estleg:Chapter_MEDITS_3_7229d86a",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -368,14 +451,18 @@
       "rdfs:label": "3. peatükk – SIIRATAVAD MEDITSIINISEADMED",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MEDITS_3_Dup5"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MEDITS_3_32_32_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:Cluster_MEDITS_3_Dup6",
+      "@id": "estleg:Cluster_MEDITS_3_32_32_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
@@ -389,7 +476,7 @@
       "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:Chapter_MEDITS_3_Dup6",
+      "@id": "estleg:Chapter_MEDITS_3_1471fc97",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
@@ -397,10 +484,14 @@
       "rdfs:label": "3. peatükk – TEGUTSEMINE VASTAVUSHINDAMISASUTUSENA",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
-        "@id": "estleg:Cluster_MEDITS_3_Dup6"
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MEDITS_3_32_32_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -426,10 +517,14 @@
       "rdfs:label": "4. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MEDITS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -455,10 +550,14 @@
       "rdfs:label": "5. peatükk – VASTUTUS",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MEDITS_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -484,23 +583,27 @@
       "rdfs:label": "6. peatükk – RAKENDUSSÄTTED",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_MEDITS_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus reguleerib meditsiiniseadme turule laskmist, kasutuselevõttu, turul kättesaadavaks tegemist ja levitamist, kliinilisi uuringuid ja toimivusuuringuid, professionaalset kasutamist ja asutusesisest valmistamist, müüki meditsiiniseadme kaardi alusel, vabamüügi sertifikaadi väljastamist, nõudeid meditsiiniseadmega seotud teabele ja selle esitamisele ning riiklikku järelevalvet ja vastutust, et tagada Eestis inimestel kasutatavate meditsiiniseadmete ohutus, kvaliteet ja",
       "estleg:legalText": "(1) Käesolev seadus reguleerib meditsiiniseadme turule laskmist, kasutuselevõttu, turul kättesaadavaks tegemist ja levitamist, kliinilisi uuringuid ja toimivusuuringuid, professionaalset kasutamist ja asutusesisest valmistamist, müüki meditsiiniseadme kaardi alusel, vabamüügi sertifikaadi väljastamist, nõudeid meditsiiniseadmega seotud teabele ja selle esitamisele ning riiklikku järelevalvet ja vastutust, et tagada Eestis inimestel kasutatavate meditsiiniseadmete ohutus, kvaliteet ja efektiivsus ning edendada nende sihtotstarbekohast kasutamist. (2) Käesolevat seadust ei kohaldata juhtudel, kui kohaldub Euroopa Parlamendi ja nõukogu määrus (EL) 2017/745, milles käsitletakse meditsiiniseadmeid, millega muudetakse direktiivi 2001/83/EÜ, määrust (EÜ) nr 178/2002 ja määrust (EÜ) nr 1223/2009 ning millega tunnistatakse kehtetuks nõukogu direktiivid 90/385/EMÜ ja 93/42/EMÜ (ELT L 117, 05.05.2017, lk 1–175), või Euroopa Parlamendi ja nõukogu määrus (EL) 2017/746 in vitro diagnostikameditsiiniseadmete kohta ning millega tunnistatakse kehtetuks direktiiv 98/79/EÜ ja komisjoni otsus 2010/227/EL (ELT L 117, 05.05.2017, lk 176–332). (3) Kehtetu -",
@@ -522,7 +625,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -545,7 +650,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_1_Lg_1",
@@ -558,7 +667,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_1_Lg_2",
@@ -590,13 +708,13 @@
       "@id": "estleg:MEDITS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Teiste õigusaktide kohaldamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadme tootja, tema volitatud esindaja, importija ja levitaja kohustustele, teavitatud asutusele, meditsiiniseadme vastavushindamisele ja turujärelevalvele kohaldatakse toote nõuetele vastavuse seaduse nõudeid erisustega, mis tulenevad käesolevast seadusest ning Euroopa Parlamendi ja nõukogu määrustest (EL) 2017/745 ja (EL) 2017/746. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:legalText": "(1) Meditsiiniseadme tootja, tema volitatud esindaja, importija ja levitaja kohustustele, teavitatud asutusele, meditsiiniseadme vastavushindamisele ja turujärelevalvele kohaldatakse toote nõuetele vastavuse seaduse nõudeid erisustega, mis tulenevad käesolevast seadusest ning Euroopa Parlamendi ja nõukogu määrustest (EL) 2017/745 ja (EL) 2017/746. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
@@ -615,8 +733,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -657,7 +779,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_2_Lg_1",
@@ -670,7 +796,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_2_Lg_2",
@@ -689,13 +827,13 @@
       "@id": "estleg:MEDITS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -721,13 +859,13 @@
       "@id": "estleg:MEDITS_Par_3_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3¹.",
       "rdfs:label": "§ 3¹. Terminid",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Käesolevas seaduses kasutatakse termineid Euroopa Parlamendi ja nõukogu määruste (EL) 2017/745 ja (EL) 2017/746 tähenduses, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:legalText": "Käesolevas seaduses kasutatakse termineid Euroopa Parlamendi ja nõukogu määruste (EL) 2017/745 ja (EL) 2017/746 tähenduses, kui käesolevas seaduses ei ole sätestatud teisiti.",
@@ -739,7 +877,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_3_1_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_3_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -769,7 +907,7 @@
       ]
     },
     {
-      "@id": "estleg:MEDITS_Par_3_1_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_3_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -783,13 +921,13 @@
       "@id": "estleg:MEDITS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Abiseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -815,13 +953,13 @@
       "@id": "estleg:MEDITS_Par_4_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
       "rdfs:label": "§ 4¹. Aktiivne meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -844,13 +982,13 @@
       "@id": "estleg:MEDITS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Aktiivne siirdatav meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -876,13 +1014,13 @@
       "@id": "estleg:MEDITS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. [Kehtetu -]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -905,13 +1043,13 @@
       "@id": "estleg:MEDITS_Par_6_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6¹.",
       "rdfs:label": "§ 6¹. [Kehtetu -]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -934,13 +1072,13 @@
       "@id": "estleg:MEDITS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Enesetestimise meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -963,13 +1101,13 @@
       "@id": "estleg:MEDITS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Tellimusmeditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -992,13 +1130,13 @@
       "@id": "estleg:MEDITS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Kliiniliselt uuritav meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1021,13 +1159,13 @@
       "@id": "estleg:MEDITS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Toimivuse hindamise meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1050,13 +1188,13 @@
       "@id": "estleg:MEDITS_Par_10_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10¹.",
       "rdfs:label": "§ 10¹. Meditsiiniseadmete alamkategooria",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1079,13 +1217,13 @@
       "@id": "estleg:MEDITS_Par_10_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10².",
       "rdfs:label": "§ 10². Meditsiiniseadmete üldrühm",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1108,13 +1246,13 @@
       "@id": "estleg:MEDITS_Par_10_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10³.",
       "rdfs:label": "§ 10³. Ühekordselt kasutatav meditsiiniseade",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1137,13 +1275,13 @@
       "@id": "estleg:MEDITS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Meditsiiniseadme professionaalne kasutaja",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Meditsiiniseadme professionaalne kasutaja käesoleva seaduse tähenduses on isik, kes kasutab meditsiiniseadet tervishoiuteenuse või muu teenuse osutamisel, samuti õppe-, teadus- või uurimistöös.",
       "estleg:legalText": "Meditsiiniseadme professionaalne kasutaja käesoleva seaduse tähenduses on isik, kes kasutab meditsiiniseadet tervishoiuteenuse või muu teenuse osutamisel, samuti õppe-, teadus- või uurimistöös.",
@@ -1155,11 +1293,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_11_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_11_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1176,10 +1316,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MEDITS_Par_11_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_11_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1187,19 +1331,28 @@
       "estleg:legalText": "Meditsiiniseadme professionaalne kasutaja käesoleva seaduse tähenduses on isik, kes kasutab meditsiiniseadet tervishoiuteenuse või muu teenuse osutamisel, samuti õppe-, teadus- või uurimistöös.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_11"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_11_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
       "rdfs:label": "§ 11¹. Tellimusmeditsiiniseadme tellimine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Tellimusmeditsiiniseade valmistatakse professionaalse kasutaja eritellimuse kohaselt, lähtudes kindla patsiendi vajadustest.",
       "estleg:legalText": "Tellimusmeditsiiniseade valmistatakse professionaalse kasutaja eritellimuse kohaselt, lähtudes kindla patsiendi vajadustest.",
@@ -1211,11 +1364,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_11_1_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_11_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1226,10 +1381,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MEDITS_Par_11_1_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_11_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1237,19 +1396,28 @@
       "estleg:legalText": "Tellimusmeditsiiniseade valmistatakse professionaalse kasutaja eritellimuse kohaselt, lähtudes kindla patsiendi vajadustest.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_11_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. [Kehtetu -]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1278,13 +1446,13 @@
       "@id": "estleg:MEDITS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Meditsiiniseadme steriliseerimine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1307,13 +1475,13 @@
       "@id": "estleg:MEDITS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Teavitatud asutus",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (2) Teavitatud asutusele, tema tegutsemisele, temale tegevusloa andmisele, selle kehtivuse peatamisele või kehtetuks tunnistamisele ning tema üle riikliku järelevalve tegemisele kohaldatakse toote nõuetele vastavuse seadust käesolevast seadusest ning Euroopa Parlamendi ja nõukogu määrustest (EL) 2017/745 ja (EL) 2017/746 tulenevate erisustega.",
       "estleg:legalText": "(1) Kehtetu - (2) Teavitatud asutusele, tema tegutsemisele, temale tegevusloa andmisele, selle kehtivuse peatamisele või kehtetuks tunnistamisele ning tema üle riikliku järelevalve tegemisele kohaldatakse toote nõuetele vastavuse seadust käesolevast seadusest ning Euroopa Parlamendi ja nõukogu määrustest (EL) 2017/745 ja (EL) 2017/746 tulenevate erisustega.",
@@ -1332,7 +1500,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1357,7 +1527,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_14_Lg_1",
@@ -1383,19 +1557,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 2"
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_14_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14¹.",
       "rdfs:label": "§ 14¹. Pädev asutus ja teavitatud asutuse eest vastutav asutus",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Käesolevas seaduses ning Euroopa Parlamendi ja nõukogu määrustes (EL) 2017/745 ja (EL) 2017/746 sätestatud pädeva asutuse ja teavitatud asutuse eest vastutava asutuse toimingud teeb ja haldusaktid annab Ravimiamet, kui nimetatud määrustes ei ole sätestatud teisiti. (2) Ravimiametil on õigus määratleda toode meditsiiniseadmena, kui toode vastab Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 sätestatud nõuetele.",
       "estleg:legalText": "(1) Käesolevas seaduses ning Euroopa Parlamendi ja nõukogu määrustes (EL) 2017/745 ja (EL) 2017/746 sätestatud pädeva asutuse ja teavitatud asutuse eest vastutava asutuse toimingud teeb ja haldusaktid annab Ravimiamet, kui nimetatud määrustes ei ole sätestatud teisiti. (2) Ravimiametil on õigus määratleda toode meditsiiniseadmena, kui toode vastab Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 sätestatud nõuetele.",
@@ -1414,7 +1597,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1448,7 +1633,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_14_1_Lg_1",
@@ -1461,7 +1650,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_14_1"
       },
-      "rdfs:label": "§ 14¹ lg 1"
+      "rdfs:label": "§ 14¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_14_1_Lg_2",
@@ -1474,19 +1672,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_14_1"
       },
-      "rdfs:label": "§ 14¹ lg 2"
+      "rdfs:label": "§ 14¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Meditsiiniseadme tootja vastutus",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1497,11 +1702,13 @@
         "@id": "estleg:Chapter_MEDITS_1"
       },
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1056413_Map_2026"
+          "@id": "estleg:Reg_1056413_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -1520,19 +1727,23 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_15_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
       "rdfs:label": "§ 15¹. Tasulised teenused",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Ravimiamet võib osutada oma põhitegevusega seotud meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmist tagavaid tasulisi teenuseid, kui see ei takista tema õigusaktidest tulenevate ülesannete täitmist ja tasuliste teenuste osutamine on vajalik seoses: Euroopa Parlamendi ja nõukogu määrustes (EL) 2017/745 ja (EL) 2017/746 sätestatud ülesannete täitmisega, arvestades nimetatud määrustes sätestatud piiranguid pädevale asutusele ja teavitatud asutuse eest vastutavale asutusele; samade teenuste",
       "estleg:legalText": "(1) Ravimiamet võib osutada oma põhitegevusega seotud meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmist tagavaid tasulisi teenuseid, kui see ei takista tema õigusaktidest tulenevate ülesannete täitmist ja tasuliste teenuste osutamine on vajalik seoses: Euroopa Parlamendi ja nõukogu määrustes (EL) 2017/745 ja (EL) 2017/746 sätestatud ülesannete täitmisega, arvestades nimetatud määrustes sätestatud piiranguid pädevale asutusele ja teavitatud asutuse eest vastutavale asutusele; samade teenuste osutamise turuolukorraga ning teenuse osutamist ei piira Euroopa Parlamendi ja nõukogu määrus (EL) 2017/745 või (EL) 2017/746 või teavitatud asutusele teadusliku arvamuse andmisega lähtuvalt Euroopa Parlamendi ja nõukogu määrusest (EL) 2017/745 või (EL) 2017/746 ning nimetatud määrused ei piira teenuse osutamist. (2) Kehtetu - (3) Ravimiameti tasu ühe teenuse osutamise eest ei tohi olla suurem kui 20 000 eurot. (4) Käesoleva paragrahvi lõikes 1 nimetatud Ravimiameti tasuliste teenuste loetelu ja tasumäärad kehtestab määrusega.",
@@ -1557,7 +1768,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1580,7 +1793,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_15_1_Lg_1",
@@ -1593,7 +1810,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_15_1"
       },
-      "rdfs:label": "§ 15¹ lg 1"
+      "rdfs:label": "§ 15¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_15_1_Lg_2",
@@ -1619,7 +1848,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_15_1"
       },
-      "rdfs:label": "§ 15¹ lg 3"
+      "rdfs:label": "§ 15¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_15_1_Lg_4",
@@ -1638,13 +1874,13 @@
       "@id": "estleg:MEDITS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Nõuded meditsiiniseadme turule laskmisele ja kasutuselevõtule",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Kehtetu - (1¹) Kehtetu - (2) Kehtetu - (3) Tootja, toetudes riskianalüüsile, teeb kindlaks seadme ohutuks ja sihtotstarbekohaseks kasutamiseks vajaliku info ning Eestis turule lastava, turul kättesaadavaks tehtava, levitatava ja kasutusele võetava meditsiiniseadmega kaasnev teave esitatakse: eesti keeles ja sobivas laadis, kui meditsiiniseade on mõeldud kasutamiseks tavakasutajale; eesti või inglise keeles ja sobivas laadis, kui meditsiiniseade on mõeldud kasutamiseks ainult",
       "estleg:legalText": "(1) Kehtetu - (1¹) Kehtetu - (2) Kehtetu - (3) Tootja, toetudes riskianalüüsile, teeb kindlaks seadme ohutuks ja sihtotstarbekohaseks kasutamiseks vajaliku info ning Eestis turule lastava, turul kättesaadavaks tehtava, levitatava ja kasutusele võetava meditsiiniseadmega kaasnev teave esitatakse: eesti keeles ja sobivas laadis, kui meditsiiniseade on mõeldud kasutamiseks tavakasutajale; eesti või inglise keeles ja sobivas laadis, kui meditsiiniseade on mõeldud kasutamiseks ainult professionaalsele kasutajale; konkreetsele kasutajale arusaadavas keeles ja sobivas laadis, kui tegemist on tellimusmeditsiiniseadmega. (4) Erinevalt käesoleva paragrahvi lõikes 3 sätestatust võib meditsiiniseadmega kaasnev ülejäänud teave olla esitatud mõnes muus potentsiaalsele kasutajale arusaadavas Euroopa Liidu liikmesriigi või Euroopa Majanduspiirkonna liikmesriigi keeles. (5) Eestis levitatava meditsiiniseadme vastavusdeklaratsioon peab olema koostatud eesti või inglise keeles või tõlgitud eesti või inglise keelde. (6) Eestis registreeritud teavitatud asutus väljastab vastavussertifikaadid eesti või inglise keeles.",
@@ -1678,8 +1914,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1711,7 +1951,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_16_Lg_1",
@@ -1763,7 +2007,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 3"
+      "rdfs:label": "§ 16 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_16_Lg_4",
@@ -1776,7 +2029,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 4"
+      "rdfs:label": "§ 16 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_16_Lg_5",
@@ -1789,7 +2054,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 5"
+      "rdfs:label": "§ 16 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_16_Lg_6",
@@ -1802,19 +2074,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 6"
+      "rdfs:label": "§ 16 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_16_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16¹.",
       "rdfs:label": "§ 16¹. Piirangud meditsiiniseadme turule laskmisele",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Tavakasutajale mõeldud mitteelektrilisi või mitteelektroonilisi mõõtefunktsiooniga elavhõbedat sisaldavaid meditsiiniseadmeid ei tohi turule lasta.",
       "estleg:legalText": "Tavakasutajale mõeldud mitteelektrilisi või mitteelektroonilisi mõõtefunktsiooniga elavhõbedat sisaldavaid meditsiiniseadmeid ei tohi turule lasta.",
@@ -1826,7 +2107,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_16_1_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_16_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1836,10 +2117,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:MEDITS_Par_16_1_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_16_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1847,19 +2132,26 @@
       "estleg:legalText": "Tavakasutajale mõeldud mitteelektrilisi või mitteelektroonilisi mõõtefunktsiooniga elavhõbedat sisaldavaid meditsiiniseadmeid ei tohi turule lasta.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_16_1"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. [Kehtetu -]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1900,13 +2192,13 @@
       "@id": "estleg:MEDITS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Nõuetele mittevastava",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1932,13 +2224,13 @@
       "@id": "estleg:MEDITS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. [Kehtetu -]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -1982,13 +2274,13 @@
       "@id": "estleg:MEDITS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Meditsiiniseadmele kliinilise hinnangu andmine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2014,13 +2306,13 @@
       "@id": "estleg:MEDITS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Meditsiiniseadme kliiniline uuring",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2032,7 +2324,7 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1061942_Map_2026"
+          "@id": "estleg:Reg_1061942_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -2064,13 +2356,13 @@
       "@id": "estleg:MEDITS_Par_21_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21¹.",
       "rdfs:label": "§ 21¹. Meditsiiniseadme kliinilise uuringu ja",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Kui uuring kavandatakse teha ainult Eestis või ainult Eestis ja muus riigis kui Euroopa Liidu liikmesriik või Euroopa Majanduspiirkonna liikmesriik ning sponsor ei ole registreeritud mõnes Euroopa Liidu liikmesriigis, võib Ravimiamet anda sponsori taotluse korral sponsorile loa määrata enda asemel uuringuga seotud kontaktisik, lähtudes vastavalt Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 62 lõikes 2 või määruse (EL) 2017/746 artikli 58 lõikes 4 sätestatust.",
       "estleg:legalText": "(1) Kui uuring kavandatakse teha ainult Eestis või ainult Eestis ja muus riigis kui Euroopa Liidu liikmesriik või Euroopa Majanduspiirkonna liikmesriik ning sponsor ei ole registreeritud mõnes Euroopa Liidu liikmesriigis, võib Ravimiamet anda sponsori taotluse korral sponsorile loa määrata enda asemel uuringuga seotud kontaktisik, lähtudes vastavalt Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 62 lõikes 2 või määruse (EL) 2017/746 artikli 58 lõikes 4 sätestatust. (2) Ravimiamet annab käesoleva paragrahvi lõikes 1 nimetatud loa, kui loa andmisega ei kaasne olulisi riske uuringus osalejate ohutusele ega õigustele ning täidetud on Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 ja käesolevas seaduses sätestatud nõuded. (3) Sponsor, kes käesoleva paragrahvi lõike 1 kohaselt soovib enda asemel määrata kontaktisiku, võib esitada Ravimiametile uuringu tegemiseks taotluse dokumendid (edaspidi uuringu taotlus) pärast seda, kui sponsor on saanud loa kasutada kontaktisikut. (4) Sponsor teavitab Ravimiametit vähemalt kümme päeva enne uuringu tegemise alustamist, kui ta kavandab teha: Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artiklis 74 nimetatud uuringut, millega kaasneb osalejatele peale seadme tavapäraste kasutustingimuste kohaselt tehtavatele protseduuride selliseid protseduure, mis ei ole invasiivsed ega koormavad; Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 artikli 58 lõikes 2 nimetatud toimivusuuringut, milles uuritakse sobivusdiagnostikaseadet ja milles kasutatakse ainult proovide jääke. (5) Sponsor tagab uuringus osalejale uuringus osalemisest tekkinud mis tahes tervisekahju hüvitamiseks kindlustuskaitse, mis katab sponsori ja uurija vastutuse ning vastab riski olemusele ja ulatusele. Kindlustuskaitse tõendamiseks esitab sponsor koos uuringu taotlusega kindlustuspoliisi või selle koopia. (6) Kui uuringu tegemiseks tuleb esitada Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 XV lisas või määruse (EL) 2017/746 XIII lisas nimetatud dokumendid, võib need koostada eesti või inglise keeles, välja arvatud teadva nõusoleku saamiseks kasutatavad dokumendid, mis tuleb koostada uuringus osaleja emakeeles. (7) Sponsor, tema seaduslik esindaja või tema kontaktisik peab uuritava meditsiiniseadme ja uuringuga seotud teavet ja dokumente hoidma pädevale asutusele kättesaadavana Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 XV lisa III peatüki punktis 3 või määruse (EL) 2017/746 XIV lisa II peatüki punktis 3 sätestatud säilitustähtaja jooksul ja korras.",
@@ -2104,7 +2396,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2136,7 +2430,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_1_Lg_1",
@@ -2149,7 +2447,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_1"
       },
-      "rdfs:label": "§ 21¹ lg 1"
+      "rdfs:label": "§ 21¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_1_Lg_2",
@@ -2175,7 +2480,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_1"
       },
-      "rdfs:label": "§ 21¹ lg 3"
+      "rdfs:label": "§ 21¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_1_Lg_4",
@@ -2214,7 +2526,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_1"
       },
-      "rdfs:label": "§ 21¹ lg 6"
+      "rdfs:label": "§ 21¹ lg 6",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_1_Lg_7",
@@ -2227,19 +2546,32 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_1"
       },
-      "rdfs:label": "§ 21¹ lg 7"
+      "rdfs:label": "§ 21¹ lg 7",
+      "estleg:itemNumber": "3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21².",
       "rdfs:label": "§ 21². Nõusolek uuringus osalemiseks",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Uuringus osalemiseks on nõutav uuringus osaleja teadev nõusolek, mis vastab Euroopa Parlamendi ja nõukogu määrusele (EL) 2017/745 või (EL) 2017/746. 7–17-aastase alaealise uuringus osalemiseks on vaja ka alaealise enda nõusolekut.",
       "estleg:legalText": "Uuringus osalemiseks on nõutav uuringus osaleja teadev nõusolek, mis vastab Euroopa Parlamendi ja nõukogu määrusele (EL) 2017/745 või (EL) 2017/746. 7–17-aastase alaealise uuringus osalemiseks on vaja ka alaealise enda nõusolekut.",
@@ -2251,7 +2583,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_21_2_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_21_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2267,10 +2599,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:MEDITS_Par_21_2_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_21_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2278,19 +2614,26 @@
       "estleg:legalText": "Uuringus osalemiseks on nõutav uuringus osaleja teadev nõusolek, mis vastab Euroopa Parlamendi ja nõukogu määrusele (EL) 2017/745 või (EL) 2017/746. 7–17-aastase alaealise uuringus osalemiseks on vaja ka alaealise enda nõusolekut.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_2"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_21_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21³.",
       "rdfs:label": "§ 21³. Kliiniliste uuringute eetikakomitee",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Kliiniliste uuringute eetikakomitee (edaspidi eetikakomitee) on meditsiiniseadme kliinilisi uuringuid- ja toimivusuuringuid (edaspidi uuring) hindav sõltumatu kogu, mis koosneb teadlastest ja eri elualade esindajatest ning mille eesmärk on hinnata uuringus osalejate ohutuse, heaolu ja õiguste kaitse tagamist. (2) Eetikakomitee annab arvamuse uuringu tegemise ja uuringus olulise muudatuse tegemise kohta Ravimiametile. (3) Eetikakomitee lähtub arvamuse andmisel Euroopa Parlamendi ja nõukogu",
       "estleg:legalText": "(1) Kliiniliste uuringute eetikakomitee (edaspidi eetikakomitee) on meditsiiniseadme kliinilisi uuringuid- ja toimivusuuringuid (edaspidi uuring) hindav sõltumatu kogu, mis koosneb teadlastest ja eri elualade esindajatest ning mille eesmärk on hinnata uuringus osalejate ohutuse, heaolu ja õiguste kaitse tagamist. (2) Eetikakomitee annab arvamuse uuringu tegemise ja uuringus olulise muudatuse tegemise kohta Ravimiametile. (3) Eetikakomitee lähtub arvamuse andmisel Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 sätestatud nõuetest, kehtestatud eetikanormidest ja rahvusvahelistest konventsioonidest ning Euroopa Parlamendi ja nõukogu määruses (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) (ELT L 119, 04.05.2016, lk 1–88) ja eriseadustes sätestatud põhimõtetest. (4) Eetikakomitee hindab uuringu eetiliste riskide suurust ja uuringu tegija tausta, leides tasakaalu uuringus osalejate põhiõiguste kaitse ja uuringu otstarbekuse vahel. (5) Eetikakomitee töökorra, liikmete arvu ja koosseisu määramise korra ning liikmete volituste tähtaja kehtestab määrusega. (5¹) Eetikakomitee tegutseb Ravimiameti juures. (5²) Ravimiamet määrab eetikakomitee liikmete koosseisu, arvestades liikme kvalifikatsiooni ja kogemust meditsiiniseadmete kliiniliste uuringute hindamisel. (6) Eetikakomitee koosseis ja eetikakomitee töösse kaasatud eksperdid avalikustatakse Ravimiameti veebilehel. (7) Ravimiamet, eetikakomitee liikmed ja eetikakomitee töösse kaasatud isikud tagavad meditsiiniseadme kliinilise uuringu- ja toimivusuuringu kohta arvamuse andmisega seoses saadud teabe konfidentsiaalsuse ning välistavad selle kättesaadavuse kolmandatele isikutele.",
@@ -2330,7 +2673,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2361,7 +2706,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_3_Lg_1",
@@ -2400,7 +2749,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_3"
       },
-      "rdfs:label": "§ 21³ lg 3"
+      "rdfs:label": "§ 21³ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_21_3_Lg_4",
@@ -2478,19 +2836,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_21_3"
       },
-      "rdfs:label": "§ 21³ lg 7"
+      "rdfs:label": "§ 21³ lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Uuringu tegemise õiguse ja uuringus olulise muudatuse tegemise õiguse taotlemine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Sponsor esitab uuringu tegemiseks ja selles olulise muudatuse tegemiseks taotluse Ravimiametile, arvestades käesolevas seaduses ning Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 sätestatud nõudeid. (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (5) Sponsor on kohustatud tasuma: uuringu taotluse läbivaatamise eest riigilõivu riigilõivuseaduse kohaselt; uuringu erialase hindamise tasu, mis sisaldab eetikakomitee hindamist, Ravimiametile käesoleva paragrahvi lõike 10",
       "estleg:legalText": "(1) Sponsor esitab uuringu tegemiseks ja selles olulise muudatuse tegemiseks taotluse Ravimiametile, arvestades käesolevas seaduses ning Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 sätestatud nõudeid. (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (5) Sponsor on kohustatud tasuma: uuringu taotluse läbivaatamise eest riigilõivu riigilõivuseaduse kohaselt; uuringu erialase hindamise tasu, mis sisaldab eetikakomitee hindamist, Ravimiametile käesoleva paragrahvi lõike 10 alusel kehtestatud määruse kohaselt; uuringu olulise muudatuse erialase hindamise tasu, mis sisaldab eetikakomitee hindamist, Ravimiametile käesoleva paragrahvi lõike 10 alusel kehtestatud määruse kohaselt. (6) Käesoleva paragrahvi lõike 5 punktis 2 nimetatud uuringu erialase hindamise tasu ülempiir on 3000 eurot ja punktis 3 nimetatud uuringu olulise muudatuse erialase hindamise tasu ülempiir on 1000 eurot. (7) Ravimiamet teavitab uuringu taotluse ja uuringu muudatuse teavituse kohta tehtud otsusest Euroopa Parlamendi ja nõukogu määruses (EL) 2017/745 või (EL) 2017/746 sätestatud korras. (8) Ravimiametil on õigus kaasata uuringu erialasesse hindamisse ja uuringu tegemise nõuetekohasuse hindamisse eksperte. Uuringu hindamisse eksperdi kaasamise korral tuleb sponsoril tasuda käesoleva paragrahvi lõike 5 punktis 2 või punktis 3 nimetatud tasu ja eksperdiarvamuse tasu vastavalt käesoleva paragrahvi lõike 10 alusel kehtestatud määrusele. Eksperdiarvamuse tasu ühe hindamise kohta ei tohi ületada 2000 eurot, kui sponsoriga ei ole kirjalikult kokku lepitud teisiti. (9) Uuringut hindavad ja selle nõuetekohasust kinnitavad isikud esitavad Ravimiametile iga aasta 31. maiks huvide deklaratsiooni, milles kinnitavad, et neil ei ole huvide konflikti ega finants- või muid huvisid, mis võiksid mõjutada nende erapooletust. (10) Eksperdiarvamuse tasu, uuringu taotluse erialase hindamise tasu ja uuringu olulise muudatuse erialase hindamise tasu suuruse ja tasumise korra kehtestab määrusega.",
@@ -2533,8 +2900,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2546,7 +2917,7 @@
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1055768_Map_2026"
+          "@id": "estleg:Reg_1055768_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -2591,7 +2962,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Sponsor",
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2599,7 +2969,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_22_Lg_1",
@@ -2664,7 +3038,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 5"
+      "rdfs:label": "§ 22 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_22_Lg_6",
@@ -2677,7 +3058,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 6"
+      "rdfs:label": "§ 22 lg 6",
+      "estleg:itemNumber": [
+        "2",
+        "3"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_22_Lg_7",
@@ -2703,7 +3097,18 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 8"
+      "rdfs:label": "§ 22 lg 8",
+      "estleg:itemNumber": [
+        "2",
+        "3"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_22_Lg_9",
@@ -2716,7 +3121,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 9"
+      "rdfs:label": "§ 22 lg 9",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_22_Lg_10",
@@ -2735,13 +3149,13 @@
       "@id": "estleg:MEDITS_Par_22_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22¹.",
       "rdfs:label": "§ 22¹. Nõuded muude meditsiiniseadme kliiniliste uuringute tegemisele ja selliste uuringute tegemise õiguse taotlemisele",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artiklis 82 nimetatud uuringute puhul kohaldatakse artikli 62 lõigetes 2–7 ning artiklites 63–66, 68–72, 75–77 ja 80 sätestatud nõudeid, välja arvatud nendes aspektides, mis puudutavad dokumentide esitamist ja teabevahetust artiklis 73 nimetatud elektroonilise süsteemi kaudu ja nõuet koostada kliinilise hindamise kava.",
       "estleg:legalText": "Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artiklis 82 nimetatud uuringute puhul kohaldatakse artikli 62 lõigetes 2–7 ning artiklites 63–66, 68–72, 75–77 ja 80 sätestatud nõudeid, välja arvatud nendes aspektides, mis puudutavad dokumentide esitamist ja teabevahetust artiklis 73 nimetatud elektroonilise süsteemi kaudu ja nõuet koostada kliinilise hindamise kava.",
@@ -2753,7 +3167,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_22_1_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_22_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2763,7 +3177,7 @@
       ]
     },
     {
-      "@id": "estleg:MEDITS_Par_22_1_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_22_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2777,13 +3191,13 @@
       "@id": "estleg:MEDITS_Par_22_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22².",
       "rdfs:label": "§ 22². Nõuded muude",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Kui tegemist on Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 artiklis 57 nimetatud uuringuga, aga see ei ole artikli 58 lõikes 1 ega lõikes 2 nimetatud uuring ja selline uuring häirib inimese või inimese embrüo või loote terviklikkust, kohaldatakse artikli 58 lõiget 4, lõike 5 punkte b–m ja o ning lõikeid 6–8, artikleid 59–62 ja 64 ning artikli 68 lõikeid 1, 4 ja 6, välja arvatud nendes aspektides, mis puudutavad dokumentide esitamist ja teabevahetust artiklis 69 nimetatud",
       "estleg:legalText": "(1) Kui tegemist on Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 artiklis 57 nimetatud uuringuga, aga see ei ole artikli 58 lõikes 1 ega lõikes 2 nimetatud uuring ja selline uuring häirib inimese või inimese embrüo või loote terviklikkust, kohaldatakse artikli 58 lõiget 4, lõike 5 punkte b–m ja o ning lõikeid 6–8, artikleid 59–62 ja 64 ning artikli 68 lõikeid 1, 4 ja 6, välja arvatud nendes aspektides, mis puudutavad dokumentide esitamist ja teabevahetust artiklis 69 nimetatud elektroonilise süsteemi kaudu. (2) Käesoleva paragrahvi lõikes 1 sätestatud uuringu tegemisest teavitatakse Ravimiametit vähemalt kümme päeva enne uuringu tegemise alustamist.",
@@ -2840,13 +3254,13 @@
       "@id": "estleg:MEDITS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. [Kehtetu -]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2884,13 +3298,13 @@
       "@id": "estleg:MEDITS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Meditsiiniseadmete süsteem või protseduuripakett",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -2922,13 +3336,13 @@
       "@id": "estleg:MEDITS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Meditsiiniseadme dokumentide säilitamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Tootja või tema volitatud esindaja peab säilitama Ravimiametile kättesaadavana meditsiiniseadmega seotud dokumente järgmiselt: Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 IX lisa III peatüki punktis 8, X lisa punktis 7, XI lisa A osa punktides 9 ja 10.5, XI lisa B osa punktides 17 ja 18.4 ning XIII lisa punktis 4 sätestatu kohaselt – vähemalt kümme või 15 aastat; Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 IX lisa III peatüki punktis 7, X lisa punktis 6 ja XI lisa punktis 6",
       "estleg:legalText": "Tootja või tema volitatud esindaja peab säilitama Ravimiametile kättesaadavana meditsiiniseadmega seotud dokumente järgmiselt: Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 IX lisa III peatüki punktis 8, X lisa punktis 7, XI lisa A osa punktides 9 ja 10.5, XI lisa B osa punktides 17 ja 18.4 ning XIII lisa punktis 4 sätestatu kohaselt – vähemalt kümme või 15 aastat; Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 IX lisa III peatüki punktis 7, X lisa punktis 6 ja XI lisa punktis 6 sätestatu kohaselt – vähemalt kümme aastat.",
@@ -2940,11 +3354,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_25_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_25_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2982,10 +3398,14 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MEDITS_Par_25_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_25_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2993,19 +3413,37 @@
       "estleg:legalText": "Tootja või tema volitatud esindaja peab säilitama Ravimiametile kättesaadavana meditsiiniseadmega seotud dokumente järgmiselt: Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 IX lisa III peatüki punktis 8, X lisa punktis 7, XI lisa A osa punktides 9 ja 10.5, XI lisa B osa punktides 17 ja 18.4 ning XIII lisa punktis 4 sätestatu kohaselt – vähemalt kümme või 15 aastat; Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 IX lisa III peatüki punktis 7, X lisa punktis 6 ja XI lisa punktis 6 sätestatu kohaselt – vähemalt kümme aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_25"
+      },
+      "estleg:itemNumber": [
+        "8",
+        "7",
+        "4",
+        "6"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Asutusesiseselt valmistatud meditsiiniseadme valmistamisest, tellimusmeditsiiniseadme turul kättesaadavaks tegemisest, meditsiiniseadmete süsteemi, protseduuripaketi ja meditsiiniseadme esmakordsest Eestis levitamisest teavitamine ning andmete edastamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Tervishoiuteenuse osutaja või teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 3 lõigete 2–4 tähenduses teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool, kes Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 5 lõike 5 kohaselt või määruse (EL) 2017/746 artikli 5 lõike 5 kohaselt valmistab asutusesiseselt meditsiiniseadmeid (edaspidi asutusesisene valmistaja), avalikustab nende meditsiiniseadmete loetelu oma veebilehel ja esitab loetelu",
       "estleg:legalText": "(1) Tervishoiuteenuse osutaja või teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 3 lõigete 2–4 tähenduses teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool, kes Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 5 lõike 5 kohaselt või määruse (EL) 2017/746 artikli 5 lõike 5 kohaselt valmistab asutusesiseselt meditsiiniseadmeid (edaspidi asutusesisene valmistaja), avalikustab nende meditsiiniseadmete loetelu oma veebilehel ja esitab loetelu Ravimiametile kümne tööpäeva jooksul veebilehel avaldamisest arvates. (2) Kehtetu - (3) Iga ettevõtja, kes teeb turul kättesaadavaks tellimusmeditsiiniseadme, teavitab vähemalt kümme päeva enne sellise meditsiiniseadme turul kättesaadavaks tegemist Ravimiametit kavatsusest selline meditsiiniseade turul kättesaadavaks teha. (4) Iga ettevõtja, kes levitab Eesti turul Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 22 kohast meditsiiniseadmete süsteemi või protseduuripaketti või Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 või nõukogu direktiivi 90/385/EMÜ aktiivseid siirdatavaid meditsiiniseadmeid käsitlevate liikmesriikide õigusnormide ühtlustamise kohta (EÜT L 189, 20.07.1990, lk 17–36) või nõukogu direktiivi 93/42/EMÜ meditsiiniseadmete kohta (EÜT L 169, 12.07.1993, lk 1–43) kohaselt liigitatud IIa, IIb või III riskiklassi meditsiiniseadet või Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 VIII lisa kohaselt liigitatud B-, C- või D-klassi in vitro diagnostikameditsiiniseadet, teavitab sellest Ravimiametit kümne päeva jooksul asjaomase meditsiiniseadme esmakordsest levitamisest arvates. (5) Tellimusmeditsiiniseadme turul kättesaadavaks tegemisest, tellimusmeditsiiniseadmel tehtud olulisest muudatusest ja meditsiiniseadme esmakordsest Eestis levitamisest teavitamise tingimused ja korra kehtestab määrusega.",
@@ -3033,12 +3471,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1055678_Map_2026"
+          "@id": "estleg:Reg_1055678_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -3087,7 +3529,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_26_Lg_1",
@@ -3100,7 +3546,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 1"
+      "rdfs:label": "§ 26 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_26_Lg_2",
@@ -3126,7 +3581,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 3"
+      "rdfs:label": "§ 26 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_26_Lg_4",
@@ -3139,7 +3603,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_26"
       },
-      "rdfs:label": "§ 26 lg 4"
+      "rdfs:label": "§ 26 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_26_Lg_5",
@@ -3158,13 +3631,13 @@
       "@id": "estleg:MEDITS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Ohujuhtumi registreerimine ja valdkonna ohutusteatis",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Ravimiamet registreerib talle teatatud ohujuhtumi andmed ja teavitab sellest andmete esitajat kümne tööpäeva jooksul andmete esitamisest arvates. (2) Eesti turul kättesaadavaks tehtud meditsiiniseadme kohta koostatakse valdkonna ohutusteatis eesti keeles. Kiireloomulise olukorra kohta esitatav esmane ohutusteatis võib olla ingliskeelne.",
       "estleg:legalText": "(1) Ravimiamet registreerib talle teatatud ohujuhtumi andmed ja teavitab sellest andmete esitajat kümne tööpäeva jooksul andmete esitamisest arvates. (2) Eesti turul kättesaadavaks tehtud meditsiiniseadme kohta koostatakse valdkonna ohutusteatis eesti keeles. Kiireloomulise olukorra kohta esitatav esmane ohutusteatis võib olla ingliskeelne.",
@@ -3216,6 +3689,10 @@
       "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -3242,19 +3719,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_27"
       },
-      "rdfs:label": "§ 27 lg 2"
+      "rdfs:label": "§ 27 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Euroopa Komisjoni ja Euroopa Majanduspiirkonna liikmesriikide teavitamine ohujuhtumist",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3280,13 +3764,13 @@
       "@id": "estleg:MEDITS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Meditsiiniseadmete ja abivahendite andmekogu",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadmete ja abivahendite andmekogu on riigi infosüsteemi kuuluv andmekogu, mida peetakse Eestis turul kättesaadavaks tehtud tellimusmeditsiiniseadmete ja levitatavate meditsiiniseadmete, meditsiiniseadmete süsteemide ja protseduuripakettide ning nendega seotud ohujuhtumite ja järelevalvemenetluste andmete, uuringute andmete ning ravikindlustuse seaduse alusel Tervisekassa poolt tasu maksmise kohustuse ülevõtmise (edaspidi hüvitamine) andmete ja sotsiaalhoolekande seaduse",
       "estleg:legalText": "(1) Meditsiiniseadmete ja abivahendite andmekogu on riigi infosüsteemi kuuluv andmekogu, mida peetakse Eestis turul kättesaadavaks tehtud tellimusmeditsiiniseadmete ja levitatavate meditsiiniseadmete, meditsiiniseadmete süsteemide ja protseduuripakettide ning nendega seotud ohujuhtumite ja järelevalvemenetluste andmete, uuringute andmete ning ravikindlustuse seaduse alusel Tervisekassa poolt tasu maksmise kohustuse ülevõtmise (edaspidi hüvitamine) andmete ja sotsiaalhoolekande seaduse tähenduses abivahendite ostmise ja üürimise andmete registreerimiseks, kogumiseks, töötlemiseks ja analüüsimiseks, et kaitsta inimese tervist meditsiiniseadmest tuleneda võivate ohtude eest ning tagada hüvitatavate meditsiiniseadmete ja abivahendite kättesaadavus. (2) Meditsiiniseadmete ja abivahendite andmekogusse esitavad andmeid: meditsiiniseadme tootja või tootja volitatud esindaja; meditsiiniseadme importija; meditsiiniseadme levitaja; meditsiiniseadme professionaalne kasutaja; meditsiiniseadme tavakasutaja; abivahendi müüja ja üürileandja; Tervisekassa. (3) Meditsiiniseadmete ja abivahendite andmekogus töödeldakse järgmisi andmeid: tellimusmeditsiiniseadme, meditsiiniseadmete süsteemi ja protseduuripaketi turul kättesaadavaks tegemise ja meditsiiniseadme Eestis levitamisega seotud andmed ja dokumendid; meditsiiniseadme ohujuhtumi registreerimise ja menetlemisega seotud andmed ja dokumendid; ainult Eestis või ainult Eestis ja muus riigis kui Euroopa Liidu liikmesriik või Euroopa Majanduspiirkonna liikmesriik tehtavate kliiniliste uuringute ja toimivusuuringute tegemisega seotud andmed ja dokumendid; meditsiiniseadme järelevalvemenetlusega seotud andmed ja dokumendid; abivahendi jae- ja üürihinnad, teenuse osutamise koha kontaktid ja toodete kirjeldused; meditsiiniseadme hüvitamisega seotud andmed ja dokumendid. (4) Meditsiiniseadmete ja abivahendite andmekogu asutab ja selle põhimääruse kehtestab määrusega. (5) Meditsiiniseadmete ja abivahendite andmekogu vastutav töötleja on Ravimiamet.",
@@ -3314,20 +3798,24 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:MEDITS_Par_41_1"
         },
         {
-          "@id": "estleg:MEDITS_Par_41_1_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_41_1_Lg_1"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1032471_Map_2026"
+          "@id": "estleg:Reg_1032471_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -3370,7 +3858,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_29_Lg_1",
@@ -3396,7 +3888,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 2"
+      "rdfs:label": "§ 29 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_29_Lg_3",
@@ -3435,19 +3936,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_29"
       },
-      "rdfs:label": "§ 29 lg 5"
+      "rdfs:label": "§ 29 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Andmete kättesaadavus ja edastamine Euroopa meditsiiniseadmete andmepanka",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -3473,13 +3983,13 @@
       "@id": "estleg:MEDITS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Meditsiiniseadme professionaalse kasutamise nõuded",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadet võib tervishoiuteenuse osutamisel kasutada kooskõlas meditsiiniseadme sihtotstarbega ja tootja ettenähtud juhistega, arvestades tõenduspõhise meditsiini põhimõtteid, ning kui eeldatav kasu patsiendi tervisele on suurem võimalikust kahjust, arvestades igal üksikjuhul sama eesmärgiga alternatiivsete, vähem ohtlike tegevuste mõjusust, kasu ja riski. (2) Meditsiiniseadme valdaja tagab: meditsiiniseadme kasutus- ja hooldustingimused, mille tootja on kehtestanud; kasutusjuhiste",
       "estleg:legalText": "(1) Meditsiiniseadet võib tervishoiuteenuse osutamisel kasutada kooskõlas meditsiiniseadme sihtotstarbega ja tootja ettenähtud juhistega, arvestades tõenduspõhise meditsiini põhimõtteid, ning kui eeldatav kasu patsiendi tervisele on suurem võimalikust kahjust, arvestades igal üksikjuhul sama eesmärgiga alternatiivsete, vähem ohtlike tegevuste mõjusust, kasu ja riski. (2) Meditsiiniseadme valdaja tagab: meditsiiniseadme kasutus- ja hooldustingimused, mille tootja on kehtestanud; kasutusjuhiste olemasolu kasutuskohas; paigaldamis- ja hooldustöö ning vajaduse korral remonttöö teostamise pädeva isiku poolt.",
@@ -3498,8 +4008,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3522,7 +4036,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_31_Lg_1",
@@ -3535,7 +4053,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 1"
+      "rdfs:label": "§ 31 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_31_Lg_2",
@@ -3548,19 +4078,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 2"
+      "rdfs:label": "§ 31 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Meditsiiniseadme kasutamise eeldused",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadme professionaalne kasutaja teeb enne meditsiiniseadme professionaalse kasutamise alustamist kindlaks meditsiiniseadme tehnilise seisukorra ning korraldab professionaalse kasutaja väljaõppe, kui see on professionaalselt kasutatava meditsiiniseadme puhul nõutav. (2) Meditsiiniseadme professionaalne kasutaja koostab meditsiiniseadme professionaalse kasutamise alustamise kohta akti, kui meditsiiniseadme professionaalne kasutamine eeldab seadme töötamise õigsuse ja ohutuse",
       "estleg:legalText": "(1) Meditsiiniseadme professionaalne kasutaja teeb enne meditsiiniseadme professionaalse kasutamise alustamist kindlaks meditsiiniseadme tehnilise seisukorra ning korraldab professionaalse kasutaja väljaõppe, kui see on professionaalselt kasutatava meditsiiniseadme puhul nõutav. (2) Meditsiiniseadme professionaalne kasutaja koostab meditsiiniseadme professionaalse kasutamise alustamise kohta akti, kui meditsiiniseadme professionaalne kasutamine eeldab seadme töötamise õigsuse ja ohutuse kontrolli.",
@@ -3579,11 +4118,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1055768_Map_2026"
+          "@id": "estleg:Reg_1055768_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -3602,7 +4143,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_Lg_1",
@@ -3615,7 +4160,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 1"
+      "rdfs:label": "§ 32 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_Lg_2",
@@ -3628,19 +4182,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32"
       },
-      "rdfs:label": "§ 32 lg 2"
+      "rdfs:label": "§ 32 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32¹.",
       "rdfs:label": "§ 32¹. Meditsiiniseadme müük meditsiiniseadme kaardi alusel",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadme müügil meditsiiniseadme kaardi (edaspidi kaart) alusel tuleb ostjat teavitada meditsiiniseadme sihtotstarbekohasest ja ohutust kasutamisest, meditsiiniseadme kasutamisega kaasneda võivatest võimalikest jääkriskidest ning soovimatutest kõrvaltoimetest ja kõrvalnähtudest. Asjakohasel juhul tuleb ostja tähelepanu juhtida meditsiiniseadmega kaasnevatele piirangutele, vastunäidustustele, ettevaatusabinõudele ja hoiatustele.",
       "estleg:legalText": "(1) Meditsiiniseadme müügil meditsiiniseadme kaardi (edaspidi kaart) alusel tuleb ostjat teavitada meditsiiniseadme sihtotstarbekohasest ja ohutust kasutamisest, meditsiiniseadme kasutamisega kaasneda võivatest võimalikest jääkriskidest ning soovimatutest kõrvaltoimetest ja kõrvalnähtudest. Asjakohasel juhul tuleb ostja tähelepanu juhtida meditsiiniseadmega kaasnevatele piirangutele, vastunäidustustele, ettevaatusabinõudele ja hoiatustele. (2) Kaart on isikule arsti poolt sobiva meditsiiniseadme määramiseks väljakirjutatud dokument. (3) Meditsiiniseadme müügil kaardi alusel peab müüja veenduma seadme sobivuses ja vajaduse korral tagama selle kohandamise kasutajale. (4) Meditsiiniseadme müüja peab dokumenteerima seadmete kohta esitatud kaebused, märkides andmed kaebuse esitaja, seadme, kaebuse olemuse ja kaebusega seonduvate asjaolude kohta. Meditsiiniseadme müüja juures kaebuse lahendamise käik tuleb dokumenteerida.",
@@ -3665,7 +4228,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3682,7 +4247,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_1_Lg_1",
@@ -3695,7 +4264,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_1"
       },
-      "rdfs:label": "§ 32¹ lg 1"
+      "rdfs:label": "§ 32¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_1_Lg_2",
@@ -3708,7 +4284,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_1"
       },
-      "rdfs:label": "§ 32¹ lg 2"
+      "rdfs:label": "§ 32¹ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_1_Lg_3",
@@ -3721,7 +4306,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_1"
       },
-      "rdfs:label": "§ 32¹ lg 3"
+      "rdfs:label": "§ 32¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_1_Lg_4",
@@ -3734,19 +4331,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_1"
       },
-      "rdfs:label": "§ 32¹ lg 4"
+      "rdfs:label": "§ 32¹ lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32².",
       "rdfs:label": "§ 32². Vabamüügi sertifikaadi väljastamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Ravimiamet väljastab Eestis registreeritud tootjale või volitatud esindajale taotluse alusel meditsiiniseadme ekspordiks vabamüügi sertifikaadi, mis tõendab, et tootja või volitatud esindaja registreeritud tegevuskoht on Eesti Vabariigis ning CE-märgist kandvat asjaomast meditsiiniseadet võib Euroopa Liidus turustada. (2) Vabamüügi sertifikaat koostatakse inglise keeles ja ühes eksemplaris ning väljastatakse paberil. (3) Vabamüügi sertifikaati või selle duplikaati taotlev tootja või tema",
       "estleg:legalText": "(1) Ravimiamet väljastab Eestis registreeritud tootjale või volitatud esindajale taotluse alusel meditsiiniseadme ekspordiks vabamüügi sertifikaadi, mis tõendab, et tootja või volitatud esindaja registreeritud tegevuskoht on Eesti Vabariigis ning CE-märgist kandvat asjaomast meditsiiniseadet võib Euroopa Liidus turustada. (2) Vabamüügi sertifikaat koostatakse inglise keeles ja ühes eksemplaris ning väljastatakse paberil. (3) Vabamüügi sertifikaati või selle duplikaati taotlev tootja või tema volitatud esindaja on kohustatud enne taotluse esitamist tasuma vabamüügi sertifikaadi või selle duplikaadi väljastamise eest riigilõivu riigilõivuseaduse kohaselt. (4) Vabamüügi sertifikaat kehtib kaks aastat alates väljastamisest, välja arvatud juhul, kui meditsiiniseadme vastavussertifikaadi kehtivusaeg on lühem.",
@@ -3771,7 +4375,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3797,7 +4403,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_2_Lg_1",
@@ -3810,7 +4420,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_2"
       },
-      "rdfs:label": "§ 32² lg 1"
+      "rdfs:label": "§ 32² lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_2_Lg_2",
@@ -3836,7 +4458,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_2"
       },
-      "rdfs:label": "§ 32² lg 3"
+      "rdfs:label": "§ 32² lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_2_Lg_4",
@@ -3855,13 +4489,13 @@
       "@id": "estleg:MEDITS_Par_32_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32³.",
       "rdfs:label": "§ 32³. Nõuded asutusesiseselt valmistatavale meditsiiniseadmele",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Asutusesisene valmistaja võib asutusesiseselt valmistada meditsiiniseadmeid ainult juhul, kui on täidetud Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 5 lõikes 5 või (EL) 2017/746 artikli 5 lõikes 5 ning käesolevas seaduses sätestatud nõuded. (2) Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 artikli 5 lõike 5 punkti g kohaldatakse ka B- ja C-klassi in vitro diagnostikameditsiiniseadmetele. (3) Asutusesisene valmistaja ei tohi asutusesiseselt valmistada",
       "estleg:legalText": "(1) Asutusesisene valmistaja võib asutusesiseselt valmistada meditsiiniseadmeid ainult juhul, kui on täidetud Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 5 lõikes 5 või (EL) 2017/746 artikli 5 lõikes 5 ning käesolevas seaduses sätestatud nõuded. (2) Euroopa Parlamendi ja nõukogu määruse (EL) 2017/746 artikli 5 lõike 5 punkti g kohaldatakse ka B- ja C-klassi in vitro diagnostikameditsiiniseadmetele. (3) Asutusesisene valmistaja ei tohi asutusesiseselt valmistada meditsiiniseadmeid, mis sisaldavad nanomaterjali, mitteelujõulisi või mitteelujõuliseks muudetud loomset päritolu kudesid või rakke või nende preparaate või mis sisaldavad ainet, mida eraldi kasutamisel võib käsitada ravimina ravimiseaduse tähenduses.",
@@ -3883,7 +4517,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3911,7 +4547,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_3_Lg_1",
@@ -3924,7 +4564,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_3"
       },
-      "rdfs:label": "§ 32³ lg 1"
+      "rdfs:label": "§ 32³ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_3_Lg_2",
@@ -3950,19 +4602,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_3"
       },
-      "rdfs:label": "§ 32³ lg 3"
+      "rdfs:label": "§ 32³ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32⁴.",
       "rdfs:label": "§ 32⁴. Nõuded siiratava meditsiiniseadmega seotud teabele",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadme tootja koostab Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 18 lõikes 3 nimetamata siiratava meditsiiniseadmega kaasneva implantaadi kaardi eesti keeles ning esitab artikli 18 lõike 1 punktides b–d nõutud teabe ja tervishoiutöötajale implantaadi kaardi täitmiseks vajaliku teabe eesti keeles või tõlgituna eesti keelde. (2) Tervishoiuteenuse osutaja peab pärast siiratava meditsiiniseadme patsiendile siirdamist täitma Euroopa Parlamendi ja nõukogu määruse (EL)",
       "estleg:legalText": "(1) Meditsiiniseadme tootja koostab Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 18 lõikes 3 nimetamata siiratava meditsiiniseadmega kaasneva implantaadi kaardi eesti keeles ning esitab artikli 18 lõike 1 punktides b–d nõutud teabe ja tervishoiutöötajale implantaadi kaardi täitmiseks vajaliku teabe eesti keeles või tõlgituna eesti keelde. (2) Tervishoiuteenuse osutaja peab pärast siiratava meditsiiniseadme patsiendile siirdamist täitma Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 18 lõikes 2 nimetatud implantaadi kaardi ning tagama artikli 18 lõikes 1 nimetatud teabe kättesaadavuse patsiendile.",
@@ -3981,7 +4645,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3995,7 +4661,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_4_Lg_1",
@@ -4008,7 +4678,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_4"
       },
-      "rdfs:label": "§ 32⁴ lg 1"
+      "rdfs:label": "§ 32⁴ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_4_Lg_2",
@@ -4021,19 +4700,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_4"
       },
-      "rdfs:label": "§ 32⁴ lg 2"
+      "rdfs:label": "§ 32⁴ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32⁵.",
       "rdfs:label": "§ 32⁵. Nõuded vastavushindamisasutuse määramistaotlusele ning määramis- ja teavitamismenetluse ja teavitatud asutuse teabevahetuse keelenõuded",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Taotleja esitab Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artiklis 38 või (EL) 2017/746 artiklis 34 nimetatud vastavushindamisasutuse määramistaotluse (edaspidi määramistaotlus) ning Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 VII lisas või (EL) 2017/746 VII lisas esitatud nõuete täitmist tõendavad dokumendid Ravimiametile. (2) Määramistaotlus ning vastavushindamisasutuse määramis- ja teavitamismenetlusega (edaspidi määramis- ja teavitamismenetlus) seotud dokumendid",
       "estleg:legalText": "(1) Taotleja esitab Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artiklis 38 või (EL) 2017/746 artiklis 34 nimetatud vastavushindamisasutuse määramistaotluse (edaspidi määramistaotlus) ning Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 VII lisas või (EL) 2017/746 VII lisas esitatud nõuete täitmist tõendavad dokumendid Ravimiametile. (2) Määramistaotlus ning vastavushindamisasutuse määramis- ja teavitamismenetlusega (edaspidi määramis- ja teavitamismenetlus) seotud dokumendid koostatakse eesti või inglise keeles. Määramistaotluse läbivaatamisega, määramis- ja teavitamismenetlusega ning teavitatud asutuse perioodilise hindamise ja uuestihindamisega seotud teabevahetust peetakse eesti või inglise keeles.",
@@ -4052,8 +4738,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4076,7 +4766,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_5_Lg_1",
@@ -4089,7 +4783,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_5"
       },
-      "rdfs:label": "§ 32⁵ lg 1"
+      "rdfs:label": "§ 32⁵ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_5_Lg_2",
@@ -4102,19 +4805,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_5"
       },
-      "rdfs:label": "§ 32⁵ lg 2"
+      "rdfs:label": "§ 32⁵ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32⁶.",
       "rdfs:label": "§ 32⁶. Määramistaotluse läbivaatamise ning vastavushindamisasutuse määramisest teavitamise ja tegevusloa väljastamise riigilõivud",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Taotleja, kes esitab Ravimiametile määramistaotluse, peab tasuma määramistaotluse läbivaatamise eest riigilõivu riigilõivuseaduse kohaselt. (2) Taotleja, kelle suhtes on lõpule viidud Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 39 või (EL) 2017/746 artikli 35 kohane hindamine ning kes vastab Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 VII lisale või (EL) 2017/746 VII lisale, peab enne vastavushindamisasutuseks määramisest teavitamist ja tegevusloa saamist tasuma",
       "estleg:legalText": "(1) Taotleja, kes esitab Ravimiametile määramistaotluse, peab tasuma määramistaotluse läbivaatamise eest riigilõivu riigilõivuseaduse kohaselt. (2) Taotleja, kelle suhtes on lõpule viidud Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 39 või (EL) 2017/746 artikli 35 kohane hindamine ning kes vastab Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 VII lisale või (EL) 2017/746 VII lisale, peab enne vastavushindamisasutuseks määramisest teavitamist ja tegevusloa saamist tasuma riigilõivu riigilõivuseaduse kohaselt.",
@@ -4133,7 +4845,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4156,7 +4870,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_6_Lg_1",
@@ -4169,7 +4887,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_6"
       },
-      "rdfs:label": "§ 32⁶ lg 1"
+      "rdfs:label": "§ 32⁶ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_6_Lg_2",
@@ -4182,19 +4912,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_6"
       },
-      "rdfs:label": "§ 32⁶ lg 2"
+      "rdfs:label": "§ 32⁶ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32⁷.",
       "rdfs:label": "§ 32⁷. Tasud määramis- ja hindamismenetluse ning teavitatud asutuse perioodilise hindamise ja uuestihindamise eest",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Taotleja, kelle määramistaotlus on hinnatud täielikuks, peab Ravimiametile tasuma määramis- ja hindamismenetluse tasu käesoleva paragrahvi lõike 4 alusel kehtestatud määruse kohaselt. (2) Eestis registreeritud teavitatud asutus tasub Ravimiametile teavitatud asutuse perioodilise hindamise tasu ja teavitatud asutuse uuestihindamise tasu käesoleva paragrahvi lõike 4 alusel kehtestatud määruse kohaselt. (3) Käesoleva paragrahvi lõikes 1 nimetatud määramis- ja hindamismenetluse tasu ülempiir on",
       "estleg:legalText": "(1) Taotleja, kelle määramistaotlus on hinnatud täielikuks, peab Ravimiametile tasuma määramis- ja hindamismenetluse tasu käesoleva paragrahvi lõike 4 alusel kehtestatud määruse kohaselt. (2) Eestis registreeritud teavitatud asutus tasub Ravimiametile teavitatud asutuse perioodilise hindamise tasu ja teavitatud asutuse uuestihindamise tasu käesoleva paragrahvi lõike 4 alusel kehtestatud määruse kohaselt. (3) Käesoleva paragrahvi lõikes 1 nimetatud määramis- ja hindamismenetluse tasu ülempiir on 20 000 eurot, lõikes 2 nimetatud teavitatud asutuse perioodilise hindamise tasu ülempiir on 10 000 eurot ja lõikes 2 nimetatud teavitatud asutuse uuestihindamise tasu ülempiir on 18 000 eurot. (4) Vastavushindamisasutuse määramis- ja hindamismenetluse, teavitatud asutuse perioodilise hindamise ja teavitatud asutuse uuestihindamise tasu suuruse ning tasu arvestamise ja tasumise korra kehtestab määrusega.",
@@ -4219,8 +4961,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4246,7 +4992,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_7_Lg_1",
@@ -4259,7 +5009,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_7"
       },
-      "rdfs:label": "§ 32⁷ lg 1"
+      "rdfs:label": "§ 32⁷ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_7_Lg_2",
@@ -4272,7 +5034,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_7"
       },
-      "rdfs:label": "§ 32⁷ lg 2"
+      "rdfs:label": "§ 32⁷ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_7_Lg_3",
@@ -4285,7 +5056,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_7"
       },
-      "rdfs:label": "§ 32⁷ lg 3"
+      "rdfs:label": "§ 32⁷ lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_32_7_Lg_4",
@@ -4298,19 +5081,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_32_7"
       },
-      "rdfs:label": "§ 32⁷ lg 4"
+      "rdfs:label": "§ 32⁷ lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Riiklik ja haldusjärelevalve",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Käesolevas seaduses ja selle alusel kehtestatud õigusaktides ning Euroopa Parlamendi ja nõukogu määrustes (EL) 2017/745 ja (EL) 2017/746 sätestatud nõuete täitmise üle teeb riiklikku ja haldusjärelevalvet Ravimiamet. (2) Käesoleva seaduse 3. peatükis sätestatud nõuete täitmise üle tervishoiuteenuse osutamisel teeb riiklikku ja haldusjärelevalvet Terviseamet.",
       "estleg:legalText": "(1) Käesolevas seaduses ja selle alusel kehtestatud õigusaktides ning Euroopa Parlamendi ja nõukogu määrustes (EL) 2017/745 ja (EL) 2017/746 sätestatud nõuete täitmise üle teeb riiklikku ja haldusjärelevalvet Ravimiamet. (2) Käesoleva seaduse 3. peatükis sätestatud nõuete täitmise üle tervishoiuteenuse osutamisel teeb riiklikku ja haldusjärelevalvet Terviseamet.",
@@ -4329,7 +5121,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4381,7 +5175,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_33_Lg_1",
@@ -4407,19 +5205,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_33"
       },
-      "rdfs:label": "§ 33 lg 2"
+      "rdfs:label": "§ 33 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Riikliku järelevalve erimeetmed",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
@@ -4431,7 +5238,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_34_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_34_Lg_1"
         }
       ],
       "estleg:references": [
@@ -4481,10 +5288,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:MEDITS_Par_34_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_34_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4497,19 +5308,26 @@
         {
           "@id": "estleg:KORS_Par_30"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_34_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34¹.",
       "rdfs:label": "§ 34¹. Riikliku järelevalve erisused",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud meedet kohaldada kontrollitava isiku, tema esindaja või tema töötaja juuresolekul. (2) Kehtetu - (3) Kehtetu -",
       "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud meedet kohaldada kontrollitava isiku, tema esindaja või tema töötaja juuresolekul. (2) Kehtetu - (3) Kehtetu -",
@@ -4531,7 +5349,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
@@ -4564,7 +5384,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_34_1_Lg_1",
@@ -4582,7 +5406,19 @@
         {
           "@id": "estleg:KORS_Par_50"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_34_1_Lg_2",
@@ -4614,13 +5450,13 @@
       "@id": "estleg:MEDITS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Meditsiiniseadme nõuetele vastavuse kontrollimine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Ravimiametil on lubatud meditsiiniseadme nõuetele vastavuse kontrollimisse kaasata eksperte ning tellida meditsiiniseadmete või nende osade nõuetele vastavuse kontrollimiseks hindamisteenust käesoleva seaduse § 22 lõike 10 alusel kehtestatud määruse kohaselt. (2) Hindamisteenus vormistatakse eksperdiarvamusena, milles kirjeldatakse analüüsi-, katse- ja ekspertiisitulemusi. (3) Ravimiamet tasub meditsiiniseadme nõuetele vastavuse kontrollimiseks tellitud hindamisteenuse kulud ning tagastab",
       "estleg:legalText": "(1) Ravimiametil on lubatud meditsiiniseadme nõuetele vastavuse kontrollimisse kaasata eksperte ning tellida meditsiiniseadmete või nende osade nõuetele vastavuse kontrollimiseks hindamisteenust käesoleva seaduse § 22 lõike 10 alusel kehtestatud määruse kohaselt. (2) Hindamisteenus vormistatakse eksperdiarvamusena, milles kirjeldatakse analüüsi-, katse- ja ekspertiisitulemusi. (3) Ravimiamet tasub meditsiiniseadme nõuetele vastavuse kontrollimiseks tellitud hindamisteenuse kulud ning tagastab meditsiiniseadme või hüvitab tekitatud otsese varalise kahju, kui meditsiiniseade on eksperdiarvamuse järgi nõuetekohane. Kui meditsiiniseade ei ole eksperdiarvamuse järgi nõuetekohane, hüvitab asjaomane ettevõtja Ravimiametile hindamisteenuse kulud.",
@@ -4642,11 +5478,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:MEDITS_Par_22"
+          "@id": "estleg:MEDITS_Par_22_Lg_10"
         }
       ],
       "estleg:hasVersion": [
@@ -4679,7 +5517,11 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_35_Lg_1",
@@ -4695,9 +5537,16 @@
       "rdfs:label": "§ 35 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:MEDITS_Par_22"
+          "@id": "estleg:MEDITS_Par_22_Lg_10"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_35_Lg_2",
@@ -4723,19 +5572,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_35"
       },
-      "rdfs:label": "§ 35 lg 3"
+      "rdfs:label": "§ 35 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Sunniraha määr",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Ettekirjutuse täitmata jätmise korral võib korrakaitseorgan rakendada sunnivahendit asendustäitmise ja sunniraha seaduses ettenähtud korras. Sunniraha ülemmäär on 32 000 eurot.",
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral võib korrakaitseorgan rakendada sunnivahendit asendustäitmise ja sunniraha seaduses ettenähtud korras. Sunniraha ülemmäär on 32 000 eurot.",
@@ -4747,11 +5605,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_36_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_36_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4773,12 +5633,6 @@
           "@id": "estleg:MEDITS_Par_36_v122122022020"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_MEDITS_Par_36_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ATMOSF_Par_226"
@@ -4803,10 +5657,20 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_36_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
-      "@id": "estleg:MEDITS_Par_36_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_36_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -4814,19 +5678,37 @@
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral võib korrakaitseorgan rakendada sunnivahendit asendustäitmise ja sunniraha seaduses ettenähtud korras. Sunniraha ülemmäär on 32 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_36"
-      }
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_36_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Ettekirjutuse ja toimingu vaidlustamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -4852,13 +5734,13 @@
       "@id": "estleg:MEDITS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Andmete esitamata jätmine, andmete muutumisest teatamata jätmine ja valeandmete esitamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kehtetu -",
       "estleg:legalText": "Kehtetu -",
@@ -4887,13 +5769,13 @@
       "@id": "estleg:MEDITS_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Meditsiiniseadme turule laskmise, turul kättesaadavaks tegemise, asutusesisese valmistamise, kasutuselevõtu, levitamise ja professionaalse kasutamise nõuete rikkumine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadme turule laskmise, turul kättesaadavaks tegemise, asutusesisese valmistamise, kasutuselevõtu, levitamise või professionaalse kasutamise nõuete rikkumise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:legalText": "(1) Meditsiiniseadme turule laskmise, turul kättesaadavaks tegemise, asutusesisese valmistamise, kasutuselevõtu, levitamise või professionaalse kasutamise nõuete rikkumise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
@@ -4912,8 +5794,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -4929,12 +5815,6 @@
           "@id": "estleg:MEDITS_Par_39_v122122022020"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_MEDITS_Par_39_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELEKTR_Par_44"
@@ -4962,7 +5842,20 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_fine"
+        },
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_39_Lg_1",
@@ -4975,7 +5868,25 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_39"
       },
-      "rdfs:label": "§ 39 lg 1"
+      "rdfs:label": "§ 39 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_39_Lg_2",
@@ -4988,19 +5899,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_39"
       },
-      "rdfs:label": "§ 39 lg 2"
+      "rdfs:label": "§ 39 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_39_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39¹.",
       "rdfs:label": "§ 39¹. Meditsiiniseadme kliinilise uuringu ja in vitro diagnostikameditsiiniseadme toimivusuuringu tegemise nõuete rikkumine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "(1) Meditsiiniseadme kliinilise uuringu või in vitro diagnostikameditsiiniseadme toimivusuuringu tegemise nõuete rikkumise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:legalText": "(1) Meditsiiniseadme kliinilise uuringu või in vitro diagnostikameditsiiniseadme toimivusuuringu tegemise nõuete rikkumise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
@@ -5019,7 +5948,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5029,15 +5960,6 @@
           "@id": "estleg:MEDITS_Par_39_1_v122122022020"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_MEDITS_Par_39_1_fine"
-        },
-        {
-          "@id": "estleg:Sanction_MEDITS_Par_39_1_fine_2"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KINDLU_Par_255"
@@ -5062,7 +5984,20 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_1_fine"
+        },
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_1_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_39_1_Lg_1",
@@ -5075,7 +6010,20 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_39_1"
       },
-      "rdfs:label": "§ 39¹ lg 1"
+      "rdfs:label": "§ 39¹ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_1_Lg_1_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_39_1_Lg_2",
@@ -5088,19 +6036,37 @@
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_39_1"
       },
-      "rdfs:label": "§ 39¹ lg 2"
+      "rdfs:label": "§ 39¹ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MEDITS_Par_39_1_Lg_2_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:MEDITS_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Menetlus",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Ravimiamet.",
       "estleg:legalText": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Ravimiamet.",
@@ -5112,7 +6078,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_40_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_40_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5154,7 +6120,7 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:MEDITS_Par_40_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_40_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5168,13 +6134,13 @@
       "@id": "estleg:MEDITS_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41. Käesoleva seaduse jõustumise hetkel juba turul olevate meditsiiniseadmete kasutamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Käesoleva seaduse jõustumise hetkel kehtinud korra kohaselt turul olevaid ohutuid meditsiiniseadmeid võib kasutada kuni nende eeldatava mõistliku kasutusaja lõpuni.",
       "estleg:legalText": "Käesoleva seaduse jõustumise hetkel kehtinud korra kohaselt turul olevaid ohutuid meditsiiniseadmeid võib kasutada kuni nende eeldatava mõistliku kasutusaja lõpuni.",
@@ -5186,7 +6152,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_41_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_41_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5202,10 +6168,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:MEDITS_Par_41_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_41_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5213,19 +6183,26 @@
       "estleg:legalText": "Käesoleva seaduse jõustumise hetkel kehtinud korra kohaselt turul olevaid ohutuid meditsiiniseadmeid võib kasutada kuni nende eeldatava mõistliku kasutusaja lõpuni.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_41"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_41_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41¹.",
       "rdfs:label": "§ 41¹. Andmete esitamine meditsiiniseadmete andmekogusse",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kuni 2014. aasta 1. juulini võib käesoleva seaduse § 29 lõikes 3 nimetatud andmed esitada Terviseametile paberil või elektrooniliselt.",
       "estleg:legalText": "Kuni 2014. aasta 1. juulini võib käesoleva seaduse § 29 lõikes 3 nimetatud andmed esitada Terviseametile paberil või elektrooniliselt.",
@@ -5237,15 +6214,17 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_41_1_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_41_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:MEDITS_Par_29"
+          "@id": "estleg:MEDITS_Par_29_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -5266,10 +6245,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MEDITS_Par_41_1_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_41_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5280,21 +6263,33 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:MEDITS_Par_29"
+          "@id": "estleg:MEDITS_Par_29_Lg_3"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:MEDITS_Par_41_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41².",
       "rdfs:label": "§ 41². Euroopa meditsiiniseadmete andmebaasiga seotud kohustuste ja nõuete rakendamine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Kuni Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 123 lõikes 3 ning määruse (EL) 2017/746 artikli 113 lõikes 3 sätestatud Euroopa meditsiiniseadmete andmebaasi kasutusele võtmiseni toimub teabevahetus käesoleva seaduse 2022. aasta 31. detsembrini kehtinud redaktsiooni ja selle alusel kehtestatud määruste kohaselt, arvestades et pädev asutus on Ravimiamet.",
       "estleg:legalText": "Kuni Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 123 lõikes 3 ning määruse (EL) 2017/746 artikli 113 lõikes 3 sätestatud Euroopa meditsiiniseadmete andmebaasi kasutusele võtmiseni toimub teabevahetus käesoleva seaduse 2022. aasta 31. detsembrini kehtinud redaktsiooni ja selle alusel kehtestatud määruste kohaselt, arvestades et pädev asutus on Ravimiamet.",
@@ -5306,11 +6301,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_41_2_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_41_2_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -5335,10 +6332,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:MEDITS_Par_41_2_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_41_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -5346,19 +6347,28 @@
       "estleg:legalText": "Kuni Euroopa Parlamendi ja nõukogu määruse (EL) 2017/745 artikli 123 lõikes 3 ning määruse (EL) 2017/746 artikli 113 lõikes 3 sätestatud Euroopa meditsiiniseadmete andmebaasi kasutusele võtmiseni toimub teabevahetus käesoleva seaduse 2022. aasta 31. detsembrini kehtinud redaktsiooni ja selle alusel kehtestatud määruste kohaselt, arvestades et pädev asutus on Ravimiamet.",
       "estleg:parentProvision": {
         "@id": "estleg:MEDITS_Par_41_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:MEDITS_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
       "rdfs:label": "§ 42.",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MEDITS_6"
@@ -5377,13 +6387,13 @@
       "@id": "estleg:MEDITS_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
       "rdfs:label": "§ 46. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -5406,13 +6416,13 @@
       "@id": "estleg:MEDITS_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_meditsiiniseadme_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Seaduse jõustumine",
       "estleg:sourceAct": "Meditsiiniseadme seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:MEDITS_Map_2026"
+        "@id": "estleg:MEDITS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2004. aasta 1. detsembril.",
       "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 1. detsembril.",
@@ -5424,7 +6434,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:MEDITS_Par_47_Lg_Unknown_1"
+          "@id": "estleg:MEDITS_Par_47_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -5440,7 +6450,7 @@
       ]
     },
     {
-      "@id": "estleg:MEDITS_Par_47_Lg_Unknown_1",
+      "@id": "estleg:MEDITS_Par_47_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

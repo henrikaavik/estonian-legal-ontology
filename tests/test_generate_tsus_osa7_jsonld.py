@@ -17,15 +17,37 @@ Teataja-style XML rather than the network, exercising
 
 from __future__ import annotations
 
-import sys
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_tsus_osa7_jsonld as gt
+from estleg import generate_tsus_osa7_jsonld as gt
 
 NS = gt.NS
+
+
+# ---------------------------------------------------------------------------
+# #383 — concept IRI fragments must be ASCII
+# ---------------------------------------------------------------------------
+
+
+class TestConceptFragmentsAscii:
+    def test_curated_fragments_are_ascii_and_match_sanitize(self) -> None:
+        # Constants themselves must be ASCII so the mapping is readable (#383).
+        expected = {
+            "ÕigusteKaitsmine": "OigusteKaitsmine",
+            "ÕigusteEnnetamine": "OigusteEnnetamine",
+            "AegumiseTagajärjed": "AegumiseTagajarjed",
+        }
+        for estonian, ascii_frag in expected.items():
+            assert ascii_frag.isascii()
+            assert gt.sanitize_identifier(estonian) == ascii_frag
+        for frag, _label in gt.CONCEPTS_TOP + gt.CONCEPTS_BOTTOM:
+            assert frag.isascii(), frag
+        for concepts in (
+            *gt.SECTION_CONCEPTS.values(),
+            *gt.DIVISION_DEFAULT_CONCEPTS.values(),
+        ):
+            for frag in concepts:
+                assert frag.isascii(), frag
 
 
 # ---------------------------------------------------------------------------
@@ -198,31 +220,74 @@ class TestBuildGraphIntegration:
         ids = [n["@id"] for n in self.graph if "@id" in n]
         assert len(ids) == len(set(ids))
 
+    def test_no_at_id_contains_non_ascii(self) -> None:
+        # #383: LegalConcept fragments (and every other minted @id) must be ASCII.
+        def walk(obj: object) -> None:
+            if isinstance(obj, dict):
+                node_id = obj.get("@id")
+                if isinstance(node_id, str):
+                    assert node_id.isascii(), node_id
+                for value in obj.values():
+                    walk(value)
+            elif isinstance(obj, list):
+                for item in obj:
+                    walk(item)
+
+        walk(self.graph)
+
     def test_ontology_header_type_and_title(self) -> None:
         root = self.by_id[gt.ROOT_ID]
-        assert root["@type"] == ["estleg:Act", "estleg:Law", "owl:Ontology"]
+        assert root["@type"] == ["estleg:Act", "estleg:Law"]
+        assert "owl:Ontology" not in root["@type"]
         # Range derives from the base section numbers present (138 … 145).
         assert root["dc:title"] == "Tsiviilõiguste teostamine (§138-145)"
         assert root["rdfs:label"] == "TsÜS Osa 7 ontoloogia"
 
     def test_curated_tbox_and_concepts_present(self) -> None:
-        for frag, _ in gt.CLASS_DECLS:
-            assert self.by_id[f"{NS}{frag}"]["@type"] == ["owl:Class"]
+        # #438: structural classes live in the CV, not this module.
+        assert gt.CLASS_DECLS == []
+        class_frags = {
+            str(node.get("@id", "")).rsplit("/", 1)[-1]
+            for node in self.graph
+            if "owl:Class" in (
+                node.get("@type") if isinstance(node.get("@type"), list) else [node.get("@type")]
+            )
+        }
+        assert not class_frags & {
+            "LegalPart",
+            "Chapter",
+            "Division",
+            "Section",
+            "Provision",
+            "LegalConcept",
+        }
         for frag, _, _, _ in gt.PROPERTY_DECLS:
             assert self.by_id[f"{NS}{frag}"]["@type"] == ["owl:ObjectProperty"]
-        for frag, _ in gt.CONCEPTS_TOP + gt.CONCEPTS_BOTTOM:
-            assert "estleg:LegalConcept" in self.by_id[f"{NS}{frag}"]["@type"]
+        # #377: these three must not RDFS-type stubs under inference=rdfs.
+        for frag in ("hasSection", "hasProvision", "coversConcept"):
+            node = self.by_id[f"{NS}{frag}"]
+            assert "rdfs:domain" not in node
+            assert "rdfs:range" not in node
+        for frag, label in gt.CONCEPTS_TOP + gt.CONCEPTS_BOTTOM:
+            node = self.by_id[f"{NS}{frag}"]
+            assert "estleg:LegalConcept" in node["@type"]
+            assert node["rdfs:label"] == label
+        # Human-readable labels keep Estonian letters; fragments do not (#383).
+        assert self.by_id[f"{NS}OigusteKaitsmine"]["rdfs:label"] == "Õiguste kaitsmine"
+        assert self.by_id[f"{NS}OigusteEnnetamine"]["rdfs:label"] == "Õiguste ennetamine"
+        assert self.by_id[f"{NS}AegumiseTagajarjed"]["rdfs:label"] == "Aegumise tagajärjed"
 
     def test_regular_section_under_chapter(self) -> None:
         sec = self.by_id[f"{NS}TsUS_Par_138"]
         assert sec["estleg:sectionNumber"] == "138"
         assert sec["rdfs:label"] == "§ 138. Hea usu põhimõte"
         assert sec["estleg:inChapter"] == {"@id": f"{NS}TsUS_Chapter_9"}
-        assert sec["estleg:coversConcept"] == [{"@id": f"{NS}ÕigusteEnnetamine"}]
+        assert sec["estleg:coversConcept"] == [{"@id": f"{NS}OigusteEnnetamine"}]
         assert [p["@id"] for p in sec["estleg:hasProvision"]] == [
             f"{NS}Par138_Lg1",
             f"{NS}Par138_Lg2",
         ]
+        assert "estleg:LegalProvision" in sec["@type"]
 
     def test_superscript_section_id_and_label(self) -> None:
         sec = self.by_id[f"{NS}Par145_1"]
@@ -256,6 +321,7 @@ class TestBuildGraphIntegration:
 
     def test_part_and_division_structure(self) -> None:
         part = self.by_id[f"{NS}Part7"]
+        assert "estleg:LegalPart" in part["@type"]
         assert part["rdfs:label"] == "TsÜS 7. osa – Tsiviilõiguste teostamine"
         assert part["estleg:hasChapter"] == [
             {"@id": f"{NS}TsUS_Chapter_9"},

@@ -1,5 +1,11 @@
 # Namespace migration — `data.riik.ee/ontology/estleg#` → `w3id.org/estleg/` (#516)
 
+> **Completed migration / historical design.** The namespace swap shipped in
+> #667 before v1.0.0. The PURL is registered; per-node content negotiation is
+> tracked by #728. Use [w3id status](../w3id/estleg/README.md) for the live
+> resolver contract. Counts and source locations in the plan below describe
+> the pre-migration tree.
+
 > This document deliberately contains the **legacy** namespace string (in the
 > replacement specs below). It is therefore **excluded** from the migration swap
 > AND from the `data.riik.ee == 0` CI guard (alongside `CHANGELOG.md` and
@@ -29,9 +35,8 @@ scheme is the hardest thing to change after release, so it lands first.
 **Resolver traceability:** the 303 / content-negotiation resolver is the
 *second half* of #516's decision ("resolver later"). It is **not** #550 (which
 is the separate "documented REST API is vaporware" access-honesty issue). This
-migration delivers only the **namespace swap**; a **dedicated resolver
-follow-up ticket must be filed** (and #516 kept open until it lands, or closed
-on the swap with the resolver tracked by that new ticket).
+migration delivered the **namespace swap**; the resolver follow-up is now
+tracked separately in **#728**.
 
 Because node `@id`s are stored **compact** (`estleg:Local`), this is a
 `@context`-prefix + path-IRI **string swap**, not a 170k-IRI rewrite. It is *not*
@@ -71,8 +76,10 @@ Resulting IRI shapes: term `https://w3id.org/estleg/<Local>`, ontology
 
 ## How
 
-### 1. `scripts/migrate_namespace.py`
-Reuses the host-agnostic scaffolding from `scripts/migrate_uris.py`
+### 1. `python3 -m estleg.migrate_namespace`
+The implementation lives in `src/estleg/migrate_namespace.py`; `scripts/migrate_namespace.py`
+is a still-working compatibility shim, but the module is the canonical operator entry
+point. Reuses the host-agnostic scaffolding from `scripts/migrate_uris.py`
 (`_atomic_write_text` `:110`; the dry-run→report→apply skeleton) and the
 value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
 - Drives off **`git ls-files`** (recursive — covers `data/**`, `metadata.jsonld`,
@@ -81,6 +88,7 @@ value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
   checkout never half-swaps an un-pulled LFS file — see step 3).
 - **Excludes** from the swap: `CHANGELOG.md`, `docs/superpowers/plans/**`, **and
   this file `docs/NAMESPACE_MIGRATION.md`** (all hold legacy strings on purpose).
+- Dry-run is the default; apply with `python3 -m estleg.migrate_namespace --apply`.
 - Applies the three replacements to file **content** (byte-preserving). Dry-run
   is the default; `--apply` writes; idempotent (re-run = 0 changes).
 - **Separate state/report:** writes its sentinel + dry-run report to
@@ -98,7 +106,7 @@ value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
   extracts the local name with `act_iri.rsplit("#", 1)[1]` under an
   `if "#" in act_iri` guard. On a slash IRI it **falls through that guard to the
   final `return act_iri`** and returns the WHOLE IRI (NOT an `IndexError`) →
-  malformed compact IDs like `estleg:https://w3id.org/estleg/VKVS_Map_2026_Expr_…`.
+  malformed compact IDs like `estleg:https://w3id.org/estleg/VKVS_Map_Expr_…`.
   Make it separator-agnostic (e.g. split on the final `#` **or** `/`, or strip the
   `NS` prefix) and update its docstring + add a unit test for the slash form.
 - Sweep result (`split('#')`/`rsplit('#')` across `scripts/` + `tests/`): only
@@ -138,20 +146,32 @@ value-walk precedent `fix_all_issues.migrate_namespace_in_value` (`:319`).
 ### 4. CI guard — enforce completeness
 Add a corpus-wide `git grep 'data.riik.ee' == 0` assertion, **excluding**
 `CHANGELOG.md`, `docs/superpowers/plans/**`, `docs/NAMESPACE_MIGRATION.md`, and
-`data/namespace_migration_state.json`.
+`data/namespace_migration_state.json`. Since #687 the three legacy-namespace
+exclusion lists name `src/estleg/migrate_namespace.py` (the module that holds the
+legacy literals) rather than the `scripts/` shim, and they also exclude `w3id/`.
 Place it in the LFS-materialised `json-validation` job of
 `.github/workflows/validate.yml` (after its `git lfs pull`) **and** as a
 `@pytest.mark.corpus` test `tests/test_no_legacy_namespace.py` (runs in the
 LFS-materialised `-m corpus` step). NB: the default `pytest` job has no LFS pull
 → a guard there would false-pass the combined pointer; it MUST run LFS-materialised.
 
-### 5. w3id registration prep (external action by owner)
-Add `w3id/estleg/{.htaccess,README.md}` to be copied into a PR against
+### 5. w3id registration — **DONE** (#690)
+`w3id/estleg/{.htaccess,README.md}` was copied into a PR against
 `perma-id/w3id.org` (the README there asks for exactly a directory with
-`.htaccess` + `README.md`, then a PR). Resolver deferred → the `.htaccess`
-303-redirects to the GitHub artifacts for now. **The owner submits that PR**
-(needs their GitHub identity + maintainer contact). Note: `https://w3id.org/estleg/`
-currently 404s — registration is not yet done.
+`.htaccess` + `README.md`, then a PR). [PR #6575][w3id-pr] was **merged on
+2026-08-19**, so the PURL is live:
+
+- `https://w3id.org/estleg/` → **302** to the project repository;
+- `https://w3id.org/estleg/1.0.0` → **302** to `releases/tag/v1.0.0`;
+- any other version segment falls through to the repository.
+
+Content negotiation (RDF vs HTML per `Accept`) is **not** live — that is
+tracked as **#728**. The commented `303` block in `w3id/estleg/.htaccess`
+must stay commented until then. The in-tree copy under `w3id/estleg/` is the
+staging copy: **any change to it must be re-submitted to `perma-id/w3id.org`**
+before it takes effect on the live PURL.
+
+[w3id-pr]: https://github.com/perma-id/w3id.org/pull/6575
 
 ## Verification
 - Idempotency/completeness: re-run the migration → 0 changes;

@@ -1,12 +1,6 @@
 from __future__ import annotations
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_eu_legislation as mod  # noqa: E402
-
+from estleg import generate_eu_legislation as mod
 
 # ---------------------------------------------------------------------------
 # #288 — transpositionDeadline must be directive-only; euInstitution must be
@@ -27,6 +21,21 @@ def test_regulation_node_never_gets_transposition_deadline() -> None:
     }
     node = mod.legislation_to_node(item, "Regulation")
     assert "estleg:transpositionDeadline" not in node
+
+
+def test_legislation_node_emits_dcterms_title() -> None:
+    """#348: legislation nodes ship dcterms:title, not only rdfs:label."""
+    item = {
+        "celex": "32016R0679",
+        "title": "Isikuandmete kaitse üldmäärus",
+        "authors": [],
+    }
+    node = mod.legislation_to_node(item, "Regulation")
+    assert node["dcterms:title"] == {
+        "@value": "Isikuandmete kaitse üldmäärus",
+        "@language": "et",
+    }
+    assert node["rdfs:label"]["@value"] == node["dcterms:title"]["@value"]
 
 
 def test_decision_node_never_gets_transposition_deadline() -> None:
@@ -444,7 +453,7 @@ def test_count_emitted_skips_non_legislation_nodes() -> None:
     """Nodes without an estleg:euDocumentType (e.g. the owl:Ontology header
     node prepended to every graph) are not counted (#398)."""
     header = {
-        "@id": "estleg:EURlex_Combined_Map_2026",
+        "@id": "estleg:EURlex_Combined_Map",
         "@type": ["owl:Ontology"],
     }
     reg = mod.legislation_to_node(

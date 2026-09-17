@@ -14,7 +14,7 @@ stamps are the pinned `ESTLEG_BUILD_EVALUATION_DATE` and `ONTOLOGY_VERSION`.
 Current build: ontology 0.11.0, evaluation date
 2026-06-01 — 1120 laws, 124938
 provision-version records (~181 MB), 1120 per-law
-outlines and context packs, 12137 court decisions indexed.
+outlines and context packs, 12104 court decisions indexed.
 
 ## Artifacts
 

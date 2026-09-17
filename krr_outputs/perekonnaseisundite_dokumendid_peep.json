@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,40 +10,33 @@
   },
   "@graph": [
     {
-      "@id": "estleg:PEREKO_Map_2026",
+      "@id": "estleg:PEREKO_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Perekonnaseisunditega seotud dokumentide kaardistus (PKTS)",
       "dc:description": "Perekonnaseisutoimingute seaduse alusel väljastatavad perekonnaseisudokumendid: sünnitunnistus, abielutunnistus, surmatunnistus (seaduses sünnitõend, abielutõend, surmatõend).",
       "dc:source": "Perekonnaseisutoimingute seadus",
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1041076_Map_2026"
+          "@id": "estleg:Reg_1041076_Map"
         },
         {
-          "@id": "estleg:Reg_343393_Map_2026"
+          "@id": "estleg:Reg_343393_Map"
         },
         {
-          "@id": "estleg:Reg_343620_Map_2026"
+          "@id": "estleg:Reg_343620_Map"
         },
         {
-          "@id": "estleg:Reg_344823_Map_2026"
+          "@id": "estleg:Reg_344823_Map"
         }
       ],
       "estleg:implementedByCount": 4,
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_perekonnaseisudokumendid",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-01-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -82,7 +74,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15",
       "rdfs:label": "§ 15. Õigus tutvuda perekonnaseisuandmetega ja saada väljavõtteid",
@@ -90,13 +82,14 @@
         "@id": "estleg:Cluster_uhised_koigile_dokumentidele_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab üldraamistiku perekonnaseisuandmetest kinnitatud ja kinnitamata väljavõtete väljastamiseks paberil või elektrooniliselt; välisriigis esitamiseks võib lisada selgituse, et tegemist on perekonnaseisutunnistusega.",
+      "estleg:legalText": "Sätestab üldraamistiku perekonnaseisuandmetest kinnitatud ja kinnitamata väljavõtete väljastamiseks paberil või elektrooniliselt; välisriigis esitamiseks võib lisada selgituse, et tegemist on perekonnaseisutunnistusega.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_343393_Map_2026"
+          "@id": "estleg:Reg_343393_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -125,13 +118,17 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21",
       "rdfs:label": "§ 21. Sünni registreerimine Eesti perekonnaseisuasutuses",
@@ -139,12 +136,15 @@
         "@id": "estleg:Cluster_sunnitunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Määrab, millal Eesti perekonnaseisuasutus on pädev sündi registreerima (nt Eestis sünd või Eesti kodanikuga seos), mis on sünnitõendi väljastamise eeltingimus.",
+      "estleg:legalText": "Määrab, millal Eesti perekonnaseisuasutus on pädev sündi registreerima (nt Eestis sünd või Eesti kodanikuga seos), mis on sünnitõendi väljastamise eeltingimus.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -155,13 +155,17 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22",
       "rdfs:label": "§ 22. Sünni registreerimine",
@@ -169,9 +173,10 @@
         "@id": "estleg:Cluster_sunnitunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Reguleerib sünnikande andmekoosseisu (lapse, ema, isa andmed) ja menetluse tähtaega; need andmed moodustavad sünnitõendi sisulise aluse.",
+      "estleg:legalText": "Reguleerib sünnikande andmekoosseisu (lapse, ema, isa andmed) ja menetluse tähtaega; need andmed moodustavad sünnitõendi sisulise aluse.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -195,7 +200,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23",
       "rdfs:label": "§ 23. Sünni registreerimise avaldus",
@@ -203,9 +208,10 @@
         "@id": "estleg:Cluster_sunnitunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab avalduse esitaja, tähtaja ja vormi nõuded sünni registreerimiseks, mille põhjal saab sünnikande järgselt väljastada sünnitõendi.",
+      "estleg:legalText": "Sätestab avalduse esitaja, tähtaja ja vormi nõuded sünni registreerimiseks, mille põhjal saab sünnikande järgselt väljastada sünnitõendi.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -232,7 +238,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30",
       "rdfs:label": "§ 30. Sünnitõend",
@@ -240,13 +246,14 @@
         "@id": "estleg:Cluster_sunnitunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab sünnitõendi kui sünnikande alusel väljastatava ametliku perekonnaseisudokumendi.",
+      "estleg:legalText": "Sätestab sünnitõendi kui sünnikande alusel väljastatava ametliku perekonnaseisudokumendi.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_343393_Map_2026"
+          "@id": "estleg:Reg_343393_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -269,7 +276,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38",
       "rdfs:label": "§ 38. Abielu sõlmimiseks esitatavad dokumendid",
@@ -277,9 +284,10 @@
         "@id": "estleg:Cluster_abielutunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Määrab dokumendid ja andmed, mille alusel kontrollitakse abiellumise eeldusi enne abielukande tegemist ning abielutõendi väljastamist.",
+      "estleg:legalText": "Määrab dokumendid ja andmed, mille alusel kontrollitakse abiellumise eeldusi enne abielukande tegemist ning abielutõendi väljastamist.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -300,7 +308,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41",
       "rdfs:label": "§ 41. Abielu sõlmimise tähtaeg",
@@ -308,9 +316,10 @@
         "@id": "estleg:Cluster_abielutunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab menetlusliku ajaraami abielu sõlmimiseks pärast avalduse esitamist; ajaraam mõjutab abielukande ja tõendi väljastamise hetke.",
+      "estleg:legalText": "Sätestab menetlusliku ajaraami abielu sõlmimiseks pärast avalduse esitamist; ajaraam mõjutab abielukande ja tõendi väljastamise hetke.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -331,7 +340,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42",
       "rdfs:label": "§ 42. Abielukanne",
@@ -339,9 +348,10 @@
         "@id": "estleg:Cluster_abielutunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Reguleerib abielukande tegemist rahvastikuregistris; abielukanne on abielutõendi materiaalne alus.",
+      "estleg:legalText": "Reguleerib abielukande tegemist rahvastikuregistris; abielukanne on abielutõendi materiaalne alus.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -371,7 +381,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43",
       "rdfs:label": "§ 43. Abielutõend",
@@ -379,13 +389,14 @@
         "@id": "estleg:Cluster_abielutunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab abielutõendi väljastamise abielukande alusel kui ametliku tõendi abielu sõlmimise kohta.",
+      "estleg:legalText": "Sätestab abielutõendi väljastamise abielukande alusel kui ametliku tõendi abielu sõlmimise kohta.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_343393_Map_2026"
+          "@id": "estleg:Reg_343393_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -405,7 +416,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31",
       "rdfs:label": "§ 31. Surma registreerimine Eestis",
@@ -413,9 +424,10 @@
         "@id": "estleg:Cluster_surmatunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Määrab Eesti perekonnaseisuasutuse pädevuse surma registreerimisel; pädev registreerimine on surmatõendi väljastamise eeldus.",
+      "estleg:legalText": "Määrab Eesti perekonnaseisuasutuse pädevuse surma registreerimisel; pädev registreerimine on surmatõendi väljastamise eeldus.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -430,7 +442,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32",
       "rdfs:label": "§ 32. Surma registreerimine",
@@ -438,9 +450,10 @@
         "@id": "estleg:Cluster_surmatunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Reguleerib surmakande andmeid ja kande tegemise korda rahvastikuregistris, mis on surmatõendi sisuline alus.",
+      "estleg:legalText": "Reguleerib surmakande andmeid ja kande tegemise korda rahvastikuregistris, mis on surmatõendi sisuline alus.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -461,7 +474,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33",
       "rdfs:label": "§ 33. Surma registreerimiseks esitatavad dokumendid",
@@ -469,9 +482,10 @@
         "@id": "estleg:Cluster_surmatunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab surma registreerimise aluseks olevad dokumendid (sh meditsiiniline surmateatis), millest sõltub korrektne surmakanne ja tõendi väljastamine.",
+      "estleg:legalText": "Sätestab surma registreerimise aluseks olevad dokumendid (sh meditsiiniline surmateatis), millest sõltub korrektne surmakanne ja tõendi väljastamine.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:hasVersion": [
         {
@@ -489,7 +503,7 @@
       "@id": "estleg:perekonnaseisundite_dokumendid_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_perekonnaseisudokumendid"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36",
       "rdfs:label": "§ 36. Surmatõend",
@@ -497,13 +511,14 @@
         "@id": "estleg:Cluster_surmatunnistus_perekonnaseisundite_dokumendid_peep"
       },
       "estleg:summary": "Sätestab surmatõendi väljastamise surmakande alusel kui ametliku surma fakti tõendava perekonnaseisudokumendi.",
+      "estleg:legalText": "Sätestab surmatõendi väljastamise surmakande alusel kui ametliku surma fakti tõendava perekonnaseisudokumendi.",
       "estleg:sourceAct": "Perekonnaseisutoimingute seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PEREKO_Map_2026"
+        "@id": "estleg:PEREKO_Map"
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_343393_Map_2026"
+          "@id": "estleg:Reg_343393_Map"
         }
       ],
       "estleg:implementedByCount": 1,

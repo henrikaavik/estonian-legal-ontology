@@ -2,24 +2,23 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:KVTS_Map_2026",
+      "@id": "estleg:KVTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:KAITSE_3_Map_2026"
+        "@id": "estleg:KAITSE_3_Map"
       },
       "rdfs:label": "Kaitseväeteenistuse seaduse teemakaardistus (KVTS)",
       "dc:description": "KVTS kaardistus kolmes fookusklastris: kaitseväeteenistus, reservteenistus ja asendusteenistus.",
@@ -37,17 +36,26 @@
         {
           "@id": "http://eurovoc.europa.eu/538"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_KVTS",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2464"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/538"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:TopicCluster_kaitsevaeteenistuse",
@@ -91,7 +99,7 @@
       "@id": "estleg:KVTS_MS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Kaitseväeteenistuse liigid ja üldpõhimõtted",
       "rdfs:label": "Kaitseväeteenistuse mõiste, liigid ja eesmärk",
@@ -101,14 +109,14 @@
       "estleg:summary": "Sätestab kaitseväeteenistuse õigusliku raami, teenistusliikide süsteemi ning seose riigikaitse eesmärkidega.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_MS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Ajateenistusse kutsumine",
       "rdfs:label": "Ajateenistusse võtmise alused ja kord",
@@ -118,14 +126,14 @@
       "estleg:summary": "Reguleerib kutsealuste valikut, kutse otsust ning ajateenistusse asumise menetluslikke samme.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_MS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Ajateenistuse kestus ja korraldus",
       "rdfs:label": "Teenistusaja kestus, väljaõpe ja teenistusrežiim",
@@ -135,14 +143,14 @@
       "estleg:summary": "Määrab ajateenistuse kestuse põhimõtted ning teenistuse sisulise korralduse (väljaõpe, alluvus, teenistusülesanded).",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_MS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Teenistuskohustused ja distsipliin",
       "rdfs:label": "Kaitseväeteenistuses oleva isiku põhiõigused ja kohustused",
@@ -152,22 +160,28 @@
       "estleg:summary": "Kirjeldab teenistuskohustusi, käsuahela järgimist, distsiplinaarvastutuse eeldusi ning teenistusest vabastamise peamisi aluseid.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KVTS_RS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Reservteenistuse mõiste",
       "rdfs:label": "Reservteenistuse staatus ja seos sõjaaja koosseisuga",
@@ -177,22 +191,28 @@
       "estleg:summary": "Määratleb reservteenistuse rolli kaitseväekohustuse jätkuna ning reservis oleva isiku põhilise õigusliku staatuse.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KVTS_RS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Õppekogunemisele kutsumine",
       "rdfs:label": "Õppekogunemistele kutsumise kord ja kohustused",
@@ -202,14 +222,14 @@
       "estleg:summary": "Sätestab reservväelasele kutse tegemise, ilmumiskohustuse ning mõjuvate põhjuste alusel vabastamise või edasilükkamise raamid.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_RS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Reservteenistuse läbimine",
       "rdfs:label": "Reservteenistuses osalemise tingimused, hüvitised ja tagatised",
@@ -219,14 +239,14 @@
       "estleg:summary": "Reguleerib teenistusülesannete täitmist reservteenistuses ning reservis osalemisega seotud sotsiaalseid ja varalisi tagatisi.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_RS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Reservist vabastamine ja vanusepiir",
       "rdfs:label": "Reservkohustuse lõppemine",
@@ -236,14 +256,14 @@
       "estleg:summary": "Sätestab reservkohustuse lõppemise alused, sealhulgas vanusepiirid, terviseseisund ja muud seaduses nimetatud asjaolud.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_AS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Asendusteenistuse õiguslik alus",
       "rdfs:label": "Asendusteenistuse eesmärk ja kohaldamisala",
@@ -253,17 +273,21 @@
       "estleg:summary": "Määrab, millistel usulistel või kõlbelistel põhjustel võib ajateenistuse kohustuse täita asendusteenistusega.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KVTS_AS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Asendusteenistuse taotlemine",
       "rdfs:label": "Taotluse esitamine, hindamine ja otsustamine",
@@ -273,14 +297,14 @@
       "estleg:summary": "Reguleerib asendusteenistuse taotluse menetlust, pädevaid organeid ning otsuse tegemise põhimõtteid.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_AS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Asendusteenistuse korraldus",
       "rdfs:label": "Teenistuskoht, kestus ja teenistusülesanded",
@@ -290,14 +314,14 @@
       "estleg:summary": "Sätestab asendusteenistuse korraldusliku mudeli, teenistuskoha määramise ning kestuse põhimõtted võrreldes ajateenistusega.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
       "@id": "estleg:KVTS_AS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "Asendusteenistuse kohustused ja lõpetamine",
       "rdfs:label": "Asendusteenistuja kohustused, järelevalve ja teenistuse lõppemine",
@@ -307,11 +331,11 @@
       "estleg:summary": "Kirjeldab asendusteenistuja käitumis- ja tööalaseid kohustusi, järelevalvemehhanisme ning teenistuse lõppemise aluseid.",
       "estleg:sourceAct": "Kaitseväeteenistuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KVTS_Map_2026"
+        "@id": "estleg:KVTS_Map"
       }
     },
     {
-      "@id": "estleg:Concept_KaitsevVõimeTagamine",
+      "@id": "estleg:Concept_KaitsevVoimeTagamine",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Concept_kaitsevaeteenistuse"
@@ -346,7 +370,7 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus andmekvaliteedi kohta",
-      "estleg:note": "Kaardistus on tehtud ühtses JSON-LD skeemis teemakaardina. Järgmises iteratsioonis täpsustada iga normiploki juurde kehtiva redaktsiooni konkreetsed paragrahvinumbrid Riigi Teataja allikast."
+      "rdfs:comment": "Kaardistus on tehtud ühtses JSON-LD skeemis teemakaardina. Järgmises iteratsioonis täpsustada iga normiploki juurde kehtiva redaktsiooni konkreetsed paragrahvinumbrid Riigi Teataja allikast."
     },
     {
       "@id": "estleg:KVTS_NOTE_002",
@@ -354,7 +378,7 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Koostöömärge",
-      "estleg:note": "Marta õigusliku kvaliteedikontrolli jaoks: kinnitada klastrite piirid, terminoloogia ühtlus (kaitseväeteenistus/ajateenistus) ja paragrahvide täpne viitamine."
+      "rdfs:comment": "Marta õigusliku kvaliteedikontrolli jaoks: kinnitada klastrite piirid, terminoloogia ühtlus (kaitseväeteenistus/ajateenistus) ja paragrahvide täpne viitamine."
     },
     {
       "@id": "estleg:Cluster_military_service_kaitsevaeteenistuse_peep",

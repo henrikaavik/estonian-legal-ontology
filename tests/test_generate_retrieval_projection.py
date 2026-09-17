@@ -14,14 +14,11 @@ Two tiers:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_retrieval_projection as grp  # noqa: E402
+from estleg import generate_retrieval_projection as grp
 
 EVAL_DATE = "2026-06-01"
 RT_BASE = "https://www.riigiteataja.ee/akt/"
@@ -50,8 +47,8 @@ def test_strip_xml_normalises_rt_url():
 
 
 def test_derive_abbrev_from_act_id():
-    assert grp.derive_abbrev("estleg:AS_Map_2026") == "AS"
-    assert grp.derive_abbrev("estleg:AÕS_Osa1_1_94") == "AÕS"
+    assert grp.derive_abbrev("estleg:AS_Map") == "AS"
+    assert grp.derive_abbrev("estleg:AOS_Osa1_1_94") == "AOS"
     assert grp.derive_abbrev("estleg:KrMS_ProcedureMap_2026") == "KrMS"
     assert grp.derive_abbrev(None) is None
 
@@ -133,7 +130,7 @@ def _build_corpus(krr: Path) -> None:
             "@context": {"estleg": grp.NS},
             "@graph": [
                 {
-                    "@id": "estleg:TL_Map_2026",
+                    "@id": "estleg:TL_Map",
                     "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     "dcterms:title": {"@value": "Testseadus", "@language": "et"},
                     "dc:source": "Testseadus",
@@ -309,7 +306,7 @@ def _build_multipart_corpus(krr: Path) -> None:
         {
             "@context": {"estleg": grp.NS},
             "@graph": [
-                _act_root("ML_Map_2026", "Multiseadus", "111"),
+                _act_root("ML_Map", "Multiseadus", "111"),
                 _provision("ML_Par_1", "§ 1."),
             ],
         },
@@ -319,7 +316,7 @@ def _build_multipart_corpus(krr: Path) -> None:
         {
             "@context": {"estleg": grp.NS},
             "@graph": [
-                _act_root("ML_Map_2026", "Multiseadus", "111"),
+                _act_root("ML_Map", "Multiseadus", "111"),
                 _provision("ML_Par_2", "§ 2."),
             ],
         },
@@ -529,7 +526,7 @@ def test_deprecated_law_is_skipped(tmp_path):
 
 def test_retrieval_subtree_excluded_from_corpus_counter():
     """The derived retrieval artifacts must not inflate the corpus file count."""
-    import estleg_common
+    from estleg import estleg_common
 
     krr = Path("krr_outputs")
     for rel in (
@@ -547,7 +544,7 @@ def test_retrieval_subtree_excluded_from_corpus_counter():
 # ---------------------------------------------------------------------------
 @pytest.mark.corpus
 def test_real_corpus_smoke(tmp_path):
-    import validate_all
+    from estleg import validate_all
 
     krr = Path(__file__).resolve().parent.parent / "krr_outputs"
     index = krr / "INDEX.json"

@@ -386,7 +386,7 @@ and `estleg:summary`). It does not touch act-level
       (`"§ 42 lg 1 alusel"`) for traceability
 
   IRI scheme: `estleg:Citation_<source-act-shortid>_<seq>` (e.g.
-  `Citation_1014955_Map_2026_1` for the first preamble citation of
+  `Citation_1014955_Map_1` for the first preamble citation of
   the Tallinn alcohol act). Each Citation is a `owl:NamedIndividual`
   so SHACL can constrain it.
 
@@ -648,7 +648,7 @@ Concretely:
   the `legalText` of all child provisions plus the act title and
   preamble.
 - Pairwise cosine similarity within each bucket.
-- Output IDs are **act IRIs** (e.g. `estleg:Reg_1014955_Map_2026`), not
+- Output IDs are **act IRIs** (e.g. `estleg:Reg_1014955_Map`), not
   provision IRIs.
 - Provision-level KOV similarity stays out of scope — defer to a future
   phase if a concrete need surfaces.
@@ -733,10 +733,10 @@ per file with the following shape:
   "pipelineVersion": "<git-sha>",
   "pairs": [
     {
-      "source": "estleg:Reg_1014955_Map_2026",
+      "source": "estleg:Reg_1014955_Map",
       "peers": [
         {
-          "target": "estleg:Reg_1023711_Map_2026",
+          "target": "estleg:Reg_1023711_Map",
           "score": 0.873,
           "scoreModel": "tfidf-cosine"
         },

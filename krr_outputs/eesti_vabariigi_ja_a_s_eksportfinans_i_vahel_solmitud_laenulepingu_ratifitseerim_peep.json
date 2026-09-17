@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:EVASEISLR_Map_2026",
+      "@id": "estleg:EVASEISLR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Eesti Vabariigi ja A/S Eksportfinans'i vahel sõlmitud laenulepingu ratifitseerimise seadus teemakaardistus",
       "dc:source": "Eesti Vabariigi ja A/S Eksportfinans'i vahel sõlmitud laenulepingu ratifitseerimise seadus",
@@ -30,31 +29,51 @@
           "@id": "http://eurovoc.europa.eu/68"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_EVASEISLR",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:EVASEISLR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVASEISLR"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1.",
       "estleg:sourceAct": "Eesti Vabariigi ja A/S Eksportfinans'i vahel sõlmitud laenulepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVASEISLR_Map_2026"
+        "@id": "estleg:EVASEISLR_Map"
       },
       "estleg:summary": "Ratifitseerida juurdelisatud Eesti Vabariigi ja Norra pankade finantseerimis- ja ekspordikrediidiasutuse A/S EKSPORTFINANS'i vaheline laenuleping 3 150 000 USA dollari suuruses summas, mis on alla kirjutatud 1994. aasta 10. veebruaril Tallinnas.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud Eesti Vabariigi ja Norra pankade finantseerimis- ja ekspordikrediidiasutuse A/S EKSPORTFINANS'i vaheline laenuleping 3 150 000 USA dollari suuruses summas, mis on alla kirjutatud 1994. aasta 10. veebruaril Tallinnas.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:EVASEISLR_Par_1_v25003"
@@ -82,18 +101,23 @@
       "@id": "estleg:EVASEISLR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EVASEISLR"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2.",
       "estleg:sourceAct": "Eesti Vabariigi ja A/S Eksportfinans'i vahel sõlmitud laenulepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:EVASEISLR_Map_2026"
+        "@id": "estleg:EVASEISLR_Map"
       },
       "estleg:summary": "Vabariigi Valitsusel tagada kontroll käesoleva seaduse paragrahvis 1 nimetatud laenu sihipärase kasutamise üle.<table border=\"0\" width=\"85%\"> <tbody><tr> <td width=\"50%\"> </td> <td width=\"50%\"> <div align=\"right\"> <strong>Riigikogu esimees Toomas SAVI</strong> </div> </td> </tr> </tbody></table><p> Õiend<a name=\"o\"> </a><br/>Akti avaldamisandmed täiendatud, lisatud andmed väljakuulutamise kohta. </p>",
+      "estleg:legalText": "Vabariigi Valitsusel tagada kontroll käesoleva seaduse paragrahvis 1 nimetatud laenu sihipärase kasutamise üle.<table border=\"0\" width=\"85%\"> <tbody><tr> <td width=\"50%\"> </td> <td width=\"50%\"> <div align=\"right\"> <strong>Riigikogu esimees Toomas SAVI</strong> </div> </td> </tr> </tbody></table><p> Õiend<a name=\"o\"> </a><br/>Akti avaldamisandmed täiendatud, lisatud andmed väljakuulutamise kohta. </p>",
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -130,7 +154,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

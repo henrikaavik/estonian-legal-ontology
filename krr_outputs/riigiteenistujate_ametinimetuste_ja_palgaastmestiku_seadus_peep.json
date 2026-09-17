@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RAPS_Map_2026",
+      "@id": "estleg:RAPS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus teemakaardistus",
       "dc:source": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
@@ -30,16 +29,36 @@
           "@id": "http://eurovoc.europa.eu/538"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_RAPS",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/538"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_abiminister"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_peaminister"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2012-06-08",
+        "@type": "xsd:date"
       }
     },
     {
@@ -78,20 +97,23 @@
       "@id": "estleg:RAPS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse eesmärk ja rakendusala",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "Käesoleva seaduse eesmärk on ühtsete ameti- ja abiteenistuskohtade nimetuste ning ühtse palgaastmestiku sisseviimine riigi ametiasutustes.",
+      "estleg:legalText": "Käesoleva seaduse eesmärk on ühtsete ameti- ja abiteenistuskohtade nimetuste ning ühtse palgaastmestiku sisseviimine riigi ametiasutustes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_1"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -108,26 +130,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Riigiteenistujate ameti- ja abiteenistuskoha mõiste",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Ameti- ja abiteenistuskoht on riigi ametiasutuse koosseisu üksus, mida tähistatakse ametinimetusega. Ameti- ja abiteenistuskoht on riigi ametiasutuse koosseisu üksus, mida tähistatakse ametinimetusega. 2 (2) Ameti- ja abiteenistuskohad, mille põhiülesanded ja kohustused sisuliselt kattuvad, kannavad ühte ja sama nimetust. Ameti- ja abiteenistuskohad, mille põhiülesanded ja kohustused sisuliselt kattuvad, kannavad ühte ja sama nimetust.",
+      "estleg:legalText": "1 (1) Ameti- ja abiteenistuskoht on riigi ametiasutuse koosseisu üksus, mida tähistatakse ametinimetusega. Ameti- ja abiteenistuskoht on riigi ametiasutuse koosseisu üksus, mida tähistatakse ametinimetusega. 2 (2) Ameti- ja abiteenistuskohad, mille põhiülesanded ja kohustused sisuliselt kattuvad, kannavad ühte ja sama nimetust. Ameti- ja abiteenistuskohad, mille põhiülesanded ja kohustused sisuliselt kattuvad, kannavad ühte ja sama nimetust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_1"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -141,26 +170,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Riigiteenistujate ameti- ja abiteenistuskohtade jaotus",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Riigiteenistujate ameti- ja abiteenistuskohad on jaotatud, lähtudes teenistuskohal töötamiseks esitatavatest põhinõuetest, põhigruppidesse. Riigiteenistujate ameti- ja abiteenistuskohad on jaotatud, lähtudes teenistuskohal töötamiseks esitatavatest põhinõuetest, põhigruppidesse. 2 (2) Riigiteenistujate ameti- ja abiteenistuskohtade põhigruppide siseselt on kehtestatud ametikoha ja abiteenistuskoha nimetused ametinimetustena. Riigiteenistujate ameti- ja abiteenistuskohtade põhigruppide sise",
+      "estleg:legalText": "1 (1) Riigiteenistujate ameti- ja abiteenistuskohad on jaotatud, lähtudes teenistuskohal töötamiseks esitatavatest põhinõuetest, põhigruppidesse. Riigiteenistujate ameti- ja abiteenistuskohad on jaotatud, lähtudes teenistuskohal töötamiseks esitatavatest põhinõuetest, põhigruppidesse. 2 (2) Riigiteenistujate ameti- ja abiteenistuskohtade põhigruppide siseselt on kehtestatud ametikoha ja abiteenistuskoha nimetused ametinimetustena. Riigiteenistujate ameti- ja abiteenistuskohtade põhigruppide sise",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_1"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -174,27 +210,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Riigiteenistujate ameti- ja abiteenistuskohtade põhigrupid",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Riigiteenistujate ametikohtade põhigrupid on: 1 1) kõrgemad ametnikud; 2 2) vanemametnikud; 3 3) nooremametnikud. Riigiteenistujate ametikohtade põhigrupid on: kõrgemad ametnikud; vanemametnikud; nooremametnikud. 2 (2) Riigiteenistujate abiteenistuskohtade põhigrupid on: 1 1) kantseleitöötajad; 2 2) teenindustöötajad; 3 3) oskus- ja käsitöölised; 4 4) seadmete operaatorid ja mehhanismide juhid; 5 5) lihttöölised. Riigiteenistujate abiteenistuskohtade põhigrupid on: kantseleitöötajad; teeni",
+      "estleg:legalText": "1 (1) Riigiteenistujate ametikohtade põhigrupid on: 1 1) kõrgemad ametnikud; 2 2) vanemametnikud; 3 3) nooremametnikud. Riigiteenistujate ametikohtade põhigrupid on: kõrgemad ametnikud; vanemametnikud; nooremametnikud. 2 (2) Riigiteenistujate abiteenistuskohtade põhigrupid on: 1 1) kantseleitöötajad; 2 2) teenindustöötajad; 3 3) oskus- ja käsitöölised; 4 4) seadmete operaatorid ja mehhanismide juhid; 5 5) lihttöölised. Riigiteenistujate abiteenistuskohtade põhigrupid on: kantseleitöötajad; teeni",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_1"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -211,27 +256,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Kõrgemad ametnikud",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "Kõrgemad ametnikud jagunevad: 1 1) valitsusametnikud; 2 2) juhid; 3 3) nõunikud. Kõrgemad ametnikud jagunevad: valitsusametnikud; juhid; nõunikud.",
+      "estleg:legalText": "Kõrgemad ametnikud jagunevad: 1 1) valitsusametnikud; 2 2) juhid; 3 3) nõunikud. Kõrgemad ametnikud jagunevad: valitsusametnikud; juhid; nõunikud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_1"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -248,27 +302,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Ametnike ametinimetused",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Valitsusametnikud on: 1 1) riigisekretär; 1 1¹) abiminister; 2 2) kantsler; 3 3) asekantsler; 4 4) Riigikantselei peadirektor; 5 5) kehtetu - RT I 1996 89 1590 31445 1997-01-01+02:00 6 6) maavanem; 7 7) maasekretär; 8 8) riiklik lepitaja; 9 9) asjur; 10 10) riigiarhivaar; 11 11) soolise võrdõiguslikkuse volinik. Valitsusametnikud on: riigisekretär; abiminister; kantsler; asekantsler; Riigikantselei peadirektor; kehtetu - maavanem; maasekretär; riiklik lepitaja; asjur; riigiarhiv",
+      "estleg:legalText": "1 (1) Valitsusametnikud on: 1 1) riigisekretär; 1 1¹) abiminister; 2 2) kantsler; 3 3) asekantsler; 4 4) Riigikantselei peadirektor; 5 5) kehtetu - RT I 1996 89 1590 31445 1997-01-01+02:00 6 6) maavanem; 7 7) maasekretär; 8 8) riiklik lepitaja; 9 9) asjur; 10 10) riigiarhivaar; 11 11) soolise võrdõiguslikkuse volinik. Valitsusametnikud on: riigisekretär; abiminister; kantsler; asekantsler; Riigikantselei peadirektor; kehtetu - maavanem; maasekretär; riiklik lepitaja; asjur; riigiarhiv",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_2"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -318,21 +381,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Riigiteenistuse abiteenistuskohtade nimetused",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Kantseleitöötajad on: 1 1) andmesisestaja; 2 2) arveametnik; 3 3) joonestaja; 4 4) kassapidaja; 5 5) masinakirjutaja; 6 6) paljundaja; 7 7) postisaatja; 8 8) sekretär. Kantseleitöötajad on: andmesisestaja; arveametnik; joonestaja; kassapidaja; masinakirjutaja; paljundaja; postisaatja; sekretär. 2 (2) Teenindustöötajad on: 1 1) administraator; 2 2) kokk; 3 3) komandant; 4 4) laohoidja; 5 5) perenaine. Teenindustöötajad on: administraator; kokk; komandant; laohoidja; perenaine. 3 (3) Oskus- ",
+      "estleg:legalText": "1 (1) Kantseleitöötajad on: 1 1) andmesisestaja; 2 2) arveametnik; 3 3) joonestaja; 4 4) kassapidaja; 5 5) masinakirjutaja; 6 6) paljundaja; 7 7) postisaatja; 8 8) sekretär. Kantseleitöötajad on: andmesisestaja; arveametnik; joonestaja; kassapidaja; masinakirjutaja; paljundaja; postisaatja; sekretär. 2 (2) Teenindustöötajad on: 1 1) administraator; 2 2) kokk; 3 3) komandant; 4 4) laohoidja; 5 5) perenaine. Teenindustöötajad on: administraator; kokk; komandant; laohoidja; perenaine. 3 (3) Oskus- ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_2"
       },
@@ -358,21 +426,26 @@
       "@id": "estleg:RAPS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Ametinimetuste täiendamine ja täpsustamine",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Ametinimetusi on lubatud kasutada koos tööülesannet või tegevusala määrava täpsustusega. Ametinimetusi on lubatud kasutada koos tööülesannet või tegevusala määrava täpsustusega. 2 (2) Direktori nimetust võib kasutada koos täiendosaga \"pea-\". Direktori nimetust võib kasutada koos täiendosaga \"pea-\". 3 (3) Vanemametnike ametinimetuste kasutamisel on lubatud kasutada täiendosi: 1 1) pea-; 2 2) vanem-; 3 3) juhtiv-. Vanemametnike ametinimetuste kasutamisel on lubatud kasutada täiendosi: pea-; ",
+      "estleg:legalText": "1 (1) Ametinimetusi on lubatud kasutada koos tööülesannet või tegevusala määrava täpsustusega. Ametinimetusi on lubatud kasutada koos tööülesannet või tegevusala määrava täpsustusega. 2 (2) Direktori nimetust võib kasutada koos täiendosaga \"pea-\". Direktori nimetust võib kasutada koos täiendosaga \"pea-\". 3 (3) Vanemametnike ametinimetuste kasutamisel on lubatud kasutada täiendosi: 1 1) pea-; 2 2) vanem-; 3 3) juhtiv-. Vanemametnike ametinimetuste kasutamisel on lubatud kasutada täiendosi: pea-; ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_2"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -395,26 +468,33 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Palgaastme mõiste",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Palgaaste on näitarv, mis seostab ameti- või abiteenistuskohta sellele vastava palgamääraga. Palgaaste on näitarv, mis seostab ameti- või abiteenistuskohta sellele vastava palgamääraga. 2 (2) Riigiteenistujatele kehtestatakse ühtne palgaastmestik 7.-35. palgaastmeni. Riigiteenistujatele kehtestatakse ühtne palgaastmestik 7.-35. palgaastmeni. 3 (3) Käesoleva seadusega kehtestatud palgaastmetele vastavad palgamäärad ja nende kasutamise erisused kehtestab Vabariigi Valitsus ./dyn=977404&id=83",
+      "estleg:legalText": "1 (1) Palgaaste on näitarv, mis seostab ameti- või abiteenistuskohta sellele vastava palgamääraga. Palgaaste on näitarv, mis seostab ameti- või abiteenistuskohta sellele vastava palgamääraga. 2 (2) Riigiteenistujatele kehtestatakse ühtne palgaastmestik 7.-35. palgaastmeni. Riigiteenistujatele kehtestatakse ühtne palgaastmestik 7.-35. palgaastmeni. 3 (3) Käesoleva seadusega kehtestatud palgaastmetele vastavad palgamäärad ja nende kasutamise erisused kehtestab Vabariigi Valitsus ./dyn=977404&id=83",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_3"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -452,27 +532,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Ametnike palgaastmed",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Kantsleri, maavanema ja Riigikantselei peadirektori palgaaste on 35 ./dyn=977404&id=788172 . 2 (2) Asekantsleri palgaaste on 33-34 ./dyn=977404&id=788172 . 3 (3) Vabariigi Valitsuse, õiguskantsleri nõuniku ja Õiguskantsleri Kantselei direktori palgaaste on 32-33 ./dyn=977404&id=788172 . 4 (4) Riikliku ameti peadirektori, riikliku inspektsiooni peadirektori, Erastamisagentuuri peadirektori, riigiarhivaari, peaministri ja ministri nõuniku ning abi ja maasekretäri palgaaste on 30-34 ./dyn=977",
+      "estleg:legalText": "1 (1) Kantsleri, maavanema ja Riigikantselei peadirektori palgaaste on 35 ./dyn=977404&id=788172 . 2 (2) Asekantsleri palgaaste on 33-34 ./dyn=977404&id=788172 . 3 (3) Vabariigi Valitsuse, õiguskantsleri nõuniku ja Õiguskantsleri Kantselei direktori palgaaste on 32-33 ./dyn=977404&id=788172 . 4 (4) Riikliku ameti peadirektori, riikliku inspektsiooni peadirektori, Erastamisagentuuri peadirektori, riigiarhivaari, peaministri ja ministri nõuniku ning abi ja maasekretäri palgaaste on 30-34 ./dyn=977",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_3"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -522,21 +611,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RAPS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Abiteenistujate palgaastmed",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "1 (1) Kantseleitöötaja palgaaste on 8-13. Kantseleitöötaja palgaaste on 8-13. 2 (2) Teenindustöötaja palgaaste on 7-9. Teenindustöötaja palgaaste on 7-9. 3 (3) Oskus- ja käsitöölise palgaaste: 1 1) erialatöödel on 7-9; 2 2) keerukatel erialatöödel on 8-13; 3 3) eriti keerukatel erialatöödel on 9-19 ./dyn=977404&id=733998 . Oskus- ja käsitöölise palgaaste: erialatöödel on 7-9; keerukatel erialatöödel on 8-13; 4 (4) Seadmete operaatori ja mehhanismide juhi palgaaste on 9-19 ./dyn=977404&id=788172 ",
+      "estleg:legalText": "1 (1) Kantseleitöötaja palgaaste on 8-13. Kantseleitöötaja palgaaste on 8-13. 2 (2) Teenindustöötaja palgaaste on 7-9. Teenindustöötaja palgaaste on 7-9. 3 (3) Oskus- ja käsitöölise palgaaste: 1 1) erialatöödel on 7-9; 2 2) keerukatel erialatöödel on 8-13; 3 3) eriti keerukatel erialatöödel on 9-19 ./dyn=977404&id=733998 . Oskus- ja käsitöölise palgaaste: erialatöödel on 7-9; keerukatel erialatöödel on 8-13; 4 (4) Seadmete operaatori ja mehhanismide juhi palgaaste on 9-19 ./dyn=977404&id=788172 ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_3"
       },
@@ -559,15 +653,16 @@
       "@id": "estleg:RAPS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12.",
       "estleg:sourceAct": "Riigiteenistujate ametinimetuste ja palgaastmestiku seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RAPS_Map_2026"
+        "@id": "estleg:RAPS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPS_4"
       },

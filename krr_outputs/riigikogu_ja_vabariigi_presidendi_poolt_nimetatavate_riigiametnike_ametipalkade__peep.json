@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:NRAPS_Map_2026",
+      "@id": "estleg:NRAPS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus teemakaardistus",
       "dc:source": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
@@ -33,33 +32,53 @@
           "@id": "http://eurovoc.europa.eu/517"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_NRAPS",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2464"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_peaminister"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-07-22",
+        "@type": "xsd:date"
       }
     },
     {
       "@id": "estleg:NRAPS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "1(1)Peaministri, ministrite, kaitseväe juhataja, riigikontrolöri, õiguskantsleri, Riigikohtu esimehe ja liikmete ning ringkonna-, maa-, linna- ja halduskohtu kohtunike ametipalk on Eesti keskmise palga ja käesoleva seadusega kehtestatud vastava koefitsiendi korrutis. Riigikohtu esimehe ja Riigikohtu liikmete ning ringkonna-, maa-, linna- ja halduskohtu kohtunike ja kaitseväe juhataja ametipalka korrigeeritakse iga aasta alguses Eesti eelmise aasta keskmise palga alusel. Peaministri, ministrite, ",
+      "estleg:legalText": "1(1)Peaministri, ministrite, kaitseväe juhataja, riigikontrolöri, õiguskantsleri, Riigikohtu esimehe ja liikmete ning ringkonna-, maa-, linna- ja halduskohtu kohtunike ametipalk on Eesti keskmise palga ja käesoleva seadusega kehtestatud vastava koefitsiendi korrutis. Riigikohtu esimehe ja Riigikohtu liikmete ning ringkonna-, maa-, linna- ja halduskohtu kohtunike ja kaitseväe juhataja ametipalka korrigeeritakse iga aasta alguses Eesti eelmise aasta keskmise palga alusel. Peaministri, ministrite, ",
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -85,21 +104,26 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:NRAPS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Peaministri ametipalga koefitsient on 6,0.",
+      "estleg:legalText": "Peaministri ametipalga koefitsient on 6,0.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_2_v22362"
@@ -124,15 +148,16 @@
       "@id": "estleg:NRAPS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Ministri ametipalga koefitsient on 5,5.",
+      "estleg:legalText": "Ministri ametipalga koefitsient on 5,5.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_3_v22362"
@@ -146,17 +171,20 @@
       "@id": "estleg:NRAPS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Kaitseväe juhataja ametipalga koefitsient on 5,0.RT I2005654969662112005-12-23+02:00",
+      "estleg:legalText": "Kaitseväe juhataja ametipalga koefitsient on 5,0.RT I2005654969662112005-12-23+02:00",
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -173,21 +201,26 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:NRAPS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Riigikontrolöri ametipalga koefitsient on 5,5.RT I200221117277632002-03-04+02:00",
+      "estleg:legalText": "Riigikontrolöri ametipalga koefitsient on 5,5.RT I200221117277632002-03-04+02:00",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_5_v22362"
@@ -201,15 +234,16 @@
       "@id": "estleg:NRAPS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Õiguskantsleri ametipalga koefitsient on 5,5.RT I200221117277632002-03-04+02:00",
+      "estleg:legalText": "Õiguskantsleri ametipalga koefitsient on 5,5.RT I200221117277632002-03-04+02:00",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_6_v22362"
@@ -223,15 +257,16 @@
       "@id": "estleg:NRAPS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Riigikohtu esimehe ametipalga koefitsient on 6,0.RT I2002643901819572002-07-01+03:00",
+      "estleg:legalText": "Riigikohtu esimehe ametipalga koefitsient on 6,0.RT I2002643901819572002-07-01+03:00",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_7_v22362"
@@ -253,15 +288,16 @@
       "@id": "estleg:NRAPS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Riigikohtu liikme ametipalga koefitsient on 5,5.RT I2002643901819572002-07-01+03:00",
+      "estleg:legalText": "Riigikohtu liikme ametipalga koefitsient on 5,5.RT I2002643901819572002-07-01+03:00",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_8_v22362"
@@ -278,15 +314,16 @@
       "@id": "estleg:NRAPS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_9_v22362"
@@ -300,17 +337,20 @@
       "@id": "estleg:NRAPS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Ringkonnakohtu kohtuniku ametipalga koefitsient on 4,5.RT I2002643901819572002-07-01+03:00",
+      "estleg:legalText": "Ringkonnakohtu kohtuniku ametipalga koefitsient on 4,5.RT I2002643901819572002-07-01+03:00",
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -327,21 +367,26 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:NRAPS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_11_v22362"
@@ -355,17 +400,20 @@
       "@id": "estleg:NRAPS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Maa-, linna- ja halduskohtu kohtuniku ametipalga koefitsient on 4,0.RT I2002643901819572002-07-01+03:00",
+      "estleg:legalText": "Maa-, linna- ja halduskohtu kohtuniku ametipalga koefitsient on 4,0.RT I2002643901819572002-07-01+03:00",
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -382,21 +430,26 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:NRAPS_Par_12_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12¹.",
       "rdfs:label": "§ 12¹.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Peaministrile ja ministrile makstakse igakuiselt 20 protsenti ametipalgast esinduskuludeks.",
+      "estleg:legalText": "Peaministrile ja ministrile makstakse igakuiselt 20 protsenti ametipalgast esinduskuludeks.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KS_Par_76_1"
@@ -419,15 +472,16 @@
       "@id": "estleg:NRAPS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Riigiteenistujate palgaastmestiku kõrgeima astme palgamäär sätestatakse igal aastal riigieelarvega.",
+      "estleg:legalText": "Riigiteenistujate palgaastmestiku kõrgeima astme palgamäär sätestatakse igal aastal riigieelarvega.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_13_v22362"
@@ -441,15 +495,16 @@
       "@id": "estleg:NRAPS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_14_v22362"
@@ -463,15 +518,16 @@
       "@id": "estleg:NRAPS_Par_14_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14¹.",
       "rdfs:label": "§ 14¹.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Kuni 2002. aasta 31. detsembrini kehtivad § 1 lõige 1 ja §-d 7, 8, 10 ja 12 järgmises sõnastuses: Kuni 2002. aasta 31. detsembrini kehtivad § 1 lõige 1 ja §-d 7, 8, 10 ja 12 järgmises sõnastuses: « § 1. (1) Peaministri, ministri, Riigikohtu esimehe, riigikontrolöri ja õiguskantsleri ametipalk on Eesti keskmise palga ja käesoleva seadusega kehtestatud vastava koefitsiendi korrutis.»; « § 1. (1) Peaministri, ministri, Riigikohtu esimehe, riigikontrolöri ja õiguskantsleri ametipalk on Eesti keskmis",
+      "estleg:legalText": "Kuni 2002. aasta 31. detsembrini kehtivad § 1 lõige 1 ja §-d 7, 8, 10 ja 12 järgmises sõnastuses: Kuni 2002. aasta 31. detsembrini kehtivad § 1 lõige 1 ja §-d 7, 8, 10 ja 12 järgmises sõnastuses: « § 1. (1) Peaministri, ministri, Riigikohtu esimehe, riigikontrolöri ja õiguskantsleri ametipalk on Eesti keskmise palga ja käesoleva seadusega kehtestatud vastava koefitsiendi korrutis.»; « § 1. (1) Peaministri, ministri, Riigikohtu esimehe, riigikontrolöri ja õiguskantsleri ametipalk on Eesti keskmis",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KPMS_Par_1"
@@ -491,18 +547,23 @@
       "@id": "estleg:NRAPS_Par_8_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Riigikohtu kohtuniku ametipalga koefitsient on 2,3.»; Riigikohtu kohtuniku ametipalga koefitsient on 2,3.»; « § 10. Ringkonnakohtu kohtuniku ametipalga koefitsient on 1,8.»; « § 10. Ringkonnakohtu kohtuniku ametipalga koefitsient on 1,8.»; « § 12. Esimese astme kohtu kohtuniku ametipalga koefitsient on 1,6. »RT I2002643901819572002-07-01+03:00 « § 12. Esimese astme kohtu kohtuniku ametipalga koefitsient on 1,6. »",
+      "estleg:legalText": "Riigikohtu kohtuniku ametipalga koefitsient on 2,3.»; Riigikohtu kohtuniku ametipalga koefitsient on 2,3.»; « § 10. Ringkonnakohtu kohtuniku ametipalga koefitsient on 1,8.»; « § 10. Ringkonnakohtu kohtuniku ametipalga koefitsient on 1,8.»; « § 12. Esimese astme kohtu kohtuniku ametipalga koefitsient on 1,6. »RT I2002643901819572002-07-01+03:00 « § 12. Esimese astme kohtu kohtuniku ametipalga koefitsient on 1,6. »",
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
@@ -511,21 +572,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:NRAPS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_NRAPS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15.",
       "estleg:sourceAct": "Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:NRAPS_Map_2026"
+        "@id": "estleg:NRAPS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 1997. aasta 1. jaanuaril.",
+      "estleg:legalText": "Käesolev seadus jõustub 1997. aasta 1. jaanuaril.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NRAPS_Par_15_v22362"

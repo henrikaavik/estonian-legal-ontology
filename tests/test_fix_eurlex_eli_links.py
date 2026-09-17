@@ -5,16 +5,11 @@ Pure tmp_path / in-memory tests — no corpus, no LFS, no network.
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-SCRIPTS = Path(__file__).resolve().parent.parent / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
-
-import fix_eurlex_eli_links as fix  # noqa: E402
+from estleg import fix_eurlex_eli_links as fix
 
 CELEX = "32008R0015"
 ELI = "http://data.europa.eu/eli/reg/2008/15/oj"

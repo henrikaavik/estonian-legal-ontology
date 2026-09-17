@@ -2,13 +2,9 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
 import backfill_eu_provenance as bep
-
 
 CELEX_LEG = "32016R0679"
 CELEX_DEC = "61999TO0159"
@@ -60,7 +56,7 @@ class TestBackfillNode:
 
     def test_skips_non_eu_node_and_node_without_celex(self):
         # An ontology/map header node (no celex) must be left untouched.
-        header = {"@id": "estleg:EURlex_Regulations_Map_2026",
+        header = {"@id": "estleg:EURlex_Regulations_Map",
                   "@type": ["owl:Ontology"]}
         assert bep.backfill_node(header) is False
         assert "dcterms:source" not in header
@@ -76,8 +72,40 @@ class TestBackfillNode:
                 "dcterms:source": {"@id": "PRE-EXISTING"}}
         assert bep.backfill_node(node) is True   # adds sameAs + eli:id_local
         assert node["dcterms:source"] == {"@id": "PRE-EXISTING"}  # untouched
+        assert "dcterms:title" not in node  # no rdfs:label to copy from
         # Second pass is a no-op.
         assert bep.backfill_node(node) is False
+
+    def test_court_decision_copies_label_object_to_title(self):
+        label = {"@value": "Kohtuotsus C-159/99", "@language": "et"}
+        node = {"@id": "estleg:EUCJ_61999TO0159",
+                "@type": ["owl:NamedIndividual", "estleg:EUCourtDecision"],
+                "estleg:celexNumber": CELEX_DEC,
+                "rdfs:label": label}
+        assert bep.backfill_node(node) is True
+        assert node["dcterms:title"] == label
+        assert node["dcterms:title"] is not label  # copied, not aliased
+        # Title backfill is idempotent once the other provenance fields exist.
+        assert bep.backfill_node(node) is False
+
+    def test_legislation_copies_string_label_to_title(self):
+        node = {"@type": ["estleg:EULegislation"],
+                "estleg:celexNumber": CELEX_LEG,
+                "rdfs:label": "Isikuandmete kaitse üldmäärus"}
+        assert bep.backfill_node(node) is True
+        assert node["dcterms:title"] == "Isikuandmete kaitse üldmäärus"
+        assert bep.backfill_node(node) is False
+
+    def test_existing_title_is_preserved(self):
+        title = {"@value": "Existing title", "@language": "et"}
+        node = {"@type": "estleg:EUCourtDecision",
+                "estleg:celexNumber": CELEX_DEC,
+                "owl:sameAs": {"@id": RESOURCE + CELEX_DEC},
+                "dcterms:source": {"@id": RESOURCE + CELEX_DEC},
+                "rdfs:label": {"@value": "Different label", "@language": "et"},
+                "dcterms:title": title}
+        assert bep.backfill_node(node) is False
+        assert node["dcterms:title"] == title
 
 
 class TestProcessFile:

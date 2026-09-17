@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:ASKU_Map_2026",
+      "@id": "estleg:ASKU_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -24,16 +23,13 @@
       "dcterms:source": {
         "@id": "https://www.riigiteataja.ee/akt/22339.xml"
       },
-      "owl:sameAs": {
-        "@id": "https://www.riigiteataja.ee/akt/22339.xml"
-      },
       "estleg:kehtiv": {
         "@value": "2026-05-24",
         "@type": "xsd:date"
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_154175_Map_2026"
+          "@id": "estleg:Reg_154175_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -42,17 +38,43 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:references": [
+        {
+          "@id": "estleg:ASKU_Par_2"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASKU_Par_3"
+        },
+        {
+          "@id": "estleg:ASKU_Par_3_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:ASKU_TopicScheme",
@@ -84,13 +106,13 @@
       "@id": "estleg:ASKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ühineda juurdelisatud ajutise sisseveo konventsiooniga./12914432, mis on sõlmitu...]",
       "estleg:sourceAct": "Ajutise sisseveo konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASKU_Map_2026"
+        "@id": "estleg:ASKU_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud , mis on sõlmitud 1990. aasta 28. juunil Istanbulis.",
       "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1990. aasta 28. juunil Istanbulis.",
@@ -99,7 +121,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASKU_Par_1_Lg_Unknown_1"
+          "@id": "estleg:ASKU_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -123,7 +145,7 @@
       ]
     },
     {
-      "@id": "estleg:ASKU_Par_1_Lg_Unknown_1",
+      "@id": "estleg:ASKU_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -137,13 +159,13 @@
       "@id": "estleg:ASKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik kon...]",
       "estleg:sourceAct": "Ajutise sisseveo konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASKU_Map_2026"
+        "@id": "estleg:ASKU_Map"
       },
       "estleg:summary": "Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik konventsiooni lisadega A, B.1, B.2, B.3, B.5, B.6, B.9, C ja D.",
       "estleg:legalText": "Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik konventsiooni lisadega A, B.1, B.2, B.3, B.5, B.6, B.9, C ja D.",
@@ -152,7 +174,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASKU_Par_2_Lg_Unknown_1"
+          "@id": "estleg:ASKU_Par_2_Lg_1"
         }
       ],
       "estleg:referencedBy": [
@@ -160,7 +182,7 @@
           "@id": "estleg:ASKU_Par_3"
         },
         {
-          "@id": "estleg:ASKU_Par_3_Lg_Unknown_1"
+          "@id": "estleg:ASKU_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -170,7 +192,7 @@
       ]
     },
     {
-      "@id": "estleg:ASKU_Par_2_Lg_Unknown_1",
+      "@id": "estleg:ASKU_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -184,13 +206,13 @@
       "@id": "estleg:ASKU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [Vabariigi Valitsus kehtestab./dyn=22339&id=72812 ajutise sisseveo konventsiooni...]",
       "estleg:sourceAct": "Ajutise sisseveo konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:ASKU_Map_2026"
+        "@id": "estleg:ASKU_Map"
       },
       "estleg:summary": "ajutise sisseveo konventsiooni rakendamiseks määruse ning vajadusel viib vastavalt konventsiooni artiklile 29 sisse ja võtab tagasi lisatingimused käesoleva seaduse §-s 2 nimetatud lisade suhtes. Riigikogu esimees Toomas SAVI",
       "estleg:legalText": "ajutise sisseveo konventsiooni rakendamiseks määruse ning vajadusel viib vastavalt konventsiooni artiklile 29 sisse ja võtab tagasi lisatingimused käesoleva seaduse §-s 2 nimetatud lisade suhtes. Riigikogu esimees Toomas SAVI",
@@ -199,15 +221,19 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASKU_Par_3_Lg_Unknown_1"
+          "@id": "estleg:ASKU_Par_3_Lg_1"
         },
         {
-          "@id": "estleg:ASKU_Par_3_Lg_Unknown_2"
+          "@id": "estleg:ASKU_Par_3_Lg_2"
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
@@ -216,7 +242,7 @@
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_154175_Map_2026"
+          "@id": "estleg:Reg_154175_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -238,10 +264,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:ASKU_Par_3_Lg_Unknown_1",
+      "@id": "estleg:ASKU_Par_3_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -257,7 +287,7 @@
       ]
     },
     {
-      "@id": "estleg:ASKU_Par_3_Lg_Unknown_2",
+      "@id": "estleg:ASKU_Par_3_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -265,6 +295,18 @@
       "estleg:legalText": "Riigikogu esimees Toomas SAVI",
       "estleg:parentProvision": {
         "@id": "estleg:ASKU_Par_3"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

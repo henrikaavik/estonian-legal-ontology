@@ -2,21 +2,33 @@
 # Adopted in issue #516, replacing the non-resolvable, government-owned
 # data.riik.ee/ontology/estleg# scheme.
 #
-# Maintainer / contact: Henrik Aavik — https://github.com/henrikaavik
-# Project / source:      https://github.com/henrikaavik/estonian-legal-ontology
+# Maintainer / contact: Henrik Aavik
+# email: henrik.aavik@gmail.com
+# GitHub username: henrikaavik
+# Project / source: https://github.com/henrikaavik/estonian-legal-ontology
 #
-# A content-negotiating 303 resolver (RDF vs HTML per Accept) is planned. Until
-# it is stood up, term IRIs temporarily redirect to the project repository so
-# the identifiers resolve to something human-usable ("stable ID now, resolver
+# Registered via perma-id/w3id.org PR #6575, merged 2026-08-19. This file is the
+# staging copy; edits take effect only once re-submitted to perma-id/w3id.org.
+#
+# A content-negotiating 303 resolver (RDF vs HTML per Accept) is planned (#728).
+# Until it is stood up, term IRIs temporarily redirect to the project repository
+# so the identifiers resolve to something human-usable ("stable ID now, resolver
 # later").
 
 Options +FollowSymLinks
 RewriteEngine on
 
+# Version IRI (https://w3id.org/estleg/<major>.<minor>.<patch>) → the matching
+# tagged GitHub Release. Generalised from a hard-coded 1.0.0 to a SemVer capture
+# so a new release needs no w3id resubmission (#690). A tag that does not exist
+# yields GitHub's own 404; anything that is not a bare SemVer triple falls
+# through to the catch-all at the bottom of this file.
+RewriteRule ^(\d+\.\d+\.\d+)/?$ https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v$1 [R=302,L]
+
 # (Future) content negotiation to the machine-readable graph:
 #   RewriteCond %{HTTP_ACCEPT} text/turtle [OR]
 #   RewriteCond %{HTTP_ACCEPT} application/ld\+json
-#   RewriteRule ^(.*)$ https://raw.githubusercontent.com/henrikaavik/estonian-legal-ontology/main/krr_outputs/combined_ontology.jsonld [R=303,L]
+#   RewriteRule ^(.*)$ https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/combined_ontology.jsonld.gz [R=303,L]
 
 # Interim: send every IRI under this namespace to the project repository.
 RewriteRule ^(.*)$ https://github.com/henrikaavik/estonian-legal-ontology [R=302,L]

@@ -12,13 +12,9 @@ touched (the module's ``KRR`` corpus-root constant is monkeypatched per test).
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import backfill_partofact_415 as bpa  # noqa: E402
-
+from estleg import backfill_partofact_415 as bpa
 
 # ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -44,7 +40,7 @@ def _act_and_provision_graph() -> list[dict]:
     """
     return [
         {
-            "@id": "estleg:TestLaw_Map_2026",
+            "@id": "estleg:TestLaw_Map",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "rdfs:label": "Test law",
         },
@@ -116,7 +112,7 @@ def test_main_apply_stamps_partofact(tmp_path, monkeypatch):
     graph = read_graph(peep)
     prov = next(n for n in graph if n["@id"] == "estleg:TestLaw_Par_1")
     # The edge was added and points at the act root by IRI.
-    assert prov["estleg:partOfAct"] == {"@id": "estleg:TestLaw_Map_2026"}
+    assert prov["estleg:partOfAct"] == {"@id": "estleg:TestLaw_Map"}
     # Inserted in the generators' key position: right after sourceAct.
     keys = list(prov.keys())
     assert keys.index("estleg:partOfAct") == keys.index("estleg:sourceAct") + 1
@@ -164,4 +160,4 @@ def test_backfill_file_default_write_true_writes(tmp_path):
     assert (prov_n, chap_n) == (1, 0)
 
     prov = next(n for n in read_graph(peep) if n["@id"] == "estleg:TestLaw_Par_1")
-    assert prov["estleg:partOfAct"] == {"@id": "estleg:TestLaw_Map_2026"}
+    assert prov["estleg:partOfAct"] == {"@id": "estleg:TestLaw_Map"}

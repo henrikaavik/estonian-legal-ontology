@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -14,85 +13,38 @@
       "@id": "estleg:TsUS_Osa7_v1",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "TsÜS Osa 7 ontoloogia",
       "dc:title": "Tsiviilõiguste teostamine (§138-169)",
       "dcterms:subject": [
         {
-          "@id": "http://eurovoc.europa.eu/2411",
-          "rdfs:label": "õigus",
-          "skos:prefLabel": "Law"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2431",
+          "@id": "http://eurovoc.europa.eu/523",
           "rdfs:label": "tsiviilõigus",
-          "skos:prefLabel": "Civil law"
+          "skos:prefLabel": "civil law"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5226",
-          "rdfs:label": "kaubandus",
-          "skos:prefLabel": "Trade"
+          "@id": "http://eurovoc.europa.eu/10",
+          "rdfs:label": "sisekaubandus",
+          "skos:prefLabel": "domestic trade"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2841",
+          "@id": "http://eurovoc.europa.eu/75",
           "rdfs:label": "konkurents",
-          "skos:prefLabel": "Competition"
+          "skos:prefLabel": "competition"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2416",
-          "rdfs:label": "inimõigused",
-          "skos:prefLabel": "Human rights"
+          "@id": "http://eurovoc.europa.eu/538",
+          "rdfs:label": "põhiõigused",
+          "skos:prefLabel": "fundamental rights"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2451",
-          "rdfs:label": "õiguskoostöö",
-          "skos:prefLabel": "Judicial cooperation"
+          "@id": "http://eurovoc.europa.eu/217",
+          "rdfs:label": "kohtualane koostöö",
+          "skos:prefLabel": "judicial cooperation"
         }
-      ]
-    },
-    {
-      "@id": "https://w3id.org/estleg/LegalPart",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Seaduse osa"
-    },
-    {
-      "@id": "https://w3id.org/estleg/Chapter",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Peatükk"
-    },
-    {
-      "@id": "https://w3id.org/estleg/Division",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Jagu"
-    },
-    {
-      "@id": "https://w3id.org/estleg/Section",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Paragrahv"
-    },
-    {
-      "@id": "https://w3id.org/estleg/Provision",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Lõige/punkt"
-    },
-    {
-      "@id": "https://w3id.org/estleg/LegalConcept",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Õigusmõiste"
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "https://w3id.org/estleg/hasChapter",
@@ -125,42 +77,24 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": "sisaldab paragrahvi",
-      "rdfs:domain": {
-        "@id": "https://w3id.org/estleg/Division"
-      },
-      "rdfs:range": {
-        "@id": "https://w3id.org/estleg/Section"
-      }
+      "rdfs:label": "sisaldab paragrahvi"
     },
     {
       "@id": "https://w3id.org/estleg/hasProvision",
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": "sisaldab normiteksti",
-      "rdfs:domain": {
-        "@id": "https://w3id.org/estleg/Section"
-      },
-      "rdfs:range": {
-        "@id": "https://w3id.org/estleg/Provision"
-      }
+      "rdfs:label": "sisaldab normiteksti"
     },
     {
       "@id": "https://w3id.org/estleg/coversConcept",
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": "katab mõistet",
-      "rdfs:domain": {
-        "@id": "https://w3id.org/estleg/Section"
-      },
-      "rdfs:range": {
-        "@id": "https://w3id.org/estleg/LegalConcept"
-      }
+      "rdfs:label": "katab mõistet"
     },
     {
-      "@id": "https://w3id.org/estleg/ÕigusteKaitsmine",
+      "@id": "https://w3id.org/estleg/OigusteKaitsmine",
       "@type": [
         "estleg:LegalConcept",
         "owl:NamedIndividual"
@@ -168,7 +102,7 @@
       "rdfs:label": "Õiguste kaitsmine"
     },
     {
-      "@id": "https://w3id.org/estleg/ÕigusteEnnetamine",
+      "@id": "https://w3id.org/estleg/OigusteEnnetamine",
       "@type": [
         "estleg:LegalConcept",
         "owl:NamedIndividual"
@@ -420,7 +354,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_138",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "138",
       "rdfs:label": "§ 138. Hea usu põhimõte",
@@ -437,11 +372,11 @@
       },
       "estleg:coversConcept": [
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_138"
+        "@id": "estleg:TsUS_Osa7_Par_138"
       }
     },
     {
@@ -457,7 +392,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_139",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "139",
       "rdfs:label": "§ 139. Heausksuse eeldus",
@@ -471,11 +407,11 @@
       },
       "estleg:coversConcept": [
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_139"
+        "@id": "estleg:TsUS_Osa7_Par_139"
       }
     },
     {
@@ -491,7 +427,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_140",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "140",
       "rdfs:label": "§ 140. Hädakaitse",
@@ -505,14 +442,14 @@
       },
       "estleg:coversConcept": [
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteKaitsmine"
+          "@id": "https://w3id.org/estleg/OigusteKaitsmine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_140"
+        "@id": "estleg:TsUS_Osa7_Par_140"
       }
     },
     {
@@ -546,7 +483,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_141",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "141",
       "rdfs:label": "§ 141. Hädaseisund",
@@ -566,14 +504,14 @@
       },
       "estleg:coversConcept": [
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteKaitsmine"
+          "@id": "https://w3id.org/estleg/OigusteKaitsmine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_141"
+        "@id": "estleg:TsUS_Osa7_Par_141"
       }
     },
     {
@@ -598,7 +536,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_142",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "142",
       "rdfs:label": "§ 142. Aegumise mõiste",
@@ -618,11 +557,11 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/AegumiseTagajärjed"
+          "@id": "https://w3id.org/estleg/AegumiseTagajarjed"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_142"
+        "@id": "estleg:TsUS_Osa7_Par_142"
       }
     },
     {
@@ -638,7 +577,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_143",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "143",
       "rdfs:label": "§ 143. Aegumise arvestamine kohtu poolt",
@@ -655,14 +595,14 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/AegumiseTagajärjed"
+          "@id": "https://w3id.org/estleg/AegumiseTagajarjed"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteKaitsmine"
+          "@id": "https://w3id.org/estleg/OigusteKaitsmine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_143"
+        "@id": "estleg:TsUS_Osa7_Par_143"
       }
     },
     {
@@ -678,7 +618,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_144",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "144",
       "rdfs:label": "§ 144. Kõrvalkohustusest tuleneva nõude aegumine",
@@ -695,11 +636,11 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/AegumiseTagajärjed"
+          "@id": "https://w3id.org/estleg/AegumiseTagajarjed"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_144"
+        "@id": "estleg:TsUS_Osa7_Par_144"
       }
     },
     {
@@ -733,7 +674,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_145",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "145",
       "rdfs:label": "§ 145. Kokkulepe aegumise kohta",
@@ -756,11 +698,11 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/AegumiseTagajärjed"
+          "@id": "https://w3id.org/estleg/AegumiseTagajarjed"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_145"
+        "@id": "estleg:TsUS_Osa7_Par_145"
       }
     },
     {
@@ -785,7 +727,8 @@
       "@id": "https://w3id.org/estleg/Par145_1",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "145",
       "rdfs:label": "§ 145^1. § 145 1 . Aegumise tagajärjed tagatisele",
@@ -805,7 +748,7 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/AegumiseTagajärjed"
+          "@id": "https://w3id.org/estleg/AegumiseTagajarjed"
         }
       ]
     },
@@ -858,7 +801,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_146",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "146",
       "rdfs:label": "§ 146. Tehingust tuleneva nõude aegumistähtaeg",
@@ -891,7 +835,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_146"
+        "@id": "estleg:TsUS_Osa7_Par_146"
       }
     },
     {
@@ -934,7 +878,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_147",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "147",
       "rdfs:label": "§ 147. Aegumistähtaja algus",
@@ -964,7 +909,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_147"
+        "@id": "estleg:TsUS_Osa7_Par_147"
       }
     },
     {
@@ -980,7 +925,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_148",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "148",
       "rdfs:label": "§ 148. Lepingueelsetest läbirääkimistest tuleneva nõude aegumine",
@@ -997,14 +943,14 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         },
         {
           "@id": "https://w3id.org/estleg/TehingustTulenevaNoudeAegumine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_148"
+        "@id": "estleg:TsUS_Osa7_Par_148"
       }
     },
     {
@@ -1020,7 +966,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_149",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "149",
       "rdfs:label": "§ 149. Seadusest tuleneva nõude aegumistähtaeg",
@@ -1041,7 +988,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_149"
+        "@id": "estleg:TsUS_Osa7_Par_149"
       }
     },
     {
@@ -1075,7 +1022,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_150",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "150",
       "rdfs:label": "§ 150. Kahju õigusvastasest tekitamisest tuleneva nõude aegumistähtaeg",
@@ -1102,7 +1050,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_150"
+        "@id": "estleg:TsUS_Osa7_Par_150"
       }
     },
     {
@@ -1127,7 +1075,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_151",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "151",
       "rdfs:label": "§ 151. Alusetust rikastumisest tuleneva nõude aegumistähtaeg",
@@ -1151,7 +1100,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_151"
+        "@id": "estleg:TsUS_Osa7_Par_151"
       }
     },
     {
@@ -1176,7 +1125,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_152",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "152",
       "rdfs:label": "§ 152. Aegumine nõuete konkurentsi korral",
@@ -1200,7 +1150,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_152"
+        "@id": "estleg:TsUS_Osa7_Par_152"
       }
     },
     {
@@ -1225,7 +1175,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_153",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "153",
       "rdfs:label": "§ 153. Surma põhjustamisest, kehavigastuse tekitamisest, tervise kahjustamisest või vabaduse võtmisest tuleneva nõude aegumine",
@@ -1249,7 +1200,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_153"
+        "@id": "estleg:TsUS_Osa7_Par_153"
       }
     },
     {
@@ -1265,7 +1216,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_154",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "154",
       "rdfs:label": "§ 154. Korduvate kohustuste täitmisele suunatud nõude aegumine",
@@ -1286,7 +1238,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_154"
+        "@id": "estleg:TsUS_Osa7_Par_154"
       }
     },
     {
@@ -1311,7 +1263,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_155",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "155",
       "rdfs:label": "§ 155. Omandiõigusest tuleneva väljaandmisnõude ning perekonna- ja pärimisõigusest tuleneva nõude aegumine",
@@ -1335,7 +1288,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_155"
+        "@id": "estleg:TsUS_Osa7_Par_155"
       }
     },
     {
@@ -1351,7 +1304,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_156",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "156",
       "rdfs:label": "§ 156. Aegumine õigusjärgluse korral",
@@ -1372,7 +1326,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_156"
+        "@id": "estleg:TsUS_Osa7_Par_156"
       }
     },
     {
@@ -1415,7 +1369,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_157",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "157",
       "rdfs:label": "§ 157. Jõustunud kohtuotsusega tunnustatud nõude aegumine",
@@ -1445,7 +1400,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_157"
+        "@id": "estleg:TsUS_Osa7_Par_157"
       }
     },
     {
@@ -1470,7 +1425,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_158",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "158",
       "rdfs:label": "§ 158. Aegumise katkemine nõude tunnustamisega",
@@ -1494,7 +1450,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_158"
+        "@id": "estleg:TsUS_Osa7_Par_158"
       }
     },
     {
@@ -1519,7 +1475,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_159",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "159",
       "rdfs:label": "§ 159. Aegumise katkemine täitetoimingu puhul",
@@ -1542,11 +1499,11 @@
           "@id": "https://w3id.org/estleg/AegumiseKatkemineJaPeatumine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteKaitsmine"
+          "@id": "https://w3id.org/estleg/OigusteKaitsmine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_159"
+        "@id": "estleg:TsUS_Osa7_Par_159"
       }
     },
     {
@@ -1589,7 +1546,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_160",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "160",
       "rdfs:label": "§ 160. Aegumise peatumine hagi esitamisega",
@@ -1615,14 +1573,14 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteKaitsmine"
+          "@id": "https://w3id.org/estleg/OigusteKaitsmine"
         },
         {
           "@id": "https://w3id.org/estleg/AegumiseKatkemineJaPeatumine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_160"
+        "@id": "estleg:TsUS_Osa7_Par_160"
       }
     },
     {
@@ -1647,7 +1605,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_161",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "161",
       "rdfs:label": "§ 161. Aegumise peatumine vahekohtumenetluse korral",
@@ -1667,14 +1626,14 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteKaitsmine"
+          "@id": "https://w3id.org/estleg/OigusteKaitsmine"
         },
         {
           "@id": "https://w3id.org/estleg/AegumiseKatkemineJaPeatumine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_161"
+        "@id": "estleg:TsUS_Osa7_Par_161"
       }
     },
     {
@@ -1690,7 +1649,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_162",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "162",
       "rdfs:label": "§ 162. Aegumise peatumine kohustuse täitmisest keeldumise õiguse puhul",
@@ -1710,11 +1670,11 @@
           "@id": "https://w3id.org/estleg/AegumiseKatkemineJaPeatumine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_162"
+        "@id": "estleg:TsUS_Osa7_Par_162"
       }
     },
     {
@@ -1730,7 +1690,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_163",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "163",
       "rdfs:label": "§ 163. Aegumise peatumine vääramatu jõu tõttu",
@@ -1751,7 +1712,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_163"
+        "@id": "estleg:TsUS_Osa7_Par_163"
       }
     },
     {
@@ -1794,7 +1755,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_164",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "164",
       "rdfs:label": "§ 164. Aegumise peatumine perekondlikul põhjusel või eestkoste ajal",
@@ -1824,7 +1786,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_164"
+        "@id": "estleg:TsUS_Osa7_Par_164"
       }
     },
     {
@@ -1849,7 +1811,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_165",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "165",
       "rdfs:label": "§ 165. Aegumise peatumine piiratud teovõimega isiku puhul",
@@ -1873,7 +1836,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_165"
+        "@id": "estleg:TsUS_Osa7_Par_165"
       }
     },
     {
@@ -1898,7 +1861,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_166",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "166",
       "rdfs:label": "§ 166. Aegumise peatumine pärimise korral",
@@ -1922,7 +1886,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_166"
+        "@id": "estleg:TsUS_Osa7_Par_166"
       }
     },
     {
@@ -1956,7 +1920,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_167",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "167",
       "rdfs:label": "§ 167. Aegumise peatumine läbirääkimiste korral",
@@ -1979,14 +1944,14 @@
           "@id": "https://w3id.org/estleg/Aegumine"
         },
         {
-          "@id": "https://w3id.org/estleg/ÕigusteEnnetamine"
+          "@id": "https://w3id.org/estleg/OigusteEnnetamine"
         },
         {
           "@id": "https://w3id.org/estleg/AegumiseKatkemineJaPeatumine"
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_167"
+        "@id": "estleg:TsUS_Osa7_Par_167"
       }
     },
     {
@@ -2011,7 +1976,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_168",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "168",
       "rdfs:label": "§ 168. Peatumise toime",
@@ -2035,7 +2001,7 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_168"
+        "@id": "estleg:TsUS_Osa7_Par_168"
       }
     },
     {
@@ -2051,7 +2017,8 @@
       "@id": "https://w3id.org/estleg/TsUS_Par_169",
       "@type": [
         "estleg:Section",
-        "owl:NamedIndividual"
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
       ],
       "estleg:sectionNumber": "169",
       "rdfs:label": "§ 169. Aegumise peatumine nõuete konkurentsi korral",
@@ -2072,11 +2039,11 @@
         }
       ],
       "owl:sameAs": {
-        "@id": "estleg:TsÜS_Osa7_Par_169"
+        "@id": "estleg:TsUS_Osa7_Par_169"
       }
     },
     {
-      "@id": "https://w3id.org/estleg/AegumiseTagajärjed",
+      "@id": "https://w3id.org/estleg/AegumiseTagajarjed",
       "@type": [
         "estleg:LegalConcept",
         "owl:NamedIndividual"

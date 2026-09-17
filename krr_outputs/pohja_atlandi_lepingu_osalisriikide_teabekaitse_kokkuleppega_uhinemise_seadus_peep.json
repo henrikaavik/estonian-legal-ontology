@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:PALOTKU_Map_2026",
+      "@id": "estleg:PALOTKU_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Põhja-Atlandi lepingu osalisriikide teabekaitse kokkuleppega ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/818352.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/818352.xml"
       },
       "estleg:kehtiv": {
@@ -36,17 +32,25 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_pohja_atlandi_lepingu_osalisriikide_teabekaitse_kokkuleppega_uhinemise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2004-11-19",
+        "@type": "xsd:date"
+      },
+      "estleg:isRatificationShell": {
+        "@value": "true",
+        "@type": "xsd:boolean"
+      },
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
       "@id": "estleg:PALOTKU_TopicScheme",
@@ -78,13 +82,13 @@
       "@id": "estleg:PALOTKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_pohja_atlandi_lepingu_osalisriikide_teabekaitse_kokkuleppega_uhinemise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ühineda juurdelisatud Põhja-Atlandi lepingu osalisriikide teabekaitse kokkuleppe...]",
       "estleg:sourceAct": "Põhja-Atlandi lepingu osalisriikide teabekaitse kokkuleppega ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PALOTKU_Map_2026"
+        "@id": "estleg:PALOTKU_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud",
       "estleg:legalText": "Ühineda juurdelisatud",
@@ -93,7 +97,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:PALOTKU_Par_1_Lg_Unknown_1"
+          "@id": "estleg:PALOTKU_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -111,7 +115,7 @@
       ]
     },
     {
-      "@id": "estleg:PALOTKU_Par_1_Lg_Unknown_1",
+      "@id": "estleg:PALOTKU_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -125,13 +129,13 @@
       "@id": "estleg:PALOTKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_pohja_atlandi_lepingu_osalisriikide_teabekaitse_kokkuleppega_uhinemise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table summary=\"allk...]",
       "estleg:sourceAct": "Põhja-Atlandi lepingu osalisriikide teabekaitse kokkuleppega ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PALOTKU_Map_2026"
+        "@id": "estleg:PALOTKU_Map"
       },
       "estleg:summary": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:legalText": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
@@ -140,7 +144,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:PALOTKU_Par_2_Lg_Unknown_1"
+          "@id": "estleg:PALOTKU_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -150,7 +154,7 @@
       ]
     },
     {
-      "@id": "estleg:PALOTKU_Par_2_Lg_Unknown_1",
+      "@id": "estleg:PALOTKU_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

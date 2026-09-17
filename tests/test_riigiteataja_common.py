@@ -5,8 +5,8 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
-import riigiteataja_common
-from riigiteataja_common import (
+from estleg import riigiteataja_common
+from estleg.riigiteataja_common import (
     build_xml_url,
     collect_text,
     fetch_xml,

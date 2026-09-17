@@ -11,14 +11,13 @@ from pathlib import Path
 
 import pytest
 
-import strip_unknown_subsection_numbers as mod
-from strip_unknown_subsection_numbers import (
+from estleg import strip_unknown_subsection_numbers as mod
+from estleg.strip_unknown_subsection_numbers import (
     SUBSECTION_NUMBER_KEY,
     _is_unknown_placeholder,
     process_file,
     strip_doc,
 )
-
 
 # ── _is_unknown_placeholder ────────────────────────────────────────────────
 

@@ -13,14 +13,10 @@ plus tmp_path file fixtures (no real corpus).
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import generate_annotations as ga  # noqa: E402
-import remove_spurious_annotations_598 as rsa  # noqa: E402
-
+from estleg import generate_annotations as ga
+from estleg import remove_spurious_annotations_598 as rsa
 
 # ---------------------------------------------------------------------------
 # Fixtures: a tiny real _LawIndex + matching iri_title, and node/doc builders.
@@ -327,7 +323,7 @@ def test_build_iri_title_map(tmp_path: Path):
     peep = {
         "@graph": [
             {
-                "@id": "estleg:MGS_Map_2026",
+                "@id": "estleg:MGS_Map",
                 "@type": ["owl:Ontology"],
                 "dc:source": "Maagaasiseadus (RT I, 2003)",
             },
@@ -339,4 +335,4 @@ def test_build_iri_title_map(tmp_path: Path):
     )
     mapping = rsa.build_iri_title_map(tmp_path)
     # Parenthetical "(RT I, …)" stripped and diacritics normalized by _norm_name.
-    assert mapping == {"estleg:MGS_Map_2026": "maagaasiseadus"}
+    assert mapping == {"estleg:MGS_Map": "maagaasiseadus"}

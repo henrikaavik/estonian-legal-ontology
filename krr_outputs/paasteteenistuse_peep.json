@@ -2,24 +2,23 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:PAASTS_Map_2026",
+      "@id": "estleg:PAASTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "owl:deprecated": true,
       "dcterms:isReplacedBy": {
-        "@id": "estleg:PäästeTS_Map_2026"
+        "@id": "estleg:PaasteTS_Map"
       },
       "rdfs:label": "Päästeteenistuse seaduse teemakaardistus",
       "dc:source": "Päästeseadus (Riigi Teataja, kehtiv redaktsioon)",
@@ -33,17 +32,23 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_PAASTS",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:temporalStatus": "unknown"
     },
     {
       "@id": "estleg:Cluster_RescueFunctions",
@@ -73,7 +78,7 @@
       "@id": "estleg:PAASTS_Par_YlesandedJaPaadevused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 1–§ 5",
       "rdfs:label": "Päästeasutuse eesmärk, pädevus ja ülesannete ulatus",
@@ -83,14 +88,14 @@
       "estleg:summary": "Sätestab päästeasutuse rolli inimelude, vara ja keskkonna kaitsel ning kirjeldab päästeteenistuse põhiülesandeid ohu ennetamisel, päästetöö korraldamisel ja avaliku turvalisuse tagamisel.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       }
     },
     {
       "@id": "estleg:PAASTS_Par_PaastetooKorraldus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 6–§ 10",
       "rdfs:label": "Päästetöö juhtimine, osalejad ja koostöö",
@@ -100,22 +105,28 @@
       "estleg:summary": "Reguleerib päästetöö juhtimise aluseid, eri osapoolte kaasamist ning asutustevahelist koostööd õnnetuste, kriiside ja muude ohuolukordade lahendamisel.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PAASTS_Par_JarelevalveJaSunnimeetmed",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 11–§ 14",
       "rdfs:label": "Riiklik järelevalve, ettekirjutus ja sunnimehhanismid",
@@ -125,14 +136,14 @@
       "estleg:summary": "Määrab päästeasutuse järelevalvepädevuse, ettekirjutuse tegemise alused ja õiguskaitsevahendid olukordades, kus tuleohutus- või päästenõudeid ei täideta.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       }
     },
     {
       "@id": "estleg:PAASTS_Par_HadaabiKorraldus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 15–§ 18",
       "rdfs:label": "Hädaabi vastuvõtmine ja väljasõidu algatamine",
@@ -142,14 +153,14 @@
       "estleg:summary": "Kirjeldab hädaabiteate menetlemise põhiloogikat: teate vastuvõtmine, ohu hindamine, prioriseerimine ja sobiva päästeressursi väljasaatmine.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       }
     },
     {
       "@id": "estleg:PAASTS_Par_ReageerimisKord",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 19–§ 22",
       "rdfs:label": "Operatiivne reageerimine ja sündmuskohal tegutsemine",
@@ -159,22 +170,28 @@
       "estleg:summary": "Sätestab reageerimise põhimõtted päästesündmusel, sh käsuliini, koosvõime politsei/kiirabi jt asutustega ning kiire sekkumise nõude inimelu ja tervise kaitseks.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PAASTS_Par_OiguslikudAlusedSeKKumiseks",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 23–§ 26",
       "rdfs:label": "Isiku ja vara puutumatuse riive hädaolukorras",
@@ -184,22 +201,28 @@
       "estleg:summary": "Reguleerib päästetöö käigus sekkumiste õigusaluseid (nt juurdepääs, evakuatsioon, ohuallika kõrvaldamine) koos proportsionaalsuse ja vältimatu vajaduse nõudega.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PAASTS_Par_TuleohutusNouded",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 27–§ 31",
       "rdfs:label": "Tuleohutuse üldnõuded ja vastutavad isikud",
@@ -209,22 +232,28 @@
       "estleg:summary": "Määratleb tuleohutuse põhinõuded ehitistes ja tegevustes, sh omaniku/valdaja kohustused ennetada tulekahju tekkimist ja levikut.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:PAASTS_Par_EnnetusJaKoolitus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 32–§ 36",
       "rdfs:label": "Tuleohutuse ennetus, juhendamine ja teavitustöö",
@@ -234,14 +263,14 @@
       "estleg:summary": "Koondab ennetusmeetmed, tuleohutusalase teavitamise ja koolitamise põhimõtted, et vähendada tulekahjude riski ning tõsta valmisolekut õnnetuse korral.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       }
     },
     {
       "@id": "estleg:PAASTS_Par_TuleohutuseJarelevalve",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PAASTS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "PääS § 37–§ 40",
       "rdfs:label": "Tuleohutusjärelevalve ja rikkumiste kõrvaldamine",
@@ -251,7 +280,7 @@
       "estleg:summary": "Sätestab päästeasutuse kontrolliõigused, rikkumiste kõrvaldamise ettekirjutused ja rakendatavad sunnivahendid tuleohutusnõuete täitmise tagamiseks.",
       "estleg:sourceAct": "Päästeseadus",
       "estleg:partOfAct": {
-        "@id": "estleg:PAASTS_Map_2026"
+        "@id": "estleg:PAASTS_Map"
       }
     },
     {

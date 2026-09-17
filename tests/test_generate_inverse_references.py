@@ -26,20 +26,19 @@ Covers:
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+import pytest
 
 
 class TestActLevelIndex:
     def test_act_level_iri_resolves_in_iri_to_file(self, tmp_path, monkeypatch):
-        """A KOV body-text ref that resolves to estleg:Reg_X_Map_2026
+        """A KOV body-text ref that resolves to estleg:Reg_X_Map
         (an act-level IRI) must be writable as referencedBy on that
         target file. collect_all_references must index act-level
         nodes for this to work."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -95,8 +94,8 @@ class TestImplementedByBodyTextExclusion:
         """Run main() over a graph where source act A has both body-text
         references to target X and issuedUnder to target Y. Verify X
         does NOT gain implementedBy; Y does."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -110,13 +109,13 @@ class TestImplementedByBodyTextExclusion:
             "@graph": [
                 {"@id": "estleg:Reg_A_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
-                 "estleg:issuedUnder": [{"@id": "estleg:Y_Map_2026"}]},
+                 "estleg:issuedUnder": [{"@id": "estleg:Y_Map"}]},
                 {"@id": "estleg:Reg_A_Par_1",
                  "@type": ["owl:NamedIndividual"],
                  "estleg:paragrahv": "§ 1",
                  # Body-text references to X — must NOT contribute
                  # to implementedBy on X.
-                 "estleg:references": [{"@id": "estleg:X_Map_2026_Par_5"}]}
+                 "estleg:references": [{"@id": "estleg:X_Map_Par_5"}]}
             ],
         }), encoding="utf-8")
 
@@ -125,9 +124,9 @@ class TestImplementedByBodyTextExclusion:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:X_Map_2026",
+                {"@id": "estleg:X_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
-                {"@id": "estleg:X_Map_2026_Par_5",
+                {"@id": "estleg:X_Map_Par_5",
                  "@type": ["owl:NamedIndividual"],
                  "estleg:paragrahv": "§ 5"}
             ],
@@ -138,7 +137,7 @@ class TestImplementedByBodyTextExclusion:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Y_Map_2026",
+                {"@id": "estleg:Y_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]}
             ],
         }), encoding="utf-8")
@@ -153,7 +152,7 @@ class TestImplementedByBodyTextExclusion:
         with open(krr / "x_peep.json", "r", encoding="utf-8") as fh:
             x_doc = json.load(fh)
         x_par_5 = next(n for n in x_doc["@graph"]
-                       if n.get("@id") == "estleg:X_Map_2026_Par_5")
+                       if n.get("@id") == "estleg:X_Map_Par_5")
         # Body-text reference produces referencedBy — that's the
         # existing inverse, unchanged
         assert "estleg:referencedBy" in x_par_5
@@ -180,8 +179,8 @@ class TestImplementedByIdempotency:
         implementedByCount triples on the next run. Without
         clear_stale_implemented_by(), the apply-only path would
         leave stale triples in place forever."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -192,7 +191,7 @@ class TestImplementedByIdempotency:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Stale_Map_2026",
+                {"@id": "estleg:Stale_Map",
                  "@type": ["owl:Ontology", "estleg:Law"],
                  "estleg:implementedBy": [
                      {"@id": "estleg:Reg_GhostSource_Map_2025"}
@@ -209,7 +208,7 @@ class TestImplementedByIdempotency:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_Live_Map_2026",
+                {"@id": "estleg:Reg_Live_Map",
                  "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]}
             ],
         }), encoding="utf-8")
@@ -245,7 +244,7 @@ class TestAliasResolveAmbiguous:
     def test_resolve_alias_refuses_when_multiple_canonicals_match(
         self, monkeypatch
     ):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # Two canonical IRIs both carry Par_14: ambiguous.
         iri_to_file = {
@@ -275,7 +274,7 @@ class TestAliasResolveAmbiguous:
     def test_resolve_alias_resolves_when_only_one_canonical_matches(
         self, monkeypatch
     ):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         iri_to_file = {
             "estleg:VOS_Par_14": Path("/tmp/vos_peep.json"),
@@ -308,8 +307,8 @@ class TestAliasAmbiguousRefused:
     def test_main_records_ambiguous_alias_in_report(
         self, tmp_path, monkeypatch
     ):
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -319,7 +318,7 @@ class TestAliasAmbiguousRefused:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Reg_X_Map_2026",
+                {"@id": "estleg:Reg_X_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
                 {"@id": "estleg:Reg_X_Par_1",
                  "@type": ["owl:NamedIndividual"],
@@ -370,7 +369,7 @@ class TestAliasAmbiguousRefused:
             )
 
         # The report must record the refusal.
-        with open(krr / "inverse_references_report.json") as fh:
+        with open(krr / "reports" / "inverse_references_report.json") as fh:
             report = json.load(fh)
         assert "alias_ambiguous" in report
         assert "estleg:Vlaigusseadus_Par_14" in report["alias_ambiguous"]
@@ -394,8 +393,8 @@ class TestVerifySymmetryCategorisation:
         carries the paragraph number must produce a
         ``unresolved-after-alias`` mismatch (NOT ``does not exist``).
         """
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -443,8 +442,8 @@ class TestVerifySymmetryCategorisation:
         must be ``genuine-missing-back-link`` — not the legacy
         "missing referencedBy" string.
         """
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -497,8 +496,8 @@ class TestAtomicSaveJsonImport:
         local non-atomic open('w') variant; it must reuse the atomic
         estleg_common.save_json so a crash mid-write never truncates a
         peep file to 0 bytes (#376)."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         # Same function object — proves the local shadow is gone and the
         # atomic implementation is in use everywhere save_json is called.
@@ -507,7 +506,7 @@ class TestAtomicSaveJsonImport:
     def test_atomic_save_json_writes_via_replace(self, tmp_path):
         """Sanity check that the imported save_json actually performs an
         atomic write: no leftover .tmp droppings and a trailing newline."""
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         target = tmp_path / "out.json"
         mod.save_json(target, {"@graph": [{"@id": "estleg:X"}]})
@@ -543,7 +542,7 @@ def _write_versions_corpus(krr):
         "@context": {"estleg": "https://w3id.org/estleg/",
                      "owl": "http://www.w3.org/2002/07/owl#"},
         "@graph": [
-            {"@id": "estleg:DEMO_Map_2026",
+            {"@id": "estleg:DEMO_Map",
              "@type": ["owl:Ontology", "estleg:Law"]},
             {"@id": "estleg:DEMO_Par_1",
              "@type": ["owl:NamedIndividual"],
@@ -580,7 +579,7 @@ def _write_versions_corpus(krr):
 
 class TestCollectVersionInverse:
     def test_groups_versions_by_provision_in_order(self, tmp_path, monkeypatch):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -597,7 +596,7 @@ class TestCollectVersionInverse:
         }
 
     def test_missing_versions_dir_returns_empty(self, tmp_path, monkeypatch):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         monkeypatch.setattr(
             mod, "VERSIONS_DIR", tmp_path / "does_not_exist",
@@ -607,7 +606,7 @@ class TestCollectVersionInverse:
     def test_dedupes_duplicate_version_edge(self, tmp_path, monkeypatch):
         """If a version IRI appears twice pointing at the same provision
         (e.g. an accidentally merged sidecar), it is listed only once."""
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         vd = krr / "provision_versions"
@@ -630,7 +629,7 @@ class TestCollectVersionInverse:
 
 class TestApplyHasVersion:
     def test_writes_has_version_on_provision_nodes(self, tmp_path):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -665,7 +664,7 @@ class TestApplyHasVersion:
     def test_unresolved_provision_is_reported_not_written(self, tmp_path):
         """A provision referenced by a sidecar but absent from any peep
         file must be returned as unresolved, never silently dropped."""
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -686,8 +685,8 @@ class TestHasVersionRoundTrip:
         """End-to-end: after main(), every ProvisionVersion's
         estleg:versionOf -> P has a matching estleg:hasVersion -> V on P
         (round-trip symmetry, #345)."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -738,7 +737,7 @@ class TestHasVersionRoundTrip:
 
         # The report records the version-inverse stats.
         report = json.loads(
-            (krr / "inverse_references_report.json").read_text(encoding="utf-8")
+            (krr / "reports" / "inverse_references_report.json").read_text(encoding="utf-8")
         )
         summ = report["summary"]
         assert summ["provisions_with_versions"] == 2
@@ -750,8 +749,8 @@ class TestHasVersionRoundTrip:
         """Running main() twice produces identical hasVersion (no
         duplication, no stale accumulation) — the clear pass strips the
         prior run's triples before re-applying."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -780,8 +779,8 @@ class TestHasVersionRoundTrip:
         """A provision carrying a pre-existing (stale) hasVersion pointing
         at a version that no longer exists in any sidecar must lose it on
         the next run."""
-        import generate_inverse_references as mod
-        import estleg_common
+        from estleg import estleg_common
+        from estleg import generate_inverse_references as mod
 
         krr = tmp_path / "krr_outputs"
         krr.mkdir()
@@ -794,7 +793,7 @@ class TestHasVersionRoundTrip:
             "@context": {"estleg": "https://w3id.org/estleg/",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:STALE_Map_2026",
+                {"@id": "estleg:STALE_Map",
                  "@type": ["owl:Ontology", "estleg:Law"]},
                 {"@id": "estleg:STALE_Par_1",
                  "@type": ["owl:NamedIndividual"],
@@ -817,6 +816,47 @@ class TestHasVersionRoundTrip:
         assert "estleg:hasVersion" not in p1
 
 
+def test_require_cross_reference_report_fails_when_index_present_and_report_missing(
+    tmp_path, monkeypatch
+):
+    """#470: production tree (has INDEX.json) without the forward-ref report."""
+    from estleg import generate_inverse_references as mod
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "INDEX.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    with pytest.raises(SystemExit, match="cross_references_report"):
+        mod.require_cross_reference_report()
+
+
+def test_require_cross_reference_report_fails_on_zero_citations(tmp_path):
+    from estleg import generate_inverse_references as mod
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "reports").mkdir()
+    (krr / "reports" / "cross_references_report.json").write_text(
+        json.dumps({"summary": {"total_citations_found": 0}}),
+        encoding="utf-8",
+    )
+    with pytest.raises(SystemExit, match="zero citations"):
+        mod.require_cross_reference_report(krr_dir=krr)
+
+
+def test_require_cross_reference_report_accepts_populated_report(tmp_path):
+    from estleg import generate_inverse_references as mod
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "reports").mkdir()
+    (krr / "reports" / "cross_references_report.json").write_text(
+        json.dumps({"summary": {"total_citations_found": 12}}),
+        encoding="utf-8",
+    )
+    mod.require_cross_reference_report(krr_dir=krr)
+
+
 # ---------------------------------------------------------------------------
 # Issue #606 — count gate that loudly surfaces estleg:hasVersion
 # under-materialisation (stale ProvisionVersion sidecars whose versionOf @ids
@@ -828,7 +868,7 @@ class TestHasVersionResolutionDegraded:
     """Pure unit tests for ``hasversion_resolution_degraded`` (#606)."""
 
     def test_healthy_resolution_not_degraded(self):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # All provisions resolved (empty unresolved) -> healthy.
         version_inverse = {
@@ -842,7 +882,7 @@ class TestHasVersionResolutionDegraded:
         assert mod.hasversion_resolution_degraded(many, ["estleg:P_0"]) is False
 
     def test_degraded_resolution_flagged(self):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # The real-world symptom: 13 of 38,512 provisions resolved.
         version_inverse = {
@@ -856,7 +896,68 @@ class TestHasVersionResolutionDegraded:
         )
 
     def test_empty_version_inverse_not_degraded(self):
-        import generate_inverse_references as mod
+        from estleg import generate_inverse_references as mod
 
         # No targets at all -> no signal, and no division by zero.
         assert mod.hasversion_resolution_degraded({}, []) is False
+
+
+def test_act_root_aggregates_union_provision_edges(tmp_path):
+    """#508: provision-level references roll up onto the act root."""
+    from estleg import generate_inverse_references as mod
+
+    path = tmp_path / "x_peep.json"
+    path.write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:X_Map",
+                        "@type": ["owl:Ontology", "estleg:Act"],
+                    },
+                    {
+                        "@id": "estleg:X_Par_1",
+                        "@type": ["estleg:LegalProvision"],
+                        "estleg:partOfAct": {"@id": "estleg:X_Map"},
+                        "estleg:references": {"@id": "estleg:Y_Par_1"},
+                        "estleg:referencedBy": {"@id": "estleg:Z_Par_2"},
+                        "estleg:interpretedBy": {"@id": "estleg:RK_1"},
+                        "estleg:competentAuthority": {"@id": "estleg:Institution_mta"},
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    assert mod.materialize_act_root_aggregates([path]) == 1
+    root = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
+    assert root["estleg:references"] == [{"@id": "estleg:Y_Par_1"}]
+    assert root["estleg:referencedBy"] == [{"@id": "estleg:Z_Par_2"}]
+    assert root["estleg:interpretedBy"] == [{"@id": "estleg:RK_1"}]
+    assert root["estleg:competentAuthority"] == [{"@id": "estleg:Institution_mta"}]
+
+
+def test_published_act_roots_carry_rolled_up_edges() -> None:
+    """#508: at least one committed law act-root has rolled-up references."""
+    repo = Path(__file__).resolve().parent.parent
+    hits = 0
+    scanned = 0
+    for path in sorted((repo / "krr_outputs").glob("*_peep.json"))[:80]:
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if not any(t in {"owl:Ontology", "estleg:Act", "estleg:Law"} for t in types):
+                continue
+            scanned += 1
+            if node.get("estleg:references") or node.get("estleg:referencedBy"):
+                hits += 1
+                break
+    assert scanned >= 10, scanned
+    assert hits >= 1, "no act-root references/referencedBy in first 80 law peeps"

@@ -1,43 +1,128 @@
 # Validation Report
 
-**Last updated:** 2026-05-26
+**Last updated:** 2026-09-07 (Tier 1 #702 merged; documentation status refreshed)
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
-| Metric | Count |
-|--------|-------|
-| Files validated | 23,069 |
-| Errors | 0 |
-| Warnings | 0 |
-| Result | **PASSED** |
+<!-- BEGIN GENERATED: validation-summary -->
 
-The repository advertises 23,113 generated JSON/JSON-LD files. `validate_all.py`
-excludes generated reports, indexes, manifests, and probe outputs that are not
-corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
-JSON-LD files.
+*Measured by `scripts/generate_validation_report.py` at commit `00c8e6471330e55737c798e22a4026d30930b773`, 2026-09-07 13:16 UTC. Do not hand-edit this block.*
+
+| Metric | Count |
+|--------|------:|
+| Files validated | 26,961 |
+| Errors | 122 |
+| Warnings | 2 |
+| Result | **FAILED** |
+
+| Count | Error category |
+|------:|----------------|
+| 38 | Duplicate @id within file |
+| 34 | indexed file has <n> act-level nodes (expected <n>) |
+| 27 | @type is not an array |
+| 5 | skos:exactMatch is not an array |
+| 5 | indexed file has no provision nodes and no registry exception |
+| 3 | missing <n> source graph IDs |
+| 3 | older than at least one canonical source file |
+| 2 | <n> shared provision IDs drift from source on SHACL-sensitive fields |
+| 1 | <n> @id values are duplicated across files (semantic collisions) |
+| 1 | <n> predicates, <n> classes |
+| 1 | <n> act-level temporal properties on non-Act nodes |
+| 1 | <n> stub node(s) carry disallowed estleg: object refs — a stub may carry only the shaped closure edges ['<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>'] |
+| 1 | <n> stale extra IDs not present in any canonical source |
+
+<!-- END GENERATED: validation-summary -->
+
+> **Correction.** Until 2026-09-05 this report said `Errors: 0 / PASSED`
+> against a run dated 2026-05-26. That statement was false for every committed
+> tree since at least v1.0.0 (2026-08-19): the `json-validation` CI job has
+> been red on every `main` run in that period. The table above is no longer
+> hand-maintained — `scripts/generate_validation_report.py` measures it from a
+> real run and stamps the commit SHA, and `--check` fails CI if the committed
+> numbers drift from the corpus. Baselines: 26,791 files / 3,558 errors on the
+> pre-Tier-0 tree (`c96577d50c`), 26,961 / 3,549 after Tier 0, and 26,961 /
+> 122-123 after the #702 validator repair. The total moves by one because the
+> `older than at least one canonical source file` rule counts filesystem
+> mtimes, not content: regenerating a T-Box artifact makes it newer than the
+> aggregates embedding it, and a fresh checkout assigns mtimes in arbitrary
+> order. That rule is excluded from the `--check` comparison and belongs with
+> the stale-aggregate work (#705).
+
+Both report checks fail when the input file count differs from the recorded
+count. Materialise missing LFS inputs before checking; when the corpus has
+changed, regenerate the reports. A count difference cannot establish that the
+report is current.
+
+The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
+`estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
+manifests, and probe outputs that are not corpus inputs, which is why it
+validates 26,961.
+
+## What the errors are
+
+Every error is itemised below with its status. **#702 removed 3,426 of the
+3,549 errors (96.5%) by repairing two stale validator rules** — they were
+validator bugs, not data defects, and they buried the ~122 findings that
+remain (the total moves by one with the mtime-based freshness rule; see the
+Correction note above).
+No new validation error category appeared; all internal object references
+resolve.
+
+The two repaired rules were:
+
+- `dcterms:subject is not an array` (3,021) — an `estleg:Chapter` maps to
+  exactly one cluster and carries a single IRI object by design. The rule now
+  exempts that type only; Acts and Parts still require an array.
+- `dcterms:title must be a string or language-tagged value` (405) — bilingual
+  title lists are the #437 language-tag policy. The rule now accepts a list of
+  language-tagged values, while still rejecting empty lists and non-literal
+  members. Value objects must contain a string `@value`; IRI objects, empty
+  objects, and numeric literals are rejected both alone and inside lists.
+
+| Count | Finding | Status |
+|---:|---|---|
+| 38 | Duplicate `@id` within file (37 in `analytical_overlay.jsonld`, 1 in `annotations/oiguskantsler_seisukohad.jsonld`) | Pre-existing; **#702 / #709**. |
+| 34 + 5 | `INDEX.json` registry drift on the split codes (AÕS, KarS, TsMS, TsÜS, VÕS): `_osaN` files report 0 act-level nodes; `_map` files have no provision nodes and no registry exception | Pre-existing; the multipart-code registry rules predate `estleg:Part` roots. **#702 / #704.** |
+| 27 | `@type is not an array` (26 controlled-vocabulary nodes, 1 in `analytical_overlay.jsonld`) | Pre-existing T-Box shape issue. **#709.** |
+| 5 | `skos:exactMatch is not an array` (`NormType_*`) | Pre-existing. **#709.** |
+| 3 + 1 + 1 | `eurlex` / `curia` / `eelnoud` combined files: missing source graph IDs in each, one stale CURIA ID, and the draft aggregate older than a canonical source | Stale LFS aggregates that were not rebuilt with the sources. **#705.** |
+| 2 | `combined_ontology.jsonld` and `eelnoud_combined.jsonld`: shared provision IDs drift from source on SHACL-sensitive fields (21,802 in the flagship file after the Tier 0 rebuild, 24,792 before; most on split-code `_OsaN` nodes and on classifier fields) | Aggregate-artifact drift; pre-existing (24,792 on the pre-Tier-0 tree). **#705.** |
+| 1 | `combined_ontology.jsonld`: 2,409 stub nodes carry `estleg:` object refs outside the shaped closure edges | Pre-existing builder finding. **#416 / #705.** |
+| 1 | `@id` values duplicated across files | The semantic-collision check counts the same node in an aggregate and in its source; the rule still needs the aggregate exemption. **#702 follow-up.** |
+| 1 | Undefined reusable vocabulary terms: 5 predicates | Pre-existing. **#709.** |
+| 1 | 78 act-level temporal properties on non-Act nodes | Pre-existing. **#702.** |
+
+Findings removed by Tier 0: the six `metadata.jsonld` count mismatches
+(#686), the merged-overlay-absent-from-combined finding and one
+stale-aggregate finding on each of the `eurlex` / `curia` / `eelnoud` files
+(combined rebuild, #681/#682). `dataset_build_manifest.json` was regenerated so its
+`catalogModified` matches the new `dcterms:modified` (#686).
+
+Warnings (2): `generation_manifest_laws.json` is not committed
+(Tier 1 #692/#704), and 9 amendment chains carry 1.0% duplicate `AmendmentEvent`
+nodes (re-run `generate_amendment_history.py`).
 
 ## Load surfaces and validation gates
 
 The repository exposes **three distinct load surfaces**, and the validation gate
-differs per surface. A reader must never conflate a finding from one surface with
-a finding from another: a combined-only SHACL violation is *aggregate-artifact
-drift*, not genuine source-data loss, and the correct fix differs accordingly.
+differs per surface. Diagnose findings against the relevant source, builder,
+and vocabulary: a combined-only failure does not by itself establish source-data
+loss, and an inferred type can expose an incorrect domain/range axiom.
 
 `krr_outputs/combined_ontology.jsonld` is the flagship aggregate artifact. It is
 designed to be **semantically complete on its own** for every shaped node it
-contains: it carries graph-closure stub nodes (marked `estleg:isStubNode`) that
-already include the SHACL-required semantic edges for their type, so an app that
-loads only the combined file does **not** need to merge in any subdirectory to
-satisfy the shapes. An app that follows the broader Seadusloome surface instead
+contains. Graph-closure stub nodes (marked `estleg:isStubNode`) are intended to
+include the SHACL-required semantic edges for their type. The failures below
+show that this contract is not yet met everywhere. An app that follows the broader Seadusloome surface instead
 loads the combined file **plus the public subdirectories** and merges nodes by
 `@id` using RDF graph-merge semantics (a thin stub in combined is filled in by
 its full source node from a subdir).
 
-| Surface | What an app loads | Invariant it guarantees | Gate command | A failure means |
+| Surface | What an app loads | Target invariant | Gate command | Where to investigate |
 |---------|-------------------|-------------------------|--------------|-----------------|
 | **Combined-only** | `krr_outputs/combined_ontology.jsonld` **alone** | The file is semantically complete on its own for every shaped node it contains (graph-closure stubs carry the required semantic edges; no subdir merge needed). | `scripts/validate_combined_standalone.py` | **Aggregate-artifact** drift — the *builder* produced an incomplete combined file. Fix by regenerating combined via `scripts/fix_all_issues.py` (the `generate_combined_jsonld` builder). **Never** relax SHACL. |
-| **Source subcorpora alone** | The per-bucket source files (laws, kov, riigikohus, eurlex, curia, drafts, sidecars) | Each source bucket conforms to the shapes on its own (with RDFS inference deriving class membership). | `scripts/shacl_validate_all.py --bucket <name>` (INDEX-driven; `inference='rdfs'`) | Genuine **source-data** missing data in that bucket — the source generator must emit the field. |
+| **Source subcorpora alone** | The per-bucket source files (laws, kov, riigikohus, eurlex, curia, drafts, sidecars) | Each source bucket conforms to the shapes on its own (with RDFS inference deriving class membership). | `scripts/shacl_validate_all.py --bucket <name>` (INDEX-driven; `inference='rdfs'`) | Check source fields and the vocabulary's inferred types; repair the generator or incorrect axiom as appropriate. |
 | **Seadusloome public load surface** | `combined_ontology.jsonld` **plus** the public subdirectories, merged by `@id` | The published union graph conforms with no SHACL warnings, and sidecar object references resolve (graph closure) — as seen by a consumer that applies **no** inference. | `scripts/validate_seadusloome_sync.py` (union SHACL; `inference='none'`; plus a graph-closure check) | **Public-load-graph** missing data — a field missing from the merged combined-plus-subdirs union as the downstream consumer sees it. |
 
 `scripts/validate_combined_standalone.py` validates the combined artifact
@@ -50,8 +135,8 @@ inside the combined file. `scripts/validate_seadusloome_sync.py` validates
 **"combined plus the public subdirectories"** (the Seadusloome surface), not the
 combined file alone; see "Seadusloome Zero-Warning Gate" below for its load set
 and CI wiring. The public subdirectories are defined once in
-`scripts/estleg_common.py` as `PUBLIC_LOAD_SUBDIRS`: `eelnoud`, `riigikohus`,
-`curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`,
+`src/estleg/estleg_common.py` as `PUBLIC_LOAD_SUBDIRS`: `eelnoud`, `riigikohus`,
+`kohtud`, `curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`,
 `provision_versions`, `annotations`, `harmonisation`, and `regulations`.
 
 > **These semantic fields are not optional noise.** `estleg:partOfAct`, the KOV
@@ -67,51 +152,146 @@ and CI wiring. The public subdirectories are defined once in
 1. JSON syntax validity
 2. `@context` namespace consistency (`estleg:` -> `https://w3id.org/estleg/`)
 3. `@type` is always an array
-4. Multi-valued properties are arrays
+4. Multi-valued properties use their declared shapes (including the Chapter subject exception)
 5. `sectionNumber` is always a string
-6. `dc:source` is not an array
+6. `dc:source` is a string or an array of strings
 7. `xsd:date` value objects use strict `YYYY-MM-DD` literals
 8. `estleg:affectedLawName` uses the canonical array-of-strings shape
 9. `@id` uniqueness within and across files, excluding known shared class IDs
-10. `dcterms:source` uses a resolvable IRI object when present
+10. `dcterms:source` uses an IRI object when present (no live URL-availability check)
 11. Internal `estleg:` object references resolve to corpus nodes
 12. `krr_outputs/INDEX.json` registry drift: indexed files exist, counts match, act/provision shape is valid unless explicitly excepted
 13. State and KOV regulation indexes match their output trees
 14. `metadata.jsonld` advertised counts match repository counts
 15. Institution labels have no duplicate normalized canonical form
+16. No Estonian personal identification code survives in `estleg:summary` / `estleg:legalText` (`validate_no_personal_codes`, #683)
 
 ## Data Coverage
 
+Counts re-derived on the 2026-09-07 reviewed Tier 0 tree (`metadata.jsonld`
+`dcterms:modified` 2026-09-07). `validate_all.py` cross-checks the catalogue
+counts against the tree, so a stale catalogue fails the gate.
+
 | Category | Files | Indexed records |
-|----------|-------|-----------------|
-| Enacted law peep files | 1,190 | 1,145 law index entries / 1,190 indexed files |
-| State regulations | 3,812 | 3,812 in current regulation index |
+|----------|------:|-----------------|
+| Enacted law peep files | 1,195 | 1,122 law index entries |
+| State regulations | 3,812 | 3,812 in the regulation index |
 | KOV regulations | 11,059 | 11,059 |
-| Draft legislation | 3 phase files | 22,832 drafts |
-| Supreme Court decisions | 34 | 12,137 decisions |
-| EU legislation | 3 | 33,242 acts |
-| EU court decisions | 5 | 22,290 decisions |
-| ProvisionVersion sidecars | 742 | full-history sidecars generated after the Phase 3.3 live run |
-| Õiguskantsler annotation sidecars | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
-| Institutions | 113 | institution files |
-| Controlled vocabulary | 1 | 134 vocabulary and fallback nodes |
+| Draft legislation | 6 | 22,832 drafts |
+| Supreme Court decisions | 35 | 12,104 decisions (Civil 4,988 · Criminal 3,686 · Administrative 2,434 · Constitutional Review 800 · Misdemeanor 107 · Other 89) |
+| Lower-court decisions (`kohtud/`) | 1 | 1 decision — a labelled **sample** (`estleg:isSampleData`), not a corpus (#689) |
+| EU legislation | 6 | 33,242 acts |
+| EU court decisions | 9 | 22,290 decisions |
+| Sanction sidecars | 464 | 7,392 sanction records (#681) |
+| ProvisionVersion sidecars | 4,422 | version history for laws and state regulations |
+| Amendment sidecars | 5,647 | 20,937 `AmendmentEvent` nodes |
+| Õiguskantsler annotation sidecar | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
+| Institutions | 117 | institution files |
+| Controlled vocabulary | 1 | 417 vocabulary and fallback nodes |
 
 ## SHACL Bucket Checks
 
-| Bucket | Files | Result |
-|--------|-------|--------|
-| `riigikohus` | 35 | PASS |
-| `drafts` | 4 | PASS |
-| `eurlex` | 163 | PASS |
-| `curia` | 6 | PASS |
-| `laws` | 5,003 | PASS |
-| `kov` | 11,063 | PASS |
-| `sidecars` | 6,796 | PASS |
-| `--all` | 23,064 | PASS (`7,117,928` triples) |
+Per-bucket source validation is `scripts/shacl_validate_all.py --bucket <name>`
+(RDFS inference). File counts below come from the discovery code on the merged
+`0cb9ac91bc` tree. Results are the completed checks on the final #736 head
+`1983c1ca18` in [CI run 34128053943](https://github.com/henrikaavik/estonian-legal-ontology/actions/runs/34128053943).
 
-Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cross-file references and shared classification nodes are validated consistently.
+| Bucket | Files | Result | Status |
+|---|---:|---|---|
+| `laws` | 4,970 | **FAIL** | Remaining corpus and inference findings require follow-up. |
+| `kov` | 11,063 | **FAIL** | Remaining corpus and inference findings require follow-up. |
+| `sidecars` | 10,653 | **FAIL** | Range-axiom typing, missing amendment targets, labels, and other fields remain. |
+| `riigikohus` | 35 | **FAIL** | ProvisionVersion range-axiom typing remains. |
+| `drafts` | 4 | **FAIL** | Remaining corpus and inference findings require follow-up. |
+| `eurlex` | 162 | **PASS** | Source-bucket conformance does not establish aggregate parity. |
+| `curia` | 6 | **PASS** | #702 removed shared-predicate domain axioms that falsely typed EU court nodes. |
+| `--all` | 26,887 | No completed local result | The 2026-09-07 attempt stopped during graph loading at 6 GiB process RSS on a 16 GiB host. |
+
+Historical diagnostic counts from the original Tier 0 run are **not** current
+measurements: sidecars had 309,422 violations (314,522 before the
+`applicableProvision` domain repair), including 99,981 referenced provision
+IRIs failing three required fields, 4,841 missing amendment targets, 4,433
+missing labels, 179 `versionValidFrom`, 24 `institutionType`, and two annotation
+fields. Riigikohus had roughly 30,000 ProvisionVersion-field violations.
+Vocabulary cleanup remains tracked by #709; #702 itself is closed.
+
+The "phantom typing" pattern is documented in `shacl/README.md`: a class
+`rdfs:domain` / `rdfs:range` on a predicate shared across classes types every
+subject / object into that class under `inference="rdfs"`, after which the
+class's shape demands fields the node was never meant to carry. Narrowing the
+remaining axioms is **#709**. The merged **#702** fixed the CURIA domains and
+two JSON validator rules; it did not resolve every bucket finding.
+
+### Review checks on regenerated data
+
+The earlier review removed 755 false confiscation/dissolution records and
+220 empty sanction sidecars. The 2026-09-07 review additionally keeps natural-
+and legal-person penalties distinct, preserves superscripted subsections such
+as `(1¹)`, and requires the operative life-imprisonment wording to stay within
+the same sentence/subsection. A corporate penalty with no stated amount carries
+no natural-person daily-rate default. Company board members and unrelated
+company mentions do not trigger the corporate rule.
+
+The final sanctions and deprecated act roots conform to the affected shapes
+(`SanctionShape`, the three sanction ceiling shapes, and
+`DeprecatedActNotInForceShape`) under both `inference="none"` and
+`inference="rdfs"`, with zero validation results. Range ordering is checked
+only for matching units and currencies: 30 days to 1 year must not be rejected
+as 30 > 1. Combined was regenerated with the canonical builder after the full
+sanctions pass: 268,836 nodes (268,835 unique IDs plus the dataset header).
+
+The full source-bucket and standalone SHACL counts below/above remain
+historical measurements. The 2026-09-07 full `--all` and standalone attempts
+were stopped at 6 GiB process RSS each to keep the 16 GiB workstation
+responsive; neither produced a completed SHACL result. These attempts do not
+establish full SHACL conformance. The affected shapes, JSON-LD
+validation/parity, and Seadusloome load gate were rerun.
+
+The Tier 0 review's default suite passed (4,293 passed, 67 skipped); MCP passed
+(113 passed, 1 skipped). Ruff, Docs lint, and the release/validate-only
+integration DAG dry-run passed. The subsequent #702 review passed 4,385 default
+tests with 68 skipped. These are software checks, not full-corpus conformance.
+
+The documentation refresh reran `pytest -q -m corpus` with materialised LFS
+inputs: **64 passed, 1 skipped, 3 failed**. All 49 executable documentation
+examples pass, including the repaired reverse EuroVoc query and sidecar
+loaders. The namespace guard also passes after historical worksheets link to
+the migration record instead of repeating the retired hostname.
+The three remaining failures are the 2,409-stub closure-policy finding (#705),
+a test requiring obsolete `LegalProvision_<slug>` instances, and a test
+requiring a direct `NationalRegulation → Act` axiom rather than the current
+`NationalRegulation → DomesticRegulation → Act` hierarchy. The latter two
+are stale test expectations not addressed by the merged #702 PR.
+
+The CI corpus-test step now runs after JSON hygiene fails, provided LFS
+materialisation succeeded. The 2026-09-07 #731 CI run verifies this behavior:
+the baseline corpus failures are reported instead of silently skipped.
+
+### Combined-only gate (`scripts/validate_combined_standalone.py`)
+
+2026-09-05, original Tier 0 tree before the review fixes: **FAIL — 251,273 violations**.
+The findings are aggregate-artifact findings and fall into three groups, none
+introduced by Tier 0: `estleg:Subsection` nodes typed `estleg:LegalProvision`
+fail `paragrahv` / `summary` (the lõige nodes carry `subsectionNumber` and
+`legalText` instead — the shape predates #514 lõige minting; **#702 / #709**);
+regulation-provision closure stubs (`Reg_*`) fail `paragrahv` / `summary` /
+`partOfAct` because the stub keeps the type but not those fields
+(**#416 / #705**); 4,841 `AmendmentEvent` nodes lack `estleg:amends` (**#702**). The
+482 label-less orphan Sanction nodes that the pre-rebuild artifact carried are
+gone (the extractor now purges stale inline anchors, #681).
+
+### Seadusloome zero-warning gate
+
+The 2026-09-07 rerun of `scripts/validate_seadusloome_sync.py` fails at graph
+closure on
+`eurlex/eurlex_combined.jsonld` (`owl:imports estleg:EURlex_Schema_2026`, a
+stale LFS aggregate) before SHACL runs. Rebuilding every aggregate in one DAG
+step is **#705**; until then this gate is red for a known reason and is not a
+statement about the source data.
 
 ## Similarity Coverage
+
+_Figures from the 2026-05-26 run; not re-measured on 2026-09-07._
 
 `scripts/generate_similarity_index.py` now includes state regulations while still deferring KOV similarity to Layer 3.
 
@@ -124,6 +304,8 @@ Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cro
 Similarity output now contains 84,527 analyzed provisions, 108,684 pairs, and updates 3,659 JSON-LD files.
 
 ## Õiguskantsler Annotation Ingestion
+
+_Figures from the Phase 3.4 run (2026-05); not re-measured on 2026-09-07._
 
 Phase 3.4 used `scripts/generate_annotations.py --probe-pdfs --pdf-probe-sample-size 10`
 as the go/no-go probe before the full live scrape. The probe found usable PDF
@@ -154,6 +336,8 @@ This gate covers the **Seadusloome public load surface** — combined **plus** t
 public subdirectories. See "Load surfaces and validation gates" above for how it
 relates to the combined-only gate (`scripts/validate_combined_standalone.py`) and
 the per-bucket source gate (`scripts/shacl_validate_all.py --bucket <name>`).
+
+**Status 2026-09-07: red** — see [Seadusloome zero-warning gate](#seadusloome-zero-warning-gate) above for the reason (#705).
 
 `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
 
@@ -200,20 +384,20 @@ were not treated as successful resolutions:
 | Removed target | Root cause |
 |----------------|------------|
 | `estleg:Vlaigusseadus_Osa10_1005_1067` | Draft law-name resolver lost the leading `Võ` during slug generation; should resolve to the VõS corpus node family. |
-| `estleg:hinenud_Rahvaste_Organisatsio_Map_2026` | Draft law-name resolver lost the leading `Ü` and truncated the treaty title; no such map node is emitted. |
-| `estleg:Eesti_Vabariigi_valitsuse_ja_A_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Eesti_Vabariigi_valitsuse_ja_L_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Eesti_Vabariigi_ja_Euroopa_Inv_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Isikuandmete_automatiseeritud__Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
-| `estleg:Maailma_Terviseorganisatsiooni_Map_2026` | Treaty `_Map_2026` target was inferred from a title that no current generator materialises as an act-map node. |
-| `estleg:Merinuete_korral_vastutuse_pi_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:hinenud_Rahvaste_Organisatsio_Map` | Draft law-name resolver lost the leading `Ü` and truncated the treaty title; no such map node is emitted. |
+| `estleg:Eesti_Vabariigi_valitsuse_ja_A_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Eesti_Vabariigi_valitsuse_ja_L_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Eesti_Vabariigi_ja_Euroopa_Inv_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Isikuandmete_automatiseeritud__Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Maailma_Terviseorganisatsiooni_Map` | Treaty `_Map` target was inferred from a title that no current generator materialises as an act-map node. |
+| `estleg:Merinuete_korral_vastutuse_pi_Map` | Treaty `_Map` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
 
 Successful target rewrites in the same diff:
 
 | Removed target | Replacement target | Notes |
 |----------------|--------------------|-------|
-| `estleg:TKS_Map_2026` | `estleg:TarbKS_Map_2026` | Six references were rewritten to the emitted TarbKS map node. One duplicate-array entry on the draft "Ülikooliseaduse ja Tartu Ülikooli seaduse muutmise seadus" was removed without replacement because the array contained `TKS_Map_2026` twice. |
-| `estleg:TS_Map_2026` | `estleg:TõS_Map_2026` | Clean 1-to-1 rename to the emitted target. |
+| `estleg:TKS_Map` | `estleg:TarbKS_Map` | Six references were rewritten to the emitted TarbKS map node. One duplicate-array entry on the draft "Ülikooliseaduse ja Tartu Ülikooli seaduse muutmise seadus" was removed without replacement because the array contained `TKS_Map` twice. |
+| `estleg:TS_Map` | `estleg:ToS_Map` | Clean 1-to-1 rename to the emitted target. |
 
 Before the draft-impact enrichment is rerun against live data, fix the
 resolver path used by `scripts/extract_draft_impact.py` and
@@ -223,6 +407,24 @@ re-emitting these dead references.
 
 ## Known Remaining Issues
 
-No validation-blocking issues are known in the remediated scope. The draft
-resolver cleanup documented above remains a required follow-up before the
-next live draft-impact ingestion run.
+- **Validator rules (#702 — repaired):** the two stale rules on
+  `dcterms:subject` and `dcterms:title` are fixed (3,549 → ~122 errors). The
+  semantic-collision and registry-drift checks still need the aggregate and
+  `estleg:Part` exemptions, so `json-validation` stays red on the remaining ~122
+  and is not yet a required check.
+- **T-Box axioms (#709):** `rdfs:range` / `rdfs:domain` on shared predicates
+  phantom-type referenced nodes under RDFS inference. #702 narrowed the four
+  axioms behind the `curia` bucket — `celexNumber`, `eurLexLink` and
+  `documentDate` (domain `EULegislation`) and `ecliIdentifier` (domain
+  `CourtDecision`) — which took that bucket from 66,740 violations to **0**.
+  The combined artifact was rebuilt with the same four widened domains. The
+  corpus regression checks the vocabulary and aggregate under RDFS inference;
+  neither projection infers those sibling classes on an EU court decision.
+  The same pattern on `rdfs:range` still keeps `sidecars` and `riigikohus` red.
+- **Aggregates (#705):** `eurlex` / `curia` / `eelnoud` combined files and
+  `combined_ontology.{nt,nq,ttl}` are stale relative to their sources; the
+  Seadusloome gate fails at graph closure on `eurlex_combined.jsonld`.
+- **Draft resolver:** the dead-reference cleanup documented above remains a
+  required follow-up before the next live draft-impact ingestion run.
+- **Personal names (#720):** codes are screened (#683); names in Riigikohus
+  summaries and CURIA party labels are a DPO decision, not a validator gap.

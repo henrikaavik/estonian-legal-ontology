@@ -2,20 +2,19 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RSS_Map_2026",
+      "@id": "estleg:RSS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Riigisaladuse seadus teemakaardistus",
       "dc:source": "Riigisaladuse seadus",
@@ -36,16 +35,85 @@
           "@id": "http://eurovoc.europa.eu/517"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_RSS",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3474"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:RSS_Par_12"
+        },
+        {
+          "@id": "estleg:RSS_Par_28"
+        },
+        {
+          "@id": "estleg:RSS_Par_26"
+        },
+        {
+          "@id": "estleg:RSS_Par_19"
+        },
+        {
+          "@id": "estleg:RSS_Par_23"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RSS_Par_26_28"
+        },
+        {
+          "@id": "estleg:RSS_Par_33"
+        },
+        {
+          "@id": "estleg:RSS_Par_35_40"
+        },
+        {
+          "@id": "estleg:RSS_Par_31"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitseministeerium"
+        },
+        {
+          "@id": "estleg:Institution_siseministeerium"
+        },
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        },
+        {
+          "@id": "estleg:Institution_teabeamet"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_valisministeerium"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2006-11-15",
+        "@type": "xsd:date"
       }
     },
     {
@@ -116,15 +184,16 @@
       "@id": "estleg:RSS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Käesolev seadus sätestab riigisaladuse mõiste, riigisaladuseks oleva teabe, riigisaladusele juurdepääsu ning riigisaladuse ja salastatud teabekandjate töötlemise korra alused.",
+      "estleg:legalText": "Käesolev seadus sätestab riigisaladuse mõiste, riigisaladuseks oleva teabe, riigisaladusele juurdepääsu ning riigisaladuse ja salastatud teabekandjate töötlemise korra alused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_1"
       },
@@ -143,21 +212,26 @@
       "@id": "estleg:RSS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Mõisted",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1 1) riigisaladus – üksnes käesolevas seaduses sätestatud Eesti Vabariigi julgeoleku tagamise huvides avalikuks tuleku eest kaitset vajav teave, mis kuulub riigile, on riigi kontrolli all või on toodetud riigi poolt või riigi jaoks; 2 2) salastatud teabekandja – dokument, andmekogum või muu materiaalne objekt, mis sisaldab riigisaladust või esitab seda elektroonilises vormis; 3 3) riigisaladuse valdaja - asutus, institutsioon või jur",
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1 1) riigisaladus – üksnes käesolevas seaduses sätestatud Eesti Vabariigi julgeoleku tagamise huvides avalikuks tuleku eest kaitset vajav teave, mis kuulub riigile, on riigi kontrolli all või on toodetud riigi poolt või riigi jaoks; 2 2) salastatud teabekandja – dokument, andmekogum või muu materiaalne objekt, mis sisaldab riigisaladust või esitab seda elektroonilises vormis; 3 3) riigisaladuse valdaja - asutus, institutsioon või jur",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_1"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -185,21 +259,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Riigisaladuse tasemed",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladuseks oleva teabe tähtsusest lähtuvalt liigitatakse käesolevas seaduses riigisaladus järgmisteks erineva salastatuse tasemega saladusteks: 1 1) «piiratud» tasemega riigisaladus; 2 2) «konfidentsiaalse» tasemega riigisaladus; 3 3) «salajase» tasemega riigisaladus; 4 4) «täiesti salajase» tasemega riigisaladus. Riigisaladuseks oleva teabe tähtsusest lähtuvalt liigitatakse käesolevas seaduses riigisaladus järgmisteks erineva salastatuse tasemega saladusteks: «piiratud» tasemega riig",
+      "estleg:legalText": "1 (1) Riigisaladuseks oleva teabe tähtsusest lähtuvalt liigitatakse käesolevas seaduses riigisaladus järgmisteks erineva salastatuse tasemega saladusteks: 1 1) «piiratud» tasemega riigisaladus; 2 2) «konfidentsiaalse» tasemega riigisaladus; 3 3) «salajase» tasemega riigisaladus; 4 4) «täiesti salajase» tasemega riigisaladus. Riigisaladuseks oleva teabe tähtsusest lähtuvalt liigitatakse käesolevas seaduses riigisaladus järgmisteks erineva salastatuse tasemega saladusteks: «piiratud» tasemega riig",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       },
@@ -216,15 +295,16 @@
       "@id": "estleg:RSS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Teabekandja salastamistähtaeg",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladust sisaldava teabekandja salastamistähtaeg on võrdne selles sisalduva riigisaladuse salastamistähtajaga. Riigisaladust sisaldava teabekandja salastamistähtaeg on võrdne selles sisalduva riigisaladuse salastamistähtajaga. 2 (2) Teabekandja salastamistähtaja kulgu arvestatakse alates päevast, millal teabekandja registreeriti kui salastatud teabekandja. Teabekandja salastamistähtaja kulgu arvestatakse alates päevast, millal teabekandja registreeriti kui salastatud teabekandja.",
+      "estleg:legalText": "1 (1) Riigisaladust sisaldava teabekandja salastamistähtaeg on võrdne selles sisalduva riigisaladuse salastamistähtajaga. Riigisaladust sisaldava teabekandja salastamistähtaeg on võrdne selles sisalduva riigisaladuse salastamistähtajaga. 2 (2) Teabekandja salastamistähtaja kulgu arvestatakse alates päevast, millal teabekandja registreeriti kui salastatud teabekandja. Teabekandja salastamistähtaja kulgu arvestatakse alates päevast, millal teabekandja registreeriti kui salastatud teabekandja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       },
@@ -238,15 +318,16 @@
       "@id": "estleg:RSS_Par_4_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
       "rdfs:label": "§ 4¹. «Piiratud» tasemega riigisaladus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) «Piiratud» tasemega riigisaladus on teave, mida käsitletakse «piiratud» tasemega saladusena Eesti Vabariigiga välislepingu sõlminud välisriigis või rahvusvahelises organisatsioonis, kui see on vastavas välislepingus selliselt sätestatud. Seda teavet sisaldav teabekandja salastatakse 10 aastaks. «Piiratud» tasemega riigisaladus on teave, mida käsitletakse «piiratud» tasemega saladusena Eesti Vabariigiga välislepingu sõlminud välisriigis või rahvusvahelises organisatsioonis, kui see on vasta",
+      "estleg:legalText": "1 (1) «Piiratud» tasemega riigisaladus on teave, mida käsitletakse «piiratud» tasemega saladusena Eesti Vabariigiga välislepingu sõlminud välisriigis või rahvusvahelises organisatsioonis, kui see on vastavas välislepingus selliselt sätestatud. Seda teavet sisaldav teabekandja salastatakse 10 aastaks. «Piiratud» tasemega riigisaladus on teave, mida käsitletakse «piiratud» tasemega saladusena Eesti Vabariigiga välislepingu sõlminud välisriigis või rahvusvahelises organisatsioonis, kui see on vasta",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       }
@@ -255,20 +336,23 @@
       "@id": "estleg:RSS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. \"Konfidentsiaalse\" tasemega riigisaladus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "\"Konfidentsiaalse\" tasemega riigisaladuseks on järgmine teave: 1 1) Kaitseministeeriumi, Siseministeeriumi, Kaitsepolitseiameti ning Teabeameti kriisireguleerimisplaan tegutsemiseks hädaolukorras. Seda teavet sisaldav teabekandja salastatakse 20 aastaks. Salastatus kustub teabe kasutamisel hädaolukorras 2 2) Vabariigi Valitsuse kriisikomisjoni viivitamatu kokkukutsumise kriteeriumid. Seda teavet sisaldav teabekandja salastatakse 10 aastaks; 3 3) Vabariigi Valitsuse kinnitatud riiklikult tähtsate",
+      "estleg:legalText": "\"Konfidentsiaalse\" tasemega riigisaladuseks on järgmine teave: 1 1) Kaitseministeeriumi, Siseministeeriumi, Kaitsepolitseiameti ning Teabeameti kriisireguleerimisplaan tegutsemiseks hädaolukorras. Seda teavet sisaldav teabekandja salastatakse 20 aastaks. Salastatus kustub teabe kasutamisel hädaolukorras 2 2) Vabariigi Valitsuse kriisikomisjoni viivitamatu kokkukutsumise kriteeriumid. Seda teavet sisaldav teabekandja salastatakse 10 aastaks; 3 3) Vabariigi Valitsuse kinnitatud riiklikult tähtsate",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -324,26 +408,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. \"Salajase\" tasemega riigisaladus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "\"Salajase\" tasemega riigisaladuseks on järgmine teave: 1 1) mobilisatsiooni läbiviimise tegevuskava. Seda teavet sisaldav teabekandja salastatakse 30 aastaks. Salastatus kustub mobilisatsiooni väljakuulutamisel; 2 2) kaitseväe ja Kaitseliidu sõjaaja koosseis. Seda teavet sisaldav teabekandja salastatakse 10 aastaks; 3 3) ministeeriumide ja maakondade riskianalüüsi kokkuvõte ning riskianalüüsi see osa, mis kirjeldab põhiseaduslikku korda ähvardavaid ohte, planeeritavaid meetmeid ja ressursside va",
+      "estleg:legalText": "\"Salajase\" tasemega riigisaladuseks on järgmine teave: 1 1) mobilisatsiooni läbiviimise tegevuskava. Seda teavet sisaldav teabekandja salastatakse 30 aastaks. Salastatus kustub mobilisatsiooni väljakuulutamisel; 2 2) kaitseväe ja Kaitseliidu sõjaaja koosseis. Seda teavet sisaldav teabekandja salastatakse 10 aastaks; 3 3) ministeeriumide ja maakondade riskianalüüsi kokkuvõte ning riskianalüüsi see osa, mis kirjeldab põhiseaduslikku korda ähvardavaid ohte, planeeritavaid meetmeid ja ressursside va",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -375,21 +466,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. \"Täiesti salajase\" tasemega riigisaladus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "\"Täiesti salajase\" tasemega riigisaladuseks on järgmine teave: 1 1) riiklikus kriisireguleerimisplaanis kirjeldatud riiklik tegevuskava tegutsemiseks eriolukorra ja erakorralise seisukorra ajal ning sõjaajal. Seda teavet sisaldav teabekandja salastatakse 50 aastaks. Salastatus kustub eriolukorra, erakorralise seisukorra või sõjaseisukorra väljakuulutamisel; 2 2) Kaitsejõudude Peastaabi ja Kaitsepolitseiameti jälitustegevuse meetodid, taktika ning jälitustegevuses kasutatavad tehnilised vahendid,",
+      "estleg:legalText": "\"Täiesti salajase\" tasemega riigisaladuseks on järgmine teave: 1 1) riiklikus kriisireguleerimisplaanis kirjeldatud riiklik tegevuskava tegutsemiseks eriolukorra ja erakorralise seisukorra ajal ning sõjaajal. Seda teavet sisaldav teabekandja salastatakse 50 aastaks. Salastatus kustub eriolukorra, erakorralise seisukorra või sõjaseisukorra väljakuulutamisel; 2 2) Kaitsejõudude Peastaabi ja Kaitsepolitseiameti jälitustegevuse meetodid, taktika ning jälitustegevuses kasutatavad tehnilised vahendid,",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       },
@@ -421,15 +517,16 @@
       "@id": "estleg:RSS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Välisriigi riigisaladus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Välisriigi riigisaladust või välisriigi või rahvusvahelise organisatsiooni poolt salastatud teabekandjaid töödeldakse vastavalt välislepingutele. Välisriigi riigisaladust või välisriigi või rahvusvahelise organisatsiooni poolt salastatud teabekandjaid töödeldakse vastavalt välislepingutele. 2 (2) Välisriigi või rahvusvahelise organisatsiooni poolt salastatud teabekandja salastamistähtaja määramisel ja pikendamisel juhindutakse välislepingutest. Välisriigi või rahvusvahelise organisatsiooni",
+      "estleg:legalText": "1 (1) Välisriigi riigisaladust või välisriigi või rahvusvahelise organisatsiooni poolt salastatud teabekandjaid töödeldakse vastavalt välislepingutele. Välisriigi riigisaladust või välisriigi või rahvusvahelise organisatsiooni poolt salastatud teabekandjaid töödeldakse vastavalt välislepingutele. 2 (2) Välisriigi või rahvusvahelise organisatsiooni poolt salastatud teabekandja salastamistähtaja määramisel ja pikendamisel juhindutakse välislepingutest. Välisriigi või rahvusvahelise organisatsiooni",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_2"
       },
@@ -449,15 +546,16 @@
       "@id": "estleg:RSS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Teabekandja salastatuse kustumine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Teabekandja salastatus kustub teabekandja salastamistähtaja möödumisel. Teabekandja salastatus kustub teabekandja salastamistähtaja möödumisel. 2 (2) Teabekandja salastatus ei kustu põhjusel, etsellessisalduv teave on tulnud ebaseaduslikult avalikuks või on avalikustatud teabekandjas sisalduva riigisaladusega sarnane teave. Teabekandja salastatus ei kustu põhjusel, etsellessisalduv teave on tulnud ebaseaduslikult avalikuks või on avalikustatud teabekandjas sisalduva riigisaladusega sarnane",
+      "estleg:legalText": "1 (1) Teabekandja salastatus kustub teabekandja salastamistähtaja möödumisel. Teabekandja salastatus kustub teabekandja salastamistähtaja möödumisel. 2 (2) Teabekandja salastatus ei kustu põhjusel, etsellessisalduv teave on tulnud ebaseaduslikult avalikuks või on avalikustatud teabekandjas sisalduva riigisaladusega sarnane teave. Teabekandja salastatus ei kustu põhjusel, etsellessisalduv teave on tulnud ebaseaduslikult avalikuks või on avalikustatud teabekandjas sisalduva riigisaladusega sarnane",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_3"
       },
@@ -477,15 +575,16 @@
       "@id": "estleg:RSS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Riigisaladuseks oleva teabe salastatuse ennetähtaegse kustutamise ja salastamistähtaja pikendamise alused",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Kui riigisaladuseks olev teave eivajaenam riigi julgeoleku tagamise huvides kaitset avalikuks tuleku eest, võidakse selle teabe salastatus kustutada ennetähtaegselt käesoleva seadusega sätestatud korras. Kui riigisaladuseks olev teave eivajaenam riigi julgeoleku tagamise huvides kaitset avalikuks tuleku eest, võidakse selle teabe salastatus kustutada ennetähtaegselt käesoleva seadusega sätestatud korras. 2 (2) Kui riigisaladuseks olev teave vajab riigi julgeoleku tagamise huvides kaitset a",
+      "estleg:legalText": "1 (1) Kui riigisaladuseks olev teave eivajaenam riigi julgeoleku tagamise huvides kaitset avalikuks tuleku eest, võidakse selle teabe salastatus kustutada ennetähtaegselt käesoleva seadusega sätestatud korras. Kui riigisaladuseks olev teave eivajaenam riigi julgeoleku tagamise huvides kaitset avalikuks tuleku eest, võidakse selle teabe salastatus kustutada ennetähtaegselt käesoleva seadusega sätestatud korras. 2 (2) Kui riigisaladuseks olev teave vajab riigi julgeoleku tagamise huvides kaitset a",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_3"
       },
@@ -511,21 +610,26 @@
       "@id": "estleg:RSS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Riigisaladuseks oleva teabe salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise kord",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladuseks oleva teabe salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise otsustab Vabariigi Valitsus korraldusega. Riigisaladuseks oleva teabe salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise otsustab Vabariigi Valitsus korraldusega. 2 (2) Vabariigi Valitsus võib kehtestada riigisaladuseks oleva teabe liigid, mille salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise otsustab: 1 1) minister käskkirjaga - ministeeriumi val",
+      "estleg:legalText": "1 (1) Riigisaladuseks oleva teabe salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise otsustab Vabariigi Valitsus korraldusega. Riigisaladuseks oleva teabe salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise otsustab Vabariigi Valitsus korraldusega. 2 (2) Vabariigi Valitsus võib kehtestada riigisaladuseks oleva teabe liigid, mille salastatuse ennetähtaegse kustutamise või salastamistähtaja pikendamise otsustab: 1 1) minister käskkirjaga - ministeeriumi val",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_3"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -551,21 +655,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12.",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladuse kaitse tagatakse: 1 1) riigisaladusele juurdepääsu korra järgimise ja elektroonilise teabeturbe tagamisega; 2 2) riigisaladuse ja salastatud teabekandjate töötlemisele kehtestatud nõuete järgimise ja tagamisega; 3 3) riigisaladuse hoidmisega ebaseadusliku avalikuks tuleku eest; 4 4) kriminaal- ja distsiplinaarvastutuse kohaldamisega riigisaladusele juurdepääsu korra ning riigisaladuse ja salastatud teabekandjate töötlemise nõuete eiramise ning riigisaladuse ebaseadusliku aval",
+      "estleg:legalText": "1 (1) Riigisaladuse kaitse tagatakse: 1 1) riigisaladusele juurdepääsu korra järgimise ja elektroonilise teabeturbe tagamisega; 2 2) riigisaladuse ja salastatud teabekandjate töötlemisele kehtestatud nõuete järgimise ja tagamisega; 3 3) riigisaladuse hoidmisega ebaseadusliku avalikuks tuleku eest; 4 4) kriminaal- ja distsiplinaarvastutuse kohaldamisega riigisaladusele juurdepääsu korra ning riigisaladuse ja salastatud teabekandjate töötlemise nõuete eiramise ning riigisaladuse ebaseadusliku aval",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
@@ -604,20 +713,23 @@
       "@id": "estleg:RSS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Riigisaladuse hoidmise kohustus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Isik, kellel ei ole õigust juurdepääsuks riigisaladusele, kuid kellele on teatavaks saanud riigisaladus, on kohustatud hoidma seda saladuses. Isik, kellel ei ole õigust juurdepääsuks riigisaladusele, kuid kellele on teatavaks saanud riigisaladus, on kohustatud hoidma seda saladuses. 2 (2) Isik, kellel ei ole õigust juurdepääsuks riigisaladusele, kuid kelle valdusesse on sattunud salastatud teabekandja, on kohustatud andma selle viivitamata Kaitsepolitseiametile. Isik, kellel ei ole õigust ",
+      "estleg:legalText": "1 (1) Isik, kellel ei ole õigust juurdepääsuks riigisaladusele, kuid kellele on teatavaks saanud riigisaladus, on kohustatud hoidma seda saladuses. Isik, kellel ei ole õigust juurdepääsuks riigisaladusele, kuid kellele on teatavaks saanud riigisaladus, on kohustatud hoidma seda saladuses. 2 (2) Isik, kellel ei ole õigust juurdepääsuks riigisaladusele, kuid kelle valdusesse on sattunud salastatud teabekandja, on kohustatud andma selle viivitamata Kaitsepolitseiametile. Isik, kellel ei ole õigust ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -642,27 +754,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Riigisaladusele juurdepääsu omava isiku kohustused",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladusele juurdepääsu omav isik on kohustatud: 1 1) hoidma saladuses talle teatavaks saanud riigisaladust; 2 2) kaitsma tema valduses olevat salastatud teabekandjat avalikuks tuleku ja kõrvalise isiku juurdepääsu eest; 3 3) teatama asutuse või juriidilise isiku juhile või tema poolt riigisaladuse kaitset korraldama volitatud isikule ja asjaomasele julgeolekukontrolli asutusele kohe igast isikust, kes püüab mis tahes viisil saavutada ebaseaduslikku juurdepääsu riigisaladusele; 4 4) te",
+      "estleg:legalText": "1 (1) Riigisaladusele juurdepääsu omav isik on kohustatud: 1 1) hoidma saladuses talle teatavaks saanud riigisaladust; 2 2) kaitsma tema valduses olevat salastatud teabekandjat avalikuks tuleku ja kõrvalise isiku juurdepääsu eest; 3 3) teatama asutuse või juriidilise isiku juhile või tema poolt riigisaladuse kaitset korraldama volitatud isikule ja asjaomasele julgeolekukontrolli asutusele kohe igast isikust, kes püüab mis tahes viisil saavutada ebaseaduslikku juurdepääsu riigisaladusele; 4 4) te",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -684,27 +805,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Riigisaladust valdava asutuse, institutsiooni ja juriidilise isiku kohustused",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladust valdava asutuse, institutsiooni ja juriidilise isiku juht on kohustatud määrama isiku ja vajaduse korral tema asendaja, kes korraldab riigisaladuse kaitset ning vastutab käesoleva seaduse ja selle alusel antud õigusaktidega kehtestatud nõuete täitmise eest, ning ametikohad, millel töötamise eeltingimuseks on juurdepääsu omamine riigisaladusele. Riigisaladust valdava asutuse, institutsiooni ja juriidilise isiku juht on kohustatud määrama isiku ja vajaduse korral tema asendaja,",
+      "estleg:legalText": "1 (1) Riigisaladust valdava asutuse, institutsiooni ja juriidilise isiku juht on kohustatud määrama isiku ja vajaduse korral tema asendaja, kes korraldab riigisaladuse kaitset ning vastutab käesoleva seaduse ja selle alusel antud õigusaktidega kehtestatud nõuete täitmise eest, ning ametikohad, millel töötamise eeltingimuseks on juurdepääsu omamine riigisaladusele. Riigisaladust valdava asutuse, institutsiooni ja juriidilise isiku juht on kohustatud määrama isiku ja vajaduse korral tema asendaja,",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -727,21 +857,26 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Kaitsepolitseiameti ja Kaitsejõudude Peastaabi kohustused ja õigused riigisaladuse kaitse korraldamisel",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladuse kaitset korraldab ja kontrolli käesoleva seaduse täitmise üle teostab Kaitsepolitseiamet, kaitseväes ja Kaitseliidus Kaitsejõudude Peastaap, välja arvatud käesoleva seaduse §-s 16 1 nimetatud juhtudel. Riigisaladuse kaitset korraldab ja kontrolli käesoleva seaduse täitmise üle teostab Kaitsepolitseiamet, kaitseväes ja Kaitseliidus Kaitsejõudude Peastaap, välja arvatud käesoleva seaduse §-s 16 1 nimetatud juhtudel. 2 (2) Kaitsepolitseiamet ja Kaitsejõudude Peastaap on vastaval",
+      "estleg:legalText": "1 (1) Riigisaladuse kaitset korraldab ja kontrolli käesoleva seaduse täitmise üle teostab Kaitsepolitseiamet, kaitseväes ja Kaitseliidus Kaitsejõudude Peastaap, välja arvatud käesoleva seaduse §-s 16 1 nimetatud juhtudel. Riigisaladuse kaitset korraldab ja kontrolli käesoleva seaduse täitmise üle teostab Kaitsepolitseiamet, kaitseväes ja Kaitseliidus Kaitsejõudude Peastaap, välja arvatud käesoleva seaduse §-s 16 1 nimetatud juhtudel. 2 (2) Kaitsepolitseiamet ja Kaitsejõudude Peastaap on vastaval",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
@@ -772,15 +907,16 @@
       "@id": "estleg:RSS_Par_16_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16¹.",
       "rdfs:label": "§ 16¹. Teabeameti kohustused ja õigused riigisaladuse kaitse korraldamisel",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Teabeamet korraldab ja kontrollib elektrooniliseks teabeturbeks kehtestatud nõuete täitmist, annab või tunnistab kehtetuks vastavussertifikaadid riigisaladuse automatiseeritud infotöötlussüsteemidele ning kontrollib nende käigushoidmist, sealhulgas ehitamist, kasutamist, hooldamist, remontimist ja ühendusi telekommunikatsioonivõrkudega. Teabeamet korraldab ja kontrollib elektrooniliseks teabeturbeks kehtestatud nõuete täitmist, annab või tunnistab kehtetuks vastavussertifikaadid riigisalad",
+      "estleg:legalText": "1 (1) Teabeamet korraldab ja kontrollib elektrooniliseks teabeturbeks kehtestatud nõuete täitmist, annab või tunnistab kehtetuks vastavussertifikaadid riigisaladuse automatiseeritud infotöötlussüsteemidele ning kontrollib nende käigushoidmist, sealhulgas ehitamist, kasutamist, hooldamist, remontimist ja ühendusi telekommunikatsioonivõrkudega. Teabeamet korraldab ja kontrollib elektrooniliseks teabeturbeks kehtestatud nõuete täitmist, annab või tunnistab kehtetuks vastavussertifikaadid riigisalad",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
@@ -795,20 +931,23 @@
       "@id": "estleg:RSS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Riigisaladuse kaitse komisjon",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladuste kaitse koordineerimiseks ja korraldamiseks moodustab Vabariigi Valitsus riigisaladuse kaitse komisjoni (edaspidi komisjon). Riigisaladuste kaitse koordineerimiseks ja korraldamiseks moodustab Vabariigi Valitsus riigisaladuse kaitse komisjoni (edaspidi komisjon). 2 (2) Komisjon: 1 1) teeb Vabariigi Valitsusele ettepanekuid riigisaladuse kaitse korraldamiseks; 2 2) vaatab läbi avaldusi ja kaebusi käesoleva seaduse ja selle alusel antud õigusaktide ebaseadusliku kohaldamise või",
+      "estleg:legalText": "1 (1) Riigisaladuste kaitse koordineerimiseks ja korraldamiseks moodustab Vabariigi Valitsus riigisaladuse kaitse komisjoni (edaspidi komisjon). Riigisaladuste kaitse koordineerimiseks ja korraldamiseks moodustab Vabariigi Valitsus riigisaladuse kaitse komisjoni (edaspidi komisjon). 2 (2) Komisjon: 1 1) teeb Vabariigi Valitsusele ettepanekuid riigisaladuse kaitse korraldamiseks; 2 2) vaatab läbi avaldusi ja kaebusi käesoleva seaduse ja selle alusel antud õigusaktide ebaseadusliku kohaldamise või",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_4"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -828,21 +967,26 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Riigisaladuse ja salastatud teabekandjate töötlemise mõiste",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Riigisaladuse ja salastatud teabekandja töötlemine on riigisaladuse või salastatud teabekandja märgistamine, arvestus, kogumine, hoidmine, säilitamine, kasutamine, reprodutseerimine, väljavõtete tegemine, edastamine või hävitamine või mitu eeltoodud toimingut, sõltumata toimingute teostamise viisist või kasutatavatest vahenditest.",
+      "estleg:legalText": "Riigisaladuse ja salastatud teabekandja töötlemine on riigisaladuse või salastatud teabekandja märgistamine, arvestus, kogumine, hoidmine, säilitamine, kasutamine, reprodutseerimine, väljavõtete tegemine, edastamine või hävitamine või mitu eeltoodud toimingut, sõltumata toimingute teostamise viisist või kasutatavatest vahenditest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_5"
       },
@@ -856,15 +1000,16 @@
       "@id": "estleg:RSS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Salastatud teabekandja märgistamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Salastatud teabekandjale tuleb teha: 1 1) salastusmärge; 2 2) märge teabe salastamise aluse kohta. Salastatud teabekandjale tuleb teha: salastusmärge; märge teabe salastamise aluse kohta. 2 (2) Salastatud teabekandja märgistatakse vaid järgmiselt: 1 1) \"täiesti salajase\" tasemega riigisaladust sisaldav teabekandja märgistatakse salastusmärkega \"TÄIESTI SALAJANE\"; 2 2) \"salajase\" tasemega riigisaladust sisaldav teabekandja märgistatakse salastusmärkega \"SALAJANE\"; 3 3) \"konfidentsiaalse\" ta",
+      "estleg:legalText": "1 (1) Salastatud teabekandjale tuleb teha: 1 1) salastusmärge; 2 2) märge teabe salastamise aluse kohta. Salastatud teabekandjale tuleb teha: salastusmärge; märge teabe salastamise aluse kohta. 2 (2) Salastatud teabekandja märgistatakse vaid järgmiselt: 1 1) \"täiesti salajase\" tasemega riigisaladust sisaldav teabekandja märgistatakse salastusmärkega \"TÄIESTI SALAJANE\"; 2 2) \"salajase\" tasemega riigisaladust sisaldav teabekandja märgistatakse salastusmärkega \"SALAJANE\"; 3 3) \"konfidentsiaalse\" ta",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_5"
       },
@@ -886,21 +1031,26 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RSS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Salastatud dokumendi koostamine ja vormistamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Salastatud dokumendi koostamisel ja vormistamisel juhindutakse haldusdokumentide vormistamise põhinõuetest riigisaladuse kaitse korrast tulenevate erisustega. Salastatud dokumendi koostamisel ja vormistamisel juhindutakse haldusdokumentide vormistamise põhinõuetest riigisaladuse kaitse korrast tulenevate erisustega. 2 (2) Salastatud teabekandja kuulub kohustuslikule registreerimisele. Salastatud teabekandja kuulub kohustuslikule registreerimisele.",
+      "estleg:legalText": "1 (1) Salastatud dokumendi koostamisel ja vormistamisel juhindutakse haldusdokumentide vormistamise põhinõuetest riigisaladuse kaitse korrast tulenevate erisustega. Salastatud dokumendi koostamisel ja vormistamisel juhindutakse haldusdokumentide vormistamise põhinõuetest riigisaladuse kaitse korrast tulenevate erisustega. 2 (2) Salastatud teabekandja kuulub kohustuslikule registreerimisele. Salastatud teabekandja kuulub kohustuslikule registreerimisele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_5"
       },
@@ -914,20 +1064,23 @@
       "@id": "estleg:RSS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Salastatud teabekandja säilitamine ja hävitamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Teabekandja, mille salastamistähtaeg on kustunud või kustutatud, kuid millel on väärtus ühiskonnale, riigile või isikule, antakse üle Rahvusarhiivile kooskõlas arhiiviseadusega (RT I 1998, 36/37, 552). Teabekandja, mille salastamistähtaeg on kustunud või kustutatud, kuid millel on väärtus ühiskonnale, riigile või isikule, antakse üle Rahvusarhiivile kooskõlas arhiiviseadusega (RT I 1998, 36/37, 552). 2 (2) Teabekandja, mille salastamistähtaeg on kustunud või kustutatud, kuulub hävitamisele",
+      "estleg:legalText": "1 (1) Teabekandja, mille salastamistähtaeg on kustunud või kustutatud, kuid millel on väärtus ühiskonnale, riigile või isikule, antakse üle Rahvusarhiivile kooskõlas arhiiviseadusega (RT I 1998, 36/37, 552). Teabekandja, mille salastamistähtaeg on kustunud või kustutatud, kuid millel on väärtus ühiskonnale, riigile või isikule, antakse üle Rahvusarhiivile kooskõlas arhiiviseadusega (RT I 1998, 36/37, 552). 2 (2) Teabekandja, mille salastamistähtaeg on kustunud või kustutatud, kuulub hävitamisele",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_5"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -941,27 +1094,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Riigisaladusele juurdepääsu alused",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Juurdepääs riigisaladusele on isiku õigus tutvuda riigisaladusega ning töödelda riigisaladust ja salastatud teabekandjat: 1 1) ametikohajärgselt; 2 2) riigisaladusele juurdepääsu loa alusel; 3 3) uurija, prokuröri või kohtu määruse alusel. Juurdepääs riigisaladusele on isiku õigus tutvuda riigisaladusega ning töödelda riigisaladust ja salastatud teabekandjat: ametikohajärgselt; riigisaladusele juurdepääsu loa alusel; uurija, prokuröri või kohtu määruse alusel.",
+      "estleg:legalText": "Juurdepääs riigisaladusele on isiku õigus tutvuda riigisaladusega ning töödelda riigisaladust ja salastatud teabekandjat: 1 1) ametikohajärgselt; 2 2) riigisaladusele juurdepääsu loa alusel; 3 3) uurija, prokuröri või kohtu määruse alusel. Juurdepääs riigisaladusele on isiku õigus tutvuda riigisaladusega ning töödelda riigisaladust ja salastatud teabekandjat: ametikohajärgselt; riigisaladusele juurdepääsu loa alusel; uurija, prokuröri või kohtu määruse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -975,26 +1137,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Juurdepääs riigisaladusele ametikohajärgselt",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Õigus juurdepääsuks riigisaladusele, sõltumata selle salastatuse tasemest, on ametikohajärgselt: 1 1) Vabariigi Presidendil talle Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega pandud ülesannete täitmiseks; 2 2) Riigikogu liikmel Riigikogu töökorra seaduses (RT 1992, 46, 582; RT I 1999, 2, 44) sätestatud juhtudel; 3 3) Vabariigi Valitsuse liikmel Vabariigi Valitsuse seaduses (RT I 1995, 94, 1628; 1996, 49, 953; 88, 1560; 1997, 29, 447; 40, 622; 52, 833; 73,",
+      "estleg:legalText": "1 (1) Õigus juurdepääsuks riigisaladusele, sõltumata selle salastatuse tasemest, on ametikohajärgselt: 1 1) Vabariigi Presidendil talle Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega pandud ülesannete täitmiseks; 2 2) Riigikogu liikmel Riigikogu töökorra seaduses (RT 1992, 46, 582; RT I 1999, 2, 44) sätestatud juhtudel; 3 3) Vabariigi Valitsuse liikmel Vabariigi Valitsuse seaduses (RT I 1995, 94, 1628; 1996, 49, 953; 88, 1560; 1997, 29, 447; 40, 622; 52, 833; 73,",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1045,27 +1214,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Juurdepääs riigisaladusele juurdepääsuloa alusel",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladusele juurdepääsu õigus juurdepääsuloa alusel on «konfidentsiaalse», «salajase» või «täiesti salajase» tasemega juurdepääsuluba omaval füüsilisel või juriidilisel isikul, kellel on põhjendatud teadmisvajadus. Riigisaladusele juurdepääsu õigus juurdepääsuloa alusel on «konfidentsiaalse», «salajase» või «täiesti salajase» tasemega juurdepääsuluba omaval füüsilisel või juriidilisel isikul, kellel on põhjendatud teadmisvajadus. 1 (1¹) Juriidilisele isikule eiantajuurdepääs",
+      "estleg:legalText": "1 (1) Riigisaladusele juurdepääsu õigus juurdepääsuloa alusel on «konfidentsiaalse», «salajase» või «täiesti salajase» tasemega juurdepääsuluba omaval füüsilisel või juriidilisel isikul, kellel on põhjendatud teadmisvajadus. Riigisaladusele juurdepääsu õigus juurdepääsuloa alusel on «konfidentsiaalse», «salajase» või «täiesti salajase» tasemega juurdepääsuluba omaval füüsilisel või juriidilisel isikul, kellel on põhjendatud teadmisvajadus. 1 (1¹) Juriidilisele isikule eiantajuurdepääs",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1093,27 +1271,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Juurdepääs riigisaladusele uurija, prokuröri või kohtu määruse alusel",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) \"Konfidentsiaalse\" või \"salajase\" tasemega riigisaladusele juurdepääsu õigus on kriminaal-, tsiviil-, haldus- või haldusõiguserikkumise asja kohtueelse menetlemise või kohtumenetluse osalisel uurija, prokuröri või kohtu määruse alusel kohtumenetluse seadustes ettenähtud juhtudel ja korras ning pärast julgeolekukontrolli läbimist. \"Konfidentsiaalse\" või \"salajase\" tasemega riigisaladusele juurdepääsu õigus on kriminaal-, tsiviil-, haldus- või haldusõiguserikkumise asja kohtueelse menetlemis",
+      "estleg:legalText": "1 (1) \"Konfidentsiaalse\" või \"salajase\" tasemega riigisaladusele juurdepääsu õigus on kriminaal-, tsiviil-, haldus- või haldusõiguserikkumise asja kohtueelse menetlemise või kohtumenetluse osalisel uurija, prokuröri või kohtu määruse alusel kohtumenetluse seadustes ettenähtud juhtudel ja korras ning pärast julgeolekukontrolli läbimist. \"Konfidentsiaalse\" või \"salajase\" tasemega riigisaladusele juurdepääsu õigus on kriminaal-, tsiviil-, haldus- või haldusõiguserikkumise asja kohtueelse menetlemis",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1141,27 +1328,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Välismaalaste juurdepääs riigisaladusele",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Välisriigi kodanik või kodakondsuseta isik (edaspidi välismaalane) võib taotleda juurdepääsuluba, kui riigisaladust valdaval asutusel on selle isiku riigisaladusele juurdepääsu lubamine vajalik seoses asutusele pandud ülesannete täitmisega ning isikul on vajalikud eriteadmised või -oskused nende ülesannete täitmisele kaasaaitamiseks. Välisriigi kodanik või kodakondsuseta isik (edaspidi välismaalane) võib taotleda juurdepääsuluba, kui riigisaladust valdaval asutusel on selle isiku riigisala",
+      "estleg:legalText": "1 (1) Välisriigi kodanik või kodakondsuseta isik (edaspidi välismaalane) võib taotleda juurdepääsuluba, kui riigisaladust valdaval asutusel on selle isiku riigisaladusele juurdepääsu lubamine vajalik seoses asutusele pandud ülesannete täitmisega ning isikul on vajalikud eriteadmised või -oskused nende ülesannete täitmisele kaasaaitamiseks. Välisriigi kodanik või kodakondsuseta isik (edaspidi välismaalane) võib taotleda juurdepääsuluba, kui riigisaladust valdaval asutusel on selle isiku riigisala",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1183,26 +1379,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_26_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26¹.",
       "rdfs:label": "§ 26¹. Riigisaladuse edastamine välisriigile ja rahvusvahelisele organisatsioonile",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Riigikantselei, Kaitseministeerium, Siseministeerium, Välisministeerium ja julgeolekuasutus võivad edastada riigisaladuseks olevat teavet välisriigile või rahvusvahelisele organisatsioonile julgeolekuasutuste seaduse (RT I 2001, 7, 17) §-s 34 sätestatud juhul ja Vabariigi Valitsuse poolt käesoleva seaduse § 12 lõike 2 alusel kehtestatud määrusega ettenähtud korras, kui välislepinguga on tagatud kaitse edastatava teabe avalikuks tulemise eest.",
+      "estleg:legalText": "Riigikantselei, Kaitseministeerium, Siseministeerium, Välisministeerium ja julgeolekuasutus võivad edastada riigisaladuseks olevat teavet välisriigile või rahvusvahelisele organisatsioonile julgeolekuasutuste seaduse (RT I 2001, 7, 17) §-s 34 sätestatud juhul ja Vabariigi Valitsuse poolt käesoleva seaduse § 12 lõike 2 alusel kehtestatud määrusega ettenähtud korras, kui välislepinguga on tagatud kaitse edastatava teabe avalikuks tulemise eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -1225,27 +1428,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Juurdepääsuloa andmise, andmisest keeldumise, kehtivuse pikendamise ja tühistamise alused",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Juurdepääsuluba antakse juurdepääsuks konfidentsiaalse», «salajase» või «täiesti salajase» tasemega riigisaladusele lähtuvalt isiku juurdepääsuvajadusest. Juurdepääsuluba antakse juurdepääsuks konfidentsiaalse», «salajase» või «täiesti salajase» tasemega riigisaladusele lähtuvalt isiku juurdepääsuvajadusest. 2 (2) Juurdepääsuloa andmise korra kehtestab Vabariigi Valitsus määrusega. Juurdepääsuloa andmise korras sätestatakse juurdepääsuloa andmise, andmisest keeldumise, kehtivuse pikendamis",
+      "estleg:legalText": "1 (1) Juurdepääsuluba antakse juurdepääsuks konfidentsiaalse», «salajase» või «täiesti salajase» tasemega riigisaladusele lähtuvalt isiku juurdepääsuvajadusest. Juurdepääsuluba antakse juurdepääsuks konfidentsiaalse», «salajase» või «täiesti salajase» tasemega riigisaladusele lähtuvalt isiku juurdepääsuvajadusest. 2 (2) Juurdepääsuloa andmise korra kehtestab Vabariigi Valitsus määrusega. Juurdepääsuloa andmise korras sätestatakse juurdepääsuloa andmise, andmisest keeldumise, kehtivuse pikendamis",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1274,26 +1486,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Juurdepääsuloa või selle kehtivuse pikendamise taotlemine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Juurdepääsuluba või selle kehtivuse pikendamist võib taotleda ning taotluse võib rahuldada üksnes juhul, kui isikul on juurdepääsuvajadus. Juurdepääsuluba või selle kehtivuse pikendamist ei või taotleda, samuti seda anda ainuüksi eesmärgil lubada isikule sissepääs riigisaladuse kaitseks valvatavale alale või kergendada seal liikumist. Juurdepääsuluba või selle kehtivuse pikendamist võib taotleda ning taotluse võib rahuldada üksnes juhul, kui isikul on juurdepääsuvajadus. Juurdepääsuluba võ",
+      "estleg:legalText": "1 (1) Juurdepääsuluba või selle kehtivuse pikendamist võib taotleda ning taotluse võib rahuldada üksnes juhul, kui isikul on juurdepääsuvajadus. Juurdepääsuluba või selle kehtivuse pikendamist ei või taotleda, samuti seda anda ainuüksi eesmärgil lubada isikule sissepääs riigisaladuse kaitseks valvatavale alale või kergendada seal liikumist. Juurdepääsuluba või selle kehtivuse pikendamist võib taotleda ning taotluse võib rahuldada üksnes juhul, kui isikul on juurdepääsuvajadus. Juurdepääsuluba võ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1312,27 +1531,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Julgeolekukontroll",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Juurdepääsuloa saamiseks või selle kehtivuse pikendamiseks või juurdepääsuks uurija, prokuröri või kohtu määruse alusel peab seda taotlev isik läbima julgeolekukontrolli. Julgeolekukontrolli eesmärk on selgitada välja isiku vastavus juurdepääsuloa andmise või selle kehtivuse pikendamise tingimustele. Juurdepääsuloa saamiseks või selle kehtivuse pikendamiseks või juurdepääsuks uurija, prokuröri või kohtu määruse alusel peab seda taotlev isik läbima julgeolekukontrolli. Julgeolekukontrolli e",
+      "estleg:legalText": "1 (1) Juurdepääsuloa saamiseks või selle kehtivuse pikendamiseks või juurdepääsuks uurija, prokuröri või kohtu määruse alusel peab seda taotlev isik läbima julgeolekukontrolli. Julgeolekukontrolli eesmärk on selgitada välja isiku vastavus juurdepääsuloa andmise või selle kehtivuse pikendamise tingimustele. Juurdepääsuloa saamiseks või selle kehtivuse pikendamiseks või juurdepääsuks uurija, prokuröri või kohtu määruse alusel peab seda taotlev isik läbima julgeolekukontrolli. Julgeolekukontrolli e",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1355,26 +1583,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Juurdepääsuloa andmine või selle kehtivuse pikendamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Juurdepääsuloa andmise või selle kehtivuse pikendamise aluseks on teostatud julgeolekukontrolli alusel tehtud otsustus, mis peab tuginema kogu julgeolekukontrolli käigus kogutud teabele. Juurdepääsuloa andmise või selle kehtivuse pikendamise aluseks on teostatud julgeolekukontrolli alusel tehtud otsustus, mis peab tuginema kogu julgeolekukontrolli käigus kogutud teabele. 2 (2) Julgeolekukontrolli käigus kogutud teabe vaatab julgeolekukontrolli teostanud asutuses läbi selleks moodustatud ko",
+      "estleg:legalText": "1 (1) Juurdepääsuloa andmise või selle kehtivuse pikendamise aluseks on teostatud julgeolekukontrolli alusel tehtud otsustus, mis peab tuginema kogu julgeolekukontrolli käigus kogutud teabele. Juurdepääsuloa andmise või selle kehtivuse pikendamise aluseks on teostatud julgeolekukontrolli alusel tehtud otsustus, mis peab tuginema kogu julgeolekukontrolli käigus kogutud teabele. 2 (2) Julgeolekukontrolli käigus kogutud teabe vaatab julgeolekukontrolli teostanud asutuses läbi selleks moodustatud ko",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1391,26 +1626,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Juurdepääsuloa andmisest või selle kehtivuse pikendamisest keeldumise alused",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Juurdepääsuluba andmast või selle kehtivust pikendamast keeldutakse füüsilisele isikule: 1 1) kes ei vasta käesoleva seaduse § 28 lõikes 2 sätestatud tingimustele; 2 2) kes on piiratud teovõimega; 3 3) kelle tegevus on olnud või on suunatud Eesti riigi ja tema julgeoleku vastu; 4 4) kes töötab välisriigi luure- või julgeolekuteenistuses, välja arvatud käesoleva seaduse §-s 26 sätestatud juhul; 5 5) kes on töötanud Eestit okupeerinud riigi luure- või julgeolekuteenistuses, välja arvatud Ees",
+      "estleg:legalText": "1 (1) Juurdepääsuluba andmast või selle kehtivust pikendamast keeldutakse füüsilisele isikule: 1 1) kes ei vasta käesoleva seaduse § 28 lõikes 2 sätestatud tingimustele; 2 2) kes on piiratud teovõimega; 3 3) kelle tegevus on olnud või on suunatud Eesti riigi ja tema julgeoleku vastu; 4 4) kes töötab välisriigi luure- või julgeolekuteenistuses, välja arvatud käesoleva seaduse §-s 26 sätestatud juhul; 5 5) kes on töötanud Eestit okupeerinud riigi luure- või julgeolekuteenistuses, välja arvatud Ees",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
@@ -1443,27 +1685,36 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Juurdepääsuloa tühistamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Isikule keelatakse juurdepääs riigisaladusele ja juurdepääsuluba tühistatakse, kui: 1 1) isikul ei ole enam juurdepääsuvajadust; 2 2) isik on rikkunud käesoleva seaduse või selle alusel antud õigusakti nõudeid; 3 3) isik on lakanud vastamast juurdepääsuloa saamise tingimustele; 4 4) juriidilise isiku suhtes on alustatud likvideerimismenetlust või on tehtud pankrotiotsus. Isikule keelatakse juurdepääs riigisaladusele ja juurdepääsuluba tühistatakse, kui: isikul ei ole enam juurdepääsuvajadu",
+      "estleg:legalText": "1 (1) Isikule keelatakse juurdepääs riigisaladusele ja juurdepääsuluba tühistatakse, kui: 1 1) isikul ei ole enam juurdepääsuvajadust; 2 2) isik on rikkunud käesoleva seaduse või selle alusel antud õigusakti nõudeid; 3 3) isik on lakanud vastamast juurdepääsuloa saamise tingimustele; 4 4) juriidilise isiku suhtes on alustatud likvideerimismenetlust või on tehtud pankrotiotsus. Isikule keelatakse juurdepääs riigisaladusele ja juurdepääsuluba tühistatakse, kui: isikul ei ole enam juurdepääsuvajadu",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1483,33 +1734,34 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_32_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32¹.",
       "rdfs:label": "§ 32¹. Riigisaladuse seaduse nõuete rikkumine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Riigisaladuse seaduse või selle alusel kehtestatud õigusaktide nõuete rikkumise eest, kui see ei olnud seotud riigisaladuse avalikustamisega, – karistatakse rahatrahviga kuni 300 trahviühikut. Riigisaladuse seaduse või selle alusel kehtestatud õigusaktide nõuete rikkumise eest, kui see ei olnud seotud riigisaladuse avalikustamisega, – karistatakse rahatrahviga kuni 300 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 kro",
+      "estleg:legalText": "1 (1) Riigisaladuse seaduse või selle alusel kehtestatud õigusaktide nõuete rikkumise eest, kui see ei olnud seotud riigisaladuse avalikustamisega, – karistatakse rahatrahviga kuni 300 trahviühikut. Riigisaladuse seaduse või selle alusel kehtestatud õigusaktide nõuete rikkumise eest, kui see ei olnud seotud riigisaladuse avalikustamisega, – karistatakse rahatrahviga kuni 300 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 kro",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_6"
       },
       "estleg:targetGroup": [
-        "business"
-      ],
-      "estleg:hasSanction": [
         {
-          "@id": "estleg:Sanction_RSS_Par_32_35_fine"
+          "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ESS_Par_171_1"
@@ -1534,26 +1786,39 @@
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_RSS_Par_32_35_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:RSS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Teabekandjate ülevaatamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Riigisaladuse valdaja on kohustatud üle vaatama tema valduses oleva riigisaladuse ja muu teabe ning märgistama riigisaladust sisaldavad teabekandjad vastavalt käesoleva seaduse §-le 19. Kui teabekandjas sisalduv teave ei ole käesoleva seaduse kohaselt enam riigisaladus, loetakse teabekandja salastatus kustunuks ning teabekandjale tehakse sellekohane märge.",
+      "estleg:legalText": "Riigisaladuse valdaja on kohustatud üle vaatama tema valduses oleva riigisaladuse ja muu teabe ning märgistama riigisaladust sisaldavad teabekandjad vastavalt käesoleva seaduse §-le 19. Kui teabekandjas sisalduv teave ei ole käesoleva seaduse kohaselt enam riigisaladus, loetakse teabekandja salastatus kustunuks ning teabekandjale tehakse sellekohane märge.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_7"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
@@ -1581,21 +1846,26 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_33_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33¹.",
       "rdfs:label": "§ 33¹. Riigisaladuse automatiseeritud infotöötlussüsteemide kasutamine",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Riigisaladuse automatiseeritud infotöötlussüsteeme võib riigisaladuse töötlemiseks kasutada üksnes Teabeameti poolt väljastatud vastavussertifikaadi olemasolu korral. RT I 2003 23 147 263037 2004-07-01+03:00",
+      "estleg:legalText": "Riigisaladuse automatiseeritud infotöötlussüsteeme võib riigisaladuse töötlemiseks kasutada üksnes Teabeameti poolt väljastatud vastavussertifikaadi olemasolu korral. RT I 2003 23 147 263037 2004-07-01+03:00",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_7"
       },
@@ -1607,21 +1877,26 @@
       "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RSS_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Varem väljaantud juurdepääsulubade kehtivus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Enne käesoleva seaduse jõustumist väljaantud juurdepääsuload kehtivad kuni nendes märgitud tähtajani.",
+      "estleg:legalText": "Enne käesoleva seaduse jõustumist väljaantud juurdepääsuload kehtivad kuni nendes märgitud tähtajani.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_7"
       },
@@ -1640,20 +1915,23 @@
       "@id": "estleg:RSS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Varem kehtinud riigisaladuse seaduse alusel antud õigusaktide kehtivus",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "Enne käesoleva seaduse jõustumist kehtinud riigisaladuse seaduse (RT I 1997, 81, 1361) alusel antud Vabariigi Valitsuse määrused - osas, mis ei ole vastuolus käesoleva seaduse sätetega -, kehtivad kuni nende asendamiseni käesoleva seaduse alusel antud Vabariigi Valitsuse määrusega, kuid mitte kauem kui kuus kuud pärast käesoleva seaduse jõustumist.",
+      "estleg:legalText": "Enne käesoleva seaduse jõustumist kehtinud riigisaladuse seaduse (RT I 1997, 81, 1361) alusel antud Vabariigi Valitsuse määrused - osas, mis ei ole vastuolus käesoleva seaduse sätetega -, kehtivad kuni nende asendamiseni käesoleva seaduse alusel antud Vabariigi Valitsuse määrusega, kuid mitte kauem kui kuus kuud pärast käesoleva seaduse jõustumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_7"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1669,27 +1947,36 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RSS_Par_35_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RSS"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35¹.",
       "rdfs:label": "§ 35¹. Ametikohajärgne juurdepääs «piiratud» tasemega riigisaladusele",
       "estleg:sourceAct": "Riigisaladuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RSS_Map_2026"
+        "@id": "estleg:RSS_Map"
       },
       "estleg:summary": "1 (1) Isikud, kes töötavad ametikohal, millel on pärast käesoleva seaduse § 23 lõikes 2 nimetatud ametikohtade loetelu kehtestamist ametikohajärgne juurdepääs «piiratud» tasemega riigisaladusele ja kes ei oma kehtivat juurdepääsuluba «konfidentsiaalse», «salajase» või «täiesti salajase» tasemega riigisaladusele, esitavad § 28 lõike 3 punktis 3 nimetatud dokumendid julgeolekukontrolli teostavale asutusele hiljemalt ühe kuu jooksul pärast eespool nimetatud ametikohtade loetelu jõustumist. Isikud, ",
+      "estleg:legalText": "1 (1) Isikud, kes töötavad ametikohal, millel on pärast käesoleva seaduse § 23 lõikes 2 nimetatud ametikohtade loetelu kehtestamist ametikohajärgne juurdepääs «piiratud» tasemega riigisaladusele ja kes ei oma kehtivat juurdepääsuluba «konfidentsiaalse», «salajase» või «täiesti salajase» tasemega riigisaladusele, esitavad § 28 lõike 3 punktis 3 nimetatud dokumendid julgeolekukontrolli teostavale asutusele hiljemalt ühe kuu jooksul pärast eespool nimetatud ametikohtade loetelu jõustumist. Isikud, ",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RSS_7"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -1708,7 +1995,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

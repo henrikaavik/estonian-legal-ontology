@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,12 +10,11 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1062777_Map_2026",
+      "@id": "estleg:Reg_1062777_Map",
       "@type": [
         "estleg:Act",
         "estleg:GovernmentRegulation",
-        "estleg:NationalRegulation",
-        "owl:Ontology"
+        "estleg:NationalRegulation"
       ],
       "rdfs:label": "Rikkumisteadete säilitamise kord (määrus)",
       "dc:source": "Rikkumisteadete säilitamise kord",
@@ -26,9 +24,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/103022026020.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/103022026020.xml"
       },
       "estleg:issuer": "Vabariigi Valitsus",
@@ -47,32 +42,26 @@
       "estleg:temporalStatus": "inForce"
     },
     {
-      "@id": "estleg:Regulation_1062777",
-      "@type": [
-        "owl:Class"
-      ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
-      }
-    },
-    {
       "@id": "estleg:Reg_1062777_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1062777"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Rikkumisteadete säilitamine",
       "estleg:sourceAct": "Rikkumisteadete säilitamise kord",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1062777_Map_2026"
+        "@id": "estleg:Reg_1062777_Map"
       },
       "estleg:summary": "1 (1) Pädev asutus ning seaduse § 8 lõikes 2 nimetatud asutus ja isik on kohustatud säilitama rikkumisteate, sellega seoses kogutud teabe ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad. Pädev asutus ning seaduse § 8 lõikes 2 nimetatud asutus ja isik on kohustatud säilitama rikkumisteate, sellega seoses kogutud teabe ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad. 2 (2) Rikkumisteadet ja muud lõikes 1 nime",
       "estleg:legalText": "1 (1) Pädev asutus ning seaduse § 8 lõikes 2 nimetatud asutus ja isik on kohustatud säilitama rikkumisteate, sellega seoses kogutud teabe ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad. Pädev asutus ning seaduse § 8 lõikes 2 nimetatud asutus ja isik on kohustatud säilitama rikkumisteate, sellega seoses kogutud teabe ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad. 2 (2) Rikkumisteadet ja muud lõikes 1 nimetatud teavet, dokumente ja andmekandjaid säilitatakse rikkumisteate vastu võtnud asutuse, isiku või üksuse või asutusevälise kolmanda isiku juures, kes tagab nende säilimise ja nendele juurdepääsu seadustes sätestatud korras. Rikkumisteadet ja muud lõikes 1 nimetatud teavet, dokumente ja andmekandjaid säilitatakse rikkumisteate vastu võtnud asutuse, isiku või üksuse või asutusevälise kolmanda isiku juures, kes tagab nende säilimise ja nendele juurdepääsu seadustes sätestatud korras. 3 (3) Suuliselt vahetul kohtumisel või häälsõnumiga vastu võetud rikkumisteade säilitatakse: 1 1) vestluse või sõnumi salvestisena taasesitataval kujul või 2 2) vestluse protokollina. Suuliselt vahetul kohtumisel või häälsõnumiga vastu võetud rikkumisteade säilitatakse: vestluse või sõnumi salvestisena taasesitataval kujul või vestluse protokollina. 4 (4) Rikkumisteate vastuvõtja on kohustatud pakkuma lõike 3 punktis 2 nimetatud protokolli rikkumisest teavitajale tutvumiseks, parandamiseks ja kinnitamiseks. Rikkumisteate vastuvõtja on kohustatud pakkuma lõike 3 punktis 2 nimetatud protokolli rikkumisest teavitajale tutvumiseks, parandamiseks ja kinnitamiseks.",
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
@@ -84,25 +73,33 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1062777_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1062777"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Rikkumisteadete hävitamine",
       "estleg:sourceAct": "Rikkumisteadete säilitamise kord",
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1062777_Map_2026"
+        "@id": "estleg:Reg_1062777_Map"
       },
       "estleg:summary": "1 (1) Rikkumisteade, sellega seoses kogutud teave ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad hävitatakse asutuse või juriidilise isiku juhi kehtestatud korras. Rikkumisteade, sellega seoses kogutud teave ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad hävitatakse asutuse või juriidilise isiku juhi kehtestatud korras. 2 (2) Riigisaladust või salastatud välisteavet sisaldav teave käideldakse ja see märgi",
       "estleg:legalText": "1 (1) Rikkumisteade, sellega seoses kogutud teave ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad hävitatakse asutuse või juriidilise isiku juhi kehtestatud korras. Rikkumisteade, sellega seoses kogutud teave ning muud rikkumisteate menetlemise käigus koostatud ja kogutud dokumendid ning andmekandjad hävitatakse asutuse või juriidilise isiku juhi kehtestatud korras. 2 (2) Riigisaladust või salastatud välisteavet sisaldav teave käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele. Riigisaladust või salastatud välisteavet sisaldav teave käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:semanticallySimilarTo": [
         {
@@ -116,7 +113,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     }
   ]
 }

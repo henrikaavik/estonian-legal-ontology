@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:KOLS_Map_2026",
+      "@id": "estleg:KOLS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Kohaliku omavalitsuse üksuste liitude seadus teemakaardistus",
       "dc:source": "Kohaliku omavalitsuse üksuste liitude seadus",
-      "dcterms:title": "Kohaliku omavalitsuse üksuste liitude seadus",
+      "dcterms:title": [
+        {
+          "@value": "Kohaliku omavalitsuse üksuste liitude seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Local Authority Associations Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/104072017099.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/104072017099.xml"
       },
       "estleg:kehtiv": {
@@ -48,16 +53,64 @@
           "@id": "http://eurovoc.europa.eu/54"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/54"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:KOLS_Par_4"
+        },
+        {
+          "@id": "estleg:KOLS_Par_13"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KOLS_Par_6"
+        },
+        {
+          "@id": "estleg:KOLS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:KOLS_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:KOLS_Par_14"
+        },
+        {
+          "@id": "estleg:KOLS_Par_14_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2018-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/507112017001"
       }
     },
     {
@@ -104,10 +157,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KOLS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -133,10 +190,14 @@
       "rdfs:label": "2. peatükk – LIIDU ASUTAMISE JA LIIDU TEGEVUSE ERISUSED",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KOLS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -162,10 +223,14 @@
       "rdfs:label": "3. peatükk – LIIDU ÜLESANDED JA LIIDU RAHASTAMINE",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KOLS_3"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -191,23 +256,27 @@
       "rdfs:label": "4. peatükk – LÕPPSÄTTED",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_KOLS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KOLS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Seadus näeb ette maakonna või piirkonna kohaliku omavalitsuse üksuste liidu ja üleriigilise kohaliku omavalitsuse üksuste liidu (edaspidi ühiselt liit) asutamise ja tegevuse erisused võrreldes mittetulundusühingute seadusega. (2) Liit on mittetulundusühing, mille suhtes kohaldatakse mittetulundusühingute seadust, arvestades käesolevas seaduses ettenähtud erisusi.",
       "estleg:legalText": "(1) Seadus näeb ette maakonna või piirkonna kohaliku omavalitsuse üksuste liidu ja üleriigilise kohaliku omavalitsuse üksuste liidu (edaspidi ühiselt liit) asutamise ja tegevuse erisused võrreldes mittetulundusühingute seadusega. (2) Liit on mittetulundusühing, mille suhtes kohaldatakse mittetulundusühingute seadust, arvestades käesolevas seaduses ettenähtud erisusi.",
@@ -226,8 +295,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "ngo"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -253,7 +326,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_1_Lg_1",
@@ -266,7 +343,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 1"
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_1_Lg_2",
@@ -279,19 +368,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Maakonna kohaliku omavalitsuse üksuste liit",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Maakonna kohaliku omavalitsuse üksused võivad moodustada maakonna kohaliku omavalitsuse üksuste liidu (edaspidi maakondlik liit). (2) Maakondliku liidu eesmärgiks on maakonna kohaliku omavalitsuse üksuste ühistegevuse kaudu maakonna tasakaalustatud ja jätkusuutlikule arengule kaasaaitamine, maakonna kultuuritraditsioonide säilitamine ja edendamine, maakonna ja oma liikmete esindamine ja liikmete ühiste huvide kaitsmine, samuti maakonna kohaliku omavalitsuse üksuste koostöö edendamine ja",
       "estleg:legalText": "(1) Maakonna kohaliku omavalitsuse üksused võivad moodustada maakonna kohaliku omavalitsuse üksuste liidu (edaspidi maakondlik liit). (2) Maakondliku liidu eesmärgiks on maakonna kohaliku omavalitsuse üksuste ühistegevuse kaudu maakonna tasakaalustatud ja jätkusuutlikule arengule kaasaaitamine, maakonna kultuuritraditsioonide säilitamine ja edendamine, maakonna ja oma liikmete esindamine ja liikmete ühiste huvide kaitsmine, samuti maakonna kohaliku omavalitsuse üksuste koostöö edendamine ja liikmetele seadusega ettenähtud ülesannete paremaks täitmiseks võimaluste loomine. (3) Maakondliku liidu nimi peab viitama maakonnale, mille kohaliku omavalitsuse üksused sellesse liitu kuuluvad, ning sisaldama eestikeelset täiendit «omavalitsusüksuste liit» või «omavalitsuste liit». Kohaliku omavalitsuse üksuste ühendus, mis ei ole käesoleva seaduse nõuete kohane, ei või oma nimes kasutada täiendit «omavalitsusüksuste liit» või «omavalitsuste liit».",
@@ -313,7 +411,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -330,7 +430,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_Lg_1",
@@ -343,7 +447,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_Lg_2",
@@ -356,7 +469,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_Lg_3",
@@ -369,19 +491,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 3"
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2¹.",
       "rdfs:label": "§ 2¹. Piirkonna kohaliku omavalitsuse üksuste liit",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Mitme maakonna kohaliku omavalitsuse üksused võivad omavahel moodustada piirkonna kohaliku omavalitsuse üksuste liidu (edaspidi piirkondlik liit). Piirkondlik liit hõlmab kahe või enama maakonna territooriumi koosseisu kuuluvaid kohaliku omavalitsuse üksusi (2) Piirkondliku liidu eesmärk on piirkonna kohaliku omavalitsuse üksuste ühistegevuse kaudu kaasa aidata piirkonna tasakaalustatud ja jätkusuutlikule arengule, säilitada ja edendada piirkonna kultuuritraditsioone, esindada piirkonda ja",
       "estleg:legalText": "(1) Mitme maakonna kohaliku omavalitsuse üksused võivad omavahel moodustada piirkonna kohaliku omavalitsuse üksuste liidu (edaspidi piirkondlik liit). Piirkondlik liit hõlmab kahe või enama maakonna territooriumi koosseisu kuuluvaid kohaliku omavalitsuse üksusi (2) Piirkondliku liidu eesmärk on piirkonna kohaliku omavalitsuse üksuste ühistegevuse kaudu kaasa aidata piirkonna tasakaalustatud ja jätkusuutlikule arengule, säilitada ja edendada piirkonna kultuuritraditsioone, esindada piirkonda ja oma liikmeid ning kaitsta liikmete ühiseid huvisid, samuti edendada piirkonna kohaliku omavalitsuse üksuste koostööd ja luua liikmetele võimalused seadusega ette nähtud ülesannete paremaks täitmiseks. (3) Piirkondliku liidu nimi peab viitama piirkonnale, mille kohaliku omavalitsuse üksused sellesse liitu kuuluvad, ning sisaldama eestikeelset täiendit „omavalitsusüksuste liit” või „omavalitsuste liit”.",
@@ -403,7 +537,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -420,7 +556,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_1_Lg_1",
@@ -433,7 +573,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_2_1"
       },
-      "rdfs:label": "§ 2¹ lg 1"
+      "rdfs:label": "§ 2¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_1_Lg_2",
@@ -446,7 +595,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_2_1"
       },
-      "rdfs:label": "§ 2¹ lg 2"
+      "rdfs:label": "§ 2¹ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_2_1_Lg_3",
@@ -459,19 +617,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_2_1"
       },
-      "rdfs:label": "§ 2¹ lg 3"
+      "rdfs:label": "§ 2¹ lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Üleriigiline kohaliku omavalitsuse üksuste liit",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Kohaliku omavalitsuse üksused võivad moodustada üleriigilise kohaliku omavalitsuse üksuste liidu (edaspidi üleriigiline liit). (2) Üleriigilise liidu eesmärgiks on kohaliku omavalitsuse üksuste ühistegevuse kaudu kohaliku omavalitsuse üldisele arengule kaasaaitamine, oma liikmete esindamine ja nende ühiste huvide kaitsmine, samuti liikmete koostöö edendamine ja liikmetele seadusega ettenähtud ülesannete paremaks täitmiseks võimaluste loomine.",
       "estleg:legalText": "(1) Kohaliku omavalitsuse üksused võivad moodustada üleriigilise kohaliku omavalitsuse üksuste liidu (edaspidi üleriigiline liit). (2) Üleriigilise liidu eesmärgiks on kohaliku omavalitsuse üksuste ühistegevuse kaudu kohaliku omavalitsuse üldisele arengule kaasaaitamine, oma liikmete esindamine ja nende ühiste huvide kaitsmine, samuti liikmete koostöö edendamine ja liikmetele seadusega ettenähtud ülesannete paremaks täitmiseks võimaluste loomine. (3) Üleriigilise liidu nimi peab viitama selle liidu üleriigilisele ulatusele ning asjaolule, et tegemist on kohaliku omavalitsuse üksuste liiduga.",
@@ -493,7 +663,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -510,7 +682,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_3_Lg_1",
@@ -523,7 +699,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_3_Lg_2",
@@ -536,7 +721,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 2"
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_3_Lg_3",
@@ -549,19 +743,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Asutamine",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Maakondliku liidu võivad ühiselt asutada üle poole maakonna kohaliku omavalitsuse üksustest. Piirkondliku liidu võivad ühiselt asutada üle poole iga osaleva maakonna kohaliku omavalitsuse üksustest. (2) Üleriigilise liidu võivad ühiselt asutada üle poole Eesti kohaliku omavalitsuse üksustest või kohaliku omavalitsuse üksused, kelle elanike arv kokku moodustab rahvastikuregistri andmete alusel üle poole Eesti elanike arvust. (3) Kohaliku omavalitsuse üksus võib samal ajal kuuluda ühte",
       "estleg:legalText": "(1) Maakondliku liidu võivad ühiselt asutada üle poole maakonna kohaliku omavalitsuse üksustest. Piirkondliku liidu võivad ühiselt asutada üle poole iga osaleva maakonna kohaliku omavalitsuse üksustest. (2) Üleriigilise liidu võivad ühiselt asutada üle poole Eesti kohaliku omavalitsuse üksustest või kohaliku omavalitsuse üksused, kelle elanike arv kokku moodustab rahvastikuregistri andmete alusel üle poole Eesti elanike arvust. (3) Kohaliku omavalitsuse üksus võib samal ajal kuuluda ühte maakondlikku või piirkondlikku liitu ja ühte üleriigilisse liitu.",
@@ -583,8 +789,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -621,7 +831,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_4_Lg_1",
@@ -634,7 +848,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_4_Lg_2",
@@ -647,7 +870,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_4_Lg_3",
@@ -660,19 +895,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3"
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Põhikiri",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Liidu põhikirjas esitatakse järgmised andmed: liidu nimi ja asukoht; liikmete vastuvõtmise ja liikmete liidust väljaastumise või -arvamise kord; liidu ülesanded; liidu organid; üldkoosolekul ja teistes organites liikmete esindatuse määramise alused; liidu organitesse esindajate määramise ja nende vahetamise kord; liidu organite volitused ja esindamise kord; liikmemaksude kehtestamise põhimõtted ja liidu liikmete osalus liidu vara soetamisel ja kasutamisel ning liidu ülesannete täitmisel;",
       "estleg:legalText": "(1) Liidu põhikirjas esitatakse järgmised andmed: liidu nimi ja asukoht; liikmete vastuvõtmise ja liikmete liidust väljaastumise või -arvamise kord; liidu ülesanded; liidu organid; üldkoosolekul ja teistes organites liikmete esindatuse määramise alused; liidu organitesse esindajate määramise ja nende vahetamise kord; liidu organite volitused ja esindamise kord; liikmemaksude kehtestamise põhimõtted ja liidu liikmete osalus liidu vara soetamisel ja kasutamisel ning liidu ülesannete täitmisel; liikmete õigused ja kohustused; põhikirja muutmise kord; liidu tegevuse tulemus- ja finantskontroll ning avastatud puudustele reageerimise võimalused ja kord; liidu lõpetamise alused ja kord; vara jaotus liidu lõpetamise korral. (2) Kui liidu põhikirjas on ette nähtud liidu organites liikmete esindatuse määramisel või muudel juhtudel liidu liikmeteks olevate kohaliku omavalitsuse üksuste elanike arvu proportsiooni arvestamine, lähtutakse kohaliku omavalitsuse üksuse elanike arvust rahvastikuregistri andmete alusel viimase kohaliku omavalitsuse volikogu valimiste aasta 1. juuni seisuga.",
@@ -691,8 +938,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -706,7 +957,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_5_Lg_1",
@@ -732,19 +987,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Liikmed",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Liit ei või keelduda maakondliku või üleriigilise liidu liikmele esitatavatele nõuetele vastava kohaliku omavalitsuse üksuse vastuvõtmisest liidu liikmeks. (2) Kui liidu liikmete arv langeb alla käesoleva seaduse §-s 4 ettenähtud suuruse ning liikmete arvu ei suudeta kuue kuu jooksul suurendada §-s 4 ettenähtud suuruseni, muudetakse liit põhikirja muutmisega muud liiki kohaliku omavalitsuse üksuste ühenduseks või lõpetatakse liidu tegevus.",
       "estleg:legalText": "(1) Liit ei või keelduda maakondliku või üleriigilise liidu liikmele esitatavatele nõuetele vastava kohaliku omavalitsuse üksuse vastuvõtmisest liidu liikmeks. (2) Kui liidu liikmete arv langeb alla käesoleva seaduse §-s 4 ettenähtud suuruse ning liikmete arvu ei suudeta kuue kuu jooksul suurendada §-s 4 ettenähtud suuruseni, muudetakse liit põhikirja muutmisega muud liiki kohaliku omavalitsuse üksuste ühenduseks või lõpetatakse liidu tegevus. (3) Haldusterritoriaalse korralduse muutmisel läheb liidu liikme staatus üle uuele kohaliku omavalitsuse üksusele, kui kõik endised kohaliku omavalitsuse üksused olid liidu liikmed. (4) Haldusterritoriaalse korralduse muutmise tulemusel tekkinud kohaliku omavalitsuse üksuse esindatuse proportsioon liidu organites määratakse uue kohaliku omavalitsuse üksuse tunnustest lähtudes. (5) Liikmestaatuse ülemineku üksikasjalik kord nähakse ette põhikirjas. (6) Kui kõik endised kohaliku omavalitsuse üksused ei olnud sama liidu liikmed, lõpeb nende liikmestaatus haldusterritoriaalse korralduse muutmisel. (7) Liidu mittetulundusühingute ja sihtasutuste registrisse kandmise avaldusele lisatakse liidu liikmete nimekiri. Liikme liitu vastuvõtmisel, liidust väljaastumisel, väljaarvamisel või liikmestaatuse üleminekul esitab liit mittetulundusühingute ja sihtasutuste registri pidajale viivitamata sellekohase teate.",
@@ -778,8 +1045,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:references": [
         {
@@ -807,7 +1078,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_1",
@@ -820,7 +1095,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_2",
@@ -838,7 +1125,16 @@
         {
           "@id": "estleg:KOLS_Par_4"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_3",
@@ -851,7 +1147,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 3"
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_4",
@@ -864,7 +1169,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 4"
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_5",
@@ -877,7 +1191,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 5"
+      "rdfs:label": "§ 6 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_6",
@@ -890,7 +1213,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 6"
+      "rdfs:label": "§ 6 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_6_Lg_7",
@@ -903,19 +1235,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 7"
+      "rdfs:label": "§ 6 lg 7",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Üldkoosolek",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Üldkoosolekul võivad oma esindaja kaudu osaleda kõik liidu liikmed. Liidu põhikirjas ettenähtud juhtudel võib liikmel olla mitu esindajat. (2) Liige nimetab oma esindaja liidu üldkoosolekule kohaliku omavalitsuse volikogu volituste tähtajaks. Igale esindajale määratakse asendaja. Esindaja ja tema asendaja nimetatakse kohaliku omavalitsuse volikogu või valitsuse liikmete hulgast. Volikogu võib esindaja või tema asendaja, sõltumata põhjusest, tagasi kutsuda ning nimetada uue esindaja või",
       "estleg:legalText": "(1) Üldkoosolekul võivad oma esindaja kaudu osaleda kõik liidu liikmed. Liidu põhikirjas ettenähtud juhtudel võib liikmel olla mitu esindajat. (2) Liige nimetab oma esindaja liidu üldkoosolekule kohaliku omavalitsuse volikogu volituste tähtajaks. Igale esindajale määratakse asendaja. Esindaja ja tema asendaja nimetatakse kohaliku omavalitsuse volikogu või valitsuse liikmete hulgast. Volikogu võib esindaja või tema asendaja, sõltumata põhjusest, tagasi kutsuda ning nimetada uue esindaja või asendaja. (3) Üldkoosoleku otsused võetakse vastu üldkoosolekul osalevate esindajate poolthäälteenamusega. Igal esindajal on üks hääl. Seaduses või põhikirjas võib mõne otsuse vastuvõtmiseks näha ette suurema häälteenamuse nõude või näha ette, et otsus on vastu võetud, kui ükski esindaja ei ole selle vastu. (4) Mittetulundusühingute seaduses nimetatud liikmete häälteenamust käsitatakse liitude puhul käesoleva paragrahvi lõikes 3 nimetatud poolthäälteenamusena.",
@@ -940,8 +1284,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body",
-        "ngo"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -964,7 +1312,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_7_Lg_1",
@@ -977,7 +1329,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1"
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_7_Lg_2",
@@ -990,7 +1349,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_7_Lg_3",
@@ -1003,7 +1374,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_7_Lg_4",
@@ -1016,19 +1394,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 4"
+      "rdfs:label": "§ 7 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Liidu esindusülesanded",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Liit esindab liitu kuuluvaid kohaliku omavalitsuse üksusi kui tervikut suhetes riigiorganite, teiste isikute ja rahvusvaheliste organisatsioonidega. (2) Maakondlik liit esindab maakonna ning piirkondlik liit sellesse kuuluvate maakondade kohaliku omavalitsuse üksuste ühishuve suhetes riigiorganite, teiste isikute ja rahvusvaheliste organisatsioonidega. (2¹) Maakondlik liit võib teise liidu või liitudega moodustada ühise regionaalse esinduse.",
       "estleg:legalText": "(1) Liit esindab liitu kuuluvaid kohaliku omavalitsuse üksusi kui tervikut suhetes riigiorganite, teiste isikute ja rahvusvaheliste organisatsioonidega. (2) Maakondlik liit esindab maakonna ning piirkondlik liit sellesse kuuluvate maakondade kohaliku omavalitsuse üksuste ühishuve suhetes riigiorganite, teiste isikute ja rahvusvaheliste organisatsioonidega. (2¹) Maakondlik liit võib teise liidu või liitudega moodustada ühise regionaalse esinduse. Sellisel juhul otsustavad liidud vastavalt oma põhikirjale järgmised küsimused: ühise esinduse arvulise koosseisu ja esindatuse põhimõtete kooskõlastamine ja kehtestamine; ühise esinduse tehnilise teenindamise ning raha eraldamise põhimõtete kooskõlastamine ja kehtestamine; liidu esindajate nimetamine ühisesse esindusse ja vajaduse korral ühisest esindusest tagasikutsumine. (3) Liidul on õigus oma liikmete ühiste huvide kaitsmiseks pöörduda kaebusega halduskohtusse.",
@@ -1053,8 +1440,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1080,7 +1471,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_8_Lg_1",
@@ -1093,7 +1488,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 1"
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_8_Lg_2",
@@ -1106,7 +1510,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 2"
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_8_Lg_2_1",
@@ -1119,7 +1532,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 2¹"
+      "rdfs:label": "§ 8 lg 2¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_8_Lg_3",
@@ -1132,19 +1552,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 3"
+      "rdfs:label": "§ 8 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Liidu täidetavad kohaliku omavalitsuse ülesanded",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Liit täidab kohaliku omavalitsuse ülesandeid, mille liidu kaudu ühiselt täitmise on otsustanud üldkoosolek. Üldkoosolek võib otsustada ülesande täitmiseks võtmise teiselt liidult lepingu alusel. (2) Kohaliku omavalitsuse ülesandeid täidab liit nende kohaliku omavalitsuse üksuste eest, kelle volikogu on otsustanud ülesande liidu kaudu ühise täitmise. (3) Avaliku võimu volituse rakendamist eeldava ülesande võib liidule täitmiseks anda ainult seaduses sisalduva sellekohase volituse olemasolu",
       "estleg:legalText": "(1) Liit täidab kohaliku omavalitsuse ülesandeid, mille liidu kaudu ühiselt täitmise on otsustanud üldkoosolek. Üldkoosolek võib otsustada ülesande täitmiseks võtmise teiselt liidult lepingu alusel. (2) Kohaliku omavalitsuse ülesandeid täidab liit nende kohaliku omavalitsuse üksuste eest, kelle volikogu on otsustanud ülesande liidu kaudu ühise täitmise. (3) Avaliku võimu volituse rakendamist eeldava ülesande võib liidule täitmiseks anda ainult seaduses sisalduva sellekohase volituse olemasolu korral. (4) Seadusega või selle alusel kohalikule omavalitsusele pandud ülesande võib liidule täitmiseks anda ainult seaduses sisalduva sellekohase volituse olemasolu korral.",
@@ -1169,7 +1596,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1189,7 +1618,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_9_Lg_1",
@@ -1202,7 +1635,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 1"
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_9_Lg_2",
@@ -1215,7 +1660,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_9_Lg_3",
@@ -1228,7 +1682,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 3"
+      "rdfs:label": "§ 9 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_9_Lg_4",
@@ -1241,19 +1702,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 4"
+      "rdfs:label": "§ 9 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Liidu täidetavad riiklikud ülesanded",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Liit täidab ülesandeid, mis on talle pandud seadusega või seaduse alusel. (2) Liit võib sõlmida valitsusasutusega lepingu, mille alusel ta võtab täita riikliku ülesande. (3) Riikliku ülesande võtab liit täita juhul, kui ükski liitu kuuluv kohaliku omavalitsuse üksus ei ole selle vastu. (4) Seadusega või seaduse alusel liidule pandud ülesande täitmisega seotud kulud kaetakse riigieelarvest.",
       "estleg:legalText": "(1) Liit täidab ülesandeid, mis on talle pandud seadusega või seaduse alusel. (2) Liit võib sõlmida valitsusasutusega lepingu, mille alusel ta võtab täita riikliku ülesande. (3) Riikliku ülesande võtab liit täita juhul, kui ükski liitu kuuluv kohaliku omavalitsuse üksus ei ole selle vastu. (4) Seadusega või seaduse alusel liidule pandud ülesande täitmisega seotud kulud kaetakse riigieelarvest.",
@@ -1278,7 +1751,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1298,7 +1773,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_10_Lg_1",
@@ -1324,7 +1803,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 2"
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_10_Lg_3",
@@ -1337,7 +1828,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 3"
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_10_Lg_4",
@@ -1356,13 +1856,13 @@
       "@id": "estleg:KOLS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Liidu rahastamine",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "Liidu ülesannete täitmist rahastatakse: liikmemaksudest; toetustest ja annetustest; liidu põhikirjalisest tegevusest saadavast tulust; seaduses või seaduse alusel ettenähtud juhtudel riigieelarvelistest eraldistest.",
       "estleg:legalText": "Liidu ülesannete täitmist rahastatakse: liikmemaksudest; toetustest ja annetustest; liidu põhikirjalisest tegevusest saadavast tulust; seaduses või seaduse alusel ettenähtud juhtudel riigieelarvelistest eraldistest.",
@@ -1374,7 +1874,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KOLS_Par_11_Lg_Unknown_1"
+          "@id": "estleg:KOLS_Par_11_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1384,7 +1884,7 @@
       ]
     },
     {
-      "@id": "estleg:KOLS_Par_11_Lg_Unknown_1",
+      "@id": "estleg:KOLS_Par_11_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1398,13 +1898,13 @@
       "@id": "estleg:KOLS_Par_11_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
       "rdfs:label": "§ 11¹. Majandusaasta aruanne",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "Liit esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõike 5 ja § 78 lõike 3 kohaselt ilma põhitegevusala andmeteta.",
       "estleg:legalText": "Liit esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõike 5 ja § 78 lõike 3 kohaselt ilma põhitegevusala andmeteta.",
@@ -1416,11 +1916,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KOLS_Par_11_1_Lg_Unknown_1"
+          "@id": "estleg:KOLS_Par_11_1_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "ngo"
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1442,10 +1944,14 @@
         {
           "@id": "estleg:TargetGroup_NGO"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:KOLS_Par_11_1_Lg_Unknown_1",
+      "@id": "estleg:KOLS_Par_11_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1453,19 +1959,28 @@
       "estleg:legalText": "Liit esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõike 5 ja § 78 lõike 3 kohaselt ilma põhitegevusala andmeteta.",
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_11_1"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:KOLS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Liidu ümberregistreerimine",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "(1) Eesti Vabariigi ettevõtete, asutuste ja organisatsioonide registris (edaspidi ettevõtteregister) registreeritud kohaliku omavalitsuse üksuste liidud kuuluvad ümberregistreerimisele mittetulundusühingute ja sihtasutuste registris. (2) Mittetulundusühingute seaduse nõuete kohane liidu ümberregistreerimise avaldus esitatakse mittetulundusühingute ja sihtasutuste registri pidajale hiljemalt 2004. aasta 1. jaanuariks. Avaldusele lisatakse mittetulundusühingute seaduse § 93 lõikes 2 nõutud",
       "estleg:legalText": "(1) Eesti Vabariigi ettevõtete, asutuste ja organisatsioonide registris (edaspidi ettevõtteregister) registreeritud kohaliku omavalitsuse üksuste liidud kuuluvad ümberregistreerimisele mittetulundusühingute ja sihtasutuste registris. (2) Mittetulundusühingute seaduse nõuete kohane liidu ümberregistreerimise avaldus esitatakse mittetulundusühingute ja sihtasutuste registri pidajale hiljemalt 2004. aasta 1. jaanuariks. Avaldusele lisatakse mittetulundusühingute seaduse § 93 lõikes 2 nõutud dokumendid ning liidu liikmete nimekiri. (3) Kui ettevõtteregistris registreeritud liitu ei ole 2004. aasta 1. jaanuariks mittetulundusühinguna registrisse kantud või kui registrisse kandmise avaldust ei ole registripidajale selleks ajaks esitatud või kui avaldus on jäetud pärast seda kuupäeva rahuldamata, loetakse liit sundlõpetatuks ja likvideeritakse mittetulundusühingute seaduse §-s 95 ettenähtud korras. Liitude sundlõpetamise teadete avaldamine ametlikus väljaandes Ametlikud Teadaanded on riigilõivuvaba. (4) Mittetulundusühingute ja sihtasutuste registris registreeritud kohaliku omavalitsuse üksuste liit, kes vastab käesoleva seaduse §-s 4 esitatud nõuetele, viib hiljemalt 2004. aasta 1. jaanuariks oma põhikirja vastavusse käesoleva seadusega või lõpetab liidu nime kasutamise, vastasel juhul loetakse liit sundlõpetatuks ning likvideeritakse mittetulundusühingute seaduse §-s 95 ettenähtud korras. (5) Käesoleva paragrahvi lõigetes 2 ja 3 ettenähtud korras kuuluvad mittetulundusühingute ja sihtasutuste registris ümberregistreerimisele ka ettevõtteregistris registreeritud kohaliku omavalitsuse üksuste liitude ühendused.",
@@ -1493,8 +2008,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "business",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1522,7 +2041,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_12_Lg_1",
@@ -1535,7 +2058,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_12_Lg_2",
@@ -1548,7 +2083,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_12_Lg_3",
@@ -1561,7 +2105,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_12_Lg_4",
@@ -1579,7 +2135,19 @@
         {
           "@id": "estleg:KOLS_Par_4"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_12_Lg_5",
@@ -1592,19 +2160,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:KOLS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 5"
+      "rdfs:label": "§ 12 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Kohaliku omavalitsuse korralduse seaduse muutmine",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -1615,14 +2195,16 @@
         "@id": "estleg:Chapter_KOLS_4"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:KOLS_Par_14"
         },
         {
-          "@id": "estleg:KOLS_Par_14_Lg_Unknown_1"
+          "@id": "estleg:KOLS_Par_14_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1640,19 +2222,23 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KOLS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kohaliku_omavalitsuse_uksuste_liitude_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Seaduse jõustumine",
       "estleg:sourceAct": "Kohaliku omavalitsuse üksuste liitude seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KOLS_Map_2026"
+        "@id": "estleg:KOLS_Map"
       },
       "estleg:summary": "Seadus jõustub 2003. aasta 1. jaanuaril, välja arvatud käesoleva seaduse § 13 punkt 8, mis jõustub seaduse Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:legalText": "Seadus jõustub 2003. aasta 1. jaanuaril, välja arvatud käesoleva seaduse § 13 punkt 8, mis jõustub seaduse Riigi Teatajas avaldamisele järgneval päeval.",
@@ -1664,7 +2250,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:KOLS_Par_14_Lg_Unknown_1"
+          "@id": "estleg:KOLS_Par_14_Lg_1"
         }
       ],
       "estleg:references": [
@@ -1679,7 +2265,7 @@
       ]
     },
     {
-      "@id": "estleg:KOLS_Par_14_Lg_Unknown_1",
+      "@id": "estleg:KOLS_Par_14_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1692,7 +2278,8 @@
         {
           "@id": "estleg:KOLS_Par_13"
         }
-      ]
+      ],
+      "estleg:itemNumber": "8"
     }
   ]
 }

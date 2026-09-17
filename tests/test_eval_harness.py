@@ -6,12 +6,9 @@ verified independently of the real corpus.
 """
 
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import eval_harness  # noqa: E402
+from estleg import eval_harness
 
 
 def _write(path: Path, graph: list[dict]) -> None:
@@ -115,6 +112,8 @@ def test_render_markdown_runs(tmp_path):
     md = eval_harness.render_markdown(report)
     assert "Fitness-for-purpose evaluation" in md
     assert "Retrievability gap" in md
+    assert "reference integrity, not semantic precision" in md
+    assert "reference integrity, not semantic precision" in report["crossref_edge_resolution"]["note"]
 
 
 def test_gold_set_precision_recall(tmp_path):

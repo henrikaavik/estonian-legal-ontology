@@ -11,12 +11,9 @@ Four footguns in helpers used across the whole pipeline:
 from __future__ import annotations
 
 import builtins
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-from estleg_common import (
+from estleg.estleg_common import (
     _RunCounters,
     _safe_load,
     iter_krr_jsonld_files,
@@ -43,10 +40,9 @@ class TestSanitizeIdDashCollision:
         assert sanitize_id("3—5") == "3_to_5"
         assert sanitize_id("3−5") == "3_to_5"
 
-    def test_ascii_hyphen_is_not_canonicalised(self):
-        # The #354 fix deliberately scopes to typographic dashes; a plain
-        # ASCII hyphen is stripped (matches generate_all_laws.sanitize_id).
-        assert sanitize_id("3-5") == "35"
+    def test_ascii_hyphen_numeric_range_canonicalises_to_to(self):
+        # #449: an ASCII-hyphen §-range must not collapse to a bare number.
+        assert sanitize_id("3-5") == "3_to_5"
 
     def test_plain_value_is_unchanged(self):
         assert sanitize_id("194") == "194"
@@ -54,7 +50,7 @@ class TestSanitizeIdDashCollision:
     def test_matches_local_generate_all_laws_definition(self):
         # The shared copy must now agree with the (previously divergent)
         # local generate_all_laws.sanitize_id (#600 sync requirement).
-        from generate_all_laws import sanitize_id as local_sanitize_id
+        from estleg.generate_all_laws import sanitize_id as local_sanitize_id
 
         for val in ("1–94", "194", "§ 5", "3-5", "Karistus"):
             assert sanitize_id(val) == local_sanitize_id(val), val

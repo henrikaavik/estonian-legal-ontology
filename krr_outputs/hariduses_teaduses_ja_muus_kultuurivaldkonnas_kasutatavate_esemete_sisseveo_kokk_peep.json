@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:HTMKKESKSPU_Map_2026",
+      "@id": "estleg:HTMKKESKSPU_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/27159.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/27159.xml"
       },
       "estleg:kehtiv": {
@@ -39,16 +35,27 @@
           "@id": "http://eurovoc.europa.eu/527"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_hariduses_teaduses_ja_muus_kultuurivaldkonnas_kasutatavate_esemete_sisseveo_kokk",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -81,13 +88,13 @@
       "@id": "estleg:HTMKKESKSPU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_hariduses_teaduses_ja_muus_kultuurivaldkonnas_kasutatavate_esemete_sisseveo_kokk"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavat...]",
       "estleg:sourceAct": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:HTMKKESKSPU_Map_2026"
+        "@id": "estleg:HTMKKESKSPU_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
       "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
@@ -96,7 +103,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:HTMKKESKSPU_Par_1_Lg_Unknown_1"
+          "@id": "estleg:HTMKKESKSPU_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -106,7 +113,7 @@
       ]
     },
     {
-      "@id": "estleg:HTMKKESKSPU_Par_1_Lg_Unknown_1",
+      "@id": "estleg:HTMKKESKSPU_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -120,13 +127,13 @@
       "@id": "estleg:HTMKKESKSPU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_hariduses_teaduses_ja_muus_kultuurivaldkonnas_kasutatavate_esemete_sisseveo_kokk"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavat...]",
       "estleg:sourceAct": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:HTMKKESKSPU_Map_2026"
+        "@id": "estleg:HTMKKESKSPU_Map"
       },
       "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis. Riigikogu aseesimees Tunne KELAM",
       "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis. Riigikogu aseesimees Tunne KELAM",
@@ -135,14 +142,16 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:HTMKKESKSPU_Par_2_Lg_Unknown_1"
+          "@id": "estleg:HTMKKESKSPU_Par_2_Lg_1"
         },
         {
-          "@id": "estleg:HTMKKESKSPU_Par_2_Lg_Unknown_2"
+          "@id": "estleg:HTMKKESKSPU_Par_2_Lg_2"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -159,10 +168,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:HTMKKESKSPU_Par_2_Lg_Unknown_1",
+      "@id": "estleg:HTMKKESKSPU_Par_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -173,7 +186,7 @@
       }
     },
     {
-      "@id": "estleg:HTMKKESKSPU_Par_2_Lg_Unknown_2",
+      "@id": "estleg:HTMKKESKSPU_Par_2_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -181,6 +194,15 @@
       "estleg:legalText": "Riigikogu aseesimees Tunne KELAM",
       "estleg:parentProvision": {
         "@id": "estleg:HTMKKESKSPU_Par_2"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     }
   ]

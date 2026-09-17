@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:TAISKA_Map_2026",
+      "@id": "estleg:TAISKA_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Täiskasvanute koolituse seadus teemakaardistus",
       "dc:source": "Täiskasvanute koolituse seadus",
-      "dcterms:title": "Täiskasvanute koolituse seadus",
+      "dcterms:title": [
+        {
+          "@value": "Täiskasvanute koolituse seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "Adult Education Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/130012025002.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/130012025002.xml"
       },
       "estleg:kehtiv": {
@@ -33,19 +38,19 @@
       },
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1030034_Map_2026"
+          "@id": "estleg:Reg_1030034_Map"
         },
         {
-          "@id": "estleg:Reg_1030969_Map_2026"
+          "@id": "estleg:Reg_1030969_Map"
         },
         {
-          "@id": "estleg:Reg_1044408_Map_2026"
+          "@id": "estleg:Reg_1044408_Map"
         },
         {
-          "@id": "estleg:Reg_1060790_Map_2026"
+          "@id": "estleg:Reg_1060790_Map"
         },
         {
-          "@id": "estleg:Reg_1062138_Map_2026"
+          "@id": "estleg:Reg_1062138_Map"
         }
       ],
       "estleg:implementedByCount": 5,
@@ -97,16 +102,106 @@
         {
           "@id": "estleg:AmendmentLink_Draft_HTM22_0735_TAISKA"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LegalProvision_taiskasvanute_koolituse_seadus",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/668"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5188"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:TAISKA_Par_8"
+        },
+        {
+          "@id": "estleg:MSU_Par_31"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_9"
+        },
+        {
+          "@id": "estleg:TOOLEP_Par_28"
+        },
+        {
+          "@id": "estleg:AVALIK_Par_31"
+        },
+        {
+          "@id": "estleg:TOOLEP_Par_69"
+        },
+        {
+          "@id": "estleg:KORS_Par_30"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TAISKA_Par_20_Lg_3"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_5"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_12_1"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_12_1_Lg_2"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_12_6"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_12_6_Lg_1"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_12_9_Lg_4"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_20_Lg_4"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_20_Lg_5"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_20_Lg_6"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/525042025003"
       }
     },
     {
@@ -162,10 +257,14 @@
       "rdfs:label": "1. peatükk – Üldsätted",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -191,10 +290,14 @@
       "rdfs:label": "2. peatükk – Nõuded täienduskoolitusasutusele",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -242,9 +345,9 @@
       "rdfs:label": "3. peatükk – Täienduskoolituse läbiviimine ja teabe avalikustamine",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_3"
       },
       "estleg:hasPart": [
@@ -254,7 +357,11 @@
         {
           "@id": "estleg:Division_TAISKA_3_2"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_TAISKA_4",
@@ -279,10 +386,14 @@
       "rdfs:label": "4. peatükk – Õppija õigus õppepuhkusele",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -308,10 +419,14 @@
       "rdfs:label": "5. peatükk – Täienduskoolituse rahastamise korraldus",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -337,10 +452,14 @@
       "rdfs:label": "6. peatükk – Riiklik ja haldusjärelevalve",
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_6"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -366,23 +485,27 @@
       "rdfs:label": "7. peatükk – Rakendussätted",
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_TAISKA_7"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TAISKA_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Käesoleva seadusega sätestatakse täienduskoolitusasutusele nõuded täienduskoolituse, sealhulgas mikrokvalifikatsiooniõppe läbiviimiseks, õppija õigus õppepuhkusele, täienduskoolituse rahastamise alused ning riiklik ja haldusjärelevalve.",
       "estleg:legalText": "Käesoleva seadusega sätestatakse täienduskoolitusasutusele nõuded täienduskoolituse, sealhulgas mikrokvalifikatsiooniõppe läbiviimiseks, õppija õigus õppepuhkusele, täienduskoolituse rahastamise alused ning riiklik ja haldusjärelevalve.",
@@ -394,7 +517,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_1_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -419,7 +542,7 @@
       ]
     },
     {
-      "@id": "estleg:TAISKA_Par_1_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -433,13 +556,13 @@
       "@id": "estleg:TAISKA_Par_1_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1¹.",
       "rdfs:label": "§ 1¹. Seaduse kohaldamisala",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Käesolevat seadust kohaldatakse täienduskoolitust läbiviivale sellisele eraõiguslikule juriidilisele isikule, avalik-õiguslikule juriidilisele isikule, riigiasutusele ja kohaliku omavalitsuse üksuse asutusele ning füüsilisest isikust ettevõtjale, kellel on seaduses sätestatud kohustus taotleda täienduskoolituse läbiviimiseks tegevusluba või kes on esitanud Eesti hariduse infosüsteemi (edaspidi hariduse infosüsteem) majandustegevusteate täienduskoolituse läbiviimise kohta (edaspidi",
       "estleg:legalText": "(1) Käesolevat seadust kohaldatakse täienduskoolitust läbiviivale sellisele eraõiguslikule juriidilisele isikule, avalik-õiguslikule juriidilisele isikule, riigiasutusele ja kohaliku omavalitsuse üksuse asutusele ning füüsilisest isikust ettevõtjale, kellel on seaduses sätestatud kohustus taotleda täienduskoolituse läbiviimiseks tegevusluba või kes on esitanud Eesti hariduse infosüsteemi (edaspidi hariduse infosüsteem) majandustegevusteate täienduskoolituse läbiviimise kohta (edaspidi täienduskoolitusasutus). (2) Käesolevas seaduses reguleeritud eraõigusliku juriidilise isiku ja füüsilisest isikust ettevõtja majandustegevuse alustamisele, teostamisele ja lõppemisele kohaldatakse majandustegevuse seadustiku üldosa seadust, võttes arvesse käesolevas seaduses sätestatud erisusi. Majandustegevuse seadustiku üldosa seaduses ning käesolevas seaduses majandustegevuse teate esitamise, täienduskoolituse läbiviimise ja teabe avalikustamise, andmete muutumisest teatamise ning majandustegevusest loobumise kohta sätestatut kohaldatakse avalik-õigusliku juriidilise isiku ning riigi ja kohaliku omavalitsuse üksuse täienduskoolitusasutuse kohta niivõrd, kuivõrd selle eripärast ei tulene teisiti. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, võttes arvesse käesolevas seaduses sätestatud erisusi.",
@@ -461,8 +584,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -482,7 +609,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_1_1_Lg_1",
@@ -495,7 +626,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_1_1"
       },
-      "rdfs:label": "§ 1¹ lg 1"
+      "rdfs:label": "§ 1¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_1_1_Lg_2",
@@ -508,7 +651,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_1_1"
       },
-      "rdfs:label": "§ 1¹ lg 2"
+      "rdfs:label": "§ 1¹ lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_1_1_Lg_3",
@@ -527,13 +682,13 @@
       "@id": "estleg:TAISKA_Par_1_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1².",
       "rdfs:label": "§ 1². Formaalõpe, mitteformaalõpe, täienduskoolitus ja mikrokvalifikatsioon",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täiskasvanuõpe käesoleva seaduse tähenduses jaguneb formaalõppeks ja mitteformaalõppeks. (2) Formaalõpe käesoleva seaduse tähenduses on üldharidus-, kutse- ja kõrgkoolis õppekava alusel toimuv eesmärgistatud õpe, mille korraldust reguleerivad põhikooli- ja gümnaasiumiseadus, kutseõppeasutuse seadus, kõrgharidusseadus ning erakooliseadus. (3) Mitteformaalõpe käesoleva seaduse tähenduses on eesmärgistatud vabatahtlik õpe, mis toimub kindlatele huvirühmadele erinevates keskkondades.",
       "estleg:legalText": "(1) Täiskasvanuõpe käesoleva seaduse tähenduses jaguneb formaalõppeks ja mitteformaalõppeks. (2) Formaalõpe käesoleva seaduse tähenduses on üldharidus-, kutse- ja kõrgkoolis õppekava alusel toimuv eesmärgistatud õpe, mille korraldust reguleerivad põhikooli- ja gümnaasiumiseadus, kutseõppeasutuse seadus, kõrgharidusseadus ning erakooliseadus. (3) Mitteformaalõpe käesoleva seaduse tähenduses on eesmärgistatud vabatahtlik õpe, mis toimub kindlatele huvirühmadele erinevates keskkondades. (4) Täienduskoolitus on õpiväljundipõhise õppekava alusel toimuv eesmärgistatud ja organiseeritud mitteformaalõppe osa, mille eesmärk on saavutada õpiväljundid. Käesolevat seadust kohaldatakse mitteformaalõppes täienduskoolitusele, sealhulgas mikrokvalifikatsiooniõppele. (5) Mikrokvalifikatsioon on täienduskoolitusel omandatud, tõendatud ja tunnustatud teadmiste ning oskuste kogum, mis vastab tööturu või ühiskonna vajadustele. Rakenduskõrgkoolid ja ülikoolid (edaspidi kõrgkoolid) võivad nimetada mikrokvalifikatsiooni mikrokraadiks, kui kõrgharidustaseme õppeained moodustavad mikrokraadi õppekava mahust vähemalt poole.",
@@ -635,13 +790,13 @@
       "@id": "estleg:TAISKA_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Täiskasvanuhariduse nõukogu",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Valdkonna eest vastutav minister moodustab täiskasvanuhariduse poliitika kujundamiseks ja rakendamiseks täiskasvanuhariduse nõukogu ning kinnitab selle töökorra käskkirjaga. (2) Täiskasvanuhariduse nõukogu on nõuandev kogu, kuhu kuuluvad asjassepuutuvate ministeeriumide, täienduskoolitusasutuste, formaalõppeasutuste, tööandjate ja töötajate esindusorganisatsioonide ning teiste täiskasvanuhariduse valdkonnas tegutsevate asutuste ja isikute esindajad.",
       "estleg:legalText": "(1) Valdkonna eest vastutav minister moodustab täiskasvanuhariduse poliitika kujundamiseks ja rakendamiseks täiskasvanuhariduse nõukogu ning kinnitab selle töökorra käskkirjaga. (2) Täiskasvanuhariduse nõukogu on nõuandev kogu, kuhu kuuluvad asjassepuutuvate ministeeriumide, täienduskoolitusasutuste, formaalõppeasutuste, tööandjate ja töötajate esindusorganisatsioonide ning teiste täiskasvanuhariduse valdkonnas tegutsevate asutuste ja isikute esindajad.",
@@ -660,8 +815,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -681,7 +840,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_2_Lg_1",
@@ -694,7 +857,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_2_Lg_2",
@@ -707,19 +879,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Majandustegevusteate esitamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolitusasutusena tegutsemiseks esitab täienduskoolituse läbiviija majandustegevusteate, kui tal ei ole seadusega ette nähtud kohustust taotleda täienduskoolituse läbiviimiseks tegevusluba. (2) Majandustegevusteade täienduskoolituse läbiviimiseks sisaldab lisaks majandustegevuse seadustiku üldosa seaduses sätestatule loetelu käesoleva seaduse § 9 lõike 1 alusel kehtestatud täienduskoolituse õppekavarühmadest (edaspidi täienduskoolituse õppekavarühm), milles täienduskoolitust läbi",
       "estleg:legalText": "(1) Täienduskoolitusasutusena tegutsemiseks esitab täienduskoolituse läbiviija majandustegevusteate, kui tal ei ole seadusega ette nähtud kohustust taotleda täienduskoolituse läbiviimiseks tegevusluba. (2) Majandustegevusteade täienduskoolituse läbiviimiseks sisaldab lisaks majandustegevuse seadustiku üldosa seaduses sätestatule loetelu käesoleva seaduse § 9 lõike 1 alusel kehtestatud täienduskoolituse õppekavarühmadest (edaspidi täienduskoolituse õppekavarühm), milles täienduskoolitust läbi viiakse.",
@@ -788,7 +972,7 @@
       "rdfs:label": "§ 3 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_9"
+          "@id": "estleg:TAISKA_Par_9_Lg_1"
         }
       ]
     },
@@ -796,13 +980,13 @@
       "@id": "estleg:TAISKA_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Täienduskoolitusasutuse nimi",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolitusasutus, kes viib läbi üksnes täienduskoolitust, ei tohi täienduskoolitusasutuse nimes mingil viisil viidata formaalõppe läbiviimise võimalusele. (2) Sõna „rahvaülikool” võib oma nimes kasutada üksnes täienduskoolitusasutus, millel on kindel tegevuskoht ja mis pakub pidevalt täienduskoolitust vähemalt kolmes täienduskoolituse õppekavarühmas.",
       "estleg:legalText": "(1) Täienduskoolitusasutus, kes viib läbi üksnes täienduskoolitust, ei tohi täienduskoolitusasutuse nimes mingil viisil viidata formaalõppe läbiviimise võimalusele. (2) Sõna „rahvaülikool” võib oma nimes kasutada üksnes täienduskoolitusasutus, millel on kindel tegevuskoht ja mis pakub pidevalt täienduskoolitust vähemalt kolmes täienduskoolituse õppekavarühmas.",
@@ -854,6 +1038,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -867,7 +1055,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_4_Lg_2",
@@ -880,19 +1075,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Täienduskoolitusasutuse veebileht ja muu avalikult ligipääsetav digikeskkond",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Täienduskoolitusasutus avalikustab käesoleva seaduse § 8 lõikes 2 nõutud teabe täienduskoolitusasutuse veebilehel või muus avalikult ligipääsetavas digikeskkonnas.",
       "estleg:legalText": "Täienduskoolitusasutus avalikustab käesoleva seaduse § 8 lõikes 2 nõutud teabe täienduskoolitusasutuse veebilehel või muus avalikult ligipääsetavas digikeskkonnas.",
@@ -904,12 +1106,12 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_5_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_5_Lg_1"
         }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_8"
+          "@id": "estleg:TAISKA_Par_8_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -934,7 +1136,7 @@
       ]
     },
     {
-      "@id": "estleg:TAISKA_Par_5_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_5_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -945,7 +1147,7 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_8"
+          "@id": "estleg:TAISKA_Par_8_Lg_2"
         }
       ]
     },
@@ -953,13 +1155,13 @@
       "@id": "estleg:TAISKA_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Täienduskoolitusasutuse täienduskoolituse läbiviimise peatamise, keelamise ja läbiviimisest loobumise erisused",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolitusasutusele kehtestatud majandustegevuse nõuete olulise rikkumise korral võib Haridus- ja Teadusministeerium haldusaktiga peatada või keelata täienduskoolituse läbiviimise täienduskoolitusasutusena. Kui Haridus- ja Teadusministeerium annab täienduskoolituse läbiviimise peatamise või keelamise haldusakti või teeb ettekirjutuse, mille järgimata jätmine võib kaasa tuua täienduskoolituse läbiviimise peatamise või keelamise haldusakti andmise, avaldab Haridus- ja Teadusministeerium",
       "estleg:legalText": "(1) Täienduskoolitusasutusele kehtestatud majandustegevuse nõuete olulise rikkumise korral võib Haridus- ja Teadusministeerium haldusaktiga peatada või keelata täienduskoolituse läbiviimise täienduskoolitusasutusena. Kui Haridus- ja Teadusministeerium annab täienduskoolituse läbiviimise peatamise või keelamise haldusakti või teeb ettekirjutuse, mille järgimata jätmine võib kaasa tuua täienduskoolituse läbiviimise peatamise või keelamise haldusakti andmise, avaldab Haridus- ja Teadusministeerium haldusakti resolutsiooni ja põhjendused osas, mille avaldamiseks on avalik huvi, haldusmenetluse seaduse §-s 31 sätestatud korras ning oma veebilehel. (2) Täienduskoolituse läbiviimisest loobumisele kohaldatakse majandustegevuse seadustiku üldosa seaduse §-s 34 sätestatut. Täienduskoolituse läbiviimisest täielikult loobunuks loetakse ka täienduskoolitusasutus, kes ei ole täitnud käesoleva seaduse § 8 lõikes 5 sätestatud andmete esitamise kohustust kuue kuu möödumisel selle kohustuse täitmise tähtaja lõppemisest arvates.",
@@ -1008,6 +1210,10 @@
       "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1026,7 +1232,14 @@
         {
           "@id": "estleg:haldusmenetluse_seadus_Par_31"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_6_Lg_2",
@@ -1042,7 +1255,7 @@
       "rdfs:label": "§ 6 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_8"
+          "@id": "estleg:TAISKA_Par_8_Lg_5"
         },
         {
           "@id": "estleg:MSU_Par_34"
@@ -1053,13 +1266,13 @@
       "@id": "estleg:TAISKA_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Täienduskoolituse õppekorraldus ja täienduskoolitusasutuse tegevuse kvaliteedi tagamise alused",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolitusasutus kehtestab täienduskoolituse õppekorralduse alused ja täienduskoolitusasutuse tegevuse kvaliteedi tagamise alused. (2) Täienduskoolituse õppekorralduse alustes sätestatakse õppija õppesse vastuvõtu ja õppest väljaarvamise tingimused, täienduskoolituse õppetasu maksmise ja tagastamise tingimused ning teised õppe korraldamiseks olulised tingimused. (3) Täienduskoolitusasutuse tegevuse kvaliteedi tagamise alustes sätestatakse vähemalt täienduskoolituse õppekavade, nende",
       "estleg:legalText": "(1) Täienduskoolitusasutus kehtestab täienduskoolituse õppekorralduse alused ja täienduskoolitusasutuse tegevuse kvaliteedi tagamise alused. (2) Täienduskoolituse õppekorralduse alustes sätestatakse õppija õppesse vastuvõtu ja õppest väljaarvamise tingimused, täienduskoolituse õppetasu maksmise ja tagastamise tingimused ning teised õppe korraldamiseks olulised tingimused. (3) Täienduskoolitusasutuse tegevuse kvaliteedi tagamise alustes sätestatakse vähemalt täienduskoolituse õppekavade, nende arendamise, täienduskoolitusega seotud koolitajate ja õppekeskkonna kvaliteedi tagamise tingimused ning täienduskoolituse tagasiside kogumise ja arvestamise kord.",
@@ -1143,13 +1356,13 @@
       "@id": "estleg:TAISKA_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Täienduskoolitusasutust käsitleva teabe avalikustamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolitusasutus avalikustab hariduse infosüsteemi kaudu õppekavarühmad, milles ta täienduskoolitust läbi viib, oma kontaktandmed ja veebilehe või avalikult ligipääsetava digikeskkonna aadressi. (2) Täienduskoolitusasutus avalikustab eesti keeles oma veebilehel või avalikult ligipääsetavas digikeskkonnas täienduskoolituse õppekorralduse alused, täienduskoolituse õppekavad, täienduskoolitusega seotud täiskasvanute koolitajate nimed koos nende kompetentsust tõendava kvalifikatsiooni,",
       "estleg:legalText": "(1) Täienduskoolitusasutus avalikustab hariduse infosüsteemi kaudu õppekavarühmad, milles ta täienduskoolitust läbi viib, oma kontaktandmed ja veebilehe või avalikult ligipääsetava digikeskkonna aadressi. (2) Täienduskoolitusasutus avalikustab eesti keeles oma veebilehel või avalikult ligipääsetavas digikeskkonnas täienduskoolituse õppekorralduse alused, täienduskoolituse õppekavad, täienduskoolitusega seotud täiskasvanute koolitajate nimed koos nende kompetentsust tõendava kvalifikatsiooni, õpi- või töökogemuse kirjeldusega, täienduskoolitusasutuse tegevuse kvaliteedi tagamise alused ja loakohustusega täienduskoolituse läbiviimiseks antud tegevusloa andmed. Teave peab olema ajakohane, kergesti leitav ja üheselt mõistetav. (3) Täienduskoolitusasutus ei pea avalikustama tellimuskoolituste õppekavasid ja nendega seotud koolitajate andmeid. Tellimuskoolitus on tellija soovidest ja vajadustest lähtuv täienduskoolitus, mida viiakse läbi tellijaga kokku lepitud tingimustel ja korras. (4) Täienduskoolitusasutus teeb iga aasta 31. märtsiks hariduse infosüsteemi kaudu kättesaadavaks Eesti Vabariigi haridusseaduse § 366 lõike 32 alusel sätestatud tegevusnäitajad eelmise kalendriaasta kohta. (5) Täienduskoolitusasutus tagab, et käesoleva paragrahvi lõikes 4 nimetatud tegevusnäitajate õigsus on dokumentaalselt tõendatav. Täienduskoolitusasutus säilitab tegevusnäitajate aluseks olevaid dokumente kolm aastat arvates selle kalendriaasta lõpust, mil dokument loodi.",
@@ -1178,7 +1391,7 @@
           "@id": "estleg:TAISKA_Par_5"
         },
         {
-          "@id": "estleg:TAISKA_Par_5_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_5_Lg_1"
         },
         {
           "@id": "estleg:TAISKA_Par_6_Lg_2"
@@ -1238,7 +1451,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_8"
       },
-      "rdfs:label": "§ 8 lg 2"
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_8_Lg_3",
@@ -1283,13 +1503,13 @@
       "@id": "estleg:TAISKA_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Täienduskoolituse standard ja täienduskoolituse õppekava",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) kehtestab määrusega täienduskoolituse standardi, milles sätestatakse täienduskoolituse õppekava nõuded, täienduskoolituse läbimist ja selles osalemist tõendavate dokumentide nõuded ning täienduskoolituse õppekavarühmade loetelu. (2) Täienduskoolitust viiakse läbi täienduskoolitusasutuse kinnitatud õpiväljundipõhise õppekava ja õppekorralduse aluste kohaselt. Õpiväljundid on õppimise tulemusel omandatavad teadmised ja oskused, mille saavutatust on võimalik tõendada ja hinnata.",
       "estleg:legalText": "(1) kehtestab määrusega täienduskoolituse standardi, milles sätestatakse täienduskoolituse õppekava nõuded, täienduskoolituse läbimist ja selles osalemist tõendavate dokumentide nõuded ning täienduskoolituse õppekavarühmade loetelu. (2) Täienduskoolitust viiakse läbi täienduskoolitusasutuse kinnitatud õpiväljundipõhise õppekava ja õppekorralduse aluste kohaselt. Õpiväljundid on õppimise tulemusel omandatavad teadmised ja oskused, mille saavutatust on võimalik tõendada ja hinnata. (3) Täienduskoolituse õppekava maht määratakse akadeemilistes tundides. Üks akadeemiline tund vastab 45 minutile. Mikrokvalifikatsiooniõppe maht määratakse ainepunktides. Üks ainepunkt vastab 26 tunnile õppija tööle teadmiste ja oskuste omandamisel.",
@@ -1321,7 +1541,7 @@
           "@id": "estleg:TAISKA_Par_12_6"
         },
         {
-          "@id": "estleg:TAISKA_Par_12_6_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_12_6_Lg_1"
         },
         {
           "@id": "estleg:TAISKA_Par_12_9_Lg_4"
@@ -1329,7 +1549,7 @@
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1030034_Map_2026"
+          "@id": "estleg:Reg_1030034_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -1388,13 +1608,13 @@
       "@id": "estleg:TAISKA_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Õppekeskkond",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Õppekeskkond on õppijate õppimist ja arengut toetav füüsiline või digitaalne keskkond. Täienduskoolitusasutuse õppekeskkond peab olema täienduskoolituseks ja õppekava õpiväljundite saavutamiseks piisav.",
       "estleg:legalText": "Õppekeskkond on õppijate õppimist ja arengut toetav füüsiline või digitaalne keskkond. Täienduskoolitusasutuse õppekeskkond peab olema täienduskoolituseks ja õppekava õpiväljundite saavutamiseks piisav.",
@@ -1403,7 +1623,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_10_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_10_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1425,10 +1645,14 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
-      "@id": "estleg:TAISKA_Par_10_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_10_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1436,19 +1660,26 @@
       "estleg:legalText": "Õppekeskkond on õppijate õppimist ja arengut toetav füüsiline või digitaalne keskkond. Täienduskoolitusasutuse õppekeskkond peab olema täienduskoolituseks ja õppekava õpiväljundite saavutamiseks piisav.",
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_10"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:TAISKA_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Täiskasvanute koolitaja",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täiskasvanute koolitaja on käesoleva seaduse tähenduses spetsialist, kes sihipäraselt loodud õpisituatsioonis toetab täiskasvanud inimeste õppimist ja enesearendust. Täiskasvanute koolitajal peavad olema koolitatavas valdkonnas erialased ja täiskasvanute koolitaja kompetentsid. Täiskasvanute koolitaja kompetentside olemasolu hindab täienduskoolitusasutus. (2) Täienduskoolituse läbiviimiseks tagab täienduskoolitusasutus õppe eesmärkide ja õpiväljundite saavutamiseks vajaliku arvu õppekavas",
       "estleg:legalText": "(1) Täiskasvanute koolitaja on käesoleva seaduse tähenduses spetsialist, kes sihipäraselt loodud õpisituatsioonis toetab täiskasvanud inimeste õppimist ja enesearendust. Täiskasvanute koolitajal peavad olema koolitatavas valdkonnas erialased ja täiskasvanute koolitaja kompetentsid. Täiskasvanute koolitaja kompetentside olemasolu hindab täienduskoolitusasutus. (2) Täienduskoolituse läbiviimiseks tagab täienduskoolitusasutus õppe eesmärkide ja õpiväljundite saavutamiseks vajaliku arvu õppekavas kirjeldatud kvalifikatsiooni, õpi- või töökogemusega koolitajate olemasolu. (3) Täiskasvanute koolitaja väljaõppe koolitajal peab lisaks käesoleva paragrahvi lõikes 1 sätestatule olema magistrikraad haridusteaduses või sellele vastav kvalifikatsioon või vähemalt 7. taseme täiskasvanute koolitaja kutse.",
@@ -1490,6 +1721,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -1503,7 +1738,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_11_Lg_2",
@@ -1529,19 +1771,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_11"
       },
-      "rdfs:label": "§ 11 lg 3"
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Täienduskoolituse olulistest tingimustest teavitamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Lisaks majandustegevuse seadustiku üldosa seaduse § 31 lõikes 2 sätestatule teeb täienduskoolitusasutus täienduskoolituses osalejale ja koolituse rahastajale teatavaks vähemalt järgmised andmed ja dokumendid: täienduskoolituse õppekava; täienduskoolitust läbi viiva täiskasvanute koolitaja nimi ja andmed tema kvalifikatsiooni kohta; täienduskoolituse toimumise aeg; täienduskoolituse läbiviimise koht ja aadress; õppetasu suurus ja muud õpingutega kaasnevad kulud, sealhulgas õppevahendite",
       "estleg:legalText": "(1) Lisaks majandustegevuse seadustiku üldosa seaduse § 31 lõikes 2 sätestatule teeb täienduskoolitusasutus täienduskoolituses osalejale ja koolituse rahastajale teatavaks vähemalt järgmised andmed ja dokumendid: täienduskoolituse õppekava; täienduskoolitust läbi viiva täiskasvanute koolitaja nimi ja andmed tema kvalifikatsiooni kohta; täienduskoolituse toimumise aeg; täienduskoolituse läbiviimise koht ja aadress; õppetasu suurus ja muud õpingutega kaasnevad kulud, sealhulgas õppevahendite kulud; õppetasu tasumise kord ja tähtaeg; õppetasu tagastamise alused ja kord. kehtetu - (2) Kehtetu -",
@@ -1558,12 +1807,12 @@
       ],
       "estleg:references": [
         {
-          "@id": "estleg:MSU_Par_31"
+          "@id": "estleg:MSU_Par_31_Lg_2"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1060790_Map_2026"
+          "@id": "estleg:Reg_1060790_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -1596,7 +1845,7 @@
       "rdfs:label": "§ 12 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:MSU_Par_31"
+          "@id": "estleg:MSU_Par_31_Lg_2"
         }
       ]
     },
@@ -1617,13 +1866,13 @@
       "@id": "estleg:TAISKA_Par_12_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12¹.",
       "rdfs:label": "§ 12¹. Nõuded mikrokvalifikatsiooniõppele",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Mikrokvalifikatsiooniõppe maht on 5 kuni 30 ainepunkti. (2) Mikrokvalifikatsiooniõppe lõpetanule annab täienduskoolitusasutus mikrokvalifikatsioonitunnistuse käesoleva seaduse § 9 lõike 1 alusel kehtestatud standardis esitatud tingimustel ja korras. (3) Mikrokvalifikatsioone on võimalik koguda ja kombineerida, et formaalõppes tõendada kvalifikatsiooni omandamist või kutsetunnistuse saamist. (4) Kõrgkoolid ja kutseõppeasutused võivad mikrokvalifikatsiooni andmisel arvestada varasemaid",
       "estleg:legalText": "(1) Mikrokvalifikatsiooniõppe maht on 5 kuni 30 ainepunkti. (2) Mikrokvalifikatsiooniõppe lõpetanule annab täienduskoolitusasutus mikrokvalifikatsioonitunnistuse käesoleva seaduse § 9 lõike 1 alusel kehtestatud standardis esitatud tingimustel ja korras. (3) Mikrokvalifikatsioone on võimalik koguda ja kombineerida, et formaalõppes tõendada kvalifikatsiooni omandamist või kutsetunnistuse saamist. (4) Kõrgkoolid ja kutseõppeasutused võivad mikrokvalifikatsiooni andmisel arvestada varasemaid õpinguid ja töökogemust vastavalt kõrgharidusseadusele ning kutseõppeasutuse seadusele.",
@@ -1646,7 +1895,7 @@
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_9"
+          "@id": "estleg:TAISKA_Par_9_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1682,7 +1931,7 @@
       "rdfs:label": "§ 12¹ lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_9"
+          "@id": "estleg:TAISKA_Par_9_Lg_1"
         }
       ]
     },
@@ -1716,13 +1965,13 @@
       "@id": "estleg:TAISKA_Par_12_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12².",
       "rdfs:label": "§ 12². Mikrokvalifikatsiooniõppe läbiviimise õigus",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Mikrokvalifikatsiooniõpet võivad läbi viia: kõrgkool ja kutseõppeasutus selles õppekavarühmas või -grupis, milles on talle antud õppeõigus või õppe läbiviimise õigus (edaspidi õppeõigus); tegevusloa alusel kõrgkool ja kutseõppeasutus selles õppekavarühmas või -grupis, milles tal ei ole õppeõigust; tegevusloa alusel muu täienduskoolitusasutus.",
       "estleg:legalText": "Mikrokvalifikatsiooniõpet võivad läbi viia: kõrgkool ja kutseõppeasutus selles õppekavarühmas või -grupis, milles on talle antud õppeõigus või õppe läbiviimise õigus (edaspidi õppeõigus); tegevusloa alusel kõrgkool ja kutseõppeasutus selles õppekavarühmas või -grupis, milles tal ei ole õppeõigust; tegevusloa alusel muu täienduskoolitusasutus.",
@@ -1731,7 +1980,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_12_2_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_12_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1741,7 +1990,7 @@
       ]
     },
     {
-      "@id": "estleg:TAISKA_Par_12_2_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_12_2_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -1755,13 +2004,13 @@
       "@id": "estleg:TAISKA_Par_12_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12³.",
       "rdfs:label": "§ 12³. Mikrokvalifikatsiooniõppe õppekava esitamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse § 122 punktis 1 nimetatud täienduskoolitusasutus viib mikrokvalifikatsiooniõpet läbi hariduse infosüsteemi kantud mikrokvalifikatsiooniõppe õppekava alusel. Õppekava esitatakse hariduse infosüsteemi põhimääruses ettenähtud korras. Enne õppekava esitamist tasub § 122 punktis 1 nimetatud täienduskoolitusasutus riigilõivu riigilõivuseaduses sätestatud määras. (2) Käesoleva seaduse § 122 punktis 1 nimetatud täienduskoolitusasutus esitab hariduse infosüsteemi õppekava, mis:",
       "estleg:legalText": "(1) Käesoleva seaduse § 122 punktis 1 nimetatud täienduskoolitusasutus viib mikrokvalifikatsiooniõpet läbi hariduse infosüsteemi kantud mikrokvalifikatsiooniõppe õppekava alusel. Õppekava esitatakse hariduse infosüsteemi põhimääruses ettenähtud korras. Enne õppekava esitamist tasub § 122 punktis 1 nimetatud täienduskoolitusasutus riigilõivu riigilõivuseaduses sätestatud määras. (2) Käesoleva seaduse § 122 punktis 1 nimetatud täienduskoolitusasutus esitab hariduse infosüsteemi õppekava, mis: liigitub sellesse õppekavarühma või -gruppi, milles on talle antud õppeõigus; vastab käesoleva seaduse § 126 punktides 2–8 esitatud nõuetele. (3) Täienduskoolitusasutus tagab hariduse infosüsteemi kantud õppekava ajakohasuse. (4) Õppekava muutmisele kohaldatakse käesoleva seaduse §-s 127 esitatud tingimusi. (5) Õppekava kustutatakse hariduse infosüsteemist, kui kõrgkooli või kutseõppeasutuse õppeõigus vastavas õppekavarühmas või -grupis tunnistatakse kehtetuks.",
@@ -1802,7 +2051,8 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_3"
       },
-      "rdfs:label": "§ 12³ lg 1"
+      "rdfs:label": "§ 12³ lg 1",
+      "estleg:itemNumber": "1"
     },
     {
       "@id": "estleg:TAISKA_Par_12_3_Lg_2",
@@ -1815,7 +2065,8 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_3"
       },
-      "rdfs:label": "§ 12³ lg 2"
+      "rdfs:label": "§ 12³ lg 2",
+      "estleg:itemNumber": "1"
     },
     {
       "@id": "estleg:TAISKA_Par_12_3_Lg_3",
@@ -1860,13 +2111,13 @@
       "@id": "estleg:TAISKA_Par_12_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁴.",
       "rdfs:label": "§ 12⁴. Tegevusluba",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Tegevusluba annab käesoleva seaduse § 122 punktides 2 ja 3 nimetatud täienduskoolitusasutusele õiguse läbi viia mikrokvalifikatsiooniõpet tegevusloal märgitud õppekava alusel. (2) Tegevusluba kehtib viis aastat. (3) Tegevusloa taotlus lahendatakse käesoleva seaduse ning majandustegevuse seadustiku üldosa seaduse alusel. (4) Käesolevas seaduses ja majandustegevuse seadustiku üldosa seaduses tegevusloa taotlemist, taotluse lahendamist, tegevusloa kehtetuks tunnistamist, andmete muutumisest",
       "estleg:legalText": "(1) Tegevusluba annab käesoleva seaduse § 122 punktides 2 ja 3 nimetatud täienduskoolitusasutusele õiguse läbi viia mikrokvalifikatsiooniõpet tegevusloal märgitud õppekava alusel. (2) Tegevusluba kehtib viis aastat. (3) Tegevusloa taotlus lahendatakse käesoleva seaduse ning majandustegevuse seadustiku üldosa seaduse alusel. (4) Käesolevas seaduses ja majandustegevuse seadustiku üldosa seaduses tegevusloa taotlemist, taotluse lahendamist, tegevusloa kehtetuks tunnistamist, andmete muutumisest teatamist ning majandustegevusest loobumist reguleerivaid sätteid kohaldatakse ka sellele isikule ja asutusele, kes ei ole ettevõtja majandustegevuse seadustiku üldosa seaduse § 5 lõike 1 tähenduses, niivõrd, kuivõrd selle eripärast ei tulene teisiti.",
@@ -1888,8 +2139,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1903,7 +2158,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_4_Lg_1",
@@ -1958,21 +2217,33 @@
       "rdfs:label": "§ 12⁴ lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:MSU_Par_5"
+          "@id": "estleg:MSU_Par_5_Lg_1"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁵.",
       "rdfs:label": "§ 12⁵. Tegevusloa taotlemine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Tegevusloa taotluse lahendab Haridus- ja Teadusministeerium. (2) Käesoleva seaduse § 122 punktides 2 ja 3 nimetatud täienduskoolitusasutus esitab tegevusloa taotluse Haridus- ja Teadusministeeriumile hariduse infosüsteemi kaudu. (3) Taotluse läbivaatamise eest tasutakse riigilõivu riigilõivuseaduses sätestatud määras. (4) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised dokumendid: mikrokvalifikatsiooniõppe õppekava, mille alusel",
       "estleg:legalText": "(1) Tegevusloa taotluse lahendab Haridus- ja Teadusministeerium. (2) Käesoleva seaduse § 122 punktides 2 ja 3 nimetatud täienduskoolitusasutus esitab tegevusloa taotluse Haridus- ja Teadusministeeriumile hariduse infosüsteemi kaudu. (3) Taotluse läbivaatamise eest tasutakse riigilõivu riigilõivuseaduses sätestatud määras. (4) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised dokumendid: mikrokvalifikatsiooniõppe õppekava, mille alusel õpetamiseks tegevusluba taotletakse; õppekavarühma kvaliteedihindamise positiivne otsus; taotluse esitaja kinnitus, et õppekava vastab teaduslikule maailmakäsitlusele; kui õppe läbiviimine peab vastama rahvusvahelistele standarditele või kokkulepetele, siis taotluse esitaja kinnitus, et kavandatav õpe järgib neid standardeid või kokkuleppeid. (5) Haridus- ja Teadusministeerium vaatab tegevusloa taotluse läbi kahe kuu jooksul käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide esitamisest arvates.",
@@ -2063,7 +2334,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_5"
       },
-      "rdfs:label": "§ 12⁵ lg 4"
+      "rdfs:label": "§ 12⁵ lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_5_Lg_5",
@@ -2082,13 +2360,13 @@
       "@id": "estleg:TAISKA_Par_12_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁶.",
       "rdfs:label": "§ 12⁶. Tegevusloa kontrolliese",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Tegevusluba antakse, kui taotleja vastab järgmistele tingimustele: tema mikrokvalifikatsiooniõppe õppekava liigitub õppekavarühma, millel on käesoleva seaduse § 1210 lõike 3 punktis 1 nimetatud kvaliteedihindamise positiivne otsus; tema õppekava vastab käesolevas seaduses ja käesoleva seaduse § 9 lõike 1 alusel kehtestatud standardis esitatud nõuetele; tema õppekava maht vastab käesoleva seaduse § 121 lõikes 1 kehtestatud mikrokvalifikatsiooniõppe mahule; tema õppekava on liigitatud",
       "estleg:legalText": "Tegevusluba antakse, kui taotleja vastab järgmistele tingimustele: tema mikrokvalifikatsiooniõppe õppekava liigitub õppekavarühma, millel on käesoleva seaduse § 1210 lõike 3 punktis 1 nimetatud kvaliteedihindamise positiivne otsus; tema õppekava vastab käesolevas seaduses ja käesoleva seaduse § 9 lõike 1 alusel kehtestatud standardis esitatud nõuetele; tema õppekava maht vastab käesoleva seaduse § 121 lõikes 1 kehtestatud mikrokvalifikatsiooniõppe mahule; tema õppekava on liigitatud õppekavarühma rahvusvahelise ühtse hariduse liigituse ISCED (International Standard Classification of Education) alusel õppekava sisu arvestades; tema õppekavas on viide asjaomasele kutsestandardile või selle osale, kui õppekava koostamise aluseks on kutsestandard; tal on täienduskoolituse tegevusluba, kui õppekava avatakse tegevusalal, millel tegutsemiseks on muu seaduse alusel vajalik tegevusluba; tema õppekava alusel läbiviidav õpe vastab rahvusvahelistele standarditele või kokkulepetele, kui rahvusvahelistes standardites või kokkulepetes on esitatud nõuded selle õppekava ja õppe kohta; tema õppekava lähtub teaduslikust maailmakäsitlusest.",
@@ -2097,15 +2375,17 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_12_6_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_12_6_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_9"
+          "@id": "estleg:TAISKA_Par_9_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2117,10 +2397,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TAISKA_Par_12_6_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_12_6_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2131,21 +2415,31 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_9"
+          "@id": "estleg:TAISKA_Par_9_Lg_1"
         }
-      ]
+      ],
+      "estleg:itemNumber": "1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁷.",
       "rdfs:label": "§ 12⁷. Õppekava ja tegevusloa muutmine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolitusasutus võib tegevusloa kehtivuse ajal teha õppekavas muudatusi. Õppekava muudatused esitab täienduskoolitusasutus hariduse infosüsteemi kaudu hariduse infosüsteemi põhimääruses sätestatud korras. (2) Õppekavas õpiväljundite või õppemahu muutmise korral tuleb taotleda uus tegevusluba.",
       "estleg:legalText": "(1) Täienduskoolitusasutus võib tegevusloa kehtivuse ajal teha õppekavas muudatusi. Õppekava muudatused esitab täienduskoolitusasutus hariduse infosüsteemi kaudu hariduse infosüsteemi põhimääruses sätestatud korras. (2) Õppekavas õpiväljundite või õppemahu muutmise korral tuleb taotleda uus tegevusluba.",
@@ -2167,6 +2461,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -2180,7 +2478,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_7"
       },
-      "rdfs:label": "§ 12⁷ lg 1"
+      "rdfs:label": "§ 12⁷ lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_7_Lg_2",
@@ -2193,19 +2498,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_7"
       },
-      "rdfs:label": "§ 12⁷ lg 2"
+      "rdfs:label": "§ 12⁷ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁸.",
       "rdfs:label": "§ 12⁸. Tegevusloa kehtetuks tunnistamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Haridus- ja Teadusministeerium tunnistab lisaks majandustegevuse seadustiku üldosa seaduses sätestatud tegevusloa kehtetuks tunnistamise alustele tegevusloa kehtetuks, kui: täienduskoolitusasutuse õppekavarühma kvaliteedihindamise positiivne otsus kaotab kehtivuse või on tunnistatud kehtetuks; riikliku või haldusjärelevalve käigus ilmneb, et täienduskoolitusasutuse tegevus on vastuolus käesoleva seaduse või muude õigusaktidega; käesoleva seaduse § 126 punktis 6 nimetatud tegevusluba on",
       "estleg:legalText": "(1) Haridus- ja Teadusministeerium tunnistab lisaks majandustegevuse seadustiku üldosa seaduses sätestatud tegevusloa kehtetuks tunnistamise alustele tegevusloa kehtetuks, kui: täienduskoolitusasutuse õppekavarühma kvaliteedihindamise positiivne otsus kaotab kehtivuse või on tunnistatud kehtetuks; riikliku või haldusjärelevalve käigus ilmneb, et täienduskoolitusasutuse tegevus on vastuolus käesoleva seaduse või muude õigusaktidega; käesoleva seaduse § 126 punktis 6 nimetatud tegevusluba on tunnistatud kehtetuks; õppekava maht ei vasta käesoleva seaduse § 121 lõikes 1 kehtestatud mikrokvalifikatsiooniõppe mahule; õppekava ja selle alusel läbiviidav õpe ei vasta rahvusvahelistele standarditele või kokkulepetele, kui rahvusvahelistes standardites või kokkulepetes on esitatud nõuded selle õppekava ja õppe kohta; täienduskoolitusasutus esitab taotluse tunnistada tegevusluba kehtetuks. (2) Haridus- ja Teadusministeerium võib lisaks majandustegevuse seadustiku üldosa seaduses sätestatud tegevusloa kehtetuks tunnistamise alustele tunnistada tegevusloa kehtetuks, kui täienduskoolitusasutus ei täida enam käesoleva seaduse § 126 punktidest 4, 5 ja 8 tulenevaid nõudeid.",
@@ -2243,7 +2555,8 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_8"
       },
-      "rdfs:label": "§ 12⁸ lg 1"
+      "rdfs:label": "§ 12⁸ lg 1",
+      "estleg:itemNumber": "6"
     },
     {
       "@id": "estleg:TAISKA_Par_12_8_Lg_2",
@@ -2256,19 +2569,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_8"
       },
-      "rdfs:label": "§ 12⁸ lg 2"
+      "rdfs:label": "§ 12⁸ lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁹.",
       "rdfs:label": "§ 12⁹. Täienduskoolitusasutuse õppekavarühma kvaliteedihindamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Hariduse infosüsteemi kantud täienduskoolitusasutuse õppekavarühma kvaliteedihindamine tehakse käesoleva seaduse § 122 punktides 2 ja 3 nimetatud juhul täienduskoolitusasutuse taotlusel. (2) Täienduskoolitusasutus esitab õppekavarühma kvaliteedihindamise taotluse hariduse infosüsteemi kaudu ja tasub enne taotluse esitamist õppekavarühma kvaliteedihindamise eest riigilõivuseaduses sätestatud riigilõivu. (3) Õppekavarühma kvaliteedihindamine on täienduskoolitusasutuse õppekavade ning nende",
       "estleg:legalText": "(1) Hariduse infosüsteemi kantud täienduskoolitusasutuse õppekavarühma kvaliteedihindamine tehakse käesoleva seaduse § 122 punktides 2 ja 3 nimetatud juhul täienduskoolitusasutuse taotlusel. (2) Täienduskoolitusasutus esitab õppekavarühma kvaliteedihindamise taotluse hariduse infosüsteemi kaudu ja tasub enne taotluse esitamist õppekavarühma kvaliteedihindamise eest riigilõivuseaduses sätestatud riigilõivu. (3) Õppekavarühma kvaliteedihindamine on täienduskoolitusasutuse õppekavade ning nende alusel toimuva õppe ja õppearendustegevuse hindamine. Õppekavarühma kvaliteedihindamine koosneb täienduskoolitusasutuse eneseanalüüsist ning sõltumatute ja kompetentsete ekspertide hindamisest. (4) Õppekavarühma kvaliteedihindamisel antakse positiivne hinnang, kui täienduskoolitusasutus on tõendanud järgmiste nõuete täitmist: ressursid õppekavarühmas õppe läbiviimiseks on piisavad; täiskasvanute koolitajad vastavad käesolevas seaduses ja selle alusel kehtestatud nõuetele; mikrokvalifikatsiooniõppe õppekavad vastavad käesoleva seaduse § 9 lõike 1 alusel kehtestatud standardile; õppekavad ja õppetöö vastavad käesolevas seaduses ja selle alusel kehtestatud nõuetele; õppija õppimine on toetatud ja tagasisidestatud. (5) Õppekavarühma kvaliteedihindamise tingimused ja korra ning õppekavarühmade loetelu, milles kvaliteedihindamist tehakse, kehtestab määrusega.",
@@ -2351,7 +2671,7 @@
       "rdfs:label": "§ 12⁹ lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_9"
+          "@id": "estleg:TAISKA_Par_9_Lg_1"
         }
       ]
     },
@@ -2372,13 +2692,13 @@
       "@id": "estleg:TAISKA_Par_12_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12¹⁰.",
       "rdfs:label": "§ 12¹⁰. Täienduskoolitusasutuse õppekavarühma kvaliteedihindamise korraldus",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Õppekavarühma kvaliteedihindamist korraldab valdkonna eest vastutava ministri volitatud asutus (edaspidi hindamist korraldav asutus). Hindamist korraldav asutus moodustab täienduskoolituse hindamisnõukogu, kinnitab nõukogu töökorra ja nõukogu otsuste peale esitatud vaiete lahendamise korra. (2) Täienduskoolituse hindamisnõukogu kehtestab käesoleva seaduse § 129 lõikes 4 nimetatud ja § 129 lõike 5 alusel kehtestatud nõuete täitmise hindamisjuhised ja metoodika ning võtab vastu õppekavarühma",
       "estleg:legalText": "(1) Õppekavarühma kvaliteedihindamist korraldab valdkonna eest vastutava ministri volitatud asutus (edaspidi hindamist korraldav asutus). Hindamist korraldav asutus moodustab täienduskoolituse hindamisnõukogu, kinnitab nõukogu töökorra ja nõukogu otsuste peale esitatud vaiete lahendamise korra. (2) Täienduskoolituse hindamisnõukogu kehtestab käesoleva seaduse § 129 lõikes 4 nimetatud ja § 129 lõike 5 alusel kehtestatud nõuete täitmise hindamisjuhised ja metoodika ning võtab vastu õppekavarühma kvaliteedihindamise otsused. (3) Täienduskoolituse hindamisnõukogu hindab täienduskoolitusasutuse õppekavarühma õppetöö kvaliteeti järgmiselt: kui õppekavarühma õppetöö vastab täielikult käesolevas seaduses ja selle alusel kehtestatud nõuetele, teeb hindamisnõukogu positiivse otsuse viieks aastaks; kui õppekavarühma õppetöö vastab käesolevas seaduses ja selle alusel kehtestatud nõuetele osaliselt või ei vasta nõuetele, teeb hindamisnõukogu negatiivse otsuse. (4) Hindamisnõukogu otsused kvaliteedihindamise läbinud täienduskoolitusasutuse õppekavarühmade kohta avalikustatakse hariduse infosüsteemis. (5) Hindamisnõukogu võib õppekavarühma kvaliteedihindamise positiivse otsuse kehtetuks tunnistada, kui ilmneb vähemalt üks järgmistest asjaoludest: riikliku või haldusjärelevalve käigus selgub, et täienduskoolitusasutuse tegevus on vastuolus käesoleva seaduse või muu õigusaktiga; täienduskoolitusasutus ei ole täitnud riiklikku või haldusjärelevalvet teostava haldusorgani ettekirjutust ettekirjutuses märgitud tähtpäevaks või korras; täienduskoolitusasutus on esitanud õppekavarühma kvaliteedihindamisel valeandmeid, mis on otsust mõjutanud; täienduskoolitusasutus ei vasta käesoleva seaduse § 129 lõigetes 4 ja 5 ning käesoleva paragrahvi lõikes 2 nimetatud nõuetele; täienduskoolitusasutus on esitanud majandustegevusest loobumise teate.",
@@ -2403,7 +2723,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2414,7 +2736,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_10_Lg_1",
@@ -2427,7 +2753,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_10"
       },
-      "rdfs:label": "§ 12¹⁰ lg 1"
+      "rdfs:label": "§ 12¹⁰ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_12_10_Lg_2",
@@ -2479,19 +2814,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_12_10"
       },
-      "rdfs:label": "§ 12¹⁰ lg 5"
+      "rdfs:label": "§ 12¹⁰ lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Õppepuhkuse taotlemine ja tasustamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Töötajale ja ametnikule (edaspidi koos töötaja) antakse tema taotluse ning õppeasutuse teatise alusel formaalõppes või täienduskoolitusasutuse läbiviidavas täienduskoolituses osalemiseks õppepuhkust kuni 30 kalendripäeva kalendriaasta jooksul. Tööandja huvidest lähtuva koolituse puhul lähtutakse töölepingu seaduse § 28 lõike 2 punktis 5 või avaliku teenistuse seaduse §-s 31 sätestatust. Õppepuhkust antakse ka välisriigi samaväärses õppeasutuses formaalõppes või täienduskoolitusel",
       "estleg:legalText": "(1) Töötajale ja ametnikule (edaspidi koos töötaja) antakse tema taotluse ning õppeasutuse teatise alusel formaalõppes või täienduskoolitusasutuse läbiviidavas täienduskoolituses osalemiseks õppepuhkust kuni 30 kalendripäeva kalendriaasta jooksul. Tööandja huvidest lähtuva koolituse puhul lähtutakse töölepingu seaduse § 28 lõike 2 punktis 5 või avaliku teenistuse seaduse §-s 31 sätestatust. Õppepuhkust antakse ka välisriigi samaväärses õppeasutuses formaalõppes või täienduskoolitusel osalemiseks. (2) Õppeasutuse teatises tehakse märge akadeemilisel puhkusel viibimise kohta. Tööandjal on õigus keelduda õppepuhkuse andmisest selle õppekava läbimiseks või lõpetamiseks, mille alusel toimuvad õpingud on peatunud akadeemilise puhkuse tõttu. (3) Formaalõppes ja tööalase enesetäiendamise eesmärgil täienduskoolituses osalemiseks antud õppepuhkuse ajal makstakse töötajale keskmist kalendripäevapõhist õppepuhkusetasu 20 kalendripäeva eest töölepingu seaduse § 29 lõike 8 alusel kehtestatud korras. (4) Formaalõppe lõpetamiseks antakse täiendavalt õppepuhkust 15 kalendripäeva, mille eest makstakse töölepingu seaduse § 29 lõike 5 kohaselt kehtestatud töötasu alammäära alusel arvutatud õppepuhkusetasu. Puhkusetasu arvutamisel korrutatakse õppepuhkuse päevade arv töötasu alammäära alusel arvutatud ühe kuu keskmise kalendripäeva õppepuhkusetasu määraga. Ühe kuu keskmise kalendripäeva õppepuhkusetasu määra leidmiseks jagatakse töötasu alammäär kalendriaasta päevade arvu ja arvu 12 jagatisega. Tööandja võib keelduda formaalõppe lõpetamiseks puhkuse andmisest, kui ta on samale töötajale juba andnud puhkust sama õppekava lõpetamiseks. (5) Õppepuhkuse taotluses määrab töötaja, kas ta soovib võtta õppepuhkust õppes osalemiseks või formaalõppe lõpetamiseks. (6) Puhkuste ajakavasse märkimata õppepuhkuse kasutamisest teatab töötaja tööandjale kirjalikku taasesitamist võimaldavas vormis vähemalt neliteist kalendripäeva ette. (7) Kõrgkooli eksternõppes osalejale antakse lisaks käesoleva paragrahvi lõikes 1 nimetatule õppepuhkust formaalõppe lõpetamiseks käesoleva paragrahvi lõikes 4 nimetatud tingimustel ja käesolevas paragrahvis sätestatud korras.",
@@ -2525,20 +2867,30 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TOOLEP_Par_28"
+          "@id": "estleg:TOOLEP_Par_28_Lg_2"
         },
         {
           "@id": "estleg:AVALIK_Par_31"
+        },
+        {
+          "@id": "estleg:TOOLEP_Par_29_Lg_8"
+        },
+        {
+          "@id": "estleg:TOOLEP_Par_29_Lg_5"
         }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1030969_Map_2026"
+          "@id": "estleg:Reg_1030969_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -2587,7 +2939,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_1",
@@ -2603,12 +2959,25 @@
       "rdfs:label": "§ 13 lg 1",
       "estleg:references": [
         {
-          "@id": "estleg:TOOLEP_Par_28"
+          "@id": "estleg:TOOLEP_Par_28_Lg_2"
         },
         {
           "@id": "estleg:AVALIK_Par_31"
         }
-      ]
+      ],
+      "estleg:itemNumber": "5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_2",
@@ -2621,7 +2990,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_3",
@@ -2637,9 +3018,18 @@
       "rdfs:label": "§ 13 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:TOOLEP_Par_29"
+          "@id": "estleg:TOOLEP_Par_29_Lg_8"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_4",
@@ -2655,9 +3045,24 @@
       "rdfs:label": "§ 13 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TOOLEP_Par_29"
+          "@id": "estleg:TOOLEP_Par_29_Lg_5"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_5",
@@ -2670,7 +3075,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_13"
       },
-      "rdfs:label": "§ 13 lg 5"
+      "rdfs:label": "§ 13 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_6",
@@ -2683,7 +3097,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_13"
       },
-      "rdfs:label": "§ 13 lg 6"
+      "rdfs:label": "§ 13 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_13_Lg_7",
@@ -2702,13 +3128,13 @@
       "@id": "estleg:TAISKA_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Õppepuhkuse andmisest keeldumine ja selle katkestamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Tööandjal on õigus keelduda õppepuhkuse andmisest, kui õppepuhkuse päev või järjestikused õppepuhkuse päevad langevad üksnes töötaja puhkepäevadele. (2) Tööandjal on õigus õppepuhkus katkestada või selle andmine edasi lükata töölepingu seaduse § 69 lõikes 5 ettenähtud tingimustel. Kui puhkus katkestati või lükati edasi, on töötajal õigus kasutada kasutamata jäänud õppepuhkuse osa formaalõppes või täienduskoolituses osalemiseks talle sobival ajal, arvestades käesolevas peatükis kehtestatud",
       "estleg:legalText": "(1) Tööandjal on õigus keelduda õppepuhkuse andmisest, kui õppepuhkuse päev või järjestikused õppepuhkuse päevad langevad üksnes töötaja puhkepäevadele. (2) Tööandjal on õigus õppepuhkus katkestada või selle andmine edasi lükata töölepingu seaduse § 69 lõikes 5 ettenähtud tingimustel. Kui puhkus katkestati või lükati edasi, on töötajal õigus kasutada kasutamata jäänud õppepuhkuse osa formaalõppes või täienduskoolituses osalemiseks talle sobival ajal, arvestades käesolevas peatükis kehtestatud piiranguid.",
@@ -2727,12 +3153,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:TOOLEP_Par_69"
+          "@id": "estleg:TOOLEP_Par_69_Lg_5"
         }
       ],
       "estleg:hasVersion": [
@@ -2774,7 +3204,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_14_Lg_1",
@@ -2787,7 +3221,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_14_Lg_2",
@@ -2803,21 +3252,36 @@
       "rdfs:label": "§ 14 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:TOOLEP_Par_69"
+          "@id": "estleg:TOOLEP_Par_69_Lg_5"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Täienduskoolituse rahastamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Täienduskoolituse kulud katab sellest huvitatud isik või asutus. (2) Riigieelarvest, kohaliku omavalitsuse üksuse eelarvest ja välistoetustest on lubatud rahastada või hüvitada täienduskoolitusasutuse läbiviidavat täienduskoolitust, mis vastab käesolevas seaduses ja selle alusel kehtestatud nõuetele. (3) Käesoleva paragrahvi lõikes 2 kehtestatud tingimust ei kohaldata, kui täienduskoolitust viivad läbi ühe isiku või asutuse töötajad sama isiku või asutuse töötajatele või kui koolitust viib",
       "estleg:legalText": "(1) Täienduskoolituse kulud katab sellest huvitatud isik või asutus. (2) Riigieelarvest, kohaliku omavalitsuse üksuse eelarvest ja välistoetustest on lubatud rahastada või hüvitada täienduskoolitusasutuse läbiviidavat täienduskoolitust, mis vastab käesolevas seaduses ja selle alusel kehtestatud nõuetele. (3) Käesoleva paragrahvi lõikes 2 kehtestatud tingimust ei kohaldata, kui täienduskoolitust viivad läbi ühe isiku või asutuse töötajad sama isiku või asutuse töötajatele või kui koolitust viib läbi riigiasutuse või kohaliku omavalitsuse asutuse töötaja teise riigiasutuse või kohaliku omavalitsuse asutuse töötajale või kui koolituse läbiviimine kuulub riigiasutuse või kohaliku omavalitsuse asutuse töötaja töö- või teenistusülesannete hulka. (4) Käesoleva paragrahvi lõikes 2 kehtestatud tingimuse võib põhjendatud erandina jätta kohaldamata, kui soovitud täienduskoolitust ei korralda ükski täienduskoolitusasutus või kui koolitus tellitakse väljaspool Eestit tegutsevalt täienduskoolituse pakkujalt, kes ei ole täienduskoolitusasutus käesoleva seaduse tähenduses. Käesolevas lõikes nimetatud juhul seab täienduskoolituse kvaliteedile nõuded täienduskoolituse tellija.",
@@ -2842,12 +3306,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1062138_Map_2026"
+          "@id": "estleg:Reg_1062138_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -2887,7 +3355,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_15_Lg_1",
@@ -2900,7 +3372,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_15_Lg_2",
@@ -2913,7 +3394,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_15"
       },
-      "rdfs:label": "§ 15 lg 2"
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_15_Lg_3",
@@ -2926,7 +3419,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_15"
       },
-      "rdfs:label": "§ 15 lg 3"
+      "rdfs:label": "§ 15 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_15_Lg_4",
@@ -2939,19 +3444,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_15"
       },
-      "rdfs:label": "§ 15 lg 4"
+      "rdfs:label": "§ 15 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Riiklik täienduskoolituse tellimus",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Ministeerium võib esitada täienduskoolitusasutusele või nende liidule riikliku tellimuse täienduskoolituse pakkumiseks (edaspidi riiklik täienduskoolituse tellimus). Riikliku täienduskoolituse tellimuse koostamisel lähtutakse riigi strateegilistest ja valdkondlikest arengukavadest, tööjõuvajaduse uuringutest ja prognoosidest või muust infost koolitusvajaduse kohta. (2) Riiklik täienduskoolituse tellimus on riigieelarvest rahastatavate täienduskoolituskohtade arv.",
       "estleg:legalText": "(1) Ministeerium võib esitada täienduskoolitusasutusele või nende liidule riikliku tellimuse täienduskoolituse pakkumiseks (edaspidi riiklik täienduskoolituse tellimus). Riikliku täienduskoolituse tellimuse koostamisel lähtutakse riigi strateegilistest ja valdkondlikest arengukavadest, tööjõuvajaduse uuringutest ja prognoosidest või muust infost koolitusvajaduse kohta. (2) Riiklik täienduskoolituse tellimus on riigieelarvest rahastatavate täienduskoolituskohtade arv. (3) Kehtetu - (4) Riikliku täienduskoolituse tellimuse koostamise ja esitamise korra ning täienduskoolituskoha maksumuse arvestamise korra ja akadeemilise tunni või ainepunkti maksumuse kehtestab määrusega. (5) Kehtetu - (6) Riikliku täienduskoolituse tellimuse alusel moodustatud õppekohal õppimine on õppija jaoks tasuta, kui selle tellimuse esitamisel ei ole õppija jaoks kehtestatud omaosaluse määra.",
@@ -2982,11 +3499,13 @@
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:implementedBy": [
         {
-          "@id": "estleg:Reg_1044408_Map_2026"
+          "@id": "estleg:Reg_1044408_Map"
         }
       ],
       "estleg:implementedByCount": 1,
@@ -3019,7 +3538,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_16_Lg_1",
@@ -3032,7 +3555,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_16_Lg_2",
@@ -3103,13 +3638,13 @@
       "@id": "estleg:TAISKA_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Riiklik ja haldusjärelevalve täienduskoolituse läbiviija üle",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Haridus- ja Teadusministeerium teostab riiklikku või haldusjärelevalvet täienduskoolitusasutuste ja nende tegevuse vastavuse üle käesolevas seaduses ja selle alusel kehtestatud nõuetele. (1¹) Haridus- ja Teadusministeerium võib riikliku või haldusjärelevalve teostamisel kaasata eksperte. (1²) Mikrokvalifikatsiooniõppe ja selle läbiviija üle riikliku või haldusjärelevalve teostamisel võib Haridus- ja Teadusministeerium kaasata hindamist korraldava asutuse, kes tuvastab käesoleva seaduse §",
       "estleg:legalText": "(1) Haridus- ja Teadusministeerium teostab riiklikku või haldusjärelevalvet täienduskoolitusasutuste ja nende tegevuse vastavuse üle käesolevas seaduses ja selle alusel kehtestatud nõuetele. (1¹) Haridus- ja Teadusministeerium võib riikliku või haldusjärelevalve teostamisel kaasata eksperte. (1²) Mikrokvalifikatsiooniõppe ja selle läbiviija üle riikliku või haldusjärelevalve teostamisel võib Haridus- ja Teadusministeerium kaasata hindamist korraldava asutuse, kes tuvastab käesoleva seaduse § 129 lõikes 4 nimetatud ning § 129 lõike 5 ja § 1210 lõike 2 alusel kehtestatud nõuete täitmise eelhaldusaktiga. (2) Haridus- ja Teadusministeerium teostab riiklikku või haldusjärelevalvet täienduskoolitust läbi viiva täienduskoolitusasutuseks mitte oleva isiku või asutuse üle, kui tema läbiviidavast täienduskoolitusest lähtub kõrgendatud või oluline oht ning muu korrakaitse- või majandushaldusorgan ei ole pädev seda ohtu tõrjuma.",
@@ -3134,8 +3669,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3173,7 +3712,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_17_Lg_1",
@@ -3199,7 +3742,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_17"
       },
-      "rdfs:label": "§ 17 lg 1¹"
+      "rdfs:label": "§ 17 lg 1¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_17_Lg_1_2",
@@ -3212,7 +3762,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_17"
       },
-      "rdfs:label": "§ 17 lg 1²"
+      "rdfs:label": "§ 17 lg 1²",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_17_Lg_2",
@@ -3225,19 +3787,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_17"
       },
-      "rdfs:label": "§ 17 lg 2"
+      "rdfs:label": "§ 17 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Riikliku järelevalve erimeetmed",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Riiklikku järelevalvet teostav asutus võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:legalText": "Riiklikku järelevalvet teostav asutus võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
@@ -3249,11 +3820,13 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_18_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_18_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -3289,10 +3862,14 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:TAISKA_Par_18_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_18_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3305,19 +3882,31 @@
         {
           "@id": "estleg:KORS_Par_30"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Sunniraha määr",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
@@ -3329,23 +3918,19 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_19_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_19_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:TAISKA_Par_19_v110062015010"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_TAISKA_Par_19_coercive_payment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ATMOSF_Par_226"
@@ -3367,10 +3952,20 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TAISKA_Par_19_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
-      "@id": "estleg:TAISKA_Par_19_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_19_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3378,19 +3973,34 @@
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_19"
-      }
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_TAISKA_Par_19_Lg_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
     },
     {
       "@id": "estleg:TAISKA_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Üleminekusätted",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "(1) Enne käesoleva seaduse jõustumist erakooliseaduse alusel tööalase või vabaharidusliku koolituse läbiviimiseks väljastatud koolitusload või tegevusload kehtivad kuni 2016. aasta 30. juunini. Nimetatud koolitusloa või tegevusloa alusel täiskasvanute koolitusasutuste pidajad on kuni loa kehtivuse lõpuni võrdsustatud täienduskoolitusasutuse pidajaga käesoleva seaduse tähenduses. (2) Enne käesoleva seaduse jõustumist täiskasvanute koolitusasutusena tegutsenud riigi- ja kohaliku omavalitsuse",
       "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist erakooliseaduse alusel tööalase või vabaharidusliku koolituse läbiviimiseks väljastatud koolitusload või tegevusload kehtivad kuni 2016. aasta 30. juunini. Nimetatud koolitusloa või tegevusloa alusel täiskasvanute koolitusasutuste pidajad on kuni loa kehtivuse lõpuni võrdsustatud täienduskoolitusasutuse pidajaga käesoleva seaduse tähenduses. (2) Enne käesoleva seaduse jõustumist täiskasvanute koolitusasutusena tegutsenud riigi- ja kohaliku omavalitsuse asutused ning avalik-õiguslikud juriidilised isikud on kuni 2016. aasta 30. juunini võrdsustatud täienduskoolitusasutuse pidajaga käesoleva seaduse tähenduses. (3) Täienduskoolitusasutuse pidajad peavad käesoleva seaduse § 7 lõikes 1 nimetatud täienduskoolitusasutuse tegevuse kvaliteedi tagamise alused kehtestama hiljemalt 2016. aasta 1. juuliks. (4) Täienduskoolitusasutus viib hariduse infosüsteemis ning oma veebilehel ja muus avalikult ligipääsetavas digikeskkonnas enda andmed vastavusse käesoleva seaduse § 11 lõikes 1 sätestatuga 2025. aasta 31. detsembriks. (5) Täienduskoolitust võib alates 2026. aasta 1. jaanuarist läbi viia käesoleva seaduse § 11 lõike 1 teises lauses sätestatud nõuetele vastav täiskasvanute koolitaja. (6) Täiskasvanute koolitaja väljaõpet võib alates 2026. aasta 1. jaanuarist läbi viia käesoleva seaduse § 11 lõikes 3 sätestatud nõuetele vastav koolitaja. (7) Täienduskoolitusasutus võib alates 2025. aasta 1. septembrist läbi viia mikrokvalifikatsiooniõpet, kui mikrokvalifikatsiooniõpe vastab käesolevas seaduses esitatud nõuetele.",
@@ -3424,8 +4034,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -3448,7 +4062,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_20_Lg_1",
@@ -3474,7 +4092,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_20"
       },
-      "rdfs:label": "§ 20 lg 2"
+      "rdfs:label": "§ 20 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_20_Lg_3",
@@ -3490,9 +4120,16 @@
       "rdfs:label": "§ 20 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_7"
+          "@id": "estleg:TAISKA_Par_7_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_20_Lg_4",
@@ -3508,7 +4145,7 @@
       "rdfs:label": "§ 20 lg 4",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_11"
+          "@id": "estleg:TAISKA_Par_11_Lg_1"
         }
       ]
     },
@@ -3526,9 +4163,16 @@
       "rdfs:label": "§ 20 lg 5",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_11"
+          "@id": "estleg:TAISKA_Par_11_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_20_Lg_6",
@@ -3544,9 +4188,16 @@
       "rdfs:label": "§ 20 lg 6",
       "estleg:references": [
         {
-          "@id": "estleg:TAISKA_Par_11"
+          "@id": "estleg:TAISKA_Par_11_Lg_3"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_20_Lg_7",
@@ -3559,19 +4210,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_20"
       },
-      "rdfs:label": "§ 20 lg 7"
+      "rdfs:label": "§ 20 lg 7",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:TAISKA_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21.",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAISKA_7"
@@ -3585,13 +4243,13 @@
       "@id": "estleg:TAISKA_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
       "rdfs:label": "§ 43. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -3611,13 +4269,13 @@
       "@id": "estleg:TAISKA_Par_43_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43¹.",
       "rdfs:label": "§ 43¹. Täiskasvanute koolituse seaduse kehtetuks tunnistamine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Täiskasvanute koolituse seadus (RT I 1993, 74, 1054) tunnistatakse kehtetuks.",
       "estleg:legalText": "Täiskasvanute koolituse seadus (RT I 1993, 74, 1054) tunnistatakse kehtetuks.",
@@ -3629,7 +4287,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_43_1_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_43_1_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3639,7 +4297,7 @@
       ]
     },
     {
-      "@id": "estleg:TAISKA_Par_43_1_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_43_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3653,13 +4311,13 @@
       "@id": "estleg:TAISKA_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
       "rdfs:label": "§ 44.",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAISKA_7"
@@ -3690,13 +4348,13 @@
       "@id": "estleg:TAISKA_Par_48",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
       "rdfs:label": "§ 48. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -3716,13 +4374,13 @@
       "@id": "estleg:TAISKA_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_taiskasvanute_koolituse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
       "rdfs:label": "§ 49. Seaduse jõustumine",
       "estleg:sourceAct": "Täiskasvanute koolituse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:TAISKA_Map_2026"
+        "@id": "estleg:TAISKA_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2015. aasta 1. juulil.",
       "estleg:legalText": "Käesolev seadus jõustub 2015. aasta 1. juulil.",
@@ -3734,7 +4392,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:TAISKA_Par_49_Lg_Unknown_1"
+          "@id": "estleg:TAISKA_Par_49_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3744,7 +4402,7 @@
       ]
     },
     {
-      "@id": "estleg:TAISKA_Par_49_Lg_Unknown_1",
+      "@id": "estleg:TAISKA_Par_49_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -3753,6 +4411,336 @@
       "estleg:parentProvision": {
         "@id": "estleg:TAISKA_Par_49"
       }
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3"
+      },
+      "estleg:citationText": "käesoleva seaduse § 126"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3"
+      },
+      "estleg:citationText": "käesoleva seaduse §-s 127"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_Lg_1_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3_Lg_1"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_Lg_2_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3_Lg_2"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_Lg_2_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 126"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_3_Lg_4_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_3_Lg_4"
+      },
+      "estleg:citationText": "käesoleva seaduse §-s 127"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_4_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_4"
+      },
+      "estleg:citationText": "käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_4_Lg_1_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_4_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_5_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_5"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_5_Lg_2_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_5_Lg_2"
+      },
+      "estleg:citationText": "Käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_6_13",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_6"
+      },
+      "estleg:citationText": "käesoleva seaduse § 1210"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_6_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_6"
+      },
+      "estleg:citationText": "käesoleva seaduse § 121"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_6_Lg_1_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_6_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 1210"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_6_Lg_1_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_6_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 121"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_8_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_8"
+      },
+      "estleg:citationText": "käesoleva seaduse § 126"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_8_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_8"
+      },
+      "estleg:citationText": "käesoleva seaduse § 121"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_8_19",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_8"
+      },
+      "estleg:citationText": "käesoleva seaduse § 126"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_8_Lg_1_20",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_8_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 126"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_8_Lg_1_21",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_8_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 121"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_8_Lg_2_22",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_8_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 126"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_9_23",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_9"
+      },
+      "estleg:citationText": "käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_9_Lg_1_24",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_9_Lg_1"
+      },
+      "estleg:citationText": "käesoleva seaduse § 122"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_10_25",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_10"
+      },
+      "estleg:citationText": "käesoleva seaduse § 129"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_10_26",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_10"
+      },
+      "estleg:citationText": "käesoleva seaduse § 129"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_10_Lg_2_27",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_10_Lg_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 129"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_12_10_Lg_5_28",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_12_10_Lg_5"
+      },
+      "estleg:citationText": "käesoleva seaduse § 129"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_17_29",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_17"
+      },
+      "estleg:citationText": "käesoleva seaduse § 129"
+    },
+    {
+      "@id": "estleg:Citation_TAISKA_P_17_Lg_1_2_30",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Citation"
+      ],
+      "estleg:citationSource": {
+        "@id": "estleg:TAISKA_Par_17_Lg_1_2"
+      },
+      "estleg:citationText": "käesoleva seaduse § 129"
     }
   ]
 }

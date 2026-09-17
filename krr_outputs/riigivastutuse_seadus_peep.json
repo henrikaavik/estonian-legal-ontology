@@ -2,29 +2,34 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:RVastS_Map_2026",
+      "@id": "estleg:RVastS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
       "rdfs:label": "Riigivastutuse seadus teemakaardistus",
       "dc:source": "Riigivastutuse seadus",
-      "dcterms:title": "Riigivastutuse seadus",
+      "dcterms:title": [
+        {
+          "@value": "Riigivastutuse seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "State Liability Act",
+          "@language": "en"
+        }
+      ],
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/107052025019.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/107052025019.xml"
       },
       "estleg:kehtiv": {
@@ -59,16 +64,94 @@
           "@id": "http://eurovoc.europa.eu/4630"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_riigivastutuse_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/538"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4630"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:RVastS_Par_3"
+        },
+        {
+          "@id": "estleg:RVastS_Par_12"
+        },
+        {
+          "@id": "estleg:RVastS_Par_22"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RVastS_Par_7"
+        },
+        {
+          "@id": "estleg:RVastS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:RVastS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:RVastS_Par_31_Lg_6"
+        },
+        {
+          "@id": "estleg:RVastS_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:RVastS_Par_19"
+        },
+        {
+          "@id": "estleg:RVastS_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:RVastS_Par_19_Lg_3"
+        },
+        {
+          "@id": "estleg:RVastS_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:RVastS_Par_21_Lg_3"
+        },
+        {
+          "@id": "estleg:RVastS_Par_23"
+        },
+        {
+          "@id": "estleg:RVastS_Par_23_Lg_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/516052025004"
       }
     },
     {
@@ -118,10 +201,14 @@
       "rdfs:label": "1. peatükk – ÜLDSÄTTED",
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RVastS_1"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -147,10 +234,14 @@
       "rdfs:label": "2. peatükk – NÕUDED HALDUSAKTI VÕI TOIMINGU SUHTES",
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RVastS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -220,9 +311,9 @@
       "rdfs:label": "3. peatükk – KAHJU HÜVITAMINE",
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RVastS_3"
       },
       "estleg:hasPart": [
@@ -238,7 +329,11 @@
         {
           "@id": "estleg:Division_RVastS_3_4"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Cluster_RVastS_4",
@@ -263,10 +358,14 @@
       "rdfs:label": "4. peatükk – ALUSETU RIKASTUMINE",
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RVastS_4"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -292,23 +391,27 @@
       "rdfs:label": "5. peatükk – LÕPPSÄTTED",
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
-      "owl:sameAs": {
+      "dcterms:subject": {
         "@id": "estleg:Cluster_RVastS_5"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:RVastS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus sätestab avaliku võimu volituste rakendamisel ja muude avalike ülesannete täitmisel rikutud õiguste kaitse ja taastamise ning tekitatud kahju hüvitamise alused ja korra (riigivastutus). (2) Käesolev seadus ei reguleeri õiguste taastamist ega kahju hüvitamist eraõiguslikus suhtes. (3) Kahju tekitamisena eraõiguslikus suhtes käsitatakse kahju tekitamist avaliku võimu kandja poolt: võlaõigussuhtest tuleneva kohustuse rikkumisel, sealhulgas eraõiguslikus vormis veo-, ravi- või",
       "estleg:legalText": "(1) Käesolev seadus sätestab avaliku võimu volituste rakendamisel ja muude avalike ülesannete täitmisel rikutud õiguste kaitse ja taastamise ning tekitatud kahju hüvitamise alused ja korra (riigivastutus). (2) Käesolev seadus ei reguleeri õiguste taastamist ega kahju hüvitamist eraõiguslikus suhtes. (3) Kahju tekitamisena eraõiguslikus suhtes käsitatakse kahju tekitamist avaliku võimu kandja poolt: võlaõigussuhtest tuleneva kohustuse rikkumisel, sealhulgas eraõiguslikus vormis veo-, ravi- või muu teenuse osutamisel; kinnisasja, tee, veekogu või muu asja omanikuna oma kohustusi, välja arvatud liiklusseaduse §-s 6 sätestatud kohustusi, rikkudes; liikluses osalemisel või ohtliku seadme kasutamisel või aine valdamisel, kasutamata avaliku võimu kandja eriõigusi; muul viisil eraõiguslikus vormis tegutsedes.",
@@ -330,7 +433,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -344,7 +449,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_1_Lg_1",
@@ -388,19 +497,28 @@
         {
           "@id": "estleg:LIIKLU_2_Par_6"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Õiguste kaitse ja taastamise ning kahju hüvitamise nõuded",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse alusel võib isik riigilt, kohaliku omavalitsuse üksuselt, muult avalik-õiguslikult juriidiliselt isikult või muult avalikke ülesandeid avalik-õiguslikul alusel väljaspool alluvussuhet teostavalt isikult (avaliku võimu kandjalt) nõuda: haldusakti kehtetuks tunnistamist; jätkuva toimingu lõpetamist; haldusakti andmisest või toimingu sooritamisest hoidumist; haldusakti andmist või toimingu sooritamist; tekitatud kahju hüvitamist; avalik-õiguslikus suhtes alusetult saadud asja",
       "estleg:legalText": "(1) Käesoleva seaduse alusel võib isik riigilt, kohaliku omavalitsuse üksuselt, muult avalik-õiguslikult juriidiliselt isikult või muult avalikke ülesandeid avalik-õiguslikul alusel väljaspool alluvussuhet teostavalt isikult (avaliku võimu kandjalt) nõuda: haldusakti kehtetuks tunnistamist; jätkuva toimingu lõpetamist; haldusakti andmisest või toimingu sooritamisest hoidumist; haldusakti andmist või toimingu sooritamist; tekitatud kahju hüvitamist; avalik-õiguslikus suhtes alusetult saadud asja või raha tagastamist. (2) Seadusega võib isiku õiguste taastamiseks, kaitseks või kahju hüvitamiseks ette näha täiendavaid nõudeid või käesolevas seaduses sätestatud nõudeid piirata. (3) Mõisteid «haldusakt» ja «toiming» kasutatakse käesolevas seaduses halduskohtumenetluse seadustikus määratletud tähenduses. Vaide võib esitada haldusmenetluse seaduse §-s 51 sätestatud tunnustele vastava haldusakti peale.",
@@ -422,8 +540,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -452,7 +574,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_2_Lg_1",
@@ -465,7 +591,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_2_Lg_2",
@@ -478,7 +619,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_2_Lg_3",
@@ -496,19 +649,26 @@
         {
           "@id": "estleg:haldusmenetluse_seadus_Par_51"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Haldusakti kehtetuks tunnistamise nõue",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda haldusakti kehtetuks tunnistamist üksnes selles ulatuses, milles rikutakse tema õigusi, kui seadusega ei ole sätestatud teisiti. (2) Haldusakti ei tunnistata kehtetuks, kui isiku õigused on taastatud haldusakti muutmisega. (3) Haldusakti võib jätta kehtetuks tunnistamata, kui: rikutud menetlus- või vorminõue ei võinud mõjutada asja otsustamist; kehtetuks tunnistamise nõue on esitatud oluliselt hiljem haldusakti adressaadile teatavakstegemisest ja kehtetuks tunnistamine võib",
       "estleg:legalText": "(1) Isik võib nõuda haldusakti kehtetuks tunnistamist üksnes selles ulatuses, milles rikutakse tema õigusi, kui seadusega ei ole sätestatud teisiti. (2) Haldusakti ei tunnistata kehtetuks, kui isiku õigused on taastatud haldusakti muutmisega. (3) Haldusakti võib jätta kehtetuks tunnistamata, kui: rikutud menetlus- või vorminõue ei võinud mõjutada asja otsustamist; kehtetuks tunnistamise nõue on esitatud oluliselt hiljem haldusakti adressaadile teatavakstegemisest ja kehtetuks tunnistamine võib rikkuda kolmanda isiku õiguspärast ootust. (4) Haldusakti kehtetuks tunnistamist võib nõuda kaebusega halduskohtumenetluses või vaidega haldusmenetluses.",
@@ -533,7 +693,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -558,7 +720,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_3_Lg_1",
@@ -571,7 +737,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_3_Lg_2",
@@ -584,7 +762,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 2"
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_3_Lg_3",
@@ -597,7 +784,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_3_Lg_4",
@@ -610,19 +809,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 4"
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Toimingu lõpetamise nõue",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda halduse jätkuva toiminguga kaasneva õiguste rikkumise lõpetamist, kui see on võimalik ülemääraste kuludeta. Õiguste rikkumise lõpetamise kulud on ülemäärased, kui need ületavad oluliselt isikule õiguste rikkumisega tekitatavat kahju. (2) Kui õiguste rikkumine seisneb asja õigusvastases valdamises, võib asja valdamiseks õigustatud isik nõuda asja oma valdusesse andmist. Taotluse asja õiguspärasesse valdusesse andmiseks võib haldusorganile esitada 30 aasta jooksul nõudeõiguse",
       "estleg:legalText": "(1) Isik võib nõuda halduse jätkuva toiminguga kaasneva õiguste rikkumise lõpetamist, kui see on võimalik ülemääraste kuludeta. Õiguste rikkumise lõpetamise kulud on ülemäärased, kui need ületavad oluliselt isikule õiguste rikkumisega tekitatavat kahju. (2) Kui õiguste rikkumine seisneb asja õigusvastases valdamises, võib asja valdamiseks õigustatud isik nõuda asja oma valdusesse andmist. Taotluse asja õiguspärasesse valdusesse andmiseks võib haldusorganile esitada 30 aasta jooksul nõudeõiguse tekkimisest arvates. (3) Taotluse toimingu lõpetamiseks võib esitada toimingut sooritavale haldusorganile või kaebuses halduskohtule. (4) Käesolev paragrahv ei välista nõude esitamist eraõiguses sätestatud alustel ja korras.",
@@ -647,8 +853,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -668,7 +878,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_4_Lg_1",
@@ -681,7 +895,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_4_Lg_2",
@@ -694,7 +923,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_4_Lg_3",
@@ -707,7 +948,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3"
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_4_Lg_4",
@@ -726,13 +974,13 @@
       "@id": "estleg:RVastS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Haldusaktist või toimingust hoidumise nõue",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda haldusakti andmata jätmist või halduse toimingu sooritamata jätmist, kui haldusakt või toiming rikuks tema õigusi ja tooks tõenäoliselt endaga kaasa tagajärje, mida ei saaks kõrvaldada haldusakti või toimingu hilisemal vaidlustamisel. (2) Taotluse haldusakti andmata jätmiseks või toimingu sooritamata jätmiseks võib esitada haldusakti andmiseks või toimingu sooritamiseks pädevale haldusorganile või kaebuses halduskohtule.",
       "estleg:legalText": "(1) Isik võib nõuda haldusakti andmata jätmist või halduse toimingu sooritamata jätmist, kui haldusakt või toiming rikuks tema õigusi ja tooks tõenäoliselt endaga kaasa tagajärje, mida ei saaks kõrvaldada haldusakti või toimingu hilisemal vaidlustamisel. (2) Taotluse haldusakti andmata jätmiseks või toimingu sooritamata jätmiseks võib esitada haldusakti andmiseks või toimingu sooritamiseks pädevale haldusorganile või kaebuses halduskohtule. (3) Käesolev paragrahv ei välista nõude esitamist halduse toimingu sooritamata jätmiseks eraõiguses sätestatud alustel ja korras.",
@@ -754,7 +1002,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -771,7 +1021,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_5_Lg_1",
@@ -784,7 +1038,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_5_Lg_2",
@@ -797,7 +1063,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_5_Lg_3",
@@ -816,13 +1089,13 @@
       "@id": "estleg:RVastS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Haldusakti andmise või toimingu sooritamise nõue",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda haldusakti andmist või toimingu sooritamist, kui avaliku võimu kandja on kohustatud haldusakti andma või toimingu sooritama ja see puudutab isiku õigusi. (2) Kehtetu – (3) Taotlus haldusakti andmiseks või toimingu sooritamiseks tuleb esitada selleks pädevale haldusorganile. Taotluse rahuldamata või tähtaegselt läbi vaatamata jätmise korral võib isik esitada vaide haldusorganile või kaebuse halduskohtule. (4) Kui õigusvastaselt on jäetud andmata haldusakt või sooritamata",
       "estleg:legalText": "(1) Isik võib nõuda haldusakti andmist või toimingu sooritamist, kui avaliku võimu kandja on kohustatud haldusakti andma või toimingu sooritama ja see puudutab isiku õigusi. (2) Kehtetu – (3) Taotlus haldusakti andmiseks või toimingu sooritamiseks tuleb esitada selleks pädevale haldusorganile. Taotluse rahuldamata või tähtaegselt läbi vaatamata jätmise korral võib isik esitada vaide haldusorganile või kaebuse halduskohtule. (4) Kui õigusvastaselt on jäetud andmata haldusakt või sooritamata toiming, mille andmine või sooritamine tuleb otsustada kaalutlusõiguse (diskretsiooni) alusel, teeb kohus nõude rahuldamise korral avaliku võimu kandjale ettekirjutuse asja uueks otsustamiseks. (5) Käesoleva paragrahvi lõikes 4 sätestatud juhul võib kohus teha avaliku võimu kandjale ettekirjutuse haldusakti andmiseks või toimingu sooritamiseks ilma asjaolude täiendava kaalumiseta vaid juhul, kui juhtumi asjaolude tõttu ei saa avaliku võimu kandja haldusakti andmisest või toimingu sooritamisest asja uuel otsustamisel ühelgi tingimusel keelduda. (6) Käesoleva paragrahvi lõikes 4 sätestatud juhul võib vaiet lahendav haldusorgan nõude rahuldamisel valida, kas teha pädevale organile ettekirjutus haldusakti andmiseks või toimingu sooritamiseks ilma asjaolude täiendava kaalumiseta või teha ettekirjutus asja uueks otsustamiseks.",
@@ -853,8 +1126,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -877,7 +1154,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_6_Lg_1",
@@ -890,7 +1171,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_6_Lg_2",
@@ -916,7 +1209,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 3"
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_6_Lg_4",
@@ -929,7 +1234,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 4"
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_6_Lg_5",
@@ -942,7 +1259,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 5"
+      "rdfs:label": "§ 6 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_6_Lg_6",
@@ -955,19 +1284,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 6"
+      "rdfs:label": "§ 6 lg 6",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Vastutuse alused",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik, kelle õigusi on avaliku võimu kandja õigusvastase tegevusega avalik-õiguslikus suhtes rikkunud (edaspidi kannatanu), võib nõuda talle tekitatud kahju hüvitamist, kui kahju ei olnud võimalik vältida ega ole võimalik kõrvaldada käesoleva seaduse §-des 3, 4 ja 6 sätestatud viisil õiguste kaitsmise või taastamisega. (2) Tegevusetusega tekitatud kahju hüvitamist võib nõuda üksnes juhul, kui haldusakt jäi õigeaegselt andmata või toiming õigeaegselt sooritamata ja sellega rikuti isiku õigusi.",
       "estleg:legalText": "(1) Isik, kelle õigusi on avaliku võimu kandja õigusvastase tegevusega avalik-õiguslikus suhtes rikkunud (edaspidi kannatanu), võib nõuda talle tekitatud kahju hüvitamist, kui kahju ei olnud võimalik vältida ega ole võimalik kõrvaldada käesoleva seaduse §-des 3, 4 ja 6 sätestatud viisil õiguste kaitsmise või taastamisega. (2) Tegevusetusega tekitatud kahju hüvitamist võib nõuda üksnes juhul, kui haldusakt jäi õigeaegselt andmata või toiming õigeaegselt sooritamata ja sellega rikuti isiku õigusi. (2¹) Lisaks käesoleva paragrahvi lõigetes 1 ja 2 sätestatule võib isik nõuda avaliku võimu kandja tegevuse või tegevusetusega tekitatud kahju hüvitamist juhul, kui Euroopa Inimõiguste Kohus on rahuldanud tema individuaalkaebuse Euroopa inimõiguste ja põhivabaduste kaitse konventsiooni või selle protokolli rikkumise tõttu asjaomase avaliku võimu kandja poolt, isiku õigusi rikuti oluliselt ning isikul puuduvad muud võimalused oma õiguste taastamiseks. Kahju hüvitamist võib nõuda ka isik, kes on sarnases asjas ja samal õiguslikul alusel esitanud Euroopa Inimõiguste Kohtule individuaalkaebuse või kellel on sarnases asjas ja samal õiguslikul alusel sellise kaebuse esitamise õigus Euroopa inimõiguste ja põhivabaduste kaitse konventsiooni artikli 35 lõikes 1 sätestatud tähtaega arvestades. (3) Käesoleva paragrahvi lõigete 1–21 alusel hüvitatakse otsene varaline kahju ja saamata jäänud tulu. (4) Kui seadusega pole sätestatud teisiti ja see pole vastuolus avalikõiguslike suhete olemusega, kohaldatakse avaliku võimu teostamisel tekitatud kahju hüvitamisel lisaks käesolevale seadusele ka eraõiguse kahju hüvitamise sätteid.",
@@ -992,8 +1328,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:references": [
         {
@@ -1021,7 +1361,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_7_Lg_1",
@@ -1039,7 +1383,19 @@
         {
           "@id": "estleg:RVastS_Par_3"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_7_Lg_2",
@@ -1052,7 +1408,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_7_Lg_2_1",
@@ -1065,7 +1433,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2¹"
+      "rdfs:label": "§ 7 lg 2¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_7_Lg_3",
@@ -1091,19 +1471,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 4"
+      "rdfs:label": "§ 7 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Varalise kahju hüvitamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Varaline kahju hüvitatakse rahas. Hüvitisega tuleb luua varaline olukord, milles kannatanu oleks siis, kui tema õigusi ei oleks rikutud. (2) Kehavigastuse tekitamisel või tervise kahjustamisel võib kannatanu nõuda sellega tekitatud kulutuste hüvitamist. Sealhulgas võib kannatanu nõuda järgmiste kulutuste hüvitamist: vajalikud ravikulud; vajaduste suurenemisest tingitud kulud; töövõimetuse tõttu saamata jäänud tulu, sealhulgas sissetulekute vähenemisest või edasiste majanduslike võimaluste",
       "estleg:legalText": "(1) Varaline kahju hüvitatakse rahas. Hüvitisega tuleb luua varaline olukord, milles kannatanu oleks siis, kui tema õigusi ei oleks rikutud. (2) Kehavigastuse tekitamisel või tervise kahjustamisel võib kannatanu nõuda sellega tekitatud kulutuste hüvitamist. Sealhulgas võib kannatanu nõuda järgmiste kulutuste hüvitamist: vajalikud ravikulud; vajaduste suurenemisest tingitud kulud; töövõimetuse tõttu saamata jäänud tulu, sealhulgas sissetulekute vähenemisest või edasiste majanduslike võimaluste halvenemisest tingitud kahju. (3) Hüvitist töövõimetuse tõttu saamata jäänud tulu eest ei saa nõuda osas, milles kannatanul on õigus kahju tekitamisest tulenevalt saada töövõimetoetust. (jõustumine muudetud - RT I, 17.12.2015, 1) (4) Püsiva terviserikke tekitamisel tuleb kahju hüvitada perioodiliste rahaliste maksetena iga kolme kuu eest ette. Kahju iseloomu arvestades võib hüvitise määramisel või väljamõistmisel seda ajavahemikku muuta või näha ette ühekordse makse.",
@@ -1143,7 +1532,10 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Hüvitisega"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_8_Lg_1",
@@ -1156,7 +1548,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 1"
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_8_Lg_2",
@@ -1169,7 +1568,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 2"
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_8_Lg_3",
@@ -1182,7 +1588,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 3"
+      "rdfs:label": "§ 8 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_8_Lg_4",
@@ -1195,19 +1608,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 4"
+      "rdfs:label": "§ 8 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Mittevaralise kahju hüvitamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Füüsiline isik võib nõuda mittevaralise kahju rahalist hüvitamist süüliselt väärikuse alandamise, tervise kahjustamise, vabaduse võtmise, kodu või eraelu puutumatuse või sõnumi saladuse rikkumise, au või hea nime teotamise korral. (2) Mittevaraline kahju hüvitatakse proportsionaalselt õiguserikkumise raskusega ning arvestades süü vormi ja raskust. (3) Kahju tekitamise süülisust ei arvestata, kui mittevaralise kahju hüvitamist taotletakse Euroopa Inimõiguste Kohtu otsuse alusel, millega on",
       "estleg:legalText": "(1) Füüsiline isik võib nõuda mittevaralise kahju rahalist hüvitamist süüliselt väärikuse alandamise, tervise kahjustamise, vabaduse võtmise, kodu või eraelu puutumatuse või sõnumi saladuse rikkumise, au või hea nime teotamise korral. (2) Mittevaraline kahju hüvitatakse proportsionaalselt õiguserikkumise raskusega ning arvestades süü vormi ja raskust. (3) Kahju tekitamise süülisust ei arvestata, kui mittevaralise kahju hüvitamist taotletakse Euroopa Inimõiguste Kohtu otsuse alusel, millega on tuvastatud avaliku võimu kandja poolt Euroopa inimõiguste ja põhivabaduste kaitse konventsiooni või selle protokolli rikkumine.",
@@ -1226,8 +1646,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1250,7 +1674,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_9_Lg_1",
@@ -1263,7 +1691,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 1"
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_9_Lg_2",
@@ -1289,19 +1729,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 3"
+      "rdfs:label": "§ 9 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Kahju hüvitamine kolmandatele isikutele",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Surma põhjustamisel, kehavigastuse tekitamisel või tervise kahjustamisel on kolmandal isikul õigus nõuda sellega seoses kantud kulutuste, äralangenud ülalpidamise ja mittevaralise kahju hüvitamist eraõiguses sätestatud alustel. (2) Äralangenud ülalpidamise hüvitamist ei saa nõuda ulatuses, milles kolmandal isikul tekkis surma põhjustamisest tulenevalt õigus saada toitjakaotuspensioni. Äralangenud ülalpidamine hüvitatakse maksetega sarnaselt käesoleva seaduse § 8 lõikele 4.",
       "estleg:legalText": "(1) Surma põhjustamisel, kehavigastuse tekitamisel või tervise kahjustamisel on kolmandal isikul õigus nõuda sellega seoses kantud kulutuste, äralangenud ülalpidamise ja mittevaralise kahju hüvitamist eraõiguses sätestatud alustel. (2) Äralangenud ülalpidamise hüvitamist ei saa nõuda ulatuses, milles kolmandal isikul tekkis surma põhjustamisest tulenevalt õigus saada toitjakaotuspensioni. Äralangenud ülalpidamine hüvitatakse maksetega sarnaselt käesoleva seaduse § 8 lõikele 4.",
@@ -1317,7 +1766,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1328,7 +1779,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_10_Lg_1",
@@ -1341,7 +1796,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 1"
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_10_Lg_2",
@@ -1359,19 +1823,28 @@
         {
           "@id": "estleg:RVastS_Par_8"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Tagajärgede kõrvaldamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Kannatanu võib avaliku võimu kandjalt rahalise hüvitise asemel nõuda kehtetuks tunnistatud või vastavas osas muudetud haldusakti või toimingu õigusvastaste tagajärgede kõrvaldamist. (2) Avaliku võimu kandja on tagajärgede kõrvaldamisel kohustatud rakendama kõiki õiguspäraseid abinõusid, sealhulgas andma haldusakte, sooritama toiminguid või esitama kolmanda isiku vastu eraõiguslikke nõudeid, kui selleks on olemas õiguslik alus ja tagajärgede kõrvaldamise kulud ei ületaks oluliselt rahalist",
       "estleg:legalText": "(1) Kannatanu võib avaliku võimu kandjalt rahalise hüvitise asemel nõuda kehtetuks tunnistatud või vastavas osas muudetud haldusakti või toimingu õigusvastaste tagajärgede kõrvaldamist. (2) Avaliku võimu kandja on tagajärgede kõrvaldamisel kohustatud rakendama kõiki õiguspäraseid abinõusid, sealhulgas andma haldusakte, sooritama toiminguid või esitama kolmanda isiku vastu eraõiguslikke nõudeid, kui selleks on olemas õiguslik alus ja tagajärgede kõrvaldamise kulud ei ületaks oluliselt rahalist hüvitist. (3) Avaliku võimu kandja võib, sõltumata kannatanu tahtest, kõrvaldada tagajärjed käesoleva paragrahvi lõikes 2 sätestatud viisil, kui rahaline hüvitis oleks oluliselt suurem tagajärgede kõrvaldamise kuludest ja isikul pole kaalukat põhjust nõuda rahalist hüvitist.",
@@ -1390,7 +1863,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1407,7 +1882,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_11_Lg_1",
@@ -1420,7 +1899,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_11_Lg_2",
@@ -1433,7 +1919,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 2"
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_11_Lg_3",
@@ -1446,19 +1941,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 3"
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Kahju hüvitamiseks kohustatud isik",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Kahju kannatanud isikule on kahju hüvitama kohustatud avaliku võimu kandja, kelle tegevusega kahju tekitati. Tegevusetusega tekitatud kahju on kohustatud hüvitama avaliku võimu kandja, kes jättis õigeaegselt haldusakti andmata või toimingu sooritamata. (2) Avaliku võimu kandja poolt tekitatud kahjuks loetakse igasugune selle avaliku võimu kandja ülesandeid täitnud füüsilise isiku poolt vahetult põhjustatud kahju, sõltumata sellest, kas ülesandeid täideti teenistussuhte, lepingu,",
       "estleg:legalText": "(1) Kahju kannatanud isikule on kahju hüvitama kohustatud avaliku võimu kandja, kelle tegevusega kahju tekitati. Tegevusetusega tekitatud kahju on kohustatud hüvitama avaliku võimu kandja, kes jättis õigeaegselt haldusakti andmata või toimingu sooritamata. (2) Avaliku võimu kandja poolt tekitatud kahjuks loetakse igasugune selle avaliku võimu kandja ülesandeid täitnud füüsilise isiku poolt vahetult põhjustatud kahju, sõltumata sellest, kas ülesandeid täideti teenistussuhte, lepingu, üksikkorralduse või muul alusel. Käesolevas lõikes nimetatud füüsiline isik kannatanu ees ei vastuta, kui seadus ei sätesta teisiti. (3) Füüsilisest või eraõiguslikust juriidilisest isikust avaliku võimu kandja poolt tekitatud kahju eest vastutab riik, kohaliku omavalitsuse üksus või muu avalik-õiguslik juriidiline isik, kes andis füüsilisele või eraõiguslikule juriidilisele isikule volitused avalike ülesannete täitmiseks, kui seadus ei sätesta teisiti. (4) Kui kahju on kohustatud hüvitama mitu avaliku võimu kandjat, vastutavad nad kannatanu ees solidaarselt. Avaliku võimu kandja osa ei saa solidaarvastutuse korras nõuda isikult, kes vastutab kannatanu ees eraõigusest tulenevalt. (5) Kui tagajärgede kõrvaldamiseks vajaliku haldusakti andmine või toimingu sooritamine ei ole käesoleva paragrahvi lõikes 1 nimetatud avaliku võimu kandja pädevuses, on tagajärgede kõrvaldamiseks vajaliku haldusakti või toimingu kohustatud andma või sooritama pädev avaliku võimu kandja.",
@@ -1483,8 +1990,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1515,7 +2026,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_12_Lg_1",
@@ -1528,7 +2043,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_12_Lg_2",
@@ -1541,7 +2068,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_12_Lg_3",
@@ -1554,7 +2090,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_12_Lg_4",
@@ -1567,7 +2115,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 4"
+      "rdfs:label": "§ 12 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_12_Lg_5",
@@ -1586,13 +2141,13 @@
       "@id": "estleg:RVastS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Vastutuse piiramine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Hüvitise suuruse määramisel arvestatakse: kahju tekkimise ettenägematust; objektiivseid takistusi kahju ärahoidmisel; õiguste rikkumise raskust; eraõiguses sätestatud piiranguid seoses kannatanu osaga kahju tekitamisel; muid asjaolusid, millest tulenevalt kahju hüvitamine täies ulatuses oleks ebaõiglane. (2) Saamata jäänud tulu ei hüvitata, kui kahju hüvitamiseks kohustatud isik tõendab, et ta ei olnud kahju tekitamises süüdi. (3) Avaliku võimu kandja vabaneb vastutusest avalike ülesannete",
       "estleg:legalText": "(1) Hüvitise suuruse määramisel arvestatakse: kahju tekkimise ettenägematust; objektiivseid takistusi kahju ärahoidmisel; õiguste rikkumise raskust; eraõiguses sätestatud piiranguid seoses kannatanu osaga kahju tekitamisel; muid asjaolusid, millest tulenevalt kahju hüvitamine täies ulatuses oleks ebaõiglane. (2) Saamata jäänud tulu ei hüvitata, kui kahju hüvitamiseks kohustatud isik tõendab, et ta ei olnud kahju tekitamises süüdi. (3) Avaliku võimu kandja vabaneb vastutusest avalike ülesannete täitmisel tekitatud kahju eest, kui kahju tekitamist ei olnud võimalik vältida ka avalike ülesannete täitmisel vajalikku hoolsust täielikult järgides. (4) Tagajärgede kõrvaldamist nõudev kannatanu on kohustatud kandma tagajärgede kõrvaldamise kulud ulatuses, mis vastab tema osale tagajärgede tekitamisel. Kui tagajärjed jäävad kõrvaldamata seetõttu, et kannatanul ei ole võimalik oma osale vastavaid kulusid kanda, võib ta nõuda rahalist hüvitist avaliku võimu kandja osale vastavas ulatuses.",
@@ -1614,7 +2169,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -1636,7 +2193,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_13_Lg_1",
@@ -1662,7 +2223,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 2"
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_13_Lg_3",
@@ -1688,19 +2258,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 4"
+      "rdfs:label": "§ 13 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Õigustloova aktiga tekitatud kahju",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda õigustloova aktiga või selle andmata jätmisega tekitatud kahju hüvitamist üksnes juhul, kui kahju põhjustati avaliku võimu kandja kohustuste olulise rikkumisega, rikutud kohustuse aluseks olev norm on otsekohaldatav ning isik kuulub õigustloova akti või selle andmata jätmise tõttu eriliselt kannatanud isikute rühma. (2) Käesoleva paragrahvi lõige 1 ei välista vastutust õigustloova akti alusel antud haldusakti või sooritatud toiminguga tekitatud kahju eest.",
       "estleg:legalText": "(1) Isik võib nõuda õigustloova aktiga või selle andmata jätmisega tekitatud kahju hüvitamist üksnes juhul, kui kahju põhjustati avaliku võimu kandja kohustuste olulise rikkumisega, rikutud kohustuse aluseks olev norm on otsekohaldatav ning isik kuulub õigustloova akti või selle andmata jätmise tõttu eriliselt kannatanud isikute rühma. (2) Käesoleva paragrahvi lõige 1 ei välista vastutust õigustloova akti alusel antud haldusakti või sooritatud toiminguga tekitatud kahju eest.",
@@ -1716,7 +2293,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1733,7 +2312,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_14_Lg_1",
@@ -1746,7 +2329,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_14_Lg_2",
@@ -1765,13 +2360,13 @@
       "@id": "estleg:RVastS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Õigusemõistmisel tekitatud kahju",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda kohtumenetluse käigus, sealhulgas kohtulahendiga tekitatud kahju hüvitamist üksnes juhul, kui kohtunik on kohtumenetluse käigus toime pannud kuriteo. (2) Käesoleva paragrahvi lõiget 1 kohaldatakse ka kahju suhtes, mis on tekkinud: vaidluse lahendamisel seadusega vaidluste kohtuväliseks lahendamiseks loodud organi poolt; väärteo kohtuvälise menetlemise käigus. (3) Käesoleva paragrahvi lõiget 1 ei kohaldata haldusorgani poolt vaidemenetluse käigus tekitatud kahju suhtes.",
       "estleg:legalText": "(1) Isik võib nõuda kohtumenetluse käigus, sealhulgas kohtulahendiga tekitatud kahju hüvitamist üksnes juhul, kui kohtunik on kohtumenetluse käigus toime pannud kuriteo. (2) Käesoleva paragrahvi lõiget 1 kohaldatakse ka kahju suhtes, mis on tekkinud: vaidluse lahendamisel seadusega vaidluste kohtuväliseks lahendamiseks loodud organi poolt; väärteo kohtuvälise menetlemise käigus. (3) Käesoleva paragrahvi lõiget 1 ei kohaldata haldusorgani poolt vaidemenetluse käigus tekitatud kahju suhtes. (3¹) Lisaks käesoleva paragrahvi lõikes 1 sätestatule võib isik nõuda käesoleva paragrahvi lõigetes 1 ja 2 ettenähtud menetluste käigus, sealhulgas asjas tehtud lahendiga tekitatud kahju hüvitamist juhul, kui Euroopa Inimõiguste Kohus on rahuldanud tema individuaalkaebuse Euroopa inimõiguste ja põhivabaduste kaitse konventsiooni või selle protokolli rikkumise tõttu asjaomases menetluses, kui rikkumine viis asja ebaõige lahendamiseni ja isikul puuduvad muud võimalused oma õiguste taastamiseks. (4) Käesoleva paragrahvi lõiked 1 ja 2 ei välista avaliku võimu kandja vastutust, kui kohtunik või vaidluse või väärteoasja kohtuväline lahendaja on kahju tekitanud õigusemõistmise, vaidluse või väärteoasja lahendamisega mitteseotud tegevusega.",
@@ -1796,8 +2391,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1823,7 +2422,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_15_Lg_1",
@@ -1836,7 +2439,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_15_Lg_2",
@@ -1875,7 +2493,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 3¹"
+      "rdfs:label": "§ 15 lg 3¹",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_15_Lg_4",
@@ -1888,19 +2518,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 4"
+      "rdfs:label": "§ 15 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Õiguspärase haldusakti või toiminguga tekitatud kahju",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib nõuda õiguspärase, kuid tema põhiõigusi või -vabadusi erakordselt piirava haldusakti või halduse toiminguga tekitatud varalise kahju hüvitamist õiglases ulatuses. (2) Kui seadus ei sätesta teisiti, ei saa käesoleva paragrahvi lõikes 1 nimetatud hüvitist nõuda ulatuses, milles: põhiõiguste või -vabaduste piiramise põhjustas isik ise või see toimus tema huvides; isikute eriline kohtlemine on ette nähtud seadusega; isikul on hüvitist võimalik saada mujalt, sealhulgas kindlustuselt;",
       "estleg:legalText": "(1) Isik võib nõuda õiguspärase, kuid tema põhiõigusi või -vabadusi erakordselt piirava haldusakti või halduse toiminguga tekitatud varalise kahju hüvitamist õiglases ulatuses. (2) Kui seadus ei sätesta teisiti, ei saa käesoleva paragrahvi lõikes 1 nimetatud hüvitist nõuda ulatuses, milles: põhiõiguste või -vabaduste piiramise põhjustas isik ise või see toimus tema huvides; isikute eriline kohtlemine on ette nähtud seadusega; isikul on hüvitist võimalik saada mujalt, sealhulgas kindlustuselt; hüvitise maksmise küsimus on reguleeritud muude seadustega. (3) Hüvitise määramisel arvestatakse kasu, mida põhiõiguste või -vabaduste piiramine avaliku võimu kandjale või avalikele huvidele kaasa tõi, piiramise raskust, kahju tekkimise ettenägematust ja muid olulisi asjaolusid.",
@@ -1919,7 +2558,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -1933,7 +2574,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_16_Lg_1",
@@ -1946,7 +2591,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1"
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_16_Lg_2",
@@ -1959,7 +2616,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_16_Lg_3",
@@ -1978,13 +2644,13 @@
       "@id": "estleg:RVastS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Taotluse või kaebuse esitamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Kahju hüvitamiseks võib esitada taotluse kahju tekitanud haldusorganile või kaebuse halduskohtule. Taotlus kohtu poolt tekitatud kahju hüvitamiseks esitatakse Justiits- ja Digiministeeriumile. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeeriumile” sõnadega „Justiits- ja Digiministeeriumile” (2) Kahju tekitamisel käesoleva seaduse § 12 lõikes 3 sätestatud juhul esitatakse taotlus haldusorganile, kes kahju tekitanud füüsilisele või eraõiguslikule",
       "estleg:legalText": "(1) Kahju hüvitamiseks võib esitada taotluse kahju tekitanud haldusorganile või kaebuse halduskohtule. Taotlus kohtu poolt tekitatud kahju hüvitamiseks esitatakse Justiits- ja Digiministeeriumile. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeeriumile” sõnadega „Justiits- ja Digiministeeriumile” (2) Kahju tekitamisel käesoleva seaduse § 12 lõikes 3 sätestatud juhul esitatakse taotlus haldusorganile, kes kahju tekitanud füüsilisele või eraõiguslikule juriidilisele isikule andis volitused avalike ülesannete täitmiseks. Kui volitused tulenevad vahetult seadusest, esitatakse taotlus füüsilise või eraõigusliku juriidilise isiku üle riiklikku järelevalvet teostavale haldusorganile. (3) Taotlus või kaebus tuleb esitada kolme aasta jooksul, arvates päevast, millal kannatanu kahjust ja selle põhjustanud isikust teada sai või pidi teada saama, sõltumata teada saamisest aga 10 aasta jooksul kahju tekitamisest või selle põhjustanud sündmusest arvates.",
@@ -2003,8 +2669,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -2038,7 +2708,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_17_Lg_1",
@@ -2051,7 +2725,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 1"
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_17_Lg_2",
@@ -2067,9 +2753,18 @@
       "rdfs:label": "§ 17 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_12"
+          "@id": "estleg:RVastS_Par_12_Lg_3"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_17_Lg_3",
@@ -2082,19 +2777,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_17"
       },
-      "rdfs:label": "§ 17 lg 3"
+      "rdfs:label": "§ 17 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Taotluse läbivaatamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Haldusorgan peab taotluse lahendama kahe kuu jooksul selle nõuetekohasest esitamisest arvates. (2) Kui haldusorgan jätab kahju hüvitamise taotluse rahuldamata või tähtaegselt lahendamata või kui kannatanu ei nõustu hüvitise suuruse või viisiga, võib kannatanu 30 päeva jooksul esitada halduskohtule kaebuse hüvitise väljamõistmiseks.",
       "estleg:legalText": "(1) Haldusorgan peab taotluse lahendama kahe kuu jooksul selle nõuetekohasest esitamisest arvates. (2) Kui haldusorgan jätab kahju hüvitamise taotluse rahuldamata või tähtaegselt lahendamata või kui kannatanu ei nõustu hüvitise suuruse või viisiga, võib kannatanu 30 päeva jooksul esitada halduskohtule kaebuse hüvitise väljamõistmiseks.",
@@ -2117,7 +2824,10 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Haldusorgan"
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_18_Lg_1",
@@ -2130,7 +2840,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 1"
+      "rdfs:label": "§ 18 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_18_Lg_2",
@@ -2143,19 +2860,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_18"
       },
-      "rdfs:label": "§ 18 lg 2"
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Regressi alused",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Käesolevast peatükist tulenevalt kahju hüvitanud avaliku võimu kandja võib esitada regressinõude käesoleva seaduse § 12 lõigetes 2 ja 3 nimetatud isiku vastu, kelle õigusvastase tegevuse tulemusena kahju tekkis, või avaliku võimu kandja vastu, kelle eest solidaarvastutuse alusel kahju hüvitati. (2) Hüvitist vähendatakse, kui regressinõude täielik rahuldamine oleks ebaõiglane, arvestades avaliku võimu kandja poolt antud korraldusi ja juhiseid ning käesoleva seaduse § 13 lõikes 1 nimetatud",
       "estleg:legalText": "(1) Käesolevast peatükist tulenevalt kahju hüvitanud avaliku võimu kandja võib esitada regressinõude käesoleva seaduse § 12 lõigetes 2 ja 3 nimetatud isiku vastu, kelle õigusvastase tegevuse tulemusena kahju tekkis, või avaliku võimu kandja vastu, kelle eest solidaarvastutuse alusel kahju hüvitati. (2) Hüvitist vähendatakse, kui regressinõude täielik rahuldamine oleks ebaõiglane, arvestades avaliku võimu kandja poolt antud korraldusi ja juhiseid ning käesoleva seaduse § 13 lõikes 1 nimetatud asjaolusid. (3) Käesoleva seaduse § 12 lõikes 2 nimetatud isik vastutab avaliku võimu kandja ees üksnes süüliselt kahju põhjustamisel.",
@@ -2174,11 +2898,16 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_12"
+          "@id": "estleg:RVastS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:RVastS_Par_13_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2193,7 +2922,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_19_Lg_1",
@@ -2211,7 +2944,19 @@
         {
           "@id": "estleg:RVastS_Par_12"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_19_Lg_2",
@@ -2227,7 +2972,7 @@
       "rdfs:label": "§ 19 lg 2",
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_13"
+          "@id": "estleg:RVastS_Par_13_Lg_1"
         }
       ]
     },
@@ -2245,21 +2990,30 @@
       "rdfs:label": "§ 19 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_12"
+          "@id": "estleg:RVastS_Par_12_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Hüvitise nõudmise kord",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Regressinõude alusel hüvitise saamiseks teeb avaliku võimu kandja isikule kirjaliku ettepaneku, näidates ära kahju hüvitamise ulatuse, korra ja tähtaja ning hüvitise nõudmise aluseks olevad asjaolud. Isik vastab ettepanekule kirjalikult. (2) Ettepaneku võib teha kolme kuu jooksul, arvates päevast, millal avaliku võimu kandja regressinõude aluseks olevatest asjaoludest teada sai või pidi teada saama, sõltumata teada saamisest aga kolme aasta jooksul kahju tekitamisest arvates.",
       "estleg:legalText": "(1) Regressinõude alusel hüvitise saamiseks teeb avaliku võimu kandja isikule kirjaliku ettepaneku, näidates ära kahju hüvitamise ulatuse, korra ja tähtaja ning hüvitise nõudmise aluseks olevad asjaolud. Isik vastab ettepanekule kirjalikult. (2) Ettepaneku võib teha kolme kuu jooksul, arvates päevast, millal avaliku võimu kandja regressinõude aluseks olevatest asjaoludest teada sai või pidi teada saama, sõltumata teada saamisest aga kolme aasta jooksul kahju tekitamisest arvates. Nimetatud tähtaeg ei hakka kulgema enne avaliku võimu kandja poolt kannatanule kahju hüvitamise otsustamist või avaliku võimu kandjalt kannatanu kasuks hüvitise väljamõistmist. (3) Ettepanekule vastamiseks tuleb isikule anda aega vähemalt kaks nädalat. (4) Kui isik ei ole õigeaegselt ettepanekule vastanud, keeldub kahju hüvitamisest või ei ole ettepanekus näidatud tähtajaks kahju hüvitanud, on avaliku võimu kandjal õigus pöörduda hüvitise väljamõistmiseks halduskohtusse 30 päeva jooksul käesolevas lõikes sätestatud asjaolude ilmnemisest arvates. (5) Avaliku võimu kandjat esindab regressinõude esitamisel haldusorgan, kes otsustas kahju hüvitamise kannatanule.",
@@ -2284,7 +3038,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2309,7 +3065,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_20_Lg_1",
@@ -2322,7 +3082,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 1"
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_20_Lg_2",
@@ -2335,7 +3104,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 2"
+      "rdfs:label": "§ 20 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_20_Lg_3",
@@ -2348,7 +3124,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 3"
+      "rdfs:label": "§ 20 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_20_Lg_4",
@@ -2361,7 +3149,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_20"
       },
-      "rdfs:label": "§ 20 lg 4"
+      "rdfs:label": "§ 20 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_20_Lg_5",
@@ -2380,13 +3177,13 @@
       "@id": "estleg:RVastS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Regressi erijuhud",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Ametnik vastutab avaliku võimu kandja ees avaliku teenistuse seaduses sätestatud alustel ja korras. (2) Isik, kes tekitas kahju tema ja avaliku võimu kandja vahelise eraõigussuhte alusel tegutsedes, vastutab avaliku võimu kandja ees üksnes eraõiguses sätestatud alustel. (3) Tervisekassal on tagasinõudeõigus avaliku võimu kandja poolt kindlustatud isikule tervise kahjustamise või kehavigastusega tekitatud kahju puhul Tervisekassa poolt tasutud ravikindlustushüvitise ulatuses.",
       "estleg:legalText": "(1) Ametnik vastutab avaliku võimu kandja ees avaliku teenistuse seaduses sätestatud alustel ja korras. (2) Isik, kes tekitas kahju tema ja avaliku võimu kandja vahelise eraõigussuhte alusel tegutsedes, vastutab avaliku võimu kandja ees üksnes eraõiguses sätestatud alustel. (3) Tervisekassal on tagasinõudeõigus avaliku võimu kandja poolt kindlustatud isikule tervise kahjustamise või kehavigastusega tekitatud kahju puhul Tervisekassa poolt tasutud ravikindlustushüvitise ulatuses. Nõue esitatakse käesoleva seaduse §-des 17 ja 18 sätestatud korras.",
@@ -2405,8 +3202,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2429,7 +3230,11 @@
         {
           "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_21_Lg_1",
@@ -2442,7 +3247,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 1"
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_21_Lg_2",
@@ -2455,7 +3269,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 2"
+      "rdfs:label": "§ 21 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_21_Lg_3",
@@ -2473,19 +3296,28 @@
         {
           "@id": "estleg:RVastS_Par_17"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Alusetu rikastumine avalik-õiguslikus suhtes",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Isik võib avaliku võimu kandjalt nõuda õigusliku aluseta avalik-õiguslikus suhtes üleantud asja või raha tagastamist, kui seadus ei sätesta teisiti. Kui alusetult saadud asja tagastamine on võimatu või seotud ülemääraste kuludega, võib õigustatud isik nõuda asja väärtuse hüvitamist rahas. (2) Kui käesoleva seadusega ei ole reguleeritud teisiti ja see ei ole vastuolus avalik-õigusliku suhte olemusega, kohaldatakse avalik-õiguslikus suhtes toimunud alusetu rikastumise korral eraõiguse sätteid.",
       "estleg:legalText": "(1) Isik võib avaliku võimu kandjalt nõuda õigusliku aluseta avalik-õiguslikus suhtes üleantud asja või raha tagastamist, kui seadus ei sätesta teisiti. Kui alusetult saadud asja tagastamine on võimatu või seotud ülemääraste kuludega, võib õigustatud isik nõuda asja väärtuse hüvitamist rahas. (2) Kui käesoleva seadusega ei ole reguleeritud teisiti ja see ei ole vastuolus avalik-õigusliku suhte olemusega, kohaldatakse avalik-õiguslikus suhtes toimunud alusetu rikastumise korral eraõiguse sätteid. (3) Avaliku võimu kandja võib isikult nõuda õigusliku aluseta avalik-õiguslikus suhtes üleantud asja või raha tagastamist eraõiguses sätestatud alustel ja korras.",
@@ -2507,15 +3339,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:RVastS_Par_23"
         },
         {
-          "@id": "estleg:RVastS_Par_23_Lg_Unknown_1"
+          "@id": "estleg:RVastS_Par_23_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2533,7 +3369,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_22_Lg_1",
@@ -2546,7 +3386,22 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 1"
+      "rdfs:label": "§ 22 lg 1",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_22_Lg_2",
@@ -2559,7 +3414,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 2"
+      "rdfs:label": "§ 22 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_22_Lg_3",
@@ -2572,19 +3436,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_22"
       },
-      "rdfs:label": "§ 22 lg 3"
+      "rdfs:label": "§ 22 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Intress ja asjast saadud kasu",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "Lisaks käesoleva seaduse § 22 lõikes 1 sätestatule võib isik nõuda avaliku võimu kandjalt: intressi alusetult saadud raha eest kuus protsenti aastas; asja võõrandamisest ja asja kasutamisest saadud kasu üleandmist.",
       "estleg:legalText": "Lisaks käesoleva seaduse § 22 lõikes 1 sätestatule võib isik nõuda avaliku võimu kandjalt: intressi alusetult saadud raha eest kuus protsenti aastas; asja võõrandamisest ja asja kasutamisest saadud kasu üleandmist.",
@@ -2596,15 +3472,17 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RVastS_Par_23_Lg_Unknown_1"
+          "@id": "estleg:RVastS_Par_23_Lg_1"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_22"
+          "@id": "estleg:RVastS_Par_22_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2619,10 +3497,14 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
-      "@id": "estleg:RVastS_Par_23_Lg_Unknown_1",
+      "@id": "estleg:RVastS_Par_23_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
@@ -2633,21 +3515,33 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_22"
+          "@id": "estleg:RVastS_Par_22_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Nõude üle otsustamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Avalik-õiguslikus suhtes alusetust rikastumisest tuleneva nõude üle otsustab asja või raha saanud haldusorgan haldusaktiga. Haldusaktis märgitakse ära tagastamise või hüvitamise viis ja ulatus. Avaliku võimu kandja omandis oleva kinnisasja või muu registrisse kantud asja tagastamisel õigustatud isikule tehakse omandiõiguse ülemineku kohta kinnistusraamatusse või muusse registrisse kanne haldusakti ja avaliku võimu kandja notariaalselt tõestatud avalduse alusel.",
       "estleg:legalText": "(1) Avalik-õiguslikus suhtes alusetust rikastumisest tuleneva nõude üle otsustab asja või raha saanud haldusorgan haldusaktiga. Haldusaktis märgitakse ära tagastamise või hüvitamise viis ja ulatus. Avaliku võimu kandja omandis oleva kinnisasja või muu registrisse kantud asja tagastamisel õigustatud isikule tehakse omandiõiguse ülemineku kohta kinnistusraamatusse või muusse registrisse kanne haldusakti ja avaliku võimu kandja notariaalselt tõestatud avalduse alusel. (2) Taotlus tuleb esitada kolme aasta jooksul, arvates päevast, millal õigustatud isik nõudest teada sai või pidi teada saama, sõltumata teada saamisest aga 10 aasta jooksul nõude tekkimisest arvates.",
@@ -2666,8 +3560,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2684,7 +3582,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_24_Lg_1",
@@ -2697,7 +3599,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 1"
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_24_Lg_2",
@@ -2710,19 +3624,31 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_24"
       },
-      "rdfs:label": "§ 24 lg 2"
+      "rdfs:label": "§ 24 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25.",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RVastS_5"
@@ -2741,13 +3667,13 @@
       "@id": "estleg:RVastS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -2770,13 +3696,13 @@
       "@id": "estleg:RVastS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Seaduse rakendamine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "(1) Avalik-õiguslikus suhtes tekitatud kahju hüvitamiseks või alusetult saadud raha või asja tagastamiseks enne käesoleva seaduse jõustumist esitatud kaebuse või hagi läbivaatamisel kohaldatakse enne käesoleva seaduse jõustumist kehtinud sätteid ja kahju hüvitamise üldisi põhimõtteid. (2) Enne käesoleva seaduse jõustumist tekitatud kahju hüvitamiseks või alusetult üleantud raha või asja tagastamiseks võib taotluse või kaebuse esitada enne käesoleva seaduse jõustumist vastava vaidluse",
       "estleg:legalText": "(1) Avalik-õiguslikus suhtes tekitatud kahju hüvitamiseks või alusetult saadud raha või asja tagastamiseks enne käesoleva seaduse jõustumist esitatud kaebuse või hagi läbivaatamisel kohaldatakse enne käesoleva seaduse jõustumist kehtinud sätteid ja kahju hüvitamise üldisi põhimõtteid. (2) Enne käesoleva seaduse jõustumist tekitatud kahju hüvitamiseks või alusetult üleantud raha või asja tagastamiseks võib taotluse või kaebuse esitada enne käesoleva seaduse jõustumist vastava vaidluse lahendamiseks kaebuse või hagi esitamiseks kehtinud tähtaja jooksul, kuid mitte hiljem kui kolme aasta jooksul käesoleva seaduse jõustumisest arvates. (3) Käesoleva paragrahvi lõiget 2 ei kohaldata, kui isik sai nõudeõiguse tekkimisest teada pärast käesoleva seaduse jõustumist. (4) Käesoleva seaduse alusel ei saa nõuda enne Eesti Vabariigi põhiseaduse jõustumist kehtestatud õigustloova aktiga tekitatud kahju hüvitamist. (5) Isik, kelle taotluse alusetult vabaduse võtmisega tekitatud kahju hüvitamiseks on Rahandusministeerium jätnud rahuldamata enne käesoleva seaduse jõustumist, võib kaebuse halduskohtule esitada kuue kuu jooksul keeldumise otsuse teatavaks tegemisest arvates. Enne käesoleva seaduse jõustumist kohtule esitatud hagi alusetult vabaduse võtmisega tekitatud kahju hüvitamiseks vaadatakse läbi enne käesoleva seaduse jõustumist kehtinud alustel ja korras. (6) Käesoleva seaduse § 8 lõike 2 punktis 3 sätestatud hüvitist töövõimetuse tõttu saamata jäänud tulu eest ei saa nõuda ka osas, milles kannatanul on õigus kahju tekitamisest tulenevalt saada töövõimetuspensioni. (jõustumine muudetud - RT I, 17.12.2015, 1)",
@@ -2807,8 +3733,12 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -2828,7 +3758,11 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_31_Lg_1",
@@ -2841,7 +3775,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 1"
+      "rdfs:label": "§ 31 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_31_Lg_2",
@@ -2854,7 +3797,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 2"
+      "rdfs:label": "§ 31 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_31_Lg_3",
@@ -2867,7 +3817,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 3"
+      "rdfs:label": "§ 31 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_31_Lg_4",
@@ -2893,7 +3852,19 @@
       "estleg:parentProvision": {
         "@id": "estleg:RVastS_Par_31"
       },
-      "rdfs:label": "§ 31 lg 5"
+      "rdfs:label": "§ 31 lg 5",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_31_Lg_6",
@@ -2909,21 +3880,29 @@
       "rdfs:label": "§ 31 lg 6",
       "estleg:references": [
         {
-          "@id": "estleg:RVastS_Par_8"
+          "@id": "estleg:RVastS_Par_8_Lg_2"
         }
-      ]
+      ],
+      "estleg:itemNumber": "3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:RVastS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_riigivastutuse_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Seaduse jõustumine",
       "estleg:sourceAct": "Riigivastutuse seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:RVastS_Map_2026"
+        "@id": "estleg:RVastS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
       "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
@@ -2935,7 +3914,7 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:RVastS_Par_32_Lg_Unknown_1"
+          "@id": "estleg:RVastS_Par_32_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -2951,7 +3930,7 @@
       ]
     },
     {
-      "@id": "estleg:RVastS_Par_32_Lg_Unknown_1",
+      "@id": "estleg:RVastS_Par_32_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"

@@ -2,18 +2,17 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
-      "@id": "estleg:KortTS_Map_2026",
+      "@id": "estleg:KortTS_Map",
       "@type": [
-        "owl:Ontology",
         "estleg:Act",
         "estleg:Law"
       ],
@@ -22,9 +21,6 @@
       "dcterms:title": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/22251.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/22251.xml"
       },
       "estleg:kehtiv": {
@@ -42,16 +38,38 @@
           "@id": "http://eurovoc.europa.eu/68"
         }
       ],
-      "estleg:temporalStatus": "inForce"
-    },
-    {
-      "@id": "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus",
-      "@type": [
-        "owl:Class"
+      "estleg:temporalStatus": "inForce",
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:references": [
+        {
+          "@id": "estleg:KortTS_Par_3"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KortTS_Par_4"
+        },
+        {
+          "@id": "estleg:KortTS_Par_4_Lg_1"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
       }
     },
     {
@@ -84,13 +102,13 @@
       "@id": "estleg:KortTS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. [1 (1) Käesolev seadus reguleerib endistelt korteriühingutelt õigusvastaselt võõr...]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "(1) Käesolev seadus reguleerib endistelt korteriühingutelt õigusvastaselt võõrandatud vara tagastamist ja kompenseerimist endiste korteriühingute liikmetele või nende pärijatele. (2) Korteriühinguteks loetakse käesolevas seaduses kõiki ühendusi, mis juriidiliste isikutena oma liikmete vahendeid kaasates ehitasid või omandasid elamuid oma liikmetele eluruumi muretsemiseks ning kelle põhikiri oli pädevas riigiorganis registreeritud.",
       "estleg:legalText": "(1) Käesolev seadus reguleerib endistelt korteriühingutelt õigusvastaselt võõrandatud vara tagastamist ja kompenseerimist endiste korteriühingute liikmetele või nende pärijatele. (2) Korteriühinguteks loetakse käesolevas seaduses kõiki ühendusi, mis juriidiliste isikutena oma liikmete vahendeid kaasates ehitasid või omandasid elamuid oma liikmetele eluruumi muretsemiseks ning kelle põhikiri oli pädevas riigiorganis registreeritud.",
@@ -111,13 +129,19 @@
         }
       ],
       "estleg:targetGroup": [
-        "business"
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_1_Lg_1",
@@ -143,19 +167,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KortTS_Par_1"
       },
-      "rdfs:label": "§ 1 lg 2"
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. [1 (1) Kui korteriühing oli andnud oma liikme omandisse korteriühingu poolt ehita...]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "(1) Kui korteriühing oli andnud oma liikme omandisse korteriühingu poolt ehitatud või omandatud elamu ning see elamu võõrandati korteriühingu varana õigusvastaselt, tagastatakse võõrandatud elamu või kompenseeritakse selle maksumus endise korteriühingu liikmele või tema pärijatele. (2) Kui endise korteriühingu liikme omandisse koos käesoleva paragrahvi 1. lõikes näidatud elamuga oli antud ka elamut teenindav maa, tagastatakse see või kompenseeritakse selle maksumus omandireformi aluste seaduses",
       "estleg:legalText": "(1) Kui korteriühing oli andnud oma liikme omandisse korteriühingu poolt ehitatud või omandatud elamu ning see elamu võõrandati korteriühingu varana õigusvastaselt, tagastatakse võõrandatud elamu või kompenseeritakse selle maksumus endise korteriühingu liikmele või tema pärijatele. (2) Kui endise korteriühingu liikme omandisse koos käesoleva paragrahvi 1. lõikes näidatud elamuga oli antud ka elamut teenindav maa, tagastatakse see või kompenseeritakse selle maksumus omandireformi aluste seaduses (RT 1991, 21, 257 ja 45, 565; 1992, 19, 275 ja 33, 420; 1993, 15, 253 ja 254) ja Eesti Vabariigi maareformi seaduses (RT 1991, 34, 426; 1992, 10, 145 ja I 1993, 20, 354) sätestatud korras.",
@@ -206,13 +239,13 @@
       "@id": "estleg:KortTS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. [1 (1) Kui korteriühingult õigusvastaselt võõrandatud elamus asuv korter oli kort...]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "(1) Kui korteriühingult õigusvastaselt võõrandatud elamus asuv korter oli korteriühingu liikme omandis või osamaksu alusel tema kasutuses, loetakse korter koos sellele vastava muu osaga elamust omandireformi objektiks ning tagastatakse või antakse endise korteriühingu liikme või tema pärijate omandisse või kompenseeritakse neile selle maksumus. Elamust korterile vastava muu osa suuruse kindlaksmääramisel lähtutakse selle korteri üldpinna osast kogu hoone korterite üldpinnast.",
       "estleg:legalText": "(1) Kui korteriühingult õigusvastaselt võõrandatud elamus asuv korter oli korteriühingu liikme omandis või osamaksu alusel tema kasutuses, loetakse korter koos sellele vastava muu osaga elamust omandireformi objektiks ning tagastatakse või antakse endise korteriühingu liikme või tema pärijate omandisse või kompenseeritakse neile selle maksumus. Elamust korterile vastava muu osa suuruse kindlaksmääramisel lähtutakse selle korteri üldpinna osast kogu hoone korterite üldpinnast. (2) Kui endise korteriühingu omandis oli elamu juurde kuuluv maa ja abihooned, kompenseeritakse nende maksumus korteriühingu liikmetele või nende pärijatele proportsionaalselt liikme osamaksu osatähtsusele endise korteriühingu kapitalis.",
@@ -271,13 +304,13 @@
       "@id": "estleg:KortTS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. [1 (1) Kui endise korteriühingu liige on surnud, antakse käesoleva seaduse § 3 1....]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "(1) Kui endise korteriühingu liige on surnud, antakse käesoleva seaduse § 3 1. lõikes nimetatud juhtudel korter selle pärija omandisse, kes elab selles korteris ja taotleb omandiõigust korterile. (2) Kui korteris elab mitu pärijat, kes taotlevad omandiõigust korterile, peavad nad kokku leppima, kelle omandisse korter antakse. (3) Kui korteri omandisse taotlevaid pärijaid on mitu ja mitte keegi neist ei ela selles korteris, peavad nad kokku leppima, kelle omandisse korter antakse.",
       "estleg:legalText": "(1) Kui endise korteriühingu liige on surnud, antakse käesoleva seaduse § 3 1. lõikes nimetatud juhtudel korter selle pärija omandisse, kes elab selles korteris ja taotleb omandiõigust korterile. (2) Kui korteris elab mitu pärijat, kes taotlevad omandiõigust korterile, peavad nad kokku leppima, kelle omandisse korter antakse. (3) Kui korteri omandisse taotlevaid pärijaid on mitu ja mitte keegi neist ei ela selles korteris, peavad nad kokku leppima, kelle omandisse korter antakse. Kui pärijad kokkulepet ei saavuta, korterit ühegi pärija omandisse ei anta ning neil on õigus saada kompensatsiooni. (4) Pärija, kes saab korteri enda omandisse, tasub teistele pärijatele kompensatsiooni vastavalt nende osale. Kompensatsiooni maksmise tähtaegades peavad pärijad kokku leppima.",
@@ -310,6 +343,10 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -341,7 +378,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KortTS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_4_Lg_3",
@@ -354,7 +398,14 @@
       "estleg:parentProvision": {
         "@id": "estleg:KortTS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 3"
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_4_Lg_4",
@@ -367,19 +418,26 @@
       "estleg:parentProvision": {
         "@id": "estleg:KortTS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 4"
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. [1 (1) Käesoleva seaduse objektiks oleva vara tagastamine ja kompenseerimine toim...]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "(1) Käesoleva seaduse objektiks oleva vara tagastamine ja kompenseerimine toimub Eesti Vabariigi omandireformi aluste seaduses sätestatud tingimustel ja korras, kusjuures pärijateks loetakse Eesti Vabariigi omandireformi aluste seaduse §-s 8 nimetatud isikud. (2) Käesoleva seaduse alusel korteri enda omandisse saanud isiku ja selle korteris elavate teiste isikute vahelised suhted reguleeritakse Eesti Vabariigi elamuseaduse (RT 1992, 17, 254 ) sätetega, kui Eesti Vabariigi omandireformi aluste",
       "estleg:legalText": "(1) Käesoleva seaduse objektiks oleva vara tagastamine ja kompenseerimine toimub Eesti Vabariigi omandireformi aluste seaduses sätestatud tingimustel ja korras, kusjuures pärijateks loetakse Eesti Vabariigi omandireformi aluste seaduse §-s 8 nimetatud isikud. (2) Käesoleva seaduse alusel korteri enda omandisse saanud isiku ja selle korteris elavate teiste isikute vahelised suhted reguleeritakse Eesti Vabariigi elamuseaduse (RT 1992, 17, 254 ) sätetega, kui Eesti Vabariigi omandireformi aluste seaduse §-st 121 ei tulene teisiti.",
@@ -395,7 +453,9 @@
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -406,7 +466,11 @@
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_5_Lg_1",
@@ -419,7 +483,16 @@
       "estleg:parentProvision": {
         "@id": "estleg:KortTS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 1"
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_5_Lg_2",
@@ -432,19 +505,28 @@
       "estleg:parentProvision": {
         "@id": "estleg:KortTS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 2"
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. [Käesolevast seadusest tulenevad endiste korteriühingute liikmete või nende pärij...]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "Käesolevast seadusest tulenevad endiste korteriühingute liikmete või nende pärijate taotlused vaadatakse läbi nende poolt maa- või linnavalitsustele juba esitatud avalduste alusel, kusjuures taotlejatel on õigus neisse teha käesolevast seadusest tulenevaid täiendusi ja täpsustusi.",
       "estleg:legalText": "Käesolevast seadusest tulenevad endiste korteriühingute liikmete või nende pärijate taotlused vaadatakse läbi nende poolt maa- või linnavalitsustele juba esitatud avalduste alusel, kusjuures taotlejatel on õigus neisse teha käesolevast seadusest tulenevaid täiendusi ja täpsustusi.",
@@ -452,8 +534,12 @@
         "@id": "estleg:Cluster_KortTS_default"
       },
       "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:hasVersion": [
         {
@@ -470,19 +556,23 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:KortTS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
@@ -499,13 +589,13 @@
       "@id": "estleg:KortTS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_endiste_korteriuhingute_liikmete_korterite_tagastamise_ja_kompenseerimise_seadus"
+        "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. [Käesolev seadus jõustub Riigi Teatajas avaldamise päevast.]",
       "estleg:sourceAct": "Endiste korteriühingute liikmete korterite tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
-        "@id": "estleg:KortTS_Map_2026"
+        "@id": "estleg:KortTS_Map"
       },
       "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamise päevast.",
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamise päevast.",

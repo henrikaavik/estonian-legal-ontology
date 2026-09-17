@@ -1,10 +1,7 @@
 import json
-import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-
-import shacl_validate_all
+from estleg import shacl_validate_all
 
 
 def touch(path: Path) -> None:
@@ -248,6 +245,10 @@ def test_sanction_type_has_closed_value_set():
         "pecuniary_punishment",
         "arrest",
         "coercive_payment",
+        # Issue #681: KarS's two remaining "other punishments" —
+        # konfiskeerimine (KarS §§ 83-85) and sundlõpetamine (KarS § 46).
+        "confiscation",
+        "compulsory_dissolution",
     }, values
 
 

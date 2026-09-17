@@ -6,12 +6,15 @@ correctness, validation gates, and project documentation.
 
 ## Repo Layout
 
-- `scripts/` - corpus generators, enrichment scripts, validation commands, and
-  integration orchestration.
+- `src/estleg/` - generator, enrichment, validation, and orchestration implementations.
+- `scripts/` - compatibility command-line entry points. The release builder is
+  `scripts/build_release_artifacts.py` (INDEX + combined). Spent one-shots
+  live in `scripts/archive/` and must not be run on the live corpus;
+  `migrate_uris.py` stays in `scripts/`.
 - `tests/` - unit and regression tests for generator behavior and validators.
 - `shacl/` - SHACL shapes used by local validation and downstream sync gates.
 - `krr_outputs/` - generated JSON-LD corpus and aggregate artifacts.
-- `mcp_server/` - estleg-mcp natural-language query layer (14 tools).
+- `mcp_server/` - estleg-mcp natural-language query layer (20 tools).
 - `docs/` - schema references, validation notes, and release documentation.
   See `docs/ARCHITECTURE.md` for load surfaces and consumer paths.
 - `.github/workflows/validate.yml` - CI validation entry point.
@@ -91,6 +94,13 @@ convention.
 - **When generating new nodes**, reuse the registry abbreviation for the law
   rather than re-slugifying the title, and keep the human-readable name in
   `rdfs:label`, not in the `@id`.
+- **`sanitize_id` lives only in `src/estleg/estleg_common.py`** (issues #449/#472).
+  Default behaviour transliterates Estonian letters and maps a numeric
+  §-range (`1-94` / `1–94`) to `1_to_94` so it cannot collide with `194`.
+  Court/draft/EIS callers pass `replace_dash=True` (and court also
+  `replace_slash=True`, `canonicalize_ranges=False`, `unknown_char="_"`,
+  `max_len=80`). Do not add a new local `sanitize_id` — import the shared
+  one or a `functools.partial` of it.
 
 ## Validation Commands
 
@@ -98,7 +108,7 @@ Use the narrowest relevant command while developing, then broaden before
 finishing data-quality work:
 
 ```bash
-python3 -m ruff check scripts/ tests/
+python3 -m ruff check scripts/ src/estleg/ tests/
 python3 -m pytest -q
 python3 scripts/validate_all.py
 python3 scripts/shacl_validate_all.py --all
@@ -138,8 +148,8 @@ the zero-warning gate still reports distinctly.
 
 ## Working Practice
 
-- Prefer existing helpers in `scripts/estleg_common.py` and
-  `scripts/riigiteataja_common.py` over duplicating parsing or filesystem
+- Prefer existing helpers in `src/estleg/estleg_common.py` and
+  `src/estleg/riigiteataja_common.py` over duplicating parsing or filesystem
   logic.
 - Add focused regression tests for every bug fix.
 - Keep public metadata counts and validation documentation in sync with corpus

@@ -17,16 +17,14 @@ when a populated, de-LFS-pointered corpus is present (``-m corpus``).
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
+from estleg import fix_all_issues as fix
+from estleg.validate_all import _is_lfs_pointer
 
-import fix_all_issues as fix  # noqa: E402
-from validate_all import _is_lfs_pointer  # noqa: E402
+ROOT = Path(__file__).resolve().parent.parent
 
 COMBINED = ROOT / "krr_outputs" / "combined_ontology.jsonld"
 

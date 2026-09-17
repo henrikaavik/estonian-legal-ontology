@@ -2,7 +2,6 @@
   "@context": {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
@@ -11,11 +10,10 @@
   },
   "@graph": [
     {
-      "@id": "estleg:Reg_1045653_Map_2026",
+      "@id": "estleg:Reg_1045653_Map",
       "@type": [
         "estleg:Act",
-        "estleg:MunicipalRegulation",
-        "owl:Ontology"
+        "estleg:MunicipalRegulation"
       ],
       "rdfs:label": "Vallavolikogu ja vallavalitsuse liikme teenistuslähetusse saatmise kord (määrus)",
       "dc:source": "Vallavolikogu ja vallavalitsuse liikme teenistuslähetusse saatmise kord",
@@ -25,9 +23,6 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/424032021048.xml"
-      },
-      "owl:sameAs": {
         "@id": "https://www.riigiteataja.ee/akt/424032021048.xml"
       },
       "estleg:issuer": "Jõgeva Vallavolikogu",
@@ -45,12 +40,12 @@
       "estleg:regulationTypeBucket": "saatmise kord",
       "estleg:issuedUnder": [
         {
-          "@id": "estleg:KOKS_Map_2026"
+          "@id": "estleg:KOKS_Map"
         }
       ],
       "estleg:implementsCitation": [
         {
-          "@id": "estleg:Citation_Reg_1045653_Map_2026_1"
+          "@id": "estleg:Citation_Reg_1045653_Map_1"
         }
       ],
       "dcterms:subject": [
@@ -63,37 +58,37 @@
       ],
       "estleg:similarAct": [
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1062183_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1062183_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1015531_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1015531_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1058664_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1058664_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1027956_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1027956_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1012434_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1012434_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1062409_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1062409_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1046338_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1046338_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1044144_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1044144_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1041753_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1041753_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1062966_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1062966_Map"
         },
         {
-          "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1037984_Map_2026"
+          "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1037984_Map"
         }
       ],
       "estleg:entryIntoForce": {
@@ -113,23 +108,26 @@
         {
           "@id": "estleg:Amendment_Reg_1045653_135b87d85a"
         }
-      ]
-    },
-    {
-      "@id": "estleg:Regulation_1045653",
-      "@type": [
-        "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)",
-      "rdfs:subClassOf": {
-        "@id": "estleg:LegalProvision"
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_jogeva_vallavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_jogeva_vallavalitsus"
+        }
+      ],
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
       }
     },
     {
       "@id": "estleg:Reg_1045653_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1045653",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
@@ -144,10 +142,12 @@
         "@id": "estleg:Municipality_EHAK_0247"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1045653_Map_2026"
+        "@id": "estleg:Reg_1045653_Map"
       },
       "estleg:targetGroup": [
-        "public_body"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -162,13 +162,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1045653_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1045653",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
@@ -183,11 +187,15 @@
         "@id": "estleg:Municipality_EHAK_0247"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1045653_Map_2026"
+        "@id": "estleg:Reg_1045653_Map"
       },
       "estleg:targetGroup": [
-        "public_body",
-        "official"
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
@@ -199,13 +207,17 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1045653_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1045653",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
@@ -220,22 +232,28 @@
         "@id": "estleg:Municipality_EHAK_0247"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1045653_Map_2026"
+        "@id": "estleg:Reg_1045653_Map"
       },
       "estleg:targetGroup": [
-        "citizen"
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
       ],
       "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
-      ]
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1045653_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:Regulation_1045653",
+        "estleg:LegalProvision",
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 4.",
@@ -250,11 +268,11 @@
         "@id": "estleg:Municipality_EHAK_0247"
       },
       "estleg:partOfAct": {
-        "@id": "estleg:Reg_1045653_Map_2026"
+        "@id": "estleg:Reg_1045653_Map"
       }
     },
     {
-      "@id": "estleg:Citation_Reg_1045653_Map_2026_1",
+      "@id": "estleg:Citation_Reg_1045653_Map_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -266,13 +284,13 @@
       "estleg:citationText": "Määrus kehtestatakse kohaliku omavalitsuse korralduse seaduse § 17 lõike 4"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1062183_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1062183_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1062183_Map_2026"
+        "@id": "estleg:Reg_1062183_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.443",
@@ -281,13 +299,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1015531_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1015531_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1015531_Map_2026"
+        "@id": "estleg:Reg_1015531_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.423",
@@ -296,13 +314,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1058664_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1058664_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1058664_Map_2026"
+        "@id": "estleg:Reg_1058664_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.423",
@@ -311,13 +329,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1027956_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1027956_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1027956_Map_2026"
+        "@id": "estleg:Reg_1027956_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.42",
@@ -326,13 +344,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1012434_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1012434_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1012434_Map_2026"
+        "@id": "estleg:Reg_1012434_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.415",
@@ -341,13 +359,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1062409_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1062409_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1062409_Map_2026"
+        "@id": "estleg:Reg_1062409_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.401",
@@ -356,13 +374,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1046338_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1046338_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1046338_Map_2026"
+        "@id": "estleg:Reg_1046338_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.392",
@@ -371,13 +389,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1044144_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1044144_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1044144_Map_2026"
+        "@id": "estleg:Reg_1044144_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.391",
@@ -386,13 +404,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1041753_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1041753_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1041753_Map_2026"
+        "@id": "estleg:Reg_1041753_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.36",
@@ -401,13 +419,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1062966_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1062966_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1062966_Map_2026"
+        "@id": "estleg:Reg_1062966_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.317",
@@ -416,13 +434,13 @@
       "estleg:similarityModel": "tfidf-cosine"
     },
     {
-      "@id": "estleg:Similarity_Reg_1045653_Map_2026_Reg_1037984_Map_2026",
+      "@id": "estleg:Similarity_Reg_1045653_Map_Reg_1037984_Map",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Similarity"
       ],
       "estleg:similarTarget": {
-        "@id": "estleg:Reg_1037984_Map_2026"
+        "@id": "estleg:Reg_1037984_Map"
       },
       "estleg:similarityScore": {
         "@value": "0.313",
