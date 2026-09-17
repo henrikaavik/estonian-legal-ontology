@@ -19,12 +19,21 @@ import os
 import sys
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.mcpserver import MCPServer
+except ModuleNotFoundError as exc:
+    if exc.name != "mcp.server.mcpserver":
+        raise
+    from mcp.server.fastmcp import FastMCP as MCPServer
+
+    _MCP_V2 = False
+else:
+    _MCP_V2 = True
 from mcp.server.transport_security import TransportSecuritySettings
 
 from . import data
 
-mcp = FastMCP("estleg")
+mcp = MCPServer("estleg")
 
 # Legal text can be very long; cap it so a single provision stays chat-sized.
 _MAX_LEGAL_TEXT = 2000
@@ -976,15 +985,16 @@ def _build_http_app():
     other path. The ontology is public law, so the token is about preventing
     anonymous abuse of a public endpoint, not protecting secret data.
     """
-    # Apply the deployment config to FastMCP's own settings BEFORE the app and
-    # its session manager are built (streamable_http_app() reads
-    # ``settings.transport_security`` when it lazily creates the manager).
-    # Previously only uvicorn received ESTLEG_HOST, leaving FastMCP on its
-    # localhost defaults and the transport rejecting the proxied Host header.
-    mcp.settings.host = os.environ.get("ESTLEG_HOST", "127.0.0.1")
-    mcp.settings.port = int(os.environ.get("ESTLEG_PORT", "8000"))
-    mcp.settings.transport_security = _transport_security()
-    app = mcp.streamable_http_app()  # serves MCP at ``/mcp`` with its lifespan
+    host = os.environ.get("ESTLEG_HOST", "127.0.0.1")
+    security = _transport_security()
+    # SDK 2 moved transport configuration from settings to the app factory.
+    if _MCP_V2:
+        app = mcp.streamable_http_app(host=host, transport_security=security)
+    else:
+        mcp.settings.host = host
+        mcp.settings.port = int(os.environ.get("ESTLEG_PORT", "8000"))
+        mcp.settings.transport_security = security
+        app = mcp.streamable_http_app()
 
     from starlette.requests import Request
     from starlette.responses import JSONResponse, PlainTextResponse
@@ -992,7 +1002,9 @@ def _build_http_app():
     async def _health(_req: Request) -> PlainTextResponse:
         return PlainTextResponse("ok")
 
-    app.add_route("/healthz", _health, methods=["GET"])
+    from starlette.routing import Route
+
+    app.routes.append(Route("/healthz", _health, methods=["GET"]))
 
     token = os.environ.get("ESTLEG_TOKEN", "").strip()
     if token:
@@ -1068,10 +1080,12 @@ def main() -> None:
     if transport in ("http", "streamable-http", "streamable_http"):
         import uvicorn
 
-        # _build_http_app() resolves ESTLEG_HOST/ESTLEG_PORT onto mcp.settings;
-        # bind uvicorn to the same values so there is a single source of truth.
         app = _build_http_app()
-        uvicorn.run(app, host=mcp.settings.host, port=mcp.settings.port)
+        uvicorn.run(
+            app,
+            host=os.environ.get("ESTLEG_HOST", "127.0.0.1"),
+            port=int(os.environ.get("ESTLEG_PORT", "8000")),
+        )
     else:
         mcp.run()
 
