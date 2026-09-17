@@ -18,6 +18,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg import validate_combined_standalone as gate
 
 CONTEXT = {
@@ -202,6 +204,29 @@ def test_node_level_results_are_grouped_per_shape(tmp_path):
         "ProvisionRequiresSummaryShape": 1,
         "ProvisionRequiresPartOfActShape": 1,
     }, summary["groups"]
+
+
+@pytest.mark.parametrize("shape_ids", [
+    ("<https://example.org/first/Required>", "<https://example.org/second/Required>"),
+    ("_:first", "_:second"),
+])
+def test_distinct_shapes_with_the_same_display_name_stay_separate(tmp_path, shape_ids):
+    shapes = tmp_path / "shapes"
+    shapes.mkdir()
+    (shapes / "requirements.ttl").write_text(f"""
+        @prefix sh: <http://www.w3.org/ns/shacl#> .
+        @prefix estleg: <https://w3id.org/estleg/> .
+        {shape_ids[0]} a sh:NodeShape ; sh:targetClass estleg:LegalProvision ;
+            sh:nodeKind sh:Literal .
+        {shape_ids[1]} a sh:NodeShape ; sh:targetClass estleg:LegalProvision ;
+            sh:nodeKind sh:BlankNode .
+    """)
+    combined = write_combined(tmp_path, [
+        {"@id": "estleg:TEST_Par_1", "@type": "estleg:LegalProvision"},
+    ])
+    summary = gate.evaluate(combined, shapes, class_floors={})
+    assert summary["total"] == 2
+    assert [row["count"] for row in summary["groups"]] == [1, 1]
 
 
 def test_gate_errors_when_combined_missing(tmp_path):

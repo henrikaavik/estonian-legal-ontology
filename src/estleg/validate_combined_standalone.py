@@ -250,7 +250,9 @@ def evaluate(
         # reports no sh:resultPath, so without it the three
         # ProvisionRequires*Shape results collapsed into one row that named
         # whichever shape happened to be seen last (#709).
-        key = (focus_types, compact_path, is_stub, severity, shape_name)
+        # Display names are not identities: distinct namespaces may use the
+        # same local name, and every anonymous shape displays as <bnode>.
+        key = (focus_types, compact_path, is_stub, severity, source_shape)
         bucket = groups[key]
         bucket["count"] += 1
         bucket["source_shape"] = shape_name
