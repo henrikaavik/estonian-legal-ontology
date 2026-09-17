@@ -190,6 +190,20 @@ def test_gate_reports_missing_exempt_classifier_on_non_stub(tmp_path):
     assert summary["skipped_exempt"] == 0, summary
 
 
+def test_node_level_results_are_grouped_per_shape(tmp_path):
+    """The §-level minimums are sh:or node constraints (#709), which report no
+    sh:resultPath. Grouped on path alone, the three shapes collapsed into one row
+    labelled with whichever was seen last."""
+    bare = {"@id": "estleg:TEST_Par_1", "@type": ["owl:NamedIndividual", "estleg:LegalProvision"]}
+    summary = gate.evaluate(write_combined(tmp_path, [bare]), SHAPES, class_floors={})
+    rows = {row["source_shape"]: row["count"] for row in summary["groups"]}
+    assert rows == {
+        "ProvisionRequiresParagrahvShape": 1,
+        "ProvisionRequiresSummaryShape": 1,
+        "ProvisionRequiresPartOfActShape": 1,
+    }, summary["groups"]
+
+
 def test_gate_errors_when_combined_missing(tmp_path):
     summary = gate.evaluate(tmp_path / "combined_ontology.jsonld", SHAPES)
     assert summary["status"] == "error"

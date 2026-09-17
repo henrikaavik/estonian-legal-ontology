@@ -166,7 +166,9 @@ def test_missing_summary_fails(tmp_path, capsys):
 
     assert code != 0, output
     assert "summary" in output
-    assert "LegalProvisionShape" in output
+    # #709: the §-level minimums moved out of LegalProvisionShape into one
+    # named shape per field, so that a lõige can be excused from them.
+    assert "ProvisionRequiresSummaryShape" in output
 
 
 def test_corrected_inputs_pass(tmp_path, capsys):

@@ -204,26 +204,28 @@ estleg:ActExpressionShape
 #     scope (issue #450). `sh:targetSubjectsOf` alone is tautological
 #     for the required paragrahv property: nodes without the predicate
 #     never become focus nodes.
+#
+# This shape constrains the VALUES of every provision, lõiked included. The
+# three fields a § must carry -- paragrahv, summary, partOfAct -- are required
+# by the ProvisionRequires*Shape trio below, which excuses a lõige (#709).
 estleg:LegalProvisionShape
     a sh:NodeShape ;
     sh:targetClass estleg:LegalProvision ;
     sh:targetSubjectsOf estleg:paragrahv ;
     sh:property [
         sh:path estleg:paragrahv ;
-        sh:minCount 1 ;
         sh:datatype xsd:string ;
         sh:name "paragrahv" ;
-        sh:description "Every LegalProvision must have a section reference (e.g., 'AdvS § 1', 'TsÜS § 40 lg 1-2')" ;
+        sh:description "Section reference (e.g., 'AdvS § 1', 'TsÜS § 40 lg 1-2'). Required of every provision that is not a lõige: see ProvisionRequiresParagrahvShape." ;
     ] ;
     sh:property [
         sh:path estleg:summary ;
-        sh:minCount 1 ;
         sh:or (
             [ sh:datatype xsd:string ]
             [ sh:datatype rdf:langString ]
         ) ;
         sh:name "summary" ;
-        sh:description "Every LegalProvision must have a topic-aware summary. Full legal text is optional via estleg:legalText." ;
+        sh:description "Topic-aware summary. Required of every provision that is not a lõige: see ProvisionRequiresSummaryShape. Full legal text is optional via estleg:legalText." ;
     ] ;
     sh:property [
         sh:path estleg:legalText ;
@@ -248,10 +250,9 @@ estleg:LegalProvisionShape
         # generate_regulations.py on every provision; KOV provisions also carry
         # it via enrich_kov_layer1.py.
         sh:path estleg:partOfAct ;
-        sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "partOfAct" ;
-        sh:description "Every LegalProvision must link to its parent act root via at least one IRI-valued estleg:partOfAct." ;
+        sh:description "IRI link to the parent act root. Required of every provision that is not a lõige: see ProvisionRequiresPartOfActShape." ;
     ] ;
     sh:property [
         sh:path estleg:topicCluster ;
@@ -425,6 +426,62 @@ estleg:LegalProvisionShape
         sh:name "hasSubsection" ;
         sh:description "Optional — estleg:Subsection (lõige) nodes belonging to this provision, one per lõige in document order. Absent on provisions with no lõige structure (their text lives directly on the § node)." ;
     ] .
+
+# What a § must carry, and a lõige need not (#709).
+#
+# #519 made estleg:Subsection a subclass of estleg:LegalProvision so that
+# `?x a estleg:LegalProvision` finds lõiked too; at the time
+# LegalProvisionShape was reached only through sh:targetSubjectsOf
+# estleg:paragrahv, so no lõige became a focus node. #450 then added
+# sh:targetClass estleg:LegalProvision, and all 111,911 lõiked were held to
+# the three §-level minimums -- 335,733 violations in the `laws` bucket and
+# ~89% of the Seadusloome gate (pyshacl resolves class targets through
+# rdfs:subClassOf in the data graph even with inference off). A lõige carries
+# its own text and exactly one estleg:parentProvision by design (#132,
+# SubsectionShape below); its § reference, summary and act live on that parent.
+#
+# One shape per field, each a single sh:or with its own message -- see "One
+# constraint per shape when the message matters" in shacl/README.md. Same two
+# targets as LegalProvisionShape, so exactly the same nodes are in scope.
+# A node that is not a lõige and lacks the field still fails, as #450 requires.
+#
+# sh:class reads the asserted type, and every lõige is typed estleg:Subsection
+# in its peep and in combined. Under the buckets' RDFS inference it also reads
+# an ENTAILED one: estleg:parentProvision and estleg:subsectionNumber
+# (rdfs:domain) and estleg:hasSubsection (rdfs:range) entail estleg:Subsection.
+# So a § that wrongly carried one of those would be excused in its bucket but
+# not by the no-inference gates. All 111,973 nodes they touch are asserted
+# Subsections today, and scripts/check_phantom_typing.py reports any that is
+# not -- estleg:Subsection is a shaped class -- ahead of the bucket's SHACL run.
+estleg:ProvisionRequiresParagrahvShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
+    sh:targetSubjectsOf estleg:paragrahv ;
+    sh:message "A LegalProvision that is not a lõige (estleg:Subsection) must carry estleg:paragrahv, its section reference (e.g. 'AdvS § 1')." ;
+    sh:or (
+        [ sh:class estleg:Subsection ]
+        [ sh:path estleg:paragrahv ; sh:minCount 1 ]
+    ) .
+
+estleg:ProvisionRequiresSummaryShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
+    sh:targetSubjectsOf estleg:paragrahv ;
+    sh:message "A LegalProvision that is not a lõige (estleg:Subsection) must carry estleg:summary, its topic-aware summary." ;
+    sh:or (
+        [ sh:class estleg:Subsection ]
+        [ sh:path estleg:summary ; sh:minCount 1 ]
+    ) .
+
+estleg:ProvisionRequiresPartOfActShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
+    sh:targetSubjectsOf estleg:paragrahv ;
+    sh:message "A LegalProvision that is not a lõige (estleg:Subsection) must link to its act root via estleg:partOfAct." ;
+    sh:or (
+        [ sh:class estleg:Subsection ]
+        [ sh:path estleg:partOfAct ; sh:minCount 1 ]
+    ) .
 
 # Shape for Subsection (lõige) instances — issue #132.
 #

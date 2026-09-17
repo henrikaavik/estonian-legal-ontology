@@ -203,7 +203,7 @@ the vocabulary repaired under #709. CI re-measures every bucket on each push.
 | `drafts` | 4 | 9,482 | **0 — PASS** | All of it was `changeType` typing every draft as a `ProposedAmendment`. |
 | `kov` | 11,063 | 36,511 | **6** | Real: six `Reg_*_Map` acts carry `contentStatus "repealedBeforeSnapshot"`, which `ActTemporalShape`'s value list omits. |
 | `sidecars` | 10,653 | 309,422 | **5,046** | Real: see the list below. |
-| `laws` | 4,970 | 338,909 | **337,335** | `Subsection` × `LegalProvisionShape`; see below. |
+| `laws` | 4,970 | 338,909 | **1,602** | 337,335 after the axiom repair; 1,602 once the §-level minimums excuse lõiked. Real: see below. |
 | `eurlex` | 162 | PASS | **PASS** | Source-bucket conformance does not establish aggregate parity. |
 | `curia` | 6 | PASS | **PASS** | #702 removed the shared-predicate domains that typed EU court nodes. |
 | `--all` | 26,887 | — | No completed local result | The 2026-09-07 attempt stopped during graph loading at 6 GiB process RSS on a 16 GiB host. |
@@ -242,20 +242,33 @@ Every node the `riigikohus` axiom typed is a complete, correctly typed
   `institutionType "minister"`, absent from the shape's value list. Two fields
   are missing on one Õiguskantsler annotation.
 - **`kov`, 6.** `contentStatus "repealedBeforeSnapshot"`, as in the table.
-- **`laws`.** 111,911 `estleg:Subsection` (lõige) nodes each fail
-  `LegalProvisionShape`'s `paragrahv`, `summary` and `partOfAct` minimums. This
-  is not an axiom defect. #519 declared `Subsection rdfs:subClassOf
-  LegalProvision` while that shape was targeted only by `sh:targetSubjectsOf
-  estleg:paragrahv`; #450 later added `sh:targetClass estleg:LegalProvision`,
-  which reaches every lõige. A lõige carries `legalText` and `parentProvision`
-  by design (#132, `SubsectionShape`). The same nodes are about 89% of the
-  Seadusloome gate's findings, because pyshacl resolves class targets through
-  `rdfs:subClassOf` in the data graph even without inference. Also in `laws`:
-  533 § nodes in the two hand-modelled OWL modules
+- **`laws`, 1,602.** 533 § nodes in the two hand-modelled OWL modules
   (`karistusseadustik_eriosa_owl.jsonld` 430, `tsus_osa7_138_169_owl.jsonld`
-  103), typed `estleg:Section` / `estleg:LegalProvision` and lacking the three
-  fields, and three duplicate-value findings on `REOS_Map` and `ROS_Map`.
-  111,911 + 533 nodes × 3 fields + 3 = 337,335.
+  103), typed `estleg:Section` / `estleg:LegalProvision`, lack `paragrahv`,
+  `summary` and `partOfAct` — 533 × 3, each reported by the shape named for
+  the field — plus three duplicate-value findings on `REOS_Map` and `ROS_Map`.
+
+### The lõige question (#709)
+
+After the axiom repair `laws` still stood at 337,335, and 335,733 of that was
+one thing: 111,911 `estleg:Subsection` (lõige) nodes each failing
+`LegalProvisionShape`'s `paragrahv`, `summary` and `partOfAct` minimums. It was
+not an axiom defect. #519 declared `Subsection rdfs:subClassOf LegalProvision`
+while that shape was reached only through `sh:targetSubjectsOf
+estleg:paragrahv`, so no lõige was a focus node; #450 later added
+`sh:targetClass estleg:LegalProvision`, which reaches every one. The same
+nodes were about 89% of the combined-only gate's findings, because pyshacl
+resolves class targets through `rdfs:subClassOf` in the data graph even with
+inference off.
+
+A lõige carries its own `legalText` and exactly one `parentProvision` by
+design (#132, `SubsectionShape`); its § reference, summary and act live on the
+parent. The three minimums now sit in `ProvisionRequiresParagrahvShape`,
+`ProvisionRequiresSummaryShape` and `ProvisionRequiresPartOfActShape`, each
+excusing nodes typed `estleg:Subsection`. `LegalProvisionShape` still
+constrains the values of every provision, lõiked included, and a § that lacks
+a field still fails — the 533 above are exactly those. 337,335 − 335,733 =
+1,602.
 
 ### Review checks on regenerated data
 
@@ -314,6 +327,17 @@ regulation-provision closure stubs (`Reg_*`) fail `paragrahv` / `summary` /
 (**#416 / #705**); 4,841 `AmendmentEvent` nodes lack `estleg:amends` (**#702**). The
 482 label-less orphan Sanction nodes that the pre-rebuild artifact carried are
 gone (the extractor now purges stale inline anchors, #681).
+
+2026-09-17, with the §-level minimums excusing lõiked (#709): **FAIL — 26,840
+violations**, down from 250,662 on `0cb9ac91bc`. The difference is exactly the
+first group: 111,911 lõiked × `paragrahv` and `summary` = 223,822 (combined
+already materialises `partOfAct` on them, #520). What remains is the other two
+groups plus the legacy modules: 3,735 regulation-provision closure stubs × 3
+and 4,446 KOV-provision stubs × 2 (**#705**); 4,841 `AmendmentEvent` nodes
+without `estleg:amends`; 1,878 results on the § nodes of the hand-modelled
+VÕS / KarS / TsÜS modules; and 24 `institutionType "minister"`. The gate now
+groups its summary by reporting shape as well as result path, because an
+`sh:or` node constraint carries no `sh:resultPath`.
 
 ### Seadusloome zero-warning gate
 
@@ -454,10 +478,10 @@ re-emitting these dead references.
   are down to their real findings, and `scripts/check_phantom_typing.py` keeps
   the pattern from returning. The combined artifact was rebuilt; it differs
   from the previous one in exactly the 36 property declarations concerned.
-  Still open under #709: the `Subsection` × `LegalProvisionShape` question that
-  owns `laws` and most of the Seadusloome gate (above), and the ticket's
-  standards work (SKOS-typed value families, `targetGroup` as an object
-  property, a punkt class, language tags).
+  The lõige question that owned `laws` is settled above. Still open under
+  #709: the ticket's standards work (SKOS-typed value families, `targetGroup`
+  as an object property, a punkt class, language tags) and the
+  `estleg:Section` / `Part` / `LegalPart` modelling in the legacy OWL modules.
 - **Aggregates (#705):** `eurlex` / `curia` / `eelnoud` combined files and
   `combined_ontology.{nt,nq,ttl}` are stale relative to their sources; the
   Seadusloome gate fails at graph closure on `eurlex_combined.jsonld`.

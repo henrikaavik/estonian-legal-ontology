@@ -93,6 +93,39 @@ An open axiom still says what it stands in for. `DOMAIN_INCLUDES` and
 carry no RDFS or OWL 2 RL semantics and therefore type nothing. List only the
 classes measured on the shipped corpus.
 
+## What a § must carry, and a lõige need not (#709)
+
+`estleg:Subsection` is a subclass of `estleg:LegalProvision` (#519), so every
+lõige is a focus node of any shape that targets `estleg:LegalProvision` — on
+both surfaces, because pyshacl resolves class targets through
+`rdfs:subClassOf` in the data graph even with inference off. A lõige carries
+its own `estleg:legalText` and exactly one `estleg:parentProvision` (#132,
+`SubsectionShape`); its § reference, summary and act live on that parent.
+
+`estleg:LegalProvisionShape` therefore constrains **values** only, for every
+provision including lõiked. The three fields a § must carry are required by
+`estleg:ProvisionRequiresParagrahvShape`, `estleg:ProvisionRequiresSummaryShape`
+and `estleg:ProvisionRequiresPartOfActShape`. Each has the same two targets as
+`LegalProvisionShape` and a single
+`sh:or ( [ sh:class estleg:Subsection ] [ sh:path … ; sh:minCount 1 ] )`.
+A node that is not a lõige and lacks a field still fails (#450), now under
+the shape named for that field.
+
+`sh:class` reads the asserted type, and every lõige is typed
+`estleg:Subsection` both in its peep and in combined. Under RDFS inference it
+also reads an entailed one: `estleg:parentProvision` and
+`estleg:subsectionNumber` (domain) and `estleg:hasSubsection` (range) entail
+`estleg:Subsection`. A § that wrongly carried one of those would be excused in
+its bucket and not by the no-inference gates. All 111,973 nodes they touch are
+asserted Subsections, so the surfaces agree on the shipped corpus, and
+`scripts/check_phantom_typing.py` reports any that is not, since
+`estleg:Subsection` is a shaped class. A test pins the divergence.
+
+Before this, #450's class target held all 111,911 lõiked to the §-level
+minimums: 335,733 of the `laws` bucket's violations and about 89% of the
+Seadusloome gate's. When a new shape targets `estleg:LegalProvision`, decide
+whether it is meant for lõiked too.
+
 ## One constraint per shape when the message matters
 
 `sh:message` attaches to a *shape*, not to a constraint, so every
