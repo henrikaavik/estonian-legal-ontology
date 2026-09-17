@@ -1349,8 +1349,11 @@ Every act node carries `estleg:Act` rdf:type **directly**, in
 addition to its specific subtype (`Law`, `MunicipalRegulation`,
 `NationalRegulation`, etc.). Same pattern as `KovProvision` on
 provisions. This keeps the data self-describing and means SHACL
-constraints on `estleg:Act` (e.g. `partOfAct`'s range) work without
-requiring RDFS subclass inference at validation time.
+constraints on `estleg:Act` (e.g. `estleg:ActShape`) work without
+requiring RDFS subclass inference at validation time. `partOfAct` itself
+declares an open range with `schema:rangeIncludes estleg:Act` (#709): a
+provision's act root is declared in another file on some load surfaces, and
+an `rdfs:range` would type that bare reference as an act.
 
 ### SHACL shapes
 
