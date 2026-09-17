@@ -46,10 +46,30 @@ artifact that embeds it are regenerated.
   `schema:rangeIncludes estleg:Act` records the class; the #522 T-Box test now
   asserts that form. The rebuilt combined artifact differs from the previous
   one in exactly the 36 property declarations this change touches.
-- Not addressed here: `laws` (338,909 → 337,335) and the Seadusloome gate are
-  dominated by `estleg:Subsection` nodes meeting `LegalProvisionShape`, which
-  is a shape and modelling question rather than an axiom defect. See the
-  validation report.
+- Not an axiom defect, and handled in part 2 below: `laws` (338,909 →
+  337,335 here) and the combined-only gate were dominated by
+  `estleg:Subsection` nodes meeting `LegalProvisionShape`.
+
+### 2026-09 public-sector readiness — what a § must carry (#676, ticket #709, part 2)
+
+- **`laws` SHACL bucket: 337,335 → 1,602, all real.** #519 made
+  `estleg:Subsection` a subclass of `estleg:LegalProvision` while
+  `LegalProvisionShape` was reached only through `sh:targetSubjectsOf
+  estleg:paragrahv`; #450 then added `sh:targetClass estleg:LegalProvision`,
+  and all 111,911 lõiked were held to the §-level `paragrahv`, `summary` and
+  `partOfAct` minimums — 335,733 violations, and about 89% of the combined-only
+  gate's, since pyshacl resolves class targets through `rdfs:subClassOf` in
+  the data graph even with inference off. A lõige carries its own `legalText`
+  and one `parentProvision` by design (#132); its § reference, summary and act
+  live on that parent.
+- The three minimums move into `ProvisionRequiresParagrahvShape`,
+  `ProvisionRequiresSummaryShape` and `ProvisionRequiresPartOfActShape` — one
+  `sh:or` each with its own message, same targets as before — and excuse nodes
+  typed `estleg:Subsection`. `LegalProvisionShape` still constrains the values
+  of every provision, lõiked included, and a § that lacks a field still fails
+  (#450): the 1,602 are 533 § nodes in the two hand-modelled OWL modules × 3,
+  plus three duplicate-value findings. Tested under both `inference="rdfs"`
+  and `inference="none"`. No data changes.
 
 ### Documentation audit — 2026-09-07
 

@@ -245,10 +245,17 @@ def evaluate(
         )
 
         focus_types = _focus_types(data_graph, focus_node)
-        key = (focus_types, compact_path, is_stub, severity)
+        shape_name = seadusloome._local_name(source_shape)
+        # The shape is part of the key: a node-level constraint (sh:or, sh:not)
+        # reports no sh:resultPath, so without it the three
+        # ProvisionRequires*Shape results collapsed into one row that named
+        # whichever shape happened to be seen last (#709).
+        # Display names are not identities: distinct namespaces may use the
+        # same local name, and every anonymous shape displays as <bnode>.
+        key = (focus_types, compact_path, is_stub, severity, source_shape)
         bucket = groups[key]
         bucket["count"] += 1
-        bucket["source_shape"] = seadusloome._local_name(source_shape)
+        bucket["source_shape"] = shape_name
         bucket["severity"] = severity
         if len(bucket["examples"]) < 5 and focus_node is not None:
             focus_str = str(focus_node)
@@ -256,7 +263,7 @@ def evaluate(
                 bucket["examples"].append(focus_str)
 
     rows = []
-    for (focus_types, path, is_stub, severity), info in groups.items():
+    for (focus_types, path, is_stub, severity, _shape), info in groups.items():
         rows.append(
             {
                 "focus_type": ", ".join(focus_types) if focus_types else "(untyped)",
@@ -268,7 +275,7 @@ def evaluate(
                 "examples": info["examples"],
             }
         )
-    rows.sort(key=lambda r: (-r["count"], r["focus_type"], r["path"]))
+    rows.sort(key=lambda r: (-r["count"], r["focus_type"], r["path"], r["source_shape"]))
 
     total = sum(r["count"] for r in rows)
 

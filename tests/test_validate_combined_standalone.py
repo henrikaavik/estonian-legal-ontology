@@ -18,6 +18,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg import validate_combined_standalone as gate
 
 CONTEXT = {
@@ -188,6 +190,43 @@ def test_gate_reports_missing_exempt_classifier_on_non_stub(tmp_path):
     paths = {r["path"] for r in summary["groups"]}
     assert "estleg:caseType" in paths, summary["groups"]
     assert summary["skipped_exempt"] == 0, summary
+
+
+def test_node_level_results_are_grouped_per_shape(tmp_path):
+    """The §-level minimums are sh:or node constraints (#709), which report no
+    sh:resultPath. Grouped on path alone, the three shapes collapsed into one row
+    labelled with whichever was seen last."""
+    bare = {"@id": "estleg:TEST_Par_1", "@type": ["owl:NamedIndividual", "estleg:LegalProvision"]}
+    summary = gate.evaluate(write_combined(tmp_path, [bare]), SHAPES, class_floors={})
+    rows = {row["source_shape"]: row["count"] for row in summary["groups"]}
+    assert rows == {
+        "ProvisionRequiresParagrahvShape": 1,
+        "ProvisionRequiresSummaryShape": 1,
+        "ProvisionRequiresPartOfActShape": 1,
+    }, summary["groups"]
+
+
+@pytest.mark.parametrize("shape_ids", [
+    ("<https://example.org/first/Required>", "<https://example.org/second/Required>"),
+    ("_:first", "_:second"),
+])
+def test_distinct_shapes_with_the_same_display_name_stay_separate(tmp_path, shape_ids):
+    shapes = tmp_path / "shapes"
+    shapes.mkdir()
+    (shapes / "requirements.ttl").write_text(f"""
+        @prefix sh: <http://www.w3.org/ns/shacl#> .
+        @prefix estleg: <https://w3id.org/estleg/> .
+        {shape_ids[0]} a sh:NodeShape ; sh:targetClass estleg:LegalProvision ;
+            sh:nodeKind sh:Literal .
+        {shape_ids[1]} a sh:NodeShape ; sh:targetClass estleg:LegalProvision ;
+            sh:nodeKind sh:BlankNode .
+    """)
+    combined = write_combined(tmp_path, [
+        {"@id": "estleg:TEST_Par_1", "@type": "estleg:LegalProvision"},
+    ])
+    summary = gate.evaluate(combined, shapes, class_floors={})
+    assert summary["total"] == 2
+    assert [row["count"] for row in summary["groups"]] == [1, 1]
 
 
 def test_gate_errors_when_combined_missing(tmp_path):

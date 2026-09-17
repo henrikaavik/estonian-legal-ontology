@@ -75,8 +75,12 @@ class TestIssue450LegalProvisionTargetClass:
             "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
         })
         assert not ok, msg
-        assert "MinCountConstraintComponent" in msg
-        assert "paragrahv" in msg
+        # #709: the minimum now lives in its own shape (an sh:or that excuses a
+        # lõige), so the report names that shape rather than a bare minCount. An
+        # sh:or result has no sh:resultPath; the field name reaches the report
+        # through the shape's sh:message.
+        assert "ProvisionRequiresParagrahvShape" in msg
+        assert "must carry estleg:paragrahv" in msg
 
 
 class TestIssue393ProvisionVersionInterval:
