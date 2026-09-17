@@ -1,5 +1,11 @@
 # Namespace migration — `data.riik.ee/ontology/estleg#` → `w3id.org/estleg/` (#516)
 
+> **Completed migration / historical design.** The namespace swap shipped in
+> #667 before v1.0.0. The PURL is registered; per-node content negotiation is
+> tracked by #728. Use [w3id status](../w3id/estleg/README.md) for the live
+> resolver contract. Counts and source locations in the plan below describe
+> the pre-migration tree.
+
 > This document deliberately contains the **legacy** namespace string (in the
 > replacement specs below). It is therefore **excluded** from the migration swap
 > AND from the `data.riik.ee == 0` CI guard (alongside `CHANGELOG.md` and
@@ -29,9 +35,8 @@ scheme is the hardest thing to change after release, so it lands first.
 **Resolver traceability:** the 303 / content-negotiation resolver is the
 *second half* of #516's decision ("resolver later"). It is **not** #550 (which
 is the separate "documented REST API is vaporware" access-honesty issue). This
-migration delivers only the **namespace swap**; a **dedicated resolver
-follow-up ticket must be filed** (and #516 kept open until it lands, or closed
-on the swap with the resolver tracked by that new ticket).
+migration delivered the **namespace swap**; the resolver follow-up is now
+tracked separately in **#728**.
 
 Because node `@id`s are stored **compact** (`estleg:Local`), this is a
 `@context`-prefix + path-IRI **string swap**, not a 170k-IRI rewrite. It is *not*

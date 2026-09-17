@@ -1,7 +1,8 @@
 # estleg-mcp — handoff / where this stands
 
-_Snapshot: 2026-09-04. Matches `main` (`estleg-mcp` 0.1.0); the live remote
-still runs the pre-#678 build until it is redeployed._
+_Source status checked 2026-09-07 against `main` at `0cb9ac91bc`
+(`estleg-mcp` 0.1.0). This repository check does not establish the revision
+deployed at the remote endpoint._
 
 ## Goal
 
@@ -19,30 +20,35 @@ Shipped via PR [#493](https://github.com/henrikaavik/estonian-legal-ontology/pul
 (issue [#495](https://github.com/henrikaavik/estonian-legal-ontology/issues/495):
 tool-contract tests / OWL exclusion) and
 PR [#666](https://github.com/henrikaavik/estonian-legal-ontology/pull/666)
-(`#499` point-in-time history + `#500` regulations).
+(`#499` point-in-time history + `#500` regulations), followed by
+[#732](https://github.com/henrikaavik/estonian-legal-ontology/pull/732)
+(#678/#680 provision detection and source-URL fixes; merged 2026-09-07).
 
 - `estleg_mcp/data.py` — data-access layer over the per-file `*_peep.json`
   (never the LFS-only combined graph). Resolves laws by title / official
   abbreviation (KarS, VÕS, PS, ...) / slug, accent-insensitive.
-- `estleg_mcp/server.py` — FastMCP server, **14 tools**:
+- `estleg_mcp/server.py` — FastMCP server, **20 tools**:
   `search_laws`, `get_law`, `get_provision`, `who_references`, `references_of`,
   `drafts_affecting_law`, `court_decisions_for_law`, `sanctions_for_law`,
   `competent_authority_for_law`, `transposition`,
   `provision_history`, `regulations_for_law`, `get_regulation`,
-  `regulations_by_issuer`.
+  `regulations_by_issuer`, `define_term`, `laws_for_subject`,
+  `amendment_history`, `eu_case_law_for_directive`,
+  `harmonisation_for_directive`, `layers_available`.
   `get_law` / `get_provision` accept optional `as_of` for a historical redaction.
 - Transports: **stdio** (local IDEs) and **streamable-HTTP** with an
   `ESTLEG_TOKEN` bearer gate (remote). `/healthz` is unauthenticated.
 - `docker/` — Coolify-style image (python:3.13-slim + uv, mirrors Seadusloome);
   the entrypoint clones the corpus to a `/data` volume at boot (LFS skipped).
-- Tests: `mcp_server/tests/` — data-layer unit tests, 14-tool contract tests,
+- Tests: `mcp_server/tests/` — data-layer and tool-contract tests,
   and HTTP host/`/healthz` transport tests.
 
 ## Status
 
 - On `main` as `mcp_server/` (install: `pip install -e mcp_server`).
-- Remote HTTP endpoint is live: `https://estleg.sixtyfour.ee/mcp`
-  (`GET /healthz` → `ok`).
+- Configured remote endpoint: `https://estleg.sixtyfour.ee/mcp`.
+  Check `/healthz` for availability and verify the deployed revision separately;
+  a health response alone does not prove it includes the merged fixes.
 - Client config is in [README.md](README.md) (stdio and the remote `url` form).
 
 ### 2026-09-04 — corpus drift repaired (#678, #680)
@@ -78,7 +84,8 @@ tree, all of which failed **silently** (no error, just empty or wrong output):
   It now tries the package path first and falls back to `scripts/`, still
   parsing with `ast` rather than importing.
 
-Suite: 19 failing tests before, 0 after (104 passed, 1 skipped).
+Historical fix-run result: 19 failing tests before, 0 after (104 passed,
+1 skipped). Use current CI for the present suite result.
 
 ## Next steps
 
@@ -94,8 +101,8 @@ Suite: 19 failing tests before, 0 after (104 passed, 1 skipped).
 - **KarS / VÕS have no riigiteataja source** in the ontology, so `get_law`,
   `get_provision` and `sanctions_for_law` return `rt_url: ""` for them (their
   Wikidata IRI comes back under `external_ids`). Restoring `dcterms:source`
-  on those act nodes is a **producer-side** ticket, not an MCP one; 134 acts
-  in total have no source. The MCP contract tests pin PS / LS for the
+  on those act nodes is producer-side work (#692/#695). The September 4
+  census above recorded 134 acts without a source. The MCP contract tests pin PS / LS for the
   riigiteataja citation assertions until then.
 - **371 act nodes carry an official English-text ELI** under
   `estleg:officialEnglishText` (e.g. `https://www.riigiteataja.ee/en/eli/…`).
@@ -105,8 +112,9 @@ Suite: 19 failing tests before, 0 after (104 passed, 1 skipped).
 - **Semantic search** is not in v1: `similarity_index.json` and
   `combined_ontology.jsonld` ship as Git-LFS pointers, so a semantic tool needs
   `git lfs pull` plus an embedding/index step over provision summaries.
-- **`temporalStatus` = "unknown"** for some acts (e.g. VÕS, PS) is an upstream
-  ontology data gap, surfaced honestly; `get_law` also returns
+- **`temporalStatus` = "unknown"** means the corpus lacks sufficient status
+  evidence or the IRI is retired (#682); it must not be read as `repealed`.
+  `get_law` also returns
   `consolidated_as_of` (the consolidated-text date) for context.
 - Seadusloome already clones this ontology and runs a Jena/Fuseki SPARQL
   endpoint on the same box, so a future estleg could query Fuseki instead of

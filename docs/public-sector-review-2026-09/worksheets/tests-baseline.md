@@ -90,7 +90,8 @@ so these are genuine data/test disagreements, not environment gaps:
 1. `tests/test_documented_examples.py::test_documented_sparql_returns_rows[API_GUIDE.md:EuroVoc subject classification (reverse)]`
    — `API_GUIDE.md L426 returned 0 rows — the documented query no longer matches the shipped corpus (#506)`.
 2. `tests/test_no_legacy_namespace.py::test_no_legacy_data_riik_ee_namespace`
-   — `Legacy data.riik.ee namespace still present in: src/estleg/migrate_namespace.py`
+   — reported the retired namespace in `src/estleg/migrate_namespace.py`
+   (hostname documented in [NAMESPACE_MIGRATION.md](../../NAMESPACE_MIGRATION.md))
    (the migration script itself contains the literal; CI `json-validation` job fails on the same check).
 3. `tests/test_real_corpus_invariants.py::test_combined_graph_is_closed`
    — `combined_ontology.jsonld: 2409 stub node(s) carry disallowed estleg: object refs …

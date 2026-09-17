@@ -206,13 +206,14 @@ the guessable `HMS` IRI is a deprecation stub. The same shape holds for
 27 deprecated act IRIs in total (`krr_outputs/INDEX.json` `deprecated_laws`,
 24 entries / 27 IRIs).
 
-### W5 — HIGH — The `data.riik.ee == 0` CI guard is stale after the #472 package move and currently returns a hit
+### W5 — HIGH — The zero-legacy-namespace CI guard is stale after the #472 package move and currently returns a hit
 
 `.github/workflows/validate.yml:251-261` and `tests/test_no_legacy_namespace.py:20-30`
 both exclude `scripts/migrate_namespace.py`. That file is now a 9-line
 `runpy` shim containing no legacy string. The implementation moved to
 `src/estleg/migrate_namespace.py`, which holds 12 occurrences of
-`data.riik.ee` and is **not** excluded. Running the workflow's exact grep in
+the retired hostname (see [NAMESPACE_MIGRATION.md](../../NAMESPACE_MIGRATION.md))
+and is **not** excluded. Running the workflow's exact grep in
 this checkout returns:
 
 ```
@@ -499,7 +500,7 @@ single `eli:is_about` alias.
 ### I3. Do not mint under ELI — keep `w3id.org/estleg/` and make it resolve
 
 **What.** Reject a move to `https://www.riigiteataja.ee/eli/...` or a
-`data.riik.ee` namespace as the primary key. Instead: (a) finish the w3id PURL
+retired government-owned namespace as the primary key. Instead: (a) finish the w3id PURL
 registration; (b) replace the catch-all in `w3id/estleg/.htaccess:27` with
 content negotiation that serves Turtle/JSON-LD to machine clients and an HTML
 description page to browsers; (c) generalise the version rule from the
@@ -508,7 +509,7 @@ hardcoded `^1\.0\.0/?$` to `^([0-9]+\.[0-9]+\.[0-9]+)/?$`.
 **Why.** `docs/NAMESPACE_MIGRATION.md` already establishes the correct
 principle: minting under a namespace the project does not control is an
 identifier-*authority* error, and that reasoning applies to
-`riigiteataja.ee/eli/` exactly as it applied to `data.riik.ee`. The project
+`riigiteataja.ee/eli/` exactly as it applied to the retired namespace. The project
 cannot maintain redirects on either. The right architecture is the one
 `docs/ARCHITECTURE.md` already states — minted `estleg:` primary keys, with
 RT/ELI/CELEX/ECLI on `owl:sameAs` and properties — which is only half-built

@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Documentation audit — 2026-09-07
+
+- Align setup, MCP tool documentation, schema references, the release DAG, and
+  the Estonian overview with the merged Tier 0 / #702 tree. Distinguish the
+  published August v1.0.0 release from subsequent fixes on `main`.
+- Replace obsolete all-green validation and freshness claims with measured
+  status and open follow-ups; label historical reviews and plans explicitly.
+- Repair Python sidecar/index examples and the reverse EuroVoc query; require
+  Python loader examples to produce output so empty file globs cannot pass.
+- Regenerate the fitness baseline from the current corpus and describe link
+  resolution as reference integrity rather than semantic precision. Legal
+  data and generated release artifacts are unchanged.
+
 ### 2026-09 public-sector readiness — Tier 1 (#676, ticket #702)
 
 Repairs the validator so the gate reports real defects, and makes both
@@ -414,8 +427,8 @@ citations / fetched-text hashes / golden facts.
 
 ### Cycle-2 technical-correctness pass (#560, label `review-2026-06-20`)
 
-This release also folds in the cycle-2 correctness fixes merged as PRs
-#620–#634, including: the combined-graph closure gate no longer exempts
+This release also folds in the cycle-2 correctness fixes merged as
+PRs #620–#634, including: the combined-graph closure gate no longer exempts
 `hasVersion`/`amendedBy` and the SHACL emptiness guard is restored (#589/#590);
 the test suite now loads the real shipped artifacts (#591); fabricated
 publication dates fixed (#571); sidecars + KOV merged into combined and the

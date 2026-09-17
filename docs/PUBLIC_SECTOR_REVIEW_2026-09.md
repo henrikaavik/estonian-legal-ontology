@@ -1,5 +1,11 @@
 # Public-sector readiness review — Estonian Legal Ontology
 
+> **Historical baseline, not current status.** This review and its worksheets
+> describe the September 3 tree below. Tier 0 (#677–#690) and #702 were merged
+> on September 7. Findings and original measurements are preserved for the
+> roadmap; use [project status](README.md#project-status) and the generated
+> [validation report](VALIDATION_REPORT.md) for the reviewed current tree.
+
 | | |
 |---|---|
 | Review date | 2026-09-03 |

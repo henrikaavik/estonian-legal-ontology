@@ -10,16 +10,18 @@
 
 ## What personal data the corpus contains
 
-Two subcorpora carry personal data about identifiable natural persons:
+Three court-data surfaces require personal-data handling:
 
 | Subcorpus | Location | Records | Where the personal data sits |
 |---|---|---|---|
-| Estonian Supreme Court decisions (Riigikohus) | `krr_outputs/riigikohus/` | 12,104 | full personal **names** appear in `estleg:summary`; personal-identification codes are masked at write time (see below) |
+| Estonian Supreme Court decisions (Riigikohus) | `krr_outputs/riigikohus/` | 12,104 | personal **names** may appear in `estleg:summary` and `estleg:legalText`; personal-identification codes are masked at write time (see below) |
 | First/second-instance decisions (kohtud) | `krr_outputs/kohtud/` | 1 (sample) | The committed corpus is a **one-decision sample**, flagged `estleg:isSampleData: true` on the graph header and `"sample": true` in `KOHTUD_INDEX.json` (#689). It holds search metadata only (court name, case number, date). Live `--fetch` may copy `kokkuvote` summaries that name persons — treat the directory as personal-data-bearing. |
 | EU Court of Justice decisions (CURIA) | `krr_outputs/curia/` | ~22,290 | **party names** appear in `rdfs:label` |
 
-These are flagged in `metadata.jsonld` on the corresponding `dcat:distribution`
-entries with `estleg:containsPersonalData: true`.
+Riigikohus and CURIA are flagged in `metadata.jsonld` on their
+`dcat:distribution` entries with `estleg:containsPersonalData: true`.
+The lower-court sample is covered by this notice without a separate
+distribution entry (see [Machine-readable flags](#machine-readable-flags)).
 
 ### Special-category / sensitive implications
 Estonian Supreme Court criminal decisions attach **Penal Code (KarS) charges to
@@ -62,7 +64,7 @@ person — `registrikood` / `reg. kood` (a Latvian company registry code is also
 11 digits) or `otsuse nr` — is left intact unless a personal-code label also
 precedes it.
 
-**Live result over the committed corpus**
+**Recorded screening result (September 2026 corpus)**
 
 | Metric | Count |
 |---|---|
@@ -151,8 +153,9 @@ consider whether you need the names at all for your use case.
   notice even without a separate `dcat:distribution` row — treat it like
   Riigikohus if summaries are stored. The committed sample is additionally
   flagged `estleg:isSampleData: true` on its graph header;
-- `estleg:containsPersonalData` is declared as an `owl:DatatypeProperty` in the
-  metadata `@graph`.
+- `estleg:containsPersonalData` is declared as an `owl:DatatypeProperty` in
+  `krr_outputs/controlled_vocabulary.jsonld`; `metadata.jsonld` no longer
+  embeds a T-Box `@graph` (#433).
 
 Per court-decision node (`krr_outputs/riigikohus/` and `krr_outputs/kohtud/`):
 
