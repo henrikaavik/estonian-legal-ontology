@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,17 +22,28 @@
       ],
       "rdfs:label": "Teabeamet",
       "estleg:institutionType": "agency",
+      "rdfs:seeAlso": {
+        "@id": "http://www.wikidata.org/entity/Q12376592"
+      },
+      "estleg:registrikood": "70005938",
+      "estleg:validFrom": {
+        "@value": "2001-02-20",
+        "@type": "xsd:date"
+      },
+      "estleg:validTo": {
+        "@value": "2017-06-30",
+        "@type": "xsd:date"
+      },
+      "estleg:successorInstitution": [
+        {
+          "@id": "estleg:Institution_valisluureamet"
+        }
+      ],
       "estleg:hasCompetence": [
         {
           "@id": "estleg:Institution_teabeamet_competence_enforcement"
-        },
-        {
-          "@id": "estleg:Institution_teabeamet_competence_general"
         }
-      ],
-      "owl:sameAs": {
-        "@id": "http://www.wikidata.org/entity/Q12376592"
-      }
+      ]
     },
     {
       "@id": "estleg:Institution_teabeamet_competence_enforcement",
@@ -47,40 +63,6 @@
       ],
       "estleg:appliesToProvisionCount": {
         "@value": "1",
-        "@type": "xsd:integer"
-      },
-      "estleg:competenceArea": "general",
-      "estleg:grantedBy": {
-        "@id": "estleg:RSS_Map"
-      }
-    },
-    {
-      "@id": "estleg:Institution_teabeamet_competence_general",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Competence"
-      ],
-      "rdfs:label": "Teabeamet – general",
-      "estleg:competenceType": "general",
-      "estleg:institution": {
-        "@id": "estleg:Institution_teabeamet"
-      },
-      "estleg:appliesToProvision": [
-        {
-          "@id": "estleg:Reg_1039248_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1039058_Par_6"
-        },
-        {
-          "@id": "estleg:RSS_Par_5"
-        },
-        {
-          "@id": "estleg:RSS_Par_33_37"
-        }
-      ],
-      "estleg:appliesToProvisionCount": {
-        "@value": "4",
         "@type": "xsd:integer"
       },
       "estleg:competenceArea": "general",

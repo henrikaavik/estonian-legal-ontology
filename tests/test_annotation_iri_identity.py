@@ -142,3 +142,21 @@ def test_committed_annotation_sidecar_has_no_duplicate_ids() -> None:
     graph = json.loads(ga.SIDECAR_PATH.read_text(encoding="utf-8"))["@graph"]
     dupes = [i for i, n in Counter(node["@id"] for node in graph).items() if n > 1]
     assert dupes == []
+
+
+def test_attribution_repair_never_changes_ids_or_order(tmp_path: Path) -> None:
+    # #719: --repair-attribution rewrites targets and attribution fields only; the #743
+    # identity (every @id, and node order) is untouched.
+    sidecar = tmp_path / "oiguskantsler_seisukohad.jsonld"
+    ga.write_sidecar(
+        [
+            _node(f"{ga.ANNOTATION_ID_PREFIX}{SLUG}", url=URL_B, date="2015-04-24",
+                  title="Valjakutse", targets=["estleg:OIGUSK_Map"]),
+            _node(f"{ga.ANNOTATION_ID_PREFIX}{SLUG}_2", url=URL_A, date="2015-08-11",
+                  title="Valjakutse politsei poolt", targets=["estleg:KORS_Map", "estleg:OIGUSK_Map"]),
+        ],
+        out_path=sidecar,
+    )
+    before = _ids(sidecar)
+    ga.repair_attribution(in_path=sidecar, provision_ids=set(), law_index=None, seed_path=None)
+    assert _ids(sidecar) == before

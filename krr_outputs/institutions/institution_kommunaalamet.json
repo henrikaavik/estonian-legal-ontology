@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -22,10 +27,7 @@
           "@id": "estleg:Institution_kommunaalamet_competence_enforcement"
         },
         {
-          "@id": "estleg:Institution_kommunaalamet_competence_general"
-        },
-        {
-          "@id": "estleg:Institution_kommunaalamet_competence_supervision"
+          "@id": "estleg:Institution_kommunaalamet_competence_licensing"
         }
       ]
     },
@@ -55,60 +57,29 @@
       }
     },
     {
-      "@id": "estleg:Institution_kommunaalamet_competence_general",
+      "@id": "estleg:Institution_kommunaalamet_competence_licensing",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Competence"
       ],
-      "rdfs:label": "Kommunaalamet – general",
-      "estleg:competenceType": "general",
+      "rdfs:label": "Kommunaalamet – licensing",
+      "estleg:competenceType": "licensing",
       "estleg:institution": {
         "@id": "estleg:Institution_kommunaalamet"
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:Reg_1061524_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1018048_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1047133_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1035819_Par_1"
+          "@id": "estleg:Reg_1038819_Par_2"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "4",
+        "@value": "1",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "general"
-    },
-    {
-      "@id": "estleg:Institution_kommunaalamet_competence_supervision",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Competence"
-      ],
-      "rdfs:label": "Kommunaalamet – supervision",
-      "estleg:competenceType": "supervision",
-      "estleg:institution": {
-        "@id": "estleg:Institution_kommunaalamet"
-      },
-      "estleg:appliesToProvision": [
-        {
-          "@id": "estleg:Reg_1045971_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1013887_Par_1"
-        }
-      ],
-      "estleg:appliesToProvisionCount": {
-        "@value": "2",
-        "@type": "xsd:integer"
-      },
-      "estleg:competenceArea": "general"
+      "estleg:competenceArea": "general",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_1038819_Map"
+      }
     }
   ]
 }

@@ -10,7 +10,8 @@ ontology. Specifically:
    load-surface directories: ``eelnoud``, ``riigikohus``, ``curia``,
    ``eurlex``, ``concepts``, ``sanctions``, ``amendments``,
    ``institutions``, ``provision_versions``, ``annotations``,
-   ``harmonisation``, and ``regulations``.
+   ``harmonisation``, ``regulations``, ``analytical`` and ``eurovoc``
+   (the list is ``estleg_common.PUBLIC_LOAD_SUBDIRS``).
 3. Parse all inputs into a single ``rdflib.Graph()`` via the JSON-LD
    parser.
 4. Load every ``*.ttl`` and ``*.jsonld`` under ``shacl/`` into a

@@ -446,9 +446,11 @@ until the controller fills it in. Tests: `tests/test_lower_court_signoff.py`.
 `metadata.jsonld`:
 
 - the Riigikohus distribution carries `estleg:containsPersonalData: true` plus a
-  `dcterms:rights` note;
+  `dcterms:rights` statement (a `dcterms:RightsStatement` whose `rdfs:label`
+  holds the note, #710);
 - the CURIA distribution carries `estleg:containsPersonalData: true` plus a
-  `dcterms:rights` note;
+  `dcterms:rights` statement (a `dcterms:RightsStatement` whose `rdfs:label`
+  holds the note, #710);
 - first/second-instance ingest (`krr_outputs/kohtud/`) is covered by this
   notice even without a separate `dcat:distribution` row. The committed sample
   is additionally flagged `estleg:isSampleData: true` on its graph header;

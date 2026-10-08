@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,23 +39,6 @@
       },
       "estleg:titleNormalized": "kohtuvalises ja kohtumenetluses esindamise ning oigusteenuse kasutamise kord",
       "estleg:regulationTypeBucket": "kasutamise kord",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/217"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/5050"
-        }
-      ],
       "estleg:entryIntoForce": {
         "@value": "2024-03-31",
         "@type": "xsd:date"
@@ -64,17 +48,6 @@
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Issuer_tallinna_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_tallinna_linnavalitsus"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -88,6 +61,44 @@
       "estleg:implementsCitation": [
         {
           "@id": "estleg:Citation_Reg_1058640_Map_1"
+        }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": true,
+        "@type": "xsd:boolean"
+      },
+      "estleg:earliestSupersedingDate": {
+        "@value": "2026-01-17",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/217"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/217"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_linn"
         }
       ]
     },
@@ -117,21 +128,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1058640_Par_2",
@@ -181,11 +186,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -223,14 +223,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -265,30 +257,33 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_tallinna_linnavolikogu"
-        },
         {
           "@id": "estleg:Issuer_tallinna_linnavalitsus"
         }
       ],
       "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:targetGroupConcept": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:Institution_riigikohus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1058640_Par_6",
@@ -348,27 +343,19 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_tallinna_linnavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_linn"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_linn"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1058640_Par_8",
@@ -396,24 +383,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_tallinna_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "enforcement",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1058640_Par_9",
@@ -437,11 +418,6 @@
         "@id": "estleg:Reg_1058640_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -485,11 +461,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -524,11 +495,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -568,11 +534,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -607,30 +568,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_tallinna_linnavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_linn"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1058640_Par_14",
@@ -658,21 +610,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_tallinna_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1058640_Par_15",
@@ -708,15 +654,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1058640_Par_16",
@@ -744,21 +690,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_tallinna_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Citation_Reg_1058640_Map_1",

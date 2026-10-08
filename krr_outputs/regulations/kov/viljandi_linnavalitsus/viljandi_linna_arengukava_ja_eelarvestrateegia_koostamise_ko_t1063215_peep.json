@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,17 +39,6 @@
       },
       "estleg:titleNormalized": "arengukava ja eelarvestrateegia koostamise kord",
       "estleg:regulationTypeBucket": "koostamise kord",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/5050"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1063215_Map_Reg_1043413_Map"
@@ -120,22 +110,41 @@
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
-      "estleg:competentAuthority": [
+      "estleg:municipalityStatus": "current",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "dcterms:subject": [
         {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
+          "@id": "http://eurovoc.europa.eu/68"
         },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5050"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        }
+      ],
+      "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_viljandi_linnavalitsus"
         },
         {
           "@id": "estleg:Issuer_viljandi_linnavolikogu"
         }
-      ],
-      "estleg:municipalityStatus": "current",
-      "estleg:assertionConfidence": {
-        "@value": "0.55",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1063215_Par_1",
@@ -159,17 +168,6 @@
         "@id": "estleg:Reg_1063215_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -230,27 +228,27 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_viljandi_linnavalitsus"
         }
       ],
       "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:targetGroupConcept": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:Institution_rahandusamet"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:Issuer_viljandi_linnavolikogu"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1063215_Par_4",
@@ -281,27 +279,19 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_viljandi_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_viljandi_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_viljandi_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_viljandi_linnavolikogu"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:Reg_1063215_Par_5",

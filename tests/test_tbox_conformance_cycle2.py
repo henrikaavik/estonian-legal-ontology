@@ -44,6 +44,8 @@ CONTEXT = {
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "schema": "https://schema.org/",
 }
 
 
@@ -225,7 +227,14 @@ def test_structural_class_declared_in_vocabulary(cls):
 _ACT_VALID = {
     "@context": CONTEXT,
     "@id": "estleg:TESTACT_Map",
-    "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+    # #708: a combined act root carries its materialised ELI / schema.org types.
+    "@type": [
+        "owl:Ontology",
+        "estleg:Act",
+        "estleg:Law",
+        "eli:LegalResource",
+        "schema:Legislation",
+    ],
     "rdfs:label": "Test Act (testseadus)",
 }
 
@@ -414,6 +423,6 @@ def test_metadata_parses_as_jsonld_with_schema_dataset_type():
 
     g = rdflib.Graph()
     g.parse(str(METADATA), format="json-ld")
-    schema = Namespace("http://schema.org/")
+    schema = Namespace("https://schema.org/")  # #710: matches the CV @context
     ds = rdflib.URIRef(_metadata()["@id"])
     assert (ds, RDF.type, schema.Dataset) in g

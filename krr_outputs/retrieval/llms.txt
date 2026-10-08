@@ -6,25 +6,47 @@
 > records so RAG and agent developers do not have to reassemble three nodes
 > across two files to cite one paragraph.
 
-The core unit is a provision-version. Each line of `chunks.jsonl` is one
-`{provision_iri, redaction_id, paragraph, act_title, abbrev, rt_url, valid_from,
-valid_to, in_force, text}` record: a single §-level provision in one redaction,
-independently citeable via `provision_iri` + `rt_url`, carrying the untruncated
-text and the validity window. Filter `in_force == true` for the current law;
-group by `provision_iri` for a paragraph's amendment history.
+The core unit is a provision-version: one §-level provision of an Estonian
+state law (INDEX laws only) in one Riigi Teataja redaction, with untruncated
+Estonian text. Each JSON Lines record (chunk schema 2.0.0)
+has exactly these keys, in this order:
 
-Projection built from ontology version 0.11.0, evaluation date
-2026-06-01. Provision-version records: 124938;
-laws: 1120; per-law outlines and context packs: 1120.
+    {chunk_id, provision_iri, act_iri, redaction_id, paragraph, act_title, abbrev, rt_url, valid_from, valid_to, in_force, kehtiv, evaluation_date, ontology_version, language, part_index, part_count, text}
+
+Every record is auditable on its own, without this file:
+- `chunk_id` — stable id: `<provision_iri>#<redaction_id>`, or
+  `<provision_iri>#consolidated` for a provision with no version layer, plus
+  `#part_<k>` only when a long § was split (`part_index` of `part_count`).
+- `ontology_version` / `evaluation_date` — the build that produced the record
+  and the as-of date `in_force` was computed against.
+- `act_iri`, `act_title`, `abbrev`, `kehtiv` — the act and the consolidation
+  date of the act snapshot the record was read from.
+- `rt_url` — the Riigi Teataja page of that redaction with a `#para<N>` anchor
+  (`#para<N>b<k>` for § N^k).
+- `language` — `et` (BCP 47).
+IRIs are compact (`estleg:` = https://w3id.org/estleg/).
+
+Filter `in_force == true` for the law as it stood on `evaluation_date`; group by
+`provision_iri` for a paragraph's amendment history.
+
+Build: ontology 1.0.0, evaluation date
+2026-06-01. Records: 124938
+(124200 version + 738 consolidated);
+laws: 1120.
 
 ## Retrieval artifacts
-- [chunks.jsonl](chunks.jsonl): one JSON record per provision-version — the core
-  retrieval / embedding unit (untruncated text).
-- [outlines/](outlines/): per-law skim tier — `{paragraph, label, chapter,
-  summary, has_versions}` per provision, to navigate a large law without
-  fetching it whole.
-- [context_packs/](context_packs/): per-law denormalised bundle — provisions +
-  versions + references + cases + amendments + sanctions in one fetch.
+- [chunks.jsonl.gz](https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/chunks.jsonl.gz): every chunk record, gzipped
+  JSON Lines — a release asset of the tagged release v1.0.0
+  (built by `build_release_assets.py`; listed with its checksum in the release
+  catalogue).
+- [chunks.sample.jsonl](chunks.sample.jsonl): the first 200 records, same schema.
+- [manifest.json](manifest.json): counts, chunk schema version, generator commit.
+- [sample_outline.json](sample_outline.json): one per-law skim outline —
+  `{paragraph, label, chapter, summary, has_versions}` per provision.
+- [sample_context_pack.json](sample_context_pack.json): one per-law denormalised
+  bundle — provisions + versions + references + cases + amendments + sanctions.
+- Per-law outlines and context packs for every law are not published; regenerate
+  them with `python3 scripts/generate_retrieval_projection.py`.
 
 ## Source corpus
 - [INDEX.json](../INDEX.json): the law manifest these projections enumerate.

@@ -24,6 +24,8 @@ PREFIXES = """
 @prefix estleg: <https://w3id.org/estleg/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix schema: <https://schema.org/> .
 """
 
 
@@ -50,7 +52,7 @@ def _failing_shapes(shapes, turtle: str) -> set[str]:
 
 def _act(content_status: str) -> str:
     return f"""
-estleg:TEST_Reg_Map a estleg:Act ;
+estleg:TEST_Reg_Map a estleg:Act, eli:LegalResource, schema:Legislation ;
     rdfs:label "Testmäärus" ;
     estleg:kehtiv "2025-01-01"^^xsd:date ;
     estleg:contentStatus "{content_status}" .

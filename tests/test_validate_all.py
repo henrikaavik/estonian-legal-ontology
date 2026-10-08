@@ -3266,3 +3266,76 @@ def test_parity_references_accepts_builder_widening_but_not_loss() -> None:
     summary_drift = dict(widened, **{"estleg:summary": "other"})
     source_summary = dict(source, **{"estleg:summary": "text"})
     assert "estleg:summary" in validate_all._parity_field_drift(source_summary, summary_drift)
+
+
+def _folded_regulation_root(*, stub: bool) -> dict:
+    node = {
+        "@id": "estleg:Reg_9_Map",
+        "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+        "rdfs:label": "Reg 9",
+        "dcterms:source": "https://www.riigiteataja.ee/akt/409",
+        "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/68"}],
+    }
+    if stub:
+        node["estleg:isStubNode"] = True
+    return node
+
+
+def _write_eurovoc_join(krr: Path) -> None:
+    write_json(
+        krr / "eurovoc" / "eurovoc_overlay.jsonld",
+        {
+            "@graph": [
+                {"@id": "estleg:EuroVocOverlay", "@type": ["owl:Ontology"]},
+                {
+                    "@id": "estleg:Reg_9_Map",
+                    "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/68"}],
+                },
+            ]
+        },
+    )
+
+
+def test_validate_combined_ontology_accepts_stub_folded_into_untyped_join_node(tmp_path):
+    """#699: an untyped overlay join on a regulation root carries the typed stub."""
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_eurovoc_join(krr)
+    _write_combined(
+        krr,
+        [
+            _provision_node("estleg:A_1"),
+            {"@id": "estleg:EuroVocOverlay", "@type": ["owl:Ontology"]},
+            _folded_regulation_root(stub=True),
+        ],
+    )
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert not [
+        err
+        for err in validate_all.errors
+        if "drift from source" in err or "stale extra" in err
+    ], validate_all.errors
+
+
+def test_validate_combined_ontology_still_rejects_typed_drift_on_a_non_stub(tmp_path):
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_eurovoc_join(krr)
+    _write_combined(
+        krr,
+        [
+            _provision_node("estleg:A_1"),
+            {"@id": "estleg:EuroVocOverlay", "@type": ["owl:Ontology"]},
+            _folded_regulation_root(stub=False),
+        ],
+    )
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert any(
+        "drift from source on SHACL-sensitive fields" in err for err in validate_all.errors
+    ), validate_all.errors

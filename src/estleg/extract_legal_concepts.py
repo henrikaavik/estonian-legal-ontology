@@ -7,8 +7,15 @@ This script:
 2. Detects definition sections ("Mõisted", "Põhimõisted", etc.)
 3. Extracts term-definition pairs from numbered definition paragraphs
 4. Creates estleg:LegalConcept nodes with SKOS labels and definitions
-5. Matches identical/similar terms across laws with skos:exactMatch / skos:closeMatch
+5. Links every provision-local definition to one canonical estleg:Concept per
+   normalised term, folding orthographic variants into skos:altLabel (#699).
+   No skos:closeMatch is emitted: the old Levenshtein <= 2 matcher linked
+   unrelated words (laev/laps, arst/arve, kolmas isik/kolmas riik).
 6. Outputs krr_outputs/concepts/ with combined and cross-reference data
+
+``--scrub-committed`` re-applies the hygiene passes (closeMatch strip,
+kehtetu strip, plural / mojibake / orthographic-variant folds) to the
+committed ``concepts_combined.jsonld`` without the Riigi Teataja XML.
 """
 
 from __future__ import annotations
@@ -17,6 +24,7 @@ import json
 import re
 import time
 import traceback
+import unicodedata
 import xml.etree.ElementTree as ET
 from functools import partial
 from pathlib import Path
@@ -254,27 +262,6 @@ def collect_full_text(el: ET.Element) -> str:
 
 
 sanitize_id = partial(_shared_sanitize_id, max_len=80, replace_dash=True)
-
-
-def edit_distance(a: str, b: str) -> int:
-    """Compute Levenshtein edit distance between two strings."""
-    if len(a) < len(b):
-        return edit_distance(b, a)
-    if len(b) == 0:
-        return len(a)
-
-    prev_row = list(range(len(b) + 1))
-    for i, ca in enumerate(a):
-        curr_row = [i + 1]
-        for j, cb in enumerate(b):
-            cost = 0 if ca == cb else 1
-            curr_row.append(min(
-                curr_row[j] + 1,       # insertion
-                prev_row[j + 1] + 1,   # deletion
-                prev_row[j] + cost,    # substitution
-            ))
-        prev_row = curr_row
-    return prev_row[len(b)]
 
 
 def is_definition_paragraph(par_el: ET.Element) -> bool:
@@ -584,86 +571,6 @@ def _disambiguate_concept_id(
     return f"{candidate}_{n}"
 
 
-def _bucketed_close_match_pairs(
-    unique_terms: list[str],
-    *,
-    min_len: int = 4,
-) -> list[tuple[str, str, int]]:
-    """Return list of (term_a, term_b, edit_distance) for pairs with
-    distance ``0 < d < 3``.
-
-    Finding 5 (#171): the previous all-pairs O(N²) loop with a 5000
-    cap was the dominant runtime cost on growing corpora, so candidate
-    pairs are co-located by a bucketing signature and Levenshtein is
-    only computed within each bucket.
-
-    #278: the old signature was ``(first_2_chars, length)``, which only
-    ever compared terms sharing their leading two characters. Every
-    edit-distance ≤ 2 pair that differs in a *leading* character
-    (``tasu``/``kasu``) or transposes the first two characters
-    (``liige``/``ilige``) landed in different buckets and was silently
-    missed. We now index each term under its set of *deletion variants*
-    — every string obtained by deleting up to ``MAX_DIST`` characters
-    (SymSpell-style). Two strings within Levenshtein distance ``d`` share
-    a common subsequence reachable by deleting ≤ ``d`` characters from
-    each, so any pair with ``d ≤ MAX_DIST`` is guaranteed to collide in
-    at least one variant bucket regardless of *where* the edits fall.
-    Generating the variants is O(n · L^MAX_DIST) in the (small, bounded)
-    term length ``L`` — i.e. O(n · k), never O(n²) across the corpus.
-
-    Pairs are emitted with the term order canonicalised (``a < b``) and
-    deduped, so the result is stable across runs.
-    """
-    if not unique_terms:
-        return []
-
-    # Edit-distance threshold: we keep pairs with 0 < d < 3, i.e. d ≤ 2.
-    MAX_DIST = 2
-
-    def _deletion_variants(word: str) -> set[str]:
-        """All strings reachable by deleting 0..MAX_DIST chars from ``word``."""
-        variants = {word}
-        frontier = {word}
-        for _ in range(MAX_DIST):
-            nxt: set[str] = set()
-            for w in frontier:
-                for i in range(len(w)):
-                    nxt.add(w[:i] + w[i + 1:])
-            variants |= nxt
-            frontier = nxt
-        return variants
-
-    # Index every (sufficiently long) term under each of its deletion
-    # variants. Terms that collide under a shared variant are the only
-    # candidates that can be within MAX_DIST edits of each other.
-    index: dict[str, list[str]] = {}
-    for term in unique_terms:
-        if len(term) < min_len:
-            continue
-        for variant in _deletion_variants(term):
-            index.setdefault(variant, []).append(term)
-
-    seen_pairs: set[tuple[str, str]] = set()
-    results: list[tuple[str, str, int]] = []
-    for candidates in index.values():
-        if len(candidates) < 2:
-            continue
-        for i, t1 in enumerate(candidates):
-            for t2 in candidates[i + 1:]:
-                if t1 == t2:
-                    continue
-                pair = (t1, t2) if t1 < t2 else (t2, t1)
-                if pair in seen_pairs:
-                    continue
-                seen_pairs.add(pair)
-                if abs(len(pair[0]) - len(pair[1])) > MAX_DIST:
-                    continue
-                dist = edit_distance(pair[0], pair[1])
-                if 0 < dist <= MAX_DIST:
-                    results.append((pair[0], pair[1], dist))
-    return results
-
-
 # ---------------------------------------------------------------------------
 # Issue #134 — canonical estleg:Concept nodes + quality / noise filter
 # ---------------------------------------------------------------------------
@@ -674,9 +581,9 @@ def _bucketed_close_match_pairs(
 # canonical ``estleg:Concept`` node per distinct *normalised* term; each
 # provision-local definition node points at it once via ``estleg:definesConcept``
 # (a hub link — O(k) total) plus a single ``skos:exactMatch`` to the canonical
-# node (the proper SKOS relation), and the fuzzy ``skos:closeMatch`` relation
-# now connects ``estleg:Concept`` nodes to each other rather than the
-# provision-local nodes.
+# node (the proper SKOS relation). The fuzzy ``skos:closeMatch`` relation that
+# used to connect Concept nodes by Levenshtein distance <= 2 was removed in
+# #699; orthographic variants are folded into ``skos:altLabel`` instead.
 
 # Maximum number of distinct ``skos:definition`` values emitted on a canonical
 # Concept node. When a term has more than this many *distinct* (normalised)
@@ -1249,6 +1156,135 @@ def fold_mojibake_concept_pairs(graph: list) -> int:
     return _fold_concept_id_pairs(graph, list(_MOJIBAKE_CONCEPT_FOLDS))
 
 
+# #699: separators that only change how a compound is written, not the word:
+# whitespace (incl. stray spaces from XML extraction such as "t öötasu"),
+# ASCII/Unicode hyphens and dashes, soft hyphen, underscore.
+_ORTHOGRAPHIC_SEPARATORS_RE = re.compile(r"[\s\-\u00ad\u2010-\u2015_]+")
+
+
+def orthographic_key(label: str) -> str:
+    """Spelling-insensitive key for one lemma's written variants (#699).
+
+    NFC + casefold; foreign letters š/ž folded to their Estonian
+    transliterations sh/zh; compound separators removed. Estonian õ/ä/ö/ü
+    are distinct letters, not diacritic variants, so they are kept: ``kasu``
+    and ``käsu`` never share a key.
+    """
+    key = unicodedata.normalize("NFC", label).casefold()
+    key = key.replace("š", "sh").replace("ž", "zh")
+    return _ORTHOGRAPHIC_SEPARATORS_RE.sub("", key)
+
+
+def _definition_count(node: dict) -> int:
+    raw = node.get("estleg:definitionCount")
+    if isinstance(raw, dict):
+        raw = raw.get("@value")
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _orthographic_keep_rank(node: dict) -> tuple:
+    """Prefer the best-attested, cleanest spelling as the surviving node."""
+    label = _pref_label_surface(node)
+    tokens = label.split()
+    stray = sum(1 for t in tokens if len(t) == 1 and t.isalpha())
+    return (
+        -_definition_count(node),
+        stray,
+        "-" in label,
+        label.casefold(),
+        node.get("@id", ""),
+    )
+
+
+def find_orthographic_variant_pairs(graph: list) -> list[tuple[str, str, str, str]]:
+    """Canonical Concepts whose prefLabels are spelling variants of one lemma.
+
+    Returns ``(keep_id, drop_id, keep_label, drop_label)`` sorted by label.
+    """
+    if not isinstance(graph, list):
+        return []
+    groups: dict[str, list[dict]] = {}
+    for node in graph:
+        if not isinstance(node, dict) or not _is_canonical_concept(node):
+            continue
+        pref = _pref_label_surface(node)
+        if not pref or not isinstance(node.get("@id"), str):
+            continue
+        key = orthographic_key(pref)
+        if key:
+            groups.setdefault(key, []).append(node)
+    pairs: list[tuple[str, str, str, str]] = []
+    for nodes in groups.values():
+        if len(nodes) < 2:
+            continue
+        ranked = sorted(nodes, key=_orthographic_keep_rank)
+        keep = ranked[0]
+        for drop in ranked[1:]:
+            pairs.append((
+                keep["@id"], drop["@id"],
+                _pref_label_surface(keep), _pref_label_surface(drop),
+            ))
+    pairs.sort(key=lambda row: (row[2].casefold(), row[3].casefold(), row[0], row[1]))
+    return pairs
+
+
+def _is_split_word_artefact(label: str) -> bool:
+    """XML-extraction artefact: a lone letter split off a word ("t öötasu")."""
+    tokens = label.split()
+    return len(tokens) > 1 and any(len(t) == 1 and t.isalpha() for t in tokens)
+
+
+def fold_orthographic_variants(graph: list) -> int:
+    """Fold spelling variants into one Concept with ``skos:altLabel`` (#699).
+
+    Genuine variants (``teenuse pakkuja`` / ``teenusepakkuja``, ``Wi-Fi`` /
+    ``WiFi``) become altLabels. Split-word extraction artefacts
+    (``t öötasu``) are folded but not kept as labels: they are not a
+    spelling anyone searches for.
+    """
+    pairs = find_orthographic_variant_pairs(graph)
+    folded = _fold_concept_id_pairs(graph, [(k, d) for k, d, _kl, _dl in pairs])
+    if not folded:
+        return 0
+    keep_ids = {k for k, _d, _kl, _dl in pairs}
+    for node in graph:
+        if not isinstance(node, dict) or node.get("@id") not in keep_ids:
+            continue
+        pref_key = orthographic_key(_pref_label_surface(node))
+        alts = [
+            lit for lit in _iter_literals(node.get("skos:altLabel"))
+            if not (
+                _is_split_word_artefact(lit["@value"])
+                and orthographic_key(lit["@value"]) == pref_key
+            )
+        ]
+        if alts:
+            node["skos:altLabel"] = alts
+        else:
+            node.pop("skos:altLabel", None)
+    return folded
+
+
+def strip_close_match(graph: list) -> int:
+    """Remove every ``skos:closeMatch`` arc (#699). Returns arcs removed.
+
+    The only producer was the Levenshtein <= 2 matcher, which asserted
+    near-equivalence between unrelated words; no closeMatch in this layer
+    has any other justification.
+    """
+    removed = 0
+    if not isinstance(graph, list):
+        return 0
+    for node in graph:
+        if isinstance(node, dict) and "skos:closeMatch" in node:
+            refs = node.pop("skos:closeMatch")
+            removed += len(refs) if isinstance(refs, list) else 1
+    return removed
+
+
 def _sync_total_concepts(graph: list) -> None:
     """Keep the dataset head's ``estleg:totalConcepts`` = LegalConcept count."""
     if not graph or not isinstance(graph[0], dict):
@@ -1267,11 +1303,17 @@ def _sync_total_concepts(graph: list) -> None:
 
 
 def scrub_concept_graph(graph: list) -> dict[str, int]:
-    """Apply #458 hygiene in place: kehtetu strip, plural fold, mojibake fold."""
+    """Apply concept hygiene in place.
+
+    #699 closeMatch strip, then #458 kehtetu strip / plural fold / mojibake
+    fold, then the #699 orthographic-variant fold.
+    """
     counts = {
+        "close_match_removed": strip_close_match(graph),
         "kehtetu_removed": strip_kehtetu_concepts(graph),
         "plurals_folded": fold_plural_concepts(graph),
         "mojibake_folded": fold_mojibake_concept_pairs(graph),
+        "orthographic_folded": fold_orthographic_variants(graph),
     }
     _sync_total_concepts(graph)
     return counts
@@ -1334,7 +1376,40 @@ def generate_schema_nodes(*, total_concepts: int) -> list[dict]:
     ]
 
 
-def main():
+def scrub_committed_concepts(path: Path | None = None) -> dict[str, int]:
+    """Re-apply :func:`scrub_concept_graph` to the committed concepts file.
+
+    The full extraction needs the Riigi Teataja XML; this offline mode keeps
+    the committed graph and only applies the hygiene passes (#699).
+    """
+    target = Path(path) if path is not None else CONCEPTS_DIR / "concepts_combined.jsonld"
+    doc = json.loads(target.read_text(encoding="utf-8"))
+    counts = scrub_concept_graph(doc.get("@graph", []))
+    if any(counts.values()):
+        save_json(target, doc)
+    return counts
+
+
+def main(argv: list[str] | None = None):
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Extract legal concepts.")
+    parser.add_argument(
+        "--scrub-committed",
+        action="store_true",
+        help=(
+            "Offline: apply the concept hygiene passes (#458/#699) to the "
+            "committed concepts_combined.jsonld and exit."
+        ),
+    )
+    # ``argv=None`` means "no CLI flags" (library / test callers); the
+    # ``__main__`` block passes ``sys.argv[1:]`` explicitly.
+    args = parser.parse_args([] if argv is None else argv)
+    if args.scrub_committed:
+        counts = scrub_committed_concepts()
+        print(f"Scrubbed concepts_combined.jsonld: {counts}")
+        return 0
+
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Legal Concepts")
     print("=" * 70)
@@ -1529,23 +1604,6 @@ def main():
 
     print(f"  Concept terms appearing in multiple laws: {len(exact_matches)}")
 
-    # Close matches (edit distance < 3) — now computed over the *Concept* term
-    # set only (far fewer comparisons; the result connects Concept nodes, not
-    # provision-local nodes). Sorted for deterministic graph ordering.
-    bucketed_pairs = _bucketed_close_match_pairs(concept_terms)
-    bucketed_pairs.sort()
-    close_matches: list[dict] = []
-    for t1, t2, dist in bucketed_pairs:
-        close_matches.append({
-            "term_a": _most_common([e["term"] for e in term_index[t1]]),
-            "term_b": _most_common([e["term"] for e in term_index[t2]]),
-            "term_a_lower": t1,
-            "term_b_lower": t2,
-            "distance": dist,
-        })
-
-    print(f"  Close matches (edit distance < 3): {len(close_matches)}")
-
     # Step 4: Generate JSON-LD output
     print("\n[4/5] Generating JSON-LD concept files...")
 
@@ -1698,25 +1756,6 @@ def main():
             if lc_id in kov_legal_concept_ids:
                 _triples_kov += 1
 
-    # ---- skos:closeMatch: Concept ↔ Concept (#134) ----
-    # The fuzzy near-match relation now connects canonical Concept nodes to
-    # each other (bidirectional), not the provision-local nodes.
-    for cm in close_matches:
-        id_a = concept_id_by_term.get(cm["term_a_lower"])
-        id_b = concept_id_by_term.get(cm["term_b_lower"])
-        if not id_a or not id_b or id_a == id_b:
-            continue
-        for src, dst in ((id_a, id_b), (id_b, id_a)):
-            node = graph_node_by_id.get(src)
-            if node is None:
-                continue
-            existing = node.get("skos:closeMatch", [])
-            if isinstance(existing, dict):
-                existing = [existing]
-            existing.append({"@id": dst})
-            node["skos:closeMatch"] = existing
-            _triples += 1
-
     # Every estleg:definesConcept / skos:exactMatch / skos:closeMatch target
     # MUST point at a node we actually emitted. Trim any straggler (defensive;
     # the construction above makes this a no-op, but it catches regressions).
@@ -1746,7 +1785,8 @@ def main():
         print(
             f"  #458 hygiene: removed {_hygiene['kehtetu_removed']} kehtetu "
             f"concept(s), folded {_hygiene['plurals_folded']} plural(s), "
-            f"{_hygiene['mojibake_folded']} mojibake pair(s)"
+            f"{_hygiene['mojibake_folded']} mojibake pair(s), "
+            f"{_hygiene['orthographic_folded']} orthographic variant(s)"
         )
 
     # Save combined concepts file
@@ -1786,7 +1826,7 @@ def main():
             "canonical_concepts": len(concept_terms),
             "concepts_filtered_noise": _concepts_filtered_noise,
             "terms_in_multiple_laws": len(exact_matches),
-            "close_match_pairs": len(close_matches),
+            "orthographic_variants_folded": _hygiene["orthographic_folded"],
         },
         "top_laws_by_definitions": [
             {"slug": slug, "count": count}
@@ -1817,14 +1857,6 @@ def main():
             }
             for em in sorted(exact_matches, key=lambda x: x["count"], reverse=True)
         ],
-        "close_matches": [
-            {
-                "term_a": cm["term_a"],
-                "term_b": cm["term_b"],
-                "edit_distance": cm["distance"],
-            }
-            for cm in close_matches[:100]  # Limit to top 100
-        ],
     }
 
     report_path = CONCEPTS_DIR / "concept_crossref_report.json"
@@ -1841,7 +1873,7 @@ def main():
     print(f"  Canonical concepts:         {len(concept_terms)}")
     print(f"  Filtered noise terms:       {_concepts_filtered_noise}")
     print(f"  Terms in multiple laws:     {len(exact_matches)}")
-    print(f"  Close-match pairs:          {len(close_matches)}")
+    print(f"  Orthographic folds:         {_hygiene['orthographic_folded']}")
     if laws_ranked:
         print("\n  Top 5 laws by definitions:")
         for slug, count in laws_ranked[:5]:
@@ -1907,4 +1939,6 @@ def main():
 
 
 if __name__ == "__main__":
-    raise SystemExit(main() or 0)
+    import sys
+
+    raise SystemExit(main(sys.argv[1:]) or 0)

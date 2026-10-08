@@ -138,9 +138,13 @@ def test_committed_2020_pin_has_rikos_url_and_chamber():
 def test_curia_schema_ecli_identifier_has_no_domain():
     graph = json.loads(CURIA_SCHEMA.read_text(encoding="utf-8"))["@graph"]
     node = next(n for n in graph if n.get("@id") == "estleg:ecliIdentifier")
-    assert "rdfs:domain" not in node
+    # An open domain: absent, or owl:Thing as the CV pins it (#702) so the
+    # shared CourtDecision / EUCourtDecision predicate types neither (#709
+    # projects the curia schema from the CV).
+    assert node.get("rdfs:domain", {"@id": "owl:Thing"}) == {"@id": "owl:Thing"}
     assert node["rdfs:range"]["@id"] == "xsd:string"
-    assert "ECLI" in node["rdfs:comment"]
+    comment = node["rdfs:comment"]
+    assert "ECLI" in (comment.get("@value", "") if isinstance(comment, dict) else comment)
 
 
 def test_extract_judges_from_modern_and_legacy_headers() -> None:

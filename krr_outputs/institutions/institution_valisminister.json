@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,16 +22,44 @@
       ],
       "rdfs:label": "välisminister",
       "estleg:institutionType": "minister",
+      "owl:sameAs": {
+        "@id": "http://www.wikidata.org/entity/Q1760777"
+      },
       "estleg:hasCompetence": [
+        {
+          "@id": "estleg:Institution_valisminister_competence_enforcement"
+        },
         {
           "@id": "estleg:Institution_valisminister_competence_general"
         },
         {
           "@id": "estleg:Institution_valisminister_competence_regulation"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Institution_valisminister_competence_enforcement",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Competence"
       ],
-      "owl:sameAs": {
-        "@id": "http://www.wikidata.org/entity/Q7330070"
+      "rdfs:label": "välisminister – enforcement",
+      "estleg:competenceType": "enforcement",
+      "estleg:institution": {
+        "@id": "estleg:Institution_valisminister"
+      },
+      "estleg:appliesToProvision": [
+        {
+          "@id": "estleg:Reg_336150_Par_10"
+        }
+      ],
+      "estleg:appliesToProvisionCount": {
+        "@value": "1",
+        "@type": "xsd:integer"
+      },
+      "estleg:competenceArea": "general_government",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_336150_Map"
       }
     },
     {
@@ -42,25 +75,19 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:RSKS_Par_8"
+          "@id": "estleg:KMS_Par_39"
         },
         {
-          "@id": "estleg:Reg_1054437_Par_4"
+          "@id": "estleg:KMS_Par_39_Lg_5"
         },
         {
-          "@id": "estleg:Reg_1061969_Par_28"
+          "@id": "estleg:Reg_1061969_Par_5"
         },
         {
-          "@id": "estleg:Reg_1052206_Par_1"
+          "@id": "estleg:Reg_1061969_Par_6"
         },
         {
           "@id": "estleg:Reg_1052206_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1052206_Par_9"
-        },
-        {
-          "@id": "estleg:Reg_1052206_Par_12"
         },
         {
           "@id": "estleg:Reg_1052206_Par_13"
@@ -72,119 +99,53 @@
           "@id": "estleg:Reg_1029857_Par_15"
         },
         {
-          "@id": "estleg:Reg_336152_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_1037879_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_1060035_Par_5"
-        },
-        {
           "@id": "estleg:Reg_1003072_Par_14"
         },
         {
           "@id": "estleg:Reg_1037590_Par_17"
         },
         {
+          "@id": "estleg:Reg_309718_Par_5"
+        },
+        {
           "@id": "estleg:Reg_309769_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1061968_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1060340_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_336150_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_336150_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_336150_Par_11"
         },
         {
           "@id": "estleg:Reg_1039676_Par_50"
         },
         {
-          "@id": "estleg:Reg_336149_Par_4"
+          "@id": "estleg:Reg_336149_Par_2"
         },
         {
-          "@id": "estleg:Reg_1009071_Par_8"
+          "@id": "estleg:Reg_336149_Par_3"
         },
         {
-          "@id": "estleg:Reg_1001932_Par_2"
+          "@id": "estleg:Reg_1001932_Par_1"
         },
         {
           "@id": "estleg:Reg_1029314_Par_25"
         },
         {
-          "@id": "estleg:Reg_336143_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1032038_Par_2"
-        },
-        {
           "@id": "estleg:Reg_1060652_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1060652_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1061943_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1056637_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1050403_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1050108_Par_2"
         },
         {
           "@id": "estleg:Reg_1039361_Par_5"
         },
         {
-          "@id": "estleg:Reg_308740_Par_17"
-        },
-        {
           "@id": "estleg:Reg_344417_Par_13"
-        },
-        {
-          "@id": "estleg:Reg_1038752_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1038752_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_157742_Par_12"
         },
         {
           "@id": "estleg:Reg_308968_Par_4"
         },
         {
-          "@id": "estleg:Reg_336142_Par_4"
-        },
-        {
           "@id": "estleg:Reg_1034955_Par_18"
-        },
-        {
-          "@id": "estleg:VABARI_Par_107_3"
-        },
-        {
-          "@id": "estleg:VALISMIN_Par_Valisteenistus_juhtimine"
-        },
-        {
-          "@id": "estleg:VALISS_Par_17"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "46",
+        "@value": "22",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "general_government",
+      "estleg:competenceArea": "tax",
       "estleg:grantedBy": {
         "@id": "estleg:Reg_1052206_Map"
       }

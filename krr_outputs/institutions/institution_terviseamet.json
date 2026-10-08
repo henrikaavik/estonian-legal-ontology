@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,6 +22,23 @@
       ],
       "rdfs:label": "Terviseamet",
       "estleg:institutionType": "agency",
+      "owl:sameAs": {
+        "@id": "http://www.wikidata.org/entity/Q25514675"
+      },
+      "estleg:registrikood": "70008799",
+      "estleg:xteeMemberCode": "EE/GOV/70008799",
+      "estleg:validFrom": {
+        "@value": "2010-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:predecessorInstitution": [
+        {
+          "@id": "estleg:Institution_tervisekaitseinspektsioon"
+        },
+        {
+          "@id": "estleg:Institution_tervishoiuamet"
+        }
+      ],
       "estleg:hasCompetence": [
         {
           "@id": "estleg:Institution_terviseamet_competence_enforcement"
@@ -25,15 +47,15 @@
           "@id": "estleg:Institution_terviseamet_competence_general"
         },
         {
+          "@id": "estleg:Institution_terviseamet_competence_licensing"
+        },
+        {
           "@id": "estleg:Institution_terviseamet_competence_regulation"
         },
         {
           "@id": "estleg:Institution_terviseamet_competence_supervision"
         }
-      ],
-      "owl:sameAs": {
-        "@id": "http://www.wikidata.org/entity/Q25514675"
-      }
+      ]
     },
     {
       "@id": "estleg:Institution_terviseamet_competence_enforcement",
@@ -48,88 +70,178 @@
       },
       "estleg:appliesToProvision": [
         {
+          "@id": "estleg:alusharidusseadus_Par_48"
+        },
+        {
+          "@id": "estleg:alusharidusseadus_Par_48_Lg_4"
+        },
+        {
           "@id": "estleg:ATMOSF_Par_218"
+        },
+        {
+          "@id": "estleg:ATMOSF_Par_218_Lg_1"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_43"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_43_Lg_1"
+        },
+        {
+          "@id": "estleg:EHS_Par_130"
+        },
+        {
+          "@id": "estleg:EHS_Par_130_Lg_11"
         },
         {
           "@id": "estleg:elundite_ja_kudede_siirdamise_seadus_Par_16"
         },
         {
-          "@id": "estleg:LTTS_Par_29_30"
+          "@id": "estleg:EraKS_Par_23"
+        },
+        {
+          "@id": "estleg:EraKS_Par_23_Lg_3"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_102"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_102_Lg_6"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_143"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_143_Lg_8"
         },
         {
           "@id": "estleg:MTS_Par_59_63"
         },
         {
+          "@id": "estleg:NETS_Par_41"
+        },
+        {
+          "@id": "estleg:NETS_Par_41_Lg_5"
+        },
+        {
+          "@id": "estleg:NETS_Par_44"
+        },
+        {
+          "@id": "estleg:NETS_Par_44_Lg_1"
+        },
+        {
           "@id": "estleg:NOORSO_Par_12"
+        },
+        {
+          "@id": "estleg:NOORSO_Par_12_Lg_1"
         },
         {
           "@id": "estleg:NOORSO_Par_13"
         },
         {
-          "@id": "estleg:POHIKO_Par_88"
+          "@id": "estleg:NOORSO_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:PsAS_Par_13"
+        },
+        {
+          "@id": "estleg:PsAS_Par_13_Lg_9"
+        },
+        {
+          "@id": "estleg:PsAS_Par_17"
+        },
+        {
+          "@id": "estleg:PsAS_Par_17_Lg_5"
         },
         {
           "@id": "estleg:PsAS_Par_19_1"
         },
         {
-          "@id": "estleg:Reg_1049625_Par_3"
+          "@id": "estleg:PsAS_Par_19_1_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1057781_Par_4"
+          "@id": "estleg:RTerS_Par_15"
         },
         {
-          "@id": "estleg:Reg_1017699_Par_19"
+          "@id": "estleg:rakkude_kudede_ja_elundite_kaitlemise_ja_siirdamis_Par_16"
+        },
+        {
+          "@id": "estleg:RavS_Par_56"
+        },
+        {
+          "@id": "estleg:RavS_Par_56_Lg_3"
+        },
+        {
+          "@id": "estleg:RavS_Par_56_Lg_3_1"
+        },
+        {
+          "@id": "estleg:RavS_Par_56_Lg_3_2"
+        },
+        {
+          "@id": "estleg:RavS_Par_58"
+        },
+        {
+          "@id": "estleg:RavS_Par_58_Lg_1_1"
+        },
+        {
+          "@id": "estleg:RavS_Par_100_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038691_Par_17"
+        },
+        {
+          "@id": "estleg:Reg_1038450_Par_17"
+        },
+        {
+          "@id": "estleg:Reg_1058092_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1038891_Par_17"
+        },
+        {
+          "@id": "estleg:Reg_1036772_Par_17"
+        },
+        {
+          "@id": "estleg:Reg_1037808_Par_17"
         },
         {
           "@id": "estleg:Reg_1042770_Par_36"
         },
         {
-          "@id": "estleg:Reg_1014435_Par_16"
-        },
-        {
           "@id": "estleg:Reg_1006368_Par_25"
         },
         {
-          "@id": "estleg:Reg_1046647_Par_16"
+          "@id": "estleg:Reg_1062065_Par_28"
         },
         {
-          "@id": "estleg:Reg_1020104_Par_15"
+          "@id": "estleg:Reg_1052474_Par_20"
         },
         {
-          "@id": "estleg:Reg_1044620_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1044622_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1044623_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1050367_Par_13"
-        },
-        {
-          "@id": "estleg:Reg_1024416_Par_15"
+          "@id": "estleg:Reg_1062691_Par_21"
         },
         {
           "@id": "estleg:Reg_1006586_Par_14"
         },
         {
-          "@id": "estleg:Reg_1033401_Par_2"
+          "@id": "estleg:Reg_1040410_Par_25"
         },
         {
-          "@id": "estleg:Reg_1061572_Par_43"
+          "@id": "estleg:Reg_1061730_Par_13"
         },
         {
-          "@id": "estleg:Reg_1061575_Par_43"
+          "@id": "estleg:Reg_1061731_Par_13"
         },
         {
-          "@id": "estleg:Reg_1043379_Par_10"
+          "@id": "estleg:Reg_1061732_Par_13"
         },
         {
-          "@id": "estleg:Reg_1052075_Par_4"
+          "@id": "estleg:Reg_1061693_Par_23"
         },
         {
-          "@id": "estleg:Reg_1044160_Par_15"
+          "@id": "estleg:Reg_1061692_Par_9"
+        },
+        {
+          "@id": "estleg:Reg_1061691_Par_9"
         },
         {
           "@id": "estleg:Reg_1025444_Par_2"
@@ -138,59 +250,98 @@
           "@id": "estleg:Reg_1054618_Par_4"
         },
         {
-          "@id": "estleg:Reg_1045361_Par_8"
+          "@id": "estleg:Reg_1047732_Par_3"
         },
         {
-          "@id": "estleg:Reg_1047813_Par_5"
+          "@id": "estleg:Reg_1045437_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1047813_Par_8"
         },
         {
           "@id": "estleg:Reg_1051996_Par_5"
         },
         {
-          "@id": "estleg:Reg_1052329_Par_16"
-        },
-        {
-          "@id": "estleg:REKLAA_Par_36"
-        },
-        {
           "@id": "estleg:SPT_Par_33"
+        },
+        {
+          "@id": "estleg:SPT_Par_33_Lg_1"
         },
         {
           "@id": "estleg:TTKS_Par_17_1"
         },
         {
-          "@id": "estleg:TTKS_Par_57"
+          "@id": "estleg:TTKS_Par_17_1_Lg_1"
         },
         {
-          "@id": "estleg:TTKS_Par_60"
+          "@id": "estleg:TTKS_Par_17_3"
+        },
+        {
+          "@id": "estleg:TTKS_Par_17_3_Lg_3"
+        },
+        {
+          "@id": "estleg:TTKS_Par_28"
+        },
+        {
+          "@id": "estleg:TTKS_Par_28_Lg_4"
+        },
+        {
+          "@id": "estleg:TTKS_Par_28_Lg_4_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_29"
+        },
+        {
+          "@id": "estleg:TTKS_Par_29_Lg_1_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_58_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_58_1_Lg_9"
         },
         {
           "@id": "estleg:TTOS_Par_20_1"
         },
         {
+          "@id": "estleg:TTOS_Par_20_1_Lg_1"
+        },
+        {
           "@id": "estleg:TTOS_Par_25"
         },
         {
-          "@id": "estleg:ULTS_Par_17"
+          "@id": "estleg:TTOS_Par_25_Lg_2"
         },
         {
           "@id": "estleg:VEE_Par_85_4"
         },
         {
+          "@id": "estleg:VEE_Par_85_4_Lg_1"
+        },
+        {
           "@id": "estleg:VEE_Par_92"
+        },
+        {
+          "@id": "estleg:VEE_Par_92_Lg_1"
         },
         {
           "@id": "estleg:VereS_Par_18"
         },
         {
+          "@id": "estleg:VereS_Par_18_Lg_1"
+        },
+        {
           "@id": "estleg:VereS_Par_20"
         },
         {
-          "@id": "estleg:veterinaarseadus_Par_62"
+          "@id": "estleg:VereS_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:VereS_Par_20_Lg_3"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "47",
+        "@value": "90",
         "@type": "xsd:integer"
       },
       "estleg:competenceArea": "health",
@@ -211,163 +362,383 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:ATMOSF_Par_49"
-        },
-        {
-          "@id": "estleg:ATMOSF_Par_250"
-        },
-        {
           "@id": "estleg:BIOTSI_Par_6"
         },
         {
-          "@id": "estleg:BIOTSI_Par_37"
-        },
-        {
-          "@id": "estleg:BIOTSI_Par_42"
-        },
-        {
-          "@id": "estleg:BIOTSI_Par_42_1"
+          "@id": "estleg:BIOTSI_Par_6_Lg_1"
         },
         {
           "@id": "estleg:BIOTSI_Par_42_2"
         },
         {
-          "@id": "estleg:BIOTSI_Par_49"
+          "@id": "estleg:BIOTSI_Par_42_2_Lg_7"
         },
         {
-          "@id": "estleg:ESS_Par_155_1"
+          "@id": "estleg:EHS_Par_127"
         },
         {
-          "@id": "estleg:EOS_Par_28_31"
-        },
-        {
-          "@id": "estleg:KVTVKKNHKR_Par_3"
-        },
-        {
-          "@id": "estleg:KEMIKA_Par_6"
-        },
-        {
-          "@id": "estleg:KEMIKA_Par_12"
+          "@id": "estleg:EHS_Par_127_Lg_2"
         },
         {
           "@id": "estleg:KEMIKA_Par_33"
         },
         {
-          "@id": "estleg:KESKKO_2_Par_14"
+          "@id": "estleg:KEMIKA_Par_33_Lg_1"
         },
         {
-          "@id": "estleg:KIIRGU_Par_30"
+          "@id": "estleg:KeVS_Par_9"
         },
         {
-          "@id": "estleg:KIIRGU_Par_44"
-        },
-        {
-          "@id": "estleg:KRIMIN_2_Par_205_3"
-        },
-        {
-          "@id": "estleg:LTTS_Par_40"
-        },
-        {
-          "@id": "estleg:MEDITS_Par_41_1"
+          "@id": "estleg:KeVS_Par_9_Lg_3"
         },
         {
           "@id": "estleg:MSOS_Par_26_1"
         },
         {
+          "@id": "estleg:MSOS_Par_26_1_Lg_6"
+        },
+        {
+          "@id": "estleg:Meret_seadus_Par_73"
+        },
+        {
+          "@id": "estleg:Meret_seadus_Par_73_Lg_4"
+        },
+        {
           "@id": "estleg:NETS_Par_18"
+        },
+        {
+          "@id": "estleg:NETS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:NETS_Par_18_Lg_2"
         },
         {
           "@id": "estleg:NETS_Par_19"
         },
         {
-          "@id": "estleg:NETS_Par_21"
+          "@id": "estleg:NETS_Par_19_Lg_6"
         },
         {
           "@id": "estleg:NETS_Par_28"
         },
         {
+          "@id": "estleg:NETS_Par_28_Lg_1"
+        },
+        {
           "@id": "estleg:NETS_Par_32"
+        },
+        {
+          "@id": "estleg:NETS_Par_32_Lg_3"
         },
         {
           "@id": "estleg:NETS_Par_34"
         },
         {
-          "@id": "estleg:NETS_Par_40"
+          "@id": "estleg:NETS_Par_34_Lg_1"
         },
         {
-          "@id": "estleg:NETS_Par_45_2"
+          "@id": "estleg:NETS_Par_45"
         },
         {
-          "@id": "estleg:NETS_Par_49"
+          "@id": "estleg:NETS_Par_45_Lg_3"
+        },
+        {
+          "@id": "estleg:Psteseadus_Par_9_1"
+        },
+        {
+          "@id": "estleg:Psteseadus_Par_9_1_Lg_2_1"
         },
         {
           "@id": "estleg:RTHS_Par_12"
         },
         {
-          "@id": "estleg:RTHS_Par_14"
+          "@id": "estleg:RTHS_Par_12_Lg_5"
         },
         {
-          "@id": "estleg:RTHS_Par_29"
+          "@id": "estleg:RavS_Par_58_Lg_3"
         },
         {
-          "@id": "estleg:RTHS_Par_38"
+          "@id": "estleg:RavS_Par_59"
         },
         {
-          "@id": "estleg:RKEHKS_Par_5"
-        },
-        {
-          "@id": "estleg:RKEHKS_Par_6"
-        },
-        {
-          "@id": "estleg:RKEHKS_Par_49"
-        },
-        {
-          "@id": "estleg:RavS_Par_16_4"
-        },
-        {
-          "@id": "estleg:RavS_Par_55"
-        },
-        {
-          "@id": "estleg:RavS_Par_56"
-        },
-        {
-          "@id": "estleg:RavS_Par_58"
-        },
-        {
-          "@id": "estleg:RavS_Par_59_1"
+          "@id": "estleg:RavS_Par_59_Lg_2"
         },
         {
           "@id": "estleg:RavS_Par_60_1"
         },
         {
+          "@id": "estleg:RavS_Par_60_1_Lg_1"
+        },
+        {
           "@id": "estleg:RavS_Par_60_2"
+        },
+        {
+          "@id": "estleg:RavS_Par_60_2_Lg_1"
         },
         {
           "@id": "estleg:RavS_Par_61"
         },
         {
+          "@id": "estleg:RavS_Par_61_Lg_1"
+        },
+        {
           "@id": "estleg:RavS_Par_61_1"
+        },
+        {
+          "@id": "estleg:RavS_Par_61_1_Lg_1"
         },
         {
           "@id": "estleg:RavS_Par_62_1"
         },
         {
-          "@id": "estleg:RavS_Par_99_4"
+          "@id": "estleg:RavS_Par_62_1_Lg_3"
         },
         {
-          "@id": "estleg:RavS_Par_112"
+          "@id": "estleg:Reg_1035940_Par_2"
         },
         {
-          "@id": "estleg:RavS_Par_114"
+          "@id": "estleg:Reg_1047732_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1047732_Par_13"
+        },
+        {
+          "@id": "estleg:Reg_1047732_Par_13_15"
+        },
+        {
+          "@id": "estleg:Reg_1050218_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1050218_Par_3"
+        },
+        {
+          "@id": "estleg:Reg_1050480_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1050480_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1045361_Par_3"
+        },
+        {
+          "@id": "estleg:Reg_1046526_Par_1_2"
+        },
+        {
+          "@id": "estleg:Reg_1046526_Par_4_6"
+        },
+        {
+          "@id": "estleg:Reg_1047813_Par_3"
+        },
+        {
+          "@id": "estleg:Reg_1060470_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_322057_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1061697_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1047812_Par_3"
+        },
+        {
+          "@id": "estleg:Reg_1047812_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1042440_Par_28"
+        },
+        {
+          "@id": "estleg:Reg_1054537_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1054537_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1045617_Par_4"
+        },
+        {
+          "@id": "estleg:Reg_1047604_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_158789_Par_3"
+        },
+        {
+          "@id": "estleg:TarbKS_Par_63"
+        },
+        {
+          "@id": "estleg:TarbKS_Par_63_Lg_1"
+        },
+        {
+          "@id": "estleg:TarbKS_Par_63_Lg_10"
+        },
+        {
+          "@id": "estleg:TTKS_Par_29_Lg_3"
+        },
+        {
+          "@id": "estleg:TTKS_Par_30"
+        },
+        {
+          "@id": "estleg:TTKS_Par_30_Lg_1_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_31_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_31_1_Lg_4"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32_Lg_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32_1_Lg_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32_1_Lg_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_32_2_Lg_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_37"
+        },
+        {
+          "@id": "estleg:TTKS_Par_37_Lg_4"
+        },
+        {
+          "@id": "estleg:TTKS_Par_37_Lg_6"
+        },
+        {
+          "@id": "estleg:TTKS_Par_41"
+        },
+        {
+          "@id": "estleg:TTKS_Par_41_Lg_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_48_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_48_1_Lg_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_54_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_54_2_Lg_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_54_2_Lg_5_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_57_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_57_2_Lg_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_57_6"
+        },
+        {
+          "@id": "estleg:TTKS_Par_57_6_Lg_6"
+        },
+        {
+          "@id": "estleg:TTKS_Par_59"
+        },
+        {
+          "@id": "estleg:TTKS_Par_59_Lg_2"
+        },
+        {
+          "@id": "estleg:TTKS_Par_59_Lg_5"
+        },
+        {
+          "@id": "estleg:TTKS_Par_59_Lg_6"
+        },
+        {
+          "@id": "estleg:TTKS_Par_66_9"
+        },
+        {
+          "@id": "estleg:TTKS_Par_66_9_Lg_1"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_7_1"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_7_1_Lg_1"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_Lg_9"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_Lg_10"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_1"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_1_Lg_2"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_2"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_10_2_Lg_5"
+        },
+        {
+          "@id": "estleg:VEE_Par_192"
+        },
+        {
+          "@id": "estleg:VEE_Par_192_Lg_3"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "204",
+        "@value": "114",
         "@type": "xsd:integer"
       },
       "estleg:competenceArea": "health",
       "estleg:grantedBy": {
         "@id": "estleg:TTKS_Map"
+      }
+    },
+    {
+      "@id": "estleg:Institution_terviseamet_competence_licensing",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Competence"
+      ],
+      "rdfs:label": "Terviseamet – licensing",
+      "estleg:competenceType": "licensing",
+      "estleg:institution": {
+        "@id": "estleg:Institution_terviseamet"
+      },
+      "estleg:appliesToProvision": [
+        {
+          "@id": "estleg:Reg_322057_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_322057_Par_8"
+        }
+      ],
+      "estleg:appliesToProvisionCount": {
+        "@value": "2",
+        "@type": "xsd:integer"
+      },
+      "estleg:competenceArea": "health",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_322057_Map"
       }
     },
     {
@@ -383,44 +754,32 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:ATMOSF_Par_51"
+          "@id": "estleg:NETS_Par_27"
         },
         {
-          "@id": "estleg:KeVS_Par_9"
+          "@id": "estleg:NETS_Par_27_Lg_3"
         },
         {
-          "@id": "estleg:PsAS_Par_14_4"
+          "@id": "estleg:Reg_1057426_Par_3"
         },
         {
-          "@id": "estleg:RavS_Par_57"
+          "@id": "estleg:Reg_1060347_Par_6"
+        },
+        {
+          "@id": "estleg:Reg_1060347_Par_9"
+        },
+        {
+          "@id": "estleg:Reg_1047813_Par_7"
         },
         {
           "@id": "estleg:Reg_1059782_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_158789_Par_1"
-        },
-        {
-          "@id": "estleg:TTKS_Par_17"
-        },
-        {
-          "@id": "estleg:TTKS_Par_28"
-        },
-        {
-          "@id": "estleg:TTKS_Par_59"
-        },
-        {
-          "@id": "estleg:VEE_Par_85_2"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "10",
+        "@value": "7",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "health",
-      "estleg:grantedBy": {
-        "@id": "estleg:TTKS_Map"
-      }
+      "estleg:competenceArea": "health"
     },
     {
       "@id": "estleg:Institution_terviseamet_competence_supervision",
@@ -435,128 +794,47 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:BIOTSI_Par_43"
+          "@id": "estleg:MSOS_Par_76"
         },
         {
-          "@id": "estleg:BIOTSI_Par_43_2"
-        },
-        {
-          "@id": "estleg:BIOTSI_Par_48"
-        },
-        {
-          "@id": "estleg:EHS_Par_141"
-        },
-        {
-          "@id": "estleg:KaubTS_Par_21"
-        },
-        {
-          "@id": "estleg:KEMIKA_Par_40"
-        },
-        {
-          "@id": "estleg:KEMIKA_Par_50"
-        },
-        {
-          "@id": "estleg:LIIKLU_2_Par_116"
-        },
-        {
-          "@id": "estleg:LTTS_Par_42_47"
-        },
-        {
-          "@id": "estleg:MEDITS_Par_33"
-        },
-        {
-          "@id": "estleg:NETS_Par_44"
-        },
-        {
-          "@id": "estleg:RTerS_Par_15"
-        },
-        {
-          "@id": "estleg:RTerS_Par_17"
-        },
-        {
-          "@id": "estleg:RTHS_Par_32"
+          "@id": "estleg:MSOS_Par_76_Lg_1_2"
         },
         {
           "@id": "estleg:RKEHKS_Par_42"
         },
         {
-          "@id": "estleg:rakkude_kudede_ja_elundite_kaitlemise_ja_siirdamis_Par_16"
+          "@id": "estleg:RKEHKS_Par_42_Lg_3"
         },
         {
           "@id": "estleg:RavS_Par_100"
         },
         {
-          "@id": "estleg:Reg_1049783_Par_24"
-        },
-        {
-          "@id": "estleg:Reg_1050655_Par_46"
-        },
-        {
-          "@id": "estleg:Reg_1043591_Par_18"
-        },
-        {
-          "@id": "estleg:Reg_1052474_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1040410_Par_25"
+          "@id": "estleg:RavS_Par_100_Lg_2"
         },
         {
           "@id": "estleg:Reg_1050218_Par_4"
         },
         {
-          "@id": "estleg:Reg_1025377_Par_11"
-        },
-        {
-          "@id": "estleg:Reg_346170_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1041143_Par_11"
-        },
-        {
           "@id": "estleg:Reg_322057_Par_6"
         },
         {
-          "@id": "estleg:Reg_1036829_Par_22"
+          "@id": "estleg:TTKS_Par_60"
         },
         {
-          "@id": "estleg:Reg_1055664_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1036172_Par_29"
-        },
-        {
-          "@id": "estleg:SOTSIA_Par_157"
-        },
-        {
-          "@id": "estleg:TarbKS_Par_62"
-        },
-        {
-          "@id": "estleg:TarbKS_Par_63"
-        },
-        {
-          "@id": "estleg:TarbKS_Par_75"
-        },
-        {
-          "@id": "estleg:TTKS_Par_61"
+          "@id": "estleg:TTKS_Par_60_Lg_1"
         },
         {
           "@id": "estleg:TNV_Par_50"
         },
         {
-          "@id": "estleg:TNV_Par_62"
-        },
-        {
-          "@id": "estleg:UHISVE_Par_66"
+          "@id": "estleg:TNV_Par_50_Lg_3"
         },
         {
           "@id": "estleg:VKS_Par_135"
-        },
-        {
-          "@id": "estleg:VEE_Par_250"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "40",
+        "@value": "13",
         "@type": "xsd:integer"
       },
       "estleg:competenceArea": "health"

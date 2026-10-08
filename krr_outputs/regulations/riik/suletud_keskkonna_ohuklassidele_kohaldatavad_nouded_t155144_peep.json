@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -40,12 +41,26 @@
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
-      "estleg:competentAuthority": [
+      "dcterms:subject": [
         {
-          "@id": "estleg:Institution_sotsiaalminister"
+          "@id": "http://eurovoc.europa.eu/557"
         },
         {
-          "@id": "estleg:Institution_tooinspektsioon"
+          "@id": "http://eurovoc.europa.eu/2825"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/557"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2825"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
         }
       ]
     },
@@ -91,26 +106,9 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_sotsiaalminister"
-        },
-        {
-          "@id": "estleg:Institution_tooinspektsioon"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -118,6 +116,14 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_155144_Par_2_v155144"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        },
+        {
+          "@id": "estleg:Institution_sotsiaalminister"
         }
       ]
     }

@@ -39,19 +39,105 @@ JUNK_TERMS = frozenset(
     }
 )
 
-# #438: module Section individuals must answer LegalProvision queries.
-# LegalPart stays distinct from multipart-file Part (#566).
+# #438 / #709: estleg:Section is the paragrahv (§) class -- every one of its
+# 601 instances (the two OWL modules and the TsÜS / VÕS osa peeps) is a § node
+# that also carries estleg:LegalProvision explicitly. Section ⊑ LegalProvision
+# is therefore true, mirrors Subsection ⊑ LegalProvision, and entails no type a
+# node lacks. LegalPart stays distinct from multipart-file Part (#566).
 CLASS_ALIGNMENT_AXIOMS: dict[str, dict[str, Any]] = {
     "estleg:Section": {"rdfs:subClassOf": {"@id": "estleg:LegalProvision"}},
 }
 
+# Superclasses added to a class on top of whatever it already declares (#709).
+# Additive and idempotent: an existing subClassOf value is kept.
+EXTRA_SUPERCLASSES: dict[str, tuple[str, ...]] = {
+    # SKOS-typed controlled-value families (mirrors TargetGroup / TemporalStatus).
+    "estleg:NormativeType": ("skos:Concept",),
+    "estleg:CaseType": ("skos:Concept",),
+    "estleg:DecisionType": ("skos:Concept",),
+    "estleg:DraftType": ("skos:Concept",),
+    "estleg:ReferenceType": ("skos:Concept",),
+    "estleg:EUDocumentType": ("skos:Concept",),
+    "estleg:EUCourtDecisionType": ("skos:Concept",),
+    "estleg:LegislativePhase": ("skos:Concept",),
+    "estleg:InstitutionType": ("skos:Concept",),
+    # Concept layers whose A-Box nodes are already dual-typed skos:Concept.
+    "estleg:Concept": ("skos:Concept",),
+    "estleg:LegalConcept": ("skos:Concept",),
+    "estleg:TopicCluster": ("skos:Concept",),
+    "estleg:GeneralPartConcept": ("skos:Concept",),
+    # W3C Organization Ontology. No CPOV cpov:PublicOrganisation: the class also
+    # holds minister offices (#457), which are posts, not organisations.
+    "estleg:Institution": ("org:Organization",),
+}
+
+# Superproperties added on top of whatever a property already declares.
+# #708: the containment edges the combined build copies onto eli:is_part_of
+# (fix_all_issues._ELI_PROPERTY_ALIGNMENTS); the T-Box states the entailment.
+# Extra axioms stamped verbatim on a CV node (#718).
+EXTRA_AXIOMS: dict[str, dict[str, Any]] = {
+    "estleg:predecessorInstitution": {"owl:inverseOf": {"@id": "estleg:successorInstitution"}},
+    "estleg:successorInstitution": {"owl:inverseOf": {"@id": "estleg:predecessorInstitution"}},
+}
+
+EXTRA_SUPERPROPERTIES: dict[str, tuple[str, ...]] = {
+    "estleg:partOfAct": ("eli:is_part_of",),
+    "estleg:isPartOf": ("eli:is_part_of",),
+    "estleg:parentProvision": ("eli:is_part_of",),
+}
+
+
+# Prefixes the CV uses in axioms but did not declare (#709): without them
+# dcat:Distribution expanded as a relative IRI.
+REQUIRED_PREFIXES: dict[str, str] = {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "org": "http://www.w3.org/ns/org#",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "schema": "https://schema.org/",
+}
+
+
+# rdf: is the one namespace the CV must not declare: the #392 gate keeps the
+# "rdf" context line out of every shipped JSON-LD file. Its few CV uses
+# (rdf:Statement in the referenceType domain) are written as full IRIs, which
+# is what the undeclared CURIE failed to expand to (#709).
+RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
+
+def expand_rdf_curies(value: Any) -> Any:
+    """Rewrite every ``{"@id": "rdf:X"}`` inside ``value`` to the full IRI."""
+    if isinstance(value, list):
+        return [expand_rdf_curies(item) for item in value]
+    if isinstance(value, dict):
+        out = {key: expand_rdf_curies(item) for key, item in value.items()}
+        ref = out.get("@id")
+        if isinstance(ref, str) and ref.startswith("rdf:"):
+            out["@id"] = RDF_NS + ref[len("rdf:"):]
+        return out
+    return value
+
+
+def _add_super(node: dict, key: str, iri: str) -> None:
+    current = as_list(node.get(key))
+    if any(isinstance(item, dict) and item.get("@id") == iri for item in current):
+        return
+    current.append({"@id": iri})
+    node[key] = current[0] if len(current) == 1 else current
+
 
 def apply_class_alignment(node: dict) -> None:
-    """Stamp Section⊑LegalProvision on a CV class node."""
+    """Stamp Section⊑LegalProvision and the #708/#709 super-axioms on a CV node."""
     nid = node.get("@id")
-    extra = CLASS_ALIGNMENT_AXIOMS.get(nid) if isinstance(nid, str) else None
+    if not isinstance(nid, str):
+        return
+    extra = CLASS_ALIGNMENT_AXIOMS.get(nid)
     if extra:
         node.update(extra)
+    node.update(copy.deepcopy(EXTRA_AXIOMS.get(nid, {})))
+    for iri in EXTRA_SUPERCLASSES.get(nid, ()):
+        _add_super(node, "rdfs:subClassOf", iri)
+    for iri in EXTRA_SUPERPROPERTIES.get(nid, ()):
+        _add_super(node, "rdfs:subPropertyOf", iri)
 
 
 # #377: these three mint types under SHACL inference=rdfs if axiomatised.
@@ -169,11 +255,56 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
         "kattelipu seisuga kuupäev",
         "coverage flag as-of date",
     ),
+    # #718 institution identity, lineage and mentions.
+    "estleg:registrikood": (("owl:DatatypeProperty",), "registrikood", "registry code"),
+    "estleg:xteeMemberCode": (("owl:DatatypeProperty",), "X-tee liikmekood", "X-tee member code"),
+    "estleg:validFrom": (("owl:DatatypeProperty",), "kehtib alates", "valid from"),
+    "estleg:validTo": (("owl:DatatypeProperty",), "kehtib kuni", "valid to"),
+    "estleg:predecessorInstitution": (("owl:ObjectProperty",), "eelkäija asutus", "predecessor institution"),
+    "estleg:successorInstitution": (("owl:ObjectProperty",), "järglasasutus", "successor institution"),
+    "estleg:mentionsInstitution": (("owl:ObjectProperty",), "mainib asutust", "mentions institution"),
+    # #719 annotation provenance and #699 EuroVoc subject provenance.
+    "estleg:isExcerpt": (("owl:DatatypeProperty",), "katkend", "is excerpt"),
+    "estleg:sourceTextLength": (("owl:DatatypeProperty",), "allikateksti pikkus", "source text length"),
+    "estleg:editorialNote": (("owl:DatatypeProperty",), "toimetuse märkus", "editorial note"),
+    "estleg:editorialSource": (("owl:DatatypeProperty",), "toimetuse märkuse autor", "editorial source"),
+    "estleg:subjectSource": (("owl:DatatypeProperty",), "teema allikas", "subject source"),
+    # #712: KOV layer-1 enrichment (enrich_kov_layer1.py).
+    "estleg:enactedByHistoricalMunicipality": (
+        ("owl:ObjectProperty",),
+        "kehtestanud endine omavalitsus",
+        "enacted by historical municipality",
+    ),
+    "estleg:historicalMunicipality": (
+        ("owl:ObjectProperty",),
+        "endine omavalitsus",
+        "historical municipality",
+    ),
+    "estleg:countyCode": (
+        ("owl:DatatypeProperty",),
+        "maakonna EHAK-kood",
+        "county EHAK code",
+    ),
+    # #712: KOV enabling-provision staleness (derive_kov_enabling_staleness.py).
+    "estleg:enablingProvisionOutdated": (
+        ("owl:DatatypeProperty",),
+        "volitusnorm muutunud",
+        "enabling provision outdated",
+    ),
 }
 
 # Terms kept declared so old queries still parse, but marked owl:deprecated
 # with dcterms:isReplacedBy. Value: (replacement, comment that overwrites).
 DEPRECATED_TERMS: dict[str, tuple[str, str]] = {
+    "estleg:targetGroupConcept": (
+        "estleg:targetGroup",
+        "Deprecated (issue #709): a partial duplicate of estleg:targetGroup, "
+        "materialised by #609 when targetGroup still carried enum strings. "
+        "Since #460 estleg:targetGroup itself holds the estleg:TargetGroup_* "
+        "IRIs and is an owl:ObjectProperty with range estleg:TargetGroup; query "
+        "that instead. Retained so old queries parse; no longer emitted, and "
+        "scripts/retire_target_group_concept.py removes existing edges.",
+    ),
     "estleg:hasNoTransposition": (
         "estleg:noTranspositionEdgeInCorpus",
         "Deprecated (issue #701): the name read as a legal finding but the flag "
@@ -190,6 +321,99 @@ DEPRECATED_TERMS: dict[str, tuple[str, str]] = {
     ),
 }
 
+# One skos:ConceptScheme per controlled-value family (#709). Every
+# owl:NamedIndividual typed with the class gets skos:Concept, skos:inScheme and
+# skos:topConceptOf; the scheme lists them as skos:hasTopConcept.
+# Value: (scheme @id, Estonian label, English label).
+SKOS_SCHEMES: dict[str, tuple[str, str, str]] = {
+    "estleg:NormativeType": (
+        "estleg:NormativeTypeScheme", "Normatiivsete liikide skeem", "Normative type scheme",
+    ),
+    "estleg:CaseType": ("estleg:CaseTypeScheme", "Kohtuasja liikide skeem", "Case type scheme"),
+    "estleg:DecisionType": (
+        "estleg:DecisionTypeScheme", "Kohtulahendi liikide skeem", "Decision type scheme",
+    ),
+    "estleg:DraftType": ("estleg:DraftTypeScheme", "Eelnõu liikide skeem", "Draft type scheme"),
+    "estleg:ReferenceType": (
+        "estleg:ReferenceTypeScheme", "Viite liikide skeem", "Reference type scheme",
+    ),
+    "estleg:EUDocumentType": (
+        "estleg:EUDocumentTypeScheme", "EL-i dokumendiliikide skeem", "EU document type scheme",
+    ),
+    "estleg:EUCourtDecisionType": (
+        "estleg:EUCourtDecisionTypeScheme",
+        "EL-i kohtulahendi liikide skeem",
+        "EU court decision type scheme",
+    ),
+    "estleg:LegislativePhase": (
+        "estleg:LegislativePhaseScheme",
+        "Menetlusetappide skeem",
+        "Legislative phase scheme",
+    ),
+    "estleg:InstitutionType": (
+        "estleg:InstitutionTypeScheme",
+        "Institutsiooni liikide skeem",
+        "Institution type scheme",
+    ),
+}
+
+# The SKOS value set behind the estleg:institutionType string tokens (#709).
+# The ABox keeps the xsd:string token (the #522 temporalStatus precedent); each
+# individual carries the token as skos:notation. Tokens match the sh:in list of
+# InstitutionShape. Value: (individual @id, Estonian label, English label).
+INSTITUTION_TYPES: dict[str, tuple[str, str, str]] = {
+    "ministry": ("estleg:InstitutionType_Ministry", "ministeerium", "ministry"),
+    "minister": ("estleg:InstitutionType_Minister", "minister", "minister"),
+    "agency": ("estleg:InstitutionType_Agency", "amet või asutus", "agency"),
+    "court": ("estleg:InstitutionType_Court", "kohus", "court"),
+    "local_government": (
+        "estleg:InstitutionType_LocalGovernment", "kohalik omavalitsus", "local government",
+    ),
+    "parliament": ("estleg:InstitutionType_Parliament", "parlament", "parliament"),
+    "head_of_state": ("estleg:InstitutionType_HeadOfState", "riigipea", "head of state"),
+    "government": ("estleg:InstitutionType_Government", "valitsus", "government"),
+}
+INSTITUTION_TYPE_CLASS = "estleg:InstitutionType"
+
+# Labels the corpus usage contradicts (#709). One class per Estonian structural
+# level, with the Riigi Teataja English-translation terms: osa = Part,
+# peatükk = Chapter, jagu = Division, jaotis = Subdivision, paragrahv (§) =
+# Section, lõige = subsection, punkt = clause.
+OVERWRITE_LABEL: dict[str, list[dict[str, str]]] = {
+    "estleg:Section": [
+        {"@value": "Paragrahv", "@language": "et"},
+        {"@value": "Section (§)", "@language": "en"},
+    ],
+    "estleg:Subdivision": [
+        {"@value": "Jaotis", "@language": "et"},
+        {"@value": "Subdivision", "@language": "en"},
+    ],
+    "estleg:LegalPart": [
+        {"@value": "Osa (struktuuriüksus)", "@language": "et"},
+        {"@value": "Part (structural unit)", "@language": "en"},
+    ],
+    "estleg:Part": [
+        {"@value": "Osa (mitmeosalise akti juur)", "@language": "et"},
+        {"@value": "Part (multipart act root)", "@language": "en"},
+    ],
+}
+
+# The Publications Office corporate-body authority cache (#709).
+EU_CORPORATE_BODY_PATH = REPO_ROOT / "data" / "eu_corporate_body_authority.json"
+
+
+def load_eu_corporate_bodies(path: Path = EU_CORPORATE_BODY_PATH) -> dict[str, str]:
+    """EUInstitution @id -> authority IRI, for codes found in the authority table."""
+    if not path.is_file():
+        return {}
+    doc = load_jsonld(path)
+    return {
+        row["individual"]: row["authorityIri"]
+        for row in doc.get("institutions", [])
+        if row.get("inAuthorityTable") and row.get("authorityIri")
+    }
+
+
 # Fallback placeholders: individuals an old closure pass materialised in the CV
 # so a dangling reference would resolve. Once a real instance file declares the
 # same @id, the CV copy is a cross-file duplicate (validate_all) that shadows the
@@ -201,19 +425,18 @@ INSTANCE_DATA_SUBDIRS = ("institutions",)
 
 # Real comments replacing the "Reusable … materialized" placeholders.
 REAL_COMMENTS: dict[str, str] = {
+    "estleg:InstitutionType": (
+        "Closed SKOS value set behind the estleg:institutionType string tokens "
+        "(#709). Members live in estleg:InstitutionTypeScheme and carry the "
+        "token as skos:notation."
+    ),
     "estleg:Annex": (
         "An annex (lisa) attached to an act. Structural sibling of Chapter / "
         "Division, not a LegalProvision."
     ),
-    "estleg:Chapter": (
-        "A chapter (peatükk) grouping provisions inside an act."
-    ),
     "estleg:Competence": (
         "An institutional competence assertion: an institution is competent "
         "for a provision or subject area."
-    ),
-    "estleg:Division": (
-        "A division (jagu / jaotis) grouping provisions inside a chapter."
     ),
     "estleg:Institution": (
         "A public institution that issues, enforces, or is competent for law. "
@@ -225,9 +448,6 @@ REAL_COMMENTS: dict[str, str] = {
     ),
     "estleg:Sanction": (
         "A sanction or penalty attached to a provision or lõige."
-    ),
-    "estleg:Subdivision": (
-        "A finer subdivision (alljaotis) under a Division."
     ),
     "estleg:UnresolvedReferencePlaceholder": (
         "Placeholder individual for a cited provision IRI that is not in the "
@@ -484,6 +704,22 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:noTranspositionEdgeInCorpus": ("owl:Thing", "xsd:boolean"),
     "estleg:coverageFlagMethod": ("owl:Thing", "xsd:string"),
     "estleg:coverageFlagAsOf": ("owl:Thing", "xsd:date"),
+    "estleg:enablingProvisionOutdated": ("owl:Thing", "xsd:boolean"),
+    "estleg:enactedByHistoricalMunicipality": ("owl:Thing", "estleg:HistoricalMunicipality"),
+    "estleg:historicalMunicipality": ("owl:Thing", "estleg:HistoricalMunicipality"),
+    "estleg:countyCode": ("owl:Thing", "xsd:string"),
+    "estleg:registrikood": ("owl:Thing", "xsd:string"),
+    "estleg:xteeMemberCode": ("owl:Thing", "xsd:string"),
+    "estleg:validFrom": ("owl:Thing", "xsd:date"),
+    "estleg:validTo": ("owl:Thing", "xsd:date"),
+    "estleg:predecessorInstitution": ("owl:Thing", "estleg:Institution"),
+    "estleg:successorInstitution": ("owl:Thing", "estleg:Institution"),
+    "estleg:mentionsInstitution": ("owl:Thing", "rdfs:Resource"),
+    "estleg:isExcerpt": ("owl:Thing", "xsd:boolean"),
+    "estleg:sourceTextLength": ("owl:Thing", "xsd:integer"),
+    "estleg:editorialNote": ("owl:Thing", "xsd:string"),
+    "estleg:editorialSource": ("owl:Thing", "xsd:string"),
+    "estleg:subjectSource": ("owl:Thing", "xsd:string"),
     "estleg:inboundCitationCount": ("owl:Thing", "xsd:integer"),
     "estleg:interpretationCount": ("owl:Thing", "xsd:integer"),
     "estleg:similarFrom": ("estleg:Similarity", "rdfs:Resource"),
@@ -559,7 +795,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:summary": ("owl:Thing", "xsd:string"),
     "estleg:temporalStatus": ("estleg:Act", "xsd:string"),
     "estleg:consistencyChecked": ("owl:Thing", "xsd:boolean"),
-    "estleg:targetGroup": ("owl:Thing", "xsd:string"),
+    "estleg:targetGroup": ("owl:Thing", "estleg:TargetGroup"),
     "estleg:terviktekstId": ("owl:Thing", "xsd:string"),
     "estleg:totalAmendments": ("owl:Thing", "xsd:integer"),
     "estleg:totalConcepts": ("owl:Thing", "xsd:integer"),
@@ -636,7 +872,7 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:removed": ("estleg:ReleaseDelta", "xsd:string"),
     "estleg:addedCount": ("estleg:ReleaseDelta", "xsd:integer"),
     "estleg:removedCount": ("estleg:ReleaseDelta", "xsd:integer"),
-    "estleg:containsPersonalData": ("dcat:Distribution", "xsd:boolean"),
+    "estleg:containsPersonalData": ("owl:Thing", "xsd:boolean"),
     "estleg:legislativePhase": (
         "estleg:DraftLegislation",
         "estleg:LegislativePhase",
@@ -747,8 +983,37 @@ OVERWRITE_DOMAIN: dict[str, str] = {
     "estleg:itemNumber": "owl:Thing",
     "estleg:provisionRef": "owl:Thing",
     "estleg:resultedInVersion": "owl:Thing",
+    # Shared by the court-interpretation and KOV enabling-provision staleness
+    # derivers: a CourtDecision domain types every flagged municipal act as a
+    # court decision under RDFS inference (#709).
+    "estleg:earliestSupersedingDate": "owl:Thing",
+    "estleg:enablingProvisionOutdated": "owl:Thing",
+    # #712: KOV layer-1 terms; the measured subject class is in DOMAIN_INCLUDES.
+    "estleg:enactedByHistoricalMunicipality": "owl:Thing",
+    "estleg:historicalMunicipality": "owl:Thing",
+    "estleg:countyCode": "owl:Thing",
+    # #719 / #699: one measured subject class each, in DOMAIN_INCLUDES.
+    "estleg:registrikood": "owl:Thing",
+    "estleg:xteeMemberCode": "owl:Thing",
+    "estleg:validFrom": "owl:Thing",
+    "estleg:validTo": "owl:Thing",
+    "estleg:predecessorInstitution": "owl:Thing",
+    "estleg:successorInstitution": "owl:Thing",
+    "estleg:mentionsInstitution": "owl:Thing",
+    # #720: also stamped on the in-band Dataset heads of the combined
+    # aggregates; a dcat:Distribution domain would type them as distributions.
+    "estleg:containsPersonalData": "owl:Thing",
+    "estleg:isExcerpt": "owl:Thing",
+    "estleg:sourceTextLength": "owl:Thing",
+    "estleg:editorialNote": "owl:Thing",
+    "estleg:editorialSource": "owl:Thing",
+    "estleg:subjectSource": "owl:Thing",
 }
 OVERWRITE_RANGE: dict[str, str] = {
+    # #718: Institution_* or KOV Issuer_* objects; neither may be entailed.
+    "estleg:mentionsInstitution": "rdfs:Resource",
+    # #709: every one of the 120,421 law-peep objects is a TargetGroup_* IRI.
+    "estleg:targetGroup": "estleg:TargetGroup",
     "estleg:amendsLaw": "rdfs:Resource",
     "estleg:interpretedBy": "rdfs:Resource",
     "estleg:amendedBy": "rdfs:Resource",
@@ -789,6 +1054,152 @@ OVERWRITE_RANGE: dict[str, str] = {
 # Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
 # so like DOMAIN_RANGE it never reaches a term whose comment is already there.
 OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
+    # The eelnoud generator's text (#443); the CV copy predated it, so a
+    # projection of the eelnoud schema from the CV dropped the ELI-DL note.
+    "estleg:DraftLegislation": (
+        "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus "
+        "menetluses. ELI-DL v3: rdfs:subClassOf eli-dl:DraftLegislationWork (#443)."
+    ),
+    # #709: one class per Estonian structural level, labels and comments agreeing.
+    "estleg:Part": (
+        "The root node of one osa (part) of a multipart act that ships as one "
+        "file per osa (#566), e.g. the TsÜS / VÕS osa peeps. It repeats the "
+        "act's metadata. The osa as a structural unit inside an act's hierarchy "
+        "is estleg:LegalPart."
+    ),
+    "estleg:LegalPart": (
+        "An osa (part) as a structural unit of an act's hierarchy, above "
+        "estleg:Chapter (peatükk), e.g. \"2. osa – ERIOSA\" of the KarS special "
+        "part module. Distinct from estleg:Part, the per-file root of a "
+        "multipart act (#566)."
+    ),
+    "estleg:Chapter": (
+        "A peatükk (chapter) grouping provisions inside an act or an osa "
+        "(estleg:LegalPart)."
+    ),
+    "estleg:Division": (
+        "A jagu (division) grouping provisions inside a peatükk "
+        "(estleg:Chapter). The next level down is jaotis (estleg:Subdivision)."
+    ),
+    "estleg:Subdivision": (
+        "A jaotis (subdivision) grouping provisions inside a jagu "
+        "(estleg:Division), e.g. \"1. jaotis – Tervist kahjustavad süüteod\" "
+        "in the KarS special part."
+    ),
+    "estleg:Section": (
+        "A paragrahv (§, \"section\" in Riigi Teataja English translations): "
+        "the numbered provision level directly above lõige "
+        "(estleg:Subsection). Used by the KarS special-part and TsÜS osa 7 OWL "
+        "modules and the TsÜS / VÕS osa peeps; every instance also carries "
+        "estleg:LegalProvision, which is the class the main law generator "
+        "emits for the same level. Not a container: the jagu and jaotis levels "
+        "are estleg:Division and estleg:Subdivision (#709)."
+    ),
+    "estleg:Subsection": (
+        "A numbered subsection (lõige) of an estleg:LegalProvision — the level "
+        "Estonian legal citations actually reference (\"TsÜS § 14 lg 2\"). One "
+        "node per lõige of a paragrahv that has lõige structure; it carries the "
+        "lõige number (estleg:subsectionNumber), the lõige's own text "
+        "(estleg:legalText, including the inline (N) punkt markers, mirroring "
+        "the provision-level legalText), and an estleg:parentProvision link "
+        "back to the § node. The parent provision keeps its full concatenated "
+        "estleg:legalText for backward compatibility — the subsections sum to "
+        "it. Defined for issue #132. The punkt (clause) level below lõige has "
+        "no class: the parser keeps sub-points as inline markers plus "
+        "estleg:itemNumber on the lõige (#694, #709)."
+    ),
+    "estleg:targetGroup": (
+        "Closed target-group classification for LegalProvision deontic "
+        "effects. Values are estleg:TargetGroup individuals (skos:Concepts in "
+        "estleg:TargetGroupScheme), written as IRIs since #460; #709 declares "
+        "the property an owl:ObjectProperty to match. HEURISTIC: derived by "
+        "keyword/dutyHolder matching over the provision text (#576), "
+        "preferring the dutyHolder's subject and capping an unanchored "
+        "body-text union; treat as an advisory addressee indicator, not a "
+        "definitive legal determination. Replaces the deprecated "
+        "estleg:targetGroupConcept."
+    ),
+    "estleg:enablingProvisionOutdated": (
+        "Boolean on a municipal regulation root: true when at least one "
+        "national enabling provision it was issued under (via "
+        "estleg:implementsCitation / estleg:citationTarget) has a redaction "
+        "with different text that took effect after the regulation's "
+        "estleg:entryIntoForce. Stamped only when a cited provision resolved "
+        "to a version in force on that date; see "
+        "estleg:earliestSupersedingDate. Written by "
+        "derive_kov_enabling_staleness.py (#712)."
+    ),
+    "estleg:enactedByHistoricalMunicipality": (
+        "Links a municipal regulation issued by a body of a municipality "
+        "abolished by territorial reform (chiefly the 2017 haldusreform) to the "
+        "pre-merger estleg:HistoricalMunicipality. estleg:enactedByMunicipality "
+        "keeps pointing at the current successor municipality. Set only on acts "
+        "whose estleg:municipalityStatus is 'abolished'. Written by "
+        "enrich_kov_layer1.py (#712)."
+    ),
+    "estleg:historicalMunicipality": (
+        "Links a KOV issuing body (volikogu or valitsus) of an abolished "
+        "municipality to the pre-merger estleg:HistoricalMunicipality it "
+        "belonged to. It is the IRI counterpart of the slug-derived "
+        "estleg:historicalMunicipalityName literal. The correctly accented name "
+        "is the target's estleg:formerName. Written by enrich_kov_layer1.py "
+        "(#712)."
+    ),
+    "estleg:countyCode": (
+        "The 4-character EHAK (Statistics Estonia administrative classifier) "
+        "code of the county (maakond) the municipality belongs to, e.g. '0037' "
+        "for Harju maakond. estleg:county keeps the label. The codes come from "
+        "data/ehak/counties.json and equal the ISO 3166-2:EE county numbers "
+        "(2020 recode). Written by enrich_kov_layer1.py (#712)."
+    ),
+    "estleg:isExcerpt": "True unless annotationText carries the complete source body; a title-only text is an excerpt (#719).",
+    "estleg:sourceTextLength": "Character length of the full extracted source body; present only when known (#719).",
+    "estleg:editorialNote": "Project-authored paraphrase or note; never source text (#719).",
+    "estleg:editorialSource": "Author of editorialNote (this project), never the cited authority (#719).",
+    "estleg:subjectSource": "Provenance of dcterms:subject on this node: 'cellar' = official EuroVoc indexing from the Publications Office (cdm:work_is_about_concept_eurovoc), #699.",
+    "estleg:registrikood": "The Estonian registry code of the legal person; a rename predecessor shares its successor's code (#718).",
+    "estleg:xteeMemberCode": "The X-tee member id EE/GOV/<registrikood>, only on current institutions (#718).",
+    "estleg:validFrom": "Inclusive start of the node's identity under this name; an open start is omitted (#718).",
+    "estleg:validTo": "Inclusive end of the node's identity under this name; an open end is omitted (#718).",
+    "estleg:predecessorInstitution": "Links an institution to the institution it replaced (rename, merger or split). Inverse of estleg:successorInstitution (#718).",
+    "estleg:successorInstitution": "Links an institution to the institution that replaced it (rename, merger or split). Inverse of estleg:predecessorInstitution (#718).",
+    "estleg:mentionsInstitution": "An institution the provision names without being bound as its competentAuthority: consultation partner, addressee, descriptive genitive or predecessor name (#718). Objects are estleg:Institution_* or KOV estleg:Issuer_* nodes, so the range stays open.",
+    "estleg:containsPersonalData": (
+        "Boolean flag asserting that a resource contains personal data about "
+        "identifiable natural persons within the meaning of the GDPR (e.g. "
+        "names and case details of parties in court decisions). It applies to "
+        "catalogue distributions (dcat:Distribution) and to the in-band dataset "
+        "heads of the combined aggregates (dcat:Dataset), so the domain is left "
+        "open (#720). When true, republication is governed by data-protection "
+        "law, not merely copyright — see docs/DATA_PROTECTION.md. Introduced "
+        "for tickets #545/#546."
+    ),
+    "estleg:appliesToProvisionCount": (
+        "Number of provisions a Competence node applies to, recorded alongside "
+        "its estleg:appliesToProvision list on the per-institution files. The "
+        "list is no longer capped (#718), so the count equals the list length; "
+        "it is kept for consumers that read the total without walking the list "
+        "(see src/estleg/extract_institutional_competence.py)."
+    ),
+    # #724: populated since #379, so neither "never populated" nor deprecated.
+    "estleg:amendsLaw": (
+        "Links a draft bill (estleg:DraftLegislation) to the enacted act it "
+        "proposes to amend. The object is always an act root IRI, never a "
+        "provision: the law's _Map node, or the lowest _OsaN root of a "
+        "multipart act without one (extract_draft_impact.prefer_act_iri, "
+        "#379). Populated on the drafts whose affected law resolves to a corpus "
+        "act; estleg:affectedLawName keeps the law's name as a literal on every "
+        "draft. Provision-level impact is not resolved."
+    ),
+    "estleg:institutionType": (
+        "Coarse kind of institution as an xsd:string token: ministry, "
+        "minister, agency, court, local_government, parliament, "
+        "head_of_state, or government. The ABox keeps the token (as "
+        "estleg:temporalStatus does, #522); each token is the skos:notation of "
+        "an estleg:InstitutionType individual in estleg:InstitutionTypeScheme "
+        "(e.g. \"ministry\" = estleg:InstitutionType_Ministry), so the value "
+        "set is a SKOS concept scheme with Estonian and English labels (#709)."
+    ),
     # All 786 subjects are ProposedAmendment nodes pointing at a DraftLegislation.
     "estleg:amendingDraft": (
         "Links a ProposedAmendment to the draft bill that proposes it."
@@ -872,6 +1283,27 @@ OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
 DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:citationSource": ("estleg:Citation",),
     "estleg:currentVersion": ("estleg:LegalProvision",),
+    "estleg:earliestSupersedingDate": (
+        "estleg:CourtDecision",
+        "estleg:MunicipalRegulation",
+    ),
+    "estleg:enablingProvisionOutdated": ("estleg:MunicipalRegulation",),
+    "estleg:enactedByHistoricalMunicipality": ("estleg:MunicipalRegulation",),
+    "estleg:historicalMunicipality": ("estleg:Issuer",),
+    "estleg:countyCode": ("estleg:Municipality",),
+    "estleg:registrikood": ("estleg:Institution",),
+    "estleg:xteeMemberCode": ("estleg:Institution",),
+    "estleg:validFrom": ("estleg:Institution",),
+    "estleg:validTo": ("estleg:Institution",),
+    "estleg:predecessorInstitution": ("estleg:Institution",),
+    "estleg:successorInstitution": ("estleg:Institution",),
+    "estleg:mentionsInstitution": ("estleg:LegalProvision",),
+    "estleg:containsPersonalData": ("dcat:Distribution", "dcat:Dataset"),
+    "estleg:isExcerpt": ("estleg:Annotation",),
+    "estleg:sourceTextLength": ("estleg:Annotation",),
+    "estleg:editorialNote": ("estleg:Annotation",),
+    "estleg:editorialSource": ("estleg:Annotation",),
+    "estleg:subjectSource": ("estleg:EULegislation",),
     "estleg:enactedBy": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:enactedByMunicipality": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:hasVersion": ("estleg:LegalProvision",),
@@ -887,6 +1319,7 @@ DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:totalConcepts": ("owl:Ontology",),
 }
 RANGE_INCLUDES: dict[str, tuple[str, ...]] = {
+    "estleg:mentionsInstitution": ("estleg:Institution", "estleg:Issuer"),
     "estleg:amendingDraft": ("estleg:DraftLegislation",),
     "estleg:amendsLaw": ("estleg:Act",),
     "estleg:citationSource": ("estleg:LegalProvision", "estleg:Subsection"),
@@ -910,6 +1343,12 @@ RANGE_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:transposedBy": ("estleg:Act",),
     "estleg:transposesDirective": ("estleg:EULegislation",),
     "estleg:versionOf": ("estleg:LegalProvision",),
+}
+
+
+# Property kinds the corpus contradicts (#709). Replaces the whole @type list.
+OVERWRITE_TYPES: dict[str, list[str]] = {
+    "estleg:targetGroup": ["owl:ObjectProperty"],
 }
 
 
@@ -1052,6 +1491,13 @@ def merge_node(existing: dict, incoming: dict) -> dict:
             and "rdfs:range" in incoming
         ):
             merged["rdfs:range"] = incoming["rdfs:range"]
+    if not is_class_node(merged) and not is_property_node(merged):
+        # #709: an individual's facts (a code, a prefLabel) exist only on the
+        # source that declares it; a CV placeholder must not shadow them, or
+        # the schema projection drops them.
+        for key, value in incoming.items():
+            if key not in merged:
+                merged[key] = copy.deepcopy(value)
     incoming_types = node_types(incoming)
     if incoming_types:
         current = node_types(merged)
@@ -1093,8 +1539,96 @@ def apply_comment(node: dict) -> None:
         )
 
 
+def apply_type_overwrite(node: dict) -> None:
+    nid = node.get("@id")
+    if isinstance(nid, str) and nid in OVERWRITE_TYPES:
+        node["@type"] = list(OVERWRITE_TYPES[nid])
+
+
+def apply_label_overwrite(node: dict) -> None:
+    nid = node.get("@id")
+    if isinstance(nid, str) and nid in OVERWRITE_LABEL:
+        node["rdfs:label"] = copy.deepcopy(OVERWRITE_LABEL[nid])
+
+
+def institution_type_nodes() -> list[dict]:
+    """The InstitutionType class and its eight individuals (#709)."""
+    nodes: list[dict] = [
+        {
+            "@id": INSTITUTION_TYPE_CLASS,
+            "@type": ["owl:Class"],
+            "rdfs:label": [
+                {"@value": "Institutsiooni liik", "@language": "et"},
+                {"@value": "Institution Type", "@language": "en"},
+            ],
+        }
+    ]
+    for token, (nid, label_et, label_en) in INSTITUTION_TYPES.items():
+        labels = [
+            {"@value": label_et, "@language": "et"},
+            {"@value": label_en, "@language": "en"},
+        ]
+        nodes.append(
+            {
+                "@id": nid,
+                "@type": ["owl:NamedIndividual", INSTITUTION_TYPE_CLASS],
+                "rdfs:label": labels,
+                "skos:prefLabel": copy.deepcopy(labels),
+                "skos:notation": token,
+            }
+        )
+    return nodes
+
+
+def apply_skos_schemes(index: dict[str, dict]) -> None:
+    """Type each family's individuals as skos:Concepts in one scheme per family."""
+    for family, (scheme_id, label_et, label_en) in SKOS_SCHEMES.items():
+        members = sorted(
+            nid
+            for nid, node in index.items()
+            if family in node_types(node)
+            and "owl:NamedIndividual" in node_types(node)
+        )
+        for nid in members:
+            node = index[nid]
+            if "skos:Concept" not in node_types(node):
+                node["@type"] = [*node_types(node), "skos:Concept"]
+            node["skos:inScheme"] = iri_ref(scheme_id)
+            node["skos:topConceptOf"] = iri_ref(scheme_id)
+        labels = [
+            {"@value": label_et, "@language": "et"},
+            {"@value": label_en, "@language": "en"},
+        ]
+        index[scheme_id] = {
+            "@id": scheme_id,
+            "@type": ["skos:ConceptScheme"],
+            "rdfs:label": labels,
+            "skos:prefLabel": copy.deepcopy(labels),
+            "rdfs:comment": (
+                f"Closed value set of {family} individuals as SKOS concepts (#709)."
+            ),
+            "skos:hasTopConcept": [iri_ref(nid) for nid in members],
+        }
+
+
+def apply_eu_corporate_bodies(index: dict[str, dict], links: dict[str, str]) -> None:
+    """owl:sameAs from each EUInstitution to its Publications Office authority IRI."""
+    for nid, iri in links.items():
+        node = index.get(nid)
+        if node is not None and "estleg:EUInstitution" in node_types(node):
+            node["owl:sameAs"] = iri_ref(iri)
+
+
+# Terms an earlier pass deprecated that the corpus populates again (#724).
+UNDEPRECATED_TERMS = frozenset({"estleg:amendsLaw"})
+
+
 def apply_deprecation(node: dict) -> None:
     nid = node.get("@id")
+    if nid in UNDEPRECATED_TERMS:
+        node.pop("owl:deprecated", None)
+        node.pop("dcterms:isReplacedBy", None)
+        return
     if not isinstance(nid, str) or nid not in DEPRECATED_TERMS:
         return
     replacement, comment = DEPRECATED_TERMS[nid]
@@ -1209,6 +1743,9 @@ def build_consolidated_graph(
     for nid in DECLARED_TERMS:
         if nid not in index:
             index[nid] = declared_term_node(nid)
+    for seeded in institution_type_nodes():
+        if seeded["@id"] not in index:
+            index[seeded["@id"]] = seeded
 
     for junk in JUNK_TERMS:
         index.pop(junk, None)
@@ -1226,7 +1763,15 @@ def build_consolidated_graph(
 
     index[VOCABULARY_IRI] = ontology_header()
 
-    for node in index.values():
+    apply_skos_schemes(index)
+    apply_eu_corporate_bodies(index, load_eu_corporate_bodies())
+    for nid, node in list(index.items()):
+        index[nid] = node = {
+            key: (value if key in ("@id", "@type") else expand_rdf_curies(value))
+            for key, value in node.items()
+        }
+        apply_type_overwrite(node)
+        apply_label_overwrite(node)
         apply_comment(node)
         apply_deprecation(node)
         apply_domain_range(node)
@@ -1552,6 +2097,9 @@ def consolidate(
     }
     if "dcterms" not in new_vocab["@context"]:
         new_vocab["@context"]["dcterms"] = "http://purl.org/dc/terms/"
+    for prefix, namespace in REQUIRED_PREFIXES.items():
+        new_vocab["@context"].setdefault(prefix, namespace)
+    new_vocab["@context"].pop("rdf", None)
 
     # Save the destination before removing relocated individuals from the source.
     # A read/parse/write failure here must leave the vocabulary intact for retry.

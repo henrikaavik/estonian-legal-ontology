@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,23 +39,6 @@
       },
       "estleg:titleNormalized": "raamatupidamise sise-eeskiri",
       "estleg:regulationTypeBucket": "sise eeskiri",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/54"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2149"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/1021"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1056998_Map_Reg_1013515_Map"
@@ -135,23 +119,6 @@
           "@id": "estleg:Amendment_Reg_1056998_262b9050e6"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        },
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_rahandusministeerium"
-        },
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -181,6 +148,56 @@
         {
           "@id": "estleg:Citation_Reg_1056998_Map_4"
         }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": true,
+        "@type": "xsd:boolean"
+      },
+      "estleg:earliestSupersedingDate": {
+        "@value": "2026-01-10",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/1021"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/1021"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_linn"
+        },
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        },
+        {
+          "@id": "estleg:Issuer_loksa_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        },
+        {
+          "@id": "estleg:Institution_tooturuamet"
+        },
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
       ]
     },
     {
@@ -209,21 +226,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_2",
@@ -251,27 +262,24 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        },
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        },
         {
           "@id": "estleg:Institution_linn"
         }
       ],
       "estleg:competenceType": "enforcement",
-      "estleg:targetGroupConcept": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_3",
@@ -302,18 +310,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_4",
@@ -344,24 +352,15 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Official"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_5",
@@ -385,14 +384,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         },
@@ -431,21 +422,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_7",
@@ -469,11 +454,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -512,24 +492,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_9",
@@ -553,11 +524,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -618,24 +584,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        },
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_12",
@@ -688,24 +651,21 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
         }
       ],
       "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_14",
@@ -727,7 +687,12 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056998_Map"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_15",
@@ -758,18 +723,21 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_NGO"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavolikogu"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_16",
@@ -800,27 +768,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_17",
@@ -851,24 +810,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_18",
@@ -896,15 +846,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_19",
@@ -935,24 +885,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_20",
@@ -998,11 +939,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -1085,14 +1021,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1146,11 +1074,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1178,11 +1101,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -1236,11 +1154,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -1301,18 +1214,24 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        },
+        {
+          "@id": "estleg:Issuer_loksa_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_32",
@@ -1343,18 +1262,19 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        },
+        {
+          "@id": "estleg:Institution_tooturuamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1056998_Par_33",
@@ -1382,15 +1302,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_34",
@@ -1440,11 +1360,6 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_NGO"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1472,14 +1387,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -1521,18 +1428,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_38",
@@ -1582,15 +1486,16 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1056998_Par_40",
@@ -1621,18 +1526,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_41",
@@ -1656,14 +1558,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -1746,11 +1640,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1778,11 +1667,6 @@
         "@id": "estleg:Reg_1056998_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -1865,18 +1749,16 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1056998_Par_49",
@@ -1899,12 +1781,11 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056998_Map"
       },
-      "estleg:competentAuthority": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
+          "@id": "estleg:Institution_maksuamet"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_50",
@@ -1935,18 +1816,24 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_51",
@@ -1969,12 +1856,11 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056998_Map"
       },
-      "estleg:competentAuthority": [
+      "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:Reg_1056998_Par_52",

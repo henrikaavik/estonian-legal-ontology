@@ -22,7 +22,11 @@ CONTEXT = {
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "schema": "https://schema.org/",
 }
+# #708: the combined build asserts these on every estleg:Act root.
+ACT_ELI_TYPES = ["eli:LegalResource", "schema:Legislation"]
 
 
 def _write_combined(krr_dir: Path, graph_nodes: list[dict]) -> None:
@@ -49,7 +53,7 @@ def _write_combined(krr_dir: Path, graph_nodes: list[dict]) -> None:
     for act_iri in sorted(referenced_acts - present):
         nodes.append({
             "@id": act_iri,
-            "@type": ["owl:NamedIndividual", "estleg:Act"],
+            "@type": ["owl:NamedIndividual", "estleg:Act", *ACT_ELI_TYPES],
             "rdfs:label": "Test Act",
         })
     payload = {"@context": CONTEXT, "@graph": nodes}
@@ -201,7 +205,7 @@ def test_act_without_subject_passes_optional_eurovoc_contract(tmp_path, capsys):
         [
             {
                 "@id": "estleg:Act_Without_Subject",
-                "@type": ["estleg:Act"],
+                "@type": ["estleg:Act", *ACT_ELI_TYPES],
                 "rdfs:label": "Act Without Subject",
             }
         ],
@@ -220,7 +224,7 @@ def test_non_eurovoc_subject_warns(tmp_path, capsys):
         [
             {
                 "@id": "estleg:Act_With_Non_EuroVoc_Subject",
-                "@type": ["estleg:Act"],
+                "@type": ["estleg:Act", *ACT_ELI_TYPES],
                 "rdfs:label": "Act With Non EuroVoc Subject",
                 "dcterms:subject": {"@id": "http://example.com/topic"},
             }

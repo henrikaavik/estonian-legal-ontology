@@ -23,8 +23,13 @@ from estleg import generate_retrieval_projection as grp
 EVAL_DATE = "2026-06-01"
 RT_BASE = "https://www.riigiteataja.ee/akt/"
 
+# The #723 chunk record contract (schema 2.0.0): the #523 keys plus the audit
+# envelope and part fields. Pinned literally so a contract change is a
+# deliberate test edit, not a silent drift of grp.CHUNK_KEYS.
 REQUIRED_CHUNK_KEYS = {
+    "chunk_id",
     "provision_iri",
+    "act_iri",
     "redaction_id",
     "paragraph",
     "act_title",
@@ -33,6 +38,12 @@ REQUIRED_CHUNK_KEYS = {
     "valid_from",
     "valid_to",
     "in_force",
+    "kehtiv",
+    "evaluation_date",
+    "ontology_version",
+    "language",
+    "part_index",
+    "part_count",
     "text",
 }
 
@@ -382,8 +393,9 @@ def test_chunk_record_assembly_and_in_force(tmp_path):
 
     for chunk in chunks:
         assert set(chunk) == REQUIRED_CHUNK_KEYS
-        assert chunk["rt_url"] == f"{RT_BASE}123456"
-        assert chunk["rt_url"].startswith(RT_BASE)
+        # The fixture versions carry no estleg:rtUrl, so the act browse URL is
+        # the base; the § anchor is always appended (#723).
+        assert chunk["rt_url"].startswith(f"{RT_BASE}123456#para")
         assert chunk["act_title"] == "Testseadus"
         assert chunk["abbrev"] == "TL"
         assert chunk["paragraph"].startswith("§")

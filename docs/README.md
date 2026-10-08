@@ -5,7 +5,7 @@ This project provides a comprehensive, machine-readable ontology of Estonian and
 
 Canonical headline counts live in the root [README.md](../README.md) and `metadata.jsonld` (`estleg:statistics`). Do not edit those two independently.
 
-**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-07)
+**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,023 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-07)
 
 ## Project status
 
@@ -45,6 +45,9 @@ Documentation checked against `main` at `0cb9ac91bc` on **2026-09-07**:
 | Legal-reasoning benchmark (#727) | [BENCHMARK.md](BENCHMARK.md) |
 | Proposed ADR: Sätla reference-resolution service (#725) | [proposals/2026-10-satla-reference-resolution.md](proposals/2026-10-satla-reference-resolution.md) |
 | Proposed ADR: provision-level draft impact and HÕNTE impact areas (#724) | [proposals/2026-10-draft-provision-impact.md](proposals/2026-10-draft-provision-impact.md) |
+
+| DCAT-AP catalogue record (`metadata.jsonld`) | [DCAT_CATALOGUE.md](DCAT_CATALOGUE.md) |
+| Estonian overview | [HTML overview](eesti-oigusontoloogia-ulevaade.html) |
 | Historical review and roadmap rationale | [September review](PUBLIC_SECTOR_REVIEW_2026-09.md) |
 
 Historical reviews, worksheets, and `superpowers/` plans record their original

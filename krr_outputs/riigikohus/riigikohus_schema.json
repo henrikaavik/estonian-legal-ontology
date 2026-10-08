@@ -19,16 +19,22 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": {
-        "@value": "Kohtulahend (Court Decision)",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Kohtulahend",
+          "@language": "et"
+        },
+        {
+          "@value": "Court Decision",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": {
-        "@value": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.",
+        "@value": "Eesti kohtulahend – Riigikohus või esimese/teise astme kohus (maakohus, halduskohus, ringkonnakohus).",
         "@language": "et"
       },
       "dc:description": {
-        "@value": "A Supreme Court (Riigikohus) decision, including judgments, rulings, and resolutions.",
+        "@value": "An Estonian court decision. Riigikohus lives under krr_outputs/riigikohus/; maakohus, halduskohus and ringkonnakohus under krr_outputs/kohtud/ (#525).",
         "@language": "en"
       }
     },
@@ -37,10 +43,19 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": {
-        "@value": "Kohtuasja liik (Case Type)",
-        "@language": "et"
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
       },
+      "rdfs:label": [
+        {
+          "@value": "Kohtuasja liik (Case Type)",
+          "@language": "et"
+        },
+        {
+          "@value": "Kohtuasja liik (Case Type)",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": {
         "@value": "Kohtuasja klassifikatsioon: kriminaalasi, tsiviilasi, haldusasi, väärteoasi, põhiseaduslikkuse järelevalve.",
         "@language": "et"
@@ -51,12 +66,21 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": {
-        "@value": "Lahendi liik (Decision Type)",
-        "@language": "et"
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
       },
+      "rdfs:label": [
+        {
+          "@value": "Lahendi liik (Decision Type)",
+          "@language": "et"
+        },
+        {
+          "@value": "Lahendi liik (Decision Type)",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": {
-        "@value": "Lahendi tüüp: kohtuotsus, kohtumäärus, resolutsioon.",
+        "@value": "Lahendi tüüp: kohtuotsus, kohtumäärus, resolutsioon. Enum class folded into the controlled vocabulary (with its individuals) so estleg:DecisionTypeShape binds in every SHACL bucket (issue #563).",
         "@language": "et"
       }
     },
@@ -64,95 +88,174 @@
       "@id": "estleg:CaseType_Criminal",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Kriminaalasi",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Kriminaalasi",
+          "@language": "et"
+        },
+        {
+          "@value": "Criminal Case",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Criminal Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "1"
+      "estleg:caseTypeCode": "1",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Civil",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Tsiviilasi",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Tsiviilasi",
+          "@language": "et"
+        },
+        {
+          "@value": "Civil Case",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Civil Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "2"
+      "estleg:caseTypeCode": "2",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Administrative",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Haldusasi",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Haldusasi",
+          "@language": "et"
+        },
+        {
+          "@value": "Administrative Case",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Administrative Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "3"
+      "estleg:caseTypeCode": "3",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Misdemeanor",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Väärteoasi",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Väärteoasi",
+          "@language": "et"
+        },
+        {
+          "@value": "Misdemeanor Case",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Misdemeanor Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "4"
+      "estleg:caseTypeCode": "4",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_ConstitutionalReview",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Põhiseaduslikkuse järelevalve",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Põhiseaduslikkuse järelevalve",
+          "@language": "et"
+        },
+        {
+          "@value": "Constitutional Review",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Constitutional Review",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "5"
+      "estleg:caseTypeCode": "5",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Other",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Muu",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Muu",
+          "@language": "et"
+        },
+        {
+          "@value": "Other Case",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Other Case",
         "@language": "en"
+      },
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
       },
       "estleg:caseTypeCode": "Other"
     },
@@ -160,50 +263,89 @@
       "@id": "estleg:DecisionType_Judgment",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Kohtuotsus",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Kohtuotsus",
+          "@language": "et"
+        },
+        {
+          "@value": "Judgment",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Judgment",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
     },
     {
       "@id": "estleg:DecisionType_Ruling",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Kohtumäärus",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "Kohtumäärus",
+          "@language": "et"
+        },
+        {
+          "@value": "Ruling",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "Ruling",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
     },
     {
       "@id": "estleg:DecisionType_OrderRuling",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
-      "rdfs:label": {
-        "@value": "Määrus",
-        "@language": "et"
-      },
+      "owl:deprecated": true,
+      "rdfs:label": [
+        {
+          "@value": "Määrus",
+          "@language": "et"
+        },
+        {
+          "@value": "OrderRuling",
+          "@language": "en"
+        }
+      ],
       "skos:prefLabel": {
         "@value": "OrderRuling",
         "@language": "en"
       },
-      "owl:deprecated": true,
       "rdfs:comment": {
         "@value": "Deprecated (issue #344): declared but never used in the corpus — kohtumäärus decisions use estleg:DecisionType_Ruling instead. Retained for backward compatibility; do not emit new references.",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
     },
     {
@@ -211,10 +353,16 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": {
-        "@value": "kohtuasja liik",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "kohtuasja liik",
+          "@language": "et"
+        },
+        {
+          "@value": "kohtuasja liik",
+          "@language": "en"
+        }
+      ],
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -227,10 +375,16 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": {
-        "@value": "lahendi liik",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "lahendi liik",
+          "@language": "et"
+        },
+        {
+          "@value": "lahendi liik",
+          "@language": "en"
+        }
+      ],
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -243,29 +397,33 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": {
-        "@value": "tõlgendab seadust",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "tõlgendab seadust",
+          "@language": "et"
+        },
+        {
+          "@value": "Interprets Law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Coverage + combined graph-closure stub for the inverse of estleg:interpretedBy. The canonical T-Box definition (with rdfs:domain/rdfs:range) lives in krr_outputs/riigikohus/riigikohus_schema.json; this stub exists so the estleg:interpretedBy owl:inverseOf axiom resolves inside combined_ontology.jsonld, which does not include riigikohus_schema.json.",
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
-        "@type": "owl:Class",
-        "owl:unionOf": {
-          "@list": [
-            {
-              "@id": "estleg:LegalProvision"
-            },
-            {
-              "@id": "estleg:Act"
-            }
-          ]
-        }
+        "@id": "rdfs:Resource"
       },
-      "rdfs:comment": {
-        "@value": "Links a court decision to the legal provision or whole act it interprets or applies.",
-        "@language": "en"
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        },
+        {
+          "@id": "estleg:Act"
+        }
+      ],
+      "owl:inverseOf": {
+        "@id": "estleg:interpretedBy"
       }
     },
     {
@@ -273,10 +431,16 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": {
-        "@value": "kohtuasja number",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "kohtuasja number",
+          "@language": "et"
+        },
+        {
+          "@value": "kohtuasja number",
+          "@language": "en"
+        }
+      ],
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -289,10 +453,16 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": {
-        "@value": "lahendi kuupäev",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "lahendi kuupäev",
+          "@language": "et"
+        },
+        {
+          "@value": "decision Date",
+          "@language": "en"
+        }
+      ],
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -305,7 +475,16 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": "RIK objekti ID",
+      "rdfs:label": [
+        {
+          "@value": "RIK objekti ID",
+          "@language": "et"
+        },
+        {
+          "@value": "RIK object ID",
+          "@language": "en"
+        }
+      ],
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -318,16 +497,25 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": "RIKOS URL",
+      "rdfs:label": [
+        {
+          "@value": "RIKOS URL",
+          "@language": "et"
+        },
+        {
+          "@value": "RIKOS URL",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "Direct rikos.rik.ee document URL derived from rikObjectId (https://rikos.rik.ee/Lahend/Index?id={id}).",
+        "@language": "en"
+      },
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
         "@id": "xsd:anyURI"
-      },
-      "rdfs:comment": {
-        "@value": "Direct rikos.rik.ee document URL derived from rikObjectId (https://rikos.rik.ee/Lahend/Index?id={id}).",
-        "@language": "en"
       }
     },
     {
@@ -335,19 +523,25 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": {
-        "@value": "kolleegium",
-        "@language": "et"
+      "rdfs:label": [
+        {
+          "@value": "kolleegium",
+          "@language": "et"
+        },
+        {
+          "@value": "kolleegium",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "Deciding chamber extracted from the legalText header (e.g. Halduskolleegium, Kriminaalkolleegium, Erikogu).",
+        "@language": "en"
       },
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
         "@id": "xsd:string"
-      },
-      "rdfs:comment": {
-        "@value": "Deciding chamber extracted from the legalText header (e.g. Halduskolleegium, Kriminaalkolleegium, Erikogu).",
-        "@language": "en"
       }
     },
     {
@@ -355,10 +549,16 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": {
-        "@value": "lahendi link",
-        "@language": "et"
-      },
+      "rdfs:label": [
+        {
+          "@value": "lahendi link",
+          "@language": "et"
+        },
+        {
+          "@value": "lahendi link",
+          "@language": "en"
+        }
+      ],
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
@@ -371,16 +571,25 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": "ECLI",
-      "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
-      },
-      "rdfs:range": {
-        "@id": "xsd:string"
-      },
+      "rdfs:label": [
+        {
+          "@value": "ECLI",
+          "@language": "et"
+        },
+        {
+          "@value": "ECLI",
+          "@language": "en"
+        }
+      ],
       "rdfs:comment": {
         "@value": "European Case Law Identifier (ECLI:EE:RK:YYYY:ordinal). Assigned from H2 2016; derived from case number + decision year. Pre-H2-2016 Riigikohus decisions have no official ECLI.",
         "@language": "en"
+      },
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
       }
     },
     {
@@ -388,19 +597,25 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": {
-        "@value": "kohtunik",
-        "@language": "et"
+      "rdfs:label": [
+        {
+          "@value": "kohtunik",
+          "@language": "et"
+        },
+        {
+          "@value": "judge",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
+        "@language": "en"
       },
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
         "@id": "xsd:string"
-      },
-      "rdfs:comment": {
-        "@value": "Panel member extracted from the legalText header (presiding judge first, then liikmed).",
-        "@language": "en"
       }
     },
     {
@@ -408,19 +623,25 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": {
-        "@value": "viidatud seadus",
-        "@language": "et"
+      "rdfs:label": [
+        {
+          "@value": "viidatud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "referenced Law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": {
+        "@value": "Name or abbreviation of law referenced in the decision.",
+        "@language": "en"
       },
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
       },
       "rdfs:range": {
         "@id": "xsd:string"
-      },
-      "rdfs:comment": {
-        "@value": "Name or abbreviation of law referenced in the decision.",
-        "@language": "en"
       }
     }
   ]

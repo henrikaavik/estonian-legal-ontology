@@ -113,10 +113,21 @@ anonymisation regime govern reuse. See [`DATA_PROTECTION.md`](DATA_PROTECTION.md
 
 ## Machine-readable reflection
 
-`metadata.jsonld` reflects this model: the blanket dataset-level MIT licence has
-been removed; dataset-level `dcterms:rights` now points to this document and the
-`NOTICE`; and each `dcat:distribution` carries a per-source `dcterms:rights`
-statement (and, for the court subcorpora, `estleg:containsPersonalData`).
+`metadata.jsonld` reflects this model. It is a DCAT-AP 3.0.1 catalogue record
+(#710); [`DCAT_CATALOGUE.md`](DCAT_CATALOGUE.md) describes its structure.
+
+- The dataset node carries **no** `dcterms:license`. Its `dcterms:rights` states
+  the layered model and points to this document and the `NOTICE`.
+- The compilation layer is the `dcterms:hasPart` node, licensed CC BY 4.0.
+- Each `dcat:distribution` carries one `dcterms:license` that matches its
+  sources. EUR-Lex and CURIA carry the EU reuse terms
+  (`licence/COM_REUSE`, Decision 2011/833/EU). Estonian-source distributions
+  carry the project's CC BY 4.0 offer for its compilation layer, because the
+  texts themselves are not objects of copyright. The all-sources tree carries a
+  layered-terms licence document, because no single licence covers it.
+- Each distribution also carries a `dcterms:RightsStatement` with the
+  per-source prose. The court subcorpora also carry `estleg:containsPersonalData`.
+- `krr_outputs/void.ttl` and `CITATION.cff` declare no whole-dataset licence.
 
 ## Open verification items (for the human / DPO / legal)
 
