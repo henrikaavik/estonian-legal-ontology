@@ -14,13 +14,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+import threading
 import time
 import urllib.parse
 import xml.etree.ElementTree as ET
-from collections import Counter
+from collections import Counter, deque
+from collections.abc import Callable, Iterable, Iterator
+from concurrent.futures import Future, ThreadPoolExecutor
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import TypeVar
 
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
@@ -29,6 +35,12 @@ from estleg.estleg_common import (
     is_domain_individual,
     mint_act_iri,
 )
+from estleg.law_structure import (
+    _dedupe_paragraph_suffix,
+    _paragraph_id_suffix,
+    build_subsections,
+)
+from estleg import riigiteataja_common
 from estleg.riigiteataja_common import (
     BASE_URL,
     CONTEXT,
@@ -54,6 +66,28 @@ DEFAULT_KEHTIV = "2026-05-01"
 OUTPUT_RIIK = KRR_DIR / "regulations" / "riik"
 OUTPUT_KOV = KRR_DIR / "regulations" / "kov"
 GENERATION_MODES = ("missing-only", "refresh", "force")
+
+#: Provision IRI schemes (#722).
+#:
+#: ``law`` mints ``<prefix>_Par_<suffix>`` through the law helpers
+#: (``law_structure._paragraph_id_suffix`` + ``_dedupe_paragraph_suffix``):
+#: ``§ 9¹`` -> ``Par_9_1`` and a genuinely repeated number -> ``Par_9_x2``,
+#: independent of document position (#156/#165).
+#:
+#: ``legacy`` reproduces the pre-#722 regulation minting
+#: (``sanitize_id(nr)`` + ``_{len(seen_ids)}`` on a collision), under which
+#: ``§ 9¹`` collapses onto ``Par_9`` and is then suffixed by its position
+#: (``Par_9_10``), and the HTML path's ``§ 4′1`` collapses onto ``Par_41``.
+#:
+#: ``auto`` (the CLI default) uses ``law`` for an act with no committed peep
+#: and ``legacy`` for an act that already has one, so a refresh never
+#: silently renames a published provision IRI. Moving the committed corpus to
+#: ``law`` is a MAJOR change (docs/STABILITY.md) applied through the rename
+#: map (``regulation_iri_rename_map.py``), then ``--iri-scheme law``.
+IRI_SCHEME_LAW = "law"
+IRI_SCHEME_LEGACY = "legacy"
+IRI_SCHEME_AUTO = "auto"
+IRI_SCHEMES = (IRI_SCHEME_LAW, IRI_SCHEME_LEGACY)
 
 
 # ---------------------------------------------------------------------------
@@ -240,10 +274,74 @@ def provision_summary(display: str, label: str, source_title: str, body_text: st
     return fallback[:500] if fallback else display_text
 
 
-def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str, act_iri: str) -> list[dict]:
-    """Build provision nodes from `<paragrahv>` elements (modern XML)."""
+def _check_iri_scheme(iri_scheme: str) -> None:
+    if iri_scheme not in IRI_SCHEMES:
+        raise ValueError(
+            f"Unsupported provision IRI scheme {iri_scheme!r}; "
+            f"expected one of {IRI_SCHEMES}"
+        )
+
+
+def _legacy_paragraph_suffix(nr: str, seen_ids: set[str], prefix: str) -> str:
+    """Pre-#722 suffix: ``sanitize_id(nr)`` plus ``_{len(seen_ids)}`` on reuse.
+
+    Mutates ``seen_ids`` exactly as the old inline code did, so a legacy
+    regeneration reproduces the committed IRIs byte for byte.
+    """
+    p_id = f"estleg:{prefix}_Par_{sanitize_id(nr)}"
+    if p_id in seen_ids:
+        p_id = f"{p_id}_{len(seen_ids)}"
+    seen_ids.add(p_id)
+    return p_id[len(f"estleg:{prefix}_Par_"):]
+
+
+#: Prime-style superscript separators the HTMLKonteiner heading regex
+#: (``riigiteataja_common.parse_html_konteiner``) admits inside ``§ 4′1``.
+_HTML_SUPERSCRIPT_SEP_RE = re.compile(r"[′'·]")
+
+
+def html_paragraph_id_suffix(nr: str) -> str:
+    """Law-scheme IRI suffix for an HTMLKonteiner paragraph number.
+
+    The legacy HTML path renders ``§ 4′1`` (= ``§ 4¹``) with a prime; the
+    law scheme keeps the superscript as its own segment (``4_1``) exactly as
+    ``_paragraph_id_suffix`` does for structured ``ylaIndeks``, instead of
+    ``sanitize_id`` gluing it into ``41`` (which collides with a real § 41).
+    """
+    parts = [part for part in _HTML_SUPERSCRIPT_SEP_RE.split(nr or "") if part]
+    if not parts:
+        return "Unknown"
+    base = sanitize_id(parts[0]) or "Unknown"
+    if len(parts) > 1:
+        sup = sanitize_id("".join(parts[1:]))
+        if sup:
+            return f"{base}_{sup}"
+    return base
+
+
+def collect_structured_paragraphs(
+    root: ET.Element,
+    prefix: str,
+    title: str,
+    class_id: str,
+    act_iri: str,
+    *,
+    iri_scheme: str = IRI_SCHEME_LAW,
+    with_subsections: bool = True,
+) -> list[dict]:
+    """Build provision nodes from `<paragrahv>` elements (modern XML).
+
+    Each § is followed in the returned list by its ``estleg:Subsection``
+    (lõige) nodes, built by ``law_structure.build_subsections`` exactly as
+    for laws (#722): ``<prefix>_Par_<suffix>_Lg_<n>``, ``parentProvision``
+    back to the §, ``subsectionNumber``, and an ``estleg:hasSubsection``
+    list on the § node.
+    """
+    _check_iri_scheme(iri_scheme)
     nodes: list[dict] = []
     seen_ids: set[str] = set()
+    suffix_counts: Counter[str] = Counter()
+    seen_subsection_ids: set[str] = set()
 
     for p in [el for el in root.iter() if ln(el.tag) == "paragrahv"]:
         nr = ct(p, "paragrahvNr") or "?"
@@ -252,10 +350,13 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
         text = collect_text(p)
         full_text = collect_full_text(p)
 
-        p_id = f"estleg:{prefix}_Par_{sanitize_id(nr)}"
-        if p_id in seen_ids:
-            p_id = f"{p_id}_{len(seen_ids)}"
-        seen_ids.add(p_id)
+        if iri_scheme == IRI_SCHEME_LAW:
+            par_suffix = _dedupe_paragraph_suffix(
+                _paragraph_id_suffix(p), suffix_counts
+            )
+        else:
+            par_suffix = _legacy_paragraph_suffix(nr, seen_ids, prefix)
+        p_id = f"estleg:{prefix}_Par_{par_suffix}"
 
         if ptitle:
             label = f"{display} {ptitle}"
@@ -281,7 +382,22 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
         }
         if full_text:
             node["estleg:legalText"] = full_text
+        subsection_nodes: list[dict] = []
+        if with_subsections:
+            subsection_nodes = build_subsections(
+                p,
+                p_id,
+                abbrev_prefix=prefix,
+                par_suffix=par_suffix,
+                paragraph_display=display,
+                seen_ids=seen_subsection_ids,
+            )
+            if subsection_nodes:
+                node["estleg:hasSubsection"] = [
+                    {"@id": item["@id"]} for item in subsection_nodes
+                ]
         nodes.append(node)
+        nodes.extend(subsection_nodes)
 
     return nodes
 
@@ -290,11 +406,21 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
 # Provision extraction — legacy HTMLKonteiner fallback
 # ---------------------------------------------------------------------------
 
-def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str, act_iri: str) -> tuple[str, list[dict]]:
+def collect_html_paragraphs(
+    root: ET.Element,
+    prefix: str,
+    title: str,
+    class_id: str,
+    act_iri: str,
+    *,
+    iri_scheme: str = IRI_SCHEME_LAW,
+) -> tuple[str, list[dict]]:
     """Build provision nodes from the legacy HTMLKonteiner CDATA body.
 
-    Returns ``(preamble_text, paragraph_nodes)``.
+    Returns ``(preamble_text, paragraph_nodes)``. The HTML body carries no
+    lõige elements, so no ``estleg:Subsection`` nodes are emitted here.
     """
+    _check_iri_scheme(iri_scheme)
     container = None
     for el in root.iter():
         if ln(el.tag) == "HTMLKonteiner":
@@ -307,6 +433,7 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
 
     nodes: list[dict] = []
     seen_ids: set[str] = set()
+    suffix_counts: Counter[str] = Counter()
     for entry in paragraphs:
         nr = entry["nr"]
         display = f"§ {nr}"
@@ -315,10 +442,13 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
         # #368: cut on a sentence/word boundary, not mid-token.
         summary = truncate_on_boundary(text_full, 500) if text_full else ""
 
-        p_id = f"estleg:{prefix}_Par_{sanitize_id(nr)}"
-        if p_id in seen_ids:
-            p_id = f"{p_id}_{len(seen_ids)}"
-        seen_ids.add(p_id)
+        if iri_scheme == IRI_SCHEME_LAW:
+            par_suffix = _dedupe_paragraph_suffix(
+                html_paragraph_id_suffix(nr), suffix_counts
+            )
+        else:
+            par_suffix = _legacy_paragraph_suffix(nr, seen_ids, prefix)
+        p_id = f"estleg:{prefix}_Par_{par_suffix}"
 
         if ptitle:
             label = f"{display} {ptitle}"
@@ -445,6 +575,15 @@ def _is_provision_node(node: object) -> bool:
     return isinstance(node, dict) and "estleg:paragrahv" in node
 
 
+def _is_subsection_node(node: object) -> bool:
+    if not isinstance(node, dict):
+        return False
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    return "estleg:Subsection" in types
+
+
 def _node_has_legal_text(node: dict) -> bool:
     text = node.get("estleg:legalText")
     if text is None:
@@ -469,15 +608,21 @@ def build_regulation_jsonld(
     kehtiv: str | None = None,
     temporal_status: str | None = None,
     evaluation_date: str | None = None,
+    iri_scheme: str = IRI_SCHEME_LAW,
 ) -> tuple[dict, dict[str, int]]:
     """Generate the JSON-LD document for one regulation.
 
     Returns the doc plus a small stats dict used for reporting.
 
-    ``kehtiv`` (when provided) is stamped onto the ontology node as
-    ``estleg:kehtiv`` so downstream staleness checks (missing-only
-    re-runs) can compare a stored snapshot date against the current
-    run.
+    ``estleg:kehtiv`` is stamped on EVERY act node (#722): the snapshot
+    date the redaction was fetched under — ``kehtiv`` when given, else the
+    ``kehtiv`` that ``gather_regulations`` recorded on ``info``, else
+    ``DEFAULT_KEHTIV``. Downstream staleness checks (missing-only and
+    ``--regen-state`` re-runs) compare it against the current run.
+
+    ``iri_scheme`` selects provision IRI minting (``IRI_SCHEMES``); the
+    default is the law scheme. Structured acts also get one
+    ``estleg:Subsection`` per lõige (``law_structure.build_subsections``).
 
     ``temporal_status`` (optional) is the already-derived
     ``estleg:temporalStatus``. When omitted, a repealed status is
@@ -494,6 +639,8 @@ def build_regulation_jsonld(
     if not tid:
         # Without a stable ID we can't produce a reliable IRI — bail out.
         raise ValueError(f"Regulation has no terviktekstID: {title}")
+    _check_iri_scheme(iri_scheme)
+    kehtiv = _iso_day(kehtiv) or _iso_day(info.get("kehtiv")) or DEFAULT_KEHTIV
 
     prefix = f"Reg_{tid}"
     provision_type = "estleg:LegalProvision"
@@ -529,11 +676,17 @@ def build_regulation_jsonld(
         )
     else:
         # Provisions: try structured first, fall back to HTMLKonteiner
-        provisions = collect_structured_paragraphs(root, prefix, title, provision_type, ontology_id)
+        provisions = collect_structured_paragraphs(
+            root, prefix, title, provision_type, ontology_id,
+            iri_scheme=iri_scheme,
+        )
         parse_mode = "structured"
         preamble_html = ""
         if not provisions:
-            preamble_html, provisions = collect_html_paragraphs(root, prefix, title, provision_type, ontology_id)
+            preamble_html, provisions = collect_html_paragraphs(
+                root, prefix, title, provision_type, ontology_id,
+                iri_scheme=iri_scheme,
+            )
             parse_mode = "html_fallback" if provisions else "no_paragraphs"
 
         # Preamble: prefer structured `<preambul>`, fall back to HTML preamble
@@ -561,10 +714,9 @@ def build_regulation_jsonld(
     if gid:
         ontology_node["estleg:globalId"] = str(gid)
     ontology_node["estleg:terviktekstId"] = str(tid)
-    if kehtiv:
-        # Snapshot date as xsd:date so downstream queries can compare
-        # cleanly against today() during a staleness audit.
-        ontology_node["estleg:kehtiv"] = {"@value": kehtiv, "@type": "xsd:date"}
+    # Snapshot date as xsd:date so downstream queries can compare cleanly
+    # against today() during a staleness audit. Always present (#722).
+    ontology_node["estleg:kehtiv"] = {"@value": kehtiv, "@type": "xsd:date"}
     if metadata.get("entryIntoForce"):
         ontology_node["estleg:entryIntoForce"] = {
             "@value": metadata["entryIntoForce"],
@@ -614,8 +766,10 @@ def build_regulation_jsonld(
     graph.extend(annexes)
     graph.extend(provisions)
 
+    paragraph_count = sum(1 for n in provisions if _is_provision_node(n))
     stats = {
-        "paragraphs": len(provisions),
+        "paragraphs": paragraph_count,
+        "subsections": len(provisions) - paragraph_count,
         "annexes": len(annexes),
         "has_preamble": int(bool(preamble)),
         "html_fallback": int(parse_mode == "html_fallback"),
@@ -712,6 +866,9 @@ def gather_regulations(
                 "pealkiri": (act.get("pealkiri") or "").strip(),
                 "valjaandja": act.get("valjaandja") or "",
                 "kehtivus": act.get("kehtivus") or {},
+                # #722: the snapshot date this redaction was listed under;
+                # build_regulation_jsonld stamps it as estleg:kehtiv.
+                "kehtiv": kehtiv,
             }
         if limit is not None and len(by_tid) >= limit:
             break
@@ -1049,11 +1206,19 @@ def strip_repealed_provision_bodies(
     file_kehtiv = _xsd_date_value(ontology.get("estleg:kehtiv")) or kehtiv
     stripped = 0
     provisions = 0
+    # #722: lõige nodes carry their own legalText; a void act keeps no
+    # citable text, so its Subsection nodes and the § back-links go too.
+    subsections_dropped = sum(1 for node in graph if _is_subsection_node(node))
+    if subsections_dropped:
+        graph[:] = [node for node in graph if not _is_subsection_node(node)]
     for node in graph:
         if not _is_provision_node(node):
             continue
         provisions += 1
         changed = False
+        if "estleg:hasSubsection" in node:
+            del node["estleg:hasSubsection"]
+            changed = True
         if "estleg:legalText" in node:
             del node["estleg:legalText"]
             changed = True
@@ -1073,6 +1238,8 @@ def strip_repealed_provision_bodies(
                 "suppressed (issue #374)."
             )
 
+    if subsections_dropped and not stripped:
+        stripped = 1
     return {"stripped": stripped, "provisions": provisions}
 
 
@@ -1129,7 +1296,9 @@ def count_repealed_with_provision_legal_text(out_dir: Path) -> list[str]:
         if ontology.get("estleg:temporalStatus") != "repealed":
             continue
         for node in doc.get("@graph", []):
-            if _is_provision_node(node) and _node_has_legal_text(node):
+            if (
+                _is_provision_node(node) or _is_subsection_node(node)
+            ) and _node_has_legal_text(node):
                 remaining.append(str(path))
                 break
     return remaining
@@ -1188,12 +1357,399 @@ def update_index_repealed_counts(
     return index
 
 
+# ---------------------------------------------------------------------------
+# Bounded fetch concurrency (#722)
+# ---------------------------------------------------------------------------
+#
+# Written against plain callables so the pair can be lifted into
+# ``riigiteataja_common`` and shared with ``generate_all_laws`` (whose serial
+# ``time.sleep(0.3)`` loop has the same shape). Per-request backoff on 429 /
+# 5xx already lives in ``riigiteataja_common._get_with_retry`` (via
+# ``fetch_xml``); the throttle below only bounds the request *start* rate.
+
+_T = TypeVar("_T")
+_R = TypeVar("_R")
+
+DEFAULT_WORKERS = 4
+#: Global cap on RT request starts per second across all workers. Serial
+#: law ingest runs at ~1 / (latency + 0.3 s) ≈ 2-3 req/s; 4 req/s keeps the
+#: pool within a small multiple of that.
+DEFAULT_MAX_RPS = 4.0
+
+
+class FetchThrottle:
+    """Thread-safe request pacing: a global start-rate cap plus a per-call
+    politeness sleep (the serial ``--sleep`` of the law pipeline).
+
+    ``before_request`` blocks until at least ``1 / max_rps`` seconds have
+    passed since the previous request start (across all threads);
+    ``after_request`` sleeps ``sleep`` seconds in the calling worker, so a
+    pool of N workers never exceeds N concurrent requests nor ``max_rps``
+    starts per second. ``clock``/``sleeper`` are injectable for tests.
+    """
+
+    def __init__(
+        self,
+        *,
+        max_rps: float | None = DEFAULT_MAX_RPS,
+        sleep: float = 0.0,
+        clock: Callable[[], float] = time.monotonic,
+        sleeper: Callable[[float], None] = time.sleep,
+    ) -> None:
+        self.min_interval = (1.0 / max_rps) if max_rps and max_rps > 0 else 0.0
+        self.sleep = max(0.0, sleep)
+        self._clock = clock
+        self._sleeper = sleeper
+        self._lock = threading.Lock()
+        self._next_start = 0.0
+        self.requests = 0
+
+    def before_request(self) -> None:
+        with self._lock:
+            now = self._clock()
+            start = max(now, self._next_start)
+            self._next_start = start + self.min_interval
+            self.requests += 1
+        delay = start - now
+        if delay > 0:
+            self._sleeper(delay)
+
+    def after_request(self) -> None:
+        if self.sleep > 0:
+            self._sleeper(self.sleep)
+
+
+def bounded_ordered_map(
+    fn: Callable[[_T], _R],
+    items: Iterable[_T],
+    *,
+    workers: int = DEFAULT_WORKERS,
+    window: int | None = None,
+) -> Iterator[tuple[_T, _R]]:
+    """Yield ``(item, fn(item))`` in INPUT order with at most ``workers``
+    calls running and at most ``window`` (default ``2 * workers``) results
+    buffered.
+
+    Input order keeps the downstream writes, the regen-state ledger and the
+    printed log deterministic regardless of which fetch finishes first. An
+    exception raised by ``fn`` propagates when its item is reached; pending
+    work is cancelled when the consumer stops early (break, Ctrl-C).
+    ``workers <= 1`` runs inline with no thread.
+    """
+    if workers <= 1:
+        for item in items:
+            yield item, fn(item)
+        return
+    window = max(workers, window or 2 * workers)
+    iterator = iter(items)
+    pending: deque[tuple[_T, Future]] = deque()
+    executor = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="rt-fetch")
+    try:
+        for item in iterator:
+            pending.append((item, executor.submit(fn, item)))
+            if len(pending) >= window:
+                break
+        while pending:
+            item, future = pending.popleft()
+            result = future.result()
+            for nxt in iterator:
+                pending.append((nxt, executor.submit(fn, nxt)))
+                break
+            yield item, result
+    finally:
+        for _item, future in pending:
+            future.cancel()
+        executor.shutdown(wait=True, cancel_futures=True)
+
+
+def _xml_cache_path(cache_subdir: str, cache_name: str) -> Path:
+    return riigiteataja_common.DATA_DIR / cache_subdir / f"{cache_name}.xml"
+
+
+def make_throttled_fetch(
+    throttle: FetchThrottle,
+    *,
+    cache_subdir: str,
+    refresh: bool,
+    fetch: Callable[..., ET.Element | None] | None = None,
+) -> Callable[[dict], ET.Element | None]:
+    """Return a worker callable ``task -> XML root | None``.
+
+    A task is ``{"url", "cache_name"}``. A cache hit (non-refresh run with
+    the XML already on disk) bypasses the throttle entirely, so a resumed
+    run replays cached acts at disk speed.
+    """
+    fetcher = fetch or fetch_xml
+
+    def _fetch(task: dict) -> ET.Element | None:
+        cache_name = task["cache_name"]
+        cached = (not refresh) and _xml_cache_path(cache_subdir, cache_name).is_file()
+        if not cached:
+            throttle.before_request()
+        try:
+            return fetcher(
+                task["url"],
+                cache_name=cache_name,
+                cache_subdir=cache_subdir,
+                refresh=refresh,
+            )
+        finally:
+            if not cached:
+                throttle.after_request()
+
+    return _fetch
+
+
+# ---------------------------------------------------------------------------
+# Resumable refresh state (#722) — mirrors generate_all_laws --regen-state
+# ---------------------------------------------------------------------------
+
+REGEN_STATE_SCHEMA_VERSION = 1
+DEFAULT_REGEN_STATE_SENTINEL = "__default_regen_state__"
+#: Checkpoint cadence: the ledger is rewritten atomically every N recorded
+#: acts (and on exit). 14,871 per-act rewrites of a multi-MB ledger would
+#: dominate a resumed run; a crash loses at most N acts of progress.
+REGEN_STATE_CHECKPOINT_EVERY = 50
+
+
+def default_regen_state_path(is_kov: bool) -> Path:
+    """Default ledger location, under the git-ignored ``krr_outputs/.cache/``
+    so a resumable run never dirties ``git status``."""
+    name = "regen_state_regulations_kov.json" if is_kov else "regen_state_regulations_riik.json"
+    return KRR_DIR / ".cache" / name
+
+
+def regen_state_path(value: str | Path | None, *, is_kov: bool) -> Path | None:
+    if value is None:
+        return None
+    if value == DEFAULT_REGEN_STATE_SENTINEL:
+        return default_regen_state_path(is_kov)
+    path = Path(value)
+    return path if path.is_absolute() else REPO_ROOT / path
+
+
+def _empty_regen_state(is_kov: bool) -> dict:
+    return {
+        "schemaVersion": REGEN_STATE_SCHEMA_VERSION,
+        "kind": "regulations",
+        "kov": is_kov,
+        "completed": {},
+        "failed": {},
+    }
+
+
+def load_regen_state(path: Path | None, *, is_kov: bool) -> dict:
+    """Load a regulations regen ledger; any unreadable/foreign file -> fresh."""
+    if path is None or not path.exists():
+        return _empty_regen_state(is_kov)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            state = json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"WARNING: regen state {path} unreadable; starting fresh: {exc}", file=sys.stderr)
+        return _empty_regen_state(is_kov)
+    if not isinstance(state, dict):
+        return _empty_regen_state(is_kov)
+    if state.get("kind") not in (None, "regulations") or state.get("kov", is_kov) != is_kov:
+        print(f"WARNING: regen state {path} belongs to another corpus; starting fresh", file=sys.stderr)
+        return _empty_regen_state(is_kov)
+    state.setdefault("schemaVersion", REGEN_STATE_SCHEMA_VERSION)
+    state["kind"] = "regulations"
+    state["kov"] = is_kov
+    if not isinstance(state.get("completed"), dict):
+        state["completed"] = {}
+    if not isinstance(state.get("failed"), dict):
+        state["failed"] = {}
+    return state
+
+
+def save_regen_state(path: Path | None, state: dict) -> None:
+    """Atomically persist the ledger (tmp file + ``os.replace``)."""
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    state["schemaVersion"] = REGEN_STATE_SCHEMA_VERSION
+    state["updatedAt"] = datetime.now(UTC).isoformat()
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=2, sort_keys=True)
+            f.write("\n")
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+    os.replace(tmp, path)
+
+
+def prune_completed_regen_state(
+    state: dict,
+    regs: dict[str, dict],
+    *,
+    kehtiv: str,
+    out_dir: Path,
+) -> set[str]:
+    """Drop stale completed entries and return the terviktekstIds to skip.
+
+    A completed entry is kept only when the act is still in the current
+    source list with the same ``kehtiv`` and ``globalId`` and its recorded
+    output file still exists. Dropped entries are logged under
+    ``droppedCompleted`` (same shape as the law ledger).
+    """
+    completed = state.get("completed")
+    if not isinstance(completed, dict):
+        state["completed"] = {}
+        return set()
+    if state.get("schemaVersion") != REGEN_STATE_SCHEMA_VERSION:
+        stale = {str(tid): "schemaVersion changed" for tid in completed}
+        completed.clear()
+        state.get("failed", {}).clear()
+        state["schemaVersion"] = REGEN_STATE_SCHEMA_VERSION
+        _append_dropped(state, stale)
+        return set()
+
+    valid: set[str] = set()
+    stale: dict[str, str] = {}
+    for tid, entry in list(completed.items()):
+        info = regs.get(tid)
+        reason = None
+        if not isinstance(entry, dict):
+            reason = "invalid completed entry"
+        elif info is None:
+            reason = "not in current source list"
+        elif entry.get("kehtiv") != kehtiv:
+            reason = "kehtiv changed"
+        elif str(entry.get("globalId") or "") != str(info.get("gid") or ""):
+            reason = "globalId changed"
+        elif not entry.get("output") or not (out_dir / entry["output"]).is_file():
+            reason = "output missing"
+        if reason:
+            stale[tid] = reason
+            completed.pop(tid, None)
+        else:
+            valid.add(tid)
+    _append_dropped(state, stale)
+    return valid
+
+
+def _append_dropped(state: dict, entries: dict[str, str]) -> None:
+    if not entries:
+        return
+    history = state.get("droppedCompleted")
+    if not isinstance(history, list):
+        history = []
+    history.append({"at": datetime.now(UTC).isoformat(), "entries": entries})
+    state["droppedCompleted"] = history
+
+
+def record_regen_state(
+    state: dict,
+    *,
+    tid: str,
+    info: dict,
+    kehtiv: str,
+    status: str,
+    output: str | None = None,
+    subsection_count: int = 0,
+    iri_scheme: str | None = None,
+    reason: str | None = None,
+) -> None:
+    """Record one act's outcome. ``status='failed'`` goes under ``failed``
+    (retried next run); anything else under ``completed`` (skipped next run)."""
+    entry = {
+        "terviktekstId": tid,
+        "globalId": str(info.get("gid") or ""),
+        "title": info.get("pealkiri", ""),
+        "kehtiv": kehtiv,
+        "status": status,
+    }
+    if output:
+        entry["output"] = output
+    if iri_scheme:
+        entry["iriScheme"] = iri_scheme
+    if subsection_count:
+        entry["subsectionCount"] = subsection_count
+    if reason:
+        entry["reason"] = reason
+    if status == "failed":
+        state.setdefault("failed", {})[tid] = entry
+        state.setdefault("completed", {}).pop(tid, None)
+    else:
+        state.setdefault("completed", {})[tid] = entry
+        state.setdefault("failed", {}).pop(tid, None)
+
+
+_TID_FROM_FILENAME_RE = re.compile(r"_t(\d+)_peep\.json$")
+
+
+def existing_regulation_tids(out_dir: Path) -> set[str]:
+    """terviktekstIds that already have a committed peep, read from the
+    ``*_t<tid>_peep.json`` filename (no JSON parse). Drives
+    ``--iri-scheme auto``: those acts keep their published legacy IRIs even
+    when the title (hence the slug/filename) changed."""
+    tids: set[str] = set()
+    for path in regulation_files(out_dir):
+        m = _TID_FROM_FILENAME_RE.search(path.name)
+        if m:
+            tids.add(m.group(1))
+    return tids
+
+
+def resolve_iri_scheme(requested: str, *, has_committed_peep: bool) -> str:
+    if requested == IRI_SCHEME_AUTO:
+        return IRI_SCHEME_LEGACY if has_committed_peep else IRI_SCHEME_LAW
+    _check_iri_scheme(requested)
+    return requested
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--kov", action="store_true", help="Generate KOV (municipal) regulations instead of state-level.")
     parser.add_argument("--kehtiv", default=DEFAULT_KEHTIV, help="Snapshot date YYYY-MM-DD (default: %(default)s).")
     parser.add_argument("--limit", type=int, default=None, help="Process at most N regulations (for dry runs).")
-    parser.add_argument("--sleep", type=float, default=0.3, help="Seconds to sleep between XML fetches (be polite).")
+    parser.add_argument("--sleep", type=float, default=0.3, help="Seconds each worker sleeps after a network XML fetch (be polite; default %(default)s, as for laws).")
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=DEFAULT_WORKERS,
+        help="Concurrent RT XML fetches (bounded pool; default %(default)s, 1 = serial).",
+    )
+    parser.add_argument(
+        "--max-rps",
+        type=float,
+        default=DEFAULT_MAX_RPS,
+        help="Global cap on RT request starts per second across all workers (default %(default)s; 0 = uncapped).",
+    )
+    parser.add_argument(
+        "--iri-scheme",
+        choices=(IRI_SCHEME_AUTO, *IRI_SCHEMES),
+        default=IRI_SCHEME_AUTO,
+        help=(
+            "Provision IRI minting (#722). 'law' = law_structure suffixes "
+            "(§ 9¹ -> Par_9_1); 'legacy' = pre-#722 positional suffixes; "
+            "'auto' (default) = law for acts with no committed peep, legacy "
+            "for acts that already have one, so a refresh never renames a "
+            "published IRI. Switching the corpus to 'law' is a MAJOR change: "
+            "see regulation_iri_rename_map.py and docs/RELEASE.md."
+        ),
+    )
+    parser.add_argument(
+        "--regen-state",
+        nargs="?",
+        const=DEFAULT_REGEN_STATE_SENTINEL,
+        default=None,
+        metavar="PATH",
+        help=(
+            "Persist per-act refresh progress to PATH (default: "
+            "krr_outputs/.cache/regen_state_regulations_{riik,kov}.json). "
+            "Acts recorded as completed for the same kehtiv and globalId are "
+            "skipped, so an interrupted run resumes where it stopped."
+        ),
+    )
+    parser.add_argument(
+        "--reset-regen-state",
+        action="store_true",
+        help="Discard an existing --regen-state file before running (requires --regen-state).",
+    )
     parser.add_argument(
         "--strip-repealed-bodies",
         action="store_true",
@@ -1226,11 +1782,21 @@ def main():
     )
     args = parser.parse_args()
 
+    if args.workers < 1:
+        parser.error("--workers must be >= 1")
     is_kov = args.kov
     mode = "force" if args.force else "refresh" if args.refresh else "missing-only"
     out_dir = OUTPUT_KOV if is_kov else OUTPUT_RIIK
     out_dir.mkdir(parents=True, exist_ok=True)
     cache_subdir = "maarus_kov" if is_kov else "maarus"
+
+    state_path = regen_state_path(args.regen_state, is_kov=is_kov)
+    if args.reset_regen_state:
+        if state_path is None:
+            parser.error("--reset-regen-state requires --regen-state")
+        if state_path.exists():
+            state_path.unlink()
+            print(f"Reset regen state: {state_path}")
 
     if args.strip_repealed_bodies:
         print("=" * 70)
@@ -1255,7 +1821,10 @@ def main():
         return
 
     print("=" * 70)
-    print(f"Generate regulations (kov={'true' if is_kov else 'false'}, kehtiv={args.kehtiv}, mode={mode})")
+    print(
+        f"Generate regulations (kov={'true' if is_kov else 'false'}, kehtiv={args.kehtiv}, "
+        f"mode={mode}, workers={args.workers}, iriScheme={args.iri_scheme})"
+    )
     print("=" * 70)
 
     print("\n[1/3] Querying Riigi Teataja API...")
@@ -1270,6 +1839,18 @@ def main():
         print(f"  FATAL: {exc}")
         sys.exit(2)
 
+    regen_state = load_regen_state(state_path, is_kov=is_kov)
+    resume_tids: set[str] = set()
+    if state_path is not None:
+        regen_state.setdefault("startedAt", datetime.now(UTC).isoformat())
+        regen_state["mode"] = mode
+        regen_state["kehtiv"] = args.kehtiv
+        resume_tids = prune_completed_regen_state(
+            regen_state, regs, kehtiv=args.kehtiv, out_dir=out_dir
+        )
+        save_regen_state(state_path, regen_state)
+        print(f"  Regen state: {state_path} ({len(resume_tids)} completed acts will be skipped)")
+
     print(f"\n[2/3] Generating JSON-LD for {len(regs)} regulations...")
     run_counts = Counter({
         "newlyGenerated": 0,
@@ -1279,19 +1860,29 @@ def main():
         "refreshed": 0,
         "forceRewritten": 0,
         "failedFetches": 0,
+        "regenStateSkipped": 0,
     })
+    scheme_counts: Counter[str] = Counter()
     failed = 0
-    totals = {"paragraphs": 0, "annexes": 0, "has_preamble": 0, "html_fallback": 0, "no_paragraphs": 0}
+    totals = {"paragraphs": 0, "subsections": 0, "annexes": 0, "has_preamble": 0, "html_fallback": 0, "no_paragraphs": 0}
     # Cache the JSON-LD docs we just built (or read off disk for the
     # missing-only-skip path). Threaded into the index builder so it
     # doesn't re-read every file we just wrote.
     built_docs: dict[Path, dict] = {}
+    committed_tids = existing_regulation_tids(out_dir)
 
-    for i, (tid, info) in enumerate(sorted(regs.items()), 1):
+    # Plan serially (cheap, deterministic), fetch through the bounded pool,
+    # then build + write + ledger in the main thread in input order.
+    tasks: list[dict] = []
+    ordered = sorted(regs.items())
+    for i, (tid, info) in enumerate(ordered, 1):
         title = info["pealkiri"]
-        url = info["url"]
         issuer = info.get("valjaandja", "")
-        out_path, slug = make_filename(title, tid, is_kov, issuer)
+        out_path, _slug = make_filename(title, tid, is_kov, issuer)
+
+        if tid in resume_tids and out_path.exists():
+            run_counts["regenStateSkipped"] += 1
+            continue
 
         # Missing-only fast path: if the existing file is already up
         # to date with the current (kehtiv, terviktekstId) signature,
@@ -1311,42 +1902,79 @@ def main():
                 built_docs[out_path] = existing_doc
                 continue
 
-        print(f"  [{i}/{len(regs)}] {issuer} | {title[:80]}")
+        tasks.append({
+            "index": i,
+            "tid": tid,
+            "info": info,
+            "out_path": out_path,
+            "url": info["url"],
+            # Cache name: globalID first (cheap to verify against RT), tid as fallback.
+            "cache_name": f"reg_{info.get('gid') or tid}",
+            "iri_scheme": resolve_iri_scheme(
+                args.iri_scheme, has_committed_peep=tid in committed_tids
+            ),
+        })
 
-        # Cache name: use globalID first (cheap to verify against RT), tid as fallback
-        cache_name = f"reg_{info.get('gid') or tid}"
-        root = fetch_xml(
-            url,
-            cache_name=cache_name,
-            cache_subdir=cache_subdir,
-            refresh=mode in {"refresh", "force"},
-        )
-        if root is None:
-            print("    SKIP: could not fetch XML")
-            failed += 1
-            run_counts["failedFetches"] += 1
-            continue
+    throttle = FetchThrottle(max_rps=args.max_rps, sleep=args.sleep)
+    fetch_task = make_throttled_fetch(
+        throttle, cache_subdir=cache_subdir, refresh=mode in {"refresh", "force"}
+    )
+    since_checkpoint = 0
+    try:
+        for task, root in bounded_ordered_map(fetch_task, tasks, workers=args.workers):
+            tid = task["tid"]
+            info = task["info"]
+            title = info["pealkiri"]
+            out_path = task["out_path"]
+            print(f"  [{task['index']}/{len(regs)}] {info.get('valjaandja', '')} | {title[:80]}")
 
-        try:
-            doc, stats = build_regulation_jsonld(
-                title, info, root, is_kov=is_kov, kehtiv=args.kehtiv
-            )
-        except Exception as e:
-            print(f"    FAIL: {e}")
-            failed += 1
-            run_counts["failedFetches"] += 1
-            continue
-
-        status = write_regulation_output(
-            out_path, doc, mode=mode, expected_kehtiv=args.kehtiv
-        )
-        run_counts[status] += 1
-        built_docs[out_path] = doc
-        for k, v in stats.items():
-            totals[k] = totals.get(k, 0) + v
-
-        if args.sleep > 0:
-            time.sleep(args.sleep)
+            if root is None:
+                print("    SKIP: could not fetch XML")
+                failed += 1
+                run_counts["failedFetches"] += 1
+                record_regen_state(
+                    regen_state, tid=tid, info=info, kehtiv=args.kehtiv,
+                    status="failed", reason="could not fetch XML",
+                )
+            else:
+                try:
+                    doc, stats = build_regulation_jsonld(
+                        title, info, root, is_kov=is_kov, kehtiv=args.kehtiv,
+                        iri_scheme=task["iri_scheme"],
+                    )
+                except Exception as e:
+                    print(f"    FAIL: {e}")
+                    failed += 1
+                    run_counts["failedFetches"] += 1
+                    record_regen_state(
+                        regen_state, tid=tid, info=info, kehtiv=args.kehtiv,
+                        status="failed", reason=str(e)[:300],
+                    )
+                else:
+                    status = write_regulation_output(
+                        out_path, doc, mode=mode, expected_kehtiv=args.kehtiv
+                    )
+                    run_counts[status] += 1
+                    scheme_counts[task["iri_scheme"]] += 1
+                    built_docs[out_path] = doc
+                    for k, v in stats.items():
+                        totals[k] = totals.get(k, 0) + v
+                    record_regen_state(
+                        regen_state, tid=tid, info=info, kehtiv=args.kehtiv,
+                        status=status,
+                        output=str(out_path.relative_to(out_dir)),
+                        subsection_count=stats.get("subsections", 0),
+                        iri_scheme=task["iri_scheme"],
+                    )
+            since_checkpoint += 1
+            if state_path is not None and since_checkpoint >= REGEN_STATE_CHECKPOINT_EVERY:
+                save_regen_state(state_path, regen_state)
+                since_checkpoint = 0
+    finally:
+        # Persist progress on success, failure and Ctrl-C alike so the next
+        # --regen-state run resumes instead of restarting from tid 1.
+        if state_path is not None:
+            save_regen_state(state_path, regen_state)
 
     # ---------------------------------------------------------------------
     print("\n[3/3] Writing index...")
@@ -1368,6 +1996,12 @@ def main():
             "refreshed": run_counts["refreshed"],
             "forceRewritten": run_counts["forceRewritten"],
             "failedFetches": run_counts["failedFetches"],
+            "regenStateSkipped": run_counts["regenStateSkipped"],
+            "workers": args.workers,
+            "maxRequestsPerSecond": args.max_rps,
+            "networkRequests": throttle.requests,
+            "provisionIriScheme": dict(sorted(scheme_counts.items())),
+            "subsectionsGenerated": totals["subsections"],
             "partialAllowed": args.allow_partial,
             "sourceRemovedFromSnapshotCount": len(removed_from_source),
             "sourceRemovedFromSnapshot": removed_from_source,
@@ -1387,6 +2021,10 @@ def main():
     print(f"  Unchanged:                  {run_counts['unchanged']}")
     print(f"  Refreshed:                  {run_counts['refreshed']}")
     print(f"  Force rewritten:            {run_counts['forceRewritten']}")
+    print(f"  Skipped (regen state):      {run_counts['regenStateSkipped']}")
+    print(f"  Network requests:           {throttle.requests}")
+    print(f"  Provision IRI schemes:      {dict(sorted(scheme_counts.items()))}")
+    print(f"  Subsections generated:      {totals['subsections']}")
     print(f"  Source removed from snapshot: {len(removed_from_source)}")
     print(f"  Failed:                     {failed}")
     print(f"  Corpus regulations indexed: {index_doc['totalRegulations']}")
