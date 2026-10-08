@@ -140,7 +140,7 @@ The first public release. It replaces every earlier pre-release build.
 ### What changed from the pre-release builds
 
 - **Action: new namespace (#516).** All IRIs are under
-  `https://w3id.org/estleg/`. The earlier `data.riik.ee` namespace was never
+  `https://w3id.org/estleg/`. The earlier namespace (see [NAMESPACE_MIGRATION.md](NAMESPACE_MIGRATION.md)) was never
   the project's to use, is not bridged with `owl:sameAs`, and must not be
   used. The project is independent and is not published by the Estonian
   government.
