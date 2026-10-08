@@ -108,6 +108,7 @@ PREFERRED_KEYS = (
     "owl:disjointWith",
     "owl:equivalentClass",
     "owl:deprecated",
+    "dcterms:isReplacedBy",
     "rdfs:label",
     "skos:prefLabel",
     "rdfs:comment",
@@ -146,6 +147,47 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
         "resulted in version",
     ),
     "estleg:rtUrl": (("owl:DatatypeProperty",), "Riigi Teataja URL", "Riigi Teataja URL"),
+    # #701: corpus-coverage flags replacing hasNoTransposition /
+    # hasNoCompetentAuthority, plus the provenance stamped beside them.
+    "estleg:noTranspositionEdgeInCorpus": (
+        ("owl:DatatypeProperty",),
+        "korpuses puudub ülevõtuseos",
+        "no transposition edge in corpus",
+    ),
+    "estleg:competentAuthorityNotExtracted": (
+        ("owl:DatatypeProperty",),
+        "pädevat asutust pole eraldatud",
+        "competent authority not extracted",
+    ),
+    "estleg:coverageFlagMethod": (
+        ("owl:DatatypeProperty",),
+        "kattelipu meetod",
+        "coverage flag method",
+    ),
+    "estleg:coverageFlagAsOf": (
+        ("owl:DatatypeProperty",),
+        "kattelipu seisuga kuupäev",
+        "coverage flag as-of date",
+    ),
+}
+
+# Terms kept declared so old queries still parse, but marked owl:deprecated
+# with dcterms:isReplacedBy. Value: (replacement, comment that overwrites).
+DEPRECATED_TERMS: dict[str, tuple[str, str]] = {
+    "estleg:hasNoTransposition": (
+        "estleg:noTranspositionEdgeInCorpus",
+        "Deprecated (issue #701): the name read as a legal finding but the flag "
+        "only recorded a missing transposition edge in this corpus. Use "
+        "estleg:noTranspositionEdgeInCorpus. Retained so old queries parse; "
+        "no longer emitted.",
+    ),
+    "estleg:hasNoCompetentAuthority": (
+        "estleg:competentAuthorityNotExtracted",
+        "Deprecated (issue #701): the name read as a legal finding but the flag "
+        "only recorded that no competent-authority edge was extracted. Use "
+        "estleg:competentAuthorityNotExtracted. Retained so old queries parse; "
+        "no longer emitted.",
+    ),
 }
 
 # Fallback placeholders: individuals an old closure pass materialised in the CV
@@ -299,12 +341,6 @@ REAL_COMMENTS: dict[str, str] = {
         "Literal name of the issuing body when a structured Issuer node is "
         "not available."
     ),
-    "estleg:itemNumber": (
-        "Number of a punkt (enumerated item) inside a lõige, as a display "
-        "string such as \"3\"; repeated when the lõige lists several punktid. "
-        "Written by law_structure.py from the Riigi Teataja punktNr elements, "
-        "falling back to the punkt numbers cited in the lõige text (#514)."
-    ),
     "estleg:jurisdiction": (
         "Jurisdiction label (Estonia, EU, municipality name)."
     ),
@@ -442,6 +478,12 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:governs": ("owl:Thing", "rdfs:Resource"),
     "estleg:hasNoCompetentAuthority": ("estleg:Act", "xsd:boolean"),
     "estleg:hasNoTransposition": ("owl:Thing", "xsd:boolean"),
+    "estleg:competentAuthorityNotExtracted": ("estleg:Act", "xsd:boolean"),
+    # owl:Thing: an estleg:EULegislation domain would type EUR-Lex stubs in the
+    # laws SHACL bucket under RDFS inference (same reason as the old flag).
+    "estleg:noTranspositionEdgeInCorpus": ("owl:Thing", "xsd:boolean"),
+    "estleg:coverageFlagMethod": ("owl:Thing", "xsd:string"),
+    "estleg:coverageFlagAsOf": ("owl:Thing", "xsd:date"),
     "estleg:inboundCitationCount": ("owl:Thing", "xsd:integer"),
     "estleg:interpretationCount": ("owl:Thing", "xsd:integer"),
     "estleg:similarFrom": ("estleg:Similarity", "rdfs:Resource"),
@@ -746,10 +788,77 @@ OVERWRITE_RANGE: dict[str, str] = {
 
 # Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
 # so like DOMAIN_RANGE it never reaches a term whose comment is already there.
-OVERWRITE_COMMENT: dict[str, str] = {
+OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
     # All 786 subjects are ProposedAmendment nodes pointing at a DraftLegislation.
     "estleg:amendingDraft": (
         "Links a ProposedAmendment to the draft bill that proposes it."
+    ),
+    # The parser reads alampunktNr (#694), not the legacy punktNr the old
+    # REAL_COMMENTS text named; the CV comment was already set, so overwrite.
+    "estleg:itemNumber": (
+        "Number of an enumerated sub-point (punkt) inside a lõige, as a display "
+        "string such as \"3\" or \"1¹\"; repeated when the lõige lists several "
+        "sub-points. Written by law_structure.py from the Riigi Teataja "
+        "alampunkt elements' alampunktNr, with the ylaIndeks superscript "
+        "rendered as a Unicode superscript (#694); the legacy punktNr tag is "
+        "still honoured. Falls back to the punkt numbers cited in the lõige "
+        "text only when the lõige has no structural sub-points (#514)."
+    ),
+    # #701: bilingual, because the point is that neither reading is a finding.
+    "estleg:noTranspositionEdgeInCorpus": [
+        {
+            "@value": (
+                "Corpus-coverage flag, NOT a legal finding: true when an "
+                "in-force EU directive has no estleg:transposesDirective / "
+                "estleg:transposedBy edge in this corpus. Absence of an edge "
+                "does not mean Estonia has not transposed the directive. "
+                "Stamped with estleg:coverageFlagMethod and "
+                "estleg:coverageFlagAsOf (#701, replaces "
+                "estleg:hasNoTransposition)."
+            ),
+            "@language": "en",
+        },
+        {
+            "@value": (
+                "Korpuse katvuse lipp, MITTE õiguslik järeldus: tõene, kui "
+                "kehtival EL-i direktiivil puudub selles korpuses "
+                "ülevõtuseos (estleg:transposesDirective / estleg:transposedBy). "
+                "Seose puudumine ei tähenda, et Eesti pole direktiivi üle "
+                "võtnud."
+            ),
+            "@language": "et",
+        },
+    ],
+    "estleg:competentAuthorityNotExtracted": [
+        {
+            "@value": (
+                "Corpus-coverage flag, NOT a legal finding: true when no "
+                "estleg:competentAuthority edge was extracted for this statute "
+                "root (competentAuthorityCount is 0). It does not mean the act "
+                "names no competent authority. Stamped with "
+                "estleg:coverageFlagMethod and estleg:coverageFlagAsOf (#701, "
+                "replaces estleg:hasNoCompetentAuthority)."
+            ),
+            "@language": "en",
+        },
+        {
+            "@value": (
+                "Korpuse katvuse lipp, MITTE õiguslik järeldus: tõene, kui "
+                "seaduse juurtipule pole eraldatud ühtegi "
+                "estleg:competentAuthority seost. See ei tähenda, et seadus ei "
+                "nimeta pädevat asutust."
+            ),
+            "@language": "et",
+        },
+    ],
+    "estleg:coverageFlagMethod": (
+        "Method marker (generator and rule revision) behind the coverage-gap "
+        "flags on this node, e.g. "
+        "\"analytical-overlay/generate_analytical_overlay@1\" (#701)."
+    ),
+    "estleg:coverageFlagAsOf": (
+        "Pinned build evaluation date (BUILD_EVALUATION_DATE, not the wall "
+        "clock) at which the coverage-gap flags on this node were derived (#701)."
     ),
 }
 
@@ -984,6 +1093,16 @@ def apply_comment(node: dict) -> None:
         )
 
 
+def apply_deprecation(node: dict) -> None:
+    nid = node.get("@id")
+    if not isinstance(nid, str) or nid not in DEPRECATED_TERMS:
+        return
+    replacement, comment = DEPRECATED_TERMS[nid]
+    node["owl:deprecated"] = True
+    node["dcterms:isReplacedBy"] = iri_ref(replacement)
+    node["rdfs:comment"] = comment
+
+
 def apply_domain_range(node: dict) -> None:
     nid = node.get("@id")
     if not isinstance(nid, str) or not is_property_node(node):
@@ -1109,6 +1228,7 @@ def build_consolidated_graph(
 
     for node in index.values():
         apply_comment(node)
+        apply_deprecation(node)
         apply_domain_range(node)
         apply_includes(node)
         apply_class_alignment(node)

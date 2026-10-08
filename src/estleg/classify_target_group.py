@@ -19,11 +19,20 @@ from pathlib import Path
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     KRR_DIR,
-    heuristic_confidence_for_node,
     iter_peep_files,
     jsonld_text,
     save_json,
-    stamp_assertion_confidence,
+)
+from estleg.heuristic_overrides import (
+    TARGET_GROUP_PREDICATES,
+    OverrideError,
+    OverrideStore,
+    apply_node_overrides,
+    check_overrides,
+    ensure_prov_context,
+    load_overrides,
+    print_check_report,
+    restamp_confidence,
 )
 
 TARGET_GROUP_ORDER: tuple[str, ...] = (
@@ -425,7 +434,14 @@ def classify_files(
     *,
     report_path: Path,
     write: bool = True,
+    overrides: OverrideStore | None = None,
 ) -> dict:
+    """Classify provision target groups; human overrides (#700) win LAST.
+
+    ``overrides`` defaults to the committed ``data/heuristic_overrides.jsonl``.
+    """
+    if overrides is None:
+        overrides = load_overrides()
     counts = Counter()
     group_counts = Counter()
     unmapped_duty_holders = Counter()
@@ -445,7 +461,16 @@ def classify_files(
             types = node.get("@type") or []
             if isinstance(types, str):
                 types = [types]
+            node_id = node.get("@id")
+            owned = overrides.for_node(node_id, TARGET_GROUP_PREDICATES)
             if "estleg:paragrahv" not in node and "estleg:Subsection" not in types:
+                # #700: a human override applies to any node it names, and
+                # stale attribution is retracted, even off the provision path.
+                if apply_node_overrides(node, overrides, TARGET_GROUP_PREDICATES):
+                    changed = True
+                if overrides.for_node(node_id) and restamp_confidence(node, overrides):
+                    changed = True
+                counts["human_overrides_applied"] += len(owned)
                 continue
             counts["provisions_scanned"] += 1
             old_iris = normalize_target_group_value(node.get("estleg:targetGroup"))
@@ -467,7 +492,11 @@ def classify_files(
                     if duty:
                         unmapped_duty_holders[duty] += 1
 
-            if groups:
+            if "estleg:targetGroup" in owned:
+                # #700: the reviewed value is applied below; the heuristic
+                # neither overwrites nor pops it.
+                pass
+            elif groups:
                 counts["provisions_classified"] += 1
                 if len(groups) > 1:
                     counts["multi_valued_provisions"] += 1
@@ -478,12 +507,19 @@ def classify_files(
             elif "estleg:targetGroup" in node:
                 node.pop("estleg:targetGroup", None)
                 changed = True
-            confidence = heuristic_confidence_for_node(node)
-            if confidence and stamp_assertion_confidence(node, confidence):
+            if apply_node_overrides(node, overrides, TARGET_GROUP_PREDICATES):
+                changed = True
+            counts["human_overrides_applied"] += len(owned)
+            if restamp_confidence(node, overrides):
                 changed = True
 
         if changed:
             changed_files += 1
+            if any(
+                isinstance(n, dict) and "prov:wasAttributedTo" in n
+                for n in doc["@graph"]
+            ):
+                ensure_prov_context(doc)
             if write:
                 save_json(path, doc)
 
@@ -646,8 +682,18 @@ _DUTY_HOLDER_STRING_LINE_RE = re.compile(
 )
 
 
-def stamp_confidence_files(files: list[Path], *, write: bool = True) -> dict[str, int]:
-    """Stamp ``estleg:assertionConfidence`` on existing classifier outputs."""
+def stamp_confidence_files(
+    files: list[Path],
+    *,
+    write: bool = True,
+    overrides: OverrideStore | None = None,
+) -> dict[str, int]:
+    """Stamp ``estleg:assertionConfidence`` on existing classifier outputs.
+
+    Override-aware (#700): a human-owned layer scores 1.0.
+    """
+    if overrides is None:
+        overrides = load_overrides()
     stats = Counter()
     markers = (
         '"estleg:normativeType"',
@@ -676,8 +722,7 @@ def stamp_confidence_files(files: list[Path], *, write: bool = True) -> dict[str
         for node in doc["@graph"]:
             if not isinstance(node, dict):
                 continue
-            value = heuristic_confidence_for_node(node)
-            if value and stamp_assertion_confidence(node, value):
+            if restamp_confidence(node, overrides):
                 stats["nodes_changed"] += 1
                 file_changed = True
         if file_changed:
@@ -803,11 +848,34 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="write estleg:assertionConfidence on classifier outputs (#456)",
     )
+    parser.add_argument(
+        "--overrides",
+        type=Path,
+        default=None,
+        help="human override store (#700; default data/heuristic_overrides.jsonl)",
+    )
+    parser.add_argument(
+        "--check-overrides",
+        action="store_true",
+        help="dry run: report how many targetGroup overrides would apply and "
+        "which are stale (node not found); writes nothing",
+    )
     args = parser.parse_args(argv)
+    try:
+        overrides = load_overrides(args.overrides)
+    except OverrideError as exc:
+        print(f"ERROR: {exc}")
+        return 1
 
     files = iter_peep_files(include_kov=not args.exclude_kov)
+    if args.check_overrides:
+        report = check_overrides(overrides, files, TARGET_GROUP_PREDICATES)
+        print_check_report(report, "classify_target_group")
+        return 0
     if args.stamp_confidence:
-        stats = stamp_confidence_files(files, write=not args.dry_run)
+        stats = stamp_confidence_files(
+            files, write=not args.dry_run, overrides=overrides
+        )
         print("Estonian Legal Ontology - assertionConfidence stamp (#456)")
         print(f"  Files scanned: {stats['files_scanned']}")
         print(f"  Files changed: {stats['files_changed']}")
@@ -831,6 +899,7 @@ def main(argv: list[str] | None = None) -> int:
         files,
         report_path=KRR_DIR / "reports" / "target_group_report.json",
         write=not args.dry_run,
+        overrides=overrides,
     )
     summary = report["summary"]
     print("Estonian Legal Ontology - Target Group Classification")

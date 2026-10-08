@@ -2014,6 +2014,38 @@
       }
     },
     {
+      "@id": "estleg:competentAuthorityNotExtracted",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "pädevat asutust pole eraldatud",
+          "@language": "et"
+        },
+        {
+          "@value": "competent authority not extracted",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": [
+        {
+          "@value": "Corpus-coverage flag, NOT a legal finding: true when no estleg:competentAuthority edge was extracted for this statute root (competentAuthorityCount is 0). It does not mean the act names no competent authority. Stamped with estleg:coverageFlagMethod and estleg:coverageFlagAsOf (#701, replaces estleg:hasNoCompetentAuthority).",
+          "@language": "en"
+        },
+        {
+          "@value": "Korpuse katvuse lipp, MITTE õiguslik järeldus: tõene, kui seaduse juurtipule pole eraldatud ühtegi estleg:competentAuthority seost. See ei tähenda, et seadus ei nimeta pädevat asutust.",
+          "@language": "et"
+        }
+      ],
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
       "@id": "estleg:consistencyChecked",
       "@type": [
         "owl:DatatypeProperty"
@@ -2238,6 +2270,52 @@
       "rdfs:comment": "Issuing court as published by Riigi Teataja (toiminguEsitajaAsutus).",
       "rdfs:domain": {
         "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:coverageFlagAsOf",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kattelipu seisuga kuupäev",
+          "@language": "et"
+        },
+        {
+          "@value": "coverage flag as-of date",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Pinned build evaluation date (BUILD_EVALUATION_DATE, not the wall clock) at which the coverage-gap flags on this node were derived (#701).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:coverageFlagMethod",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kattelipu meetod",
+          "@language": "et"
+        },
+        {
+          "@value": "coverage flag method",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Method marker (generator and rule revision) behind the coverage-gap flags on this node, e.g. \"analytical-overlay/generate_analytical_overlay@1\" (#701).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -3485,6 +3563,10 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
+      "owl:deprecated": true,
+      "dcterms:isReplacedBy": {
+        "@id": "estleg:competentAuthorityNotExtracted"
+      },
       "rdfs:label": [
         {
           "@value": "puudub pädev asutus",
@@ -3495,7 +3577,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "True when a statute root has zero estleg:competentAuthority edges. Analytical coverage-gap flag (#521); omitted when the count is positive.",
+      "rdfs:comment": "Deprecated (issue #701): the name read as a legal finding but the flag only recorded that no competent-authority edge was extracted. Use estleg:competentAuthorityNotExtracted. Retained so old queries parse; no longer emitted.",
       "rdfs:domain": {
         "@id": "estleg:Act"
       },
@@ -3508,6 +3590,10 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
+      "owl:deprecated": true,
+      "dcterms:isReplacedBy": {
+        "@id": "estleg:noTranspositionEdgeInCorpus"
+      },
       "rdfs:label": [
         {
           "@value": "puudub ülevõtt",
@@ -3518,7 +3604,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "True when an in-force EU directive has no Estonian transposing act (no incoming estleg:transposesDirective / no estleg:transposedBy). Analytical coverage-gap flag (#521). Domain is owl:Thing so RDFS inference does not type EUR-Lex stubs as estleg:EULegislation in the laws SHACL bucket.",
+      "rdfs:comment": "Deprecated (issue #701): the name read as a legal finding but the flag only recorded a missing transposition edge in this corpus. Use estleg:noTranspositionEdgeInCorpus. Retained so old queries parse; no longer emitted.",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
@@ -4435,7 +4521,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Number of a punkt (enumerated item) inside a lõige, as a display string such as \"3\"; repeated when the lõige lists several punktid. Written by law_structure.py from the Riigi Teataja punktNr elements, falling back to the punkt numbers cited in the lõige text (#514).",
+      "rdfs:comment": "Number of an enumerated sub-point (punkt) inside a lõige, as a display string such as \"3\" or \"1¹\"; repeated when the lõige lists several sub-points. Written by law_structure.py from the Riigi Teataja alampunkt elements' alampunktNr, with the ylaIndeks superscript rendered as a Unicode superscript (#694); the legacy punktNr tag is still honoured. Falls back to the punkt numbers cited in the lõige text only when the lõige has no structural sub-points (#514).",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
@@ -5012,6 +5098,38 @@
       },
       "rdfs:range": {
         "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:noTranspositionEdgeInCorpus",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "korpuses puudub ülevõtuseos",
+          "@language": "et"
+        },
+        {
+          "@value": "no transposition edge in corpus",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": [
+        {
+          "@value": "Corpus-coverage flag, NOT a legal finding: true when an in-force EU directive has no estleg:transposesDirective / estleg:transposedBy edge in this corpus. Absence of an edge does not mean Estonia has not transposed the directive. Stamped with estleg:coverageFlagMethod and estleg:coverageFlagAsOf (#701, replaces estleg:hasNoTransposition).",
+          "@language": "en"
+        },
+        {
+          "@value": "Korpuse katvuse lipp, MITTE õiguslik järeldus: tõene, kui kehtival EL-i direktiivil puudub selles korpuses ülevõtuseos (estleg:transposesDirective / estleg:transposedBy). Seose puudumine ei tähenda, et Eesti pole direktiivi üle võtnud.",
+          "@language": "et"
+        }
+      ],
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {

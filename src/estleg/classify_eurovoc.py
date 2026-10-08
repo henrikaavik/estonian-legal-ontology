@@ -35,6 +35,18 @@ from estleg.estleg_common import (
 from estleg.estleg_common import (
     save_json as _save_json,
 )
+from estleg.heuristic_overrides import (
+    ATTRIBUTION_PREDICATE,
+    EUROVOC_PREDICATES,
+    OverrideError,
+    OverrideStore,
+    apply_node_overrides,
+    check_overrides,
+    ensure_prov_context,
+    load_overrides,
+    print_check_report,
+    restamp_confidence,
+)
 from estleg.kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
     CoverageReport,
@@ -588,6 +600,19 @@ def overlay_node_for_act(
     }
 
 
+def overridden_overlay_node(act_id: str, overrides: OverrideStore) -> dict:
+    """Overlay node for an act whose EuroVoc subjects a human owns (#700).
+
+    ``set`` → exactly the reviewed subjects (mirrored to ``eli:is_about``);
+    ``remove`` → no subjects. Either way the node carries
+    ``prov:wasAttributedTo`` and the override-aware confidence (1.0).
+    """
+    node: dict = {"@id": act_id}
+    apply_node_overrides(node, overrides, EUROVOC_PREDICATES)
+    restamp_confidence(node, overrides)
+    return node
+
+
 def write_eurovoc_overlay(
     nodes: list[dict],
     dest: Path | None = None,
@@ -597,6 +622,8 @@ def write_eurovoc_overlay(
     ctx = dict(CONTEXT)
     ctx["dcterms"] = "http://purl.org/dc/terms/"
     ctx["eli"] = "http://data.europa.eu/eli/ontology#"
+    if any(ATTRIBUTION_PREDICATE in node for node in nodes):
+        ctx["prov"] = "http://www.w3.org/ns/prov#"
     graph: list[dict] = [
         {
             "@id": "estleg:EuroVocOverlay",
@@ -682,10 +709,42 @@ def update_law_file_eurovoc(
     return True
 
 
-def clear_eurovoc_subjects_from_file(filepath: Path) -> bool:
+def apply_eurovoc_overrides_to_peep(filepath: Path, overrides: OverrideStore) -> bool:
+    """Legacy ``--write-peeps`` path: apply EuroVoc overrides to a peep (#700).
+
+    Every node the store names gets its reviewed EuroVoc subjects (non-EuroVoc
+    subjects are preserved), ``prov:wasAttributedTo`` and the override-aware
+    confidence. Returns True if the file was modified.
+    """
+    if not overrides:
+        return False
+    try:
+        data = load_json(filepath)
+    except Exception:
+        return False
+    modified = False
+    for node in data.get("@graph", []):
+        if not isinstance(node, dict) or not overrides.for_node(
+            node.get("@id"), EUROVOC_PREDICATES
+        ):
+            continue
+        modified |= apply_node_overrides(node, overrides, EUROVOC_PREDICATES)
+        modified |= restamp_confidence(node, overrides)
+    if modified:
+        ensure_prov_context(data)
+        save_json(filepath, data)
+    return modified
+
+
+def clear_eurovoc_subjects_from_file(
+    filepath: Path, overrides: OverrideStore | None = None
+) -> bool:
     """
     Remove all dcterms:subject entries whose @id starts with the EuroVoc URI base.
     Preserves any non-EuroVoc subjects. Returns True if the file was modified.
+
+    #700: a node whose ``dcterms:subject`` is owned by a human override is
+    skipped — its reviewed subjects are never cleared.
     """
     try:
         data = load_json(filepath)
@@ -694,6 +753,8 @@ def clear_eurovoc_subjects_from_file(filepath: Path) -> bool:
 
     modified = False
     for node in data.get("@graph", []):
+        if overrides is not None and overrides.owns(node.get("@id"), "dcterms:subject"):
+            continue
         existing = node.get("dcterms:subject")
         if existing is None:
             continue
@@ -827,7 +888,30 @@ def main(argv: list[str] | None = None):
             "Default is overlay-only (#463)."
         ),
     )
+    parser.add_argument(
+        "--overrides",
+        type=Path,
+        default=None,
+        help="human override store (#700; default data/heuristic_overrides.jsonl)",
+    )
+    parser.add_argument(
+        "--check-overrides",
+        action="store_true",
+        help=(
+            "Dry run: report how many EuroVoc overrides would apply and which "
+            "are stale (act node not found); writes nothing."
+        ),
+    )
     args = parser.parse_args(argv)
+    try:
+        overrides = load_overrides(args.overrides)
+    except OverrideError as exc:
+        print(f"ERROR: {exc}")
+        return 1
+    if args.check_overrides:
+        report = check_overrides(overrides, iter_peep_files(), EUROVOC_PREDICATES)
+        print_check_report(report, "classify_eurovoc")
+        return 0
 
     skos_path = write_eurovoc_skos_graph()
     print(f"Wrote EuroVoc SKOS graph: {_display_path(skos_path)}")
@@ -846,7 +930,7 @@ def main(argv: list[str] | None = None):
         print("\n--- Clearing existing EuroVoc subjects on peeps ---")
         cleared_count = 0
         for peep_file in iter_peep_files():
-            if clear_eurovoc_subjects_from_file(peep_file):
+            if clear_eurovoc_subjects_from_file(peep_file, overrides):
                 cleared_count += 1
         print(f"  Cleared EuroVoc subjects from {cleared_count} files")
 
@@ -893,6 +977,7 @@ def main(argv: list[str] | None = None):
     files_with_no_output = 0
     unclassified: list[str] = []
     overlay_nodes: list[dict] = []
+    overrides_applied = 0
 
     # Coverage counters
     _files_processed = 0
@@ -939,6 +1024,17 @@ def main(argv: list[str] | None = None):
             _files_processed += 1
             if is_kov:
                 _files_processed_kov += 1
+
+            # #700: a human-owned act takes its reviewed subjects (or none)
+            # instead of the keyword result, in the overlay and — under the
+            # legacy --write-peeps — on the peep.
+            act_id = meta.get("@id") or ""
+            if overrides.owns(act_id, "dcterms:subject"):
+                overrides_applied += 1
+                overlay_nodes.append(overridden_overlay_node(act_id, overrides))
+                if args.write_peeps:
+                    apply_eurovoc_overrides_to_peep(path, overrides)
+                continue
 
             if not domains:
                 unclassified.append(name)
@@ -988,7 +1084,6 @@ def main(argv: list[str] | None = None):
             for code, *_ in domains:
                 domain_counts[code] = domain_counts.get(code, 0) + 1
 
-            act_id = meta.get("@id") or ""
             if act_id:
                 overlay_nodes.append(overlay_node_for_act(act_id, domains))
             wrote = True
@@ -1085,6 +1180,7 @@ def main(argv: list[str] | None = None):
         "files_with_no_output": files_with_no_output,
         "files_updated": files_updated,
         "files_error": files_error,
+        "human_overrides_applied": overrides_applied,
         "domain_statistics": domain_stats,
         "classifications": sorted(classifications, key=lambda c: c["law_name"]),
         "unclassified_laws": sorted(unclassified),
@@ -1138,4 +1234,4 @@ def main(argv: list[str] | None = None):
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

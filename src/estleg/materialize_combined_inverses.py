@@ -301,8 +301,10 @@ def patch_combined_inverses(combined_path: Path) -> tuple[int, dict[str, int]]:
 def remint_combined_520_521(combined_path: Path) -> tuple[int, dict[str, int]]:
     """One collect + one rewrite: inverses then analytical flags (#520/#521)."""
     from estleg.generate_analytical_overlay import (
+        coverage_touched_ids,
         load_in_force_directives,
         plan_analytical_updates,
+        rewrite_combined_synced,
     )
 
     nodes = [obj for _, _, obj in iter_combined_objects(combined_path)]
@@ -319,7 +321,11 @@ def remint_combined_520_521(combined_path: Path) -> tuple[int, dict[str, int]]:
         merged.setdefault(nid, {}).update(props)
     for nid, props in analytical.items():
         merged.setdefault(nid, {}).update(props)
-    written = rewrite_combined(combined_path, merged)
+    # #701: coverage flags are synced, not merged, so deprecated names and
+    # closed gaps on an old combined are stripped rather than kept.
+    touched = coverage_touched_ids(nodes, merged)
+    del nodes
+    written = rewrite_combined_synced(combined_path, merged, touched)
     by_pred: dict[str, int] = defaultdict(int)
     for props in merged.values():
         for pred in props:
