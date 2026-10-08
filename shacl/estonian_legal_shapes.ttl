@@ -7,6 +7,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 
 estleg:graphClosureExempt
     a owl:AnnotationProperty ;
@@ -22,6 +23,21 @@ estleg:graphClosureExempt
 estleg:ActTemporalShape
     a sh:NodeShape ;
     sh:targetClass estleg:Act ;
+    # #700 human override provenance and #456 classifier confidence.
+    sh:property [
+        sh:path prov:wasAttributedTo ;
+        sh:or ( [ sh:datatype xsd:string ] [ sh:nodeKind sh:IRI ] ) ;
+        sh:name "wasAttributedTo" ;
+        sh:description "Reviewer role/organisation of a #700 human override (data/heuristic_overrides.jsonl)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:assertionConfidence ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:name "assertionConfidence" ;
+        sh:description "Classifier confidence in [0, 1] (#456); a human-overridden layer counts as 1.0 (#700)." ;
+    ] ;
     sh:property [
         sh:path dcterms:subject ;
         sh:nodeKind sh:IRI ;
@@ -115,11 +131,25 @@ estleg:ActTemporalShape
         sh:description "Optional analytical count of act-level competentAuthority IRIs (#521)." ;
     ] ;
     sh:property [
-        sh:path estleg:hasNoCompetentAuthority ;
+        sh:path estleg:competentAuthorityNotExtracted ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
-        sh:name "hasNoCompetentAuthority" ;
-        sh:description "Optional coverage-gap flag when competentAuthorityCount is 0 (#521)." ;
+        sh:name "competentAuthorityNotExtracted" ;
+        sh:description "Optional corpus-coverage flag, not a legal finding: no competentAuthority edge was extracted (competentAuthorityCount is 0). Replaces hasNoCompetentAuthority (#521, #701)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:coverageFlagMethod ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "coverageFlagMethod" ;
+        sh:description "Method marker stamped beside a coverage-gap flag (#701)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:coverageFlagAsOf ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "coverageFlagAsOf" ;
+        sh:description "Pinned as-of date (BUILD_EVALUATION_DATE) of a coverage-gap flag (#701)." ;
     ] ;
     # Issue #570: every statute root (estleg:Act, including the dual-typed
     # estleg:Law roots) must carry a human-readable rdfs:label. ActTemporalShape
@@ -212,6 +242,21 @@ estleg:LegalProvisionShape
     a sh:NodeShape ;
     sh:targetClass estleg:LegalProvision ;
     sh:targetSubjectsOf estleg:paragrahv ;
+    # #700 human override provenance and #456 classifier confidence.
+    sh:property [
+        sh:path prov:wasAttributedTo ;
+        sh:or ( [ sh:datatype xsd:string ] [ sh:nodeKind sh:IRI ] ) ;
+        sh:name "wasAttributedTo" ;
+        sh:description "Reviewer role/organisation of a #700 human override (data/heuristic_overrides.jsonl)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:assertionConfidence ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:name "assertionConfidence" ;
+        sh:description "Classifier confidence in [0, 1] (#456); a human-overridden layer counts as 1.0 (#700)." ;
+    ] ;
     sh:property [
         sh:path estleg:paragrahv ;
         sh:datatype xsd:string ;
@@ -497,6 +542,21 @@ estleg:ProvisionRequiresPartOfActShape
 estleg:SubsectionShape
     a sh:NodeShape ;
     sh:targetClass estleg:Subsection ;
+    # #700 human override provenance and #456 classifier confidence.
+    sh:property [
+        sh:path prov:wasAttributedTo ;
+        sh:or ( [ sh:datatype xsd:string ] [ sh:nodeKind sh:IRI ] ) ;
+        sh:name "wasAttributedTo" ;
+        sh:description "Reviewer role/organisation of a #700 human override (data/heuristic_overrides.jsonl)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:assertionConfidence ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 1 ;
+        sh:name "assertionConfidence" ;
+        sh:description "Classifier confidence in [0, 1] (#456); a human-overridden layer counts as 1.0 (#700)." ;
+    ] ;
     sh:property [
         sh:path estleg:subsectionNumber ;
         # #583: optional. A lõige whose number cannot be parsed from the source
@@ -1123,11 +1183,25 @@ estleg:EULegislationShape
         sh:description "Estonian law that transposes this EU directive" ;
     ] ;
     sh:property [
-        sh:path estleg:hasNoTransposition ;
+        sh:path estleg:noTranspositionEdgeInCorpus ;
         sh:maxCount 1 ;
         sh:datatype xsd:boolean ;
-        sh:name "hasNoTransposition" ;
-        sh:description "Optional coverage-gap flag when no Estonian act transposes this directive (#521)." ;
+        sh:name "noTranspositionEdgeInCorpus" ;
+        sh:description "Optional corpus-coverage flag, not a legal finding: no transposition edge for this in-force directive exists in the corpus. Replaces hasNoTransposition (#521, #701)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:coverageFlagMethod ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "coverageFlagMethod" ;
+        sh:description "Method marker stamped beside a coverage-gap flag (#701)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:coverageFlagAsOf ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "coverageFlagAsOf" ;
+        sh:description "Pinned as-of date (BUILD_EVALUATION_DATE) of a coverage-gap flag (#701)." ;
     ] .
 
 # Shape for HarmonisationLink instances (issue #197).
@@ -2574,4 +2648,53 @@ estleg:ReferenceTypeConstraint
         ) ;
         sh:name "referenceType" ;
         sh:description "Closed citation/reference-edge type (#513 T-Box). Existing estleg:references edges remain untyped until a later emission pass." ;
+    ] .
+
+# --------------------------------------------------------------------
+# Legal-text fidelity provenance shape (issue #703)
+#
+# Copied verbatim from tests/fixtures/text_fidelity_shapes.ttl;
+# tests/test_shacl_text_fidelity.py::test_fixture_matches_merged_copy keeps
+# the two copies isomorphic.
+#
+# LawActProvenanceShape is sh:Warning and ships sh:deactivated true: it
+# has current offenders (174 roots without dcterms:source, 175 without
+# estleg:kehtiv), and both SHACL gates fail on Warning results. It stays
+# deactivated until those data/text_fidelity_baseline.json lists reach
+# zero; meanwhile scripts/check_text_fidelity.py --coverage enforces the
+# shrink-only baseline. sh:severity also sits on each property shape,
+# because pyshacl does not propagate a node shape's severity to them.
+#
+# There is deliberately NO legalText shape. "A provision of a
+# structuredBody act needs estleg:legalText" joins each provision to its
+# file head (the act root, or the estleg:Part of a multi-part law), which
+# core SHACL cannot express without sh:sparql, and this file stays core
+# SHACL so inference="rdfs" and inference="none" agree (shacl/README.md,
+# tests/test_issue_681_sanctions.py). That rule (481 offenders) is
+# enforced only by check_text_fidelity.py --coverage.
+#
+# Core SHACL only, no rdfs:range or rdfs:domain, and estleg:Law has no
+# subclasses that RDFS inference could phantom-type.
+# --------------------------------------------------------------------
+
+estleg:LawActProvenanceShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Law ;
+    sh:severity sh:Warning ;
+    sh:deactivated true ;
+    rdfs:comment "An enacted law's act root must name the Riigi Teataja redaction its text was parsed from (dcterms:source) and that redaction's snapshot date (estleg:kehtiv) (issue #703). Restricted to estleg:Law: state and KOV regulations carry no kehtiv by design." ;
+    sh:property [
+        sh:path dcterms:source ;
+        sh:severity sh:Warning ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "source" ;
+        sh:message "estleg:Law act root has no dcterms:source Riigi Teataja act IRI (issue #703)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:kehtiv ;
+        sh:severity sh:Warning ;
+        sh:minCount 1 ;
+        sh:name "kehtiv" ;
+        sh:message "estleg:Law act root has no estleg:kehtiv snapshot date (issue #703)." ;
     ] .

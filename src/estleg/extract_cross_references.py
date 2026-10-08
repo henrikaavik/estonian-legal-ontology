@@ -32,7 +32,9 @@ from estleg.estleg_common import (
     ESTONIAN_MONTH_ALT,
     ESTONIAN_MONTHS_GENITIVE,
     FULLNAME_GENITIVE,
+    KNOWN_ABBREVIATION_REGISTRY_ABBREVS,
     KNOWN_ABBREVIATIONS,
+    LAW_TITLE_REGISTRY_ABBREVS,
     PAR_SUFFIX,
     act_deprecation,
     act_prefix_from_iri,
@@ -40,6 +42,7 @@ from estleg.estleg_common import (
     is_domain_individual,
     iter_peep_files,
     jsonld_text,
+    sanitize_id,
     save_json,
 )
 from estleg.kov_pipeline_coverage import (
@@ -236,12 +239,97 @@ def build_provision_index() -> tuple[
             prefix_to_act_iri, act_iri_to_prefix)
 
 
+_OSA_SUFFIX_RE = re.compile(r"^(?P<base>.+?)_Osa(?P<n>\d+)$")
+
+
+def build_prefix_family_index(
+    prefix_to_provisions: dict[str, dict[str, str]],
+) -> dict[str, list[str]]:
+    """Group provision prefixes by their law's base prefix (#696).
+
+    ``{"AOS": ["AOS_Osa1", …, "AOS_Osa8"], "KOKS": ["KOKS"]}``. A
+    multi-osa law keeps its §§ under ``<base>_Osa<N>`` prefixes, so the
+    registry's corpus prefix (``sanitize_id(abbrev)``) names the BASE and
+    the family lists every prefix that actually carries provisions, in
+    osa order.
+    """
+    family: dict[str, list[tuple[int, str]]] = {}
+    for prefix in prefix_to_provisions:
+        m = _OSA_SUFFIX_RE.match(prefix)
+        if m:
+            family.setdefault(m.group("base"), []).append((int(m.group("n")), prefix))
+        else:
+            family.setdefault(prefix, []).append((0, prefix))
+    return {base: [p for _n, p in sorted(items)] for base, items in family.items()}
+
+
+def build_prefix_title_index(
+    source_act_to_prefix: dict[str, list[str]] | dict[str, set[str]],
+) -> dict[str, set[str]]:
+    """Invert ``source_act_to_prefix`` to {base prefix → casefolded sourceAct titles}.
+
+    Used to corroborate a registry prefix against the corpus (#696): a few
+    registry entries name a prefix that a DIFFERENT file holds
+    (``STS2004_2006_2`` is registered as the Struktuuritoetuse seadus but
+    is a social-security topic map in the corpus).
+    """
+    out: dict[str, set[str]] = {}
+    for title, prefixes in source_act_to_prefix.items():
+        key = str(title).strip().casefold()
+        if not key:
+            continue
+        for prefix in _iter_prefixes(list(prefixes) if isinstance(prefixes, set) else prefixes):
+            m = _OSA_SUFFIX_RE.match(prefix)
+            out.setdefault(m.group("base") if m else prefix, set()).add(key)
+    return out
+
+
+def registry_prefixes(
+    registry_abbrevs: tuple[str, ...] | list[str],
+    prefix_family: dict[str, list[str]],
+    *,
+    expected_title: str | None = None,
+    prefix_titles: dict[str, set[str]] | None = None,
+) -> list[str]:
+    """Return the provision prefixes of the first registry abbrev present
+    in the corpus (#696).
+
+    ``registry_abbrevs`` is preference-ordered (rt_api lyhend first, see
+    ``estleg_common.build_known_abbreviations``); the corpus prefix is the
+    sanitized abbrev, never a re-slugified title. A registry entry whose
+    prefix has no provisions in the corpus (a deprecated duplicate such as
+    ``TsMS_2``) is skipped, and so is one whose corpus ``estleg:sourceAct``
+    titles (``prefix_titles``) are known but do not include
+    ``expected_title`` — the corpus contradicts the registry there, and
+    linking would name the wrong statute. ``[]`` when none qualifies.
+    """
+    expected = expected_title.strip().casefold() if expected_title else None
+    for reg_abbrev in registry_abbrevs:
+        base = sanitize_id(reg_abbrev)
+        prefixes = prefix_family.get(base)
+        if not prefixes:
+            continue
+        if expected and prefix_titles is not None:
+            titles = prefix_titles.get(base)
+            if titles and expected not in titles:
+                continue
+        return list(prefixes)
+    return []
+
+
 def build_abbreviation_to_prefix(
     source_act_to_prefix: dict[str, list[str]],
+    prefix_to_provisions: dict[str, dict[str, str]] | None = None,
 ) -> dict[str, list[str]]:
     """
     Map law abbreviations (KarS, VÕS, etc.) to the prefixes used in
     provision IRIs.
+
+    #696: when ``prefix_to_provisions`` is given, each abbreviation is
+    resolved through the abbreviation registry FIRST (the registry
+    entry's corpus prefix, plus its osa family); the
+    ``KNOWN_ABBREVIATIONS`` title -> ``estleg:sourceAct`` chain is the
+    fallback for laws the registry does not place in the corpus.
 
     Returns: {abbreviation: [iri_prefix, ...]} e.g.
     {"KarS": ["KARIST_2"], "AÕS": ["AOS_Osa1", ..., "AOS_Osa8"]}.
@@ -252,11 +340,26 @@ def build_abbreviation_to_prefix(
     osa stay reachable (#299).
     """
     abbrev_to_prefix: dict[str, list[str]] = {}
+    prefix_family = (
+        build_prefix_family_index(prefix_to_provisions)
+        if prefix_to_provisions is not None
+        else None
+    )
+    prefix_titles = build_prefix_title_index(source_act_to_prefix)
 
     for abbrev, full_name in KNOWN_ABBREVIATIONS.items():
-        # _iter_prefixes copies/normalises so callers can't mutate the
-        # shared sourceAct bucket and a stray string value is tolerated.
-        prefixes = _iter_prefixes(source_act_to_prefix.get(full_name))
+        prefixes: list[str] = []
+        if prefix_family is not None:
+            prefixes = registry_prefixes(
+                KNOWN_ABBREVIATION_REGISTRY_ABBREVS.get(abbrev, ()),
+                prefix_family,
+                expected_title=full_name,
+                prefix_titles=prefix_titles,
+            )
+        if not prefixes:
+            # _iter_prefixes copies/normalises so callers can't mutate the
+            # shared sourceAct bucket and a stray string value is tolerated.
+            prefixes = _iter_prefixes(source_act_to_prefix.get(full_name))
         if prefixes:
             abbrev_to_prefix[abbrev] = prefixes
 
@@ -389,6 +492,66 @@ def build_law_title_to_iri(
         if act_iri is None:
             continue
         out[source_act.strip().lower()] = act_iri
+    return out
+
+
+def build_law_title_to_prefixes(
+    source_act_to_prefix: dict[str, list[str]],
+    prefix_to_provisions: dict[str, dict[str, str]],
+) -> dict[str, list[str]]:
+    """Build a {casefolded nominative law title → provision prefixes} map (#696).
+
+    The provision-level sibling of ``build_law_title_to_iri``: the in-law
+    citation pass resolves a § (not an act), and a multi-osa law spreads
+    its §§ over several prefixes, so an act IRI alone is not enough.
+    Registry titles resolve through the registry's corpus prefix first
+    (``registry_prefixes``); every remaining corpus ``estleg:sourceAct``
+    title falls back to its sourceAct prefixes. Keys are casefolded so the
+    genitive fold of ``_genitive_law_ref_to_title`` looks them up directly.
+
+    In the fallback, a prefix the registry (corroborated by the corpus)
+    assigns to a DIFFERENT law is dropped: the corpus reuses some short
+    prefixes across files (``KS`` carries the Kohtute seadus but also
+    Ülikooliseadus / Korteriühistuseadus provisions), and resolving
+    ``ülikooliseaduse § 5`` into the Kohtute seadus would be a wrong link.
+    """
+    prefix_family = build_prefix_family_index(prefix_to_provisions)
+    prefix_titles = build_prefix_title_index(source_act_to_prefix)
+    out: dict[str, list[str]] = {}
+    owner: dict[str, str] = {}
+    for title, reg_abbrevs in LAW_TITLE_REGISTRY_ABBREVS.items():
+        prefixes = registry_prefixes(
+            reg_abbrevs, prefix_family,
+            expected_title=title, prefix_titles=prefix_titles,
+        )
+        if prefixes:
+            out[title] = prefixes
+            for prefix in prefixes:
+                m = _OSA_SUFFIX_RE.match(prefix)
+                owner.setdefault(m.group("base") if m else prefix, title)
+    for source_act, prefixes in source_act_to_prefix.items():
+        key = source_act.strip().casefold()
+        if not key or key in out:
+            continue
+        found = []
+        for p in _iter_prefixes(prefixes):
+            m = _OSA_SUFFIX_RE.match(p)
+            base_owner = owner.get(m.group("base") if m else p)
+            if p in prefix_to_provisions and base_owner in (None, key):
+                found.append(p)
+        if found:
+            out[key] = found
+    # A bare title that is the word-suffix of SEVERAL other law titles is a
+    # series short name (``struktuuritoetuse seadus`` vs ``Perioodi
+    # 2004–2006 / 2007–2013 / 2014–2020 struktuuritoetuse seadus``):
+    # regulations use it as a locally defined short form for one of the
+    # period laws, so resolving it to the bare-titled act would link the
+    # wrong statute. Longer titles still match (longest suffix wins).
+    law_titles = [t for t in out if t.endswith(("seadus", "seadustik", "koodeks"))]
+    for title in law_titles:
+        extensions = sum(1 for other in law_titles if other.endswith(" " + title))
+        if extensions >= 2:
+            del out[title]
     return out
 
 
@@ -1085,8 +1248,13 @@ _LG_TAIL = rf"(?:\s+{_LG_AFTER_PAR}\s+(\d+))?"
 
 # Pattern 1: Abbreviation + § + number(s)
 #   KarS § 121, KarS §-s 121, KarS § 121 lg 2 p 3, KarS §-de 208-210
+# #696: the leading ``\b`` (Unicode-aware, so Õ/Ä/Ö/Ü count as word
+# characters) stops a registered key from matching the tail of a longer,
+# unregistered abbreviation: ``MTÜS § 12`` must not become ``TÜS``,
+# ``ELS § 7`` not ``LS``, ``XTMS § 4`` not ``TMS``. Mirrors the court
+# sibling in ``extract_court_provision_links`` (#350).
 _PAT_ABBREV = re.compile(
-    rf"({_ABBREV_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER}){_LG_TAIL}",
+    rf"\b({_ABBREV_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER}){_LG_TAIL}",
     re.UNICODE,
 )
 
@@ -1113,7 +1281,104 @@ _PAT_FULLNAME = (
 )
 
 
-def extract_citations_from_text(text: str) -> list[dict]:
+# Pattern 4 (#696): any law title in the genitive + § N, resolved against
+# the full registry/corpus title map rather than the 74-entry
+# FULLNAME_GENITIVE list. The regex only anchors on the law-marker word
+# (``…seaduse`` / ``…seadustiku`` / ``…koodeksi``) directly before the §;
+# the law name is recovered by looking back over at most
+# ``_TITLE_MAX_WORDS`` words and taking the LONGEST word suffix whose
+# nominative fold is a known title. (``\Z``, not ``$``: ``$`` also matches
+# before a trailing newline, which would mis-split a line-wrapped name.)
+_PAT_GENITIVE_MARKER = re.compile(
+    rf"(seaduse|seadustiku|koodeksi)\s*{PAR_SUFFIX}\s*({_PAR_NUMBER}){_LG_TAIL}",
+    re.UNICODE | re.IGNORECASE,
+)
+_TITLE_MAX_WORDS = 10
+_TITLE_WORD_CHARS = "a-zõäöüšžA-ZÕÄÖÜŠŽ"
+_PAT_ATTACHED_STEM = re.compile(rf"[{_TITLE_WORD_CHARS}\-]*\Z")
+# Leading law-name tokens: words, plus the year / period tokens that open
+# titles such as ``2026. aasta riigieelarve seadus`` or ``Perioodi
+# 2014–2020 struktuuritoetuse seadus``.
+_PAT_LEADING_WORDS = re.compile(
+    rf"(?:(?:-?[{_TITLE_WORD_CHARS}][{_TITLE_WORD_CHARS}\-]*|\d+(?:[\-–]\d+)?\.?)\s+)"
+    rf"{{0,{_TITLE_MAX_WORDS}}}\Z"
+)
+_BARE_LAW_MARKER_TITLES = frozenset({"seadus", "seadustik", "koodeks"})
+# A title match is a truncated name — and would link the WRONG statute —
+# when the word right before it still belongs to the name: a year/period
+# token (``2014–2020 struktuuritoetuse seadus`` is not the Struktuuritoetuse
+# seadus) or one of these year/period words.
+_TITLE_CONTINUATION_WORDS = frozenset({"aasta", "aastate", "perioodi"})
+
+
+_PAT_PERIOD_RANGE = re.compile(r"^\d{4}[\-–]\d{4}$")
+
+
+def _continues_law_name(word: str) -> bool:
+    """A year-word or a period range (``2014–2020``) still belongs to the
+    law name; a bare date year (``1. juulit 2002 elamuseaduse``) does not."""
+    w = word.casefold().rstrip(".,")
+    return w in _TITLE_CONTINUATION_WORDS or bool(_PAT_PERIOD_RANGE.match(w))
+
+
+_PAT_PRECEDING_TOKEN = re.compile(r"(\S+)\s+\Z")
+
+
+def preceded_by_law_name_continuation(text: str, pos: int) -> bool:
+    """True when the token right before ``pos`` still belongs to a longer
+    law name (``2026. aasta`` before ``riigieelarve seaduse``), so a
+    genitive match starting at ``pos`` would name the wrong statute (#696)."""
+    m = _PAT_PRECEDING_TOKEN.search(text[max(0, pos - 40):pos])
+    return bool(m) and _continues_law_name(m.group(1))
+
+
+def _match_genitive_title(
+    text: str,
+    marker_start: int,
+    marker: str,
+    law_title_to_prefixes: dict[str, list[str]],
+) -> tuple[str, list[str], int] | None:
+    """Recover the longest known law title ending at a genitive marker.
+
+    Returns ``(title_key, prefixes, phrase_start)`` or ``None`` when no word
+    suffix before the marker folds onto a title in
+    ``law_title_to_prefixes`` (so an unknown name — ``nimetatud seaduse``,
+    ``käesoleva seaduse`` — never becomes a citation).
+    """
+    window_start = max(0, marker_start - 240)
+    left = text[window_start:marker_start]
+    stem = _PAT_ATTACHED_STEM.search(left).group(0)
+    before = left[: len(left) - len(stem)]
+    lead = _PAT_LEADING_WORDS.search(before)
+    # (absolute start offset, word) for each law-name word before the stem.
+    words: list[tuple[int, str]] = []
+    if lead:
+        words = [
+            (window_start + lead.start() + w.start(), w.group(0))
+            for w in re.finditer(r"\S+", lead.group(0))
+        ]
+    last = stem + marker
+    last_start = marker_start - len(stem)
+    for k in range(len(words), -1, -1):
+        chosen = words[len(words) - k:]
+        phrase = " ".join([*(w for _o, w in chosen), last])
+        title = _genitive_law_ref_to_title(phrase)
+        if not title or title in _BARE_LAW_MARKER_TITLES:
+            continue
+        key = title.casefold()
+        prefixes = law_title_to_prefixes.get(key)
+        if prefixes:
+            preceding = words[len(words) - k - 1][1] if k < len(words) else ""
+            if preceding and _continues_law_name(preceding):
+                return None  # truncated name of an unknown/other law
+            return key, prefixes, chosen[0][0] if chosen else last_start
+    return None
+
+
+def extract_citations_from_text(
+    text: str,
+    law_title_to_prefixes: dict[str, list[str]] | None = None,
+) -> list[dict]:
     """
     Parse text for Estonian legal citation patterns.
 
@@ -1121,10 +1386,13 @@ def extract_citations_from_text(text: str) -> list[dict]:
       - law_ref: abbreviation or full name reference
       - paragraphs: list of paragraph numbers (strings)
       - is_self_ref: True if "käesoleva seaduse" pattern
+      - prefixes: (Pattern 4 only) the resolved provision prefixes
 
     Uses the module-level compiled patterns ``_PAT_ABBREV`` /
     ``_PAT_SELF`` / ``_PAT_FULLNAME`` (#386) rather than rebuilding the
-    abbrev/genitive alternations on every call.
+    abbrev/genitive alternations on every call. When
+    ``law_title_to_prefixes`` is given (#696), any genitive law title the
+    curated patterns did not already cover is resolved against it.
     """
     citations: list[dict] = []
     if not text:
@@ -1164,6 +1432,8 @@ def extract_citations_from_text(text: str) -> list[dict]:
             par_range = m.group(2).strip()
             paragraphs = _expand_par_range(par_range)
             abbrev = FULLNAME_GENITIVE.get(gen_name)
+            if abbrev and preceded_by_law_name_continuation(text, m.start()):
+                abbrev = None  # e.g. "2026. aasta riigieelarve seaduse" ≠ RES
             if abbrev:
                 citations.append({
                     "law_ref": abbrev,
@@ -1173,6 +1443,31 @@ def extract_citations_from_text(text: str) -> list[dict]:
                     "span_start": m.start(),
                     "citationText": m.group(0).strip(),
                 })
+
+    # Pattern 4 (#696): any registry/corpus law title in the genitive.
+    # Skips spans already claimed by Patterns 2/3 so a curated genitive
+    # (or a self-reference) is never double-counted.
+    if law_title_to_prefixes:
+        claimed = [
+            (c["span_start"], c["span_start"] + len(c["citationText"]))
+            for c in citations
+        ]
+        for m in _PAT_GENITIVE_MARKER.finditer(text):
+            if any(start < m.end() and m.start() < end for start, end in claimed):
+                continue
+            hit = _match_genitive_title(text, m.start(), m.group(1), law_title_to_prefixes)
+            if hit is None:
+                continue
+            title_key, prefixes, phrase_start = hit
+            citations.append({
+                "law_ref": title_key,
+                "prefixes": prefixes,
+                "paragraphs": _expand_par_range(m.group(2).strip()),
+                "lg": m.group(3),
+                "is_self_ref": False,
+                "span_start": phrase_start,
+                "citationText": text[phrase_start:m.end()].strip(),
+            })
 
     return citations
 
@@ -1687,6 +1982,10 @@ def resolve_citation(
     # prefix); cross-law abbreviations carry a list of osa prefixes.
     if citation["is_self_ref"]:
         prefixes: list[str] = [self_prefix] if self_prefix else []
+    elif citation.get("prefixes"):
+        # Pattern 4 (#696): already resolved to provision prefixes via
+        # the law-title map.
+        prefixes = list(citation["prefixes"])
     else:
         law_ref = citation["law_ref"]
         mapped = abbrev_to_prefix.get(law_ref)
@@ -1906,8 +2205,13 @@ def _run_inlaw_citation_pass(
     abbrev_to_prefix: dict[str, list[str]],
     prefix_to_provisions: dict[str, dict[str, str]],
     xml_par_texts: dict[str, str],
+    law_title_to_prefixes: dict[str, list[str]] | None = None,
 ) -> dict:
     """Run the in-law citation pass over ``graph``.
+
+    ``law_title_to_prefixes`` (#696, from ``build_law_title_to_prefixes``)
+    lets full-name genitive citations resolve against every registry /
+    corpus law title, not only the curated ``FULLNAME_GENITIVE`` list.
 
     Mutates provision nodes by attaching ``estleg:references``. Returns
     a stats fragment with ``provisions_scanned``, ``citations_found``,
@@ -1946,7 +2250,9 @@ def _run_inlaw_citation_pass(
         if not text_to_scan:
             continue
 
-        citations = extract_citations_from_text(text_to_scan)
+        citations = extract_citations_from_text(
+            text_to_scan, law_title_to_prefixes=law_title_to_prefixes
+        )
         if not citations:
             continue
 
@@ -2151,6 +2457,7 @@ def process_law_file(
     issuer_registry: dict[str, tuple[str, str, str]] | None = None,
     issuer_indexes: IssuerRegistryIndex | None = None,
     act_iri_to_prefix: dict[str, str] | None = None,
+    law_title_to_prefixes: dict[str, list[str]] | None = None,
 ) -> dict:
     """
     Process a single law JSON-LD file to extract and add cross-references.
@@ -2201,6 +2508,7 @@ def process_law_file(
         abbrev_to_prefix=abbrev_to_prefix,
         prefix_to_provisions=prefix_to_provisions,
         xml_par_texts=xml_par_texts,
+        law_title_to_prefixes=law_title_to_prefixes,
     )
     pass_results.append(inlaw_stats)
 
@@ -2462,6 +2770,12 @@ def main() -> int:
         prefix_to_act_iri=prefix_to_act_iri,
     )
     print(f"  law-title fallback: {len(law_title_to_iri)} titles")
+    # #696: the same title map at provision-prefix granularity, threaded
+    # into the in-law citation pass (registry corpus prefix first).
+    law_title_to_prefixes = build_law_title_to_prefixes(
+        source_act_to_prefix, prefix_to_provisions
+    )
+    print(f"  law-title -> provision prefixes: {len(law_title_to_prefixes)} titles")
 
     riik_root = KRR_DIR / "regulations" / "riik"
     kov_root = KRR_DIR / "regulations" / "kov"
@@ -2477,7 +2791,9 @@ def main() -> int:
 
     # Step 3: Build abbreviation mapping
     print("\n[3/5] Building abbreviation-to-prefix mapping...")
-    abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefix)
+    abbrev_to_prefix = build_abbreviation_to_prefix(
+        source_act_to_prefix, prefix_to_provisions
+    )
     print(f"  Mapped {len(abbrev_to_prefix)} abbreviations to IRI prefixes")
     # Built once and reused for the cross_references_report.json mapping below
     # so the diagnostic print and the report can never diverge or regress
@@ -2507,6 +2823,7 @@ def main() -> int:
             issuer_registry=issuer_registry,
             issuer_indexes=issuer_indexes,
             act_iri_to_prefix=act_iri_to_prefix,
+            law_title_to_prefixes=law_title_to_prefixes,
         )
         all_stats.append(stats)
 

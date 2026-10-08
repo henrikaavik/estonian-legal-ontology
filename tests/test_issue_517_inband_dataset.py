@@ -191,3 +191,13 @@ def test_existing_combined_file_has_inband_dataset_head(relpath: str) -> None:
         f"{relpath} @graph has no void:Dataset/dcat:Dataset node and "
         f"@graph[0] has no dcterms:license"
     )
+
+
+def test_apply_inband_dataset_fields_stamps_version_unconditionally():
+    """#705: owl:versionInfo / owl:versionIRI are build-derived and always overwritten."""
+    from estleg import estleg_common as ec
+
+    head = {"@id": "estleg:X_Combined_Map", "@type": ["owl:Ontology"], "owl:versionInfo": "0.11.0"}
+    ec.apply_inband_dataset_fields(head)
+    assert head["owl:versionInfo"] == ec.ONTOLOGY_VERSION
+    assert head["owl:versionIRI"] == {"@id": ec.ONTOLOGY_VERSION_IRI}

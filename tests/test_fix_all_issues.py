@@ -10,6 +10,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg import fix_all_issues
 
 
@@ -512,18 +514,58 @@ def test_fix_intra_file_duplicates_preserves_head_references(tmp_path):
     assert other["estleg:references"][0]["@id"] == "estleg:N_1"
 
 
-def test_generate_index_uses_today_date(tmp_path, monkeypatch):
-    """`INDEX.json.generated` is dynamic — never the hardcoded checked-in date (#159)."""
-    import datetime as dt
+def test_generate_index_stamps_build_evaluation_date(tmp_path, monkeypatch):
+    """`INDEX.json.generated` is the declared build date, never the wall clock (#704).
+
+    INDEX.json is hashed into the release manifest, so a `date.today()` stamp
+    put the run day into the content hash and churned the file on every
+    rebuild. #159's complaint (a hand-typed literal) stays fixed: the value
+    follows `BUILD_EVALUATION_DATE`, which the release pins.
+    """
+    from estleg import estleg_common
 
     monkeypatch.setattr(fix_all_issues, "KRR_DIR", tmp_path)
+    monkeypatch.setattr(estleg_common, "BUILD_EVALUATION_DATE", "2031-02-03")
     write_json(tmp_path / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
 
     fix_all_issues.generate_index()
+    first = (tmp_path / "INDEX.json").read_bytes()
+    fix_all_issues.generate_index()
 
     index = read_json(tmp_path / "INDEX.json")
-    assert index["generated"] == dt.date.today().isoformat()
-    assert index["generated"] != "2026-03-02"
+    assert index["generated"] == "2031-02-03"
+    assert (tmp_path / "INDEX.json").read_bytes() == first
+
+
+def test_registry_exception_seed_comes_from_the_data_file(tmp_path, monkeypatch):
+    """The seed lives in data/registry_exceptions.json (#704), not in code."""
+    seed = tmp_path / "registry_exceptions.json"
+    write_json(seed, {"registry_exceptions": {"x_peep.json": {"category": "c", "reason": "r"}}})
+    monkeypatch.setattr(fix_all_issues, "REGISTRY_EXCEPTIONS_PATH", seed)
+    krr = tmp_path / "krr"
+    krr.mkdir()
+    monkeypatch.setattr(fix_all_issues, "KRR_DIR", krr)
+    write_json(krr / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
+
+    fix_all_issues.generate_index()
+
+    assert read_json(krr / "INDEX.json")["registry_exceptions"] == {
+        "x_peep.json": {"category": "c", "reason": "r"}
+    }
+
+
+def test_committed_registry_exception_seed_keeps_the_known_entries():
+    seed = fix_all_issues.load_registry_exceptions()
+    assert seed == fix_all_issues.DEFAULT_REGISTRY_EXCEPTIONS
+    assert {
+        "kriminaalmenetluse_peep.json",
+        "deprecated_duplicates",
+    } <= set(seed)
+
+
+def test_missing_registry_exception_seed_fails_loudly(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        fix_all_issues.load_registry_exceptions(tmp_path / "absent.json")
 
 
 def test_generate_index_excludes_derived_jsonld_and_preserves_exceptions(tmp_path, monkeypatch):
@@ -881,7 +923,9 @@ def test_module_imports_validate_all_for_audit():
 # ---------------------------------------------------------------------------
 
 
-import fix_duplicate_ids  # noqa: E402
+from tests._script_loader import load_script  # noqa: E402
+
+fix_duplicate_ids = load_script("scripts/archive/fix_duplicate_ids.py")
 
 
 def test_fix_duplicate_ids_get_file_prefix_no_dead_pass(tmp_path):

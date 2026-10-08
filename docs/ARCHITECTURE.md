@@ -61,21 +61,48 @@ Amendment nodes are **merged** into combined. Version forward-edges are
   sidecars (`sanctions/`, `institutions/`, `concepts/`, `annotations/`,
   `amendments/`, `provision_versions/`).
 - **Derived:** `combined_ontology.jsonld`, `INDEX.json`, retrieval
-  JSONL. Do not hand-edit. Rebuild with `scripts/fix_all_issues.py`
-  (combined + INDEX) after enrichment.
+  JSONL, the RDF dumps and the release assets. Do not hand-edit. Rebuild with
+  `scripts/build_release_artifacts.py` (combined + INDEX) after enrichment and
+  `scripts/build_release_assets.py` for the downloads.
 
 EuroVoc writes `eurovoc/eurovoc_overlay.jsonld` by default; `--write-peeps`
 opts into the legacy in-place path. Deontic, target-group, and some similarity
 passes still mutate peeps. Combined merges selected overlay directories at
-build time; full separation and DAG input coverage remain open (#697/#704).
+build time; full separation of the peep-mutating passes remains open (#697).
 
 ## Pipeline
 
-`scripts/run_all_integration.py` is the **enrich + combine + validate**
-DAG (20 declared steps, serial by default). It does **not** ingest from Riigi Teataja /
-EUR-Lex. Ingest generators (`generate_all_laws.py`, regulations, courts,
-drafts, EU) are a prior stage. `--release` validates whatever peeps are
-on disk.
+`scripts/run_all_integration.py` is the **enrich + combine + package +
+validate** DAG (#704, #705): 29 declared steps in four tiers, serial by
+default. Every layer that ships has a declared producer step with its reads and
+writes, and `validate_dag` rejects a derived read whose writer is not one of
+the reader's dependencies.
+
+- **Ingest** (3 steps): the provision-version layer from Riigi Teataja
+  redactions, the state-regulation version snapshots and the oiguskantsler
+  annotations. They need the network, so the runner records them and uses
+  the committed outputs unless `--with-ingest` is given. The bulk ingest
+  generators (`generate_all_laws.py`, regulations, courts, drafts, EU) remain
+  a prior stage outside the DAG.
+- **Enrichment** (23 steps): the offline corpus passes, the sub-corpus
+  aggregate rebuilds, and the version-derived layers. These are the #429
+  amendment/version join, act `temporalStatus`, act expressions and court
+  interpretation staleness.
+- **Build** (1 step): `build_release_artifacts.py` rebuilds
+  `combined_ontology.jsonld` and `INDEX.json`. The #520 inverse/closure edges
+  and #521 analytical stamps run inside it. It is the last enrichment-side
+  step.
+- **Package** (2 steps): the analytical overlay file, then
+  `build_release_assets.py`. It writes the gzipped combined dumps, the
+  streamed `.nt`/`.nq`/`.ttl`, the seven-graph `estleg_all.nq.gz`,
+  `chunks.jsonl.gz`, `SHA256SUMS` and the catalogue's per-asset
+  `dcat:byteSize` / `spdx:checksum` into the repo-root `release/` directory.
+
+`--release` validates whatever peeps are on disk after the DAG runs, and the
+release manifest re-hashes every asset in `release/SHA256SUMS`. CI installs
+with `constraints.txt` and checks that every coverage report's
+`pipeline_version` is a commit (`--check-pipeline-versions`). See
+[RELEASE.md](RELEASE.md).
 
 Gates: `ruff` → `pytest` → `validate_all.py` →
 `shacl_validate_all.py --all` (RDFS) →

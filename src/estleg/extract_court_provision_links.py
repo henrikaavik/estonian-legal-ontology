@@ -21,12 +21,21 @@ from collections import defaultdict
 from pathlib import Path
 from typing import NamedTuple
 
-from estleg.extract_cross_references import _provision_lookup_keys
+from estleg.extract_cross_references import (
+    _provision_lookup_keys,
+    build_citation_iri,
+    build_citation_node,
+    build_prefix_family_index,
+    build_prefix_title_index,
+    preceded_by_law_name_continuation,
+    registry_prefixes,
+)
 from estleg.estleg_common import (
     _FAILURE_SAMPLES_INMEMORY_CAP,
     BODY_CANON,
     ESTONIAN_MONTH_ALT,
     FULLNAME_GENITIVE,
+    KNOWN_ABBREVIATION_REGISTRY_ABBREVS,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
     _RunCounters,
@@ -305,6 +314,7 @@ def build_provision_index(
 
 def build_abbreviation_to_prefix(
     source_act_to_prefixes: dict[str, set[str]],
+    prefix_to_provisions: dict[str, dict[str, str]] | None = None,
 ) -> dict[str, set[str]]:
     """Map law abbreviations to the SET of IRI prefixes for their source act.
 
@@ -315,10 +325,30 @@ def build_abbreviation_to_prefix(
     behaviour) silently dropped every citation landing in a non-selected
     Part. ``source_act_to_prefixes`` values may arrive as a ``set`` or any
     iterable of prefixes — normalised to a ``set`` here.
+
+    #696: when ``prefix_to_provisions`` is given, the abbreviation
+    registry's corpus prefix (plus its osa family) wins; the sourceAct
+    title chain is the fallback. Mirrors
+    ``extract_cross_references.build_abbreviation_to_prefix``.
     """
+    prefix_family = (
+        build_prefix_family_index(prefix_to_provisions)
+        if prefix_to_provisions is not None
+        else None
+    )
+    prefix_titles = build_prefix_title_index(source_act_to_prefixes)
     abbrev_to_prefixes: dict[str, set[str]] = {}
     for abbrev, full_name in KNOWN_ABBREVIATIONS.items():
-        prefixes = source_act_to_prefixes.get(full_name)
+        prefixes: set[str] | list[str] | None = None
+        if prefix_family is not None:
+            prefixes = registry_prefixes(
+                KNOWN_ABBREVIATION_REGISTRY_ABBREVS.get(abbrev, ()),
+                prefix_family,
+                expected_title=full_name,
+                prefix_titles=prefix_titles,
+            )
+        if not prefixes:
+            prefixes = source_act_to_prefixes.get(full_name)
         if prefixes:
             abbrev_to_prefixes[abbrev] = set(prefixes)
     return abbrev_to_prefixes
@@ -480,7 +510,8 @@ def extract_citations_from_text(
         paragraphs = _expand_par_range(par_range, counters=counters)
         if paragraphs:
             state_citations.append(
-                {"law_ref": abbrev, "paragraphs": paragraphs, "lg": m.group(3)}
+                {"law_ref": abbrev, "paragraphs": paragraphs, "lg": m.group(3),
+                 "citationText": m.group(0).strip()}
             )
 
     # Pattern 2: Full name in genitive + § + number
@@ -497,9 +528,12 @@ def extract_citations_from_text(
             par_range = m.group(2).strip()
             paragraphs = _expand_par_range(par_range, counters=counters)
             abbrev = FULLNAME_GENITIVE.get(gen_name)
+            if abbrev and preceded_by_law_name_continuation(text, m.start()):
+                abbrev = None  # #696: "2026. aasta riigieelarve seaduse" ≠ RES
             if abbrev and paragraphs:
                 state_citations.append(
-                    {"law_ref": abbrev, "paragraphs": paragraphs, "lg": m.group(3)}
+                    {"law_ref": abbrev, "paragraphs": paragraphs, "lg": m.group(3),
+                     "citationText": m.group(0).strip()}
                 )
 
     # Pattern 3: KOV act-level citation (Layer 2c PR #3)
@@ -587,8 +621,14 @@ def resolve_citations(
     abbrev_to_prefixes: dict[str, set[str] | str],
     prefix_to_provisions: dict[str, dict[str, str]],
     counters: _RunCounters | None = None,
+    unresolved: list[dict] | None = None,
 ) -> list[str]:
     """Resolve citations to existing provision IRIs.
+
+    #696: when ``unresolved`` is a list, every citation that resolved NONE
+    of its §§ is appended to it, so the caller can keep it as a
+    target-less ``estleg:Citation`` node (the in-law #514 behaviour)
+    instead of silently dropping it.
 
     Issue #256: ``abbrev_to_prefixes`` maps each abbreviation to the *set*
     of IRI prefixes for its source act (one per Part of a multi-Part code).
@@ -608,7 +648,10 @@ def resolve_citations(
     for cit in citations:
         prefixes = _normalize_prefixes(abbrev_to_prefixes.get(cit["law_ref"]))
         if not prefixes:
+            if unresolved is not None:
+                unresolved.append(cit)
             continue
+        hits_before = len(resolved)
         lg = cit.get("lg")
         if isinstance(lg, str):
             lg = lg.strip() or None
@@ -630,6 +673,8 @@ def resolve_citations(
             else:
                 chosen = hits[0]
             resolved.append(chosen)
+        if unresolved is not None and len(resolved) == hits_before:
+            unresolved.append(cit)
     return list(dict.fromkeys(resolved))  # deduplicate
 
 
@@ -684,6 +729,56 @@ def resolve_kov_citation(
     return None, "issuer_year_num_unmatched", issuer_norm
 
 
+# #696: target-less estleg:Citation nodes this pass owns in a court peep.
+# ``normalize_court_referenced_law`` mints its own unresolved-law
+# Citations with a ``_RefLaw_`` infix; those are NOT this pass's to clear.
+REFERENCED_LAW_CITATION_INFIX = "_RefLaw_"
+
+
+def is_court_pass_unresolved_citation(node: object) -> bool:
+    """True for a target-less Citation emitted by ``process_court_files``."""
+    if not isinstance(node, dict):
+        return False
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    return (
+        "estleg:Citation" in types
+        and "estleg:citationTarget" not in node
+        and REFERENCED_LAW_CITATION_INFIX not in str(node.get("@id", ""))
+    )
+
+
+def build_unresolved_court_citations(
+    decision_iri: str,
+    unresolved: list[dict],
+) -> list[dict]:
+    """Build target-less Citation nodes for unresolved state citations (#696).
+
+    Mirrors the in-law #514 behaviour: the citation is kept (with its
+    ``citationDetail`` = cited law abbreviation, ``citationText`` = the
+    matched span and ``citationSource`` = the decision) instead of being
+    dropped. Duplicate (law_ref, text) pairs within one decision collapse.
+    """
+    nodes: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+    for cit in unresolved:
+        key = (str(cit.get("law_ref") or ""), str(cit.get("citationText") or ""))
+        if key in seen:
+            continue
+        seen.add(key)
+        nodes.append(
+            build_citation_node(
+                iri=build_citation_iri(decision_iri, len(nodes) + 1),
+                target_iri=None,
+                citation_detail=key[0] or None,
+                citation_text=key[1] or None,
+                source_iri=decision_iri,
+            )
+        )
+    return nodes
+
+
 def process_court_files(
     abbrev_to_prefix: dict[str, set[str] | str],
     prefix_to_provisions: dict[str, dict[str, str]],
@@ -732,6 +827,7 @@ def process_court_files(
             "citations_found": 0,
             "citations_resolved": 0,
             "state_citations_resolved": 0,
+            "state_citations_unresolved": 0,
             "legalText_citations_found": 0,
             "summary_fallback_citations_found": 0,
             "decisions_with_summary_baseline": 0,
@@ -748,6 +844,12 @@ def process_court_files(
 
         graph = doc.get("@graph", [])
         modified = False
+        # #696: drop this pass's previous unresolved Citations (idempotent).
+        kept_nodes = [n for n in graph if not is_court_pass_unresolved_citation(n)]
+        if len(kept_nodes) != len(graph):
+            graph[:] = kept_nodes
+            modified = True
+        new_citation_nodes: list[dict] = []
 
         for node in graph:
             node_id = node.get("@id", "")
@@ -805,10 +907,16 @@ def process_court_files(
             # authoritative resolve (the summary-baseline resolve above is
             # diagnostic-only and intentionally does NOT pass counters, to
             # avoid double-counting).
+            unresolved_state: list[dict] = []
             state_iris = resolve_citations(
                 state_citations, abbrev_to_prefix, prefix_to_provisions,
-                counters=counters,
+                counters=counters, unresolved=unresolved_state,
             )
+            if unresolved_state and node_id:
+                new_citation_nodes.extend(
+                    build_unresolved_court_citations(node_id, unresolved_state)
+                )
+            stats["state_citations_unresolved"] += len(unresolved_state)
             state_link_count += len(state_iris)
             stats["state_citations_resolved"] += len(state_iris)
 
@@ -859,6 +967,10 @@ def process_court_files(
 
             for target_iri in resolved:
                 interpreted_by[target_iri].append(node_id)
+
+        if new_citation_nodes:
+            graph.extend(new_citation_nodes)
+            modified = True
 
         stats["full_text_recall_lift"] = (
             stats["state_citations_resolved"]
@@ -1056,7 +1168,9 @@ def main(enable_kov: bool = True) -> None:
 
     # Step 3: Build abbreviation mapping.
     print("\n[3/6] Building abbreviation-to-prefix mapping...")
-    abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefixes)
+    abbrev_to_prefix = build_abbreviation_to_prefix(
+        source_act_to_prefixes, prefix_to_provisions
+    )
     print(f"  Mapped {len(abbrev_to_prefix)} abbreviations to IRI prefixes")
     # Issue #256: each abbreviation may now span several per-Part prefixes;
     # join them for the log line and count their UNION of § provisions.

@@ -16,13 +16,27 @@ filename (``_peep`` suffix stripped). Override with ``--graph IRI``.
 Combined ``.nt`` / ``.nq`` (and ``.ttl`` when generated) are LFS-tracked
 next to ``combined_ontology.jsonld``. A small proof export also lives at
 ``krr_outputs/exports/abipolitseiniku_seadus.nt``.
+
+``--stream`` (#705) serializes a single-``@graph`` JSON-LD file in node
+batches and line-sorts N-Triples / N-Quads with an external ``sort -u``, so
+the 2.6 M-triple combined graph fits in a few hundred MB instead of the
+10-14 GB an in-memory ``Graph`` + ``Dataset`` copy needs. One pass can write
+several formats. The triple set is the same as a whole-file parse (each
+top-level node is independent; duplicates are removed by ``sort -u``); only
+blank-node labels differ, as they do between any two rdflib runs.
+
+    python3 scripts/serialize_corpus.py --stream --input krr_outputs/combined_ontology.jsonld \
+        --format nt --output krr_outputs/combined_ontology.nt
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -231,12 +245,167 @@ def serialize_file(
     }
 
 
+def iter_graph_nodes(path: Path) -> Iterator[dict]:
+    """Yield each top-level ``@graph`` object of ``path`` without parsing RDF."""
+    text = path.read_text(encoding="utf-8")
+    marker = text.find('"@graph"')
+    if marker < 0:
+        raise ValueError(f"{path}: no @graph")
+    bracket = text.find("[", marker)
+    if bracket < 0:
+        raise ValueError(f"{path}: @graph is not an array")
+    decoder = json.JSONDecoder()
+    index = bracket + 1
+    length = len(text)
+    while True:
+        while index < length and text[index] in " \t\r\n,":
+            index += 1
+        if index >= length:
+            raise ValueError(f"{path}: unterminated @graph")
+        if text[index] == "]":
+            return
+        obj, end = decoder.raw_decode(text, index)
+        if isinstance(obj, dict):
+            yield obj
+        index = end
+
+
+def nquad_from_ntriple(line: str, graph_iri: str) -> str:
+    """Turn one N-Triples line into the N-Quads line for ``graph_iri``."""
+    raw = line.rstrip("\r\n").rstrip()
+    if not raw.endswith("."):
+        raise ValueError(f"not an N-Triples statement: {line!r}")
+    return f"{raw[:-1].rstrip()} <{graph_iri}> .\n"
+
+
+def external_sort_unique(source: Path, dest: Path, *, work_dir: Path) -> None:
+    """``LC_ALL=C sort -u`` (byte order == code-point order for UTF-8).
+
+    Matches :func:`_sorted_line_dump` ordering while keeping memory bounded.
+    ``-u`` restores RDF set semantics across batches.
+    """
+    env = dict(os.environ, LC_ALL="C")
+    subprocess.run(
+        ["sort", "-u", "-S", "512M", "-T", str(work_dir), "-o", str(dest), str(source)],
+        check=True,
+        env=env,
+    )
+
+
+def serialize_jsonld_streaming(
+    input_path: Path | str,
+    outputs: dict[str, Path | str],
+    *,
+    graph_iri: str | None = None,
+    batch_size: int = 5000,
+) -> dict[str, Any]:
+    """Serialize a large single-``@graph`` JSON-LD file in bounded memory (#705).
+
+    ``outputs`` maps a format (``nt`` / ``nq`` / ``ttl``) to its destination.
+    N-Triples and N-Quads are line-sorted and de-duplicated exactly like
+    :func:`serialize_graph`'s output; Turtle is a concatenation of per-batch
+    Turtle documents (repeated ``@prefix`` directives are legal Turtle).
+    Writes go to ``<dest>.tmp`` first and are renamed into place on success.
+    Returns ``{"triples": <distinct N-Triples lines or parsed count>, "graph_iri",
+    "outputs": {fmt: {"path", "bytes"}}}``.
+    """
+    source = Path(input_path)
+    if not source.is_file():
+        raise FileNotFoundError(f"input not found: {source}")
+    if is_lfs_pointer(source):
+        raise ValueError(
+            f"{source} is a Git LFS pointer; run `git lfs pull` before serializing"
+        )
+    if batch_size < 1:
+        raise ValueError("batch_size must be positive")
+    targets = {_normalize_format(fmt): Path(dest) for fmt, dest in outputs.items()}
+    if not targets:
+        raise ValueError("no output formats requested")
+    context = _peek_jsonld_context(source) or dict(CONTEXT)
+    iri = graph_iri_for(source, graph_iri)
+
+    unsorted: dict[str, Path] = {}
+    handles: dict[str, Any] = {}
+    for key, dest in targets.items():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        scratch = dest.with_name(dest.name + (".unsorted" if key in {"nt", "nq"} else ".tmp"))
+        unsorted[key] = scratch
+        handles[key] = scratch.open("w", encoding="utf-8")
+
+    parsed = 0
+
+    def flush(batch: list[dict]) -> None:
+        nonlocal parsed
+        graph = graph_from_jsonld({"@context": context, "@graph": batch})
+        parsed += len(graph)
+        if "nt" in handles or "nq" in handles:
+            lines = [
+                line + "\n"
+                for line in graph.serialize(format="nt").splitlines()
+                if line.strip()
+            ]
+            if "nt" in handles:
+                handles["nt"].writelines(lines)
+            if "nq" in handles:
+                handles["nq"].writelines(nquad_from_ntriple(line, iri) for line in lines)
+        if "ttl" in handles:
+            handles["ttl"].write(graph.serialize(format="turtle"))
+            handles["ttl"].write("\n")
+
+    try:
+        batch: list[dict] = []
+        for node in iter_graph_nodes(source):
+            batch.append(node)
+            if len(batch) >= batch_size:
+                flush(batch)
+                batch = []
+        if batch:
+            flush(batch)
+    finally:
+        for handle in handles.values():
+            handle.close()
+
+    result: dict[str, Any] = {"triples": parsed, "graph_iri": iri, "outputs": {}}
+    try:
+        for key, dest in targets.items():
+            scratch = unsorted[key]
+            if key in {"nt", "nq"}:
+                staged = dest.with_name(dest.name + ".tmp")
+                external_sort_unique(scratch, staged, work_dir=dest.parent)
+                scratch.unlink()
+                staged.replace(dest)
+                if key == "nt":
+                    with dest.open("rb") as handle:
+                        result["triples"] = sum(1 for _ in handle)
+            else:
+                scratch.replace(dest)
+            result["outputs"][key] = {"path": dest, "bytes": dest.stat().st_size}
+    finally:
+        for scratch in unsorted.values():
+            scratch.unlink(missing_ok=True)
+    return result
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--input", type=Path, required=True, help="JSON-LD file to convert")
+    parser.add_argument(
+        "--stream",
+        action="store_true",
+        help=(
+            "Bounded-memory batch serialization for large single-@graph files "
+            "(combined_ontology.jsonld); see serialize_jsonld_streaming (#705)."
+        ),
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=5000,
+        help="Top-level nodes per batch with --stream (default 5000).",
+    )
     parser.add_argument(
         "--format",
         choices=FORMATS,
@@ -257,6 +426,21 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.stream:
+        try:
+            result = serialize_jsonld_streaming(
+                args.input,
+                {args.format: args.output},
+                graph_iri=args.graph,
+                batch_size=args.batch_size,
+            )
+        except (FileNotFoundError, ValueError, OSError, subprocess.CalledProcessError) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        print(f"Wrote {result['triples']} triples to {args.output} (streamed)")
+        if args.format == "nq":
+            print(f"Named graph: {result['graph_iri']}")
+        return 0
     try:
         result = serialize_file(args.input, args.output, args.format, graph_iri=args.graph)
     except (FileNotFoundError, ValueError, OSError) as exc:

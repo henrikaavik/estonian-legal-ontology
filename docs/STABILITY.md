@@ -12,6 +12,11 @@ Pin a release by `owl:versionInfo` / `owl:versionIRI`
 | Heuristic | Keyword / classifier output; may be rewritten on regen | `dcterms:subject` (EuroVoc), `estleg:normativeType`, `estleg:targetGroup`, `estleg:semanticallySimilarTo` |
 | Build marker | Not a legal claim | `estleg:isStubNode` |
 
+A Heuristic value that a reviewer has corrected is pinned in
+`data/heuristic_overrides.jsonl`. Regeneration never rewrites it, and the
+node carries `prov:wasAttributedTo` with `estleg:assertionConfidence` 1.0 for
+the reviewed layer. See [HEURISTIC_OVERRIDES.md](HEURISTIC_OVERRIDES.md).
+
 Do **not** persist `estleg:isStubNode` as a fact about the real-world
 entity. On the full load surface the complete node wins; ignore the flag.
 

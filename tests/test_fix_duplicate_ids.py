@@ -24,9 +24,10 @@ import json
 import re
 from pathlib import Path
 
-import fix_duplicate_ids as fdi
-
 from estleg import estleg_common
+from tests._script_loader import load_script
+
+fdi = load_script("scripts/archive/fix_duplicate_ids.py")
 
 # Canonical "fully-migrated IRI" grammar from migrate_uris.NEW_IRI_FORMAT_RE
 # (hyphen is NOT allowed). We re-declare it here so the test asserts the same
