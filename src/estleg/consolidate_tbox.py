@@ -120,6 +120,43 @@ PREFERRED_KEYS = (
     "owl:FunctionalProperty",
 )
 
+# Keys the corpus convention keeps as JSON arrays even when they hold one value.
+# Mirrors ``validate_all.validate_types`` (@type) and the SKOS mapping links in
+# ``validate_all.MULTI_VALUED_PROPS``; a scalar copied from metadata.jsonld or a
+# subcorpus schema used to reach the CV unchanged and fail both checks.
+ARRAY_VALUED_KEYS = (
+    "@type",
+    "skos:exactMatch",
+    "skos:closeMatch",
+    "skos:broadMatch",
+    "skos:narrowMatch",
+    "skos:relatedMatch",
+)
+
+# Terms the corpus uses that no merge source declares. Seeded only when absent,
+# so the CV copy (with its backfilled comment and axioms) wins on every rerun.
+# Value: (types, Estonian label, English label).
+DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
+    "estleg:citationSource": (("owl:ObjectProperty",), "viitav säte", "Citation Source"),
+    "estleg:itemNumber": (("owl:DatatypeProperty",), "punkti number", "Item Number"),
+    "estleg:provisionRef": (("owl:DatatypeProperty",), "sätteviide", "Provision Reference"),
+    "estleg:resultedInVersion": (
+        ("owl:ObjectProperty",),
+        "tulemuseks redaktsioon",
+        "resulted in version",
+    ),
+    "estleg:rtUrl": (("owl:DatatypeProperty",), "Riigi Teataja URL", "Riigi Teataja URL"),
+}
+
+# Fallback placeholders: individuals an old closure pass materialised in the CV
+# so a dangling reference would resolve. Once a real instance file declares the
+# same @id, the CV copy is a cross-file duplicate (validate_all) that shadows the
+# real node's labels, so it is dropped. Only instance-data overlays count here;
+# an id declared by a merge source (a subcorpus *_schema.json) is a shared
+# T-Box id and must stay in the CV the schemas are projected from.
+FALLBACK_STATUS = "fallbackMaterialized"
+INSTANCE_DATA_SUBDIRS = ("institutions",)
+
 # Real comments replacing the "Reusable … materialized" placeholders.
 REAL_COMMENTS: dict[str, str] = {
     "estleg:Annex": (
@@ -194,6 +231,13 @@ REAL_COMMENTS: dict[str, str] = {
     "estleg:belongsToCluster": (
         "Topic-cluster key a concept or provision was assigned to."
     ),
+    "estleg:citationSource": (
+        "Links a reified estleg:Citation to the provision (a § or a lõige) whose "
+        "text contains the citation: the citing side, where citationTarget is "
+        "the cited side. Written by extract_cross_references.py; an unresolved "
+        "law citation keeps citationSource and citationText and omits "
+        "citationTarget (#514)."
+    ),
     "estleg:caseTypeCode": (
         "Short code of a CaseType individual (e.g. criminal, civil)."
     ),
@@ -255,6 +299,12 @@ REAL_COMMENTS: dict[str, str] = {
         "Literal name of the issuing body when a structured Issuer node is "
         "not available."
     ),
+    "estleg:itemNumber": (
+        "Number of a punkt (enumerated item) inside a lõige, as a display "
+        "string such as \"3\"; repeated when the lõige lists several punktid. "
+        "Written by law_structure.py from the Riigi Teataja punktNr elements, "
+        "falling back to the punkt numbers cited in the lõige text (#514)."
+    ),
     "estleg:jurisdiction": (
         "Jurisdiction label (Estonia, EU, municipality name)."
     ),
@@ -283,6 +333,12 @@ REAL_COMMENTS: dict[str, str] = {
     "estleg:preambleText": (
         "Preamble / enacting-clause text of an act or regulation."
     ),
+    "estleg:provisionRef": (
+        "Human-readable citation of the provision a ProvisionVersion is a "
+        "version of, e.g. \"PKS § 1\" or \"KARIST_2 § 88 lg 1\", derived from "
+        "the versionOf IRI. A denormalised display string, not a graph join: "
+        "use versionOf. Written by generate_provision_versions.py (#524)."
+    ),
     "estleg:proposesToAmend": (
         "Links a ProposedAmendment to the act it would amend."
     ),
@@ -298,8 +354,23 @@ REAL_COMMENTS: dict[str, str] = {
     "estleg:requestedCluster": (
         "Requested topic-cluster assignment used during concept extraction."
     ),
+    "estleg:resultedInVersion": (
+        "Links an AmendmentEvent to each estleg:ProvisionVersion that took "
+        "effect on the event's date (#429). Written by "
+        "generate_amendment_history.py. The versions live in the "
+        "provision_versions/ sidecars, so the term carries no rdfs:range "
+        "(schema:rangeIncludes only) and is stripped from "
+        "combined_ontology.jsonld via estleg_common.COMBINED_STRIPPED_PREDICATES "
+        "(#681); it resolves on the full load surface."
+    ),
     "estleg:rtReference": (
         "Riigi Teataja reference string on an AmendmentEvent."
+    ),
+    "estleg:rtUrl": (
+        "Riigi Teataja URL of the redaction (terviktekst) that produced a "
+        "ProvisionVersion, built from its versionRedactionId. Written by "
+        "generate_provision_versions.py as a plain string literal; "
+        "ProvisionVersionShape also accepts xsd:anyURI (#524)."
     ),
     "estleg:sanctionType": (
         "Kind of sanction (fine, imprisonment, withdrawal of right, …)."
@@ -507,6 +578,13 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:citationTarget": ("estleg:Citation", "rdfs:Resource"),
     "estleg:citationDetail": ("estleg:Citation", "xsd:string"),
     "estleg:citationText": ("estleg:Citation", "xsd:string"),
+    "estleg:citationSource": ("owl:Thing", "rdfs:Resource"),
+    "estleg:itemNumber": ("owl:Thing", "xsd:string"),
+    "estleg:provisionRef": ("owl:Thing", "xsd:string"),
+    "estleg:resultedInVersion": ("owl:Thing", "rdfs:Resource"),
+    # ProvisionVersionShape owns rtUrl, targets exactly ProvisionVersion, and
+    # every one of its subjects is a ProvisionVersion: the domain types nothing new.
+    "estleg:rtUrl": ("estleg:ProvisionVersion", "xsd:string"),
     "estleg:issuedUnder": ("estleg:Act", "rdfs:Resource"),
     "estleg:implementsCitation": ("estleg:Act", "estleg:Citation"),
     "estleg:implementedBy": ("owl:Thing", "rdfs:Resource"),
@@ -620,6 +698,13 @@ OVERWRITE_DOMAIN: dict[str, str] = {
     # Carried by dataset / amendment-chain header nodes, not acts.
     "estleg:totalAmendments": "owl:Thing",
     "estleg:totalConcepts": "owl:Thing",
+    # Terms first declared for the vocabulary-coverage gate. No shape carries
+    # sh:path for any of them, so a named domain could only add types; the
+    # measured subject class goes in DOMAIN_INCLUDES instead.
+    "estleg:citationSource": "owl:Thing",
+    "estleg:itemNumber": "owl:Thing",
+    "estleg:provisionRef": "owl:Thing",
+    "estleg:resultedInVersion": "owl:Thing",
 }
 OVERWRITE_RANGE: dict[str, str] = {
     "estleg:amendsLaw": "rdfs:Resource",
@@ -653,6 +738,10 @@ OVERWRITE_RANGE: dict[str, str] = {
     # Already open, by backfill; pinned so RANGE_INCLUDES may describe them.
     "estleg:enactedAs": "rdfs:Resource",
     "estleg:interpretsLaw": "rdfs:Resource",
+    # Objects are a § or a lõige; neither class may be entailed from the edge.
+    "estleg:citationSource": "rdfs:Resource",
+    # amendments/ -> provision_versions/: the interpretsVersion pattern again.
+    "estleg:resultedInVersion": "rdfs:Resource",
 }
 
 # Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
@@ -672,13 +761,17 @@ OVERWRITE_COMMENT: dict[str, str] = {
 # estleg:Part roots of a multipart act (#566) repeat the act's metadata; they
 # are counted under the Act they belong to, not listed as a class of their own.
 DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
+    "estleg:citationSource": ("estleg:Citation",),
     "estleg:currentVersion": ("estleg:LegalProvision",),
     "estleg:enactedBy": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:enactedByMunicipality": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:hasVersion": ("estleg:LegalProvision",),
     "estleg:implementedBy": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:implementedByCount": ("estleg:Act", "estleg:LegalProvision"),
+    "estleg:itemNumber": ("estleg:Subsection",),
     "estleg:municipalityStatus": ("estleg:MunicipalRegulation", "estleg:Issuer"),
+    "estleg:provisionRef": ("estleg:ProvisionVersion",),
+    "estleg:resultedInVersion": ("estleg:AmendmentEvent",),
     "estleg:semanticallySimilarTo": ("estleg:LegalProvision",),
     # Amendment-chain and concept-map header nodes.
     "estleg:totalAmendments": ("owl:Ontology",),
@@ -687,6 +780,7 @@ DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
 RANGE_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:amendingDraft": ("estleg:DraftLegislation",),
     "estleg:amendsLaw": ("estleg:Act",),
+    "estleg:citationSource": ("estleg:LegalProvision", "estleg:Subsection"),
     "estleg:citationTarget": ("estleg:LegalProvision", "estleg:Act"),
     "estleg:definesConcept": ("estleg:Concept",),
     "estleg:enactedAs": ("estleg:Act",),
@@ -701,6 +795,7 @@ RANGE_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:issuedUnder": ("estleg:Act",),
     "estleg:partOfAct": ("estleg:Act",),
     "estleg:proposesToAmend": ("estleg:Act",),
+    "estleg:resultedInVersion": ("estleg:ProvisionVersion",),
     "estleg:sharedDirective": ("estleg:EULegislation",),
     "estleg:similarTarget": ("estleg:LegalProvision", "estleg:Act"),
     "estleg:transposedBy": ("estleg:Act",),
@@ -779,6 +874,7 @@ def index_by_id(nodes: Iterable[dict]) -> dict[str, dict]:
 
 
 def normalize_node(node: dict) -> dict:
+    """Order keys canonically and wrap array-valued keys holding a scalar."""
     ordered: dict[str, Any] = {}
     for key in PREFERRED_KEYS:
         if key in node:
@@ -786,13 +882,29 @@ def normalize_node(node: dict) -> dict:
     for key, value in node.items():
         if key not in ordered:
             ordered[key] = value
+    for key in ARRAY_VALUED_KEYS:
+        if key in ordered and not isinstance(ordered[key], list):
+            ordered[key] = [ordered[key]]
     return ordered
+
+
+def declared_term_node(nid: str) -> dict:
+    """A fresh node for a DECLARED_TERMS entry; comment and axioms are applied later."""
+    types, label_et, label_en = DECLARED_TERMS[nid]
+    return {
+        "@id": nid,
+        "@type": list(types),
+        "rdfs:label": [
+            {"@value": label_et, "@language": "et"},
+            {"@value": label_en, "@language": "en"},
+        ],
+    }
 
 
 def ontology_header() -> dict:
     return {
         "@id": VOCABULARY_IRI,
-        "@type": "owl:Ontology",
+        "@type": ["owl:Ontology"],
         "owl:versionInfo": ONTOLOGY_VERSION,
         "rdfs:label": [
             {"@value": "Estonian Legal Ontology vocabulary", "@language": "en"},
@@ -916,6 +1028,32 @@ def apply_includes(node: dict) -> None:
             node[key] = [iri_ref(iri) for iri in table[nid]]
 
 
+def is_fallback_placeholder(node: dict) -> bool:
+    return (
+        node.get("estleg:referenceStatus") == FALLBACK_STATUS
+        and not is_class_node(node)
+        and not is_property_node(node)
+    )
+
+
+def instance_data_ids(krr_dir: Path = KRR_DIR) -> set[str]:
+    """Every @id declared by a node in the INSTANCE_DATA_SUBDIRS overlays."""
+    ids: set[str] = set()
+    for sub in INSTANCE_DATA_SUBDIRS:
+        directory = krr_dir / sub
+        if not directory.is_dir():
+            continue
+        for path in sorted(directory.iterdir()):
+            if path.suffix not in {".json", ".jsonld"} or not path.is_file():
+                continue
+            ids.update(
+                node["@id"]
+                for node in graph_nodes(load_jsonld(path))
+                if isinstance(node.get("@id"), str)
+            )
+    return ids
+
+
 def iter_merge_sources(krr_dir: Path = KRR_DIR) -> Iterator[dict]:
     metadata = load_jsonld(METADATA_PATH)
     yield from graph_nodes(metadata)
@@ -929,8 +1067,13 @@ def iter_merge_sources(krr_dir: Path = KRR_DIR) -> Iterator[dict]:
 def build_consolidated_graph(
     vocab_doc: dict,
     extra_sources: Iterable[dict] | None = None,
+    instance_ids: Iterable[str] | None = None,
 ) -> tuple[list[dict], list[dict]]:
-    """Return (vocabulary nodes, unresolved individuals)."""
+    """Return (vocabulary nodes, unresolved individuals).
+
+    ``instance_ids`` are the @ids real instance files declare (default:
+    :func:`instance_data_ids`); a fallback placeholder with one of them is dropped.
+    """
     index = index_by_id(copy.deepcopy(node) for node in graph_nodes(vocab_doc))
     sources = extra_sources if extra_sources is not None else iter_merge_sources()
     for incoming in sources:
@@ -944,8 +1087,17 @@ def build_consolidated_graph(
         else:
             index[nid] = copy.deepcopy(incoming)
 
+    for nid in DECLARED_TERMS:
+        if nid not in index:
+            index[nid] = declared_term_node(nid)
+
     for junk in JUNK_TERMS:
         index.pop(junk, None)
+
+    declared = set(instance_ids if instance_ids is not None else instance_data_ids())
+    for nid in [nid for nid, node in index.items() if nid in declared]:
+        if is_fallback_placeholder(index[nid]):
+            del index[nid]
 
     unresolved: list[dict] = []
     for nid, node in list(index.items()):

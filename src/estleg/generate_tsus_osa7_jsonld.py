@@ -645,6 +645,13 @@ def main(argv: list[str] | None = None) -> int:
     graph = build_graph(osa)
     doc = {"@context": CONTEXT, "@graph": graph}
 
+    # Backfill the §-level SHACL minimums (paragrahv / summary / partOfAct,
+    # PR #741) and the lõige typing before writing, so a regeneration cannot
+    # undo scripts/normalise_legacy_modules.py.
+    from estleg.normalise_legacy_modules import normalise_document
+
+    normalise_document(doc)
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

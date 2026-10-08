@@ -1709,11 +1709,13 @@ def test_closure_stub_kov_provision_transitively_closes_parent_act(tmp_path):
     assert prov["estleg:enactedBy"] == {"@id": "estleg:Issuer_saku_vallavolikogu"}
     assert prov["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0681"}
     assert prov["estleg:partOfAct"] == {"@id": "estleg:Reg_1001519_Map"}
-    # KovProvisionShape — NOT LegalProvisionShape — applies: the stub must not
-    # acquire estleg:paragrahv (which would target it with the §-shape and demand
-    # a summary it deliberately drops).
-    assert "estleg:paragrahv" not in prov
-    assert "estleg:summary" not in prov
+    # #741: the build-time rollup (#519) types this KovProvision stub
+    # estleg:LegalProvision, so the ProvisionRequires{Paragrahv,Summary,PartOfAct}
+    # shapes target it — the stub must carry paragrahv + summary too, even though
+    # the source asserts only Regulation_<id> + KovProvision.
+    assert "estleg:LegalProvision" in prov["@type"]
+    assert prov["estleg:paragrahv"] == "§ 16"
+    assert prov["estleg:summary"] == "Rakendussäte."
 
     # the parent act, reachable only via partOfAct, is transitively stubbed AND
     # complete (so partOfAct's sh:class estleg:Act target resolves with metadata).
@@ -1823,6 +1825,9 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
                     "@id": "estleg:Reg_M_Par_1",
                     "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
                     "rdfs:label": "§ 1",
+                    "estleg:paragrahv": "§ 1",
+                    "estleg:summary": "Esimene paragrahv.",
+                    "estleg:legalText": "Pikk tekst, mida stub ei kanna.",
                     "estleg:enactedBy": {"@id": "estleg:Issuer_saku_vallavolikogu"},
                     "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0681"},
                     "estleg:partOfAct": {"@id": "estleg:Reg_M_Map"},
@@ -1888,6 +1893,12 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
             "estleg:partOfAct",
         ],
         "estleg:ProposedAmendment": ["estleg:amendingDraft"],
+        # #741 ProvisionRequires*Shape trio (lõige excused via sh:or).
+        "estleg:LegalProvision": [
+            "estleg:paragrahv",
+            "estleg:summary",
+            "estleg:partOfAct",
+        ],
     }
     edge_props = (
         "estleg:enactedBy",
@@ -1905,6 +1916,8 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
         ntypes = ntypes if isinstance(ntypes, list) else [ntypes]
         need: set[str] = set()
         for t in ntypes:
+            if t == "estleg:LegalProvision" and "estleg:Subsection" in ntypes:
+                continue
             need |= set(required.get(t, []))
         if need:
             need.add("rdfs:label")  # every shaped stub also needs a label
@@ -1919,3 +1932,165 @@ def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
 
     assert incomplete == [], incomplete
     assert dangling == [], dangling
+
+
+# --- #741 provision-shape closure props + #520 stub edge allowlist ----------
+
+
+def _stub_estleg_predicates(stub: dict) -> set[str]:
+    return {pred for pred, _ in estleg_common.iter_node_estleg_refs(stub)}
+
+
+def test_closure_stub_state_provision_carries_provision_shape_props():
+    """#741: a state-regulation provision stub (typed estleg:LegalProvision)
+    carries paragrahv/summary/partOfAct and NO estleg: edge outside the allowlist;
+    the full legalText body and every other estleg: ref are still dropped."""
+    source = {
+        "@id": "estleg:Reg_154075_Par_10",
+        "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+        "rdfs:label": "§ 10 [Õhusõiduki sundmaandamises …]",
+        "estleg:paragrahv": "§ 10",
+        "estleg:summary": "Lennuliiklusteenistused esitavad aruande.",
+        "estleg:legalText": "Täielik tekst.",
+        "estleg:sourceAct": "Õhusõiduki sundmaandamise kord",
+        "estleg:partOfAct": {"@id": "estleg:Reg_154075_Map"},
+        "estleg:competentAuthority": [{"@id": "estleg:Institution_peaminister"}],
+        "estleg:references": [{"@id": "estleg:haldusmenetluse_seadus_Par_8"}],
+    }
+    stub = fix_all_issues._make_closure_stub(source)
+    assert stub["estleg:paragrahv"] == "§ 10"
+    assert stub["estleg:summary"] == "Lennuliiklusteenistused esitavad aruande."
+    assert stub["estleg:partOfAct"] == {"@id": "estleg:Reg_154075_Map"}
+    assert "estleg:legalText" not in stub
+    assert "estleg:sourceAct" not in stub
+    # exactly the shaped edge survives — competentAuthority / references stripped
+    assert _stub_estleg_predicates(stub) == {"estleg:partOfAct"}
+    assert _stub_estleg_predicates(stub) <= estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
+
+
+def test_closure_stub_kov_provision_without_asserted_legalprovision_gets_trio():
+    """The #519 rollup types a Regulation_<id> + KovProvision stub LegalProvision
+    AFTER stub emission, so _make_closure_stub must resolve shape requirements over
+    the entailed types — otherwise the published stub fails the #741 trio."""
+    source = {
+        "@id": "estleg:Reg_1048944_Par_1",
+        "@type": ["owl:NamedIndividual", "estleg:Regulation_1048944", "estleg:KovProvision"],
+        "rdfs:label": "§ 1. Ülesannete delegeerimine",
+        "estleg:paragrahv": "§ 1.",
+        "estleg:summary": "Ülesanded delegeeritakse vallavalitsusele.",
+        "estleg:legalText": "Täielik tekst.",
+        "estleg:enactedBy": {"@id": "estleg:Issuer_viimsi_vallavolikogu"},
+        "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0890"},
+        "estleg:partOfAct": {"@id": "estleg:Reg_1048944_Map"},
+        "estleg:targetGroup": [{"@id": "estleg:TargetGroup_PublicBody"}],
+        "estleg:references": [{"@id": "estleg:haldusmenetluse_seadus_Par_8"}],
+    }
+    stub = fix_all_issues._make_closure_stub(source)
+    # the stub keeps its ASSERTED types; the rollup adds LegalProvision later
+    assert stub["@type"] == source["@type"]
+    for prop in ("estleg:paragrahv", "estleg:summary", "estleg:partOfAct"):
+        assert prop in stub, prop
+    assert "estleg:legalText" not in stub
+    assert _stub_estleg_predicates(stub) == {
+        "estleg:enactedBy",
+        "estleg:enactedByMunicipality",
+        "estleg:partOfAct",
+    }
+
+
+def test_closure_stub_subsection_is_waived_from_provision_trio():
+    """The #741 shapes excuse a lõige via sh:or ([sh:class estleg:Subsection] …):
+    a Subsection stub (rolled up to LegalProvision) stays a lean leaf."""
+    assert estleg_common.required_closure_props(
+        ["estleg:Subsection", "estleg:LegalProvision"]
+    ) == ()
+    assert estleg_common.required_closure_props(["estleg:LegalProvision"]) == (
+        "estleg:paragrahv",
+        "estleg:summary",
+        "estleg:partOfAct",
+    )
+    source = {
+        "@id": "estleg:X_Par_1_Lg_1",
+        "@type": ["owl:NamedIndividual", "estleg:Subsection"],
+        "rdfs:label": "lg 1",
+        "estleg:paragrahv": "§ 1",
+        "estleg:summary": "Lõike tekst.",
+        "estleg:partOfAct": {"@id": "estleg:X_Map"},
+        "estleg:parentProvision": {"@id": "estleg:X_Par_1"},
+    }
+    stub = fix_all_issues._make_closure_stub(source)
+    assert set(stub) == {"@id", "@type", "rdfs:label", "estleg:isStubNode"}
+
+
+def test_combined_stubs_carry_only_allowlisted_edges_after_inverse_pass(tmp_path):
+    """End to end through generate_combined_jsonld: a law provision carrying
+    estleg:referencedBy -> a regulation provision makes that provision a closure
+    stub, and the #520 inverse pass re-asserts the forward estleg:references onto
+    it. That edge is allowlisted (STUB_SEMANTIC_EDGE_PREDICATES), resolves
+    in-graph, and every stub's estleg: edges stay inside the allowlist — the exact
+    rule validate_all's leaky-stub check enforces."""
+    write_json(
+        tmp_path / "haldusmenetluse_seadus_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:haldusmenetluse_seadus_Par_8",
+                    "@type": ["estleg:LegalProvision"],
+                    "rdfs:label": "HMS § 8",
+                    "estleg:referencedBy": [{"@id": "estleg:Reg_154075_Par_10"}],
+                }
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "regulations" / "riik" / "ohusoiduki_t154075_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_154075_Map",
+                    "@type": ["estleg:Act", "estleg:GovernmentRegulation", "owl:Ontology"],
+                    "rdfs:label": "Õhusõiduki sundmaandamise kord",
+                    "estleg:documentType": "määrus",
+                    "estleg:terviktekstId": "154075",
+                    "estleg:hasProvision": {"@id": "estleg:Reg_154075_Par_10"},
+                },
+                {
+                    "@id": "estleg:Reg_154075_Par_10",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "rdfs:label": "§ 10",
+                    "estleg:paragrahv": "§ 10",
+                    "estleg:summary": "Aruanne Lennuametile.",
+                    "estleg:legalText": "Täielik tekst.",
+                    "estleg:partOfAct": {"@id": "estleg:Reg_154075_Map"},
+                    "estleg:references": [{"@id": "estleg:haldusmenetluse_seadus_Par_8"}],
+                    "estleg:competentAuthority": [{"@id": "estleg:Institution_x"}],
+                },
+            ]
+        },
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
+
+    prov = nodes["estleg:Reg_154075_Par_10"]
+    assert prov["estleg:isStubNode"] is True
+    assert prov["estleg:paragrahv"] == "§ 10"
+    assert prov["estleg:summary"] == "Aruanne Lennuametile."
+    assert prov["estleg:partOfAct"] == {"@id": "estleg:Reg_154075_Map"}
+    assert "estleg:legalText" not in prov
+    # #520 re-asserts the forward citation from the present law node's referencedBy
+    assert prov["estleg:references"] == [{"@id": "estleg:haldusmenetluse_seadus_Par_8"}]
+    # partOfAct's target was closed transitively as a complete regulation stub
+    act = nodes["estleg:Reg_154075_Map"]
+    assert act["estleg:isStubNode"] is True
+    assert act["estleg:terviktekstId"] == "154075"
+
+    present = {estleg_common.canonical_estleg_ref(k) or k for k in nodes}
+    for nid, node in nodes.items():
+        if node.get(estleg_common.STUB_NODE_MARKER) is not True:
+            continue
+        refs = list(estleg_common.iter_node_estleg_refs(node))
+        leaked = {p for p, _ in refs} - estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
+        assert leaked == set(), (nid, leaked)
+        dangling = [t for _, t in refs if t not in present]
+        assert dangling == [], (nid, dangling)

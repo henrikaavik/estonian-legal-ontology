@@ -7,30 +7,14 @@
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `00c8e6471330e55737c798e22a4026d30930b773`, 2026-09-07 13:16 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `5dd79f9401e66533d2be6497b135c6fb63d60af4`, 2026-10-08 14:46 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
 | Files validated | 26,961 |
-| Errors | 122 |
+| Errors | 0 |
 | Warnings | 2 |
-| Result | **FAILED** |
-
-| Count | Error category |
-|------:|----------------|
-| 38 | Duplicate @id within file |
-| 34 | indexed file has <n> act-level nodes (expected <n>) |
-| 27 | @type is not an array |
-| 5 | skos:exactMatch is not an array |
-| 5 | indexed file has no provision nodes and no registry exception |
-| 3 | missing <n> source graph IDs |
-| 3 | older than at least one canonical source file |
-| 2 | <n> shared provision IDs drift from source on SHACL-sensitive fields |
-| 1 | <n> @id values are duplicated across files (semantic collisions) |
-| 1 | <n> predicates, <n> classes |
-| 1 | <n> act-level temporal properties on non-Act nodes |
-| 1 | <n> stub node(s) carry disallowed estleg: object refs — a stub may carry only the shaped closure edges ['<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>', '<iri>'] |
-| 1 | <n> stale extra IDs not present in any canonical source |
+| Result | **PASSED** |
 
 <!-- END GENERATED: validation-summary -->
 
@@ -197,16 +181,16 @@ tree. "Before" is [CI run 34837816050](https://github.com/henrikaavik/estonian-l
 on `0cb9ac91bc`; "after" is a local pyshacl 0.31.0 run on 2026-09-17 with
 the vocabulary repaired under #709. CI re-measures every bucket on each push.
 
-| Bucket | Files | Before #709 | After #709 | Status |
-|---|---:|---:|---:|---|
-| `riigikohus` | 35 | 30,426 | **0 — PASS** | All of it was `interpretsVersion` typing `provision_versions/` nodes as bare `ProvisionVersion`. |
-| `drafts` | 4 | 9,482 | **0 — PASS** | All of it was `changeType` typing every draft as a `ProposedAmendment`. |
-| `kov` | 11,063 | 36,511 | **6** | Real: six `Reg_*_Map` acts carry `contentStatus "repealedBeforeSnapshot"`, which `ActTemporalShape`'s value list omits. |
-| `sidecars` | 10,653 | 309,422 | **5,046** | Real: see the list below. |
-| `laws` | 4,970 | 338,909 | **1,602** | 337,335 after the axiom repair; 1,602 once the §-level minimums excuse lõiked. Real: see below. |
-| `eurlex` | 162 | PASS | **PASS** | Source-bucket conformance does not establish aggregate parity. |
-| `curia` | 6 | PASS | **PASS** | #702 removed the shared-predicate domains that typed EU court nodes. |
-| `--all` | 26,887 | — | No completed local result | The 2026-09-07 attempt stopped during graph loading at 6 GiB process RSS on a 16 GiB host. |
+| Bucket | Files | Before #709 | After #709 | After Tier 1 gates (2026-10-08) | Status |
+|---|---:|---:|---:|---:|---|
+| `riigikohus` | 35 | 30,426 | **0 — PASS** | 0 | All of it was `interpretsVersion` typing `provision_versions/` nodes as bare `ProvisionVersion`. |
+| `drafts` | 4 | 9,482 | **0 — PASS** | 0 | All of it was `changeType` typing every draft as a `ProposedAmendment`. |
+| `kov` | 11,063 | 36,511 | 6 | **0** | `ActTemporalShape` now admits `repealedBeforeSnapshot` (#374). |
+| `sidecars` | 10,653 | 309,422 | 5,046 | **0** | Version-layer events stamped with `amends`; one-day versions admitted (`sh:lessThanOrEquals`); `minister` admitted; annotation IRI collision resolved. |
+| `laws` | 4,970 | 338,909 | 1,602 | **0** | Legacy OWL-module § nodes normalised; the REOS/ROS IRI collisions resolved. |
+| `eurlex` | 162 | PASS | **PASS** | PASS | Aggregate now rebuilt offline from schema + peeps. |
+| `curia` | 6 | PASS | **PASS** | PASS | #702 removed the shared-predicate domains that typed EU court nodes. |
+| `--all` | 26,887 | — | No completed local result | — | The 2026-09-07 attempt stopped during graph loading at 6 GiB process RSS on a 16 GiB host; CI measures the buckets separately. |
 
 ### What #709 removed
 
@@ -233,20 +217,49 @@ the pyshacl focus-node counts below exactly. It now reports none.
 Every node the `riigikohus` axiom typed is a complete, correctly typed
 `ProvisionVersion` in `provision_versions/`; none was dangling.
 
-### What remains, and is real
+### What the Tier 1 gates round removed (2026-10-08)
 
-- **`sidecars`, 5,046.** 4,841 version-layer `AmendmentEvent` nodes
-  (`Amendment_*_vf_*`) carry `entryIntoForce` and `resultedInVersion` but no
-  `estleg:amends`, which `AmendmentEventShape` requires. 179 `ProvisionVersion`
-  nodes fail `versionValidFrom` < `versionValidTo`. 24 `Institution` nodes carry
-  `institutionType "minister"`, absent from the shape's value list. Two fields
-  are missing on one Õiguskantsler annotation.
-- **`kov`, 6.** `contentStatus "repealedBeforeSnapshot"`, as in the table.
-- **`laws`, 1,602.** 533 § nodes in the two hand-modelled OWL modules
-  (`karistusseadustik_eriosa_owl.jsonld` 430, `tsus_osa7_138_169_owl.jsonld`
-  103), typed `estleg:Section` / `estleg:LegalProvision`, lack `paragrahv`,
-  `summary` and `partOfAct` — 533 × 3, each reported by the shape named for
-  the field — plus three duplicate-value findings on `REOS_Map` and `ROS_Map`.
+The "after Tier 1 gates" column was measured per file with pyshacl
+(`inference="rdfs"`, the vocabulary loaded alongside) on every file that
+failed before, and across the whole corpus with `scripts/check_phantom_typing.py
+--all` (0 in all seven buckets); CI re-measures the full buckets on every push.
+
+- **`sidecars`, 5,046 → 0.** The 4,841 version-layer `AmendmentEvent` nodes
+  (`Amendment_*_vf_*`) now carry `estleg:amends` — the generator's version join
+  copied the target from a sibling event and 178 chains had none;
+  `generate_amendment_history.py --relink-version-events` stamps it from the
+  law's act root(s). The 179 `ProvisionVersion` rows were one-day versions:
+  `versionValidTo` is the inclusive last day (the day before the successor's
+  `versionValidFrom`), so the shape now uses `sh:lessThanOrEquals`. The 24
+  `institutionType "minister"` rows are legitimate since #457 and the value
+  list admits them. The two annotation rows were two Õiguskantsler opinions
+  collapsed onto one IRI by the #459 common-prefix merge; ids are now
+  disambiguated on the emitted form.
+- **`kov`, 6 → 0.** `contentStatus "repealedBeforeSnapshot"` admitted.
+- **`laws`, 1,602 → 0.** The 533 § nodes of `karistusseadustik_eriosa_owl.jsonld`
+  and `tsus_osa7_138_169_owl.jsonld` carry `paragrahv`, `summary` and
+  `partOfAct` (`scripts/normalise_legacy_modules.py`, also called by both
+  module generators). The three duplicate-value findings were two different
+  laws sharing one compact prefix after transliteration (REÕS/REOS, RÕS/ROS);
+  `migrate_uris.py resolve-collisions` gave the yielding laws `REOS_2` /
+  `ROS_2` and the #426 deprecated duplicates `UKS_2` / `TsUS_2` / `TsMS_2`.
+- **Combined-only gate, 26,840 → PASS.** Closure stubs typed
+  `estleg:LegalProvision` now carry the §-level fields the #741 shapes require,
+  and the #520 inverse pass's `estleg:references` is an allowed stub edge.
+- **Seadusloome load-surface gate.** Graph closure passes for the first time:
+  the stale `eurlex_combined.jsonld` imported `estleg:EURlex_Schema_2026`,
+  which exists nowhere; the sub-corpus aggregates are now rebuilt offline from
+  schema + peeps (`scripts/rebuild_subcorpus_combined.py`).
+
+### What remains
+
+- The deprecated legacy peeps (#426) stay in the corpus under their new
+  suffixed prefixes; cross-file references that were ambiguous between a
+  collision pair stay on the law that kept the bare prefix until the
+  citation and similarity passes are re-run from text.
+- `generate_provision_versions.py` and the version join are still outside the
+  integration DAG (#704): a plain regeneration of the amendment chains would
+  drop the version-layer events again.
 
 ### The lõige question (#709)
 

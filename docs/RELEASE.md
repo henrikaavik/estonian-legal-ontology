@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 18 steps (enrichment plus aggregate rebuilds) form an explicit,
+release build. Its 20 steps (enrichment plus aggregate rebuilds) form an explicit,
 declarative directed acyclic graph (DAG); the runner topologically sorts it,
 runs it (serially by default), then — in `--release` mode — runs the three
 release validators and writes a release-wide manifest aggregating everything.
@@ -185,22 +185,30 @@ phase order is preserved exactly.
 | 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json`, `eurlex/eurlex_combined.jsonld` |
 | 4 | `rebuild_eurlex_combined` | `generate_transposition_mapping.py` | `eurlex/eurlex_combined.jsonld` |
 | 5 | `link_curia_eu_legislation.py` | `rebuild_eurlex_combined` | `curia/*_peep.json`, `curia/curia_combined.jsonld`, `curia/curia_eu_link_report.json` |
-| 6 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
-| 7 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
-| 8 | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
-| 9 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
-| 10 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
-| 11 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
-| 12 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
-| 13 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
-| 14 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
-| 15 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
-| 16 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
-| 17 | `generate_similarity_index.py` | The 14 enrichment dependencies listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
-| 18 | `build_release_artifacts.py` | All preceding 17 steps | `combined_ontology.jsonld`, `INDEX.json` |
+| 6 | `rebuild_curia_combined` | `link_curia_eu_legislation.py` | `curia/curia_combined.jsonld` |
+| 7 | `rebuild_eelnoud_combined` | — | `eelnoud/eelnoud_combined.jsonld` |
+| 8 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
+| 9 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
+| 10 | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
+| 11 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
+| 12 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
+| 13 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
+| 14 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
+| 15 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
+| 16 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
+| 17 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
+| 18 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
+| 19 | `generate_similarity_index.py` | The 14 enrichment dependencies listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
+| 20 | `build_release_artifacts.py` | All preceding 19 steps | `combined_ontology.jsonld`, `INDEX.json` |
 
 `rebuild_eurlex_combined` invokes `generate_eu_legislation.py` with
-`--rebuild-combined-from-peeps`. This table reflects the declarations in
+`--rebuild-combined-from-peeps`, which delegates to
+`scripts/rebuild_subcorpus_combined.py`; `rebuild_curia_combined` and
+`rebuild_eelnoud_combined` call that script directly (`--subcorpus curia` /
+`--subcorpus eelnoud`). The module assembles each sub-corpus aggregate offline
+from its schema file plus its `*_peep.json` files, taking the file lists from
+the parity gate's own definition (`validate_all.SUBCORPUS_COMBINED_TARGETS`),
+so the rebuild and the check cannot disagree. This table reflects the declarations in
 `src/estleg/run_all_integration.py:STEPS`; full input/output coverage remains
 work under #704.
 
@@ -264,7 +272,7 @@ This is the **unified release command**. It:
 1. Validates the DAG (exit 2 on a structural problem).
 2. Takes an atomic rename-aside snapshot of `krr_outputs/` (unless
    `--no-restore-on-failure`).
-3. Runs all 18 steps in topo order. A failed step skips its dependents; the
+3. Runs all 20 steps in topo order. A failed step skips its dependents; the
    first hard failure stops the run and the snapshot is restored.
 4. If — and only if — every step succeeded, runs the three release
    validators in order:
@@ -272,7 +280,7 @@ This is the **unified release command**. It:
    - `python3 scripts/shacl_validate_all.py --all` — full-corpus SHACL conformance
    - `python3 scripts/validate_seadusloome_sync.py` — Seadusloome zero-warning gate
 5. Writes `krr_outputs/reports/integration/release_manifest.json`.
-6. Exits **0 only if `release_ok`** — i.e. all 18 steps succeeded **and**
+6. Exits **0 only if `release_ok`** — i.e. all 20 steps succeeded **and**
    all three validators passed **and** no release-surface artifact is
    missing (`releaseArtifacts.missing` is empty; see
    [the manifest schema](#the-release_manifestjson-schema)). Otherwise exit 1.

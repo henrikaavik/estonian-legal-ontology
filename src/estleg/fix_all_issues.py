@@ -129,7 +129,9 @@ COMBINED_BUILD_LFS_SOURCES = (
 # #416: the only properties copied onto a closure stub. Everything else (large
 # text bodies — summary/legalText — and crucially every ``estleg:`` object
 # reference) is dropped so a stub is a graph-closure LEAF that introduces no
-# new dangling refs. ``owl:sameAs`` / ``dcterms:source`` are kept because they
+# new dangling refs. Exception (#488): the SHACL-required props of the stub's
+# shaped type(s) — ``estleg_common.SHAPE_REQUIRED_CLOSURE_PROPS``, e.g. a
+# provision's paragrahv/summary/partOfAct — are copied too (legalText never is). ``owl:sameAs`` / ``dcterms:source`` are kept because they
 # point at EXTERNAL (non-``estleg:``) IRIs (Riigi Teataja / CELEX) — real,
 # useful links that do not affect internal closure.
 STUB_KEEP_PROPS = (
@@ -1011,8 +1013,10 @@ def _make_closure_stub(source: dict) -> dict:
     marks the node with ``estleg:isStubNode`` so the parity gate can recognise it.
 
     #488: when the source carries a SHACL-shaped ``@type`` (a domestic
-    regulation, KOV provision, or proposed amendment), the stub must ALSO carry
-    that shape's required SEMANTIC properties — including IRI-valued graph edges
+    regulation, a non-lõige provision, a KOV provision, or a proposed
+    amendment) — asserted directly or entailed by the #519 type rollup — the
+    stub must ALSO carry that shape's required properties, e.g. a provision's
+    ``estleg:paragrahv`` / ``estleg:summary`` (#741), and IRI-valued graph edges
     (``estleg:enactedBy`` / ``estleg:enactedByMunicipality`` / ``estleg:partOfAct``
     / ``estleg:amendingDraft``) — so the standalone combined artifact satisfies
     the project's own SHACL contract rather than publishing an incomplete typed
@@ -1033,7 +1037,16 @@ def _make_closure_stub(source: dict) -> dict:
         kept = _strip_estleg_refs(source[prop])
         if kept is not None:
             stub[prop] = kept
-    for prop in estleg_common.required_closure_props(node_type):
+    # Look the shape requirements up over the ENTAILED types: _apply_type_rollup
+    # (#519) runs after stub emission and asserts e.g. estleg:LegalProvision on a
+    # KovProvision / Regulation_<id> stub, which puts it in scope of the #741
+    # ProvisionRequires*Shape trio. The source @type alone would miss that.
+    if node_type is None:
+        entailed_types: list[str] = []
+    else:
+        asserted = node_type if isinstance(node_type, list) else [node_type]
+        entailed_types = _materialize_supertypes([t for t in asserted if isinstance(t, str)])
+    for prop in estleg_common.required_closure_props(entailed_types):
         if prop in source and prop not in stub:
             value = source[prop]
             stub[prop] = copy.deepcopy(value) if isinstance(value, (dict, list)) else value

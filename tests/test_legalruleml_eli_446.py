@@ -31,8 +31,11 @@ def test_normtype_individuals_map_to_legalruleml() -> None:
         exact = by_id[nid].get("skos:exactMatch")
         assert isinstance(same, dict), nid
         assert same.get("@id") == iri
-        assert isinstance(exact, dict), nid
-        assert exact.get("@id") == iri
+        # skos:exactMatch is array-valued in the CV (validate_all's
+        # multi-valued convention); accept the single-dict form too.
+        exact_items = exact if isinstance(exact, list) else [exact]
+        assert exact_items and all(isinstance(item, dict) for item in exact_items), nid
+        assert iri in {item.get("@id") for item in exact_items}, nid
 
 
 def test_update_law_file_emits_eli_is_about(tmp_path: Path) -> None:

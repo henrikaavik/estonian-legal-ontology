@@ -15,6 +15,7 @@ Generates:
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from datetime import datetime
@@ -27,7 +28,6 @@ from estleg.estleg_common import (
     mint_act_iri,
     parse_xml,
     save_json,
-    stamp_combined_dataset_head,
 )
 from estleg.estleg_common import (
     sanitize_id as _shared_sanitize_id,
@@ -564,7 +564,46 @@ def generate_draft_node(
     return node
 
 
-def main():
+def rebuild_eelnoud_combined_from_peeps(eelnoud_dir: Path | None = None) -> dict:
+    """Rebuild ``eelnoud_combined.jsonld`` offline from schema + phase peeps.
+
+    Thin wrapper over
+    :func:`estleg.rebuild_subcorpus_combined.rebuild_subcorpus_combined`, the
+    single offline producer whose source list is the parity gate's own.
+    """
+    from estleg.rebuild_subcorpus_combined import rebuild_subcorpus_combined
+
+    target = eelnoud_dir if eelnoud_dir is not None else EELNOUD_DIR
+    return rebuild_subcorpus_combined(
+        "eelnoud", target.parent, subcorpus_dir=target
+    ).as_dict()
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--rebuild-combined-from-peeps",
+        action="store_true",
+        help=(
+            "Skip the EIS fetch; rebuild eelnoud_combined.jsonld offline from "
+            "eelnoud_schema.json + the phase peeps."
+        ),
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    # ``argv=None`` means "no CLI flags" (not sys.argv) so in-process callers
+    # and tests that call ``main()`` keep the plain live-fetch behaviour.
+    args = parse_args([] if argv is None else argv)
+    if args.rebuild_combined_from_peeps:
+        stats = rebuild_eelnoud_combined_from_peeps()
+        print(
+            f"Rebuilt {stats['path']} from peeps: "
+            f"{stats['nodes']} nodes, {stats['files']} source files"
+        )
+        return 0
+
     print("=" * 60)
     print("Fetching draft legislation from EIS")
     print("=" * 60)
@@ -650,29 +689,12 @@ def main():
         save_json(out_path, doc)
         print(f"  Saved: {out_path.name} ({len(graph)} nodes)")
 
-    # Generate combined file with all drafts
+    # Generate combined file with all drafts. Written by the offline rebuild
+    # (schema + phase peeps, the parity gate's own source list) so the live
+    # and offline paths cannot drift.
     print("\n--- Generating combined drafts file ---")
-    combined_graph: list[dict] = [
-        {
-            "@id": mint_act_iri("Eelnoud_Combined"),
-            "@type": ["owl:Ontology"],
-            "rdfs:label": {"@value": "EIS eelnõud – kõik etapid (Combined)", "@language": "et"},
-            "dc:description": {"@value": "Kõik EIS eelnõud kõigist menetlusetappidest.", "@language": "et"},
-            "dc:source": "Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee",
-        },
-    ]
-    combined_graph.extend(generate_schema_nodes())
-    for d in all_drafts:
-        combined_graph.append(d["node"])
-
-    combined_doc = {"@context": CONTEXT, "@graph": combined_graph}
-    stamp_combined_dataset_head(
-        combined_doc,
-        label="Estonian Legal Ontology — drafts combined",
-    )
-    combined_path = EELNOUD_DIR / "eelnoud_combined.jsonld"
-    save_json(combined_path, combined_doc)
-    print(f"  Saved: {combined_path.name} ({len(combined_graph)} nodes)")
+    stats = rebuild_eelnoud_combined_from_peeps(EELNOUD_DIR)
+    print(f"  Saved: {stats['path'].name} ({stats['nodes']} nodes)")
 
     # Generate index
     print("\n--- Generating drafts index ---")
@@ -718,7 +740,8 @@ def main():
         phase_count = sum(1 for d in all_drafts if d["feed"] == phase_key)
         print(f"  {feed_info['label_et']}: {phase_count} drafts")
     print("=" * 60)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))

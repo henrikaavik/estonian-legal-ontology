@@ -110,7 +110,7 @@ def test_tsus_part_subsection_emission_uses_ascii_iri_prefix() -> None:
     doc = generate_missing_parts.generate_tsus_part1(root, "fixture.xml")
     assert doc is not None
     ids = {node["@id"] for node in doc["@graph"]}
-    assert "estleg:TsUS_Osa1_Par_1_Lg_1" in ids
+    assert "estleg:TsUS_2_Osa1_Par_1_Lg_1" in ids
     assert all("TsÜS" not in node_id for node_id in ids)
 
 
@@ -165,8 +165,8 @@ def test_tsus_osa1_flat_marker_falls_through_to_section_scan() -> None:
     )
     provision_ids = {p["@id"] for p in provisions}
     assert provision_ids == {
-        "estleg:TsUS_Osa1_Par_1",
-        "estleg:TsUS_Osa1_Par_2",
+        "estleg:TsUS_2_Osa1_Par_1",
+        "estleg:TsUS_2_Osa1_Par_2",
     }
 
 
@@ -192,7 +192,7 @@ def test_tsus_osa1_act_id_is_snapshot_stable() -> None:
     )
     doc = generate_missing_parts.generate_tsus_part1(root, "fixture.xml")
     assert doc is not None
-    assert doc["@graph"][0]["@id"] == "estleg:TsUS_Osa1"
+    assert doc["@graph"][0]["@id"] == "estleg:TsUS_2_Osa1"
     # The §range still appears in the human-readable label.
     assert "§3" in estleg_common.jsonld_text(doc["@graph"][0]["rdfs:label"])
 
@@ -258,7 +258,7 @@ def test_vos_provisions_link_to_act_root_via_part_of_act() -> None:
 
 def test_tsus_provisions_link_to_act_root_via_part_of_act() -> None:
     """Issue #415: every TsÜS part-1 provision must carry estleg:partOfAct →
-    estleg:TsUS_Osa1."""
+    estleg:TsUS_2_Osa1."""
     root = ET.fromstring(
         """
         <akt>
@@ -281,7 +281,7 @@ def test_tsus_provisions_link_to_act_root_via_part_of_act() -> None:
     provisions = _provisions(doc)
     assert provisions
     for prov in provisions:
-        assert prov.get("estleg:partOfAct") == {"@id": "estleg:TsUS_Osa1"}
+        assert prov.get("estleg:partOfAct") == {"@id": "estleg:TsUS_2_Osa1"}
 
 
 def test_vos_output_slug_matches_generate_all_laws(tmp_path, monkeypatch) -> None:
@@ -449,9 +449,9 @@ def test_tsus_requested_cluster_is_iri_reference_not_bare_string() -> None:
             f"requestedCluster must be an IRI reference dict, got {cluster!r}"
         )
         assert not isinstance(cluster, str)
-        assert cluster == {"@id": "estleg:Cluster_TsUS_Uldsatted"}
+        assert cluster == {"@id": "estleg:Cluster_TsUS_2_Uldsatted"}
     # The referenced cluster individual must exist in the graph.
-    _node_by_id(doc, "estleg:Cluster_TsUS_Uldsatted")
+    _node_by_id(doc, "estleg:Cluster_TsUS_2_Uldsatted")
 
 
 def test_summary_does_not_leak_amendment_marker() -> None:

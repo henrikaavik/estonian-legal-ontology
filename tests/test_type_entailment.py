@@ -175,50 +175,72 @@ def test_apply_type_rollup_in_place_and_count():
 def test_combined_materializes_parent_types():
     """The regenerated combined graph answers the bare-parent type queries (#519).
 
-    Artifact-level invariant: every sampled-family instance carries the
-    materialized parent, and ``?x a estleg:LegalProvision`` is far above the
-    pre-fix value of 71. SKIPS on a missing / unsmudged-LFS-pointer combined so a
-    clean clone without ``git lfs pull`` stays green.
+    Artifact-level invariant: ``?x a estleg:LegalProvision`` covers the full
+    provision population (pre-#519 it matched 71 nodes), every provision-typed
+    family carries the materialized parent, and every act class carries
+    ``estleg:Act``. Since c5625a748b the generators type provisions as plain
+    ``estleg:LegalProvision`` and the mechanical per-file ``LegalProvision_<slug>``
+    / ``Regulation_<id>`` classes are retired, so the retyped-provision invariant
+    is: every instance that carries ``estleg:paragrahv`` (i.e. is a §-level
+    provision) is typed ``estleg:LegalProvision``, and the leaf families — if any
+    ever reappear — still roll up. SKIPS on a missing / unsmudged-LFS-pointer
+    combined so a clean clone without ``git lfs pull`` stays green.
     """
     if not COMBINED.is_file() or _is_lfs_pointer(COMBINED):
         pytest.skip("combined_ontology.jsonld absent or an unsmudged LFS pointer")
     graph = json.loads(COMBINED.read_text(encoding="utf-8"))["@graph"]
 
     legalprovision_nodes = 0
-    saw_slug = saw_subsection = saw_law = saw_reg_act = False
+    paragrahv_provisions = 0
+    saw_kov = saw_subsection = saw_law = saw_reg_act = False
+    retired_leaf_classes: list[str] = []
     reg_act_classes = {
         "estleg:MunicipalRegulation",
         "estleg:NationalRegulation",
         "estleg:GovernmentRegulation",
         "estleg:MinisterialRegulation",
     }
+    leaf_prefixes = tuple(prefix for prefix, _ in fix._TYPE_ROLLUP_PREFIXES)
     for node in graph:
         types = node.get("@type")
         if not isinstance(types, list):
             continue
         ts = set(types)
         if "owl:Class" in ts:
-            continue  # TBox class declarations are not instances
+            # TBox class declarations are not instances; c5625a748b retired the
+            # per-document leaf classes, so none may be re-minted into combined.
+            if str(node.get("@id", "")).startswith(leaf_prefixes):
+                retired_leaf_classes.append(node["@id"])
+            continue
         if "estleg:LegalProvision" in ts:
             legalprovision_nodes += 1
-        # (a) per-file slug instance also carries the bare parent
-        if any(t.startswith("estleg:LegalProvision_") for t in types):
+        # retyped provisions: every §-level provision is a LegalProvision
+        if "estleg:paragrahv" in node:
             assert "estleg:LegalProvision" in ts, node.get("@id")
-            saw_slug = True
-        # (b) Subsection
+            paragrahv_provisions += 1
+        # a leaf-family instance (should none remain) still carries the parent
+        if any(t.startswith(leaf_prefixes) for t in types):
+            assert "estleg:LegalProvision" in ts, node.get("@id")
+        # KovProvision -> LegalProvision
+        if "estleg:KovProvision" in ts:
+            assert "estleg:LegalProvision" in ts, node.get("@id")
+            saw_kov = True
+        # Subsection -> LegalProvision
         if "estleg:Subsection" in ts:
             assert "estleg:LegalProvision" in ts, node.get("@id")
             saw_subsection = True
-        # (c) Law -> Act
+        # Law -> Act
         if "estleg:Law" in ts:
             assert "estleg:Act" in ts, node.get("@id")
             saw_law = True
-        # (d) regulation act class -> Act
+        # regulation act class -> Act
         if ts & reg_act_classes:
             assert "estleg:Act" in ts, node.get("@id")
             saw_reg_act = True
 
-    assert saw_slug, "no LegalProvision_<slug> instance found in combined"
+    assert retired_leaf_classes == [], retired_leaf_classes[:10]
+    assert paragrahv_provisions > 10_000, paragrahv_provisions
+    assert saw_kov, "no KovProvision instance found in combined"
     assert saw_subsection, "no Subsection instance found in combined"
     assert saw_law, "no Law instance found in combined"
     assert saw_reg_act, "no *Regulation act node found in combined"
@@ -226,13 +248,42 @@ def test_combined_materializes_parent_types():
     assert legalprovision_nodes > 100_000, legalprovision_nodes
 
 
+def _subclass_parents(node: dict | None) -> list[str]:
+    if node is None:
+        return []
+    sub = node.get("rdfs:subClassOf")
+    values = sub if isinstance(sub, list) else [sub]
+    out: list[str] = []
+    for value in values:
+        ref = value.get("@id") if isinstance(value, dict) else value
+        if isinstance(ref, str):
+            out.append(ref)
+    return out
+
+
+def _entailed_superclasses(by_id: dict, cls: str) -> list[str]:
+    """Transitive ``rdfs:subClassOf`` closure of ``cls`` (BFS, cycle-safe)."""
+    seen: list[str] = []
+    queue = _subclass_parents(by_id.get(cls))
+    while queue:
+        current = queue.pop(0)
+        if current in seen:
+            continue
+        seen.append(current)
+        queue.extend(_subclass_parents(by_id.get(current)))
+    return seen
+
+
 @pytest.mark.corpus
 def test_tbox_axioms_back_the_materialized_types():
-    """Each rolled-up parent is backed by an ``rdfs:subClassOf`` axiom (#519).
+    """Each rolled-up parent is entailed by ``rdfs:subClassOf`` axioms (#519).
 
-    The materialized types must equal what a reasoner would entail, so the
-    bare classes the rollup relies on carry the matching subclass axiom in the
-    shipped graph (sourced from ``controlled_vocabulary.jsonld``).
+    The materialized types must be what a reasoner would entail, so for every
+    rollup edge ``cls -> parent`` the shipped T-Box (sourced from
+    ``controlled_vocabulary.jsonld``) must reach ``parent`` from ``cls`` through
+    the subclass chain. The chain need not be a single hop: the regulation
+    hierarchy is ``NationalRegulation / MunicipalRegulation ⊑ DomesticRegulation
+    ⊑ Act``, so the rollup's direct ``-> Act`` edge is backed transitively.
     """
     if not COMBINED.is_file() or _is_lfs_pointer(COMBINED):
         pytest.skip("combined_ontology.jsonld absent or an unsmudged LFS pointer")
@@ -248,9 +299,13 @@ def test_tbox_axioms_back_the_materialized_types():
         "estleg:GovernmentRegulation": "estleg:NationalRegulation",
         "estleg:MinisterialRegulation": "estleg:NationalRegulation",
     }
+    # the builder's rollup table must not assert anything the test does not vet
+    assert dict(fix._TYPE_ROLLUP_EDGES) == expected
     for cls, parent in expected.items():
-        node = by_id.get(cls)
-        assert node is not None, f"{cls} class declaration missing from combined"
-        sub = node.get("rdfs:subClassOf")
-        sub_id = sub.get("@id") if isinstance(sub, dict) else sub
-        assert sub_id == parent, f"{cls} rdfs:subClassOf {sub_id} != {parent}"
+        assert cls in by_id, f"{cls} class declaration missing from combined"
+        supers = _entailed_superclasses(by_id, cls)
+        assert parent in supers, f"{cls} does not entail {parent} (supers: {supers})"
+    # the intermediate domestic-regulation tier the chain now runs through
+    for cls in ("estleg:NationalRegulation", "estleg:MunicipalRegulation"):
+        assert _subclass_parents(by_id[cls]) == ["estleg:DomesticRegulation"], cls
+    assert "estleg:Act" in _subclass_parents(by_id.get("estleg:DomesticRegulation"))

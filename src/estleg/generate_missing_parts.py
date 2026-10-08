@@ -407,6 +407,13 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
     return {"@context": CONTEXT, "@graph": graph}
 
 
+# The legacy ``tsiviilseadustik_osaN`` set is a #426 deprecated duplicate of
+# ``tsiviilseadustiku_uldosa_seadus`` (registry ``TsÜS`` -> corpus ``TsUS``).
+# It yields that prefix (``migrate_uris.py resolve-collisions``; registry key
+# ``tsiviilseadustik`` = ``TsUS_2``), so its IRIs must never reuse ``TsUS_``.
+TSUS_LEGACY_PREFIX = "TsUS_2"
+
+
 def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
     """Generate JSON-LD for TsÜS Osa 1."""
     osa = find_osa(root, "1")
@@ -458,7 +465,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
     graph: list[dict] = [
         {
             # Snapshot-stable act IRI (no volatile §min–§max range) — #269c.
-            "@id": "estleg:TsUS_Osa1",
+            "@id": f"estleg:{TSUS_LEGACY_PREFIX}_Osa1",
             "@type": ["estleg:Act", "estleg:Law"],
             "rdfs:label": et_literal(
                 f"TsÜS Osa 1 (Üldsätted) §{par_min}–{par_max} kaardistus"
@@ -466,7 +473,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             "dc:source": "Tsiviilseadustiku üldosa seadus",
         },
         {
-            "@id": "estleg:Cluster_TsUS_Uldsatted",
+            "@id": f"estleg:Cluster_{TSUS_LEGACY_PREFIX}_Uldsatted",
             "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
             "rdfs:label": et_literal("Üldsätted (tsiviilõiguse aluspõhimõtted)"),
         },
@@ -484,7 +491,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         full_text = collect_full_text(p)
         par_suffix = _paragraph_id_suffix(p)
 
-        p_id = f"estleg:TsUS_Osa1_Par_{par_suffix}"
+        p_id = f"estleg:{TSUS_LEGACY_PREFIX}_Osa1_Par_{par_suffix}"
 
         node: dict = {
             "@id": p_id,
@@ -497,10 +504,12 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
                 f"{p_display} {p_title}".strip() if p_title else p_display
             ),
             # IRI reference, not a bare string literal (#370 item 2).
-            "estleg:requestedCluster": {"@id": "estleg:Cluster_TsUS_Uldsatted"},
+            "estleg:requestedCluster": {
+                "@id": f"estleg:Cluster_{TSUS_LEGACY_PREFIX}_Uldsatted"
+            },
             "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
             # Issue #415: structural IRI join to the TsÜS part-1 act root.
-            "estleg:partOfAct": {"@id": "estleg:TsUS_Osa1"},
+            "estleg:partOfAct": {"@id": f"estleg:{TSUS_LEGACY_PREFIX}_Osa1"},
         }
 
         if text:
@@ -512,7 +521,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         subsection_nodes = build_subsections(
             p,
             p_id,
-            abbrev_prefix="TsUS",
+            abbrev_prefix=TSUS_LEGACY_PREFIX,
             par_suffix=par_suffix,
             paragraph_display=p_display,
             osa_nr="1",

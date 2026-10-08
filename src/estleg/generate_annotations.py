@@ -81,6 +81,7 @@ from estleg.estleg_common import (
     is_domain_individual,
     iter_peep_files,
     sanitize_id,
+    save_json,
     slugify,
 )
 from estleg.kov_pipeline_coverage import (
@@ -106,6 +107,8 @@ PDF_PROBE_REPORT_PATH = KRR_DIR / "reports" / "annotations_pdf_probe.json"
 SEED_PATH = REPO_ROOT / "data" / "annotations" / "seed_annotations.json"
 
 ANNOTATION_SOURCE = "Õiguskantsler"
+ANNOTATION_ID_PREFIX = "estleg:Annotation_OK_"
+ANNOTATION_LABEL_PREFIX = "Õiguskantsleri seisukoht: "
 ANNOTATION_TYPE = "interpretation"  # default when the title does not classify
 _SECTION_CITE_RE = re.compile(
     r"(?:§+\s*|paragrahvi?\s+)(\d+)(?:([¹²³⁴⁵⁶⁷⁸⁹⁰]+)|[_^](\d+))?",
@@ -199,6 +202,21 @@ def _looks_like_pdf_url(url: str) -> bool:
 def _short_hash(value: str, *, length: int = 8) -> str:
     # Stable disambiguator only; collisions are unlikely at the current archive scale.
     return hashlib.sha1(value.encode("utf-8")).hexdigest()[:length]
+
+
+def annotation_local_id(opinion_id: str) -> str:
+    """Return the local name an opinion id is emitted under (after ``Annotation_OK_``).
+
+    The ONE transform between an :class:`Opinion` id and its IRI. Collision detection
+    (:func:`disambiguate_duplicate_opinion_ids`) and the emitter both go through it, so two
+    ids that only differ in characters ``sanitize_id`` drops can never share an IRI.
+    """
+    return sanitize_id(opinion_id)
+
+
+def annotation_iri(opinion_id: str) -> str:
+    """Return the compact ``estleg:Annotation_OK_…`` IRI for an opinion id."""
+    return f"{ANNOTATION_ID_PREFIX}{annotation_local_id(opinion_id)}"
 
 
 # ---------------------------------------------------------------------------
@@ -770,36 +788,49 @@ def _fetch_bytes(
     return body
 
 
-def disambiguate_duplicate_opinion_ids(opinions: list[Opinion]) -> list[Opinion]:
-    """Append a stable source hash when the live archive reuses a title/PDF slug.
+@dataclass(frozen=True)
+class _IdCandidate:
+    """The fields the IRI disambiguation rule reads, from an Opinion or a sidecar node."""
 
-    Deterministic and input-order independent: the per-opinion source hash is derived from
-    content (url, or date/title) with no list position, and residual ``_2``/``_3`` ordinals
-    for truly identical url/date/title rows are assigned by a STABLE sort of the colliding
-    group, not by arrival order. Equivalent inputs in any order yield identical IRIs.
+    base: str        # local id in its FINAL emitted form (see annotation_local_id)
+    url: str
+    date_iso: str
+    title: str
+    tiebreak: str    # body text; only orders rows identical in url/date/title
+
+
+def _assign_distinct_local_ids(candidates: list[_IdCandidate]) -> list[str]:
+    """Return one distinct local id per candidate; non-colliding bases are kept verbatim.
+
+    Rule (shared by the generator and the ``--dedupe-sidecar-ids`` repair, so both mint
+    identical IRIs): a base shared by >1 candidate becomes
+    ``<base>_<_short_hash(url or "date|title")>``; rows still identical after that are
+    ordered by a stable sort of (url, date, title, hash of all four fields) and get
+    ``_2``/``_3``… by rank. No list position is used, so the result is input-order
+    independent.
     """
     counts: dict[str, int] = {}
-    for op in opinions:
-        counts[op.opinion_id] = counts.get(op.opinion_id, 0) + 1
+    for cand in candidates:
+        counts[cand.base] = counts.get(cand.base, 0) + 1
     if not any(count > 1 for count in counts.values()):
-        return opinions
+        return [cand.base for cand in candidates]
 
-    # First pass: assign each colliding opinion a content-derived (position-independent) id,
-    # bucketing any residual collisions so we can break ties by a stable sorted rank below.
+    # First pass: content-derived (position-independent) id for every colliding row,
+    # bucketing residual collisions so ties are broken by a stable sorted rank below.
     interim_ids: list[str] = []
     collisions: dict[str, list[int]] = {}
-    for pos, op in enumerate(opinions):
-        if counts[op.opinion_id] > 1:
-            source_key = op.url or f"{op.date_iso or ''}|{op.title}"
-            interim_id = f"{op.opinion_id}_{_short_hash(source_key)}"
+    for pos, cand in enumerate(candidates):
+        if counts[cand.base] > 1:
+            source_key = cand.url or f"{cand.date_iso}|{cand.title}"
+            interim_id = f"{cand.base}_{_short_hash(source_key)}"
         else:
-            interim_id = op.opinion_id
+            interim_id = cand.base
         interim_ids.append(interim_id)
         collisions.setdefault(interim_id, []).append(pos)
 
-    # Second pass: for any interim id shared by >1 row (identical url, or identical
-    # date+title), sort the colliding rows by a stable composite key and append the ordinal
-    # by sorted rank so the same set of inputs always maps the same row to the same suffix.
+    # Second pass: rows sharing an interim id (identical url, or identical date+title) are
+    # ranked by a stable composite key so the same input set always maps the same row to
+    # the same ordinal suffix.
     final_ids: list[str] = list(interim_ids)
     for interim_id, positions in collisions.items():
         if len(positions) <= 1:
@@ -807,20 +838,44 @@ def disambiguate_duplicate_opinion_ids(opinions: list[Opinion]) -> list[Opinion]
         ordered = sorted(
             positions,
             key=lambda p: (
-                opinions[p].url,
-                opinions[p].date_iso or "",
-                opinions[p].title,
+                candidates[p].url,
+                candidates[p].date_iso,
+                candidates[p].title,
                 _short_hash(
-                    f"{opinions[p].url}|{opinions[p].date_iso or ''}|"
-                    f"{opinions[p].title}|{opinions[p].summary}"
+                    f"{candidates[p].url}|{candidates[p].date_iso}|"
+                    f"{candidates[p].title}|{candidates[p].tiebreak}"
                 ),
             ),
         )
         for rank, pos in enumerate(ordered):
             final_ids[pos] = interim_id if rank == 0 else f"{interim_id}_{rank + 1}"
+    return final_ids
 
+
+def disambiguate_duplicate_opinion_ids(opinions: list[Opinion]) -> list[Opinion]:
+    """Append a stable source hash when two opinions would be emitted under one IRI.
+
+    Collisions are detected on the FINAL emitted local id (:func:`annotation_local_id`),
+    not the raw ``opinion_id``, so ids that differ only in characters the IRI transform
+    drops are still separated. Deterministic and input-order independent: the per-opinion
+    source hash is derived from content (url, or date/title) with no list position, and
+    residual ``_2``/``_3`` ordinals for truly identical url/date/title rows are assigned by
+    a STABLE sort of the colliding group, not by arrival order. Equivalent inputs in any
+    order yield identical IRIs. Opinions that do not collide keep their raw id unchanged.
+    """
+    candidates = [
+        _IdCandidate(
+            base=annotation_local_id(op.opinion_id),
+            url=op.url,
+            date_iso=op.date_iso or "",
+            title=op.title,
+            tiebreak=op.summary,
+        )
+        for op in opinions
+    ]
+    final_ids = _assign_distinct_local_ids(candidates)
     return [
-        op if final_ids[pos] == op.opinion_id else replace(op, opinion_id=final_ids[pos])
+        op if final_ids[pos] == candidates[pos].base else replace(op, opinion_id=final_ids[pos])
         for pos, op in enumerate(opinions)
     ]
 
@@ -1255,13 +1310,13 @@ def build_annotations_for_opinion(
     text = _annotation_text(opinion)
     targets = provision_iris_for_acts(iris, f"{opinion.title}\n{text}", provision_ids)
     node = {
-        "@id": f"estleg:Annotation_OK_{sanitize_id(opinion.opinion_id)}",
+        "@id": annotation_iri(opinion.opinion_id),
         "@type": ["owl:NamedIndividual", "estleg:Annotation"],
         "estleg:annotates": _annotates_value(targets),
         "estleg:annotationText": text,
         "estleg:annotationType": classify_annotation_type(opinion.title, text),
         "estleg:annotationSource": ANNOTATION_SOURCE,
-        "rdfs:label": {"@value": f"Õiguskantsleri seisukoht: {opinion.title}", "@language": "et"},
+        "rdfs:label": {"@value": f"{ANNOTATION_LABEL_PREFIX}{opinion.title}", "@language": "et"},
     }
     if opinion.url:
         node["estleg:annotationSourceUrl"] = _xsd_anyuri(opinion.url)
@@ -1385,7 +1440,7 @@ def remint_annotation_sidecar(
             title = str(label.get("@value") or "")
         elif isinstance(label, str):
             title = label
-        title = title.removeprefix("Õiguskantsleri seisukoht: ").strip()
+        title = title.removeprefix(ANNOTATION_LABEL_PREFIX).strip()
         refined = provision_iris_for_acts(targets, f"{title}\n{text}", provision_ids)
         node = {
             "@id": common,
@@ -1403,6 +1458,10 @@ def remint_annotation_sidecar(
             node["rdfs:label"] = first["rdfs:label"]
         collapsed.append(node)
 
+    # The common-prefix collapse above can mint an id another document already uses
+    # (e.g. ``<slug>_KORS`` + ``<slug>_OIGUSK`` -> ``<slug>``); re-separate them with the
+    # generator's own rule.
+    dedupe_annotation_node_ids(collapsed)
     collapsed.sort(key=lambda item: str(item.get("@id") or ""))
     if header is not None:
         header["rdfs:label"] = {
@@ -1427,6 +1486,88 @@ def remint_annotation_sidecar(
         ),
         "after": len(collapsed),
         "groups": len(groups),
+    }
+
+
+def _literal_value(value: object) -> str:
+    """Return the lexical form of a plain or ``{"@value": …}`` JSON-LD literal ("" if absent)."""
+    if isinstance(value, dict):
+        value = value.get("@value")
+    return value.strip() if isinstance(value, str) else ""
+
+
+def _is_annotation_node(node: object) -> bool:
+    if not isinstance(node, dict):
+        return False
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    return "estleg:Annotation" in types
+
+
+def dedupe_annotation_node_ids(nodes: list[dict]) -> list[tuple[str, str]]:
+    """Give every ``estleg:Annotation`` node in ``nodes`` a distinct ``@id``, in place.
+
+    Re-derives the ids of colliding nodes from the node's own fields
+    (``estleg:annotationSourceUrl``, ``estleg:annotationDate``, the title recovered from
+    ``rdfs:label``, and ``estleg:annotationText`` as the last tiebreak) with the SAME rule
+    :func:`disambiguate_duplicate_opinion_ids` applies at generation time, so a later full
+    regeneration mints identical IRIs. Nodes whose id is unique are untouched, which makes
+    the operation idempotent. Returns the ``(old_id, new_id)`` pairs that changed.
+    """
+    positions: list[int] = []
+    candidates: list[_IdCandidate] = []
+    for pos, node in enumerate(nodes):
+        if not _is_annotation_node(node):
+            continue
+        node_id = node.get("@id")
+        if not isinstance(node_id, str) or not node_id.startswith(ANNOTATION_ID_PREFIX):
+            continue
+        positions.append(pos)
+        candidates.append(
+            _IdCandidate(
+                base=node_id.removeprefix(ANNOTATION_ID_PREFIX),
+                url=_literal_value(node.get("estleg:annotationSourceUrl")),
+                date_iso=_literal_value(node.get("estleg:annotationDate")),
+                title=_literal_value(node.get("rdfs:label")).removeprefix(ANNOTATION_LABEL_PREFIX).strip(),
+                tiebreak=_literal_value(node.get("estleg:annotationText")),
+            )
+        )
+    changes: list[tuple[str, str]] = []
+    for pos, cand, final in zip(positions, candidates, _assign_distinct_local_ids(candidates)):
+        if final != cand.base:
+            old_id = nodes[pos]["@id"]
+            nodes[pos]["@id"] = f"{ANNOTATION_ID_PREFIX}{final}"
+            changes.append((old_id, nodes[pos]["@id"]))
+
+    seen: set[str] = set()
+    for node in nodes:
+        node_id = node.get("@id") if isinstance(node, dict) else None
+        if isinstance(node_id, str):
+            if node_id in seen:
+                raise ValueError(f"@id collision persists after disambiguation: {node_id}")
+            seen.add(node_id)
+    return changes
+
+
+def dedupe_sidecar_ids(*, in_path: Path = SIDECAR_PATH, out_path: Path | None = None) -> dict[str, object]:
+    """Offline repair: separate ``estleg:Annotation`` nodes that share an ``@id``.
+
+    Loads the committed sidecar, applies :func:`dedupe_annotation_node_ids` and rewrites it
+    with node order and JSON formatting preserved (``save_json``: indent 2, UTF-8, trailing
+    newline — the same layout :func:`write_sidecar` emits). Writes nothing when there is no
+    collision, so a second run is a no-op.
+    """
+    dest = out_path or in_path
+    doc = json.loads(in_path.read_text(encoding="utf-8"))
+    graph = doc.get("@graph") or []
+    changes = dedupe_annotation_node_ids(graph)
+    if changes or dest != in_path:
+        save_json(dest, doc)
+    return {
+        "annotations": sum(1 for node in graph if _is_annotation_node(node)),
+        "renamed": len(changes),
+        "changes": changes,
     }
 
 
@@ -1736,11 +1877,23 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         action="store_true",
         help="Collapse the committed annotations sidecar to one node per document (#459).",
     )
+    parser.add_argument(
+        "--dedupe-sidecar-ids",
+        action="store_true",
+        help="Offline, idempotent repair: re-derive the @id of committed annotation nodes "
+             "that share one, using the generator's disambiguation rule. No network access.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args([] if argv is None else argv)
+    if args.dedupe_sidecar_ids:
+        stats = dedupe_sidecar_ids()
+        print(f"{stats['annotations']} annotation node(s); renamed {stats['renamed']}:")
+        for old_id, new_id in stats["changes"]:
+            print(f"  {old_id} -> {new_id}")
+        return 0
     if args.remint_sidecar:
         provision_ids = collect_provision_ids()
         stats = remint_annotation_sidecar(provision_ids=provision_ids)

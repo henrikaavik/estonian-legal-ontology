@@ -996,36 +996,48 @@ def test_validate_dc_source_rejects_dict_value():
     assert any("must be a string or array of strings" in e for e in validate_all.errors)
 
 
-def test_validate_combined_ontology_mtime_check_uses_le(tmp_path):
-    """Tied mtime + structural drift triggers the staleness error (#158).
+def test_validate_combined_ontology_staleness_is_content_based_not_mtime(tmp_path):
+    """#705: staleness is reported from content, never from filesystem mtimes.
 
-    Previously the comparison was strict-less-than (`<`), so a source
-    file regenerated in the same epoch second as the combined would
-    silently pass. The check now uses `<=` and is gated on structural
-    drift to avoid spurious failures from build-ordering.
+    The former `older than at least one canonical source file` rule compared
+    mtimes, which a fresh checkout assigns in arbitrary order. A combined that
+    lags its sources must still fail, through the missing-ID content signal.
     """
     import os
 
     krr = tmp_path / "krr_outputs"
-    # Source has an extra ID that combined is missing -> structural drift.
+    # Source has an extra ID that combined is missing -> real staleness.
     write_json(
         krr / "law_a_peep.json",
         {"@graph": [_provision_node("estleg:A_1"), _provision_node("estleg:A_2")]},
     )
     _write_combined(krr, [_provision_node("estleg:A_1")])
-
-    # Force the combined and the peep to share the same mtime exactly.
     peep_path = krr / "law_a_peep.json"
     combined_path = krr / "combined_ontology.jsonld"
     common = peep_path.stat().st_mtime
-    os.utime(combined_path, (common, common))
+    os.utime(combined_path, (common - 100, common - 100))
 
     validate_all.validate_combined_ontology(krr)
 
-    assert any(
-        "older than at least one canonical source file" in err
-        for err in validate_all.errors
-    ), validate_all.errors
+    assert any("missing 1 source graph IDs" in err for err in validate_all.errors), validate_all.errors
+    assert not any("older than" in err for err in validate_all.errors), validate_all.errors
+
+
+def test_validate_combined_ontology_ignores_mtime_when_content_matches(tmp_path):
+    """#705: a content-identical combined with an older mtime is not stale."""
+    import os
+
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_combined(krr, [_provision_node("estleg:A_1")])
+    peep_path = krr / "law_a_peep.json"
+    combined_path = krr / "combined_ontology.jsonld"
+    common = peep_path.stat().st_mtime
+    os.utime(combined_path, (common - 100, common - 100))
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert not any("older than" in err for err in validate_all.errors), validate_all.errors
 
 
 # ---------------------------------------------------------------------------
@@ -3229,3 +3241,28 @@ class TestGateWiring:
         validate_all.validate_numeric_identity_strings(Path("act.json"), doc)
         assert len(validate_all.errors) == 1
         assert "plain strings" in validate_all.errors[0]
+
+
+def test_parity_references_accepts_builder_widening_but_not_loss() -> None:
+    """#520: combined may widen estleg:references; dropping a target is drift."""
+    source = {
+        "@id": "estleg:X_Par_1_Lg_1",
+        "@type": ["estleg:Subsection"],
+        "estleg:references": [{"@id": "estleg:Y_Par_77_Lg_3"}],
+    }
+    widened = {
+        "@id": "estleg:X_Par_1_Lg_1",
+        "@type": ["estleg:Subsection", "estleg:LegalProvision"],
+        "estleg:references": [
+            {"@id": "estleg:Y_Par_77_Lg_3"},
+            {"@id": "estleg:Y_Par_77"},
+            {"@id": "estleg:Y_Map"},
+        ],
+    }
+    assert validate_all._parity_field_drift(source, widened) == []
+    replaced = dict(widened, **{"estleg:references": [{"@id": "estleg:Y_Map"}]})
+    assert validate_all._parity_field_drift(source, replaced) == ["estleg:references"]
+    # Strict fields are still compared for equality.
+    summary_drift = dict(widened, **{"estleg:summary": "other"})
+    source_summary = dict(source, **{"estleg:summary": "text"})
+    assert "estleg:summary" in validate_all._parity_field_drift(source_summary, summary_drift)

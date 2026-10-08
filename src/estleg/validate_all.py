@@ -17,7 +17,7 @@ Exit code 0 = all pass, 1 = failures found.
 import json
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -83,6 +83,16 @@ COMBINED_ALLOWED_JSONLD = (
 # list (#158) catches more drift but does not eliminate the need for
 # SHACL — we use it as a fast structural-equality precheck before
 # SHACL runs.
+# Parity fields the combined builder legitimately WIDENS: `materialize_combined_edges`
+# (#520) re-asserts the forward direction of every `INVERSE_PAIRS` edge whose
+# inverse a source peep carries (`estleg:referencedBy` -> `estleg:references`)
+# and closes citations of a lõige onto its § and act root. The combined value is
+# therefore a strict superset of the source value by construction. Parity on
+# these fields means "every source target survives"; a dropped or replaced
+# target is still drift. Measured on the 2026-10-08 rebuild: 21,738 of the
+# 21,802 drifting ids were exactly this widening.
+PROVISION_PARITY_SUPERSET_FIELDS = frozenset({"estleg:references"})
+
 PROVISION_PARITY_FIELDS = (
     "@type",
     "estleg:paragrahv",
@@ -687,14 +697,35 @@ TEMPORAL_PLACEMENT_EXCEPTIONS = frozenset({
 })
 
 
+def _part_root_parent(node: dict) -> str | None:
+    """Return the ``estleg:isPartOf`` target of an ``estleg:Part`` node, else None.
+
+    Multipart statutes (#379 / #566) are published as one map peep holding
+    the ``estleg:Act`` root plus one peep per osa whose root is an
+    ``estleg:Part`` pointing back at that Act. Only a Part that names exactly
+    one parent IRI qualifies.
+    """
+    if "estleg:Part" not in node_types(node):
+        return None
+    parent = node.get("estleg:isPartOf")
+    if isinstance(parent, list):
+        if len(parent) != 1:
+            return None
+        parent = parent[0]
+    if isinstance(parent, dict):
+        parent = parent.get("@id")
+    return parent if isinstance(parent, str) and parent else None
+
+
 def validate_temporal_property_targets(files: list[Path]):
     """Closed-world check: act-level temporal props must live on Act nodes.
 
     Fails (errors) when `estleg:temporalStatus` / `estleg:entryIntoForce`
     / `estleg:adoptionDate` / `estleg:repealDate` / `estleg:lastAmendmentDate`
     appear on a node whose `@type` does not include `estleg:Act`, unless
-    the (property, type) pair is in `TEMPORAL_PLACEMENT_EXCEPTIONS`. This
-    catches the historical `graph[0]` fallback in `extract_temporal_data.py`
+    the (property, type) pair is in `TEMPORAL_PLACEMENT_EXCEPTIONS` or the
+    node is a multipart `estleg:Part` root whose `estleg:isPartOf` names an
+    `estleg:Act` present in `files`. This catches the historical `graph[0]` fallback in `extract_temporal_data.py`
     that wrote temporal props onto non-Act `estleg:LegalConcept` nodes
     (#128). SHACL's `estleg:ActTemporalShape` only constrains nodes that
     *are* `estleg:Act` (open-world `sh:targetClass`), so this gate is the
@@ -702,6 +733,10 @@ def validate_temporal_property_targets(files: list[Path]):
     """
     print("\n--- Temporal Property Placement ---")
     offenders: list[tuple[str, str, str]] = []
+    act_ids: set[str] = set()
+    # Part-root offenders held back until every file is read, because the
+    # Act their estleg:isPartOf names usually lives in a sibling map peep.
+    part_root_candidates: list[tuple[tuple[str, str, str], str]] = []
     for filepath in files:
         doc = validate_json_syntax(filepath)
         if not isinstance(doc, dict):
@@ -711,13 +746,28 @@ def validate_temporal_property_targets(files: list[Path]):
                 continue
             types = set(node_types(node))
             if "estleg:Act" in types:
+                node_id = node.get("@id")
+                if isinstance(node_id, str):
+                    act_ids.add(node_id)
                 continue
+            parent = _part_root_parent(node)
             for prop in TEMPORAL_ACT_LEVEL_PROPS:
                 if prop not in node:
                     continue
                 if any((prop, t) in TEMPORAL_PLACEMENT_EXCEPTIONS for t in types):
                     continue
-                offenders.append((filepath.name, node.get("@id", "?"), prop))
+                row = (filepath.name, node.get("@id", "?"), prop)
+                if parent is not None:
+                    part_root_candidates.append((row, parent))
+                else:
+                    offenders.append(row)
+    # A multipart act's per-osa root (estleg:Part + estleg:isPartOf) repeats
+    # the act's temporal metadata by design (#566 / #709; mirrored in
+    # check_phantom_typing.TOLERATED_ON_PART_ROOTS). Tolerated only when the
+    # parent it points at is a real estleg:Act; a Part whose parent is missing
+    # or not an Act is still the #128 misplacement.
+    offenders.extend(row for row, parent in part_root_candidates if parent not in act_ids)
+    offenders.sort()
     if offenders:
         error(
             f"{len(offenders)} act-level temporal properties on non-Act nodes"
@@ -913,6 +963,111 @@ def registry_exception_category(index_doc: dict, law: dict, file_name: str) -> s
     return None
 
 
+@dataclass
+class _MultipartEntry:
+    """Structure of one multipart INDEX entry (#379 / #566), read from its files.
+
+    A multipart statute (an INDEX entry carrying ``parts_mapped``) is published
+    as a structure-only map peep, whose single act node lists the osa roots in
+    ``estleg:hasPart``, plus one peep per osa, whose root is an ``estleg:Part``
+    that points back with ``estleg:isPartOf`` and holds the provisions (see
+    ``ensure_multipart_map_peeps``). Both shapes are accepted only when the
+    links resolve inside the same INDEX entry. A part root without
+    ``isPartOf``, or a map listing a part that no sibling file roots, still
+    fails the registry rule.
+    """
+
+    enabled: bool = False
+    act_ids: set[str] = field(default_factory=set)
+    # part-root @id -> the act @id it names in estleg:isPartOf
+    part_parents: dict[str, str] = field(default_factory=dict)
+
+    @classmethod
+    def from_entry(cls, law: dict, loaded: list[tuple[str, dict, list]]) -> "_MultipartEntry":
+        parts_mapped = law.get("parts_mapped")
+        if not isinstance(parts_mapped, list) or not parts_mapped:
+            return cls()
+        entry = cls(enabled=True)
+        for _file_name, _doc, graph in loaded:
+            for node in graph:
+                if not isinstance(node, dict):
+                    continue
+                node_id = node.get("@id")
+                if not isinstance(node_id, str):
+                    continue
+                if is_act_node(node):
+                    entry.act_ids.add(node_id)
+                parent = _part_root_parent(node)
+                if parent is not None:
+                    entry.part_parents[node_id] = parent
+        return entry
+
+    def _resolved_part_roots(self, graph: list) -> list[str]:
+        return [
+            node["@id"]
+            for node in graph
+            if isinstance(node, dict)
+            and isinstance(node.get("@id"), str)
+            and self.part_parents.get(node["@id"]) in self.act_ids
+        ]
+
+    def is_part_file(self, graph: list) -> bool:
+        """True when the file's sole act-level node is a resolved Part root."""
+        return self.enabled and len(self._resolved_part_roots(graph)) == 1
+
+    def part_root_problems(self, graph: list) -> list[str]:
+        if not self.enabled:
+            return []
+        problems = []
+        for node in graph:
+            if not isinstance(node, dict) or "estleg:Part" not in node_types(node):
+                continue
+            node_id = node.get("@id", "?")
+            parent = _part_root_parent(node)
+            if parent is None:
+                problems.append(f"estleg:Part root {node_id} has no single estleg:isPartOf parent")
+            elif parent not in self.act_ids:
+                problems.append(
+                    f"estleg:Part root {node_id} isPartOf {parent}, which is not an act "
+                    f"node in this INDEX entry"
+                )
+        if len(self._resolved_part_roots(graph)) > 1:
+            problems.append("file has more than one resolved estleg:Part root")
+        return problems
+
+    def _has_part_targets(self, act_node: dict) -> list[str]:
+        targets = []
+        values = act_node.get("estleg:hasPart", [])
+        for value in values if isinstance(values, list) else [values]:
+            target = value.get("@id") if isinstance(value, dict) else value
+            if isinstance(target, str):
+                targets.append(target)
+        return targets
+
+    def is_map_root(self, act_node: dict) -> bool:
+        """True when every estleg:hasPart target is a sibling Part root of this act."""
+        if not self.enabled:
+            return False
+        act_id = act_node.get("@id")
+        targets = self._has_part_targets(act_node)
+        return bool(targets) and all(self.part_parents.get(t) == act_id for t in targets)
+
+    def map_root_problems(self, act_nodes: list[dict]) -> list[str]:
+        if not self.enabled or len(act_nodes) != 1:
+            return []
+        act_node = act_nodes[0]
+        act_id = act_node.get("@id", "?")
+        targets = self._has_part_targets(act_node)
+        if not targets:
+            return [f"map root {act_id} lists no estleg:hasPart parts"]
+        return [
+            f"map root {act_id} hasPart {t}, which no sibling file roots as an "
+            f"estleg:Part of {act_id}"
+            for t in targets
+            if self.part_parents.get(t) != act_id
+        ]
+
+
 def validate_registry_index(krr_dir: Path = KRR_DIR, *, allow_missing_index: bool = False):
     index_path = krr_dir / "INDEX.json"
     print("\n--- Registry Drift ---")
@@ -954,6 +1109,7 @@ def validate_registry_index(krr_dir: Path = KRR_DIR, *, allow_missing_index: boo
             error(f"{index_path.name}: laws[{law_idx}].files is missing or empty")
             continue
 
+        loaded: list[tuple[str, dict, list]] = []
         for file_idx, file_name in enumerate(files):
             indexed_file_count += 1
             if not isinstance(file_name, str) or not file_name:
@@ -975,19 +1131,37 @@ def validate_registry_index(krr_dir: Path = KRR_DIR, *, allow_missing_index: boo
             if not isinstance(graph, list):
                 error(f"{file_name}: indexed file has no @graph array")
                 continue
+            loaded.append((file_name, file_doc, graph))
 
+        multipart = _MultipartEntry.from_entry(law, loaded)
+        for file_name, file_doc, graph in loaded:
             exception = registry_exception_category(doc, law, file_name)
             if exception and exception not in REGISTRY_EXCEPTION_CATEGORIES:
                 error(f"{index_path.name}: unsupported registry exception {exception!r} for {file_name}")
                 exception = None
 
-            act_count = sum(1 for node in graph if isinstance(node, dict) and is_act_node(node))
+            act_nodes = [node for node in graph if isinstance(node, dict) and is_act_node(node)]
+            act_count = len(act_nodes)
             provision_count = sum(1 for node in graph if isinstance(node, dict) and is_provision_node(node))
 
-            if act_count != 1 and exception not in CONCEPT_ONLY_REGISTRY_EXCEPTIONS:
+            is_part_file = act_count == 0 and multipart.is_part_file(graph)
+            is_map_file = (
+                act_count == 1 and provision_count == 0 and multipart.is_map_root(act_nodes[0])
+            )
+
+            if act_count != 1 and not is_part_file and exception not in CONCEPT_ONLY_REGISTRY_EXCEPTIONS:
                 error(f"{file_name}: indexed file has {act_count} act-level nodes (expected 1)")
-            if provision_count == 0 and not exception and not _is_no_structured_body_doc(file_doc):
+                for reason in multipart.part_root_problems(graph):
+                    print(f"    {reason}")
+            if (
+                provision_count == 0
+                and not exception
+                and not is_map_file
+                and not _is_no_structured_body_doc(file_doc)
+            ):
                 error(f"{file_name}: indexed file has no provision nodes and no registry exception")
+                for reason in multipart.map_root_problems(act_nodes):
+                    print(f"    {reason}")
 
     if isinstance(doc.get("total_laws"), int) and doc["total_laws"] != len(laws):
         error(f"{index_path.name}: total_laws={doc['total_laws']} but laws has {len(laws)} entries")
@@ -2071,9 +2245,24 @@ def _parity_field_drift(source_node: dict, combined_node: dict) -> list[str]:
             continue
         src_value = _normalize_parity_value(source_node.get(f))
         comb_value = _normalize_parity_value(combined_node.get(f))
+        if f in PROVISION_PARITY_SUPERSET_FIELDS:
+            if not _parity_values_subset(source_node.get(f), combined_node.get(f)):
+                drift.append(f)
+            continue
         if src_value != comb_value:
             drift.append(f)
     return drift
+
+
+def _parity_values_subset(source_value: object, combined_value: object) -> bool:
+    """True when every source value is present in the combined value (#520)."""
+    def _items(value: object) -> list[str]:
+        if value is None:
+            return []
+        values = value if isinstance(value, list) else [value]
+        return [json.dumps(v, sort_keys=True, ensure_ascii=False) for v in values]
+
+    return set(_items(source_value)) <= set(_items(combined_value))
 
 
 @dataclass(frozen=True)
@@ -2085,12 +2274,6 @@ class CombinedParityTarget:
     source_files: list[Path]
     source_nodes: dict[str, dict]
     allowlist_ids: set[str]
-    # Files used for the mtime staleness check. Only peep files are
-    # considered authoritative for staleness: subcorpus schema/vocab
-    # allowlist files frequently get touched independently of the
-    # combined and would otherwise create spurious "older than source"
-    # warnings.
-    mtime_check_files: list[Path] = field(default_factory=list)
     # Map nodes (`*_Map_2026`) generated separately for combined files
     # are documented exceptions: subcorpus combined files merge their
     # peeps under a single `<Subcorpus>_Combined_Map_2026` instead of
@@ -2146,14 +2329,11 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
         prefixes = target.extra_exempt_id_prefixes
         exempt_prefix_ids = {nid for nid in combined_nodes if nid.startswith(prefixes)}
 
-    structural_drift = False
-
     missing = source_ids - combined_ids - target.expected_missing_ids
     if missing:
         error(f"{label}: missing {len(missing)} source graph IDs")
         for node_id in sorted(missing)[:20]:
             print(f"    missing from combined: {node_id}")
-        structural_drift = True
 
     extras = (
         combined_ids
@@ -2172,7 +2352,6 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
             print(f"    stale extra in combined: {node_id}")
         if len(extras) > 20:
             print(f"    ... and {len(extras) - 20} more")
-        structural_drift = True
 
     drift_samples: dict[str, list[str]] = {f: [] for f in PROVISION_PARITY_FIELDS}
     drift_count = 0
@@ -2192,33 +2371,14 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
         for f, ids in drift_samples.items():
             if ids:
                 print(f"    drift in {f}: {', '.join(ids)}")
-        structural_drift = True
 
-    mtime_files = target.mtime_check_files or target.source_files
-    max_source_mtime = max(
-        (path.stat().st_mtime for path in mtime_files),
-        default=0.0,
-    )
-    # Use `<=` so that a same-second tie still flags a stale combined.
-    # Without this guard a regenerated source file landing in the same
-    # epoch second as the previous combined would silently pass (#158).
-    #
-    # The mtime gate is a backstop for the case where someone hand-
-    # edited a peep without regenerating the combined. When the
-    # structural parity check is clean it implies the combined matches
-    # its sources content-wise, so a stale mtime can only be a build-
-    # ordering artefact (e.g. a fresh git checkout that wrote files in
-    # alphabetical order) and is not actionable. We therefore suppress
-    # the mtime error when structural parity passes; this keeps the
-    # gate strong against real staleness without flagging normal
-    # checkout artifacts.
-    if (
-        max_source_mtime
-        and mtime_files
-        and combined_path.stat().st_mtime <= max_source_mtime
-        and structural_drift
-    ):
-        error(f"{label}: older than at least one canonical source file")
+    # #705: staleness is the content signal above. A combined that lags its
+    # sources shows up as missing / stale-extra / drifting IDs, which this
+    # function already reports. The former "older than at least one canonical
+    # source file" rule compared filesystem mtimes, which a fresh checkout
+    # assigns in arbitrary order, so the same tree flipped red/green between CI
+    # and a local run. It also only fired alongside structural drift, so it
+    # never caught anything the content checks missed. Removed, not relaxed.
     print(
         f"  Checked {label} against {len(target.source_files)} canonical source files "
         f"({len(target.allowlist_ids)} allowlisted vocabulary IDs)"
@@ -3057,7 +3217,6 @@ def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
         # spec from the missing-from-combined delta. These are merged
         # into a single `<Subcorpus>_Combined_Map_2026` by the combined
         # writer and are not drift.
-        peep_files = sorted(krr_dir.glob(spec.peep_glob))
         source_nodes, allowlist_ids, source_files = collect_source_nodes(
             krr_dir,
             peep_glob=spec.peep_glob,
@@ -3076,7 +3235,6 @@ def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
             # check: they are independent vocabulary inputs that may be
             # touched without invalidating the combined artefact. Only
             # `*_peep.json` regeneration should fail the gate.
-            mtime_check_files=peep_files,
             expected_missing_ids=set(spec.expected_missing),
             expected_extra_ids=set(spec.expected_extras),
         )
@@ -3589,7 +3747,79 @@ def validate_dupn_iri_baseline(
     return count
 
 
-def validate_id_uniqueness(all_ids: dict[str, list[str]]):
+# Keys that make a node an identity-bearing definition rather than a join
+# assertion. A join node carries only @id plus counts, flags or edges.
+IDENTITY_KEYS = frozenset({
+    "@type",
+    "rdfs:label",
+    "skos:prefLabel",
+    "dcterms:title",
+    "dcterms:identifier",
+})
+
+
+def is_overlay_surface_file(filepath: Path, krr_dir: Path = KRR_DIR) -> bool:
+    """True for files in a sidecar load surface (``PUBLIC_LOAD_SUBDIRS``).
+
+    Root-level law peeps are never overlays, so an untyped node there still
+    counts as a definition in the cross-file uniqueness rule.
+    """
+    try:
+        rel = filepath.resolve().relative_to(Path(krr_dir).resolve())
+    except ValueError:
+        return False
+    return len(rel.parts) > 1 and rel.parts[0] in estleg_common.PUBLIC_LOAD_SUBDIRS
+
+
+def is_join_assertion_node(node: object) -> bool:
+    """True for an untyped, unlabelled node that only annotates an existing IRI.
+
+    The analytical overlay (#521) stamps counts and gap flags on the published
+    graph's IRIs, and regulation version files (#429) attach
+    ``estleg:hasVersion`` / ``estleg:currentVersion`` to the provision IRI.
+    Both re-assert the IRI by design and join on it.
+    """
+    return isinstance(node, dict) and not (IDENTITY_KEYS & node.keys())
+
+
+def is_self_replaced_node(node: object) -> bool:
+    """True when a node's ``dcterms:isReplacedBy`` names the node itself."""
+    if not isinstance(node, dict):
+        return False
+    node_id = node.get("@id")
+    values = node.get("dcterms:isReplacedBy")
+    for value in values if isinstance(values, list) else [values]:
+        target = value.get("@id") if isinstance(value, dict) else value
+        if isinstance(node_id, str) and target == node_id:
+            return True
+    return False
+
+
+def _defining_files(occurrences: list[str], join_occurrences) -> set[str]:
+    """Files holding at least one non-join occurrence of an @id.
+
+    When every occurrence is a join node nothing defines the IRI, and two
+    files annotating it are still reported, so the result is then all files.
+    """
+    remaining = Counter(occurrences)
+    remaining.subtract(Counter(join_occurrences))
+    defining = {name for name, count in remaining.items() if count > 0}
+    return defining or set(occurrences)
+
+
+def validate_id_uniqueness(
+    all_ids: dict[str, list[str]],
+    *,
+    join_ids: dict[str, list[str]] | None = None,
+    self_replaced_ids: dict[str, list[str]] | None = None,
+):
+    """Report @id values defined by more than one file.
+
+    An id counts as defined by a file unless every occurrence there is a join
+    assertion in an overlay file (``is_join_assertion_node`` plus
+    ``is_overlay_surface_file``). ``self_replaced_ids`` lists nodes whose
+    ``dcterms:isReplacedBy`` is their own @id, reported on a separate line.
+    """
     print("\n--- @id Uniqueness ---")
     # Shared ontology class definitions are expected to appear in multiple files
     shared_class_ids = {
@@ -3657,10 +3887,31 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
     for schema_path in schema_paths().values():
         if schema_path.is_file():
             shared_class_ids.update(schema_term_ids(schema_path))
-    dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k not in shared_class_ids}
-    shared_dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k in shared_class_ids}
+    join_ids = join_ids or {}
+    dupes: dict[str, list[str]] = {}
+    shared_dupes = 0
+    joined = 0
+    for node_id, occurrences in all_ids.items():
+        distinct = sorted(set(occurrences))
+        # A repeat inside one file is the "Duplicate @id within file" rule's
+        # finding, not a cross-file collision.
+        if len(distinct) < 2:
+            continue
+        if node_id in shared_class_ids:
+            shared_dupes += 1
+            continue
+        defining = _defining_files(occurrences, join_ids.get(node_id, ()))
+        if len(defining) == 1:
+            joined += 1
+            continue
+        dupes[node_id] = distinct
     if shared_dupes:
-        print(f"  OK: {len(shared_dupes)} shared ontology class @id values (expected)")
+        print(f"  OK: {shared_dupes} shared ontology class @id values (expected)")
+    if joined:
+        print(
+            f"  OK: {joined} @id values re-asserted only by untyped join nodes in "
+            f"overlay files (#521 analytical counts/flags, #429 version edges)"
+        )
     if dupes:
         error(f"{len(dupes)} @id values are duplicated across files (semantic collisions)")
         for dupe_id, files in sorted(dupes.items())[:20]:
@@ -3669,6 +3920,16 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
             print(f"    ... and {len(dupes) - 20} more")
     else:
         print("  OK: All @id values are unique across files")
+
+    if self_replaced_ids:
+        error(
+            f"{len(self_replaced_ids)} node(s) declare dcterms:isReplacedBy their own @id "
+            f"(#426 deprecated duplicate shares its replacement's IRI)"
+        )
+        for node_id, files in sorted(self_replaced_ids.items())[:20]:
+            print(f"    {node_id}: {sorted(set(files))}")
+        if len(self_replaced_ids) > 20:
+            print(f"    ... and {len(self_replaced_ids) - 20} more")
 
 
 def parse_args(argv: list[str] | None = None):
@@ -3752,6 +4013,8 @@ def main(argv: list[str] | None = None):
     print(f"\nValidating {len(files)} files...\n")
 
     all_ids: dict[str, list[str]] = defaultdict(list)
+    join_ids: dict[str, list[str]] = defaultdict(list)
+    self_replaced_ids: dict[str, list[str]] = defaultdict(list)
     internal_refs: list[tuple[str, str, str, str]] = []
 
     for filepath in files:
@@ -3777,14 +4040,19 @@ def main(argv: list[str] | None = None):
         # Collect IDs
         if "@graph" in doc:
             seen_in_file = set()
+            in_overlay_dir = is_overlay_surface_file(filepath, krr_dir)
             for node in doc["@graph"]:
                 nid = node.get("@id", "")
                 if nid in seen_in_file:
                     error(f"{filepath.name}: Duplicate @id within file: {nid}")
                 seen_in_file.add(nid)
                 all_ids[nid].append(filepath.name)
+                if in_overlay_dir and is_join_assertion_node(node):
+                    join_ids[nid].append(filepath.name)
+                if is_self_replaced_node(node):
+                    self_replaced_ids[nid].append(filepath.name)
 
-    validate_id_uniqueness(all_ids)
+    validate_id_uniqueness(all_ids, join_ids=join_ids, self_replaced_ids=self_replaced_ids)
     validate_internal_references(all_ids, internal_refs)
     validate_vocabulary_coverage(files)
     validate_canonical_tbox(krr_dir)
