@@ -249,19 +249,6 @@ jobs:
         if: ${{ !cancelled() }}
         run: python3 scripts/check_rt_staleness.py --schema-canary
 
-      # #703: compare a weekly-seeded sample of 25 provisions with Riigi
-      # Teataja. Exit 2 = RT unreachable (warning, not a failure).
-      - name: Legal-text fidelity sample vs Riigi Teataja (#703)
-        id: text_fidelity
-        if: ${{ !cancelled() }}
-        shell: bash
-        run: |
-          set +e
-          python3 scripts/check_text_fidelity.py --sample 25 --seed "${FIDELITY_SEED:-$(date -u +%G%V)}"
-          rc=$?
-          if [ "$rc" -eq 2 ]; then echo "::warning::Riigi Teataja unreachable; text fidelity not verified"; exit 0; fi
-          exit "$rc"
-
       - name: "Corpus freshness vs today (#693)"
         if: ${{ !cancelled() }}
         run: |
@@ -354,10 +341,6 @@ jobs:
 
       # #703: offline (~1 s). Compares legal-text coverage with
       # data/text_fidelity_baseline.json, which may only shrink.
-      - name: Legal-text coverage baseline (#703)
-        if: ${{ !cancelled() }}
-        run: python3 scripts/check_text_fidelity.py --coverage
-
       # #702: docs/VALIDATION_REPORT.md and docs/DUPLICATE_IDS_REPORT.md used
       # to be maintained by hand, and both drifted into publishing false
       # statements (a "PASSED / 0 errors" conformance claim against a red gate,

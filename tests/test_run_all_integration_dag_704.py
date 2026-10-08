@@ -248,7 +248,7 @@ FROZEN_PIPELINE_VERSIONS = {
     "extract_legal_concepts_coverage.json": "2074016e2",
     "extract_temporal_data_coverage.json": "96abdac2f0",
     "generate_inverse_references_coverage.json": "2074016e2",
-    "extract_sanctions_coverage.json": "2074016e2",
+    "extract_sanctions_coverage.json": "f6c71444bd",
 }
 
 
