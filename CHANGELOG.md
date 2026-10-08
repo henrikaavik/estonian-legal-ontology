@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 4 — #723
+
+- **Retrieval projection (#723).** Every chunks.jsonl record now carries an audit envelope (chunk_id, ontology_version, evaluation_date, act_iri, kehtiv, language) and a provision-level rt_url (the redaction's Riigi Teataja page with a #para<N> anchor). Optional --max-chars splits long paragraphs on sentence boundaries (part_index/part_count). act_title prefers the Estonian title. manifest.json reports the code's ontology version, chunk schema 2.0.0, key list and generator commit; llms.txt no longer links unpublished files and points at the chunks.jsonl.gz release asset. Committed samples regenerated.
+
 ### Tier 1 wave 3 — Fix cross-law citation boundaries and expand resolver coverage
 
 - **Cross-law citation boundaries and resolver coverage (#696).** The in-law abbreviation pattern now has a Unicode left word boundary: `MTÜS § 12`, `ELS § 7` and `XTMS § 4` no longer resolve to TÜS, LS or TMS, and the old "RPS § 7" → Põhiseadus mislinks are gone. `KNOWN_ABBREVIATIONS` is derived from `data/law_abbreviations.json` with the official Riigi Teataja lyhend first (95 → 287 keys, a documented alias table for legacy keys, a drift test against the registry); the registry settled the TTKS, KELS, AVVKHS and KOS collisions and the aliases KHaS and ATS were added. Resolvers build provision IRIs from the registry's corpus prefix checked against the corpus `sourceAct`, so RÕS and REOS resolve to `ROS_2_*` / `REOS_2_*`. The in-law pass resolves full-name genitive citations against every registry or corpus law title (not only the 74-entry list), with guards against year, period and series short-name mislinks. Unresolved court citations and unresolvable `referencedLaw` values are kept as target-less `estleg:Citation` nodes instead of being dropped. Corpus effect: in-law cross-law references 8,505 → 13,253, court `interpretsLaw` links 89,712 → 111,224; the combined graph and overlay are rebuilt.
