@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 30 steps form an explicit, declarative directed acyclic
+release build. Its 31 steps form an explicit, declarative directed acyclic
 graph (DAG) in four tiers: ingest (network fetches), enrichment (offline
 corpus passes and aggregate rebuilds), build (the combined/INDEX rebuild) and
 package (release assets). The runner topologically sorts it, runs it
@@ -96,7 +96,7 @@ periodicities:
 | CURIA | `CURIA_INDEX.json` `fetched` / `generated` | 120 d | quarterly |
 | Retrieval chunks | release asset `chunks.jsonl.gz` | not gated | monthly |
 | Complete dataset | aggregate of the rows above | — | monthly |
-| Change record | frozen per release | — | irregular |
+| Change record | frozen per release (0.11.0 law level, 1.0.0 provision level) | — | irregular |
 
 A budget is the publishing cadence plus at most one month of grace. When the
 gate fails, refresh the stale corpora through their generators and commit the
@@ -108,8 +108,10 @@ unreachable" is a warning there, and "RT answered with HTML or another schema"
 fails the job. `--fetch` compares the law sample with live RT metadata and
 XML and stays operator-run. Inter-release IRI deltas are published as
 `krr_outputs/changes-<version>.jsonld` and linked from `metadata.jsonld` as a
-`dcat:distribution`. The committed IRI delta is for 0.11.0, not every
-subsequent commit.
+`dcat:distribution`. Each release publishes
+`krr_outputs/changes-<version>.jsonld` (provision-level, uncapped;
+`scripts/emit_release_changes.py`, docs/AMENDMENT_HISTORY.md).
+`changes-0.11.0.jsonld` is the legacy law-level snapshot.
 
 The committed tree is recorded in
 `krr_outputs/dataset_build_manifest.json` (dataset version, git SHA,
@@ -175,7 +177,9 @@ The required merge checks are `lint`, `pytest`, and `estleg-mcp tests`.
 They are distinct from the full release gates below. Passing them permits
 reviewed incremental fixes; it does not make a data release SHACL-conformant.
 Bulk `.nt`/`.nq`/`.ttl` dumps and the other release assets are rebuilt by
-the last DAG step, `build_release_assets.py` (#705). See
+the last DAG step, `build_release_assets.py` (#705). Step 30,
+`emit_release_changes.py`, writes the provision-level delta against the
+latest `v*` tag first, so the asset catalogue sees the fresh record (#713). See
 [Release assets](#release-assets).
 
 Õiguskantsler PDF extraction uses pdfminer; OCR is not in the dependency set.
@@ -245,7 +249,7 @@ phase order is preserved exactly.
 | 12 | enrichment | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
 | 13 | enrichment | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
 | 14 | enrichment | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
-| 15 | enrichment | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
+| 15 | enrichment | `generate_amendment_history.py` (runs the #429 version join, #713) | 1, 2, 10 | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json`, `reports/kov/generate_amendment_history_coverage.json` |
 | 16 | enrichment | `link_amendment_versions.py` | 15, 1, 2 | `amendments/**/*.json`, `*_peep.json` |
 | 17 | enrichment | `derive_act_temporal_status.py` (`--all --recompute --evaluation-date …`) | 14, 1, 2 | `*_peep.json` |
 | 18 | enrichment | `generate_act_expressions_608.py` (`--apply`) | 1, 2 | `act_expressions_combined.jsonld` |
@@ -260,7 +264,8 @@ phase order is preserved exactly.
 | 27 | enrichment | `generate_similarity_index.py` | the 19 enrichment steps listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
 | 28 | build | `build_release_artifacts.py` (embeds `materialize_combined_inverses` #520 and the #521 analytical stamps) | every non-package step | `combined_ontology.jsonld`, `INDEX.json` |
 | 29 | package | `generate_analytical_overlay.py` (`--write`) | 28, 27 | `analytical/analytical_overlay.jsonld` |
-| 30 | package | `build_release_assets.py` | 28, 29 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
+| 30 | package | `emit_release_changes.py` (#713) | 28 | `changes-*.jsonld`, `changes-*.jsonl`, `reports/release_changes_report.json` |
+| 31 | package | `build_release_assets.py` | 28, 29, 30 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
 
 **Ingest tier.** Steps 1-3 fetch from Riigi Teataja or oiguskantsler.ee.
 They are declared so every produced layer has a producer and declared inputs.
@@ -269,11 +274,11 @@ unless `--with-ingest` is given. Step 2 is offline, but it rewrites the same
 coverage report as step 1 (`generate_provision_versions.COVERAGE_PATH`), so it
 stays with the law run until the generator writes its own report.
 
-**Version layer.** `generate_amendment_history.py` rebuilds the chains
-without the #429 version join. Step 16 runs that join after the chains and the
-version sidecars exist. It re-mints the `_vf_` events and the
-`resultedInVersion` links, so a chain rerun cannot lose them. On the committed
-corpus the join is a no-op: 179 chains and 0 peeps change. Steps 17, 18, 25
+**Version layer.** `generate_amendment_history.py` runs the #429 version
+join itself (#713), so step 15 depends on the version sidecars (steps 1, 2) and
+writes provision-level `estleg:amends`. Step 16 re-runs the same join, so a
+sidecar-only rerun is repaired. After a chain rerun it is a no-op, which CI
+checks with `scripts/link_amendment_versions.py --check`. Steps 17, 18, 25
 and 26 derive act `temporalStatus`, the act expressions, court staleness and
 KOV enabling-provision staleness (#712) from the same sidecars.
 
@@ -356,7 +361,7 @@ This is the **unified release command**. It:
    `--no-restore-on-failure` or `--snapshot none`). With `--snapshot auto`
    and a clean `git status --porcelain krr_outputs`, the copy is skipped
    and a failure rolls back to git HEAD instead (#722).
-3. Runs all 30 steps in topo order. Ingest-tier steps are recorded as
+3. Runs all 31 steps in topo order. Ingest-tier steps are recorded as
    `skipped_ingest` unless `--with-ingest` is given. A failed step skips its
    dependents; the first hard failure stops the run and the snapshot is
    restored.

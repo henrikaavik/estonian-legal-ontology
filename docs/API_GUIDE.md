@@ -36,6 +36,53 @@ krr_outputs/
   INDEX.json          # Master registry of all enacted laws
 ```
 
+## Python Client (`estleg_client`)
+
+`estleg_client` is the supported read-only client. It is published as the
+`estleg-client` distribution, which depends only on `rdflib`, and it also
+ships inside this repository. It covers all five corpora. Each corpus has one
+`load_*` function that returns an `rdflib.Graph` and one `iter_*` function
+that yields typed rows. The full reference, including the stability promise,
+is [estleg_client/README.md](../estleg_client/README.md). The raw-file
+recipes under [Loading Data with Python](#loading-data-with-python) remain
+valid for custom pipelines.
+
+| Corpus | Loader (one record) | Iterator (rows) | Keys |
+|---|---|---|---|
+| Enacted laws | `load_law(name)` | `iter_rows(graph, "provisions" \| "sanctions" \| "citations")` | INDEX slug, abbreviation (`ABIPOL`), title substring |
+| State + KOV regulations | `load_regulation(key, kov=None)` | `iter_regulations(kov=, issuer=)` | RT terviktekst id, RT global id, `Reg_<id>`, title |
+| Riigikohus | `load_court_decision(key)`, `load_court_decisions(year)` | `iter_court_decisions(year=)` | case number, ECLI, `RK_...` |
+| EIS drafts | `load_draft(key)` | `iter_drafts(phase=)` | EIS number, `Draft_...`, title |
+| EU acts | `load_eu_act(celex)` | `iter_eu_acts(doc_type=, in_force=, estonia_relevant=)` | CELEX, `EU_<celex>` |
+
+```py
+from estleg_client import load_regulation, provision_rows, iter_eu_acts, sanction_rows, load_law
+
+kov = load_regulation("1039736", kov=True)           # a municipal regulation
+for row in provision_rows(kov):
+    print(row.paragraph, row.label, row.is_kov, row.temporal_status, row.source_url)
+
+for row in sanction_rows(load_law("ABIPOL")):
+    print(row.sanction_type, row.max_amount, row.unit, row.amount_eur, row.subject)
+
+in_force_directives = [r.celex for r in iter_eu_acts(doc_type="Directive", in_force=True)]
+print(len(in_force_directives))
+```
+
+Type matching is exact. `provisions_of` returns `estleg:LegalProvision` and
+`estleg:KovProvision` nodes, and `sanctions_of` returns only `estleg:Sanction`
+nodes. Use `has_type(node, ...)` for your own filters. In `SanctionRow`,
+`amount_eur` is filled for `monetary` amounts in EUR or EEK and for
+`fine_units`, at 4 EUR per unit. It is `None` for daily rates, turnover shares
+and custodial terms. `subject` is inferred from the penalty kind.
+
+Without a clone, run `fetch_corpus()` (or `estleg-load download`). It
+downloads the tagged release assets, verifies them against `SHA256SUMS`, and
+unpacks them into the user cache, where `corpus_root()` finds them. Laws,
+drafts and EU acts work from a release download. Regulations and Riigikohus
+decisions need a git checkout, because a release carries them only inside
+`estleg_all.nq.gz`.
+
 ## Loading Data with Python
 
 ### Enacted Laws

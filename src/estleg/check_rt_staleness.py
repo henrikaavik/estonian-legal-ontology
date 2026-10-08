@@ -441,6 +441,15 @@ CORPUS_BUDGETS: tuple[CorpusBudget, ...] = (
         rationale="Frozen per-release diff; it is never refreshed, a new "
         "release publishes a new one.",
     ),
+    CorpusBudget(
+        key="changes_provision",
+        label="Inter-release change record (provision level)",
+        distribution_title="Inter-release change record 1.0.0 (provision level)",
+        accrual_periodicity=FREQ_IRREGULAR,
+        max_lag_days=None,
+        rationale="Provision-level per-release diff (#713), rewritten by the "
+        "emit_release_changes.py DAG step for each release; not gated.",
+    ),
 )
 
 

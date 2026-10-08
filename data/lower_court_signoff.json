@@ -1,0 +1,13 @@
+{
+  "_comment": "Sign-off record gating a live lower-court sweep (#720): `python3 -m estleg.generate_lower_court_decisions --fetch --apply --signoff data/lower_court_signoff.json` refuses unless this record validates (see validate_signoff in src/estleg/generate_lower_court_decisions.py and docs/DATA_PROTECTION.md, section 'Lower-court sweep gate'). Shipped as a FAIL-CLOSED TEMPLATE: approved_on, expires_on and dpo_reference are null, so every live --apply run is refused until the controller fills them in. approved_by is a role (maintainer | data_protection_officer | controller_representative), never a person's name. scope.courts takes county | administrative | circuit. The scope below is the proposed first sweep, not an approval.",
+  "approved_by": "data_protection_officer",
+  "approved_on": null,
+  "expires_on": null,
+  "dpo_reference": null,
+  "scope": {
+    "courts": ["county", "administrative", "circuit"],
+    "date_from": "2026-01-01",
+    "date_to": "2026-12-31",
+    "max_decisions": 50
+  }
+}

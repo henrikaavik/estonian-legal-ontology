@@ -1048,7 +1048,10 @@ def amendment_history(law: str, limit: int = 50) -> list[dict[str, Any]]:
     Example question: "What amendments has KarS already received?"
 
     Returns a list of {event_id, label, amendment_date, entry_into_force,
-    amends, rt_reference, rt_url, changed_provisions}. ``rt_reference`` is the
+    amends, amended_provisions, rt_reference, rt_url, changed_provisions}.
+    ``amends`` is the amended act's root IRI; ``amended_provisions`` lists the
+    § / subsection IRIs the amending act touched (#713; empty for an
+    act-level event). ``rt_reference`` is the
     amending act's Riigi Teataja reference as recorded ("RT I, 2002, 86, 504"
     or an RT URL, else ""); ``rt_url`` is the amending act's riigiteataja.ee
     URL when that reference is one, otherwise the amended act's URL, otherwise
@@ -1183,8 +1186,8 @@ def what_changed(
     ``date``). ``rt_url`` is the redaction's riigiteataja.ee URL when recorded.
     ``amendment_events`` lists the effected amendment events in the window
     (only those linked to the changes when scoped to one §), each with
-    {event_id, label, amendment_date, entry_into_force, amends, rt_reference,
-    rt_url, changed_provisions}. ``history_available`` is false (with a
+    {event_id, label, amendment_date, entry_into_force, amends,
+    amended_provisions, rt_reference, rt_url, changed_provisions}. ``history_available`` is false (with a
     ``note``) when the corpus has no version history for the law. A bad date
     or an unknown law / § yields a {note}.
     """

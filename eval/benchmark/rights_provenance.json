@@ -1,0 +1,64 @@
+{
+  "benchmark": "estleg-legal-reasoning",
+  "version": "0.1.0",
+  "issue": "https://github.com/henrikaavik/estonian-legal-ontology/issues/727",
+  "status": "DRAFT — rights and personal-data positions pending legal / data-owner / DPO sign-off; not cleared for deposit",
+  "authoritative_documents": ["NOTICE", "docs/DATA_RIGHTS.md", "docs/DATA_PROTECTION.md", "docs/BENCHMARK.md"],
+  "builder": {
+    "module": "src/estleg/build_legal_benchmark.py",
+    "full_build": "python3 scripts/build_legal_benchmark.py --out eval/benchmark/full",
+    "committed_sample": "python3 scripts/build_legal_benchmark.py --sample-per-task 200 --out eval/benchmark/sample",
+    "seed": "estleg-bench-727-v1",
+    "deterministic": "byte-identical output for an unchanged corpus; no timestamps, network or LFS inputs",
+    "evaluation_date": "2026-06-01 (estleg_common.BUILD_EVALUATION_DATE)"
+  },
+  "tasks": {
+    "point_in_time": {
+      "inputs": ["krr_outputs/provision_versions/*.jsonld", "krr_outputs/INDEX.json", "krr_outputs/*_peep.json (law roots)"],
+      "fields_read": ["estleg:versionOf", "estleg:versionText", "estleg:versionValidFrom", "estleg:versionValidTo", "estleg:versionRedactionId", "estleg:rtUrl", "estleg:provisionRef", "dcterms:title", "dcterms:source", "estleg:kehtiv"],
+      "content_reproduced": "statutory text of historical redactions (answer and distractors)",
+      "label_quality": "structural: the answer is the redaction whose RT validity window contains the query date; exactly one redaction must cover that date",
+      "rights": {
+        "source_text": "Riigi Teataja statutory text; not an object of copyright (Autoriõiguse seadus § 5)",
+        "source_terms": "VERIFY: Riigi Teataja reuse / sui generis database terms for the consolidated product (docs/DATA_RIGHTS.md open item)",
+        "compilation": "CC BY 4.0, draft election (CC0 1.0 alternative)"
+      },
+      "personal_data": "none expected (legislation)"
+    },
+    "court_interpretation": {
+      "inputs": ["krr_outputs/riigikohus/riigikohus_*_peep.json"],
+      "fields_read": ["@id", "estleg:caseNumber", "estleg:ecliIdentifier", "estleg:decisionDate", "estleg:chamber", "estleg:caseType (filter only, not emitted)", "estleg:interpretsLaw"],
+      "fields_never_read": ["estleg:summary", "estleg:legalText", "estleg:judge", "rdfs:label"],
+      "content_reproduced": "case number, ECLI, decision date, chamber, interpreted provision IRIs",
+      "label_quality": "silver: estleg:interpretsLaw edges come from the regex citation resolver over the decision text (src/estleg/extract_court_provision_links.py); a cited provision counts as interpreted",
+      "default_exclusions": "criminal and misdemeanour cases (estleg:CaseType_Criminal / _Misdemeanor): a case number linked to Penal Code provisions is offence-related data under Art. 10 GDPR; re-include only with --include-criminal after DPO sign-off",
+      "rights": {
+        "source_text": "Riigikohus / RIK judgments are not objects of copyright (Autoriõiguse seadus § 5); no judgment text is reproduced",
+        "source_terms": "VERIFY: personal-data position is a DRAFT pending DPO confirmation (docs/DATA_PROTECTION.md, #720); a republisher is an independent GDPR controller",
+        "compilation": "CC BY 4.0, draft election (CC0 1.0 alternative)"
+      },
+      "personal_data": "no names or free text; case numbers are public identifiers of published decisions — confirm with the DPO that this is acceptable for a deposited dataset"
+    },
+    "cross_reference": {
+      "inputs": ["krr_outputs/*_peep.json (INDEX.json laws)"],
+      "fields_read": ["estleg:references", "estleg:legalText (citation re-extraction only)", "rdfs:label", "estleg:paragrahv", "dcterms:title", "dcterms:source", "estleg:kehtiv"],
+      "content_reproduced": "the citation string (a short span of statutory text) and provision IRIs",
+      "label_quality": "silver: the gold edge is the corpus's own heuristic estleg:references edge, kept only when exactly one edge matches the cited § / lõige and the in-law vs cross-law direction; not hand-adjudicated",
+      "rights": {
+        "source_text": "Riigi Teataja statutory text; not an object of copyright (Autoriõiguse seadus § 5)",
+        "source_terms": "VERIFY: Riigi Teataja reuse / database terms (docs/DATA_RIGHTS.md open item)",
+        "compilation": "CC BY 4.0, draft election (CC0 1.0 alternative)"
+      },
+      "personal_data": "none expected (legislation)"
+    }
+  },
+  "open_items_for_maintainer": [
+    "Rights transfer / deposit licence agreement with CLARIN-EE (not closed in docs/DATA_RIGHTS.md)",
+    "Confirm Riigi Teataja reuse and database terms for the consolidated texts",
+    "Confirm the layer (b) election: CC BY 4.0 vs CC0 1.0",
+    "DPO confirmation for court-derived items (case numbers) and the criminal-case exclusion (#720)",
+    "Applicant organisation, PI and partners (TartuNLP / EKI / a law faculty)",
+    "Persistent identifier (CLARIN-EE handle; relation to the Zenodo DOI item #473)",
+    "Legal adjudication of a gold subset (the current labels are corpus-derived, see label_quality)"
+  ]
+}

@@ -968,7 +968,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Machine-readable inter-release IRI delta (added/removed act IRIs and counts). Issue #549."
+      "rdfs:comment": "Machine-readable inter-release delta: provision-level added/removed/changed IRIs plus law-level changes (#549, #713)."
     },
     {
       "@id": "estleg:Sanction",
@@ -1176,7 +1176,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "IRI added between compared snapshots. Listed sample may be capped; see estleg:addedCount.",
+      "rdfs:comment": "IRI added between compared snapshots: a provision IRI (#713) or, in the legacy #549 record, a law IRI. See estleg:addedCount.",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -1200,6 +1200,52 @@
         }
       ],
       "rdfs:comment": "Full count of IRIs added between compared snapshots.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:addedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "lisatud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "added law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act-root IRI of a law added to INDEX between the compared snapshots (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:addedLawCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "lisatud seaduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "added law count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Count of estleg:addedLaw IRIs in a ReleaseDelta (#713).",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -1354,6 +1400,29 @@
       }
     },
     {
+      "@id": "estleg:amendmentKind",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "muudatuse liik (muutmismärge)",
+          "@language": "et"
+        },
+        {
+          "@value": "amendment kind",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Kind of an effected amendment, inferred from Riigi Teataja muutmismarge text only where a token is present (Kehtetu / täiendatud / muudetud / sõnastatud): repeals, supplements or amends. Absent when no token is present. Values mirror estleg:changeType (drafts). Issue #713.",
+      "rdfs:domain": {
+        "@id": "estleg:AmendmentEvent"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:amends",
       "@type": [
         "owl:ObjectProperty"
@@ -1368,7 +1437,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Links an AmendmentEvent to the act it amends. Inverse of estleg:amendedBy.",
+      "rdfs:comment": "Links an AmendmentEvent to the act it amends (act root(s) first) and, since #713, to each estleg:LegalProvision / estleg:Subsection the amending act touched (from the muutmismarge parent nesting). Inverse of estleg:amendedBy.",
       "rdfs:domain": {
         "@id": "estleg:AmendmentEvent"
       },
@@ -1843,6 +1912,52 @@
       }
     },
     {
+      "@id": "estleg:changed",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "muudetud",
+          "@language": "et"
+        },
+        {
+          "@value": "changed",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Provision IRI whose legalText, summary or temporal fields changed between the compared snapshots (#713). See estleg:changedCount.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:changedCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "muudetute arv",
+          "@language": "et"
+        },
+        {
+          "@value": "changed count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Full count of estleg:changed provision IRIs in a ReleaseDelta (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
       "@id": "estleg:chapterNumber",
       "@type": [
         "owl:DatatypeProperty"
@@ -1973,6 +2088,52 @@
       "rdfs:comment": "Optional original citation string for traceability, e.g. '§ 42 lg 1 alusel'.",
       "rdfs:domain": {
         "@id": "estleg:Citation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:comparedFrom",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "võrreldud alates",
+          "@language": "et"
+        },
+        {
+          "@value": "compared from",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Label of the older snapshot a ReleaseDelta compares, e.g. 'git v1.0.0 (f018cf05f2)' (#549, #713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:comparedTo",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "võrreldud kuni",
+          "@language": "et"
+        },
+        {
+          "@value": "compared to",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Label of the newer snapshot a ReleaseDelta compares (#549, #713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -2669,6 +2830,52 @@
       "rdfs:comment": "Total number of distinct definition wordings observed for a canonical estleg:Concept node when only a capped subset is emitted as skos:definition. Range: xsd:integer.",
       "rdfs:domain": {
         "@id": "estleg:Concept"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:deprecatedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "aegunud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "deprecated law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act-root IRI of a law newly listed as deprecated in INDEX between the compared snapshots (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:deprecatedLawCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "aegunud seaduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "deprecated law count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Count of estleg:deprecatedLaw IRIs in a ReleaseDelta (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
       },
       "rdfs:range": {
         "@id": "xsd:integer"
@@ -4954,6 +5161,52 @@
       }
     },
     {
+      "@id": "estleg:listedInline",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "loetletud kirjes",
+          "@language": "et"
+        },
+        {
+          "@value": "listed inline",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "False when a ReleaseDelta's IRI lists are in the changes-<version>.jsonl sibling instead of inline (over 10,000 listed IRIs, #713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:listedIriCap",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "loetletud IRI-de ülempiir",
+          "@language": "et"
+        },
+        {
+          "@value": "listed IRI cap",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Legacy #549 cap on the number of IRIs listed in a ReleaseDelta; the counts stay complete. The #713 record is uncapped.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
       "@id": "estleg:mappedPart",
       "@type": [
         "owl:DatatypeProperty"
@@ -5838,7 +6091,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Date the draft was published/registered in EIS.",
+      "rdfs:comment": "Publication date: of a draft in EIS, or, on an AmendmentEvent, of the amending act in Riigi Teataja (avaldamineKuupaev, #713).",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
@@ -6092,7 +6345,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "IRI removed between compared snapshots. Listed sample may be capped; see estleg:removedCount.",
+      "rdfs:comment": "IRI removed between compared snapshots: a provision IRI (#713) or, in the legacy #549 record, a law IRI. See estleg:removedCount.",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -6116,6 +6369,52 @@
         }
       ],
       "rdfs:comment": "Full count of IRIs removed between compared snapshots.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:removedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "eemaldatud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "removed law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act-root IRI of a law removed from INDEX between the compared snapshots (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:removedLawCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "eemaldatud seaduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "removed law count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Count of estleg:removedLaw IRIs in a ReleaseDelta (#713).",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },

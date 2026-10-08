@@ -683,6 +683,7 @@ AMENDMENT_FIELDS = {
     "amendment_date",
     "entry_into_force",
     "amends",
+    "amended_provisions",
     "rt_reference",
     "rt_url",
     "changed_provisions",

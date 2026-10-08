@@ -1,0 +1,60 @@
+# Packaging for the standalone ``estleg-client`` distribution (#716).
+#
+# The client source stays in the repository's ``estleg_client/`` directory
+# (the root ``estonian-legal-ontology`` distribution keeps shipping it for
+# in-repo development). ``stage.py`` assembles a standard project layout --
+# this file, ``estleg_client/`` (README.md becomes the PyPI long
+# description) and the repository LICENSE -- which ``python -m build`` turns
+# into the wheel and sdist that .github/workflows/publish-client.yml uploads.
+#
+#   python packaging/estleg-client/stage.py build/estleg-client
+#   python -m build build/estleg-client --outdir dist
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "estleg-client"
+dynamic = ["version"]
+description = "Read-only Python client for the Estonian Legal Ontology: laws, regulations, Riigikohus decisions, EIS drafts and EU acts as rdflib graphs and typed rows, with a verified corpus download."
+readme = "README.md"
+requires-python = ">=3.11"
+# The MIT licence covers the client code. The corpus it downloads carries the
+# layered rights described in the release's NOTICE / DATA_RIGHTS.md.
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Henrik Aavik" }]
+keywords = ["estonia", "law", "legal-ontology", "rdf", "json-ld", "riigi-teataja", "eur-lex"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Legal Industry",
+  "Natural Language :: Estonian",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Typing :: Typed",
+]
+# Consumer-only: no requests / pyshacl / beautifulsoup4 (producer deps).
+dependencies = ["rdflib>=7.1,<8"]
+
+[project.urls]
+Homepage = "https://github.com/henrikaavik/estonian-legal-ontology"
+Documentation = "https://github.com/henrikaavik/estonian-legal-ontology/blob/main/estleg_client/README.md"
+Issues = "https://github.com/henrikaavik/estonian-legal-ontology/issues"
+
+[project.scripts]
+estleg-load = "estleg_client.cli:main"
+
+[tool.setuptools]
+packages = ["estleg_client"]
+
+[tool.setuptools.package-data]
+estleg_client = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "estleg_client.__version__" }

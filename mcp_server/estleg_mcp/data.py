@@ -1368,7 +1368,41 @@ def _amendment_graph_for(record: LawRecord) -> Graph:
     return _graph_of(base / f"amendments_{base_slug}.json")
 
 
-def _amendment_event_row(node: Node, act_rt_url: str) -> dict[str, Any]:
+def _act_root_count(chain: Graph) -> int:
+    """How many leading ``estleg:amends`` IRIs of a chain's events are act roots.
+
+    The generator writes ``amends`` as the act root(s) first (one per part of
+    a multipart act) followed, since #713, by the provision IRIs the amending
+    act touched. Every effected event of a chain carries the same roots, so
+    the roots are the longest prefix shared by all events' ``amends`` lists.
+    At least 1 whenever any event has an ``amends``. A chain whose only
+    event lists provisions reports them as roots, which errs towards
+    under-reporting provisions rather than inventing them.
+    """
+    prefix: list[str] | None = None
+    for node in chain:
+        if "estleg:AmendmentEvent" not in _types_of(node):
+            continue
+        ids = _ids_of(node.get("estleg:amends"))
+        if not ids:
+            continue
+        if prefix is None:
+            prefix = ids
+            continue
+        keep = 0
+        for a, b in zip(prefix, ids):
+            if a != b:
+                break
+            keep += 1
+        prefix = prefix[:keep]
+    if prefix is None:
+        return 0
+    return max(1, len(prefix))
+
+
+def _amendment_event_row(
+    node: Node, act_rt_url: str, act_roots: int = 1
+) -> dict[str, Any]:
     """One citation-bearing amendment-event row (shared by two tools, #714).
 
     ``rt_reference`` is the Riigi Teataja reference of the amending act as the
@@ -1379,14 +1413,20 @@ def _amendment_event_row(node: Node, act_rt_url: str) -> dict[str, Any]:
     counts the provision redactions the event produced
     (``estleg:resultedInVersion``, present on the version-layer ``_vf_``
     events; 0 on the others).
+
+    ``amends`` is the first act root of the list-valued ``estleg:amends``
+    (#713); ``amended_provisions`` lists the provision / subsection IRIs after
+    the ``act_roots`` leading roots (empty for an act-level event).
     """
     reference = _text(node.get("estleg:rtReference")) or _text(node.get("estleg:amendingAct"))
+    amends = _ids_of(node.get("estleg:amends"))
     return {
         "event_id": node.get("@id", "") if isinstance(node.get("@id"), str) else "",
         "label": _text(node.get("rdfs:label")),
         "amendment_date": _date_text(node.get("estleg:amendmentDate")),
         "entry_into_force": _date_text(node.get("estleg:entryIntoForce")),
-        "amends": _id_of(node.get("estleg:amends")),
+        "amends": amends[0] if amends else "",
+        "amended_provisions": amends[max(1, act_roots):],
         "rt_reference": reference,
         "rt_url": _guarded_rt(reference) or act_rt_url,
         "changed_provisions": len(_ids_of(node.get("estleg:resultedInVersion"))),
@@ -1401,11 +1441,13 @@ def amendment_events(record: LawRecord, limit: int = 50) -> list[dict[str, Any]]
     if limit <= 0:
         return []
     act_url = rt_url_for_slug(record.name)
+    chain = _amendment_graph_for(record)
+    roots = _act_root_count(chain)
     rows: list[dict[str, Any]] = []
-    for node in _amendment_graph_for(record):
+    for node in chain:
         if "estleg:AmendmentEvent" not in _types_of(node):
             continue
-        rows.append(_amendment_event_row(node, act_url))
+        rows.append(_amendment_event_row(node, act_url, roots))
         if len(rows) >= limit:
             break
     return rows
@@ -2587,11 +2629,13 @@ def amendment_events_between(
     a window and is skipped.
     """
     act_url = rt_url_for_slug(record.name)
+    chain = _amendment_graph_for(record)
+    roots = _act_root_count(chain)
     rows: list[dict[str, Any]] = []
-    for node in _amendment_graph_for(record):
+    for node in chain:
         if "estleg:AmendmentEvent" not in _types_of(node):
             continue
-        row = _amendment_event_row(node, act_url)
+        row = _amendment_event_row(node, act_url, roots)
         when = row["entry_into_force"] or row["amendment_date"]
         if when and since <= when <= until:
             rows.append(row)
