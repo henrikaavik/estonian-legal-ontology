@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -46,9 +51,9 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "ülevõtmise staatus (transposition status)",
-      "rdfs:comment": "Status of directive transposition: full, partial, or unknown.",
+      "rdfs:comment": "Corpus transposition status of an EU directive: transposed, no_measure_required or no_evidence_in_corpus (#711). Never 'not transposed': no_evidence_in_corpus is a statement about this corpus, not a legal finding.",
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "estleg:EULegislation"
       },
       "rdfs:range": {
         "@id": "xsd:string"

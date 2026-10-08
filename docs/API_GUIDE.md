@@ -288,16 +288,209 @@ g.parse("krr_outputs/concepts/concepts_combined.jsonld", format="json-ld")
 print(f"Total triples: {len(g)}")
 ```
 
+## CSV Exports
+
+`scripts/serialize_tabular.py` flattens the peeps (never
+`combined_ontology.jsonld`) into ten star-schema CSV tables for pandas, R,
+spreadsheets and BI tools (issues #559, #716). Parquet is written next to each
+CSV when `pyarrow` is importable (`--full` only).
+
+```bash
+# the committed sample in krr_outputs/exports/ (deterministic; ~1.3 MB of CSV)
+python3 scripts/serialize_tabular.py --sample
+# everything, outside the repo (~310 MB of CSV, ~30 s, ~1.7 GB RAM)
+python3 scripts/serialize_tabular.py --full --out /tmp/estleg-tabular
+# per-corpus overrides on top of the sample preset
+python3 scripts/serialize_tabular.py --out /tmp/estleg-tabular --laws-glob '*_peep.json'
+```
+
+**Sample scope.** Five laws (`ABIPOL`, `AVTS`, `ISIKUA`, `KOKS`, `TUIS`) with
+their sanction sidecars; the state regulations of two issuers
+(*Rahvastikuminister*, *Sotsiaalkaitseminister ning tervise- ja tööminister*)
+and the KOV regulations of two issuers (`abja_vallavolikogu`, abolished;
+`kastre_vallavalitsus`, current); Riigikohus 2020 and 2024; 200 drafts and 200
+EU acts drawn by `sha256("estleg-716:" + iri)` with half the quota reserved for
+rows that link into the corpus (`amendsLaw` / `enactedAs`,
+`transposedBy`); every institution; the competences of the sampled
+provisions. A fresh `--sample` run must reproduce the committed files byte for
+byte (`tests/test_serialize_tabular.py`, `corpus` tier).
+
+**Contract.** Column order is append-only: new columns are added at the end,
+existing ones are never renamed, removed or reordered. IRIs are compact
+(`estleg:…`); multi-valued cells are joined with `;`; booleans are
+`true`/`false`; dates are ISO `YYYY-MM-DD`; an empty cell means the corpus has
+no value. The KOV legality view (`kov_legality.csv`, `--kov-legality`, #712)
+is documented in the module docstring.
+
+### `laws.csv` — enacted-law act roots
+
+| Column | Meaning |
+|---|---|
+| `iri` | Act root (`estleg:<ABBREV>_Map`) |
+| `slug` | Peep file slug (`<slug>_peep.json`) |
+| `title` | Estonian title (`dcterms:title@et`, else `dc:source`) |
+| `abbreviation` | Registry abbreviation (`data/law_abbreviations.json`) |
+| `temporalStatus` | `inForce` / `unknown` today (`repealed` / `notYetEffective` reserved) |
+| `kehtiv` | Riigi Teataja consolidation date the peep was built from |
+
+### `provisions.csv` — § and lõige rows of laws and regulations
+
+| Column | Meaning |
+|---|---|
+| `iri` | Provision (`…_Par_<n>`, lõige `…_Par_<n>_Lg_<m>`) |
+| `act` | Act root |
+| `paragrahv` | § label (inherited by a lõige from its §) |
+| `subsection` | Lõige number (empty on a §) |
+| `legalText` | Text (else summary), truncated to 2,000 characters |
+| `in_force` | `estleg:inForce`, else derived from `temporalStatus` |
+| `temporalStatus` | Own stamp; else from the § redaction in force on the act's `kehtiv` date (`repealed` when it ended before, `notYetEffective` when the first one starts after); else the act's status |
+| `valid_from` | Own stamp; else `versionValidFrom` of that redaction; else the act's `entryIntoForce` |
+| `valid_to` | Own stamp; else `versionValidTo` of that redaction; else the act's `repealDate` |
+| `current_version` | `estleg:ProvisionVersion` of that redaction (`provision_versions/`) |
+
+### `citations.csv`
+
+| Column | Meaning |
+|---|---|
+| `source` | Citing node |
+| `target` | Cited node |
+| `predicate` | `estleg:references` or `estleg:referencedBy` |
+
+### `sanctions.csv`
+
+| Column | Meaning |
+|---|---|
+| `iri` | `estleg:Sanction_…` |
+| `provision` | `estleg:applicableProvision` |
+| `type` | `fine`, `imprisonment`, `pecuniary_punishment`, `coercive_payment`, `arrest`, `confiscation`, `compulsory_dissolution` |
+| `min`, `max` | Amounts as written |
+| `unit` | `monetary`, `fine_units`, `daily_rates`, `days`, `years`, `percent_of_turnover` |
+| `act` | Act root of the provision |
+| `subject` | Who the sanction applies to: explicit `estleg:sanctionSubject`; else the provision's `dutyHolder`, else its `targetGroup` (own, then its lõiked's, then its parent §'s); else the act IRI |
+| `subject_source` | `sanctionSubject` / `dutyHolder` / `targetGroup` / `act` |
+| `subject_person_type` | `natural_person` / `legal_person` inferred from the penalty kind (KarS §§ 44-48), as in `estleg_client.rows` |
+| `currency` | `EUR` / `EEK` for `monetary` amounts |
+| `amount_eur_min`, `amount_eur_max` | EUR: `monetary` EUR as is, EEK ÷ 15.6466 (to cents), `fine_units` × 4 EUR (KarS § 47); empty for custodial, `daily_rates` and `percent_of_turnover` units |
+| `statutory_default` | `estleg:isStatutoryDefault` |
+| `label` | Human-readable summary |
+
+### `court_decisions.csv` — Riigikohus
+
+| Column | Meaning |
+|---|---|
+| `iri`, `caseNumber`, `date`, `ecli`, `chamber` | Decision metadata (no full text) |
+
+### `regulations.csv` — state and KOV regulations
+
+| Column | Meaning |
+|---|---|
+| `iri` | `estleg:Reg_<terviktekstId>_Map` |
+| `rt_id`, `global_id` | Riigi Teataja terviktekst id and global id |
+| `title` | Title |
+| `level` | `state` / `kov` |
+| `regulation_type` | Specific state class (`GovernmentRegulation`, `MinisterialRegulation`); empty for KOV; `;`-joined |
+| `document_type`, `act_number` | RT document type and number |
+| `issuer`, `issuer_iri` | Issuing body (text; `estleg:Issuer_…` for KOV) |
+| `municipality_ehak`, `municipality` | Current municipality (EHAK code, name); for an abolished issuer this is the successor |
+| `county_code`, `county` | County EHAK code and name |
+| `municipality_status` | `current` / `abolished` |
+| `historical_municipality` | Pre-merger `estleg:HistoricalMunicipality_<EHAK>` |
+| `kehtiv` | RT snapshot date of the regulation corpus |
+| `temporal_status`, `entry_into_force`, `repeal_date`, `last_amended`, `publication_date` | Temporal stamps |
+| `issued_under` | Enabling acts (`estleg:issuedUnder`) |
+| `enabling_provisions`, `enabling_provision_count` | Cited enabling provisions (`implementsCitation` → `citationTarget`) |
+| `enabling_provision_outdated`, `earliest_superseding_date` | #712 stamps: an enabling provision was rewritten after the regulation entered into force |
+| `provision_count` | Number of § rows |
+| `source_url` | Riigi Teataja URL |
+
+### `drafts.csv` — EIS drafts
+
+| Column | Meaning |
+|---|---|
+| `iri`, `eis_number`, `title` | Draft |
+| `phase` | `PublicConsultation` / `Review` / `Submission` |
+| `draft_type` | `Bill`, `AmendmentBill`, `MinisterialRegulation`, `GovernmentRegulation`, `DraftIntent`, `EUPosition`, `Other`, … |
+| `initiator`, `publication_date`, `change_type` | EIS metadata |
+| `amends_law` | Laws the draft amends (`estleg:amendsLaw`) |
+| `enacted_as` | Act it became (`estleg:enactedAs`) |
+| `affected_laws` | Law names as written in EIS |
+| `eis_link` | EIS URL |
+
+### `eu_acts.csv` — EUR-Lex
+
+| Column | Meaning |
+|---|---|
+| `iri`, `celex`, `title` | Act |
+| `doc_type` | `Regulation` / `Decision` / `Directive` / `InternationalAgreement` / `ParliamentPosition` |
+| `document_date`, `in_force` | Date and in-force flag |
+| `institution` | Authoring institution |
+| `eli` | ELI URI |
+| `transposition_deadline` | Directive deadline |
+| `transposed_by_count`, `transposed_by` | Estonian transposing acts |
+| `subjects_count` | EuroVoc subjects |
+| `estonia_relevant` | Relevance flag |
+| `source_url` | EUR-Lex URL |
+
+### `institutions.csv`
+
+| Column | Meaning |
+|---|---|
+| `iri`, `label`, `type` | Institution (`agency`, `minister`, `ministry`, `court`, `local_government`, …) |
+| `registrikood` | Estonian business-register code |
+| `xtee_member_code` | X-tee member code (`EE/GOV/<code>`) |
+| `same_as` | `owl:sameAs` (Wikidata, aliases) |
+| `predecessor`, `successor`, `replaced_by` | Succession links |
+| `valid_from`, `valid_to` | Existence period |
+| `competence_count` | Number of `estleg:Competence` bindings |
+
+### `competences.csv` — provision × institution (#718)
+
+| Column | Meaning |
+|---|---|
+| `provision` | Provision the competence applies to |
+| `institution` | Competent institution |
+| `competence_type` | `general`, `enforcement`, `regulation`, `supervision`, `licensing` |
+| `competence` | `estleg:Competence` node |
+| `competence_area` | Policy area |
+| `granted_by` | Act granting it |
+
 ## SPARQL Queries
 
 The most powerful way to query this dataset is loading files into a semantic graph database (Apache Jena, Blazegraph, Oxigraph, etc.) and using SPARQL.
 
+### SPARQL quickstart (`docker compose up`)
+
 The in-repo quickstart is Oxigraph via `docker compose up` →
-[http://localhost:7878](http://localhost:7878) (issue #474). Each corpus is a
-named graph (`https://w3id.org/estleg/graph/laws` and siblings). The compose
-file loads `krr_outputs/exports/estleg_all_sample.nq.gz` by default; generate
-the full `krr_outputs/estleg_all.nq.gz` with
-`python3 -m estleg.serialize_named_graphs --write`.
+[http://localhost:7878](http://localhost:7878) (issues #474, #716). Each corpus
+is a named graph (`https://w3id.org/estleg/graph/laws` and siblings). The
+default loads the real seven-graph dump `estleg_all.nq.gz` (10.06 M quads,
+196 MB gzipped, 2.4 GB as N-Quads). `scripts/compose_fetch_dump.sh` picks the
+first of three sources:
+
+1. **`ESTLEG_DUMP`** — an explicit host file:
+   `ESTLEG_DUMP=/path/to/dump.nq.gz docker compose up`.
+2. **`release/estleg_all.nq.gz`** — built locally by
+   `python3 scripts/build_release_assets.py` and checked against
+   `release/SHA256SUMS`.
+3. **The tagged GitHub release asset** —
+   `https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v<version>/estleg_all.nq.gz`
+   with its `SHA256SUMS`, verified before loading and cached in the `dumpvol`
+   volume. `<version>` is `ESTLEG_VERSION` (default: the ontology version).
+
+The 14-quad fixture `krr_outputs/exports/estleg_all_sample.nq.gz` is only for
+smoke tests and loads into separate volumes:
+
+```bash
+docker compose --profile sample up sample-sparql
+```
+
+**Resources.** Oxigraph is a Rust binary on RocksDB, so there is no JVM heap
+(`-Xmx`) to size; memory is native and bounded by what Docker grants the
+container. The full load has not been timed here (no Docker daemon in CI).
+Budget **8 GB RAM** for Docker and **~10 GB free disk** (2.4 GB of
+decompressed N-Quads in `dumpvol` plus the RocksDB store in `store`). Every
+`docker compose up` re-runs the idempotent load; restart only the endpoint
+with `docker compose up --no-deps sparql`.
 
 > **Which graph to query.** Provisions are typed `estleg:LegalProvision` on the
 > instance (issue #434), so `?x a estleg:LegalProvision` works on a single peep

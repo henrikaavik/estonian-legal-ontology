@@ -118,8 +118,12 @@ corpus on each machine, run the server over streamable HTTP behind TLS.
 | `ESTLEG_CORPUS_REF` | `v1.0.0` | container entrypoint: the corpus **release tag** to check out (a branch works but is not reproducible). Also stamped on every `snapshot` / audit line. `ESTLEG_CORPUS_BRANCH` is a deprecated alias. |
 | `ESTLEG_CORPUS_COMMIT` | (from `.git`) | set by the entrypoint to the checked-out commit; otherwise the server reads `HEAD` from the corpus checkout |
 | `ESTLEG_ALLOW_EMPTY_PROVISIONS` | (unset) | set to `1` to start even when the startup provision check fails (see below). Applies to **both** transports. |
+| `ESTLEG_RESOLVER` | on | `off` unmounts the public w3id resolver routes (`/id/{local}`, `/vocabulary`); they then answer `401` like every other path (see [w3id resolver](#w3id-resolver-728)) |
+| `ESTLEG_RESOLVER_RATE_LIMIT` | `ESTLEG_RATE_LIMIT` | rate for the **single shared** anonymous resolver bucket (same syntax); unset = the shared per-consumer limit applies to that bucket |
+| `ESTLEG_RESOLVER_RATE_BURST` | the per-period count | bucket size for `ESTLEG_RESOLVER_RATE_LIMIT` |
 
-The MCP endpoint is at `/mcp`; `/healthz` is an unauthenticated health check.
+The MCP endpoint is at `/mcp`; `/healthz` is an unauthenticated health check;
+`/id/{local}` and `/vocabulary` are the public, read-only w3id resolver.
 
 ### Startup check: provision detection (#678)
 
@@ -153,8 +157,12 @@ current § count.
   in constant time; a duplicate name or a token shared by two consumers is a
   configuration error. Keep the JSON token file outside the image and mount it
   read-only.
-- **Only `/healthz` is unauthenticated.** Everything else answers `401` with
-  `WWW-Authenticate: Bearer` without a valid token.
+- **Only `/healthz` and the resolver are unauthenticated.** `GET`/`HEAD` on
+  exactly `/id`, `/id/`, `/id/<one segment>` and `/vocabulary` pass without a
+  token as the consumer `anonymous` (public identifiers, read-only, #728).
+  Everything else, including any other method on those paths and
+  `/id/a%2Fb`, answers `401` with `WWW-Authenticate: Bearer` without a valid
+  token.
 - **Rate limit** (optional, per consumer) answers `429` with `Retry-After`
   and writes a `rate_limited` audit line.
 - The ontology is public law: the gate exists to attribute and bound use of a
@@ -250,6 +258,53 @@ require (they cannot launch a local binary). For Claude Code:
 claude mcp add --transport http estleg https://estleg.sixtyfour.ee/mcp \
   --header "Authorization: Bearer <token>"
 ```
+
+### w3id resolver (#728)
+
+`https://w3id.org/estleg/<local>` is the persistent IRI of every node. The
+staged w3id rules (`w3id/estleg/.htaccess`) answer a client that asks for RDF
+or HTML with **`303 See Other`** to `https://estleg.sixtyfour.ee/id/<local>`;
+the client follows it and re-sends its own `Accept` header, and this server
+picks the representation:
+
+```text
+GET https://w3id.org/estleg/KARIST_2_Osa2_Par_141   Accept: text/turtle
+  -> 303  Location: https://estleg.sixtyfour.ee/id/KARIST_2_Osa2_Par_141   (w3id.org)
+GET https://estleg.sixtyfour.ee/id/KARIST_2_Osa2_Par_141   Accept: text/turtle
+  -> 200  text/turtle   Vary: Accept   ETag   Cache-Control: public, max-age=3600
+```
+
+| `Accept` (or `?format=`) | Body |
+|---|---|
+| `application/ld+json`, `application/json` (`jsonld`) | `{"@context": <project context>, "@graph": [node, {"@id": neighbour, "rdfs:label": …}…]}`: the node exactly as the corpus stores it; its `estleg:` references stay `@id` references, with a label when the defining file or the vocabulary has one |
+| `text/turtle` (`ttl`), `application/n-triples` (`nt`), `application/rdf+xml` (`rdf`) | the same graph serialised by rdflib (`406` when rdflib is not installed) |
+| `text/html`, `*/*`, none (`html`) | a small description page: label, type, the Riigi Teataja / EUR-Lex / Riigikohus / EIS links, every property, outgoing links as `/id/…` anchors, property names linked to `/vocabulary#<term>`, `<link rel="alternate">` to the RDF forms and `<link rel="canonical">` to the w3id IRI |
+
+- **Which nodes.** Laws and their §/lõige/chapter/division nodes,
+  regulations (state and municipal), provision versions, sanctions,
+  amendment chains, Riigikohus decisions, eelnõud, EUR-Lex acts, CURIA
+  decisions, institutions and every vocabulary term. The local name's family
+  picks the one or few files that can define it (`estleg_mcp/resolver.py`), so
+  a hit never loads more than a law's own files.
+- **Aliases.** `/id/KarS_Par_141` is not a node; it answers `303` to the
+  canonical `/id/KARIST_2_Osa2_Par_141`.
+- **Errors.** An unknown name, and `/id/` without one, answer `404` with a JSON
+  body (`{"error": "not_found", "iri": …}`); an `Accept` the server cannot
+  satisfy answers `406` listing the supported types.
+- **`GET /vocabulary`** serves `krr_outputs/controlled_vocabulary.jsonld`
+  (JSON-LD as committed, Turtle via rdflib, or an HTML index whose terms are
+  anchors: `/vocabulary#Act`).
+- **Access.** Anonymous by design; every hit writes an audit line with
+  `consumer: "anonymous"`, `tool: "resolve"` and a `status`
+  (`ok`/`not_found`/`alias`/`not_modified`/`not_acceptable`). All anonymous
+  hits share one rate-limit bucket (`ESTLEG_RESOLVER_RATE_LIMIT`), so a crawler
+  can exhaust the resolver's allowance but never a token holder's.
+- **Turtle needs rdflib.** The container installs the `http` extra, which does
+  not include rdflib yet; until it does, RDF requests answer `406` and JSON-LD
+  and HTML still work.
+
+Operating model, measurements and open decisions:
+[`docs/proposals/2026-10-w3id-content-negotiation.md`](../docs/proposals/2026-10-w3id-content-negotiation.md).
 
 ## Tools
 

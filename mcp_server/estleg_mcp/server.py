@@ -53,7 +53,7 @@ else:
     _MCP_V2 = True
 from mcp.server.transport_security import TransportSecuritySettings
 
-from . import audit, data, i18n, provenance, security
+from . import audit, data, i18n, provenance, resolver_web, security
 
 mcp = MCPServer("estleg")
 
@@ -1591,10 +1591,18 @@ def _build_http_app():
         return PlainTextResponse("ok")
 
     app.routes.append(Route(security.HEALTH_PATH, _health, methods=["GET"]))
+    # w3id resolver pilot (#728): public, read-only /id/{local} + /vocabulary.
+    open_resolver = resolver_web.enabled()
+    if open_resolver:
+        resolver_web.mount(app)
     app.add_middleware(
         security.AccessMiddleware,
         registry=registry,
         limiter=limiter,
+        open_resolver=open_resolver,
+        resolver_limiter=security.RateLimiter.from_env(
+            rate_var="ESTLEG_RESOLVER_RATE_LIMIT", burst_var="ESTLEG_RESOLVER_RATE_BURST"
+        ),
         audit_log=audit.get_audit_log,
         identity=lambda: {
             **provenance.corpus_identity(),

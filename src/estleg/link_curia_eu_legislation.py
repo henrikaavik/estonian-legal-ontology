@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
-"""Link CURIA decisions to EU legislation named in their labels (#418).
+"""Link CURIA decisions to the EU legislation they interpret (#418, #717).
 
-Deterministic and offline: CELEX ids are parsed from Estonian
-``rdfs:label`` / ``dcterms:title`` text and kept only when the matching
-``estleg:EU_*`` node already exists in the eurlex peeps. No network.
+Deterministic and offline. Two sources, CELLAR preferred:
+
+* ``cellar-interprets`` — CELLAR's ``cdm:case-law_interpretes_resource_legal``
+  for the decision, from the cache ``data/curia/cellar_interprets.json``
+  (fill it with ``generate_eu_court_decisions.py --fetch-interprets``). When
+  it yields at least one known act, those edges REPLACE any title-parsed
+  ones.
+* ``title-regex`` — CELEX ids parsed from the Estonian ``rdfs:label`` /
+  ``dcterms:title`` (the #418 fallback), appended.
+
+Targets are kept only when the matching ``estleg:EU_*`` node already exists
+in the eurlex peeps. The source is stamped on the decision as
+``estleg:derivationMethod``. No network.
 
     estleg:interpretsEULaw -> {"@id": "estleg:EU_<CELEX>"}
 
@@ -18,7 +28,13 @@ import json
 import re
 from pathlib import Path
 
-from estleg.estleg_common import REPO_ROOT, save_json
+from estleg.estleg_common import (
+    REPO_ROOT,
+    add_derivation_method,
+    derivation_methods,
+    remove_derivation_method,
+    save_json,
+)
 from estleg.eurlex_common import sanitize_celex
 
 CURIA_FILES = (
@@ -35,6 +51,19 @@ EURLEX_PEEPS = (
     "eurlex/eurlex_directives_peep.json",
     "eurlex/eurlex_decisions_peep.json",
 )
+
+INTERPRETS_CACHE = REPO_ROOT / "data" / "curia" / "cellar_interprets.json"
+METHOD_CELLAR = "cellar-interprets"
+METHOD_TITLE = "title-regex"
+
+
+def load_cellar_interprets(path: Path = INTERPRETS_CACHE) -> dict[str, list[str]]:
+    """Decision CELEX -> interpreted CELEX, or ``{}`` when not fetched."""
+    if not path.exists():
+        return {}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    return {str(k): list(v) for k, v in (doc.get("interprets") or {}).items()}
+
 
 _BARE_CELEX = re.compile(r"\b([1-5]\d{4}[LRD]\d{4})\b", re.IGNORECASE)
 
@@ -145,35 +174,59 @@ def _existing_iris(value: object) -> list[str]:
     return out
 
 
-def link_decision_node(node: dict, known_iris: set[str]) -> bool:
-    """Append ``estleg:interpretsEULaw`` edges. Returns True if changed."""
+def _set_edges(node: dict, iris: list[str]) -> None:
+    node["estleg:interpretsEULaw"] = (
+        {"@id": iris[0]} if len(iris) == 1 else [{"@id": iri} for iri in iris]
+    )
+
+
+def link_decision_node(
+    node: dict,
+    known_iris: set[str],
+    cellar: dict[str, list[str]] | None = None,
+) -> bool:
+    """Set ``estleg:interpretsEULaw`` edges. Returns True if changed."""
     if "estleg:EUCourtDecision" not in _node_types(node):
         return False
-    text = " ".join(
-        part
-        for part in (
-            literal_text(node.get("rdfs:label")),
-            literal_text(node.get("dcterms:title")),
-        )
-        if part
+    before = json.dumps(
+        [node.get("estleg:interpretsEULaw"), node.get("estleg:derivationMethod")],
+        sort_keys=True,
     )
-    targets = [
-        celex_to_iri(celex)
-        for celex in parse_eu_citations(text)
-        if celex_to_iri(celex) in known_iris
+    celex = node.get("estleg:celexNumber")
+    official = [
+        celex_to_iri(c)
+        for c in (cellar or {}).get(celex if isinstance(celex, str) else "", [])
+        if celex_to_iri(c) in known_iris
     ]
-    if not targets:
-        return False
-    existing = _existing_iris(node.get("estleg:interpretsEULaw"))
-    have = set(existing)
-    added = [iri for iri in targets if iri not in have]
-    if not added:
-        return False
-    merged = existing + added
-    node["estleg:interpretsEULaw"] = (
-        {"@id": merged[0]} if len(merged) == 1 else [{"@id": iri} for iri in merged]
+    if official:
+        _set_edges(node, list(dict.fromkeys(official)))
+        add_derivation_method(node, METHOD_CELLAR)
+        remove_derivation_method(node, METHOD_TITLE)
+    else:
+        text = " ".join(
+            part
+            for part in (
+                literal_text(node.get("rdfs:label")),
+                literal_text(node.get("dcterms:title")),
+            )
+            if part
+        )
+        targets = [
+            celex_to_iri(c)
+            for c in parse_eu_citations(text)
+            if celex_to_iri(c) in known_iris
+        ]
+        existing = _existing_iris(node.get("estleg:interpretsEULaw"))
+        merged = existing + [iri for iri in targets if iri not in existing]
+        if merged:
+            _set_edges(node, merged)
+            remove_derivation_method(node, METHOD_CELLAR)
+            add_derivation_method(node, METHOD_TITLE)
+    after = json.dumps(
+        [node.get("estleg:interpretsEULaw"), node.get("estleg:derivationMethod")],
+        sort_keys=True,
     )
-    return True
+    return before != after
 
 
 def load_known_eu_iris(krr_dir: Path) -> set[str]:
@@ -196,7 +249,10 @@ def load_known_eu_iris(krr_dir: Path) -> set[str]:
 
 
 def process_file(
-    path: Path, known_iris: set[str], dry_run: bool
+    path: Path,
+    known_iris: set[str],
+    dry_run: bool,
+    cellar: dict[str, list[str]] | None = None,
 ) -> tuple[int, int, int]:
     """Backfill one CURIA file. Returns (changed, decisions, edges_added)."""
     doc = json.loads(path.read_text(encoding="utf-8"))
@@ -210,7 +266,7 @@ def process_file(
             continue
         decisions += 1
         before = len(_existing_iris(node.get("estleg:interpretsEULaw")))
-        if link_decision_node(node, known_iris):
+        if link_decision_node(node, known_iris, cellar):
             changed += 1
             edges += len(_existing_iris(node.get("estleg:interpretsEULaw"))) - before
     if changed and not dry_run:
@@ -241,6 +297,7 @@ def main(argv: list[str] | None = None) -> int:
     report_path = args.report or (args.krr_dir / "curia" / "curia_eu_link_report.json")
 
     known = load_known_eu_iris(args.krr_dir)
+    cellar = load_cellar_interprets()
     print("=" * 70)
     print("Link CURIA decisions to EU legislation (#418)")
     print("=" * 70)
@@ -283,7 +340,7 @@ def main(argv: list[str] | None = None) -> int:
                 iri = node.get("@id")
                 if isinstance(iri, str) and len(samples) < 10:
                     samples.append(iri)
-        changed, decisions, edges = process_file(path, known, args.dry_run)
+        changed, decisions, edges = process_file(path, known, args.dry_run, cellar)
         total_changed += changed
         total_decisions += decisions
         total_edges += edges
@@ -292,8 +349,25 @@ def main(argv: list[str] | None = None) -> int:
     match_rate = (
         round(labeled_linked / labeled_with_cite, 4) if labeled_with_cite else 0.0
     )
+    by_method: dict[str, int] = {}
+    edges_by_method: dict[str, int] = {}
+    for rel in CURIA_FILES:
+        path = args.krr_dir / rel
+        if rel.endswith("_combined.jsonld") or not path.exists() or args.dry_run:
+            continue
+        for node in json.loads(path.read_text(encoding="utf-8")).get("@graph", []):
+            if not isinstance(node, dict) or "estleg:EUCourtDecision" not in _node_types(node):
+                continue
+            for method in derivation_methods(node):
+                by_method[method] = by_method.get(method, 0) + 1
+                edges_by_method[method] = edges_by_method.get(method, 0) + len(
+                    _existing_iris(node.get("estleg:interpretsEULaw"))
+                )
     report = {
         "known_eu_iris": len(known),
+        "cellar_interprets_cache_celex": len(cellar),
+        "decisions_by_derivation_method": dict(sorted(by_method.items())),
+        "edges_by_derivation_method": dict(sorted(edges_by_method.items())),
         "decisions_scanned": total_decisions,
         "decisions_changed": total_changed,
         "edges_added": total_edges,

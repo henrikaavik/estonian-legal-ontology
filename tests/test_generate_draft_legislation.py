@@ -174,6 +174,7 @@ class TestTitleKeyLen:
             n["@id"]
             for n in peep["@graph"]
             if isinstance(n.get("@id"), str) and n["@id"].startswith("estleg:Draft_")
+            and "estleg:DraftLegislation" in n.get("@type", [])
         ]
         assert draft_ids == [
             f"estleg:Draft_{sanitize_id(title_a[:TITLE_KEY_LEN])}"
@@ -352,9 +353,12 @@ class TestIndexIsByteStable:
     def test_index_has_no_generated_timestamp(self, tmp_path, monkeypatch):
         index_path = self._run(tmp_path, monkeypatch)
         index = json.loads(index_path.read_text(encoding="utf-8"))
-        assert "generated" not in index, (
-            "EELNOUD_INDEX.json must not embed a wall-clock 'generated' "
-            "timestamp (#295 churn)"
+        # #717: ``generated`` is a DATA date (the latest observed EIS date),
+        # which the #531 staleness stamp needs; it must never be the wall
+        # clock (#295 churn).
+        assert index.get("generated") == "2026-02-01", (
+            "EELNOUD_INDEX.json 'generated' must be the latest EIS data date, "
+            "not a wall-clock timestamp (#295 churn)"
         )
         # Sanity: the synthetic draft was still indexed.
         assert index["total_drafts"] == 1
@@ -428,6 +432,7 @@ class TestDraftOutputIsSortedById:
             n["@id"]
             for n in graph
             if isinstance(n.get("@id"), str) and n["@id"].startswith("estleg:Draft_")
+            and "estleg:DraftLegislation" in n.get("@type", [])
         ]
 
     def test_phase_peep_draft_nodes_are_sorted_by_id(self, tmp_path, monkeypatch):

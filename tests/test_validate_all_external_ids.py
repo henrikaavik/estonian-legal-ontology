@@ -63,3 +63,16 @@ def test_seeded_ids_resolve_historical_municipality_edges(repo: Path, capsys) ->
     out = capsys.readouterr().out
     assert "seeded 2 external ids from historical_municipalities.jsonld" in out
     assert "1 internal object references resolve" in out
+
+
+def test_cache_subtree_is_operational_state(tmp_path: Path) -> None:
+    """#729/#722: krr_outputs/.cache/ holds git-ignored machine state, never corpus data."""
+    from estleg import estleg_common
+
+    krr = tmp_path / "krr_outputs"
+    (krr / ".cache").mkdir(parents=True)
+    (krr / ".cache" / "hash_manifest.json").write_text("{}", encoding="utf-8")
+    (krr / "law_peep.json").write_text('{"@graph": []}', encoding="utf-8")
+    assert estleg_common.is_operational_state_file(krr / ".cache" / "hash_manifest.json")
+    assert not estleg_common.is_operational_state_file(krr / "law_peep.json")
+    assert [p.name for p in estleg_common.iter_krr_jsonld_files(krr)] == ["law_peep.json"]

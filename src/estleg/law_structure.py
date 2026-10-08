@@ -1146,3 +1146,23 @@ def emit_hierarchy_and_provisions(
 
 
 
+
+
+def normtehnmarkus_texts(root: ET.Element) -> list[str]:
+    """Return the texts of the act's ``<normtehnmarkus>`` blocks (#711).
+
+    Riigi Teataja closes an act that implements EU law with a
+    normitehniline märkus listing the directives it transposes. The same
+    tag also appears as a bare footnote marker in the title (only a
+    ``normtehnmarkusNr``); those markers carry no text and are skipped.
+    Texts are whitespace-collapsed and returned in document order; the
+    directive parse lives in ``estleg.extract_ntm_directives``.
+    """
+    texts: list[str] = []
+    for el in root.iter():
+        if ln(el.tag) != "normtehnmarkus":
+            continue
+        text = ct(el, "normtehnmarkusTekst")
+        if text:
+            texts.append(re.sub(r"\s+", " ", text).strip())
+    return texts

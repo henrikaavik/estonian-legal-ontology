@@ -10,7 +10,10 @@ Generates:
   - krr_outputs/reports/similarity_index.json
   - krr_outputs/reports/similarity_report.json
   - krr_outputs/reports/similarity_sample.json   (only with --emit-sample N)
-  - krr_outputs/similarity/kov_similarity_index.json (KOV act-level pass)
+  - krr_outputs/similarity/kov_similarity_index.json (KOV act-level pass;
+    git-ignored write-only artefact, #539)
+  - krr_outputs/similarity/kov_state_similarity_index.json (KOV<->state
+    topical pass, ``generate_kov_state_similarity.py``, #729; committed)
 
 Those JSON files are **non-graph application artifacts** (issue #462) —
 a tf-idf / keyword-Jaccard application index, not RDF. SPARQL will not
@@ -1620,6 +1623,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "unaffected and stays byte-identical to a run without this flag."
         ),
     )
+    parser.add_argument(
+        "--no-kov-state",
+        dest="include_kov_state_similarity",
+        action="store_false",
+        default=True,
+        help=(
+            "Skip the KOV<->state topical pass (#729) that writes "
+            "krr_outputs/similarity/kov_state_similarity_index.json and the "
+            "kov_state_topical section of similarity_report.json."
+        ),
+    )
     # ``argv is None`` -> parse an empty list, not ``sys.argv``. Callers
     # that want CLI parsing (the __main__ block) pass ``sys.argv[1:]``
     # explicitly; programmatic callers (tests) get safe defaults.
@@ -1905,6 +1919,17 @@ def main(argv: list[str] | None = None):
         cleared = clear_kov_similarity_output()
         print(f"  Cleared KOV similarity back-links from {cleared} act file(s)")
 
+    # KOV<->state topical pass (#729): a non-graph sidecar; never writes peeps.
+    kov_state_index = None
+    if args.include_kov_state_similarity:
+        from estleg import generate_kov_state_similarity as kov_state
+
+        print("\n" + "=" * 60)
+        print("KOV<->state topical similarity (TF-IDF cosine, #729)")
+        print("=" * 60)
+        kov_state_index = kov_state.build_index(KRR_DIR)
+        kov_state.write_outputs(kov_state_index, KRR_DIR, update_report=False)
+
     # Optional: human precision-review sample.
     sample_written = None
     if args.emit_sample > 0:
@@ -1981,6 +2006,8 @@ def main(argv: list[str] | None = None):
         bucket = f"{int(pair['similarity'] * 10) / 10:.1f}"
         buckets[bucket] += 1
     report["similarity_distribution"] = dict(sorted(buckets.items()))
+    if kov_state_index is not None:
+        kov_state.merge_into_report(report, kov_state_index)
 
     report_path = KRR_DIR / "reports" / "similarity_report.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)

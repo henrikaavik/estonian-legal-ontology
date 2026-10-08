@@ -1947,3 +1947,58 @@ def test_two_empty_body_acts_produce_no_perfect_pair_end_to_end(tmp_path, monkey
     ):
         node = _act_node(path, act_id)
         assert "estleg:similarAct" not in node
+
+
+# ---------------------------------------------------------------------------
+# #729: main() runs the KOV<->state topical pass and merges its counts
+# ---------------------------------------------------------------------------
+
+def _kov_state_corpus(krr: Path) -> Path:
+    law = krr / "jaatmeseadus_peep.json"
+    law.parent.mkdir(parents=True, exist_ok=True)
+    text = ("Olmejäätmete kogumine jäätmevedu korraldatud jäätmeveo piirkonnas "
+            "biojäätmed pakendijäätmed jäätmekäitleja")
+    law.write_text(json.dumps({"@graph": [
+        {"@id": "estleg:JS_Map", "@type": ["estleg:Act", "estleg:Law"],
+         "rdfs:label": "Jäätmeseadus", "dc:source": "Jäätmeseadus"},
+        {"@id": "estleg:JS_Par_1", "@type": ["estleg:LegalProvision"],
+         "rdfs:label": "§ 1.", "estleg:summary": text, "estleg:legalText": text,
+         "estleg:sourceAct": "Jäätmeseadus", "estleg:partOfAct": {"@id": "estleg:JS_Map"}},
+    ]}, ensure_ascii=False), encoding="utf-8")
+    kov = krr / "regulations" / "kov" / "x_vallavolikogu" / "eeskiri_t7_peep.json"
+    kov.parent.mkdir(parents=True, exist_ok=True)
+    kov.write_text(json.dumps({"@graph": [
+        {"@id": "estleg:Reg_7_Map", "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+         "rdfs:label": "Jäätmehoolduseeskiri (määrus)"},
+        {"@id": "estleg:Reg_7_Par_1", "@type": ["estleg:LegalProvision"],
+         "rdfs:label": "§ 1.", "estleg:legalText": text,
+         "estleg:partOfAct": {"@id": "estleg:Reg_7_Map"}},
+    ]}, ensure_ascii=False), encoding="utf-8")
+    return law
+
+
+def test_main_writes_kov_state_index_and_report_section(tmp_path, monkeypatch):
+    krr = tmp_path / "krr_outputs"
+    law = _kov_state_corpus(krr)
+    monkeypatch.setattr(similarity, "KRR_DIR", krr)
+    monkeypatch.setattr(similarity, "iter_peep_files", lambda include_kov=False: [law])
+    similarity.main(["--no-kov"])
+
+    index = json.loads((krr / "similarity" / "kov_state_similarity_index.json").read_text("utf-8"))
+    assert index["kovToLaw"]["estleg:Reg_7_Map"][0][0] == "estleg:JS_Map"
+    report = json.loads((krr / "reports" / "similarity_report.json").read_text("utf-8"))
+    assert report["provisions_by_type"]["kov"] == 1
+    assert report["kov_state_topical"]["counts"] == index["counts"]
+
+
+def test_no_kov_state_skips_the_topical_pass(tmp_path, monkeypatch):
+    krr = tmp_path / "krr_outputs"
+    law = _kov_state_corpus(krr)
+    monkeypatch.setattr(similarity, "KRR_DIR", krr)
+    monkeypatch.setattr(similarity, "iter_peep_files", lambda include_kov=False: [law])
+    similarity.main(["--no-kov", "--no-kov-state"])
+
+    assert not (krr / "similarity" / "kov_state_similarity_index.json").exists()
+    report = json.loads((krr / "reports" / "similarity_report.json").read_text("utf-8"))
+    assert report["provisions_by_type"]["kov"] == 0
+    assert "kov_state_topical" not in report

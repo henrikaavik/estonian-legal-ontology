@@ -17,6 +17,12 @@ this. The streamable-HTTP transport is a shared network endpoint, so:
   token bucket: ``60/minute``, ``5/second``, ``1000/hour`` or a bare number
   (per minute). ``ESTLEG_RATE_BURST`` sets the bucket size (default: the
   per-period count). Over-limit requests get ``429`` with ``Retry-After``.
+* **Resolver exemption (#728).** When the HTTP app mounts the w3id resolver
+  (``/id/{local}``, ``/vocabulary``), ``GET``/``HEAD`` on exactly those paths
+  pass without a token as the ``anonymous`` consumer and draw from the single
+  :data:`RESOLVER_BUCKET` bucket (``ESTLEG_RESOLVER_RATE_LIMIT`` /
+  ``ESTLEG_RESOLVER_RATE_BURST``, falling back to the shared limit). Every
+  other path and method stays fail-closed.
 
 :class:`AccessMiddleware` is a pure ASGI middleware (no response buffering,
 so the SSE stream of the MCP transport passes through untouched). It records
@@ -42,6 +48,14 @@ CONSUMER_STATE_KEY = "estleg_consumer"
 ANONYMOUS_CONSUMER = "anonymous"
 LEGACY_CONSUMER = "default"
 HEALTH_PATH = "/healthz"
+# The w3id resolver pilot (#728): public identifiers, read-only, anonymous.
+# Exactly ``/id``, ``/id/``, ``/id/<one segment>`` and ``/vocabulary`` -- a
+# decoded ``/`` inside the name (``/id/a%2Fb``) does not match and stays gated.
+RESOLVER_PATH = re.compile(r"^/(?:id(?:/[^/]*)?|vocabulary)$")
+RESOLVER_METHODS = frozenset({"GET", "HEAD"})
+# Every anonymous resolver hit shares this one rate-limit bucket, so a crawler
+# can exhaust only the resolver's allowance, never a token holder's.
+RESOLVER_BUCKET = "anonymous-resolver"
 
 _NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
@@ -209,17 +223,26 @@ class RateLimiter:
         self._lock = threading.Lock()
 
     @classmethod
-    def from_env(cls, environ: Mapping[str, str] | None = None) -> RateLimiter | None:
+    def from_env(
+        cls,
+        environ: Mapping[str, str] | None = None,
+        *,
+        rate_var: str = "ESTLEG_RATE_LIMIT",
+        burst_var: str = "ESTLEG_RATE_BURST",
+    ) -> RateLimiter | None:
         env = os.environ if environ is None else environ
-        parsed = parse_rate(env.get("ESTLEG_RATE_LIMIT", ""))
+        try:
+            parsed = parse_rate(env.get(rate_var, ""))
+        except ValueError as exc:
+            raise ValueError(str(exc).replace("ESTLEG_RATE_LIMIT", rate_var)) from exc
         if parsed is None:
             return None
         rate, count = parsed
-        burst_text = env.get("ESTLEG_RATE_BURST", "").strip()
+        burst_text = env.get(burst_var, "").strip()
         try:
             burst = int(burst_text) if burst_text else count
         except ValueError as exc:
-            raise ValueError(f"ESTLEG_RATE_BURST: {burst_text!r} is not an integer") from exc
+            raise ValueError(f"{burst_var}: {burst_text!r} is not an integer") from exc
         return cls(rate, max(1, burst))
 
     def acquire(self, consumer: str) -> float:
@@ -266,6 +289,11 @@ class AccessMiddleware:
 
     ``registry`` may be ``None`` only when anonymous HTTP was explicitly
     allowed; requests are then attributed to the ``anonymous`` consumer.
+
+    With ``open_resolver=True`` (set by the HTTP app only when it mounted the
+    resolver routes), ``GET``/``HEAD`` on :data:`RESOLVER_PATH` also bypass the
+    token check as ``anonymous``, limited under :data:`RESOLVER_BUCKET` by
+    ``resolver_limiter`` (or, when that is ``None``, the shared ``limiter``).
     """
 
     def __init__(
@@ -275,12 +303,16 @@ class AccessMiddleware:
         limiter: RateLimiter | None = None,
         audit_log: Callable[[], AuditLog] | None = None,
         identity: Callable[[], dict[str, str]] | None = None,
+        open_resolver: bool = False,
+        resolver_limiter: RateLimiter | None = None,
     ) -> None:
         self.app = app
         self.registry = registry
         self.limiter = limiter
         self.audit_log = audit_log
         self.identity = identity
+        self.open_resolver = open_resolver
+        self.resolver_limiter = resolver_limiter
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         kind = scope.get("type")
@@ -292,6 +324,13 @@ class AccessMiddleware:
             # server exposes no such route, and nothing may bypass the gate.
             if kind == "websocket":
                 await send({"type": "websocket.close", "code": 1008})
+            return
+        if (
+            self.open_resolver
+            and RESOLVER_PATH.match(scope.get("path") or "")
+            and (scope.get("method") or "").upper() in RESOLVER_METHODS
+        ):
+            await self._serve_resolver(scope, receive, send)
             return
         if self.registry is None:
             consumer: str | None = ANONYMOUS_CONSUMER
@@ -324,7 +363,27 @@ class AccessMiddleware:
             state[CONSUMER_STATE_KEY] = consumer
         await self.app(scope, receive, send)
 
-    def _audit_rate_limited(self, consumer: str, retry_after: int) -> None:
+    async def _serve_resolver(self, scope: Scope, receive: Receive, send: Send) -> None:
+        """Anonymous, bucket-limited pass-through for the resolver routes (#728)."""
+        limiter = self.resolver_limiter or self.limiter
+        if limiter is not None:
+            wait = limiter.acquire(RESOLVER_BUCKET)
+            if wait > 0:
+                retry = max(1, int(wait + 0.999))
+                self._audit_rate_limited(ANONYMOUS_CONSUMER, retry, tool="resolve")
+                await _json_response(
+                    send,
+                    429,
+                    {"error": "rate_limited", "retry_after_seconds": retry},
+                    [(b"retry-after", str(retry).encode())],
+                )
+                return
+        state = scope.setdefault("state", {})
+        if isinstance(state, dict):
+            state[CONSUMER_STATE_KEY] = ANONYMOUS_CONSUMER
+        await self.app(scope, receive, send)
+
+    def _audit_rate_limited(self, consumer: str, retry_after: int, tool: str = "") -> None:
         if self.audit_log is None:
             return
         record: dict[str, Any] = {
@@ -334,6 +393,8 @@ class AccessMiddleware:
             "transport": "http",
             "retry_after_seconds": retry_after,
         }
+        if tool:
+            record["tool"] = tool
         if self.identity is not None:
             record.update(self.identity())
         self.audit_log().emit(record)
@@ -345,6 +406,8 @@ __all__ = [
     "CONSUMER_STATE_KEY",
     "CredentialsRequired",
     "LEGACY_CONSUMER",
+    "RESOLVER_BUCKET",
+    "RESOLVER_PATH",
     "RateLimiter",
     "TokenConfigError",
     "TokenRegistry",

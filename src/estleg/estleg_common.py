@@ -1793,7 +1793,7 @@ PINNED_RUN_TIMESTAMP: str = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 # mechanism that keeps local and CI file counts identical.
 #
 # The corpus count this exclusion yields is pinned by ``metadata.jsonld``
-# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 27026), which
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 27029), which
 # ``validate_metadata_catalog`` enforces — treat that file as the source of
 # truth rather than this prose. Any change here that moves that number means
 # the classifier was broadened or narrowed incorrectly.
@@ -1810,7 +1810,7 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
 # known integration-report directory) so the pinned ``metadata.jsonld``
-# count (currently 27026) is unchanged: the only ``*.json`` currently living under
+# count (currently 27029) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from
@@ -1847,12 +1847,18 @@ def is_operational_state_file(path: Path) -> bool:
        ``_DERIVED_PROJECTION_DIRS`` (currently ``retrieval``). This excludes
        the whole subtree at any depth so a derived consumer projection never
        inflates the corpus count.
+    4. **Local cache subtree** — any file under ``krr_outputs/.cache/`` (the
+       git-ignored regeneration ledgers of #722 and the ``--only-changed``
+       hash manifest of #729): machine state, never corpus data, so the
+       catalogue count cannot drift with what a checkout happens to cache.
     """
     if path.name in OPERATIONAL_STATE_FILES:
         return True
     parts = path.parts
     for parent, child in zip(parts, parts[1:]):
-        if parent == "krr_outputs" and child in _DERIVED_PROJECTION_DIRS:
+        if parent == "krr_outputs" and (
+            child in _DERIVED_PROJECTION_DIRS or child == ".cache"
+        ):
             return True
     if path.suffix.lower() == ".json":
         parent_parts = path.parent.parts
@@ -2214,6 +2220,10 @@ ALLOWED_HTTP_HOSTS: frozenset[str] = frozenset(
         "www.publications.europa.eu",
         "eur-lex.europa.eu",
         "www.eur-lex.europa.eu",
+        # Riigikogu open-data REST API (#717): parliamentary stages of drafts.
+        # CC BY-SA 3.0; the client keeps to 1 request/s and caches every
+        # response under data/riigikogu/ (generate_riigikogu_proceedings.py).
+        "api.riigikogu.ee",
     }
 )
 
@@ -2279,6 +2289,67 @@ def allowed_get(url: str, **kwargs):
         ]
         kwargs["hooks"] = hooks
     return requests.get(url, **kwargs)
+
+
+# ---------------------------------------------------------------------------
+# estleg:derivationMethod provenance stamps (#717)
+# ---------------------------------------------------------------------------
+
+DERIVATION_METHOD_PREDICATE = "estleg:derivationMethod"
+# Closed value set (docs/DRAFT_LIFECYCLE.md "Provenance"). Each value names
+# both the method and the property it qualifies, so a node may carry several.
+DERIVATION_METHODS: frozenset[str] = frozenset(
+    {
+        "eis-feed",  # ProcessStep: observed in an EIS RSS feed
+        "riigikogu-eis-number",  # ProcessStep: Riigikogu join via quoted EIS number
+        "riigikogu-mark",  # ProcessStep: Riigikogu join via "(NNN SE)" in the EIS title
+        "riigikogu-title-date",  # ProcessStep: Riigikogu join via title + date window
+        "minted-ecli",  # CourtDecision.ecliIdentifier minted locally, not published
+        "rederived-case-type",  # CourtDecision.caseType re-derived from the chamber text
+        "title-regex",  # EUCourtDecision.interpretsEULaw parsed from the title
+        "cellar-interprets",  # EUCourtDecision.interpretsEULaw from CELLAR
+    }
+)
+
+
+def derivation_methods(node: dict) -> list[str]:
+    """The ``estleg:derivationMethod`` values on ``node`` (always a list)."""
+    raw = node.get(DERIVATION_METHOD_PREDICATE)
+    items = raw if isinstance(raw, list) else ([raw] if raw is not None else [])
+    out: list[str] = []
+    for item in items:
+        value = item.get("@value") if isinstance(item, dict) else item
+        if isinstance(value, str) and value not in out:
+            out.append(value)
+    return out
+
+
+def _set_derivation_methods(node: dict, values: list[str]) -> None:
+    values = sorted(set(values))
+    if not values:
+        node.pop(DERIVATION_METHOD_PREDICATE, None)
+    else:
+        node[DERIVATION_METHOD_PREDICATE] = values[0] if len(values) == 1 else values
+
+
+def add_derivation_method(node: dict, method: str) -> bool:
+    """Stamp ``method`` on ``node``; returns True when it was added."""
+    if method not in DERIVATION_METHODS:
+        raise ValueError(f"unknown estleg:derivationMethod {method!r}")
+    current = derivation_methods(node)
+    if method in current:
+        return False
+    _set_derivation_methods(node, [*current, method])
+    return True
+
+
+def remove_derivation_method(node: dict, method: str) -> bool:
+    """Drop ``method`` from ``node``; returns True when it was present."""
+    current = derivation_methods(node)
+    if method not in current:
+        return False
+    _set_derivation_methods(node, [m for m in current if m != method])
+    return True
 
 
 def sha256_hex(data: bytes | str) -> str:
