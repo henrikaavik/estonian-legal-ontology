@@ -1,0 +1,52 @@
+# REUSE specification 3.3 (https://reuse.software/spec-3.3/) licence map (#721).
+#
+# Code is MIT; the project's own compilation layer is CC-BY-4.0; third-party
+# legal texts keep their source terms (LicenseRef-EstLeg-SourceTerms, which
+# points at NOTICE). NOTICE and docs/DATA_RIGHTS.md are the authoritative
+# prose; this file is their machine-readable form and must not say more than
+# they do. The CC BY 4.0 election for the compilation layer is still a DRAFT
+# pending the maintainer's sign-off (docs/DATA_RIGHTS.md, open items).
+#
+# When several tables match a file, the last matching table wins, so the
+# catch-all comes first and narrower data paths follow.
+
+version = 1
+
+# Everything not matched below: code, scripts, tests, tooling, CI config and
+# project documentation.
+[[annotations]]
+path = "**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Estonian Legal Ontology project"
+SPDX-License-Identifier = "MIT"
+
+# Project-authored data inputs: curated aliases, overrides, baselines,
+# registries and migration state.
+[[annotations]]
+path = ["data/**", "metadata.jsonld", "CITATION.cff"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Estonian Legal Ontology project"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# The published corpus: the project's compilation layer over third-party
+# legal texts, plus test fixtures and benchmark samples cut from that corpus.
+# Both layers apply to every file here (NOTICE, layer (a) + (b)).
+[[annotations]]
+path = ["krr_outputs/**", "tests/fixtures/**", "eval/benchmark/**"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Estonian Legal Ontology project"
+SPDX-License-Identifier = "CC-BY-4.0 AND LicenseRef-EstLeg-SourceTerms"
+
+# EU material additionally carries the Union's copyright notice.
+[[annotations]]
+path = ["krr_outputs/eurlex/**", "krr_outputs/curia/**", "krr_outputs/eurovoc_concept_scheme.jsonld"]
+precedence = "closest"
+SPDX-FileCopyrightText = ["2026 Estonian Legal Ontology project", "1998-2026 European Union"]
+SPDX-License-Identifier = "CC-BY-4.0 AND LicenseRef-EstLeg-SourceTerms"
+
+# Purely project-authored vocabulary and shapes: no third-party text.
+[[annotations]]
+path = ["shacl/**", "krr_outputs/controlled_vocabulary.jsonld", "krr_outputs/void.ttl"]
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Estonian Legal Ontology project"
+SPDX-License-Identifier = "CC-BY-4.0"

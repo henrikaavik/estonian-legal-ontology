@@ -48,6 +48,12 @@ python3 -m pytest -q                                # default suite; corpus mark
 python3 -m pytest -q mcp_server/tests                # separate MCP package suite
 ```
 
+`make check` runs the first two plus the docs lint with the same commands CI
+uses (see the `Makefile`; CI's `lint` job calls `make lint`). The `pytest` job
+runs on Python 3.11, 3.12 and 3.13. Decision rights, release support and the
+security contact route are in [GOVERNANCE.md](GOVERNANCE.md) and
+[SECURITY.md](SECURITY.md).
+
 For corpus, generator, or validation changes, also run:
 
 ```bash

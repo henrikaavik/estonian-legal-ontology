@@ -1,0 +1,86 @@
+# Publish the Estonian public overview to GitHub Pages (#715).
+#
+# Site URL: https://henrikaavik.github.io/estonian-legal-ontology/
+#   eesti-oigusontoloogia-ulevaade.html   ministry overview (index.html redirects here)
+#   ANDMED.et.md, DATA_PROTECTION.md, DATA_RIGHTS.md and the other docs/*.md
+#   are copied verbatim; the overview links their rendered GitHub views.
+#
+# MAINTAINER ACTION REQUIRED: this workflow cannot deploy until Pages is
+# enabled for the repository (Settings -> Pages -> Build and deployment ->
+# Source: "GitHub Actions"). Only a repository admin can change that setting.
+# Until then the deploy job fails with "Pages site not found"; the build job
+# still verifies that the site assembles.
+#
+# Actions are pinned by full commit SHA; the trailing comment names the tag.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: false
+
+      - name: Assemble site
+        run: |
+          set -euo pipefail
+          site=_site
+          rm -rf "$site"
+          mkdir -p "$site"
+          cp docs/eesti-oigusontoloogia-ulevaade.html "$site/"
+          cp docs/*.md "$site/"
+          cp -R docs/assets "$site/assets"
+          cat > "$site/index.html" <<'HTML'
+          <!doctype html>
+          <html lang="et">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Eesti õigusontoloogia</title>
+            <meta http-equiv="refresh" content="0; url=eesti-oigusontoloogia-ulevaade.html">
+            <link rel="canonical" href="eesti-oigusontoloogia-ulevaade.html">
+          </head>
+          <body>
+            <p><a href="eesti-oigusontoloogia-ulevaade.html">Eesti õigusontoloogia ülevaade</a></p>
+          </body>
+          </html>
+          HTML
+          test -s "$site/eesti-oigusontoloogia-ulevaade.html"
+          test -s "$site/ANDMED.et.md"
+          ls -la "$site"
+
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -1,8 +1,17 @@
 # Estonian Legal Ontology
 
+<!-- audience-router: keep first; tests/test_public_surface_docs.py checks it -->
+| You are | Start here |
+|---|---|
+| **Otsustaja või jurist (eesti keeles)** | [Andmekirjeldus](docs/ANDMED.et.md) and the [Estonian overview](https://henrikaavik.github.io/estonian-legal-ontology/eesti-oigusontoloogia-ulevaade.html) |
+| **Integrator** | [docs/API_GUIDE.md](docs/API_GUIDE.md) and [mcp_server/README.md](mcp_server/README.md) |
+| **Operator** | [docs/OPERATOR_RUNBOOK.md](docs/OPERATOR_RUNBOOK.md) |
+
+**Project policies:** [GOVERNANCE.md](GOVERNANCE.md) · [SECURITY.md](SECURITY.md) · [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md)
+
 A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **domestic regulations (määrused)**, **Supreme Court decisions**, **EU legal acts**, and **EU court decisions** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
 
-**Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid.
+**Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://henrikaavik.github.io/estonian-legal-ontology/eesti-oigusontoloogia-ulevaade.html) — mis see on, kust andmed pärinevad, litsents, isikuandmed, viitamine ja versioon. GitHub Pages is pending enablement in the repository settings; until it is live, read the source [docs/eesti-oigusontoloogia-ulevaade.html](docs/eesti-oigusontoloogia-ulevaade.html) or the data statement [docs/ANDMED.et.md](docs/ANDMED.et.md).
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
 **Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,008 JSON/JSON-LD files** | **170,000+ semantic nodes**
@@ -621,33 +630,7 @@ Harmonisation sidecars (`krr_outputs/harmonisation/`) are neighbour-state compar
 
 ### Running integration scripts
 
-```bash
-# Cross-law references (run first — other scripts depend on this)
-python3 scripts/extract_cross_references.py
-python3 scripts/generate_inverse_references.py
-
-# Court decision links
-python3 scripts/extract_court_provision_links.py
-
-# EU integration
-python3 scripts/generate_transposition_mapping.py
-python3 scripts/classify_eurovoc.py
-python3 scripts/generate_harmonisation_links.py
-
-# Temporal and amendment data
-python3 scripts/extract_temporal_data.py
-python3 scripts/generate_amendment_history.py
-
-# Legal concepts and classification
-python3 scripts/extract_legal_concepts.py
-python3 scripts/classify_deontic.py
-python3 scripts/extract_institutional_competence.py
-python3 scripts/extract_sanctions.py
-
-# Draft impact and similarity
-python3 scripts/extract_draft_impact.py
-python3 scripts/generate_similarity_index.py
-```
+The integration layers run as one dependency-ordered DAG (`scripts/run_all_integration.py`). Commands, step order and flags are in the [operator runbook](docs/OPERATOR_RUNBOOK.md#2-rebuild-the-derived-layers).
 
 ## Repository Structure
 
@@ -903,70 +886,7 @@ release contract for downstream sync.
 
 ## Refreshing Data
 
-These are operator commands that change the corpus. The RT migration (#691)
-and full ingest/enrichment reproducibility work in #697/#704 remain
-open; a successful process exit alone does not establish a complete refresh.
-Choose the intended snapshot explicitly and inspect the generated manifest.
-
-```bash
-# Refresh enacted laws from a declared Riigi Teataja snapshot.
-# Default is --missing-only against --kehtiv 2026-05-01. In --missing-only
-# mode an existing file is *also* re-fetched when its stored
-# estleg:kehtiv snapshot date no longer matches --kehtiv (stale-snapshot
-# refresh); files already at the current snapshot are skipped.
-python3 scripts/generate_all_laws.py --missing-only
-python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
-python3 scripts/generate_all_laws.py --force --kehtiv 2026-05-01
-
-# Re-generate the SAME law list a previous run captured, without
-# re-querying the live search (the per-act XML is still fetched, keyed on
-# the recorded terviktekstId). The manifest's outputsAll block is the
-# source of truth.
-python3 scripts/generate_all_laws.py --from-manifest krr_outputs/generation_manifest_laws.json
-
-# The run records counts (full / stub / failed / skipped acts), an
-# unchanged-vs-refreshed split, and source-removed peep files (acts no
-# longer in the live snapshot — reported, not deleted) in
-# krr_outputs/generation_manifest_laws.json.
-
-# Refresh state-level domestic regulations from Riigi Teataja.
-# Default is --missing-only; use --refresh to re-fetch XML and rewrite changed files.
-# Source-list fetch failures are fatal unless --allow-partial is explicit.
-python3 scripts/generate_regulations.py --missing-only
-python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01
-# (add --kov to refresh municipal regulations)
-
-# Re-fetch draft legislation from EIS
-python3 scripts/generate_draft_legislation.py
-
-# Re-fetch Supreme Court decisions from RIK
-python3 scripts/generate_court_decisions.py
-
-# Re-fetch EU legislation from EUR-Lex
-python3 scripts/generate_eu_legislation.py
-
-# Re-fetch EU court decisions from EUR-Lex
-python3 scripts/generate_eu_court_decisions.py
-
-# Run all integration scripts in dependency order with rollback on failure:
-python3 scripts/run_all_integration.py --validate-each
-
-# Or run individually:
-python3 scripts/extract_cross_references.py
-python3 scripts/generate_inverse_references.py
-python3 scripts/extract_court_provision_links.py
-python3 scripts/generate_transposition_mapping.py
-python3 scripts/classify_eurovoc.py
-python3 scripts/extract_temporal_data.py
-python3 scripts/generate_amendment_history.py
-python3 scripts/extract_legal_concepts.py
-python3 scripts/classify_deontic.py
-python3 scripts/extract_institutional_competence.py
-python3 scripts/extract_sanctions.py
-python3 scripts/extract_draft_impact.py
-python3 scripts/generate_similarity_index.py
-python3 scripts/generate_harmonisation_links.py
-```
+Refreshing the corpus from Riigi Teataja, EIS, RIK, EUR-Lex and CURIA, rebuilding the derived layers and packaging a release are operator tasks. The commands live in [docs/OPERATOR_RUNBOOK.md](docs/OPERATOR_RUNBOOK.md).
 
 ## Contributing
 
@@ -984,3 +904,5 @@ third-party legal texts plus an original compilation layer (draft CC BY
 4.0). See [NOTICE](NOTICE), [docs/DATA_RIGHTS.md](docs/DATA_RIGHTS.md),
 and [docs/DATA_PROTECTION.md](docs/DATA_PROTECTION.md) before
 redistributing data.
+
+Licence of each path: [REUSE.toml](REUSE.toml). Governance, support and succession: [GOVERNANCE.md](GOVERNANCE.md). Security and private reports: [SECURITY.md](SECURITY.md). Consumer release notes: [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md).

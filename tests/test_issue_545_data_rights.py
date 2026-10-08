@@ -14,10 +14,10 @@ METADATA = REPO / "metadata.jsonld"
 
 
 def test_license_scope_note_excludes_krr_outputs() -> None:
-    text = LICENSE.read_text(encoding="utf-8")
-    note = text.split("----------------------------------------------------------------------", 1)[0]
+    # #721: LICENSE is the bare MIT text; its scope note lives in NOTICE.
+    note = NOTICE.read_text(encoding="utf-8")
     assert "krr_outputs" in note
-    assert "does NOT license the DATA" in note or "does not license" in note.lower()
+    assert "does NOT license the DATA corpus" in note
 
 
 def test_metadata_dataset_is_not_mit() -> None:

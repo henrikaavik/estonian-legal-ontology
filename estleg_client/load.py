@@ -1,14 +1,16 @@
 """Read-only loaders for enacted-law peeps and sanction sidecars.
 
-Resolves a law name against ``krr_outputs/INDEX.json``, parses every listed
-file (multi-osa assembly), and merges ``krr_outputs/sanctions/sanctions_<stem>.json``
-when that sidecar exists. Producer scripts in ``scripts/`` are not imported.
+Resolves a law name against ``krr_outputs/INDEX.json`` (plus
+``data/law_abbreviations.json``), parses every listed file (multi-osa
+assembly), and merges ``krr_outputs/sanctions/sanctions_<stem>.json`` when that
+sidecar exists. In a ``fetch_corpus`` download (no per-law peeps) the same
+names resolve against the per-law shards cut from ``combined_ontology.jsonld``.
+Producer modules (``estleg``, ``scripts``) are never imported.
 """
 
 from __future__ import annotations
 
 import json
-import os
 import unicodedata
 from functools import lru_cache
 from pathlib import Path
@@ -16,70 +18,44 @@ from typing import Any
 
 from rdflib import RDF, Graph, URIRef
 
-ESTLEG_NS = "https://w3id.org/estleg/"
+from estleg_client import _shards
+from estleg_client._corpus import CorpusUnavailableError, corpus_root
+from estleg_client._jsonld import (
+    ESTLEG_NS,
+    expand,
+    graph_from_nodes,
+    is_real_file,
+    parse_into,
+)
+from estleg_client.vocab import PROVISION_TYPES, SANCTION_TYPES, SUBSECTION_TYPES
+
+__all__ = [
+    "ESTLEG_NS",
+    "LawNotFoundError",
+    "NotFoundError",
+    "corpus_root",
+    "load_law",
+    "provisions_of",
+    "resolve_iri",
+    "sanctions_of",
+    "typed_iris",
+]
+
 _INDEX_REL = ("krr_outputs", "INDEX.json")
 _ABBREV_REL = ("data", "law_abbreviations.json")
 _PEEP_SUFFIX = "_peep.json"
 
 
-class LawNotFoundError(LookupError):
+class NotFoundError(LookupError):
+    """A loader could not resolve its key (or the key was ambiguous)."""
+
+
+class LawNotFoundError(NotFoundError):
     """Raised when ``load_law`` cannot resolve ``name`` to an INDEX entry."""
 
 
 def _fold(text: str) -> str:
     return unicodedata.normalize("NFC", text).casefold()
-
-
-def _as_corpus_root(path: Path) -> Path | None:
-    if not path.is_dir():
-        return None
-    if (path.joinpath(*_INDEX_REL)).is_file():
-        return path
-    if path.name == "krr_outputs" and (path / "INDEX.json").is_file():
-        return path.parent
-    return None
-
-
-def corpus_root(root: str | Path | None = None) -> Path:
-    """Return the corpus root (the directory that contains ``krr_outputs/INDEX.json``).
-
-    Resolution order:
-
-    1. Explicit ``root`` (repo root or the ``krr_outputs`` directory itself).
-    2. ``ESTLEG_CORPUS`` if set.
-    3. Walk up from this file, then from the current working directory.
-
-    Raises ``FileNotFoundError`` when no INDEX is found.
-    """
-    if root is not None:
-        candidate = Path(root).expanduser().resolve()
-        found = _as_corpus_root(candidate)
-        if found is None:
-            raise FileNotFoundError(f"{candidate} does not contain krr_outputs/INDEX.json")
-        return found
-
-    env = os.environ.get("ESTLEG_CORPUS")
-    if env:
-        candidate = Path(env).expanduser().resolve()
-        found = _as_corpus_root(candidate)
-        if found is None:
-            raise FileNotFoundError(
-                f"ESTLEG_CORPUS={env!r} does not contain krr_outputs/INDEX.json"
-            )
-        return found
-
-    here = Path(__file__).resolve()
-    for start in (here, Path.cwd().resolve()):
-        for candidate in (start, *start.parents):
-            found = _as_corpus_root(candidate)
-            if found is not None:
-                return found
-
-    raise FileNotFoundError(
-        "Could not locate the Estonian Legal Ontology corpus. "
-        "Pass root=... or set ESTLEG_CORPUS to the directory that contains "
-        "krr_outputs/INDEX.json."
-    )
 
 
 def _krr_dir(root: Path) -> Path:
@@ -94,6 +70,8 @@ def _load_json(path: Path) -> Any:
 @lru_cache(maxsize=16)
 def _index_laws(root_key: str) -> tuple[tuple[str, tuple[str, ...]], ...]:
     path = Path(root_key).joinpath(*_INDEX_REL)
+    if not path.is_file():
+        return ()
     payload = _load_json(path)
     laws = payload.get("laws") if isinstance(payload, dict) else None
     if not isinstance(laws, list):
@@ -240,45 +218,125 @@ def _sanctions_sidecar(krr: Path, peep_name: str) -> Path | None:
     return path if path.is_file() else None
 
 
-def _parse_jsonld(graph: Graph, path: Path) -> None:
-    graph.parse(source=str(path), format="json-ld")
+def _shard_entry(name: str, root: Path) -> dict[str, Any] | None:
+    """Resolve ``name`` against the release shard index (slug, prefix, title)."""
+    index = _shards.read_shard_index(_krr_dir(root))
+    if index is None:
+        return None
+    entries = [e for e in index.get("laws", []) if isinstance(e, dict)]
+    query = name.strip()
+    folded = _fold(query)
+    slug_query = _shards.slugify(query)
+    for key in ("slug", "prefix"):
+        hits = [e for e in entries if _fold(str(e.get(key, ""))) == folded]
+        if len(hits) == 1:
+            return hits[0]
+    exact = [e for e in entries if _fold(str(e.get("title", ""))) == folded]
+    if len(exact) == 1:
+        return exact[0]
+    subs = [
+        e
+        for e in entries
+        if folded in _fold(str(e.get("title", "")))
+        or (slug_query and slug_query in str(e.get("slug", "")))
+    ]
+    if len(subs) == 1:
+        return subs[0]
+    if len(subs) > 1 or len(exact) > 1:
+        raise _ambiguous(query, [str(e.get("slug") or e.get("prefix")) for e in (exact or subs)])
+    raise _not_found(query)
+
+
+def _load_law_from_shards(name: str, root: Path, slug: str | None) -> Graph:
+    krr = _krr_dir(root)
+    index = _shards.read_shard_index(krr)
+    if index is None:
+        raise CorpusUnavailableError(
+            f"The per-law peep files for {name!r} are not in {krr} and no law shards "
+            "exist. Use a git checkout, or re-run fetch_corpus() with the "
+            "combined_ontology.jsonld.gz asset."
+        )
+    entry = None
+    if slug:
+        entry = next(
+            (e for e in index.get("laws", []) if isinstance(e, dict) and e.get("slug") == slug),
+            None,
+        )
+    if entry is None:
+        entry = _shard_entry(name, root)
+    if entry is None:
+        raise _not_found(name)
+    nodes = _shards.read_shard_nodes(krr, str(entry["file"]))
+    return graph_from_nodes(nodes, index.get("context") or {})
 
 
 def load_law(name: str, *, root: str | Path | None = None) -> Graph:
-    """Load every peep (and matching sanctions sidecar) for one INDEX law.
+    """Load one enacted law as an ``rdflib.Graph``.
 
-    ``name`` is an exact INDEX slug, a registry abbreviation, or a
-    case-insensitive title substring. Returns an ``rdflib.Graph``.
+    ``name`` is an exact INDEX slug (``abipolitseiniku_seadus``), a registry
+    abbreviation (``ABIPOL``), or a case-insensitive title substring. In a git
+    checkout every peep file of the law plus its sanctions sidecar is parsed;
+    in a ``fetch_corpus`` download the law's shard is parsed instead.
+
+    Raises :class:`LawNotFoundError` for an unknown or ambiguous name.
     """
     corpus = corpus_root(root)
-    _, files = _resolve_law(name, corpus)
     krr = _krr_dir(corpus)
-    graph = Graph()
-    for filename in files:
-        peep = krr / filename
-        _parse_jsonld(graph, peep)
-        sidecar = _sanctions_sidecar(krr, filename)
-        if sidecar is not None:
-            _parse_jsonld(graph, sidecar)
-    return graph
+    slug: str | None = None
+    files: tuple[str, ...] = ()
+    if _index_laws(str(corpus)):
+        try:
+            slug, files = _resolve_law(name, corpus)
+        except LawNotFoundError:
+            if _shards.read_shard_index(krr) is None:
+                raise
+    if files and all(is_real_file(krr / filename) for filename in files):
+        graph = Graph()
+        for filename in files:
+            parse_into(graph, krr / filename)
+            sidecar = _sanctions_sidecar(krr, filename)
+            if sidecar is not None:
+                parse_into(graph, sidecar)
+        return graph
+    return _load_law_from_shards(name, corpus, slug)
 
 
-def _iris_typed(graph: Graph, needle: str) -> list[str]:
+def typed_iris(
+    graph: Graph,
+    *types: str,
+    exclude: tuple[str, ...] = (),
+) -> list[str]:
+    """Sorted subject IRIs whose ``rdf:type`` is exactly one of ``types``.
+
+    Subjects that also carry one of the ``exclude`` types are dropped.
+    """
+    excluded = [URIRef(expand(t)) for t in exclude]
     found: set[str] = set()
-    for subject, _, type_term in graph.triples((None, RDF.type, None)):
-        if needle in str(type_term):
+    for type_iri in (URIRef(expand(t)) for t in types):
+        for subject in graph.subjects(RDF.type, type_iri):
+            if any((subject, RDF.type, ex) in graph for ex in excluded):
+                continue
             found.add(str(subject))
     return sorted(found)
 
 
-def provisions_of(graph: Graph) -> list[str]:
-    """Return provision node IRIs (RDF type contains ``LegalProvision``)."""
-    return _iris_typed(graph, "LegalProvision")
+def provisions_of(graph: Graph, *, include_subsections: bool = False) -> list[str]:
+    """Paragraph-level provision IRIs (exact ``LegalProvision`` / ``KovProvision``).
+
+    ``estleg:Subsection`` (lõige) nodes are excluded even when they also carry
+    ``LegalProvision`` -- the combined release aggregate materialises that
+    supertype on every subsection, the per-law peeps do not -- so a checkout
+    and a release download give the same answer. ``include_subsections=True``
+    returns paragraphs and subsections together.
+    """
+    if include_subsections:
+        return typed_iris(graph, *PROVISION_TYPES, *SUBSECTION_TYPES)
+    return typed_iris(graph, *PROVISION_TYPES, exclude=SUBSECTION_TYPES)
 
 
 def sanctions_of(graph: Graph) -> list[str]:
-    """Return sanction node IRIs (RDF type contains ``Sanction``)."""
-    return _iris_typed(graph, "Sanction")
+    """Sanction node IRIs: exact ``estleg:Sanction`` (never a ``SanctionType``)."""
+    return typed_iris(graph, *SANCTION_TYPES)
 
 
 def _expand_iri(iri: str) -> str:
@@ -327,12 +385,15 @@ def resolve_iri(
     root: str | Path | None = None,
     graph: Graph | None = None,
 ) -> str | None:
-    """Return the expanded IRI if that node is present.
+    """Return the expanded IRI if that node is present, else ``None``.
 
-    When ``graph`` is given, look the node up there (so
-    ``resolve_iri("estleg:ABIPOL_Par_1", graph=load_law("abipolitseiniku_seadus"))``
-    works). Otherwise load the law whose registry abbreviation matches the
-    first compact-id segment (longest prefix when the abbrev contains ``_``).
+    With ``graph`` the node is looked up there (so
+    ``resolve_iri("estleg:ABIPOL_Par_1", graph=load_law("ABIPOL"))`` works).
+    Without it the owning record is loaded from its local-name family:
+    ``Reg_<id>_...`` (regulation), ``RK_...`` (Riigikohus decision),
+    ``Draft_...`` (draft), ``EU_<celex>`` (EU act); anything else is treated as
+    an enacted-law node whose registry abbreviation is the longest matching
+    prefix.
     """
     expanded = _expand_iri(iri)
     if not expanded:
@@ -341,12 +402,17 @@ def resolve_iri(
         return _lookup_iri(graph, expanded)
 
     corpus = corpus_root(root)
-    compact = _compact_id(expanded)
-    guess = _slug_from_compact(compact, corpus)
+    compact_id = _compact_id(expanded)
+    from estleg_client.corpora import load_for_compact_id
+
+    loaded = load_for_compact_id(compact_id, root=corpus)
+    if loaded is not None:
+        return _lookup_iri(loaded, expanded)
+    guess = _slug_from_compact(compact_id, corpus)
     if not guess:
         return None
     try:
         loaded = load_law(guess, root=corpus)
-    except LawNotFoundError:
+    except (LawNotFoundError, CorpusUnavailableError):
         return None
     return _lookup_iri(loaded, expanded)
