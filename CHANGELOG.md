@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 5 — #725, #724
+
+- **Added `docs/proposals/2026-10-satla-reference-resolution.md` (#725, review 3.2).** It is a Proposed ADR for a read-only service that resolves act + § + lõige to an estleg IRI and an RT address, with explicit unknown, ambiguous and degraded answers. It is grounded in measured coverage: 984 of 1,119 law roots carry an RT source, none carry an Estonian ELI, 78.6 % of § have lõige nodes and 96.8 % have version history. It sets out the API, data contract, operating options, a bounded pilot with pass thresholds, and the decisions only the maintainer can take. No resolver code is added.
+- **Added docs/proposals/2026-10-draft-provision-impact.md, a proposed ADR for #724.** It covers provision-level draft impact (`estleg:amendsProvision`) and a HÕNTE impact-area SKOS scheme, grounded in a feasibility study of the 22,832-draft EIS layer. The study found that feed titles yield provision-level targets for at most 98 drafts (0.43%), so the work is gated on EIS/Sätla attachment rights. The ADR defines a bounded three-track pilot with go/no-go targets. It also records two rights-free bugs in act-level `amendsLaw` resolution.
+
 ### Tier 1 wave 4 — standards, coverage and product layers (#699, #708, #709, #710, #712, #714, #718, #719, #722, #723)
 
 - **Official EuroVoc for EU acts; tighter Estonian EuroVoc; no edit-distance concept matches (#699).** EU acts now carry the Publications Office's own EuroVoc subjects from CELLAR as `dcterms:subject` / `eli:is_about`, marked `estleg:subjectSource "cellar"`. 33,206 of 33,242 acts (99.9%) are covered. `scripts/fetch_eurovoc_official.py` caches the answers so reruns work offline. The Estonian keyword classifier no longer tags constitutional law on "valitsus"/"vabariik": the share fell from 65.8% to 0.7%. It ranks domains by hits per 1,000 tokens, needs at least 1 hit per 1,000 tokens, and assigns at most 3 domains, down from 5. The concepts layer no longer emits Levenshtein `skos:closeMatch`, which linked unrelated words such as laev/laps; all 279 pairs are removed. 15 spelling variants are folded into single concepts as `skos:altLabel`. EUR-Lex peeps no longer re-declare EU document-type individuals; those live only in the vocabulary as SKOS concepts.
