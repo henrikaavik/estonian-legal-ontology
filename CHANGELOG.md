@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - **Test hygiene (#706).** The suite now has explicit `unit`, `committed`, `corpus`, `live` and `slow` tiers. `corpus` is deselected by default, so run `pytest -m corpus` for the gates, and `live` needs `ESTLEG_LIVE_CANARY=1`. A no-network guard (pytest-socket) and a 300 s default timeout (pytest-timeout) apply to every run, and pytest-xdist enables `-n auto`. A new LFS-aware `corpus_krr` fixture fails corpus gates on missing LFS inputs instead of skipping them. A session guard fails the run if any test modifies `krr_outputs/` (`ESTLEG_ALLOW_KRR_WRITES=1` for intentional data work). The sup-markup and Unknown-subsection migration tests now run against an isolated tree. `scripts/archive` and `examples` are no longer on the pytest path and load explicitly by file path. Nine Riigi Teataja source-XML-to-peep golden pairs (1.0 MB) pin generator output for laws, KarS osa1, a ratification act, two state regulations and a KOV regulation.
 
+### Tier 1 wave 3 — Preserve superscripts and sub-points in statutory text
+
+- **Preserve superscripts and sub-points in statutory text (#694).** The law parser now renders real `<sup>` child elements in Riigi Teataja `tavatekst` as Unicode superscripts (`§ 217²`, not `§ 2172`) in `legalText`, `summary` and `citationText`. It keeps each `alampunkt`'s `k)` marker in lõige text and derives `estleg:itemNumber` from `alampunktNr`, so `1¹` stays distinct from `1`. On the committed KarS XML the same input now changes 113 § and 145 lõige texts, and lõige with `itemNumber` go from 7 to 111. No `estleg:Item` class exists, so sub-points stay in the text with `itemNumber` rather than becoming `…_P_k` nodes. `riigiteataja_common.ct` flattens a `<sup>` child in a title instead of truncating at it. This fixes the parser only; the roughly 140 affected committed peeps need a `generate_all_laws.py --refresh` run through the public-API fetch path (#691).
+
 ### 2026-09 public-sector readiness — Tier 1, green the data gates (#676; #702, #705, #709 residues)
 
 - **SHACL value lists and interval semantics.** `ActTemporalShape` admits
