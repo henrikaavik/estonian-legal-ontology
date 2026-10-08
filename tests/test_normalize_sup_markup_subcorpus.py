@@ -9,6 +9,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from estleg import normalize_sup_markup_subcorpus as mod
 from estleg.generate_all_laws import _sup_to_unicode
 from estleg.normalize_sup_markup_subcorpus import (
@@ -111,9 +113,28 @@ def test_subcorpus_dirs_cover_ticket_scope():
         assert d in SUBCORPUS_DIRS
 
 
-def test_main_idempotent_on_real_corpus(capsys):
-    """After the backfill is applied, a re-run leaves the corpus clean."""
-    rc = mod.main([])
-    assert rc == 0
-    out = capsys.readouterr().out
-    assert "Strings normalized: 0" in out
+def test_main_normalizes_then_is_idempotent_on_isolated_corpus(isolated_krr, capsys):
+    """main() rewrites a staged subcorpus once, then a re-run is a no-op.
+
+    Runs against an isolated ``krr_outputs`` under tmp_path (#706): a test
+    must never run a writing migration against the real corpus.
+    """
+    isolated_krr.bind(mod)
+    isolated_krr.write_json("regulations/x_peep.json", {"t": "§ 4<sup>1</sup>"})
+    isolated_krr.write_json("curia/y.jsonld", {"t": "plain"})
+
+    assert mod.main(["--dry-run"]) == 0
+    assert "Strings would normalize: 1" in capsys.readouterr().out
+    assert "<sup>" in (isolated_krr.krr / "regulations/x_peep.json").read_text(encoding="utf-8")
+
+    assert mod.main([]) == 0
+    assert "Strings normalized: 1" in capsys.readouterr().out
+    assert mod.main([]) == 0
+    assert "Strings normalized: 0" in capsys.readouterr().out
+
+
+@pytest.mark.corpus
+def test_real_corpus_has_no_sup_markup_left(corpus_krr, capsys):
+    """Corpus gate: the real subcorpus is already normalized (dry run only)."""
+    assert mod.main(["--krr-dir", str(corpus_krr.path("regulations").parent), "--dry-run"]) == 0
+    assert "Strings would normalize: 0" in capsys.readouterr().out

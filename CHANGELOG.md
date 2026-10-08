@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 3 — Isolate corpus tests and add source-to-peep golden fixtures
+
+- **Test hygiene (#706).** The suite now has explicit `unit`, `committed`, `corpus`, `live` and `slow` tiers. `corpus` is deselected by default, so run `pytest -m corpus` for the gates, and `live` needs `ESTLEG_LIVE_CANARY=1`. A no-network guard (pytest-socket) and a 300 s default timeout (pytest-timeout) apply to every run, and pytest-xdist enables `-n auto`. A new LFS-aware `corpus_krr` fixture fails corpus gates on missing LFS inputs instead of skipping them. A session guard fails the run if any test modifies `krr_outputs/` (`ESTLEG_ALLOW_KRR_WRITES=1` for intentional data work). The sup-markup and Unknown-subsection migration tests now run against an isolated tree. `scripts/archive` and `examples` are no longer on the pytest path and load explicitly by file path. Nine Riigi Teataja source-XML-to-peep golden pairs (1.0 MB) pin generator output for laws, KarS osa1, a ratification act, two state regulations and a KOV regulation.
+
 ### 2026-09 public-sector readiness — Tier 1, green the data gates (#676; #702, #705, #709 residues)
 
 - **SHACL value lists and interval semantics.** `ActTemporalShape` admits
