@@ -1423,7 +1423,8 @@ estleg:EUCourtShape
 # Shape for AmendmentEvent instances.
 #
 # Every estleg:AmendmentEvent (88,962 in the committed corpus) carries
-# exactly one estleg:amends pointer to the act it modifies; the
+# one or more estleg:amends pointers: the act root(s) it modifies first
+# and, since #713, each provision the amending act touched; the
 # constraints below pin the core predicates so a regression that emits
 # amends as a plain string, types entryIntoForce as a literal string, or
 # drops the RT reference is caught by the SHACL gate (issue #357).
@@ -1466,6 +1467,13 @@ estleg:AmendmentEventShape
         sh:datatype xsd:boolean ;
         sh:name "isCurrentAmendment" ;
         sh:description "Optional terminal-amendment marker (issue #389): true on the last in-force amendment after chronological sort, letting consumers find the latest amendment without a full date scan. Stamped by generate_amendment_history.py; absent on non-terminal events." ;
+    ] ;
+    sh:property [
+        sh:path estleg:amendmentKind ;
+        sh:datatype xsd:string ;
+        sh:in ( "repeals" "supplements" "amends" ) ;
+        sh:name "amendmentKind" ;
+        sh:description "Inferred amendment kind (#713); optional, multi-valued when one amending act both repeals and amends." ;
     ] .
 
 # Shape for ProposedAmendment instances (issue #423).

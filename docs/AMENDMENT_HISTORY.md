@@ -96,9 +96,15 @@ of the provision that carries the marker. The values reuse the
 `jõustumisaeg muudetud` is an entry-into-force change, so it is never counted.
 
 `estleg:changeType` is draft-scoped (`rdfs:domain estleg:DraftLegislation`),
-so it cannot be reused on events. The kind is therefore computed and counted
-in the report but **not emitted** until the controlled vocabulary declares
-`estleg:amendmentKind`. `--emit-amendment-kind` turns it on. Whether RT can
+so it cannot be reused on events. The controlled vocabulary, the SHACL
+`AmendmentEventShape` and `SCHEMA_REFERENCE` now declare
+`estleg:amendmentKind`. The kind is computed and counted in the report, and
+`--emit-amendment-kind` emits it. It stays opt-in until the operator chain
+refresh: regenerating the committed chains already changes them beyond the new
+key (`@context` drift on every chain, and the pending provision-level `amends`
+on KarS), so flipping the default would not be a key-only change. On the
+three fixed-point chains the flag adds the key and nothing else (11 KarS
+events). Whether RT can
 supply the kind as a structured field is an open question for RIK/RT (#713).
 
 ### KarS measurements (committed `data/riigiteataja/karistusseadustik.xml`)
@@ -186,11 +192,6 @@ Re-run it with `--version <next>` when the version is bumped.
 
 ## What remains
 
-- The DAG step, the DCAT distribution row and the MCP `what_changed` tool are
-  owned elsewhere. The exact entries are requested in the wave-5 wiring
-  requests (#713 section).
-- The CV, SHACL and `SCHEMA_REFERENCE` need `estleg:amendmentKind`,
-  `estleg:changed`, `estleg:changedCount`, the law-level delta terms, and the
-  existing undeclared `comparedFrom`, `comparedTo` and `listedIriCap`.
+- Default `--emit-amendment-kind` on at the operator chain refresh.
 - RIK/RT must confirm whether amendment kind is a structured XML field.
 - The operator XML refresh described above.

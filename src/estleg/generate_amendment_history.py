@@ -1503,9 +1503,12 @@ def _has_valid_amend_date(amend: dict) -> bool:
 # Provision-level ``estleg:amends`` (#713)
 # ---------------------------------------------------------------------------
 
-# Emit the inferred amendment kind on AmendmentEvents. OFF until the CV
-# declares a property for it (``estleg:changeType`` is draft-scoped:
-# rdfs:domain estleg:DraftLegislation). See docs/AMENDMENT_HISTORY.md.
+# Emit the inferred amendment kind on AmendmentEvents. The CV and SHACL
+# declare estleg:amendmentKind (``estleg:changeType`` is draft-scoped:
+# rdfs:domain estleg:DraftLegislation). It stays opt-in until the operator
+# chain refresh: regenerating the committed chains already changes them
+# beyond the new key (@context drift, pending provision-level amends), so a
+# default flip would not be a key-only change. See docs/AMENDMENT_HISTORY.md.
 AMENDMENT_KIND_PROPERTY = "estleg:amendmentKind"
 EMIT_AMENDMENT_KIND_DEFAULT = False
 
@@ -2456,7 +2459,8 @@ def cli(argv: list[str] | None = None) -> int:
         action="store_true",
         help=(
             f"Emit the inferred amendment kind as {AMENDMENT_KIND_PROPERTY} "
-            "(off until the controlled vocabulary declares the property, #713)."
+            "(declared in the CV and SHACL; opt-in until the operator chain "
+            "refresh, #713)."
         ),
     )
     args = parser.parse_args(argv)

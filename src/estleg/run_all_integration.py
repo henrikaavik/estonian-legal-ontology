@@ -4,7 +4,7 @@ Master orchestration script for the enrichment pipeline and release builds.
 
 This module owns three things:
 
-1. A declarative **step DAG** of 30 steps in four tiers (#704): ingest
+1. A declarative **step DAG** of 31 steps in four tiers (#704): ingest
    (network fetches), enrichment (offline corpus passes and sub-corpus
    aggregate rebuilds), build (the combined/INDEX rebuild) and package
    (consumer artefacts derived from the built corpus). Each step declares
@@ -66,8 +66,8 @@ Execution order (topological):
     12. extract_court_provision_links.py
     13. classify_eurovoc.py
     14. extract_temporal_data.py
-    15. generate_amendment_history.py
-    16. link_amendment_versions.py        (after 15 and the version layer)
+    15. generate_amendment_history.py     (after 1, 2, 10; runs the version join)
+    16. link_amendment_versions.py        (after 15; join re-run, no-op check)
     17. derive_act_temporal_status.py     (after 14 and the version layer)
     18. generate_act_expressions_608.py   (after the version layer)
     19-24. extract_legal_concepts.py, classify_deontic.py,
@@ -82,7 +82,8 @@ Execution order (topological):
                                           (#520) and the analytical stamps (#521)
   Phase 6 — Package
     29. generate_analytical_overlay.py    analytical/analytical_overlay.jsonld
-    30. build_release_assets.py           release/ + SHA256SUMS
+    30. emit_release_changes.py           changes-<version>.jsonld (#713)
+    31. build_release_assets.py           release/ + SHA256SUMS
 
 If a dependency fails, its dependents are automatically skipped.
 
@@ -376,20 +377,31 @@ STEPS: list[dict] = [
     },
     {
         "name": "generate_amendment_history.py",
-        "description": "Amendment history chains",
+        "description": "Amendment history chains + version join (#429, #713)",
         "script": "generate_amendment_history.py",
-        "depends_on": [],
-        "reads": ["*_peep.json", "regulations/**/*_peep.json"],
+        # main() runs the #429 version join (apply_version_join) and writes
+        # provision-level estleg:amends (#713), so the enacted-law sidecars
+        # must exist first. Regulation sidecars are never joined (#431), but
+        # they share the provision_versions/*.jsonld glob, so the DAG check
+        # requires their writer to be ordered first as well. The amending
+        # drafts come from eelnoud_combined.jsonld (load_amendment_drafts).
+        "depends_on": ["generate_provision_versions.py",
+                       "generate_provision_versions_regulations",
+                       "rebuild_eelnoud_combined"],
+        "reads": ["*_peep.json", "regulations/**/*_peep.json",
+                  "provision_versions/*.jsonld", "eelnoud/eelnoud_combined.jsonld"],
         "writes": ["amendments/**/*.json", "*_peep.json",
-                   "reports/amendment_history_report.json"],
+                   "reports/amendment_history_report.json",
+                   "reports/kov/generate_amendment_history_coverage.json"],
     },
     {
         "name": "link_amendment_versions.py",
-        "description": "Join amendment chains to the version layer (#429)",
+        "description": "Re-run the amendment/version join; no-op after a chain rerun (#429, #713)",
         "script": "link_amendment_versions.py",
-        # generate_amendment_history.main() rebuilds the chains without the
-        # #429 join; this step re-mints the _vf_ events and resultedInVersion
-        # links from provision_versions/ so a chain rerun cannot drop them.
+        # generate_amendment_history.main() already runs this join; the step
+        # re-runs the same apply_version_join so a sidecar-only rerun
+        # (generate_provision_versions without the chains) is repaired, and
+        # is a verified no-op otherwise (scripts/link_amendment_versions.py --check).
         "depends_on": ["generate_amendment_history.py",
                        "generate_provision_versions.py",
                        "generate_provision_versions_regulations"],
@@ -625,11 +637,25 @@ STEPS: list[dict] = [
         "writes": ["analytical/analytical_overlay.jsonld"],
     },
     {
+        "name": "emit_release_changes.py",
+        "description": "Provision-level release delta vs the latest v* tag (#713)",
+        "script": "emit_release_changes.py",
+        "tier": TIER_PACKAGE,
+        # Reads the previous release's peeps from git (git cat-file --batch on
+        # the latest v* tag) and the working-tree peeps; never needs LFS.
+        "depends_on": ["build_release_artifacts.py"],
+        "reads": ["INDEX.json", "*_peep.json", "*_owl.jsonld",
+                  "provision_versions/*.jsonld"],
+        "writes": ["changes-*.jsonld", "changes-*.jsonl",
+                   "reports/release_changes_report.json"],
+    },
+    {
         "name": "build_release_assets.py",
         "description": "Gzip, dump, hash and catalogue every release asset (#705)",
         "script": "build_release_assets.py",
         "tier": TIER_PACKAGE,
-        "depends_on": ["build_release_artifacts.py", "generate_analytical_overlay.py"],
+        "depends_on": ["build_release_artifacts.py", "generate_analytical_overlay.py",
+                       "emit_release_changes.py"],
         "reads": ["combined_ontology.jsonld", "eelnoud/eelnoud_combined.jsonld",
                   "eurlex/eurlex_combined.jsonld", "curia/curia_combined.jsonld",
                   "concepts/concepts_combined.jsonld", "act_expressions_combined.jsonld",

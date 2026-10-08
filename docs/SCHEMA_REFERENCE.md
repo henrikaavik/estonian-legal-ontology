@@ -965,14 +965,39 @@ Effected amendments (from Riigi Teataja) and proposed amendments (from draft bil
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
 | `estleg:amendedBy` | Act | AmendmentEvent (IRI) | Act-root → **effected** amendment events only (from Riigi Teataja). Inverse of `estleg:amends`. |
-| `estleg:amends` | AmendmentEvent | LegalProvision / Act (IRI) | What this effected amendment event changed. Inverse of `estleg:amendedBy`. |
+| `estleg:amends` | AmendmentEvent | LegalProvision / Act (IRI) | What this effected amendment event changed: the act root(s) first, then, since #713, each `estleg:LegalProvision` / `estleg:Subsection` the amending act touched (from the muutmismarge parent nesting). One or more values. Inverse of `estleg:amendedBy`. |
 | `estleg:amendmentDate` | AmendmentEvent | `xsd:date` | Adoption / legal-effect date of an effected amendment. Reserved for effected events — proposals use `estleg:publicationDate`. |
 | `estleg:isCurrentAmendment` | AmendmentEvent | `xsd:boolean` | Marks the latest **effected** event per act. Never emitted on a `ProposedAmendment`. |
+| `estleg:amendmentKind` | AmendmentEvent | `xsd:string` (0..n) | `repeals` / `supplements` / `amends`, inferred from the muutmismarge text only where a token is present (#713). Values mirror `estleg:changeType`. Emitted with `generate_amendment_history.py --emit-amendment-kind`. |
+| `estleg:publicationDate` | AmendmentEvent / ProposedAmendment | `xsd:date` | On an AmendmentEvent: the amending act's Riigi Teataja publication date (avaldamineKuupaev, #713). On a ProposedAmendment: the draft's EIS publication date. |
 | `estleg:hasProposedAmendment` | Act | ProposedAmendment (IRI) | Act-root → **proposed** (not-yet-enacted) amendment nodes. Inverse of `estleg:proposesToAmend`. |
 | `estleg:proposesToAmend` | ProposedAmendment | LegalProvision / Act (IRI) | Act/provision a draft amendment bill proposes to change. Inverse of `estleg:hasProposedAmendment`. |
 | `estleg:amendingDraft` | ProposedAmendment | DraftLegislation (IRI) | The `Draft_*` node behind a proposed amendment. |
 | `estleg:changeType` | DraftLegislation | `xsd:string` | Type of change: amends, repeals, supplements, enacts |
 | `estleg:affectedBy` | LegalProvision | DraftLegislation (IRI) | Pending drafts affecting this provision |
+
+### Release delta (`estleg:ReleaseDelta`)
+
+`krr_outputs/changes-<version>.jsonld` is a `dcat:Dataset` typed
+`estleg:ReleaseDelta` (#549, #713), written by `scripts/emit_release_changes.py`
+and listed in `metadata.jsonld` as a `dcat:distribution`. The #713 record is
+provision-level and uncapped. Above 10,000 listed IRIs the lists move to the
+`changes-<version>.jsonl` sibling. `changes-0.11.0.jsonld` is the legacy
+law-level record. Every property below has domain `estleg:ReleaseDelta`. See
+[AMENDMENT_HISTORY.md](AMENDMENT_HISTORY.md).
+
+| Property | Range | Description |
+|----------|-------|-------------|
+| `estleg:comparedFrom` | `xsd:string` | Label of the older snapshot, e.g. `git v1.0.0 (f018cf05f2)`. |
+| `estleg:comparedTo` | `xsd:string` | Label of the newer snapshot. |
+| `estleg:added` / `estleg:removed` | `xsd:string` | Provision IRI added / removed (#713), or a law IRI in the legacy #549 record. |
+| `estleg:addedCount` / `estleg:removedCount` | `xsd:integer` | Complete counts of the above. |
+| `estleg:changed` | `xsd:string` | Provision IRI whose legalText, summary or temporal fields changed. |
+| `estleg:changedCount` | `xsd:integer` | Count of `estleg:changed`. |
+| `estleg:addedLaw` / `estleg:removedLaw` / `estleg:deprecatedLaw` | `xsd:string` | Act-root IRI of a law added / removed / deprecated in INDEX. |
+| `estleg:addedLawCount` / `estleg:removedLawCount` / `estleg:deprecatedLawCount` | `xsd:integer` | Counts of the above. |
+| `estleg:listedInline` | `xsd:boolean` | False when the IRI lists are in the JSONL sibling. |
+| `estleg:listedIriCap` | `xsd:integer` | Legacy #549 cap on listed IRIs. |
 
 ### Provision versioning (historical redactions)
 

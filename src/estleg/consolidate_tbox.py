@@ -291,6 +291,45 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
         "volitusnorm muutunud",
         "enabling provision outdated",
     ),
+    # #713: inferred kind of an effected amendment (generate_amendment_history.py).
+    "estleg:amendmentKind": (
+        ("owl:DatatypeProperty",),
+        "muudatuse liik (muutmismärge)",
+        "amendment kind",
+    ),
+    # #549 / #713: estleg:ReleaseDelta record terms (emit_release_changes.py).
+    "estleg:comparedFrom": (("owl:DatatypeProperty",), "võrreldud alates", "compared from"),
+    "estleg:comparedTo": (("owl:DatatypeProperty",), "võrreldud kuni", "compared to"),
+    "estleg:listedIriCap": (
+        ("owl:DatatypeProperty",),
+        "loetletud IRI-de ülempiir",
+        "listed IRI cap",
+    ),
+    "estleg:changed": (("owl:DatatypeProperty",), "muudetud", "changed"),
+    "estleg:changedCount": (("owl:DatatypeProperty",), "muudetute arv", "changed count"),
+    "estleg:addedLaw": (("owl:DatatypeProperty",), "lisatud seadus", "added law"),
+    "estleg:removedLaw": (("owl:DatatypeProperty",), "eemaldatud seadus", "removed law"),
+    "estleg:deprecatedLaw": (("owl:DatatypeProperty",), "aegunud seadus", "deprecated law"),
+    "estleg:addedLawCount": (
+        ("owl:DatatypeProperty",),
+        "lisatud seaduste arv",
+        "added law count",
+    ),
+    "estleg:removedLawCount": (
+        ("owl:DatatypeProperty",),
+        "eemaldatud seaduste arv",
+        "removed law count",
+    ),
+    "estleg:deprecatedLawCount": (
+        ("owl:DatatypeProperty",),
+        "aegunud seaduste arv",
+        "deprecated law count",
+    ),
+    "estleg:listedInline": (
+        ("owl:DatatypeProperty",),
+        "loetletud kirjes",
+        "listed inline",
+    ),
 }
 
 # Terms kept declared so old queries still parse, but marked owl:deprecated
@@ -471,10 +510,6 @@ REAL_COMMENTS: dict[str, str] = {
     ),
     "estleg:amendmentDate": (
         "Date an AmendmentEvent took effect, as xsd:date."
-    ),
-    "estleg:amends": (
-        "Links an AmendmentEvent to the act it amends. Inverse of "
-        "estleg:amendedBy."
     ),
     "estleg:annexNumber": (
         "Ordinal or official number of an Annex."
@@ -872,6 +907,20 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:removed": ("estleg:ReleaseDelta", "xsd:string"),
     "estleg:addedCount": ("estleg:ReleaseDelta", "xsd:integer"),
     "estleg:removedCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    # #549 / #713 release-delta record terms.
+    "estleg:comparedFrom": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:comparedTo": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:listedIriCap": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:changed": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:changedCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:addedLaw": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:removedLaw": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:deprecatedLaw": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:addedLawCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:removedLawCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:deprecatedLawCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:listedInline": ("estleg:ReleaseDelta", "xsd:boolean"),
+    "estleg:amendmentKind": ("estleg:AmendmentEvent", "xsd:string"),
     "estleg:containsPersonalData": ("owl:Thing", "xsd:boolean"),
     "estleg:legislativePhase": (
         "estleg:DraftLegislation",
@@ -1054,6 +1103,78 @@ OVERWRITE_RANGE: dict[str, str] = {
 # Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
 # so like DOMAIN_RANGE it never reaches a term whose comment is already there.
 OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
+    # #713: provision-level amendment history and the provision-level release
+    # delta (generate_amendment_history.py, emit_release_changes.py).
+    "estleg:amends": (
+        "Links an AmendmentEvent to the act it amends (act root(s) first) and, "
+        "since #713, to each estleg:LegalProvision / estleg:Subsection the "
+        "amending act touched (from the muutmismarge parent nesting). Inverse "
+        "of estleg:amendedBy."
+    ),
+    "estleg:publicationDate": (
+        "Publication date: of a draft in EIS, or, on an AmendmentEvent, of the "
+        "amending act in Riigi Teataja (avaldamineKuupaev, #713)."
+    ),
+    "estleg:amendmentKind": (
+        "Kind of an effected amendment, inferred from Riigi Teataja "
+        "muutmismarge text only where a token is present (Kehtetu / "
+        "täiendatud / muudetud / sõnastatud): repeals, supplements or amends. "
+        "Absent when no token is present. Values mirror estleg:changeType "
+        "(drafts). Issue #713."
+    ),
+    "estleg:ReleaseDelta": (
+        "Machine-readable inter-release delta: provision-level "
+        "added/removed/changed IRIs plus law-level changes (#549, #713)."
+    ),
+    "estleg:added": (
+        "IRI added between compared snapshots: a provision IRI (#713) or, in "
+        "the legacy #549 record, a law IRI. See estleg:addedCount."
+    ),
+    "estleg:removed": (
+        "IRI removed between compared snapshots: a provision IRI (#713) or, in "
+        "the legacy #549 record, a law IRI. See estleg:removedCount."
+    ),
+    "estleg:comparedFrom": (
+        "Label of the older snapshot a ReleaseDelta compares, e.g. "
+        "'git v1.0.0 (f018cf05f2)' (#549, #713)."
+    ),
+    "estleg:comparedTo": (
+        "Label of the newer snapshot a ReleaseDelta compares (#549, #713)."
+    ),
+    "estleg:listedIriCap": (
+        "Legacy #549 cap on the number of IRIs listed in a ReleaseDelta; the "
+        "counts stay complete. The #713 record is uncapped."
+    ),
+    "estleg:changed": (
+        "Provision IRI whose legalText, summary or temporal fields changed "
+        "between the compared snapshots (#713). See estleg:changedCount."
+    ),
+    "estleg:changedCount": (
+        "Full count of estleg:changed provision IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:addedLaw": (
+        "Act-root IRI of a law added to INDEX between the compared snapshots (#713)."
+    ),
+    "estleg:removedLaw": (
+        "Act-root IRI of a law removed from INDEX between the compared snapshots (#713)."
+    ),
+    "estleg:deprecatedLaw": (
+        "Act-root IRI of a law newly listed as deprecated in INDEX between the "
+        "compared snapshots (#713)."
+    ),
+    "estleg:addedLawCount": (
+        "Count of estleg:addedLaw IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:removedLawCount": (
+        "Count of estleg:removedLaw IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:deprecatedLawCount": (
+        "Count of estleg:deprecatedLaw IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:listedInline": (
+        "False when a ReleaseDelta's IRI lists are in the changes-<version>.jsonl "
+        "sibling instead of inline (over 10,000 listed IRIs, #713)."
+    ),
     # The eelnoud generator's text (#443); the CV copy predated it, so a
     # projection of the eelnoud schema from the CV dropped the ELI-DL note.
     "estleg:DraftLegislation": (

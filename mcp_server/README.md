@@ -304,6 +304,20 @@ assessing an empty result.
   was no longer in force). `until` defaults to today (UTC); both bounds are
   inclusive. Accepts a law, `"KarS § 424"`, or a provision IRI (also one no
   longer in the current graph).
+  It reads the same sources the #713 contract names (the law's
+  `amendments/` chain and its `provision_versions/` sidecar), never the
+  release delta, which compares ontology releases rather than legal time.
+  The shipped tool differs from that contract in four ways. It returns an
+  object with `changes` and `amendment_events` instead of a bare event list.
+  `since` is required and `until` defaults to today. Versions arrive as
+  `changes` rows, not nested in each event. Each event row carries the act
+  root in `amends` and the touched § / subsection IRIs in
+  `amended_provisions`, without labels. `amendmentKind` is not surfaced,
+  because the generator does not emit it by default yet.
+- **`amendment_history`** and the `what_changed` event rows read the
+  list-valued `estleg:amends` (#713): `amends` is the first act root (it was
+  `""` for multipart acts before) and `amended_provisions` lists the
+  provision IRIs after the act roots.
 - **`transposition_gaps`** applies the #701 `noTranspositionEdgeInCorpus`
   rule from the regular-blob sources (`eurlex/eurlex_directives_peep.json`
   `inForce` + `transposedBy`, plus `reports/transposition_mapping.json`)
