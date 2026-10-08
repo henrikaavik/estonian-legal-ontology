@@ -1,0 +1,48 @@
+# Pinned versions for the build and CI toolchain (#704).
+#
+# pyproject.toml declares compatible ranges; this file pins the exact
+# versions the committed corpus was last built and validated with, so a
+# rebuild on a fresh machine uses the same rdflib / pyshacl (the N-Triples,
+# N-Quads and Turtle dumps and the SHACL results depend on them).
+#
+#   python3 -m pip install -e ".[dev]" -c constraints.txt
+#
+# Covers the direct runtime and dev dependencies plus every transitive
+# dependency they pull in (rdflib / pyshacl / requests / bs4 / pytest
+# closure). Optional extras (pdf, embeddings) and estleg-mcp are not pinned
+# here. Refresh deliberately: bump, rebuild, run the gates, commit together.
+
+# Runtime (pyproject [project].dependencies)
+beautifulsoup4==4.15.0
+pyshacl==0.31.0
+rdflib==7.6.0
+requests==2.34.2
+
+# rdflib / pyshacl closure
+html5rdf==1.2.1
+owlrl==7.6.2
+packaging==26.3
+prettytable==3.18.0
+pyparsing==3.3.2
+wcwidth==0.8.2
+
+# requests / beautifulsoup4 closure
+certifi==2026.7.22
+charset-normalizer==3.5.1
+idna==3.19
+soupsieve==2.9.2
+typing_extensions==4.16.0
+urllib3==2.7.0
+
+# Dev (pyproject [project.optional-dependencies].dev) and closure
+coverage==7.15.4
+execnet==2.1.2
+iniconfig==2.3.0
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+pytest-cov==7.1.0
+pytest-socket==0.8.1
+pytest-timeout==2.4.0
+pytest-xdist==3.8.0
+ruff==0.16.3
