@@ -25,7 +25,9 @@ from ``estleg_common.COMBINED_JSONLD_TARGETS``. The rebuild and the parity
 check therefore cannot disagree about what a source is.
 
 Determinism: no wall-clock value is written (``stamp_combined_dataset_head``
-adds only the label, Dataset types, publisher, license and ``void:uriSpace``),
+adds only the label, Dataset types, publisher, license and ``void:uriSpace``;
+``stamp_version_fields`` then sets ``owl:versionInfo`` / ``owl:versionIRI``
+from ``ONTOLOGY_VERSION``, #705),
 inputs are read in a fixed order, and output goes through the shared
 ``save_json``. A second run over unchanged inputs is byte-identical.
 
@@ -51,6 +53,7 @@ from estleg.estleg_common import (
     save_json,
     stamp_combined_dataset_head,
 )
+from estleg.stamp_combined_dataset_heads import stamp_version_fields
 from estleg.validate_all import SUBCORPUS_COMBINED_TARGETS, SubcorpusCombinedSpec
 
 # Descriptive (non-label) fields of each combined head, copied verbatim from
@@ -296,6 +299,9 @@ def build_subcorpus_combined(
 
     doc = {"@context": context or dict(CONTEXT), "@graph": graph}
     stamp_combined_dataset_head(doc, label=dataset_label(spec))
+    # #705: the head carries the release version. Build-derived, so it is
+    # overwritten on every rebuild (not curated).
+    stamp_version_fields(doc["@graph"][0])
     result = RebuildResult(
         subcorpus=name,
         path=_resolve(spec.combined_path_rel, krr_dir, subcorpus_dir),

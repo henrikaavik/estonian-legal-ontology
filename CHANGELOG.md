@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 3 — Reproducible build DAG and one release-asset step
+
+- **Reproducible build DAG and release assets (#704, #705).** `run_all_integration.py` now declares 29 steps in four tiers (ingest, enrichment, build, package). Every produced layer has a producer: the provision-version layer, annotations, the #429 amendment/version join (new `link_amendment_versions.py`, so a chain rerun cannot drop `_vf_` events), act `temporalStatus`, act expressions, court staleness, the analytical overlay, and the embedded #520/#521 passes. Network steps are recorded but run only with `--with-ingest`. `validate_dag` rejects a derived read whose writer is not one of the reader's dependencies. The new last step `build_release_assets.py` writes into `release/` (gitignored): the gzipped combined dumps, `combined_ontology.{nt,nq,ttl}` through a bounded-memory streamed serializer (`serialize_corpus.py --stream`), the seven-graph `estleg_all.nq.gz` (now fail-closed, with real regulations and riigikohus sources), `chunks.jsonl.gz`, a v1.0.0-format `SHA256SUMS`, and per-distribution `dcat:byteSize` / `spdx:checksum` in `metadata.jsonld`. The release manifest re-hashes every asset. `INDEX.json` `generated` is now `BUILD_EVALUATION_DATE`, the `registry_exceptions` seed lives in `data/registry_exceptions.json`, and `constraints.txt` pins the toolchain for CI. A new CI gate (`--check-pipeline-versions`) fails when a coverage report's `pipeline_version` is not a commit, apart from three frozen reports in `data/pipeline_version_baseline.json`.
+- Sub-corpus rebuilds now stamp `owl:versionInfo` / `owl:versionIRI` on the combined head (and `apply_inband_dataset_fields` writes both keys unconditionally); the eurlex, curia, eelnoud and concepts aggregates are re-stamped at 1.0.0.
+
 ### 2026-09 public-sector readiness — Tier 1, green the data gates (#676; #702, #705, #709 residues)
 
 - **SHACL value lists and interval semantics.** `ActTemporalShape` admits

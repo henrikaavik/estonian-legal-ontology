@@ -2,18 +2,23 @@
 """
 Master orchestration script for the enrichment pipeline and release builds.
 
-This module owns two things:
+This module owns three things:
 
-1. A declarative **step DAG** of 20 steps (enrichment scripts plus the
-   sub-corpus aggregate rebuilds and the release build). Each step
-   declares its ``command``, ``depends_on`` (other step names), ``writes``
-   (glob patterns it produces under ``krr_outputs/``) and ``reads`` (glob
-   patterns it consumes — either produced by an earlier step or a committed
-   input). The runner topologically sorts the DAG and runs in dependency
-   order (which is the historical phase order). The DAG is validated at
-   startup: no cycles, every ``depends_on`` names a real step, and every
-   ``reads`` pattern is either a committed input or covered by some prior
-   step's ``writes``.
+1. A declarative **step DAG** of 29 steps in four tiers (#704): ingest
+   (network fetches), enrichment (offline corpus passes and sub-corpus
+   aggregate rebuilds), build (the combined/INDEX rebuild) and package
+   (consumer artefacts derived from the built corpus). Each step declares
+   its ``command``, ``depends_on`` (other step names), ``writes`` (glob
+   patterns it produces under ``krr_outputs/``) and ``reads`` (glob patterns
+   it consumes — either produced by an earlier step or a committed input).
+   The runner topologically sorts the DAG and runs in dependency order. The
+   DAG is validated at startup: no cycles, every ``depends_on`` names a real
+   step, every ``reads`` pattern is a committed input or covered by some
+   prior step's ``writes``, and every other writer of a derived artefact a
+   step reads is one of that step's (transitive) dependencies.
+
+   Ingest-tier steps are recorded but not executed unless ``--with-ingest``
+   is given; their committed outputs stand in (status ``skipped_ingest``).
 
    All scripts modify the same ``*_peep.json`` files in ``krr_outputs/``,
    so the default execution mode is **serial** (determinism). ``--parallel
@@ -21,59 +26,62 @@ This module owns two things:
    "independent" steps still rewrite the shared ``*_peep.json`` corpus,
    ``validate_dag()`` *rejects* ``--parallel > 1`` (exit 2) whenever two
    steps that could run concurrently declare overlapping ``writes`` globs;
-   the current 15-step DAG has such overlaps, so ``--parallel`` is only
-   safe once per-step corpus writes are made disjoint. ``--parallel 1``
-   (serial, the default) is unaffected.
+   the current DAG has such overlaps, so ``--parallel`` is only safe once
+   per-step corpus writes are made disjoint. ``--parallel 1`` (serial, the
+   default) is unaffected.
 
 2. A **release build**: ``--release`` runs the full DAG, then the three
    release validators (``validate_all.py``, ``shacl_validate_all.py --all``,
    ``validate_seadusloome_sync.py``), then writes
    ``<MANIFEST_DIR>/release_manifest.json`` aggregating the per-step ledger,
    the topo-order used, each validator's pass/fail + headline metrics, a
-   content hash of the committed release artifacts, and ``release_ok``.
+   content hash of the committed release artifacts and of every asset in
+   ``release/SHA256SUMS``, and ``release_ok``.
    ``--release --validate-only`` skips generation and just runs the three
    validators against the current corpus. Exit code is 0 only if
    ``release_ok`` (all steps succeeded AND all validators passed AND no
-   release-surface artifact is missing).
+   release-surface artifact is missing or mismatched).
 
-Dependency chains (A must complete before B):
-  extract_cross_references.py  ->  generate_inverse_references.py
-      (writes estleg:references)    (reads references, writes referencedBy)
+3. A **pipeline-version gate**: ``--check-pipeline-versions`` resolves the
+   ``pipeline_version`` of every ``reports/kov/*coverage.json`` to a commit
+   and fails on one that is not a git object, except the frozen reports in
+   ``data/pipeline_version_baseline.json``.
 
-  generate_transposition_mapping.py  ->  generate_harmonisation_links.py
-      (writes transposition_mapping.json) (reads transposition_mapping.json)
-
-All other steps are standalone but still mutate ``*_peep.json``, so under
-serial execution they run one at a time. ``generate_similarity_index.py``
-runs last because it reads the fully-enriched data from all prior steps.
-
-Execution order (topological — equals the historical phase order):
+Execution order (topological):
+  Phase 0 — Ingest (network; run only with --with-ingest)
+    1.  generate_provision_versions.py          provision_versions/ (laws)
+    2.  generate_provision_versions_regulations state-regulation sidecars
+    3.  generate_annotations.py                 Oiguskantsler annotations
   Phase 1 — Cross-references
-    1.  extract_cross_references.py      (standalone)
-    2.  generate_inverse_references.py   (depends on step 1)
+    4.  extract_cross_references.py
+    5.  generate_inverse_references.py   (after 4)
   Phase 2 — EU transposition and sub-corpus aggregates
-    3.  generate_transposition_mapping.py (standalone)
-    4.  rebuild_eurlex_combined           (depends on step 3; offline, via
-                                           rebuild_subcorpus_combined.py)
-    5.  link_curia_eu_legislation.py      (depends on step 4)
-    6.  rebuild_curia_combined            (depends on step 5)
-    7.  rebuild_eelnoud_combined          (standalone)
-    8.  generate_harmonisation_links.py   (depends on step 3)
-  Phase 3 — Independent enrichment (no ordering constraints among these)
-    9.  extract_court_provision_links.py
-    10. classify_eurovoc.py
-    11. extract_temporal_data.py
-    12. generate_amendment_history.py
-    13. extract_legal_concepts.py
-    14. classify_deontic.py
-    15. classify_target_group.py
-    16. extract_institutional_competence.py
-    17. extract_sanctions.py
-    18. extract_draft_impact.py
-  Phase 4 — Aggregation (benefits from all prior data)
-    19. generate_similarity_index.py
-    20. build_release_artifacts.py        (combined_ontology.jsonld + INDEX.json;
-                                           depends on every preceding step)
+    6.  generate_transposition_mapping.py
+    7.  rebuild_eurlex_combined           (after 6)
+    8.  link_curia_eu_legislation.py      (after 7)
+    9.  rebuild_curia_combined            (after 8)
+    10. rebuild_eelnoud_combined
+    11. generate_harmonisation_links.py   (after 6)
+  Phase 3 — Enrichment
+    12. extract_court_provision_links.py
+    13. classify_eurovoc.py
+    14. extract_temporal_data.py
+    15. generate_amendment_history.py
+    16. link_amendment_versions.py        (after 15 and the version layer)
+    17. derive_act_temporal_status.py     (after 14 and the version layer)
+    18. generate_act_expressions_608.py   (after the version layer)
+    19-24. extract_legal_concepts.py, classify_deontic.py,
+        classify_target_group.py, extract_institutional_competence.py,
+        extract_sanctions.py, extract_draft_impact.py
+    25. derive_court_interpretation_staleness.py (after 12 and the versions)
+    26. generate_similarity_index.py      (after all enrichment)
+  Phase 5 — Build (the last enrichment-side step)
+    27. build_release_artifacts.py        combined_ontology.jsonld + INDEX.json;
+                                          embeds materialize_combined_inverses
+                                          (#520) and the analytical stamps (#521)
+  Phase 6 — Package
+    28. generate_analytical_overlay.py    analytical/analytical_overlay.jsonld
+    29. build_release_assets.py           release/ + SHA256SUMS
 
 If a dependency fails, its dependents are automatically skipped.
 
@@ -148,7 +156,30 @@ COMMITTED_INPUTS: tuple[str, ...] = (
     "eelnoud/eelnoud_schema.json",
     "curia/curia_schema.json",
     "eurlex/eurlex_schema.json",
+    # Combined-build inputs with no producing step in this DAG: the #433 ABox
+    # placeholder file (consolidate_tbox, a T-Box tool run by hand) and the
+    # two hand-maintained OWL files are already covered by *_owl.jsonld.
+    "unresolved_references.jsonld",
+    "eurlex/eurlex_directives_peep.json",
 )
+
+# Step tiers (#704). ``ingest`` steps fetch from the network (Riigi Teataja,
+# oiguskantsler.ee). They are part of the DAG so every produced layer has a
+# declared producer and inputs, but the runner records them as
+# ``skipped_ingest`` (their committed outputs stand in) unless
+# ``--with-ingest`` is passed. ``enrichment`` steps are offline corpus
+# passes, ``build`` is the combined/INDEX rebuild (the last enrichment-side
+# step), and ``package`` steps derive consumer artefacts from the built
+# corpus and may only follow ``build``.
+TIER_INGEST = "ingest"
+TIER_ENRICHMENT = "enrichment"
+TIER_BUILD = "build"
+TIER_PACKAGE = "package"
+TIERS: tuple[str, ...] = (TIER_INGEST, TIER_ENRICHMENT, TIER_BUILD, TIER_PACKAGE)
+
+
+def step_tier(step: dict) -> str:
+    return step.get("tier", TIER_ENRICHMENT)
 
 # ---------------------------------------------------------------------------
 # Declared build evaluation date (issue #262).
@@ -176,6 +207,49 @@ BUILD_EVALUATION_DATE: str = os.environ.get(
 )
 
 STEPS: list[dict] = [
+    # -- Phase 0: Ingest (network; recorded, run only with --with-ingest) ---
+    {
+        "name": "generate_provision_versions.py",
+        "description": "Provision version layer from RT redactions (#198, network)",
+        "script": "generate_provision_versions.py",
+        "tier": TIER_INGEST,
+        # Full history for every law; the redaction treated as current is the
+        # one in force on the declared evaluation date, not the run day.
+        "args": ["--all", "--today", BUILD_EVALUATION_DATE],
+        "depends_on": [],
+        "reads": ["*_peep.json"],
+        "writes": ["provision_versions/*.jsonld",
+                   "reports/provision_versions_report.json",
+                   "reports/kov/extract_provision_versions_coverage.json"],
+    },
+    {
+        "name": "generate_provision_versions_regulations",
+        "description": "State-regulation current-snapshot version sidecars (#431)",
+        "script": "generate_provision_versions.py",
+        "tier": TIER_INGEST,
+        # Offline, but it rewrites the SAME coverage report as the law run
+        # above (generate_provision_versions.COVERAGE_PATH), so running it
+        # replaces the law coverage figures. Kept in the ingest tier with the
+        # law run until the generator writes a separate report.
+        "args": ["--regulations-riik"],
+        "depends_on": ["generate_provision_versions.py"],
+        "reads": ["regulations/**/*_peep.json"],
+        "writes": ["provision_versions/*.jsonld",
+                   "reports/regulation_versions_report.json",
+                   "reports/kov/extract_provision_versions_coverage.json"],
+    },
+    {
+        "name": "generate_annotations.py",
+        "description": "Oiguskantsler opinion annotations (#199, network scrape)",
+        "script": "generate_annotations.py",
+        "tier": TIER_INGEST,
+        "args": ["--scrape", "--limit", "0"],
+        "depends_on": [],
+        "reads": ["*_peep.json"],
+        "writes": ["annotations/oiguskantsler_seisukohad.jsonld",
+                   "reports/kov/extract_annotations_coverage.json"],
+    },
+
     # -- Phase 1: Cross-references ------------------------------------------
     {
         "name": "extract_cross_references.py",
@@ -309,6 +383,44 @@ STEPS: list[dict] = [
                    "reports/amendment_history_report.json"],
     },
     {
+        "name": "link_amendment_versions.py",
+        "description": "Join amendment chains to the version layer (#429)",
+        "script": "link_amendment_versions.py",
+        # generate_amendment_history.main() rebuilds the chains without the
+        # #429 join; this step re-mints the _vf_ events and resultedInVersion
+        # links from provision_versions/ so a chain rerun cannot drop them.
+        "depends_on": ["generate_amendment_history.py",
+                       "generate_provision_versions.py",
+                       "generate_provision_versions_regulations"],
+        "reads": ["amendments/**/*.json", "provision_versions/*.jsonld",
+                  "*_peep.json"],
+        "writes": ["amendments/**/*.json", "*_peep.json"],
+    },
+    {
+        "name": "derive_act_temporal_status.py",
+        "description": "Act temporalStatus from version sidecars (#617, #682)",
+        "script": "derive_act_temporal_status.py",
+        "args": ["--all", "--recompute", "--evaluation-date", BUILD_EVALUATION_DATE],
+        # extract_temporal_data writes temporalStatus from act-level dates;
+        # this pass recomputes it from the redaction chains, so it must run
+        # after both.
+        "depends_on": ["extract_temporal_data.py",
+                       "generate_provision_versions.py",
+                       "generate_provision_versions_regulations"],
+        "reads": ["*_peep.json", "provision_versions/*.jsonld", "INDEX.json"],
+        "writes": ["*_peep.json"],
+    },
+    {
+        "name": "generate_act_expressions_608.py",
+        "description": "Act-level FRBR expressions per consolidation date (#608)",
+        "script": "generate_act_expressions_608.py",
+        "args": ["--apply"],
+        "depends_on": ["generate_provision_versions.py",
+                       "generate_provision_versions_regulations"],
+        "reads": ["provision_versions/*.jsonld", "*_peep.json"],
+        "writes": ["act_expressions_combined.jsonld"],
+    },
+    {
         "name": "extract_legal_concepts.py",
         "description": "Legal concept extraction",
         "script": "extract_legal_concepts.py",
@@ -360,6 +472,17 @@ STEPS: list[dict] = [
         "reads": ["*_peep.json", "eelnoud/*_peep.json"],
         "writes": ["*_peep.json", "reports/draft_impact_report.json"],
     },
+    {
+        "name": "derive_court_interpretation_staleness.py",
+        "description": "Court interpretation staleness from version sidecars (#618)",
+        "script": "derive_court_interpretation_staleness.py",
+        "args": ["--apply"],
+        "depends_on": ["extract_court_provision_links.py",
+                       "generate_provision_versions.py",
+                       "generate_provision_versions_regulations"],
+        "reads": ["riigikohus/*_peep.json", "provision_versions/*.jsonld"],
+        "writes": ["riigikohus/*_peep.json"],
+    },
 
     # -- Phase 4: Aggregation (reads fully-enriched data) -----------------
     {
@@ -384,6 +507,10 @@ STEPS: list[dict] = [
             "extract_institutional_competence.py",
             "extract_sanctions.py",
             "extract_draft_impact.py",
+            "link_amendment_versions.py",
+            "derive_act_temporal_status.py",
+            "generate_act_expressions_608.py",
+            "derive_court_interpretation_staleness.py",
         ],
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
                   "eelnoud/*_peep.json", "riigikohus/*_peep.json"],
@@ -404,15 +531,24 @@ STEPS: list[dict] = [
     # builds them. This step MUST run after all enrichment and BEFORE the
     # release validators, otherwise the artifact reflects the pre-enrichment
     # corpus and ``validate_seadusloome_sync`` validates stale data while
-    # reporting PASS. ``depends_on`` lists every enrichment step so topo-sort
-    # always places this node strictly last; ``main()`` runs the full DAG
-    # before invoking the release validators, so the rebuild is guaranteed to
-    # precede them and a failure here blocks the validators automatically.
+    # reporting PASS. ``depends_on`` lists every non-package step so it is
+    # the last ENRICHMENT-side step; only ``package`` steps may follow it.
+    #
+    # ``embeds`` documents passes that run INSIDE this step on the in-memory
+    # graph and must not be scheduled again (#520 / #521).
     {
         "name": "build_release_artifacts.py",
         "description": "Rebuild combined_ontology.jsonld + INDEX.json",
         "script": "build_release_artifacts.py",
+        "tier": TIER_BUILD,
+        "embeds": [
+            "materialize_combined_inverses.py (materialize_combined_edges, #520)",
+            "generate_analytical_overlay.py (stamp_analytical_properties, #521)",
+        ],
         "depends_on": [
+            "generate_provision_versions.py",
+            "generate_provision_versions_regulations",
+            "generate_annotations.py",
             "extract_cross_references.py",
             "generate_inverse_references.py",
             "generate_transposition_mapping.py",
@@ -425,19 +561,69 @@ STEPS: list[dict] = [
             "classify_eurovoc.py",
             "extract_temporal_data.py",
             "generate_amendment_history.py",
+            "link_amendment_versions.py",
+            "derive_act_temporal_status.py",
+            "generate_act_expressions_608.py",
             "extract_legal_concepts.py",
             "classify_deontic.py",
             "classify_target_group.py",
             "extract_institutional_competence.py",
             "extract_sanctions.py",
             "extract_draft_impact.py",
+            "derive_court_interpretation_staleness.py",
             "generate_similarity_index.py",
         ],
-        # Reads every root *_peep.json + the allowlisted JSON-LD inputs (the
-        # canonical combined inputs) and the existing INDEX.json it refreshes.
+        # Root peeps + the allowlisted JSON-LD inputs, the merged overlay
+        # layers (estleg_common.COMBINED_OVERLAY_SUBDIRS), the closure-stub
+        # sources (STUB_SOURCE_SUBDIRS) and the existing INDEX.json.
         "reads": ["*_peep.json", "controlled_vocabulary.jsonld",
-                  "*_owl.jsonld", "INDEX.json"],
+                  "unresolved_references.jsonld", "act_expressions_combined.jsonld",
+                  "*_owl.jsonld", "INDEX.json",
+                  "sanctions/**/*.json", "institutions/**/*.json",
+                  "concepts/**/*.json", "concepts/**/*.jsonld",
+                  "annotations/oiguskantsler_seisukohad.jsonld",
+                  "amendments/**/*.json", "eurovoc/eurovoc_overlay.jsonld",
+                  "riigikohus/*_peep.json", "eurlex/eurlex_combined.jsonld",
+                  "eelnoud/*_peep.json", "regulations/**/*_peep.json",
+                  "harmonisation/harmonisation_report.json"],
         "writes": ["combined_ontology.jsonld", "INDEX.json"],
+    },
+
+    # -- Phase 6: Packaging (reads the built corpus; may follow the build) -
+    {
+        "name": "generate_analytical_overlay.py",
+        "description": "Analytical overlay file for the enrichment-layers graph (#521)",
+        "script": "generate_analytical_overlay.py",
+        "tier": TIER_PACKAGE,
+        # --write only: the counts/flags are already stamped on combined by
+        # the build step; this emits the joinable overlay + Similarity nodes.
+        "args": ["--write"],
+        "depends_on": ["build_release_artifacts.py", "generate_similarity_index.py"],
+        "reads": ["combined_ontology.jsonld", "reports/similarity_index.json",
+                  "eurlex/eurlex_directives_peep.json"],
+        "writes": ["analytical/analytical_overlay.jsonld"],
+    },
+    {
+        "name": "build_release_assets.py",
+        "description": "Gzip, dump, hash and catalogue every release asset (#705)",
+        "script": "build_release_assets.py",
+        "tier": TIER_PACKAGE,
+        "depends_on": ["build_release_artifacts.py", "generate_analytical_overlay.py"],
+        "reads": ["combined_ontology.jsonld", "eelnoud/eelnoud_combined.jsonld",
+                  "eurlex/eurlex_combined.jsonld", "curia/curia_combined.jsonld",
+                  "concepts/concepts_combined.jsonld", "act_expressions_combined.jsonld",
+                  "annotations/oiguskantsler_seisukohad.jsonld",
+                  "analytical/analytical_overlay.jsonld", "INDEX.json",
+                  "controlled_vocabulary.jsonld", "regulations/**/*_peep.json",
+                  "riigikohus/*_peep.json", "provision_versions/*.jsonld"],
+        # Read-only on the corpus: the RDF dumps go to release/rdf/, never over
+        # the committed krr_outputs copies (the combined heads'
+        # owl:versionInfo is checked, not stamped — the build already read
+        # them). metadata.jsonld (repo root) gains byteSize/checksum.
+        "writes": [
+                   # repo-root files (outside krr_outputs/, see
+                   # build_release_assets.RELEASE_DIR)
+                   "../metadata.jsonld", "../release/*"],
     },
 ]
 
@@ -482,7 +668,12 @@ RELEASE_ARTIFACTS: tuple[str, ...] = (
     "krr_outputs/combined_ontology.jsonld",
     "krr_outputs/controlled_vocabulary.jsonld",
     "metadata.jsonld",
+    # #705: the release-asset manifest written by build_release_assets.py.
+    # hash_release_artifacts() also re-hashes every asset it lists, so the
+    # manifest covers each advertised download, not just the committed tree.
+    "release/SHA256SUMS",
 )
+RELEASE_ASSET_DIR = REPO_ROOT / "release"
 RELEASE_ARTIFACT_INDEX_GLOBS: tuple[str, ...] = (
     "INDEX.json",
     "regulations/**/REGULATIONS_*_INDEX.json",
@@ -597,6 +788,15 @@ def validate_dag(
                 )
         produced.update(s.get("writes", []))
 
+    # Read/write ordering (#704): every other step that writes a derived
+    # (non-committed) artefact a step reads must be a transitive dependency of
+    # the reader — an unordered writer makes the read depend on source order,
+    # and a later writer leaves the reader's output stale. Committed corpus
+    # inputs (the shared *_peep.json files, INDEX.json, …) are exempt: every
+    # enrichment step rewrites them in place and serial execution is the
+    # contract there.
+    _check_read_write_ordering(steps, adj, committed_inputs)
+
     # Concurrency safety: with --parallel, two steps with no dependency
     # relation in either direction can be in flight at the same time. If
     # both write a glob that can match a common path the corpus is at risk
@@ -604,6 +804,70 @@ def validate_dag(
     if parallel > 1:
         _check_parallel_write_disjointness(steps, adj)
     return topo
+
+
+def _paths_can_overlap(a: str, b: str) -> bool:
+    """Segment-aware glob overlap: can patterns ``a`` and ``b`` name one path?
+
+    Unlike :func:`_globs_can_overlap` (deliberately conservative for the
+    ``--parallel`` gate) this treats a slash-free pattern as root-level only,
+    so ``*_peep.json`` does not overlap ``amendments/**/*.json``.
+    """
+    import fnmatch
+
+    def seg_match(x: str, y: str) -> bool:
+        return fnmatch.fnmatch(x, y) or fnmatch.fnmatch(y, x)
+
+    pa, pb = a.split("/"), b.split("/")
+    if "**" not in pa and "**" not in pb:
+        return len(pa) == len(pb) and all(seg_match(x, y) for x, y in zip(pa, pb, strict=True))
+    if "**" in pb and "**" not in pa:
+        pa, pb = pb, pa
+    # pa contains "**": fixed prefix before it, basename after it.
+    prefix = pa[: pa.index("**")]
+    if "**" in pb:
+        other_prefix = pb[: pb.index("**")]
+        n = min(len(prefix), len(other_prefix))
+        return all(seg_match(x, y) for x, y in zip(prefix[:n], other_prefix[:n], strict=True)) and seg_match(pa[-1], pb[-1])
+    if len(pb) < len(prefix) + 1:
+        return False
+    return all(seg_match(x, y) for x, y in zip(prefix, pb[: len(prefix)], strict=True)) and seg_match(pa[-1], pb[-1])
+
+
+def _check_read_write_ordering(
+    steps: list[dict], adj: dict[str, list[str]], committed_inputs: tuple[str, ...]
+) -> None:
+    """Every other writer of a derived artefact must precede its reader.
+
+    A writer with no dependency relation makes the read order-dependent; a
+    writer that runs AFTER the reader leaves the reader's output stale (it was
+    built from the old file). Both are rejected. Committed corpus inputs are
+    exempt (see :func:`validate_dag`).
+    """
+    closure = _transitive_dependents(adj)
+    for reader in steps:
+        for pattern in reader.get("reads", []):
+            if pattern in committed_inputs:
+                continue
+            for writer in steps:
+                if writer["name"] == reader["name"]:
+                    continue
+                if not any(_paths_can_overlap(pattern, w) for w in writer.get("writes", [])):
+                    continue
+                if reader["name"] in closure.get(writer["name"], set()):
+                    continue  # writer is a transitive dependency: it precedes
+                if writer["name"] in closure.get(reader["name"], set()):
+                    raise DAGError(
+                        f"step {writer['name']!r} writes {pattern!r} after step "
+                        f"{reader['name']!r} has read it — the reader's output "
+                        f"would be stale; move the write before the reader"
+                    )
+                raise DAGError(
+                    f"step {reader['name']!r} reads {pattern!r}, which step "
+                    f"{writer['name']!r} also writes, but neither depends on "
+                    f"the other — declare the dependency so the read is "
+                    f"ordered"
+                )
 
 
 def _transitive_dependents(adj: dict[str, list[str]]) -> dict[str, set[str]]:
@@ -819,6 +1083,21 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Release build: run the full DAG, then the three release "
         "validators, then write release_manifest.json. Exit 0 only if "
         "release_ok (all steps + all validators passed).",
+    )
+    parser.add_argument(
+        "--with-ingest",
+        action="store_true",
+        help="Also run the ingest-tier steps (network fetches from Riigi "
+        "Teataja / oiguskantsler.ee). By default they are recorded as "
+        "skipped_ingest and their committed outputs are used.",
+    )
+    parser.add_argument(
+        "--check-pipeline-versions",
+        action="store_true",
+        help="Only run the pipeline_version gate: every "
+        "krr_outputs/reports/kov/*coverage.json pipeline_version must name a "
+        "commit in this repository (or be listed in "
+        "data/pipeline_version_baseline.json). Needs full git history.",
     )
     parser.add_argument(
         "--validate-only",
@@ -1083,6 +1362,10 @@ def _sha256_file(path: Path) -> str:
 def hash_release_artifacts() -> dict:
     """Compute a content hash over the committed release artifacts.
 
+    Covers ``RELEASE_ARTIFACTS``, the index globs and (#705) every release
+    asset listed in ``release/SHA256SUMS``, re-hashed and
+    compared against that file.
+
     Returns a dict with:
       ``files``      — {repo-relative path: sha256} for every artifact found
       ``missing``    — list of expected artifacts that were not found
@@ -1104,6 +1387,15 @@ def hash_release_artifacts() -> dict:
             continue
         for m in matches:
             found[_rel(m)] = _sha256_file(m)
+    from estleg.build_release_assets import verify_sums
+
+    assets = verify_sums(RELEASE_ASSET_DIR)
+    # SHA256SUMS itself is hashed via RELEASE_ARTIFACTS above.
+    found.update({_rel(path): sha for path, sha in assets["files"].items()})
+    missing.extend(_rel(path) for path in assets["missing"])
+    # A listed asset whose bytes no longer match SHA256SUMS is as bad as a
+    # missing one: the published checksum would be false.
+    missing.extend(f"{_rel(path)} (sha256 mismatch)" for path in assets["mismatched"])
     digest = hashlib.sha256()
     for rel in sorted(found):
         digest.update(f"{rel}\n{found[rel]}\n".encode())
@@ -1156,6 +1448,109 @@ def _combined_staleness_error() -> str | None:
                 "rebuild."
             )
     return None
+
+
+# ===========================================================================
+# Pipeline-version gate (#704)
+# ===========================================================================
+
+PIPELINE_VERSION_REPORT_GLOB = "reports/kov/*coverage.json"
+PIPELINE_VERSION_BASELINE = REPO_ROOT / "data" / "pipeline_version_baseline.json"
+
+
+def _git(args: list[str], repo: Path) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ["git", *args], cwd=str(repo), capture_output=True, text=True, check=False
+    )
+
+
+def git_commit_exists(sha: str, repo: Path = REPO_ROOT) -> bool:
+    """True when ``sha`` (full or abbreviated) names a commit object in ``repo``."""
+    if not re.fullmatch(r"[0-9a-fA-F]{4,40}", sha or ""):
+        return False
+    return _git(["rev-parse", "--verify", "--quiet", f"{sha}^{{commit}}"], repo).returncode == 0
+
+
+def load_pipeline_version_baseline(path: Path = PIPELINE_VERSION_BASELINE) -> dict[str, str]:
+    if not path.is_file():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    reports = data.get("reports") if isinstance(data, dict) else None
+    return dict(reports) if isinstance(reports, dict) else {}
+
+
+def check_pipeline_versions(
+    krr_dir: Path = KRR_DIR,
+    *,
+    baseline_path: Path = PIPELINE_VERSION_BASELINE,
+    repo: Path = REPO_ROOT,
+) -> dict:
+    """Resolve every coverage report's ``pipeline_version`` to a commit (#704).
+
+    Returns ``{"rows": [...], "failures": [...], "baselined": [...],
+    "staleBaseline": [...], "shallow": bool}``. A report fails when its
+    ``pipeline_version`` is absent or does not resolve to a commit, unless the
+    baseline lists that report with exactly that SHA. A baseline entry whose
+    report now resolves, carries another SHA, or no longer exists is reported
+    under ``staleBaseline`` so the list can shrink; it is not a failure.
+    """
+    baseline = load_pipeline_version_baseline(baseline_path)
+    shallow = _git(["rev-parse", "--is-shallow-repository"], repo).stdout.strip() == "true"
+    rows: list[dict] = []
+    failures: list[str] = []
+    baselined: list[str] = []
+    seen: set[str] = set()
+    for path in sorted(krr_dir.glob(PIPELINE_VERSION_REPORT_GLOB)):
+        name = path.name
+        seen.add(name)
+        try:
+            version = json.loads(path.read_text(encoding="utf-8")).get("pipeline_version")
+        except (OSError, json.JSONDecodeError, AttributeError):
+            version = None
+        resolves = isinstance(version, str) and git_commit_exists(version, repo)
+        rows.append({"report": name, "pipelineVersion": version, "resolves": resolves})
+        if resolves:
+            continue
+        if isinstance(version, str) and baseline.get(name) == version:
+            baselined.append(name)
+            continue
+        failures.append(name)
+    stale = sorted(
+        name for name, sha in baseline.items()
+        if name not in seen or name not in baselined
+        or next((r["pipelineVersion"] for r in rows if r["report"] == name), None) != sha
+    )
+    return {"rows": rows, "failures": failures, "baselined": baselined,
+            "staleBaseline": stale, "shallow": shallow}
+
+
+def run_pipeline_version_gate() -> int:
+    """CLI body for ``--check-pipeline-versions``; returns the exit code."""
+    result = check_pipeline_versions()
+    if result["shallow"]:
+        print("FATAL: shallow clone — older commits are not present, so every "
+              "pipeline_version would look missing. Fetch full history "
+              "(actions/checkout fetch-depth: 0).", file=sys.stderr)
+        return 2
+    print("pipeline_version gate (#704):")
+    for row in result["rows"]:
+        if row["resolves"]:
+            state = "ok"
+        elif row["report"] in result["baselined"]:
+            state = "MISSING (baselined, frozen corpus)"
+        else:
+            state = "MISSING"
+        print(f"  {row['report']:50s} {row['pipelineVersion']!s:12s} {state}")
+    for name in result["staleBaseline"]:
+        print(f"  NOTE: baseline entry {name} no longer applies — remove it from "
+              f"{_rel(PIPELINE_VERSION_BASELINE)}")
+    if result["failures"]:
+        print(f"FAIL: {len(result['failures'])} report(s) carry a pipeline_version "
+              f"that is not a commit: {', '.join(result['failures'])}", file=sys.stderr)
+        return 1
+    print(f"PASS: {len(result['rows']) - len(result['baselined'])} resolve, "
+          f"{len(result['baselined'])} baselined")
+    return 0
 
 
 # ===========================================================================
@@ -1249,8 +1644,13 @@ def run_dag(
     validate_each: bool,
     per_script_timeout: int,
     parallel: int,
+    include_ingest: bool = False,
 ) -> dict:
     """Execute the DAG in topo order (serial) or with bounded parallelism.
+
+    ``ingest``-tier steps (network fetches) are recorded with status
+    ``skipped_ingest`` and treated as succeeded — their committed outputs are
+    the inputs — unless ``include_ingest`` is set (#704).
 
     Returns a dict: ``{"ledger": [...], "succeeded": set, "failed": set,
     "skipped": set, "planned": [...], "topoOrder": [...]}``.
@@ -1280,6 +1680,13 @@ def run_dag(
 
     def _missing_script(name: str) -> bool:
         return not (SCRIPTS_DIR / by_name[name]["script"]).exists()
+
+    def _skip_ingest(name: str) -> bool:
+        return not include_ingest and step_tier(by_name[name]) == TIER_INGEST
+
+    def _ingest_record(name: str) -> dict:
+        return {"name": name, "script": by_name[name]["script"],
+                "tier": TIER_INGEST, "status": "skipped_ingest"}
 
     if parallel <= 1 or dry_run:
         # ---- Serial path (the deterministic default) --------------------
@@ -1312,6 +1719,13 @@ def run_dag(
                 continue
             if not resume_reached:
                 resume_reached = name == resume_from
+            if _skip_ingest(name):
+                print(f"\n[{i}/{total}] INGEST (not run; committed outputs used): "
+                      f"{name} — pass --with-ingest to fetch")
+                skipped.add(name)
+                succeeded.add(name)  # committed outputs stand in
+                ledger.append(_ingest_record(name))
+                continue
             if _missing_script(name):
                 print(f"\n[{i}/{total}] SKIP: {name} (file not found)")
                 skipped.add(name)
@@ -1425,6 +1839,14 @@ def run_dag(
                         progressed = True
                         continue
                     if not deps.issubset(done):
+                        continue
+                    if _skip_ingest(name):
+                        remaining.remove(name)
+                        skipped.add(name)
+                        succeeded.add(name)
+                        done.add(name)
+                        ledger.append(_ingest_record(name))
+                        progressed = True
                         continue
                     if _missing_script(name):
                         remaining.remove(name)
@@ -1593,9 +2015,17 @@ def _print_dag_plan(topo: list[str], *, release: bool, validate_only: bool) -> N
         print("  (none — --validate-only skips all generation steps)")
     else:
         for i, name in enumerate(topo, 1):
-            deps = by_name[name].get("depends_on", [])
-            dep_str = f"  <- {', '.join(deps)}" if deps else ""
-            print(f"  {i:2d}. {name}{dep_str}")
+            step = by_name[name]
+            deps = step.get("depends_on", [])
+            if not deps:
+                dep_str = ""
+            elif len(deps) <= 3:
+                dep_str = f"  <- {', '.join(deps)}"
+            else:
+                dep_str = f"  <- {len(deps)} steps"
+            print(f"  {i:2d}. [{step_tier(step)}] {name}{dep_str}")
+            for embedded in step.get("embeds", []):
+                print(f"        embeds {embedded}")
     if release:
         print("\nRelease validators that would run:")
         for spec in RELEASE_VALIDATORS:
@@ -1614,6 +2044,9 @@ def main(argv: list[str] | None = None) -> None:
     except DAGError as exc:
         print(f"FATAL: invalid step DAG: {exc}", file=sys.stderr)
         sys.exit(2)
+
+    if args.check_pipeline_versions:
+        sys.exit(run_pipeline_version_gate())
 
     if args.validate_only and not args.release:
         print("FATAL: --validate-only requires --release.", file=sys.stderr)
@@ -1689,6 +2122,7 @@ def main(argv: list[str] | None = None) -> None:
             validate_each=args.validate_each,
             per_script_timeout=args.per_script_timeout,
             parallel=args.parallel,
+            include_ingest=args.with_ingest,
         )
     except BaseException:
         # Interrupt (Ctrl-C / SIGTERM) or unexpected crash mid-build: the
