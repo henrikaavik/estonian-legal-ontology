@@ -48,14 +48,25 @@ def test_graph_has_one_scheme_and_n_concepts() -> None:
     assert len(concepts) == len(ev.EUROVOC_DOMAINS)
 
 
-def test_every_concept_id_is_eurovoc_domain_key() -> None:
+def test_every_concept_is_our_node_matching_a_eurovoc_domain_key() -> None:
+    """#709: our own concept node, skos:exactMatch to the EuroVoc IRI."""
     _, concepts = _scheme_and_concepts(ev.build_eurovoc_skos_graph())
-    domain_ids = {f"{EUROVOC_PREFIX}{code}" for code in ev.EUROVOC_DOMAINS}
-    concept_ids = {node["@id"] for node in concepts}
-    assert concept_ids == domain_ids
-    for nid in concept_ids:
-        assert nid.startswith(EUROVOC_PREFIX)
-        assert nid.removeprefix(EUROVOC_PREFIX) in ev.EUROVOC_DOMAINS
+    assert {node["@id"] for node in concepts} == {
+        ev.eurovoc_domain_node_id(code) for code in ev.EUROVOC_DOMAINS
+    }
+    for node in concepts:
+        code = node["skos:notation"]
+        assert node["@id"] == ev.eurovoc_domain_node_id(code)
+        assert node["skos:exactMatch"] == [{"@id": f"{EUROVOC_PREFIX}{code}"}]
+
+
+def test_no_triple_is_minted_on_a_eurovoc_iri() -> None:
+    """#709: EuroVoc IRIs appear only as objects (skos:exactMatch)."""
+    for doc in (ev.build_eurovoc_skos_graph(), json.loads(SKOS_PATH.read_text(encoding="utf-8"))):
+        subjects = [node["@id"] for node in doc["@graph"]]
+        assert not [nid for nid in subjects if nid.startswith(EUROVOC_PREFIX)]
+        for ref in doc["@graph"][0]["skos:hasTopConcept"]:
+            assert not ref["@id"].startswith(EUROVOC_PREFIX)
 
 
 def test_every_concept_has_bilingual_preflabel() -> None:
@@ -65,7 +76,7 @@ def test_every_concept_has_bilingual_preflabel() -> None:
         assert set(labels) == {"et", "en"}
         assert labels["et"].strip()
         assert labels["en"].strip()
-        code = node["@id"].removeprefix(EUROVOC_PREFIX)
+        code = node["skos:notation"]
         _slug, label_et, label_en, _kws = ev.EUROVOC_DOMAINS[code]
         assert labels["et"] == label_et
         assert labels["en"] == label_en
@@ -95,7 +106,7 @@ def test_527_is_constitutional_law_not_food_policy() -> None:
     assert "food" not in label_en.lower()
 
     _, concepts = _scheme_and_concepts(ev.build_eurovoc_skos_graph())
-    node = next(c for c in concepts if c["@id"] == f"{EUROVOC_PREFIX}527")
+    node = next(c for c in concepts if c["@id"] == ev.eurovoc_domain_node_id("527"))
     labels = _pref_labels(node)
     assert labels["et"] == "riigiõigus"
     assert labels["en"] == "constitutional law"

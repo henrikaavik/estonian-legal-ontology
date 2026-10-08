@@ -78,7 +78,7 @@ def test_metadata_catalog_urls_are_not_mutable_main() -> None:
     assert flagship in github, flagship
     for url in github:
         assert not wbm.is_mutable_main_url(url), url
-        assert sha in url or url.startswith(release_prefix), url
+        assert sha in url or url.startswith(release_prefix) or wbm.is_tag_pinned_url(url), url
 
 
 def test_void_data_dump_is_content_sha_not_main() -> None:

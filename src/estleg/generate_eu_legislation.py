@@ -40,6 +40,12 @@ from estleg.eurlex_common import (
 from estleg.eurlex_common import (
     sparql_query_with_retry as _sparql_query_with_retry,
 )
+from estleg.fetch_eurovoc_official import (
+    fetch_official_subjects,
+    load_cache as load_eurovoc_cache,
+    save_cache as save_eurovoc_cache,
+    stamp_official_subjects,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -197,6 +203,30 @@ def ensure_override_type_individuals(graph: list) -> int:
     return added
 
 
+def strip_doc_type_declarations(graph: list) -> int:
+    """Drop ``estleg:EUDocType_*`` T-Box individuals from an A-Box graph.
+
+    The document-type individuals are declared once, in the controlled
+    vocabulary and ``eurlex_schema.json`` (SKOS concepts in
+    ``estleg:EUDocumentTypeScheme``, #709). A copy inside a peep is a
+    divergent duplicate the parity gate reports as ``@type`` drift; acts only
+    reference the type by ``{"@id": ...}``. Returns the number removed.
+    """
+    if not isinstance(graph, list):
+        return 0
+    kept = [
+        n for n in graph
+        if not (
+            isinstance(n, dict)
+            and str(n.get("@id", "")).startswith("estleg:EUDocType_")
+            and "estleg:EUDocumentType" in _node_types(n)
+        )
+    ]
+    removed = len(graph) - len(kept)
+    graph[:] = kept
+    return removed
+
+
 # EU institution mapping (corporate-body authority code → labels)
 EU_INSTITUTIONS = {
     "COM": ("EuropeanCommission", "Euroopa Komisjon", "European Commission"),
@@ -335,6 +365,33 @@ SELECT DISTINCT ?work ?celex ?title ?title_en ?date ?inforce ?eli ?author ?deadl
     return list(by_celex.values()), partial
 
 
+def attach_official_eurovoc(
+    items: list[dict], cache: dict[str, list[str]]
+) -> dict[str, int]:
+    """Set ``item["eurovoc_ids"]`` from CELLAR (#699), filling ``cache``."""
+    subjects, stats = fetch_official_subjects(
+        [item["celex"] for item in items if item.get("celex")], cache=cache
+    )
+    for item in items:
+        ids = subjects.get(item.get("celex", ""))
+        if ids:
+            item["eurovoc_ids"] = ids
+    with_subjects = sum(1 for item in items if item.get("eurovoc_ids"))
+    print(f"  Official EuroVoc: {with_subjects}/{len(items)} acts ({stats})")
+    return stats
+
+
+# #709: document-type individuals are SKOS concepts in
+# estleg:EUDocumentTypeScheme, typed exactly as in controlled_vocabulary.jsonld.
+EU_DOC_TYPE_NODE_TYPES: tuple[str, ...] = (
+    "owl:NamedIndividual", "estleg:EUDocumentType", "skos:Concept",
+)
+EU_DOC_TYPE_SCHEME_REFS: dict[str, dict[str, str]] = {
+    "skos:inScheme": {"@id": "estleg:EUDocumentTypeScheme"},
+    "skos:topConceptOf": {"@id": "estleg:EUDocumentTypeScheme"},
+}
+
+
 def generate_schema_nodes() -> list[dict]:
     """Generate OWL schema nodes for EU legislation."""
     nodes: list[dict] = [
@@ -366,7 +423,8 @@ def generate_schema_nodes() -> list[dict]:
     for doc_key, doc_info in EU_DOC_TYPES.items():
         nodes.append({
             "@id": f"estleg:EUDocType_{doc_info['type_id']}",
-            "@type": ["owl:NamedIndividual", "estleg:EUDocumentType"],
+            "@type": list(EU_DOC_TYPE_NODE_TYPES),
+            **EU_DOC_TYPE_SCHEME_REFS,
             "rdfs:label": {"@value": doc_info["label_et"], "@language": "et"},
             "skos:prefLabel": {"@value": doc_info["label_en"], "@language": "en"},
             "rdfs:comment": {"@value": doc_info["description"], "@language": "et"},
@@ -382,7 +440,8 @@ def generate_schema_nodes() -> list[dict]:
     ):
         nodes.append({
             "@id": f"estleg:EUDocType_{override['type_id']}",
-            "@type": ["owl:NamedIndividual", "estleg:EUDocumentType"],
+            "@type": list(EU_DOC_TYPE_NODE_TYPES),
+            **EU_DOC_TYPE_SCHEME_REFS,
             "rdfs:label": {"@value": override["label_et"], "@language": "et"},
             "skos:prefLabel": {"@value": override["label_en"], "@language": "en"},
             "rdfs:comment": {"@value": override["description"], "@language": "et"},
@@ -671,6 +730,13 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
         elif inst_refs:
             node["estleg:euInstitution"] = inst_refs
 
+    # #699: official EuroVoc subjects from CELLAR
+    # (``cdm:work_is_about_concept_eurovoc``), resolved by a separate batched
+    # query in ``main`` so the paginated sweep above is not multiplied by the
+    # ~6 descriptors per act. Marked ``estleg:subjectSource "cellar"``.
+    if item.get("eurovoc_ids"):
+        stamp_official_subjects(node, item["eurovoc_ids"])
+
     return node
 
 
@@ -922,7 +988,8 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "Offline #394 pass: retarget sector-4/5 CELEX in the committed "
-            "regulations peep + combined + schema (no SPARQL)."
+            "regulations peep + combined + schema (no SPARQL); also drops "
+            "EUDocType_* T-Box re-declarations from the peep (#709)."
         ),
     )
     parser.add_argument(
@@ -952,8 +1019,16 @@ def retarget_non_regulation_corpus(krr_dir: Path | None = None) -> dict[str, int
         doc = json.loads(path.read_text(encoding="utf-8"))
         graph = doc.get("@graph", [])
         changed = retarget_non_regulation_types(graph)
-        added = ensure_override_type_individuals(graph)
-        if changed or added:
+        added = stripped = 0
+        if path.name == "eurlex_schema.json":
+            # Only the schema declares the doc-type individuals (#394/#709).
+            added = ensure_override_type_individuals(graph)
+        elif path.name.endswith("_peep.json"):
+            # A-Box peeps reference them by @id only; a re-declaration here
+            # drifts from the CV's skos:Concept typing.
+            stripped = strip_doc_type_declarations(graph)
+            stats[f"{path.name}:doc_type_declarations_removed"] = stripped
+        if changed or added or stripped:
             save_json(path, doc)
         stats[path.name] = changed
     return stats
@@ -1015,6 +1090,7 @@ def main():
     all_legislation: dict[str, list[dict]] = {}
     partial_types: dict[str, bool] = {}
     relevant_celex = collect_estonia_relevant_celex()
+    eurovoc_cache = load_eurovoc_cache()
 
     for doc_key, doc_info in EU_DOC_TYPES.items():
         print(f"\n--- Fetching {doc_info['label_en']}s ({doc_info['cdm_class']}) ---")
@@ -1026,6 +1102,7 @@ def main():
         for item in items:
             if item.get("celex") in relevant_celex:
                 item["estonia_relevant"] = True
+        attach_official_eurovoc(items, eurovoc_cache)
         all_legislation[doc_key] = items
         partial_types[doc_key] = was_partial
 
@@ -1051,6 +1128,8 @@ def main():
         print(f"  Saved: {out_path.name} ({len(graph)} nodes)")
 
         time.sleep(RATE_DELAY)
+
+    save_eurovoc_cache(eurovoc_cache)
 
     # Generate combined file
     print("\n--- Generating combined file ---")

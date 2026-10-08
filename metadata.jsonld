@@ -6,11 +6,12 @@
     "vcard": "http://www.w3.org/2006/vcard/ns#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "schema": "http://schema.org/",
+    "schema": "https://schema.org/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "estleg": "https://w3id.org/estleg/",
-    "spdx": "http://spdx.org/rdf/terms#"
+    "spdx": "http://spdx.org/rdf/terms#",
+    "adms": "http://www.w3.org/ns/adms#"
   },
   "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology",
   "@type": [
@@ -18,6 +19,96 @@
     "owl:Ontology",
     "schema:Dataset"
   ],
+  "@reverse": {
+    "dcat:dataset": {
+      "@id": "https://w3id.org/estleg/catalog",
+      "@type": "dcat:Catalog",
+      "dcterms:title": [
+        {
+          "@value": "Estonian Legal Ontology catalogue",
+          "@language": "en"
+        },
+        {
+          "@value": "Eesti õigusontoloogia andmekataloog",
+          "@language": "et"
+        }
+      ],
+      "dcterms:description": [
+        {
+          "@value": "DCAT-AP 3.0.1 catalogue of the Estonian Legal Ontology: a machine-readable JSON-LD/RDF knowledge graph of Estonian and EU law.",
+          "@language": "en"
+        },
+        {
+          "@value": "Eesti õigusontoloogia DCAT-AP 3.0.1 andmekataloog: masinloetav JSON-LD/RDF teadmusgraaf Eesti ja EL õigusest.",
+          "@language": "et"
+        }
+      ],
+      "dcterms:publisher": {
+        "@id": "https://w3id.org/estleg/publisher"
+      },
+      "foaf:homepage": {
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology",
+        "@type": "foaf:Document"
+      },
+      "dcterms:language": [
+        {
+          "@id": "http://publications.europa.eu/resource/authority/language/EST",
+          "@type": "dcterms:LinguisticSystem"
+        },
+        {
+          "@id": "http://publications.europa.eu/resource/authority/language/ENG",
+          "@type": "dcterms:LinguisticSystem"
+        }
+      ],
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:spatial": {
+        "@id": "http://publications.europa.eu/resource/authority/country/EST"
+      },
+      "dcat:themeTaxonomy": {
+        "@id": "http://publications.europa.eu/resource/authority/data-theme",
+        "@type": "skos:ConceptScheme",
+        "dcterms:title": {
+          "@value": "Data theme",
+          "@language": "en"
+        }
+      },
+      "dcterms:issued": {
+        "@value": "2026-02-23",
+        "@type": "xsd:date"
+      },
+      "dcterms:modified": {
+        "@value": "2026-09-07",
+        "@type": "xsd:date"
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://semiceu.github.io/DCAT-AP/releases/3.0.1/",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "DCAT-AP 3.0.1"
+        },
+        {
+          "@type": "dcterms:Standard",
+          "dcterms:title": {
+            "@value": "Andmekirjelduse standard 3.0.1 (Eesti DCAT-AP profiil)",
+            "@language": "et"
+          },
+          "foaf:page": {
+            "@id": "https://stat.ee/sites/default/files/2024-08/AH_juhis_andmekirjeldus_standard_3.0.1.pdf"
+          },
+          "rdfs:comment": {
+            "@value": "The Estonian profile publishes no IRI of its own; this node names it and links its published text.",
+            "@language": "en"
+          }
+        }
+      ]
+    }
+  },
   "dcterms:title": [
     {
       "@value": "Estonian Legal Ontology",
@@ -38,18 +129,46 @@
       "@language": "et"
     }
   ],
+  "dcterms:identifier": "https://w3id.org/estleg/dataset/estonian-legal-ontology",
+  "adms:versionNotes": {
+    "@value": "1.0.0 — see CHANGELOG.md in the repository.",
+    "@language": "en"
+  },
+  "dcat:version": "1.0.0",
   "dcterms:creator": {
-    "@type": "foaf:Person",
+    "@id": "https://github.com/henrikaavik",
+    "@type": [
+      "foaf:Person",
+      "foaf:Agent"
+    ],
     "foaf:name": "Henrik Aavik",
     "foaf:homepage": {
       "@id": "https://github.com/henrikaavik"
     }
   },
   "dcterms:publisher": {
-    "@id": "https://github.com/henrikaavik",
-    "@type": "foaf:Agent",
-    "foaf:name": "Henrik Aavik",
+    "@id": "https://w3id.org/estleg/publisher",
+    "@type": [
+      "foaf:Organization",
+      "foaf:Agent"
+    ],
+    "foaf:name": [
+      {
+        "@value": "Estonian Legal Ontology project",
+        "@language": "en"
+      },
+      {
+        "@value": "Eesti õigusontoloogia projekt",
+        "@language": "et"
+      }
+    ],
     "foaf:homepage": {
+      "@id": "https://github.com/henrikaavik/estonian-legal-ontology"
+    },
+    "foaf:mbox": {
+      "@id": "mailto:henrik.aavik@gmail.com"
+    },
+    "foaf:member": {
       "@id": "https://github.com/henrikaavik"
     }
   },
@@ -71,10 +190,15 @@
   },
   "dcterms:language": [
     {
-      "@id": "http://publications.europa.eu/resource/authority/language/EST"
+      "@id": "http://publications.europa.eu/resource/authority/language/EST",
+      "@type": "dcterms:LinguisticSystem"
     }
   ],
-  "dcterms:rights": "DRAFT layered rights model — pending legal sign-off. This dataset is NOT licensed as a whole under MIT. It is a compilation of (a) predominantly third-party legal texts that retain their own source rights (Riigi Teataja statutes/regulations; EU material © European Union, reused under Commission Decision 2011/833/EU, incl. EuroVoc; RIK/Riigikohus and EU Court decisions) and (b) an original compilation layer (selection/arrangement, cross-reference links, minted estleg: IRIs, ontology/TBox structure, controlled vocabularies, derived classifications) which the project offers under CC BY 4.0 (CC0 1.0 an acceptable alternative). Per-distribution dcterms:rights statements below give the source-specific terms. The MIT LICENSE in this repository applies ONLY to the repository software (scripts/, mcp_server/, tests/). Some distributions contain personal data — see estleg:containsPersonalData and docs/DATA_PROTECTION.md. See the top-level NOTICE and docs/DATA_RIGHTS.md. Verify upstream source terms before redistribution.",
+  "dcterms:accessRights": {
+    "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+    "@type": "dcterms:RightsStatement"
+  },
+  "dcterms:rights": "DRAFT layered rights model — pending legal sign-off. This dataset is NOT licensed as a whole under MIT. It is a compilation of (a) predominantly third-party legal texts that retain their own source rights (Riigi Teataja statutes/regulations; EU material © European Union, reused under Commission Decision 2011/833/EU, incl. EuroVoc; RIK/Riigikohus and EU Court decisions) and (b) an original compilation layer (selection/arrangement, cross-reference links, minted estleg: IRIs, ontology/TBox structure, controlled vocabularies, derived classifications) which the project offers under CC BY 4.0 (CC0 1.0 an acceptable alternative). Per-distribution dcterms:license and dcterms:rights below give the terms of each distribution (CC BY 4.0 where the project's compilation layer is the only licensable part, the EU reuse terms for EU material). The MIT LICENSE in this repository applies ONLY to the repository software (scripts/, mcp_server/, tests/). Some distributions contain personal data — see estleg:containsPersonalData and docs/DATA_PROTECTION.md. See the top-level NOTICE and docs/DATA_RIGHTS.md. Verify upstream source terms before redistribution.",
   "dcterms:hasPart": {
     "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#compilation",
     "@type": [
@@ -140,6 +264,10 @@
       "skos:prefLabel": {
         "@value": "Justice, legal system and public safety",
         "@language": "en"
+      },
+      "@type": "skos:Concept",
+      "skos:inScheme": {
+        "@id": "http://publications.europa.eu/resource/authority/data-theme"
       }
     },
     {
@@ -147,6 +275,10 @@
       "skos:prefLabel": {
         "@value": "Government and public sector",
         "@language": "en"
+      },
+      "@type": "skos:Concept",
+      "skos:inScheme": {
+        "@id": "http://publications.europa.eu/resource/authority/data-theme"
       }
     }
   ],
@@ -229,13 +361,20 @@
     }
   ],
   "dcat:landingPage": {
-    "@id": "https://github.com/henrikaavik/estonian-legal-ontology"
+    "@id": "https://github.com/henrikaavik/estonian-legal-ontology",
+    "@type": "foaf:Document"
   },
   "dcat:contactPoint": {
-    "@type": "vcard:Individual",
-    "vcard:fn": "Henrik Aavik",
+    "@type": [
+      "vcard:Kind",
+      "vcard:Organization"
+    ],
+    "vcard:fn": "Estonian Legal Ontology project (Henrik Aavik)",
+    "vcard:hasEmail": {
+      "@id": "mailto:henrik.aavik@gmail.com"
+    },
     "vcard:hasURL": {
-      "@id": "https://github.com/henrikaavik"
+      "@id": "https://github.com/henrikaavik/estonian-legal-ontology/issues"
     }
   },
   "dcterms:spatial": {
@@ -243,7 +382,8 @@
     "skos:prefLabel": {
       "@value": "Estonia",
       "@language": "en"
-    }
+    },
+    "@type": "dcterms:Location"
   },
   "dcterms:temporal": {
     "@type": "dcterms:PeriodOfTime",
@@ -260,24 +400,54 @@
     "@id": "https://w3id.org/estleg/vocabulary"
   },
   "dcterms:accrualPeriodicity": {
-    "@id": "http://purl.org/cld/freq/monthly"
+    "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+    "@type": "dcterms:Frequency"
   },
   "dcterms:source": [
     {
       "@id": "https://www.riigiteataja.ee",
-      "dcterms:title": "Riigi Teataja (Estonian Official Gazette)"
+      "@type": "dcat:Dataset",
+      "dcterms:title": "Riigi Teataja (Estonian Official Gazette)",
+      "dcterms:description": {
+        "@value": "Official publication of Estonian legislation; source of enacted laws, state and municipal regulations.",
+        "@language": "en"
+      }
     },
     {
       "@id": "https://eelnoud.valitsus.ee",
-      "dcterms:title": "EIS (Estonian Draft Legislation Information System)"
+      "@type": "dcat:Dataset",
+      "dcterms:title": "EIS (Estonian Draft Legislation Information System)",
+      "dcterms:description": {
+        "@value": "Source of the draft legislation subcorpus.",
+        "@language": "en"
+      }
     },
     {
       "@id": "https://rikos.rik.ee",
-      "dcterms:title": "RIK (Estonian Supreme Court Decision Database)"
+      "@type": "dcat:Dataset",
+      "dcterms:title": "RIK (Estonian Supreme Court Decision Database)",
+      "dcterms:description": {
+        "@value": "Source of the Riigikohus decision subcorpus.",
+        "@language": "en"
+      }
     },
     {
       "@id": "https://eur-lex.europa.eu",
-      "dcterms:title": "EUR-Lex (EU Law Database)"
+      "@type": "dcat:Dataset",
+      "dcterms:title": "EUR-Lex (EU Law Database)",
+      "dcterms:description": {
+        "@value": "Source of the EU legislation subcorpus (via CELLAR).",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "https://curia.europa.eu",
+      "@type": "dcat:Dataset",
+      "dcterms:title": "CURIA (Court of Justice of the European Union)",
+      "dcterms:description": {
+        "@value": "Source of the EU court decision subcorpus (via CELLAR).",
+        "@language": "en"
+      }
     }
   ],
   "schema:measurementTechnique": "Automated extraction via Python scripts from public APIs and SPARQL endpoints",
@@ -305,11 +475,12 @@
     }
   },
   "schema:publisher": {
-    "@type": "schema:Person",
-    "schema:name": "Henrik Aavik",
+    "@type": "schema:Organization",
+    "schema:name": "Estonian Legal Ontology project",
     "schema:url": {
-      "@id": "https://github.com/henrikaavik"
-    }
+      "@id": "https://github.com/henrikaavik/estonian-legal-ontology"
+    },
+    "schema:email": "henrik.aavik@gmail.com"
   },
   "schema:spatialCoverage": {
     "@type": "schema:Country",
@@ -337,223 +508,675 @@
   },
   "dcat:distribution": [
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-complete",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-complete",
       "dcterms:title": "JSON-LD ontology files (complete dataset)",
+      "dcterms:description": "All JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, cross-border harmonisation links, practitioner annotations, controlled vocabularies, reports, and indexes. File count is the validated estleg:fileCount below.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/monthly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/2676a1f81b4f3a583825239656dc7665b9e3294b/krr_outputs"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/v1.0.0/krr_outputs"
       },
       "dcat:downloadURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/2676a1f81b4f3a583825239656dc7665b9e3294b.zip"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/refs/tags/v1.0.0.zip"
+      },
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
       },
       "dcterms:format": {
-        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
       },
-      "dcterms:description": "All JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, cross-border harmonisation links, practitioner annotations, controlled vocabularies, reports, and indexes. File count is the validated estleg:fileCount below.",
-      "dcterms:rights": "DRAFT mixed/layered rights — spans all sources; see the dataset-level dcterms:rights, the top-level NOTICE, and docs/DATA_RIGHTS.md. Third-party texts retain source terms; the compilation layer is offered under CC BY 4.0. Contains personal data in the court subcorpora (see docs/DATA_PROTECTION.md). Verify upstream terms before redistribution.",
-      "estleg:fileCount": 27008
+      "dcat:packageFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/zip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#licence-layered",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:label": {
+          "@value": "Layered terms (DRAFT): the original compilation layer is offered under CC BY 4.0; the EU material inside is reused under Commission Decision 2011/833/EU; Estonian legal texts are not objects of copyright (§ 5 Autoriõiguse seadus) but Riigi Teataja reuse terms are still to be verified. Both layers apply. See NOTICE.",
+          "@language": "en"
+        },
+        "dcterms:type": {
+          "@id": "http://purl.org/adms/licencetype/Attribution",
+          "@type": "skos:Concept",
+          "skos:prefLabel": {
+            "@value": "Attribution",
+            "@language": "en"
+          }
+        },
+        "rdfs:seeAlso": [
+          {
+            "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/NOTICE"
+          },
+          {
+            "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/DATA_RIGHTS.md"
+          }
+        ]
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT mixed/layered rights — spans all sources; see the dataset-level dcterms:rights, the top-level NOTICE, and docs/DATA_RIGHTS.md. Third-party texts retain source terms; the compilation layer is offered under CC BY 4.0. Contains personal data in the court subcorpora (see docs/DATA_PROTECTION.md). Verify upstream terms before redistribution. The dcterms:license is a layered-terms document because no single licence covers every source in this distribution."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
+      "estleg:fileCount": 27023
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-laws",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-laws",
       "dcterms:title": "Combined enacted laws ontology",
+      "dcterms:description": "Enacted-law index records across the top-level law JSON-LD files (validated counts: estleg:lawIndexRecordCount and estleg:lawFileCount below); combined ontology artifact remains available for consumers that need a single file. Court-decision enum individuals (the estleg:caseType / estleg:decisionType targets estleg:CaseType_* and estleg:DecisionType_*) are defined in krr_outputs/riigikohus/riigikohus_schema.json, which is not merged into combined_ontology.jsonld; consumers that need to resolve those targets must load riigikohus_schema.json alongside the court-decision peeps.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/monthly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/combined_ontology.jsonld.gz"
       },
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/combined_ontology.jsonld.gz"
       },
-      "dcterms:description": "Enacted-law index records across the top-level law JSON-LD files (validated counts: estleg:lawIndexRecordCount and estleg:lawFileCount below); combined ontology artifact remains available for consumers that need a single file. Court-decision enum individuals (the estleg:caseType / estleg:decisionType targets estleg:CaseType_* and estleg:DecisionType_*) are defined in krr_outputs/riigikohus/riigikohus_schema.json, which is not merged into combined_ontology.jsonld; consumers that need to resolve those targets must load riigikohus_schema.json alongside the court-decision peeps.",
-      "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Statutory text is excluded from copyright under §5 Autoriõiguse seadus (not an object of copyright). VERIFY: the consolidated machine-readable product and a sui generis database right may still carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer (links, IRIs, structure) offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
+      },
+      "dcat:compressFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/gzip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Statutory text is excluded from copyright under §5 Autoriõiguse seadus (not an object of copyright). VERIFY: the consolidated machine-readable product and a sui generis database right may still carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer (links, IRIs, structure) offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md. The dcterms:license on this distribution (CC BY 4.0) is the project's offer for its compilation layer only; it grants nothing over the third-party text."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:lawIndexRecordCount": 1122,
       "estleg:lawFileCount": 1195,
       "dcat:byteSize": {
-        "@value": "24857112",
+        "@value": "25682261",
         "@type": "xsd:nonNegativeInteger"
       },
       "spdx:checksum": {
         "@type": "spdx:Checksum",
         "spdx:algorithm": {
-          "@id": "spdx:checksumAlgorithm_sha256"
+          "@id": "spdx:checksumAlgorithm_sha256",
+          "@type": "spdx:ChecksumAlgorithm"
         },
         "spdx:checksumValue": {
-          "@value": "7d01e0594ca9e8afd2af50bda4f8020bf1e9f0250564b73c00227f4be15e0bae",
+          "@value": "116167a64a2163cc69ccd499bfe9eeaacc40e83ff68bfff12fe7289ac17784c6",
           "@type": "xsd:hexBinary"
         }
       }
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-regulations-riik",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-regulations-riik",
       "dcterms:title": "Domestic regulations (state-level)",
-      "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/monthly"
-      },
-      "dcat:mediaType": "application/ld+json",
-      "dcat:accessURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/2676a1f81b4f3a583825239656dc7665b9e3294b/krr_outputs/regulations/riik"
-      },
       "dcterms:description": "State-level Estonian regulations (määrused) issued by Vabariigi Valitsus, ministers, and Eesti Pank — one JSON-LD file each, plus REGULATIONS_RIIK_INDEX.json. File count is the validated estleg:fileCount below.",
-      "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
+      "dcterms:accrualPeriodicity": {
+        "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+        "@type": "dcterms:Frequency"
+      },
+      "dcat:accessURL": {
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/v1.0.0/krr_outputs/regulations/riik"
+      },
+      "dcat:downloadURL": {
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/refs/tags/v1.0.0.zip"
+      },
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
+      },
+      "dcat:packageFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/zip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md. The dcterms:license on this distribution (CC BY 4.0) is the project's offer for its compilation layer only; it grants nothing over the third-party text."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:fileCount": 3812
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-eelnoud",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-eelnoud",
       "dcterms:title": "Combined draft legislation ontology",
+      "dcterms:description": "All draft legislation items in a single JSON-LD file. Item count is the validated estleg:draftLegislationCount below.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/monthly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/eelnoud_combined.jsonld.gz"
       },
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/eelnoud_combined.jsonld.gz"
       },
-      "dcterms:description": "All draft legislation items in a single JSON-LD file. Item count is the validated estleg:draftLegislationCount below.",
-      "dcterms:rights": "DRAFT — Source: EIS / eelnoud.valitsus.ee. Legislative drafts are not objects of copyright under §5 Autoriõiguse seadus. VERIFY EIS reuse terms for accompanying explanatory memoranda or third-party annexes before bulk redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
+      },
+      "dcat:compressFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/gzip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT — Source: EIS / eelnoud.valitsus.ee. Legislative drafts are not objects of copyright under §5 Autoriõiguse seadus. VERIFY EIS reuse terms for accompanying explanatory memoranda or third-party annexes before bulk redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md. The dcterms:license on this distribution (CC BY 4.0) is the project's offer for its compilation layer only; it grants nothing over the third-party text."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:draftLegislationCount": 22832,
       "dcat:byteSize": {
-        "@value": "1928459",
+        "@value": "1929341",
         "@type": "xsd:nonNegativeInteger"
       },
       "spdx:checksum": {
         "@type": "spdx:Checksum",
         "spdx:algorithm": {
-          "@id": "spdx:checksumAlgorithm_sha256"
+          "@id": "spdx:checksumAlgorithm_sha256",
+          "@type": "spdx:ChecksumAlgorithm"
         },
         "spdx:checksumValue": {
-          "@value": "4a6a7bd046792891fbef414f74cf174ca2ec82187a1ea8500e770d045825b42f",
+          "@value": "7068ec7bb13adfc88ede35b1f4cf71049667b2afd7d381cac772f97e6a299ac9",
           "@type": "xsd:hexBinary"
         }
       }
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-eurlex",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-eurlex",
       "dcterms:title": "Combined EU legislation ontology",
+      "dcterms:description": "All EU legal acts in a single JSON-LD file. Act count is the validated estleg:euLegislationCount below.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/quarterly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/QUARTERLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/eurlex_combined.jsonld.gz"
       },
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/eurlex_combined.jsonld.gz"
       },
-      "dcterms:description": "All EU legal acts in a single JSON-LD file. Act count is the validated estleg:euLegislationCount below.",
-      "dcterms:rights": "© European Union, 1998–2026 (https://eur-lex.europa.eu), reused under Commission Decision 2011/833/EU — source must be acknowledged and meaning not distorted; third-party-rights-reserved EU documents are excepted. EuroVoc references © European Union / Publications Office. Compilation layer offered under CC BY 4.0. DRAFT — VERIFY exact EuroVoc licence/attribution wording and that no rights-reserved EU documents were ingested verbatim. See NOTICE / docs/DATA_RIGHTS.md.",
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
+      },
+      "dcat:compressFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/gzip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/COM_REUSE",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://eur-lex.europa.eu/eli/dec/2011/833/oj"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "© European Union, 1998–2026 (https://eur-lex.europa.eu), reused under Commission Decision 2011/833/EU — source must be acknowledged and meaning not distorted; third-party-rights-reserved EU documents are excepted. EuroVoc references © European Union / Publications Office. Compilation layer offered under CC BY 4.0. DRAFT — VERIFY exact EuroVoc licence/attribution wording and that no rights-reserved EU documents were ingested verbatim. See NOTICE / docs/DATA_RIGHTS.md. The dcterms:license on this distribution is the source's reuse terms (Commission Decision 2011/833/EU); the project's compilation layer within it is additionally offered under CC BY 4.0."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:euLegislationCount": 33242,
       "dcat:byteSize": {
-        "@value": "4526137",
+        "@value": "5788944",
         "@type": "xsd:nonNegativeInteger"
       },
       "spdx:checksum": {
         "@type": "spdx:Checksum",
         "spdx:algorithm": {
-          "@id": "spdx:checksumAlgorithm_sha256"
+          "@id": "spdx:checksumAlgorithm_sha256",
+          "@type": "spdx:ChecksumAlgorithm"
         },
         "spdx:checksumValue": {
-          "@value": "675517e3760af44c88a0141297b12b8ea9096433a6441fcb173c413af3b5e64f",
+          "@value": "e9fb5c99f7f619e2462dea5e414e64a56ad9c51a14de0fdac2116e5da52ebaab",
           "@type": "xsd:hexBinary"
         }
       }
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-curia",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-curia",
       "dcterms:title": "Combined EU court decisions ontology",
+      "dcterms:description": "All EU court decisions in a single JSON-LD file. Decision count is the validated estleg:euCourtDecisionCount below.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/quarterly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/QUARTERLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/curia_combined.jsonld.gz"
       },
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/curia_combined.jsonld.gz"
       },
-      "dcterms:description": "All EU court decisions in a single JSON-LD file. Decision count is the validated estleg:euCourtDecisionCount below.",
-      "dcterms:rights": "© European Union, 1998–2026 (EU Court of Justice / CURIA), reused under Commission Decision 2011/833/EU. CONTAINS PERSONAL DATA: party names appear in rdfs:label. Republishers become independent GDPR controllers — see docs/DATA_PROTECTION.md before redistribution. DRAFT — pending legal/DPO sign-off.",
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
+      },
+      "dcat:compressFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/gzip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/COM_REUSE",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://eur-lex.europa.eu/eli/dec/2011/833/oj"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "© European Union, 1998–2026 (EU Court of Justice / CURIA), reused under Commission Decision 2011/833/EU. CONTAINS PERSONAL DATA: party names appear in rdfs:label. Republishers become independent GDPR controllers — see docs/DATA_PROTECTION.md before redistribution. DRAFT — pending legal/DPO sign-off. The dcterms:license on this distribution is the source's reuse terms (Commission Decision 2011/833/EU); the project's compilation layer within it is additionally offered under CC BY 4.0."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:containsPersonalData": true,
       "estleg:euCourtDecisionCount": 22290,
       "dcat:byteSize": {
-        "@value": "3682172",
+        "@value": "3682781",
         "@type": "xsd:nonNegativeInteger"
       },
       "spdx:checksum": {
         "@type": "spdx:Checksum",
         "spdx:algorithm": {
-          "@id": "spdx:checksumAlgorithm_sha256"
+          "@id": "spdx:checksumAlgorithm_sha256",
+          "@type": "spdx:ChecksumAlgorithm"
         },
         "spdx:checksumValue": {
-          "@value": "98397da52883eae9ef7904ef281be49efe625b24526d65f2c3fb37acf82444d0",
+          "@value": "1e1a7277eae95d0b67e3dcf37bfd3a38a9c7361ef7f510a879dbf4f595ed7b10",
           "@type": "xsd:hexBinary"
         }
       }
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-riigikohus",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-riigikohus",
       "dcterms:title": "Combined Supreme Court decisions ontology (Riigikohus)",
+      "dcterms:description": "Estonian Supreme Court (Riigikohus) decisions as JSON-LD, partitioned by case type under krr_outputs/riigikohus/, with the shared schema in riigikohus_schema.json. Decision count is the validated estleg:courtDecisionCount in the estleg:statistics block.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/quarterly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/QUARTERLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/2676a1f81b4f3a583825239656dc7665b9e3294b/krr_outputs/riigikohus"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/v1.0.0/krr_outputs/riigikohus"
       },
       "dcat:downloadURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/2676a1f81b4f3a583825239656dc7665b9e3294b.zip"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/refs/tags/v1.0.0.zip"
+      },
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
       },
       "dcterms:format": {
-        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
       },
-      "dcterms:description": "Estonian Supreme Court (Riigikohus) decisions as JSON-LD, partitioned by case type under krr_outputs/riigikohus/, with the shared schema in riigikohus_schema.json. Decision count is the validated estleg:courtDecisionCount in the estleg:statistics block.",
-      "dcterms:rights": "DRAFT — Source: RIK (https://rikos.rik.ee) / Riigikohus. Judgments are not objects of copyright under §5 Autoriõiguse seadus. CONTAINS PERSONAL DATA: full personal names appear in estleg:summary, and KarS (Penal Code) charges are attached to identifiable persons (Art. 10 GDPR criminal-conviction data). Republication is governed by GDPR + the Kohtute seadus publication regime + AKI court-anonymisation rules; republishers become independent GDPR controllers. VERIFY whether stored names match RIK's anonymised feed or exceed it (redaction needed if exceeded). See docs/DATA_PROTECTION.md — pending legal/DPO sign-off.",
+      "dcat:packageFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/zip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT — Source: RIK (https://rikos.rik.ee) / Riigikohus. Judgments are not objects of copyright under §5 Autoriõiguse seadus. CONTAINS PERSONAL DATA: full personal names appear in estleg:summary, and KarS (Penal Code) charges are attached to identifiable persons (Art. 10 GDPR criminal-conviction data). Republication is governed by GDPR + the Kohtute seadus publication regime + AKI court-anonymisation rules; republishers become independent GDPR controllers. VERIFY whether stored names match RIK's anonymised feed or exceed it (redaction needed if exceeded). See docs/DATA_PROTECTION.md — pending legal/DPO sign-off. The dcterms:license on this distribution (CC BY 4.0) is the project's offer for its compilation layer only; it grants nothing over the third-party text."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:containsPersonalData": true,
       "estleg:courtDecisionCount": 12104
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-regulations-kov",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-regulations-kov",
       "dcterms:title": "Municipal regulations ontology (KOV)",
+      "dcterms:description": "Local-government (kohaliku omavalitsuse, KOV) municipal regulations as JSON-LD — one file each under krr_outputs/regulations/kov/, plus REGULATIONS_KOV_INDEX.json. Regulation count is the validated estleg:municipalRegulationCount in the estleg:statistics block.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/monthly"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/2676a1f81b4f3a583825239656dc7665b9e3294b/krr_outputs/regulations/kov"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/v1.0.0/krr_outputs/regulations/kov"
       },
       "dcat:downloadURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/2676a1f81b4f3a583825239656dc7665b9e3294b.zip"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/archive/refs/tags/v1.0.0.zip"
+      },
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
       },
       "dcterms:format": {
-        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
       },
-      "dcterms:description": "Local-government (kohaliku omavalitsuse, KOV) municipal regulations as JSON-LD — one file each under krr_outputs/regulations/kov/, plus REGULATIONS_KOV_INDEX.json. Regulation count is the validated estleg:municipalRegulationCount in the estleg:statistics block.",
-      "dcterms:rights": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Municipal regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md.",
+      "dcat:packageFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/zip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Municipal regulation text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: consolidated product + sui generis database right may carry Riigi Teataja reuse/API terms — check live terms before redistribution. Compilation layer offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md. The dcterms:license on this distribution (CC BY 4.0) is the project's offer for its compilation layer only; it grants nothing over the third-party text."
+      },
+      "dcterms:conformsTo": [
+        {
+          "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/estonian_legal_shapes.ttl",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology SHACL shapes"
+        },
+        {
+          "@id": "https://w3id.org/estleg/vocabulary",
+          "@type": "dcterms:Standard",
+          "dcterms:title": "Estonian Legal Ontology controlled vocabulary (TBox)"
+        }
+      ],
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
       "estleg:municipalRegulationCount": 11059
     },
     {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-changes-0.11.0",
       "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-changes-0.11.0",
       "dcterms:title": "Inter-release change record 0.11.0",
+      "dcterms:description": "Machine-readable IRI delta for 0.11.0: INDEX deprecated_laws (removed/replaced) versus live INDEX laws. Listed IRIs are capped at 50; added/removed counts are complete.",
       "dcterms:accrualPeriodicity": {
-        "@id": "http://purl.org/cld/freq/irregular"
+        "@id": "http://publications.europa.eu/resource/authority/frequency/IRREG",
+        "@type": "dcterms:Frequency"
       },
-      "dcat:mediaType": "application/ld+json",
       "dcat:accessURL": {
-        "@id": "krr_outputs/changes-0.11.0.jsonld"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/blob/v1.0.0/krr_outputs/changes-0.11.0.jsonld"
       },
       "dcat:downloadURL": {
-        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/2676a1f81b4f3a583825239656dc7665b9e3294b/krr_outputs/changes-0.11.0.jsonld"
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/v1.0.0/krr_outputs/changes-0.11.0.jsonld"
+      },
+      "dcat:mediaType": {
+        "@id": "http://www.iana.org/assignments/media-types/application/ld+json",
+        "@type": "dcterms:MediaType"
       },
       "dcterms:format": {
-        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD",
+        "@type": "dcterms:MediaTypeOrExtent"
       },
-      "dcterms:description": "Machine-readable IRI delta for 0.11.0: INDEX deprecated_laws (removed/replaced) versus live INDEX laws. Listed IRIs are capped at 50; added/removed counts are complete."
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "Wholly the project's own work: a machine-readable delta of minted estleg: IRIs between releases, with no third-party text. Offered under CC BY 4.0 (DRAFT election, CC0 1.0 an acceptable alternative; see NOTICE / docs/DATA_RIGHTS.md)."
+      },
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      }
+    },
+    {
+      "@id": "https://w3id.org/estleg/dataset/estonian-legal-ontology#dist-chunks",
+      "@type": "dcat:Distribution",
+      "dcterms:identifier": "estleg-1.0.0-chunks",
+      "dcterms:title": "Retrieval chunks (provision-version JSON Lines)",
+      "dcterms:accrualPeriodicity": {
+        "@id": "http://publications.europa.eu/resource/authority/frequency/MONTHLY",
+        "@type": "dcterms:Frequency"
+      },
+      "dcat:accessURL": {
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/chunks.jsonl.gz"
+      },
+      "dcat:downloadURL": {
+        "@id": "https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v1.0.0/chunks.jsonl.gz"
+      },
+      "dcterms:format": {
+        "@id": "http://publications.europa.eu/resource/authority/file-type/JSON",
+        "@type": "dcterms:MediaTypeOrExtent"
+      },
+      "dcat:compressFormat": {
+        "@id": "http://www.iana.org/assignments/media-types/application/gzip",
+        "@type": "dcterms:MediaType"
+      },
+      "dcterms:license": {
+        "@id": "http://publications.europa.eu/resource/authority/licence/CC_BY_4_0",
+        "@type": "dcterms:LicenseDocument",
+        "rdfs:seeAlso": {
+          "@id": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      },
+      "dcterms:accessRights": {
+        "@id": "http://publications.europa.eu/resource/authority/access-right/PUBLIC",
+        "@type": "dcterms:RightsStatement"
+      },
+      "dcterms:rights": {
+        "@type": "dcterms:RightsStatement",
+        "rdfs:label": "DRAFT — Source: Riigi Teataja (https://www.riigiteataja.ee). Each record carries the untruncated text of one enacted-law provision version; statutory text is excluded from copyright under §5 Autoriõiguse seadus. VERIFY: the consolidated product and a sui generis database right may carry Riigi Teataja reuse/API terms. Compilation layer (IRIs, version alignment, structure) offered under CC BY 4.0. See NOTICE / docs/DATA_RIGHTS.md. The dcterms:license on this distribution (CC BY 4.0) is the project's offer for its compilation layer only; it grants nothing over the third-party text."
+      },
+      "dcterms:issued": {
+        "@value": "2026-08-19",
+        "@type": "xsd:date"
+      },
+      "dcterms:description": "Retrieval projection of the enacted laws: one JSON object per line (JSON Lines, gzip-compressed), one record per provision version with provision IRI, act title, RT URL, validity dates and untruncated text. Built by the release step (generate_retrieval_projection.py --chunks-only); byte size and checksum are stamped by build_release_assets.py. JSON Lines has no registered IANA media type, so dcat:mediaType is omitted and dcterms:format is JSON.",
+      "dcat:byteSize": {
+        "@value": "17547801",
+        "@type": "xsd:nonNegativeInteger"
+      },
+      "spdx:checksum": {
+        "@type": "spdx:Checksum",
+        "spdx:algorithm": {
+          "@id": "spdx:checksumAlgorithm_sha256",
+          "@type": "spdx:ChecksumAlgorithm"
+        },
+        "spdx:checksumValue": {
+          "@value": "e35ac91f944c94dfa347db0f03f54c2da57aa1855a096e6398c1c275c9dfa7bc",
+          "@type": "xsd:hexBinary"
+        }
+      }
     }
   ],
   "estleg:statistics": {
@@ -565,7 +1188,7 @@
     "estleg:courtDecisionCount": 12104,
     "estleg:euLegislationCount": 33242,
     "estleg:euCourtDecisionCount": 22290,
-    "estleg:totalFiles": 27008,
+    "estleg:totalFiles": 27023,
     "estleg:semanticNodeCount": 170000,
     "estleg:integrationLayerCount": 15,
     "estleg:courtDecisionYearRange": "1993-2026",

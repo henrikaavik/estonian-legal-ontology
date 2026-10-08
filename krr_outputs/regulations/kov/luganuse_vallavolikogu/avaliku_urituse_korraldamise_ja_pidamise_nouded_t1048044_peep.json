@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,23 +39,6 @@
       },
       "estleg:titleNormalized": "avaliku urituse korraldamise ja pidamise nouded",
       "estleg:regulationTypeBucket": "pidamise nouded",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/10"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2162"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/517"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1048044_Map_Reg_1045686_Map"
@@ -141,17 +125,6 @@
           "@id": "estleg:Amendment_Reg_1048044_b3fbc84d57"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vald"
-        },
-        {
-          "@id": "estleg:Issuer_luganuse_vallavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -170,6 +143,40 @@
       "estleg:references": [
         {
           "@id": "estleg:KORS_Par_58_Lg_2"
+        }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": false,
+        "@type": "xsd:boolean"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/10"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/10"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_luganuse_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
       ]
     },
@@ -194,12 +201,11 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1048044_Map"
       },
-      "estleg:competentAuthority": [
+      "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vald"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:Reg_1048044_Par_2",
@@ -230,14 +236,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -245,6 +243,11 @@
       "estleg:references": [
         {
           "@id": "estleg:KORS_Par_58_Lg_2"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_luganuse_vallavalitsus"
         }
       ]
     },
@@ -277,24 +280,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_luganuse_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_luganuse_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1048044_Par_4",
@@ -325,24 +319,16 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_luganuse_vallavalitsus"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1048044_Par_5",
@@ -373,27 +359,27 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_luganuse_vallavalitsus"
         }
       ],
-      "estleg:competenceType": "enforcement",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:targetGroupConcept": [
+      "estleg:competenceType": "licensing",
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         },
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1048044_Par_6",
@@ -424,27 +410,19 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_luganuse_vallavalitsus"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1048044_Par_7",
@@ -475,27 +453,19 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_luganuse_vallavalitsus"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "licensing"
     },
     {
       "@id": "estleg:Reg_1048044_Par_8",
@@ -526,27 +496,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_luganuse_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_luganuse_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1048044_Par_9",
@@ -599,27 +560,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_luganuse_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_luganuse_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1048044_Par_11",
@@ -650,27 +602,19 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
-        },
-        {
-          "@id": "estleg:Issuer_luganuse_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "supervision",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_luganuse_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:Reg_1048044_Par_12",

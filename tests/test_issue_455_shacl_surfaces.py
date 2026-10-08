@@ -29,6 +29,7 @@ CONTEXT = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "eli": "http://data.europa.eu/eli/ontology#",
 }
 
 
@@ -56,6 +57,7 @@ def _provision_with_bare_version_stub() -> dict:
         "estleg:paragrahv": "TEST § 1",
         "estleg:summary": "Fixture provision whose hasVersion target is an untyped stub.",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
         "estleg:hasVersion": {"@id": "estleg:VersionStub"},
     }
 

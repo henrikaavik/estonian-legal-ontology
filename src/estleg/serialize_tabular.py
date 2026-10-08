@@ -11,6 +11,16 @@ This exporter walks ordinary ``*_peep.json`` files (never
 * ``sanctions.csv`` — sanction sidecar nodes
 * ``court_decisions.csv`` — Riigikohus decision metadata (no full text)
 
+A sixth, opt-in table (``--kov-legality``, #712) is the KOV legality view:
+
+* ``kov_legality.csv`` — one row per municipal regulation × enabling provision
+  it cites, with the municipality / county (EHAK codes), the issuing body and
+  (for abolished municipalities) the pre-merger ``HistoricalMunicipality``, the
+  ``ProvisionVersion`` in force at the act's entry into force, and whether that
+  enabling provision has been rewritten since (see
+  ``derive_kov_enabling_staleness``). It loads the ``provision_versions/``
+  surface (~3 s), so it is not part of the default star-schema run.
+
 CSV uses the stdlib ``csv`` module. Parquet is written only when ``pyarrow``
 imports; otherwise a one-line stderr note is printed and CSV still ships.
 ``pyarrow`` is not a project dependency.
@@ -24,6 +34,14 @@ cheap and is what regenerates the committed sample.
       --laws-glob '*_peep.json' \\
       --sanctions-glob 'sanctions/sanctions_*.json' \\
       --court-glob 'riigikohus/riigikohus_*_peep.json'
+
+    # KOV legality: committed sample (two issuers of Mulgi vald) / full corpus
+    python3 scripts/serialize_tabular.py --kov-legality --out krr_outputs/exports
+    python3 scripts/serialize_tabular.py --kov-legality --out /tmp/estleg-tabular \\
+      --kov-glob 'regulations/kov/*/*_peep.json'
+    # ... or one municipality (EHAK code), e.g. Mulgi vald
+    python3 scripts/serialize_tabular.py --kov-legality --out /tmp/estleg-tabular \\
+      --kov-glob 'regulations/kov/*/*_peep.json' --kov-municipality 0480
 """
 
 from __future__ import annotations
@@ -33,6 +51,7 @@ import csv
 import json
 import sys
 from collections.abc import Iterable, Mapping, Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -90,6 +109,36 @@ SANCTION_COLUMNS: tuple[str, ...] = (
     "unit",
 )
 COURT_COLUMNS: tuple[str, ...] = ("iri", "caseNumber", "date", "ecli", "chamber")
+
+# #712 KOV legality view. Stable consumer contract: column order is part of
+# the contract (tests pin it); add new columns at the end only.
+KOV_LEGALITY_TABLE = "kov_legality"
+DEFAULT_KOV_GLOBS: tuple[str, ...] = (
+    "regulations/kov/abja_vallavolikogu/*_peep.json",
+    "regulations/kov/mulgi_vallavolikogu/*_peep.json",
+)
+KOV_LEGALITY_COLUMNS: tuple[str, ...] = (
+    "municipality_ehak",
+    "municipality",
+    "county_code",
+    "county",
+    "act_iri",
+    "title",
+    "entry_into_force",
+    "temporal_status",
+    "issuer",
+    "municipality_status",
+    "historical_municipality",
+    "historical_municipality_name",
+    "enabling_provision",
+    "citation_status",
+    "version_provision",
+    "version_in_force",
+    "provision_outdated",
+    "provision_superseding_date",
+    "act_outdated",
+    "act_earliest_superseding_date",
+)
 
 TABLE_COLUMNS: dict[str, tuple[str, ...]] = {
     "laws": LAW_COLUMNS,
@@ -728,6 +777,152 @@ def serialize(
     return write_tables(dest, tables, write_parquet=write_parquet)
 
 
+@dataclass(frozen=True)
+class KovContext:
+    """Registry lookups the KOV legality rows join against."""
+
+    municipalities: Mapping[str, Mapping[str, str]]   # EHAK → {name, county}
+    county_codes: Mapping[str, str]                   # county label → EHAK code
+    historical_names: Mapping[str, str]               # HistoricalMunicipality IRI → formerName
+
+
+def load_kov_context(ehak_dir: Path | None = None) -> KovContext:
+    """Load municipalities, county codes and historical names from ``data/ehak``."""
+    from estleg.enrich_kov_layer1 import load_county_codes
+    from estleg.kov_registry import load_municipalities
+
+    root = Path(ehak_dir) if ehak_dir is not None else REPO_ROOT / "data" / "ehak"
+    municipalities = load_municipalities(root / "municipalities.json")
+    historical_names: dict[str, str] = {}
+    doc = _load_jsonld(root / "historical_municipalities.jsonld")
+    for node in iter_nodes(doc):
+        name = jsonld_text(node.get("estleg:formerName"))
+        if name and "estleg:HistoricalMunicipality" in node_types(node):
+            historical_names[node_id(node)] = name
+    return KovContext(
+        municipalities={code: dict(mun) for code, mun in municipalities.items()},
+        county_codes=load_county_codes(root / "counties.json"),
+        historical_names=historical_names,
+    )
+
+
+def _ehak_from_municipality_iri(iri: str) -> str:
+    prefix = "estleg:Municipality_EHAK_"
+    return iri[len(prefix):] if iri.startswith(prefix) else ""
+
+
+def kov_legality_rows(
+    doc: object,
+    *,
+    versions: Any,
+    context: KovContext,
+) -> list[dict[str, str]]:
+    """Project the KOV roots of one peep into legality rows.
+
+    ``versions`` is a ``derive_kov_enabling_staleness.VersionLayer``. The
+    evaluation is recomputed here (not read back from the peep stamps) so the
+    table also carries the per-citation version IRI the peeps do not store;
+    ``act_outdated`` therefore equals the peep's
+    ``estleg:enablingProvisionOutdated`` whenever that stamp is current.
+    """
+    from estleg.derive_kov_enabling_staleness import evaluate_root, is_kov_root
+
+    nodes = iter_nodes(doc)
+    by_id = {node["@id"]: node for node in nodes if isinstance(node.get("@id"), str)}
+    rows: list[dict[str, str]] = []
+    for root in nodes:
+        if not is_kov_root(root):
+            continue
+        ehak = _ehak_from_municipality_iri(ref_id(root.get("estleg:enactedByMunicipality")))
+        mun = context.municipalities.get(ehak, {})
+        county = mun.get("county", "")
+        historical = ref_id(root.get("estleg:enactedByHistoricalMunicipality"))
+        evaluation = evaluate_root(root, by_id, versions)
+        act_outdated = ""
+        act_earliest = ""
+        if evaluation.resolved:
+            act_outdated = "true" if evaluation.outdated else "false"
+            act_earliest = evaluation.earliest_superseding_date or ""
+        base = {
+            "municipality_ehak": ehak,
+            "municipality": mun.get("name", ""),
+            "county_code": context.county_codes.get(county, ""),
+            "county": county,
+            "act_iri": node_id(root),
+            "title": jsonld_text(root.get("dc:source")) or jsonld_text(root.get("rdfs:label")),
+            "entry_into_force": jsonld_scalar(root.get("estleg:entryIntoForce")),
+            "temporal_status": jsonld_text(root.get("estleg:temporalStatus")),
+            "issuer": ref_id(root.get("estleg:enactedBy")),
+            "municipality_status": jsonld_text(root.get("estleg:municipalityStatus")),
+            "historical_municipality": historical,
+            "historical_municipality_name": context.historical_names.get(historical, ""),
+            "act_outdated": act_outdated,
+            "act_earliest_superseding_date": act_earliest,
+        }
+        if not evaluation.provisions:
+            rows.append(
+                {**base, "citation_status": "no_citation" if evaluation.as_of else "no_entry_into_force"}
+            )
+            continue
+        for prov in evaluation.provisions:
+            resolved = prov.status == "resolved"
+            rows.append(
+                {
+                    **base,
+                    "enabling_provision": prov.target,
+                    "citation_status": prov.status,
+                    "version_provision": prov.provision,
+                    "version_in_force": prov.version_in_force,
+                    "provision_outdated": (
+                        ("true" if prov.outdated else "false") if resolved else ""
+                    ),
+                    "provision_superseding_date": prov.superseding_date,
+                }
+            )
+    return rows
+
+
+def serialize_kov_legality(
+    *,
+    krr_dir: Path | None = None,
+    out_dir: Path | None = None,
+    kov_globs: Sequence[str] | None = None,
+    municipalities: Sequence[str] | None = None,
+    versions: Any = None,
+    context: KovContext | None = None,
+) -> int:
+    """Write ``kov_legality.csv`` under ``out_dir``; return the row count.
+
+    ``municipalities`` filters to the given EHAK codes (current successor
+    codes, i.e. ``estleg:enactedByMunicipality``).
+    """
+    from estleg.derive_kov_enabling_staleness import build_version_layer
+
+    root = Path(krr_dir) if krr_dir is not None else KRR_DIR
+    dest = Path(out_dir) if out_dir is not None else (root / "exports")
+    if versions is None:
+        versions = build_version_layer(root / "provision_versions")
+    if context is None:
+        context = load_kov_context()
+    wanted = set(municipalities or ())
+    rows: list[dict[str, str]] = []
+    for path in resolve_globs(root, kov_globs or DEFAULT_KOV_GLOBS):
+        if path.name.startswith("REGULATIONS_KOV_INDEX"):
+            continue
+        doc = _load_jsonld(path)
+        if doc is None:
+            continue
+        for row in kov_legality_rows(doc, versions=versions, context=context):
+            if not wanted or row["municipality_ehak"] in wanted:
+                rows.append(row)
+    rows.sort(
+        key=lambda r: (r["municipality_ehak"], r["act_iri"], r.get("enabling_provision", ""))
+    )
+    dest.mkdir(parents=True, exist_ok=True)
+    _write_csv(dest / f"{KOV_LEGALITY_TABLE}.csv", KOV_LEGALITY_COLUMNS, rows)
+    return len(rows)
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=__doc__,
@@ -786,11 +981,45 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=REPO_ROOT / "data" / "law_abbreviations.json",
         help="law abbreviation registry (slug → abbrev)",
     )
+    parser.add_argument(
+        "--kov-legality",
+        action="store_true",
+        help="write only the KOV legality table (kov_legality.csv, #712) "
+             "instead of the five star-schema tables",
+    )
+    parser.add_argument(
+        "--kov-glob",
+        action="append",
+        dest="kov_globs",
+        metavar="GLOB",
+        help=(
+            "KOV peep glob relative to --krr-dir (repeatable). Default: the "
+            "committed sample (" + ", ".join(DEFAULT_KOV_GLOBS) + ")"
+        ),
+    )
+    parser.add_argument(
+        "--kov-municipality",
+        action="append",
+        dest="kov_municipalities",
+        metavar="EHAK",
+        help="restrict the KOV legality table to this current-municipality "
+             "EHAK code (repeatable)",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.kov_legality:
+        n = serialize_kov_legality(
+            krr_dir=args.krr_dir,
+            out_dir=args.out,
+            kov_globs=args.kov_globs,
+            municipalities=args.kov_municipalities,
+        )
+        print(f"kov legality export: {n} rows")
+        print(f"  wrote {args.out / (KOV_LEGALITY_TABLE + '.csv')}")
+        return 0
     counts = serialize(
         krr_dir=args.krr_dir,
         out_dir=args.out,

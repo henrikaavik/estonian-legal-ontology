@@ -146,9 +146,11 @@ consider whether you need the names at all for your use case.
 `metadata.jsonld`:
 
 - the Riigikohus distribution carries `estleg:containsPersonalData: true` plus a
-  `dcterms:rights` note;
+  `dcterms:rights` statement (a `dcterms:RightsStatement` whose `rdfs:label`
+  holds the note, #710);
 - the CURIA distribution carries `estleg:containsPersonalData: true` plus a
-  `dcterms:rights` note;
+  `dcterms:rights` statement (a `dcterms:RightsStatement` whose `rdfs:label`
+  holds the note, #710);
 - first/second-instance ingest (`krr_outputs/kohtud/`) is covered by this
   notice even without a separate `dcat:distribution` row — treat it like
   Riigikohus if summaries are stored. The committed sample is additionally

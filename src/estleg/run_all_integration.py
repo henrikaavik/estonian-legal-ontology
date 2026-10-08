@@ -4,7 +4,7 @@ Master orchestration script for the enrichment pipeline and release builds.
 
 This module owns three things:
 
-1. A declarative **step DAG** of 29 steps in four tiers (#704): ingest
+1. A declarative **step DAG** of 30 steps in four tiers (#704): ingest
    (network fetches), enrichment (offline corpus passes and sub-corpus
    aggregate rebuilds), build (the combined/INDEX rebuild) and package
    (consumer artefacts derived from the built corpus). Each step declares
@@ -74,14 +74,15 @@ Execution order (topological):
         classify_target_group.py, extract_institutional_competence.py,
         extract_sanctions.py, extract_draft_impact.py
     25. derive_court_interpretation_staleness.py (after 12 and the versions)
-    26. generate_similarity_index.py      (after all enrichment)
+    26. derive_kov_enabling_staleness.py  (after 4 and the versions, #712)
+    27. generate_similarity_index.py      (after all enrichment)
   Phase 5 — Build (the last enrichment-side step)
-    27. build_release_artifacts.py        combined_ontology.jsonld + INDEX.json;
+    28. build_release_artifacts.py        combined_ontology.jsonld + INDEX.json;
                                           embeds materialize_combined_inverses
                                           (#520) and the analytical stamps (#521)
   Phase 6 — Package
-    28. generate_analytical_overlay.py    analytical/analytical_overlay.jsonld
-    29. build_release_assets.py           release/ + SHA256SUMS
+    29. generate_analytical_overlay.py    analytical/analytical_overlay.jsonld
+    30. build_release_assets.py           release/ + SHA256SUMS
 
 If a dependency fails, its dependents are automatically skipped.
 
@@ -483,6 +484,24 @@ STEPS: list[dict] = [
         "reads": ["riigikohus/*_peep.json", "provision_versions/*.jsonld"],
         "writes": ["riigikohus/*_peep.json"],
     },
+    {
+        "name": "derive_kov_enabling_staleness.py",
+        "description": "KOV regulations whose enabling provision changed since adoption (#712)",
+        "script": "derive_kov_enabling_staleness.py",
+        "args": ["--apply"],
+        # Reads the estleg:references edges from extract_cross_references.py
+        # and the provision version layer (both writers of
+        # provision_versions/*.jsonld). The KOV peeps are read through the
+        # committed-input pattern regulations/**/*_peep.json, as every other
+        # regulation reader does; generate_similarity_index.py rewrites KOV
+        # peeps afterwards and depends on this step.
+        "depends_on": ["extract_cross_references.py",
+                       "generate_provision_versions.py",
+                       "generate_provision_versions_regulations"],
+        "reads": ["regulations/**/*_peep.json", "provision_versions/*.jsonld"],
+        "writes": ["regulations/kov/*/*_peep.json",
+                   "reports/kov/derive_kov_enabling_staleness_coverage.json"],
+    },
 
     # -- Phase 4: Aggregation (reads fully-enriched data) -----------------
     {
@@ -511,6 +530,7 @@ STEPS: list[dict] = [
             "derive_act_temporal_status.py",
             "generate_act_expressions_608.py",
             "derive_court_interpretation_staleness.py",
+            "derive_kov_enabling_staleness.py",
         ],
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
                   "eelnoud/*_peep.json", "riigikohus/*_peep.json"],
@@ -571,6 +591,7 @@ STEPS: list[dict] = [
             "extract_sanctions.py",
             "extract_draft_impact.py",
             "derive_court_interpretation_staleness.py",
+            "derive_kov_enabling_staleness.py",
             "generate_similarity_index.py",
         ],
         # Root peeps + the allowlisted JSON-LD inputs, the merged overlay
@@ -1051,7 +1072,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--no-restore-on-failure",
         action="store_true",
-        help="Leave partial output changes in place if a later step fails.",
+        help="Leave partial output changes in place if a later step fails "
+        "(same as --snapshot none).",
+    )
+    parser.add_argument(
+        "--snapshot",
+        choices=SNAPSHOT_MODES,
+        default=SNAPSHOT_COPY,
+        help="Rollback strategy for krr_outputs/ (#722). 'copy' (default) = "
+        "rename-aside + full copytree (~3.3 GB); 'auto' = when "
+        "`git status --porcelain krr_outputs` is clean, skip the copy and "
+        "roll back from git HEAD on failure, else fall back to 'copy'; "
+        "'none' = no rollback.",
     )
     parser.add_argument(
         "--validate-each",
@@ -1112,6 +1144,73 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 # ===========================================================================
 # Snapshot / restore (unchanged semantics — atomic rename-aside)
 # ===========================================================================
+
+
+SNAPSHOT_COPY = "copy"
+SNAPSHOT_AUTO = "auto"
+SNAPSHOT_NONE = "none"
+SNAPSHOT_MODES = (SNAPSHOT_COPY, SNAPSHOT_AUTO, SNAPSHOT_NONE)
+#: Resolved rollback strategies (what ``resolve_snapshot_mode`` returns).
+ROLLBACK_COPY = "copy"
+ROLLBACK_GIT = "git"
+ROLLBACK_NONE = "none"
+
+
+def krr_outputs_git_clean() -> bool | None:
+    """True when ``git status --porcelain -- krr_outputs`` prints nothing.
+
+    ``None`` when git is unavailable or the path is not in a work tree (the
+    caller then falls back to the copy snapshot). Ignored files (caches,
+    regen ledgers) are not reported by ``--porcelain`` and are therefore
+    neither protected nor restored by the git rollback.
+    """
+    try:
+        proc = subprocess.run(
+            ["git", "status", "--porcelain", "--", str(KRR_DIR)],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            timeout=300,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.strip() == ""
+
+
+def resolve_snapshot_mode(requested: str, *, no_restore_on_failure: bool = False) -> str:
+    """Map the CLI ``--snapshot`` choice to a concrete rollback strategy.
+
+    ``--no-restore-on-failure`` always wins (``none``). ``auto`` resolves to
+    ``git`` on a clean tree — HEAD already *is* the snapshot, so the 3.3 GB
+    copytree is pure overhead — and to ``copy`` when the tree is dirty or
+    git cannot answer, so uncommitted work is never lost to a rollback.
+    """
+    if no_restore_on_failure or requested == SNAPSHOT_NONE:
+        return ROLLBACK_NONE
+    if requested == SNAPSHOT_AUTO:
+        return ROLLBACK_GIT if krr_outputs_git_clean() is True else ROLLBACK_COPY
+    return ROLLBACK_COPY
+
+
+def restore_outputs_from_git() -> None:
+    """Roll ``krr_outputs/`` back to git HEAD (the ``auto`` snapshot).
+
+    Only valid when the tree was clean at the start of the run: tracked
+    files are restored from HEAD (index and work tree) and untracked,
+    non-ignored files the run created are removed.
+    """
+    target = str(KRR_DIR)
+    subprocess.run(
+        ["git", "restore", "--source=HEAD", "--staged", "--worktree", "--", target],
+        cwd=str(REPO_ROOT), check=True,
+    )
+    subprocess.run(
+        ["git", "clean", "-fdq", "--", target],
+        cwd=str(REPO_ROOT), check=True,
+    )
 
 
 def snapshot_outputs() -> Path:
@@ -2106,12 +2205,25 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(0 if (args.dry_run or manifest["releaseOk"]) else 1)
 
     # ---- Pipeline / release build --------------------------------------
-    restore_on_failure = not args.no_restore_on_failure
+    # A dry-run never snapshots, so it never needs to ask git either.
+    rollback = ROLLBACK_NONE if args.dry_run else resolve_snapshot_mode(
+        args.snapshot, no_restore_on_failure=args.no_restore_on_failure
+    )
+    restore_on_failure = (
+        rollback != ROLLBACK_NONE if not args.dry_run
+        else not (args.no_restore_on_failure or args.snapshot == SNAPSHOT_NONE)
+    )
+    git_rollback = rollback == ROLLBACK_GIT
     snapshot: Path | None = None
-    if restore_on_failure and not args.dry_run:
+    if args.dry_run:
+        print(f"\n[DRY-RUN] Snapshot mode: {args.snapshot}")
+    elif rollback == ROLLBACK_COPY:
         print("\nCreating rollback snapshot of krr_outputs/ ...")
         snapshot = snapshot_outputs()
         print(f"  Snapshot ready at {snapshot}.")
+    elif git_rollback:
+        print("\nkrr_outputs/ is clean in git: skipping the copy snapshot; "
+              "a failure rolls back to HEAD (--snapshot auto).")
 
     try:
         dag_result = run_dag(
@@ -2136,6 +2248,11 @@ def main(argv: list[str] | None = None) -> None:
             print("\n  Interrupted — restoring krr_outputs/ from rollback "
                   "snapshot...", file=sys.stderr)
             restore_outputs(snapshot)
+            print("  Restore complete.", file=sys.stderr)
+        elif git_rollback and not args.dry_run:
+            print("\n  Interrupted — restoring krr_outputs/ from git HEAD...",
+                  file=sys.stderr)
+            restore_outputs_from_git()
             print("  Restore complete.", file=sys.stderr)
         raise
 
@@ -2169,6 +2286,10 @@ def main(argv: list[str] | None = None) -> None:
             restore_outputs(snapshot)
             print("  Restore complete.")
             snapshot = None
+        elif git_rollback:
+            print("  Restoring krr_outputs/ from git HEAD...")
+            restore_outputs_from_git()
+            print("  Restore complete.")
 
     # ---- Release build: run the three validators + write release manifest
     if args.release:
@@ -2220,6 +2341,8 @@ def main(argv: list[str] | None = None) -> None:
     manifest = {
         "generated": datetime.now(UTC).isoformat(),
         "restoreOnFailure": restore_on_failure,
+        "snapshotMode": args.snapshot,
+        "rollback": rollback,
         "dryRun": args.dry_run,
         "resumeFrom": args.resume_from,
         "parallel": args.parallel,

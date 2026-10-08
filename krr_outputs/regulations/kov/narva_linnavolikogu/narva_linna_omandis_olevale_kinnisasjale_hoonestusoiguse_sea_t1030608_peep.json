@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,23 +39,6 @@
       },
       "estleg:titleNormalized": "omandis olevale kinnisasjale hoonestusoiguse seadmise kord",
       "estleg:regulationTypeBucket": "seadmise kord",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/1021"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1030608_Map_Reg_1014647_Map"
@@ -81,20 +65,6 @@
           "@id": "estleg:Amendment_Reg_1030608_360bf2d176"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -108,6 +78,47 @@
       "estleg:implementsCitation": [
         {
           "@id": "estleg:Citation_Reg_1030608_Map_1"
+        }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": true,
+        "@type": "xsd:boolean"
+      },
+      "estleg:earliestSupersedingDate": {
+        "@value": "2016-07-01",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_linn"
         }
       ]
     },
@@ -132,12 +143,11 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1030608_Map"
       },
-      "estleg:competentAuthority": [
+      "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_linn"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_2",
@@ -196,27 +206,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_4",
@@ -247,24 +248,24 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_5",
@@ -288,14 +289,6 @@
         "@id": "estleg:Reg_1030608_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         },
@@ -337,27 +330,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_7",
@@ -391,14 +375,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -433,24 +409,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_9",
@@ -484,14 +451,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -523,12 +482,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -537,15 +490,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_11",
@@ -579,14 +532,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -650,30 +595,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_14",
@@ -729,14 +665,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -768,11 +696,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -800,11 +723,6 @@
         "@id": "estleg:Reg_1030608_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -920,11 +838,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -959,27 +872,24 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_narva_linnavalitsus"
         }
       ],
       "estleg:competenceType": "regulation",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:targetGroupConcept": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:TargetGroup_Official"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:Institution_linn"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_23",
@@ -1003,11 +913,6 @@
         "@id": "estleg:Reg_1030608_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -1046,11 +951,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1082,24 +982,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_26",
@@ -1133,14 +1027,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1175,27 +1061,19 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_narva_linnavolikogu"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1030608_Par_28",
@@ -1226,11 +1104,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1265,11 +1138,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1304,27 +1172,19 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_narva_linnavalitsus"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1030608_Par_31",
@@ -1374,11 +1234,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1410,24 +1265,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_34",
@@ -1455,21 +1304,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_35",
@@ -1500,24 +1343,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_36",
@@ -1548,24 +1382,16 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_narva_linnavolikogu"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1030608_Par_37",
@@ -1599,14 +1425,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1634,11 +1452,6 @@
         "@id": "estleg:Reg_1030608_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -1677,30 +1490,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Issuer_narva_linnavolikogu"
         },
         {
           "@id": "estleg:Issuer_narva_linnavalitsus"
         }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_40",
@@ -1731,11 +1535,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1770,24 +1569,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_42",
@@ -1818,11 +1608,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1860,14 +1645,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1902,27 +1679,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_45",
@@ -1945,19 +1713,18 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1030608_Map"
       },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_46",
@@ -1981,11 +1748,6 @@
         "@id": "estleg:Reg_1030608_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -2021,24 +1783,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "enforcement",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_48",
@@ -2069,18 +1825,16 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1030608_Par_49",
@@ -2111,27 +1865,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_50",
@@ -2165,14 +1910,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2204,15 +1941,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Issuer_narva_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2221,15 +1949,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_narva_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_52",
@@ -2261,11 +1992,6 @@
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:dutyHolder": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -2309,15 +2035,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_54",
@@ -2341,14 +2067,6 @@
         "@id": "estleg:Reg_1030608_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         },
@@ -2395,11 +2113,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2426,19 +2139,18 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1030608_Map"
       },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_57",
@@ -2472,14 +2184,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2506,19 +2210,18 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1030608_Map"
       },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_59",
@@ -2549,24 +2252,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_narva_linnavolikogu"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_60",
@@ -2600,18 +2294,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_narva_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1030608_Par_61",

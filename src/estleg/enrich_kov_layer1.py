@@ -4,6 +4,7 @@ Reads:
   - data/ehak/municipalities.json
   - data/ehak/municipality_wikidata.json (curated EHAK → Wikidata QIDs, #518)
   - data/ehak/issuers.json
+  - data/ehak/counties.json (EHAK county codes, #712)
   - krr_outputs/regulations/kov/<issuer>/*_peep.json
   - krr_outputs/*_peep.json (laws)
 
@@ -24,7 +25,7 @@ import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-from estleg.estleg_common import CONTEXT, NS, compact_iri_local, mint_act_iri
+from estleg.estleg_common import CONTEXT, NS, compact_iri_local, mint_act_iri, save_json
 from estleg.kov_registry import (
     HistoricalMunicipality,
     IssuerEntry,
@@ -51,6 +52,10 @@ ISSUERS_OUT = KRR_DIR / "issuers_kov_peep.json"
 # krr_outputs/ file-count statistics validated against metadata.jsonld.
 # It is added to the `kov` SHACL bucket in shacl_validate_all.py.
 HISTORICAL_MUNICIPALITIES_OUT = EHAK_DIR / "historical_municipalities.jsonld"
+# EHAK county (maakond) codes keyed by the county label used in
+# municipalities.json (#712). Optional: a missing file means no countyCode.
+COUNTIES_PATH = EHAK_DIR / "counties.json"
+_COUNTY_CODE_RE = re.compile(r"^00[0-9]{2}$")
 # Statistics Estonia public classifier; ``code`` is the 4-digit EHAK id.
 EHAK_CLASSIFIER_IRI = (
     "https://metaweb.stat.ee/klassifikaator_avalik?id=EHAK&code={code}"
@@ -116,6 +121,56 @@ def load_municipality_wikidata(path: Path) -> dict[str, str]:
     return out
 
 
+def load_county_codes(path: Path) -> dict[str, str]:
+    """County label (``"Harju maakond"``) → 4-character EHAK county code.
+
+    Missing file → empty map (the builder then omits ``estleg:countyCode``).
+    Malformed entries raise rather than silently emitting a bad code.
+    """
+    if not path.is_file():
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        payload = json.load(fh)
+    rows = payload.get("counties") if isinstance(payload, dict) else None
+    if not isinstance(rows, list):
+        raise ValueError(f"{path}: expected an object with a 'counties' list")
+    out: dict[str, str] = {}
+    for row in rows:
+        code = row.get("ehakCode") if isinstance(row, dict) else None
+        name = row.get("name") if isinstance(row, dict) else None
+        if not isinstance(code, str) or not _COUNTY_CODE_RE.fullmatch(code):
+            raise ValueError(f"{path}: invalid EHAK county code {code!r}")
+        if not isinstance(name, str) or not name:
+            raise ValueError(f"{path}: county {code} has no name")
+        if name in out:
+            raise ValueError(f"{path}: duplicate county name {name!r}")
+        out[name] = code
+    return out
+
+
+def historical_municipality_by_issuer(
+    historical: dict[str, HistoricalMunicipality],
+) -> dict[str, str]:
+    """Issuer slug → pre-merger EHAK code, inverted from ``issuerSlugs`` (#712).
+
+    ``extract_historical_municipalities`` already collects the issuer slugs
+    that map to each pre-merger unit; this is the lookup that lets the
+    issuer and act nodes carry an IRI edge to the
+    ``HistoricalMunicipality`` individual instead of only the slug-derived
+    ``historicalMunicipalityName`` literal.
+    """
+    out: dict[str, str] = {}
+    for code in sorted(historical):
+        for slug in historical[code]["issuerSlugs"]:
+            if slug in out and out[slug] != code:
+                raise ValueError(
+                    f"issuer {slug!r} maps to two historical municipalities "
+                    f"({out[slug]} and {code})"
+                )
+            out[slug] = code
+    return out
+
+
 def municipality_identity_links(
     ehak_code: str, wikidata_qid: str | None = None
 ) -> dict:
@@ -131,12 +186,19 @@ def municipality_identity_links(
 def build_municipality_doc(
     municipalities: dict[str, Municipality],
     wikidata_by_code: dict[str, str] | None = None,
+    county_codes: dict[str, str] | None = None,
 ) -> dict:
-    """Build the JSON-LD document containing all Municipality nodes."""
+    """Build the JSON-LD document containing all Municipality nodes.
+
+    ``estleg:county`` keeps the county label; ``estleg:countyCode`` (#712)
+    adds the EHAK county code when the label is in ``county_codes``.
+    """
     if wikidata_by_code is None:
         wikidata_by_code = load_municipality_wikidata(
             EHAK_DIR / MUNICIPALITY_WIKIDATA.name
         )
+    if county_codes is None:
+        county_codes = load_county_codes(EHAK_DIR / COUNTIES_PATH.name)
     nodes = [
         {
             "@id": mint_act_iri("Municipalities"),
@@ -154,13 +216,29 @@ def build_municipality_doc(
             "estleg:ehakCode": code,
             "estleg:county": mun["county"],
         }
+        county_code = county_codes.get(mun["county"])
+        if county_code:
+            node["estleg:countyCode"] = county_code
         node.update(municipality_identity_links(code, wikidata_by_code.get(code)))
         nodes.append(node)
     return {"@context": CONTEXT, "@graph": nodes}
 
 
-def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
-    """Build the JSON-LD document containing all Issuer nodes."""
+def build_issuer_doc(
+    issuers: dict[str, IssuerEntry],
+    historical_by_slug: dict[str, str] | None = None,
+) -> dict:
+    """Build the JSON-LD document containing all Issuer nodes.
+
+    Issuers of an abolished (pre-merger) municipality also carry
+    ``estleg:historicalMunicipality`` → the ``HistoricalMunicipality``
+    individual (#712). ``historical_by_slug`` defaults to the mapping
+    derived from ``issuers`` themselves.
+    """
+    if historical_by_slug is None:
+        historical_by_slug = historical_municipality_by_issuer(
+            extract_historical_municipalities(list(issuers.values()))
+        )
     nodes: list[dict] = [
         {
             "@id": mint_act_iri("Issuers_Kov"),
@@ -187,6 +265,11 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
             node["estleg:mappingEvidence"] = entry["mappingEvidence"]
         if entry["historicalMunicipalityName"]:
             node["estleg:historicalMunicipalityName"] = entry["historicalMunicipalityName"]
+        former_code = historical_by_slug.get(slug)
+        if former_code:
+            node["estleg:historicalMunicipality"] = {
+                "@id": historical_municipality_iri(former_code)
+            }
         nodes.append(node)
     return {"@context": CONTEXT, "@graph": nodes}
 
@@ -218,6 +301,29 @@ def stamp_kov_act_municipality_status(act_node: dict, status_by_slug: dict[str, 
     return True
 
 
+def stamp_kov_act_historical_municipality(
+    act_node: dict, historical_by_slug: dict[str, str],
+) -> bool:
+    """Set ``estleg:enactedByHistoricalMunicipality`` on a KOV act (#712).
+
+    Acts of a body of an abolished municipality point at the pre-merger
+    ``HistoricalMunicipality``; ``estleg:enactedByMunicipality`` keeps
+    pointing at the current successor. Acts of a current municipality get
+    the property removed (strip-then-set, so re-runs are idempotent).
+    Returns True iff the node changed.
+    """
+    prop = "estleg:enactedByHistoricalMunicipality"
+    slug = issuer_slug_from_iri(act_node.get("estleg:enactedBy"))
+    former_code = historical_by_slug.get(slug) if slug else None
+    if former_code is None:
+        return act_node.pop(prop, None) is not None
+    ref = {"@id": historical_municipality_iri(former_code)}
+    if act_node.get(prop) == ref:
+        return False
+    act_node[prop] = ref
+    return True
+
+
 def build_historical_municipality_doc(
     historical: dict[str, HistoricalMunicipality],
 ) -> dict:
@@ -231,9 +337,9 @@ def build_historical_municipality_doc(
     derivable. Nodes are emitted in ascending former-EHAK order for a
     stable on-disk diff. The ``issuerSlugs`` carried on the in-memory
     :class:`HistoricalMunicipality` records are used for coverage
-    reporting only and are not serialised onto the nodes — the
-    issuer→historical relationship remains via the issuer node's
-    ``estleg:historicalMunicipalityName`` literal, unchanged here.
+    the inverse ``estleg:historicalMunicipality`` edge on issuer nodes and
+    ``estleg:enactedByHistoricalMunicipality`` on acts (#712), so they are
+    not repeated on the historical nodes themselves.
     """
     nodes: list[dict] = [
         {
@@ -403,19 +509,8 @@ def stamp_act_type(path: Path) -> None:
             fh.write(new_text)
 
 
-def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
-    """Compute the enriched JSON-LD doc for a KOV act file.
-
-    Mutates and returns `doc` (callers pass an independent in-memory
-    copy when they need the original for comparison). Raises
-    ValueError on malformed input — exactly the same conditions that
-    `enrich_kov_act_file` reports.
-    """
-    issuer_ref = {"@id": issuer_iri(issuer["slug"])}
-    municipality_ref = {"@id": municipality_iri(issuer["currentMunicipalityCode"])}
-
-    # Pass 1: collect every MunicipalRegulation node, enforce exactly
-    # one, then enrich it.
+def _find_kov_act_node(doc: dict, path: Path) -> dict:
+    """Return the single ``estleg:MunicipalRegulation`` node or raise."""
     act_nodes: list[dict] = []
     for node in doc.get("@graph", []):
         types = node.get("@type", [])
@@ -423,7 +518,6 @@ def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
             types = [types]
         if "estleg:MunicipalRegulation" in types:
             act_nodes.append(node)
-
     if len(act_nodes) == 0:
         raise ValueError(
             f"{path}: no estleg:MunicipalRegulation node in @graph; "
@@ -434,8 +528,27 @@ def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
             f"{path}: found {len(act_nodes)} estleg:MunicipalRegulation "
             "nodes; KOV files must contain exactly one"
         )
+    return act_nodes[0]
 
-    act_node = act_nodes[0]
+
+def _build_enriched_act_doc(
+    doc: dict,
+    issuer: IssuerEntry,
+    path: Path,
+    historical_by_slug: dict[str, str] | None = None,
+) -> dict:
+    """Compute the enriched JSON-LD doc for a KOV act file.
+
+    Mutates and returns `doc` (callers pass an independent in-memory
+    copy when they need the original for comparison). Raises
+    ValueError on malformed input — exactly the same conditions that
+    `enrich_kov_act_file` reports.
+    """
+    issuer_ref = {"@id": issuer_iri(issuer["slug"])}
+    municipality_ref = {"@id": municipality_iri(issuer["currentMunicipalityCode"])}
+
+    # Pass 1: find the single MunicipalRegulation node, then enrich it.
+    act_node = _find_kov_act_node(doc, path)
     act_iri = act_node.get("@id")
     if not isinstance(act_iri, str) or not act_iri:
         raise ValueError(f"{path}: MunicipalRegulation node has no @id")
@@ -458,6 +571,8 @@ def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
     act_node["estleg:titleNormalized"] = normalize_title(
         title, parse_issuer_slug(issuer["slug"]),
     )
+    if historical_by_slug is not None:
+        stamp_kov_act_historical_municipality(act_node, historical_by_slug)
 
     # Pass 2: enrich provisions.
     for node in doc.get("@graph", []):
@@ -471,7 +586,11 @@ def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
     return doc
 
 
-def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> bool:
+def enrich_kov_act_file(
+    path: Path,
+    issuer: IssuerEntry,
+    historical_by_slug: dict[str, str] | None = None,
+) -> bool:
     """Add Layer 1 properties to a single KOV act peep file in place.
 
     Raises ValueError if the file does not contain exactly one node
@@ -491,7 +610,7 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> bool:
     # pre-enrichment shape. Round-tripping through JSON is fine here:
     # peep docs are pure data (no recursive refs, no datetimes).
     enriched_doc = _build_enriched_act_doc(
-        json.loads(original_text), issuer, path,
+        json.loads(original_text), issuer, path, historical_by_slug,
     )
 
     if enriched_doc == original_doc:
@@ -500,6 +619,25 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> bool:
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(enriched_doc, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
+    return True
+
+
+def stamp_kov_act_file_historical(
+    path: Path, historical_by_slug: dict[str, str],
+) -> bool:
+    """Stamp ONLY ``enactedByHistoricalMunicipality`` on a KOV act file.
+
+    The narrow entry point behind ``--historical-only``: unlike
+    :func:`enrich_kov_act_file` it does not recompute ``titleNormalized``
+    or the provision-level Layer 1 fields, so it cannot churn unrelated
+    keys. Writes atomically (same formatting) only when the act changed.
+    """
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    if not stamp_kov_act_historical_municipality(
+        _find_kov_act_node(doc, path), historical_by_slug,
+    ):
+        return False
+    save_json(path, doc)
     return True
 
 
@@ -553,16 +691,18 @@ def _load_law_paths(index_path: Path) -> tuple[list[Path], list[str]]:
     return paths, missing
 
 
-def _enrich_one_kov(args: tuple[Path, IssuerEntry]) -> tuple[Path, str | None]:
+def _enrich_one_kov(
+    args: tuple[Path, IssuerEntry, dict[str, str] | None],
+) -> tuple[Path, str | None]:
     """Worker for parallel KOV enrichment.
 
     Returns (path, error_message_or_None). The serialised error
     message survives the cross-process boundary cleanly; raising
     inside the worker would lose argument fidelity in the parent.
     """
-    path, issuer = args
+    path, issuer, historical_by_slug = args
     try:
-        enrich_kov_act_file(path, issuer)
+        enrich_kov_act_file(path, issuer, historical_by_slug)
     except (ValueError, OSError) as exc:
         return path, str(exc)
     return path, None
@@ -581,6 +721,13 @@ def main(argv: list[str] | None = None) -> int:
              "(default: 1 = serial / deterministic). Use a higher "
              "value for the full 11k-file corpus run (Finding #3).",
     )
+    parser.add_argument(
+        "--historical-only", action="store_true",
+        help="#712: regenerate the municipality / issuer / historical-"
+             "municipality registry docs and stamp ONLY "
+             "estleg:enactedByHistoricalMunicipality on KOV acts; skip the "
+             "full act enrichment and the law / state-regulation stamps.",
+    )
     args = parser.parse_args(argv if argv is not None else [])
     if args.workers < 1:
         parser.error("--workers must be >= 1")
@@ -597,8 +744,13 @@ def main(argv: list[str] | None = None) -> int:
     _save_jsonld(MUNICIPALITIES_OUT, build_municipality_doc(municipalities))
     print(f"Wrote {MUNICIPALITIES_OUT.name}")
 
+    historical = extract_historical_municipalities(
+        list(issuers.values()), municipalities,
+    )
+    historical_by_slug = historical_municipality_by_issuer(historical)
+
     # 2. Write Issuer JSON-LD
-    _save_jsonld(ISSUERS_OUT, build_issuer_doc(issuers))
+    _save_jsonld(ISSUERS_OUT, build_issuer_doc(issuers, historical_by_slug))
     print(f"Wrote {ISSUERS_OUT.name}")
 
     # 2b. Write HistoricalMunicipality JSON-LD (issue #130). Derived
@@ -607,9 +759,6 @@ def main(argv: list[str] | None = None) -> int:
     #     Path is resolved from the (monkeypatchable) EHAK_DIR so test
     #     trees that patch EHAK_DIR don't write into the real repo.
     historical_out = EHAK_DIR / HISTORICAL_MUNICIPALITIES_OUT.name
-    historical = extract_historical_municipalities(
-        list(issuers.values()), municipalities,
-    )
     _save_jsonld(
         historical_out,
         build_historical_municipality_doc(historical),
@@ -625,7 +774,22 @@ def main(argv: list[str] | None = None) -> int:
     kov_files = [f for f in kov_files if not f.name.startswith("REGULATIONS_KOV_INDEX")]
     print(f"\nEnriching {len(kov_files)} KOV act files (workers={args.workers})...")
 
-    work_items: list[tuple[Path, IssuerEntry]] = []
+    if args.historical_only:
+        stamped = 0
+        for f in kov_files:
+            if f.parent.name not in issuers:
+                print(f"  ERROR: no issuer entry for {f.parent.name}; skipping {f.name}")
+                continue
+            if stamp_kov_act_file_historical(f, historical_by_slug):
+                stamped += 1
+        print(
+            f"Stamped enactedByHistoricalMunicipality changes on {stamped} "
+            f"KOV act files ({len(historical_by_slug)} historical issuers)"
+        )
+        print("\nDone (--historical-only).")
+        return 0
+
+    work_items: list[tuple[Path, IssuerEntry, dict[str, str] | None]] = []
     missing_issuer = 0
     for f in kov_files:
         slug = f.parent.name
@@ -634,7 +798,7 @@ def main(argv: list[str] | None = None) -> int:
             missing_issuer += 1
             print(f"  ERROR: no issuer entry for {slug}; skipping {f.name}")
             continue
-        work_items.append((f, issuer))
+        work_items.append((f, issuer, historical_by_slug))
 
     enriched = 0
     errors: list[tuple[Path, str]] = []

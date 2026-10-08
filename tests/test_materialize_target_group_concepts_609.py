@@ -242,8 +242,21 @@ def test_run_unknown_values_aggregated(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# main() flag semantics
+# main() is retired (#709); the legacy flag semantics live on _legacy_main
 # ---------------------------------------------------------------------------
+
+def test_main_is_retired_and_writes_nothing(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(M, "KRR_DIR", tmp_path)
+    peep = tmp_path / "demo_peep.json"
+    _write_peep(peep, [{"@id": "estleg:X", "estleg:targetGroup": "citizen"}])
+    original = peep.read_text(encoding="utf-8")
+
+    rc = M.main(["--apply"])
+
+    assert rc == 2
+    assert "retired" in capsys.readouterr().out
+    assert peep.read_text(encoding="utf-8") == original
+
 
 def test_main_default_is_dry_run(tmp_path, monkeypatch):
     monkeypatch.setattr(M, "KRR_DIR", tmp_path)
@@ -251,7 +264,7 @@ def test_main_default_is_dry_run(tmp_path, monkeypatch):
     _write_peep(peep, [{"@id": "estleg:X", "estleg:targetGroup": "citizen"}])
     original = peep.read_text(encoding="utf-8")
 
-    rc = M.main([])
+    rc = M._legacy_main([])
 
     assert rc == 0
     assert peep.read_text(encoding="utf-8") == original  # nothing written
@@ -262,7 +275,7 @@ def test_main_apply_writes(tmp_path, monkeypatch):
     peep = tmp_path / "demo_peep.json"
     _write_peep(peep, [{"@id": "estleg:X", "estleg:targetGroup": "citizen"}])
 
-    rc = M.main(["--apply"])
+    rc = M._legacy_main(["--apply"])
 
     assert rc == 0
     doc = json.loads(peep.read_text(encoding="utf-8"))
@@ -275,7 +288,7 @@ def test_main_dry_run_overrides_apply(tmp_path, monkeypatch):
     _write_peep(peep, [{"@id": "estleg:X", "estleg:targetGroup": "citizen"}])
     original = peep.read_text(encoding="utf-8")
 
-    rc = M.main(["--apply", "--dry-run"])
+    rc = M._legacy_main(["--apply", "--dry-run"])
 
     assert rc == 0
     assert peep.read_text(encoding="utf-8") == original  # override wins: no write

@@ -288,12 +288,15 @@ def check_samples(
 # Per-corpus lag budgets (#693)
 # ---------------------------------------------------------------------------
 
-FREQ_MONTHLY = "http://purl.org/cld/freq/monthly"
-FREQ_QUARTERLY = "http://purl.org/cld/freq/quarterly"
-FREQ_IRREGULAR = "http://purl.org/cld/freq/irregular"
+# EU Publications Office frequency authority (DCAT-AP 3.0.1 / Andmekirjelduse
+# standard, #710); these replaced the Dublin Core Collection Description
+# ``http://purl.org/cld/freq/*`` IRIs that #693 first published.
+EU_FREQUENCY = "http://publications.europa.eu/resource/authority/frequency/"
+FREQ_MONTHLY = f"{EU_FREQUENCY}MONTHLY"
+FREQ_QUARTERLY = f"{EU_FREQUENCY}QUARTERLY"
+FREQ_IRREGULAR = f"{EU_FREQUENCY}IRREG"
 
-# Nominal cadence in days for each Dublin Core Collection Description
-# frequency IRI we publish. A lag budget must cover its cadence and allow
+# Nominal cadence in days for each EU frequency-authority IRI we publish. A lag budget must cover its cadence and allow
 # at most one more month of grace, so the published periodicity and the
 # enforced budget cannot drift apart silently.
 FREQ_NOMINAL_DAYS: dict[str, int] = {FREQ_MONTHLY: 30, FREQ_QUARTERLY: 91}
@@ -418,6 +421,16 @@ CORPUS_BUDGETS: tuple[CorpusBudget, ...] = (
         stamp_file="curia/CURIA_INDEX.json",
         stamp_fields=("fetched", "generated"),
         rationale="Same CELLAR pipeline and use as EUR-Lex.",
+    ),
+    CorpusBudget(
+        key="chunks",
+        label="Retrieval chunks (release asset)",
+        distribution_title="Retrieval chunks (provision-version JSON Lines)",
+        accrual_periodicity=FREQ_MONTHLY,
+        max_lag_days=None,
+        rationale="Derived from the enacted laws at release time (#723); its "
+        "freshness is the laws row, so it is published monthly and not gated "
+        "separately.",
     ),
     CorpusBudget(
         key="changes",

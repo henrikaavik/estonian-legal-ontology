@@ -4,7 +4,7 @@
 
 > **Note on terminology.** "Regulation" is overloaded across legal systems. In this ontology **domestic regulations** (Estonian *määrused*, modelled under the common superclass `estleg:DomesticRegulation` with the state-level `estleg:NationalRegulation` and municipal `estleg:MunicipalRegulation` branches) are kept strictly separate from **EU regulations** (modelled as `estleg:EULegislation` with `estleg:euDocumentType estleg:EUDocType_Regulation`). Domestic regulations are issued under an enabling Estonian law by Vabariigi Valitsus, a minister, or a municipal council; EU regulations are EU-level legal acts. Use the dedicated classes for each — see "Domestic Regulation Classes" and "EU Legislation Classes" below.
 
-> **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the canonical default-graph T-Box (issue #433): classes, class hierarchy, and properties, with an `owl:Ontology` header at `https://w3id.org/estleg/vocabulary`. `metadata.jsonld` is DCAT catalog only (`dcterms:conformsTo` that IRI). Subcorpus `*_schema.json` files (eelnoud, riigikohus, eurlex, curia) are regenerable projections of the CV (`python3 scripts/generate_schemas_from_cv.py --check`). New reusable terms MUST be defined in the CV. Unresolved citation placeholders live in `krr_outputs/unresolved_references.jsonld`, not in the T-Box.
+> **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the canonical default-graph T-Box (issue #433): classes, class hierarchy, and properties, with an `owl:Ontology` header at `https://w3id.org/estleg/vocabulary`. `metadata.jsonld` is a DCAT-AP 3.0.1 catalogue record (see docs/DCAT_CATALOGUE.md) (`dcterms:conformsTo` that IRI). Subcorpus `*_schema.json` files (eelnoud, riigikohus, eurlex, curia) are regenerable projections of the CV (`python3 scripts/generate_schemas_from_cv.py --check`). New reusable terms MUST be defined in the CV. Unresolved citation placeholders live in `krr_outputs/unresolved_references.jsonld`, not in the T-Box.
 
 ### Language-tag policy
 
@@ -16,6 +16,62 @@ Corpus default language is Estonian (issue #437).
 - **No default `@language` on `CONTEXT`.** A context-wide `"@language": "et"` would turn SHACL `xsd:string` fields into `rdf:langString`. Human-language properties already accept either (`sh:or` xsd:string / rdf:langString, issue #509 / #305).
 
 Subcorpus `*_schema.json` files also tag `@et`/`@en` on their schema labels.
+
+### Controlled-value schemes and duplicated terms (issue #709)
+
+Every closed value family is a SKOS concept scheme. The class is
+`rdfs:subClassOf skos:Concept`, and each `owl:NamedIndividual` of the class is
+typed `skos:Concept` with `skos:inScheme` / `skos:topConceptOf` its scheme. The
+scheme lists the members as `skos:hasTopConcept`.
+
+| Class | Scheme |
+|-------|--------|
+| `estleg:NormativeType` | `estleg:NormativeTypeScheme` |
+| `estleg:CaseType` | `estleg:CaseTypeScheme` |
+| `estleg:DecisionType` | `estleg:DecisionTypeScheme` |
+| `estleg:DraftType` | `estleg:DraftTypeScheme` |
+| `estleg:ReferenceType` | `estleg:ReferenceTypeScheme` |
+| `estleg:EUDocumentType` | `estleg:EUDocumentTypeScheme` |
+| `estleg:EUCourtDecisionType` | `estleg:EUCourtDecisionTypeScheme` |
+| `estleg:LegislativePhase` | `estleg:LegislativePhaseScheme` |
+| `estleg:InstitutionType` | `estleg:InstitutionTypeScheme` |
+| `estleg:TargetGroup` | `estleg:TargetGroupScheme` (#609) |
+| `estleg:TemporalStatus` | `estleg:TemporalStatusScheme` (#522) |
+
+`estleg:Concept`, `estleg:LegalConcept`, `estleg:TopicCluster` and
+`estleg:GeneralPartConcept` are also `rdfs:subClassOf skos:Concept`. Their
+A-Box nodes were already dual-typed `skos:Concept`.
+
+`estleg:containsPersonalData` (`xsd:boolean`) has an open `owl:Thing` domain
+with `schema:domainIncludes dcat:Distribution, dcat:Dataset`: it applies to
+catalogue distributions and to the in-band dataset heads of the combined
+aggregates, which a `dcat:Distribution` domain would mistype (#720).
+
+The CV `@context` declares every prefix its axioms use, including `dcat:` and
+`org:` (#709). The `rdf:` prefix stays undeclared because the #392 gate keeps
+that context line out of every shipped file. The one `rdf:` term the CV uses,
+`rdf:Statement` in the `estleg:referenceType` domain, is written as a full IRI.
+
+No triple is asserted on a EuroVoc IRI (#709).
+`krr_outputs/eurovoc_concept_scheme.jsonld` holds one
+`estleg:EuroVocDomain_<id>` concept per EuroVoc descriptor the classifier uses.
+Each concept carries our cached `skos:prefLabel`, `skos:notation <id>`,
+`skos:inScheme estleg:EuroVocDomainScheme` and `skos:exactMatch
+<http://eurovoc.europa.eu/<id>>`. `dcterms:subject` on acts still points at the
+EuroVoc IRI itself, as a bare reference.
+
+The 2026-09 review named six fact families published twice, once as a string
+and once as an IRI. Only a family whose IRI form covers the string form
+everywhere is deprecated (`owl:deprecated true` plus `dcterms:isReplacedBy`).
+
+| String or duplicate | IRI form | Status |
+|---------------------|----------|--------|
+| `estleg:targetGroupConcept` | `estleg:targetGroup` | **Deprecated.** `targetGroup` already holds the `TargetGroup_*` IRIs, so the #609 copy was the duplicate. It is no longer emitted. `scripts/retire_target_group_concept.py` removes old edges. |
+| `estleg:temporalStatus` (string token) | `estleg:TemporalStatus_*` | Kept by design (#522). The token is the `skos:notation` of the individual. |
+| `estleg:sourceAct` | `estleg:partOfAct` | Kept. About 10,200 nodes carry `sourceAct` without `partOfAct`, mostly `concepts/` definition nodes. Join on `partOfAct` wherever it is present. |
+| `estleg:issuer` | `estleg:enactedBy` | Kept. 3,812 regulation roots carry `issuer` without `enactedBy`. |
+| `estleg:belongsToCluster` | `estleg:topicCluster` | Kept. No node uses `topicCluster`. |
+| `estleg:relatesToConcept` | `estleg:coversConcept` | Kept. No node carries both terms. |
 
 ### Provenance (dataset-level)
 
@@ -31,9 +87,9 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 3. **LegalConcept (`estleg:LegalConcept`)**
    - Represents a defined legal concept or term used within the legislation.
 
-> **ELI 1.5 (issue #440).** Estonia has no registered ELI URI template, so instance IRIs stay under `estleg:`. The T-Box maps `estleg:Act` ⊑ `eli:LegalResource`, `estleg:LegalProvision` ⊑ `eli:LegalResourceSubdivision`, and `estleg:ActExpression` / `estleg:ProvisionVersion` ⊑ `eli:LegalExpression`. Dates: `estleg:entryIntoForce` ⊑ `eli:date_entry_in_force`, `estleg:repealDate` ⊑ `eli:date_no_longer_in_force`. `kehtiv` is a snapshot date, not `eli:date_publication`; `temporalStatus` is not mapped to `eli:in_force`.
+> **ELI 1.5 (issue #440).** Estonia has no registered ELI URI template, so instance IRIs stay under `estleg:`. The T-Box maps `estleg:Act` ⊑ `eli:LegalResource`, `estleg:LegalProvision` ⊑ `eli:LegalResourceSubdivision`, and `estleg:ActExpression` / `estleg:ProvisionVersion` ⊑ `eli:LegalExpression`. Dates: `estleg:entryIntoForce` ⊑ `eli:date_entry_in_force`, `estleg:repealDate` ⊑ `eli:date_no_longer_in_force`. `kehtiv` is a snapshot date, not `eli:date_publication`; `temporalStatus` is not mapped to `eli:in_force`. For consumers that run no inference, the combined graph asserts these alignments directly (#708): `eli:LegalResource` and `schema:Legislation` on every `estleg:Act`, `eli:LegalExpression` on expressions, and `eli:realizes`, `eli:date_entry_in_force` and `eli:is_part_of` copied from their `estleg:` sources.
 >
-> **schema.org (issue #543).** `estleg:Act` is also `rdfs:subClassOf schema:Legislation`; `estleg:legalText` ⊑ `schema:text`; `estleg:references` ⊑ `dcterms:references`. Newly generated act roots are also typed `schema:Legislation`. Existing peeps are not rewritten — RDFS clients load the CV. `entryIntoForce` is not also `schema:legislationDate` (would conflict with the ELI bridge).
+> **schema.org (issue #543).** `estleg:Act` is also `rdfs:subClassOf schema:Legislation`; `estleg:legalText` ⊑ `schema:text`; `estleg:references` ⊑ `dcterms:references`. Newly generated act roots are also typed `schema:Legislation`. Existing peeps are not rewritten; `combined_ontology.jsonld` carries `schema:Legislation` on every act (#708), and RDFS clients loading the peeps can load the CV. `entryIntoForce` is not also `schema:legislationDate` (would conflict with the ELI bridge).
 
 #### Draft Legislation Classes (EIS)
 4. **DraftLegislation (`estleg:DraftLegislation`)**
@@ -82,7 +138,7 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 * `estleg:initiator`: Ministry or institution that initiated the draft.
 * `estleg:publicationDate`: Date the draft was published in EIS (`xsd:date`).
 * `estleg:affectedLawName`: Name of existing law the draft proposes to amend.
-* `estleg:amendsLaw`: Object property linking a draft to the existing LegalProvision it amends.
+* `estleg:amendsLaw`: Object property linking a draft to the enacted act it proposes to amend. The object is always an act root IRI (the law's `_Map` node, or the lowest `_OsaN` root of a multipart act), never a provision (`extract_draft_impact.prefer_act_iri`, #379). 1,162 drafts carry it. It is no longer deprecated (#724).
 * `estleg:phaseOrder`: Integer indicating the phase ordering (1=consultation, 2=review, 3=submission).
 
 ### Legislative Phases
@@ -514,6 +570,16 @@ EU institution or body that authored the legal act.
 | `EUInst_EuropeanParliament` | Euroopa Parlament | EP |
 | `EUInst_EuropeanCentralBank` | Euroopa Keskpank | ECB |
 
+Each individual whose code is in the Publications Office corporate-body
+authority table carries `owl:sameAs`
+`<http://publications.europa.eu/resource/authority/corporate-body/{CODE}>`
+(#709). The code is `estleg:euInstitutionCode`, or the CELLAR author code the
+`EUInst_*` slug was minted from. 46 of the 66 individuals match, six of them
+on concepts the authority marks deprecated, such as `CST` (Civil Service
+Tribunal). The other 20 codes, such as the `EP*` committee codes and `CMT*`,
+are not in the table and get no link. The lookup is cached in
+`data/eu_corporate_body_authority.json` and read by `consolidate_tbox.py`.
+
 The four rows above are the most common institutions; `estleg:EUInst_*` is an **open set**. The corpus materialises one `estleg:EUInstitution` individual per authoring body actually seen in EUR-Lex (currently ~66 distinct `EUInst_*` IRIs, e.g. agencies, joint bodies, and committees), so consumers should treat any `estleg:EUInst_*` IRI as a valid institution rather than filtering to a fixed list.
 
 ### EU Legislation Properties
@@ -684,11 +750,41 @@ normalisation before they can be ordered.
 
 ### Institution (`estleg:Institution`)
 Represents a state institution with legal competences.
+`estleg:Institution` is `rdfs:subClassOf org:Organization` (W3C Organization
+Ontology, #709). It is not typed as CPOV `cpov:PublicOrganisation`, because the
+class also holds minister offices (#457), which are posts, not organisations.
+
+`estleg:institutionType` stays an `xsd:string` token in the A-Box, following
+the #522 precedent for `temporalStatus`. Each token is the `skos:notation` of
+an individual in `estleg:InstitutionTypeScheme`.
+
+| Token | Individual |
+|-------|------------|
+| `ministry` | `estleg:InstitutionType_Ministry` |
+| `minister` | `estleg:InstitutionType_Minister` |
+| `agency` | `estleg:InstitutionType_Agency` |
+| `court` | `estleg:InstitutionType_Court` |
+| `local_government` | `estleg:InstitutionType_LocalGovernment` |
+| `parliament` | `estleg:InstitutionType_Parliament` |
+| `head_of_state` | `estleg:InstitutionType_HeadOfState` |
+| `government` | `estleg:InstitutionType_Government` |
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `estleg:competenceType` | `xsd:string` | Type: supervision, licensing, enforcement, regulation |
 | `estleg:hasCompetence` | `owl:ObjectProperty` | Institution → reified `estleg:Competence` node(s). Inverse of `estleg:institution` on Competence nodes. |
+| `estleg:registrikood` | `xsd:string` | The Estonian registry code of the legal person; a rename predecessor shares its successor's code (#718). |
+| `estleg:xteeMemberCode` | `xsd:string` | The X-tee member id `EE/GOV/<registrikood>`, only on current institutions (#718). |
+| `estleg:validFrom` / `estleg:validTo` | `xsd:date` | Inclusive bounds of the node's identity under this name; open ends are omitted (#718). |
+| `estleg:predecessorInstitution` / `estleg:successorInstitution` | `owl:ObjectProperty` | Institution → Institution lineage (rename, merger, split); `owl:inverseOf` each other (#718). |
+
+`estleg:mentionsInstitution` (`owl:ObjectProperty`, on `estleg:LegalProvision`)
+links a provision to an institution it names without binding it as its
+`estleg:competentAuthority`: consultation partner, addressee, descriptive
+genitive or predecessor name (#718). Objects are `Institution_*` or KOV
+`Issuer_*` nodes, so the range stays open (`rdfs:Resource` with
+`schema:rangeIncludes`). All #718 terms use an open `owl:Thing` domain with
+`schema:domainIncludes`, so RDFS inference types no node.
 
 Institution → Competence links use `estleg:hasCompetence` (inverse of
 `estleg:institution` on Competence nodes). Competence remains the reified
@@ -706,7 +802,7 @@ Reified institutional competence sidecar node generated under
 | `estleg:institution` | `owl:ObjectProperty` | Institution whose competence is being described |
 | `estleg:competenceType` | `xsd:string` | Type: `supervision`, `licensing`, `enforcement`, `regulation`, `advisory`, or `general` |
 | `estleg:appliesToProvision` | `owl:ObjectProperty` | Provision(s) to which this competence applies |
-| `estleg:appliesToProvisionCount` | `xsd:integer` | Full provision count when the sidecar list is capped |
+| `estleg:appliesToProvisionCount` | `xsd:integer` | Provision count; the `appliesToProvision` list is no longer capped (#718), so it equals the list length |
 | `estleg:grantedBy` | `owl:ObjectProperty` | Act IRI that most directly grants the competence, derived from the source act distribution |
 | `estleg:competenceArea` | `xsd:string` | Coarse thematic area for overlap/gap analysis across institutions |
 
@@ -714,7 +810,25 @@ Reified institutional competence sidecar node generated under
 Deontic classification of provisions. Individuals: `NormType_Obligation`, `NormType_Right`, `NormType_Permission`, `NormType_Prohibition`, `NormType_Definition` (heading *mõiste* or first-line *tähendab*/*mõistetakse*; issue #461).
 
 ### Section (`estleg:Section`)
-Represents a section (jagu/peatükk) in the KarS special parts structure, generated by `generate_kars_eriosa_jsonld.py`.
+Represents a paragrahv (§). "Section" is the Riigi Teataja English-translation
+term for §. The class is used by the KarS special-part and TsÜS osa 7 OWL
+modules and by the TsÜS / VÕS osa peeps. Every instance also carries
+`estleg:LegalProvision`, the class the main law generator emits for the same
+level, so `estleg:Section rdfs:subClassOf estleg:LegalProvision` entails no new
+type (#709).
+
+One class per Estonian structural level (#709):
+
+| Level | Class | `rdfs:label` @et / @en |
+|-------|-------|------------------------|
+| osa | `estleg:LegalPart` | Osa (struktuuriüksus) / Part (structural unit) |
+| osa file root of a multipart act (#566) | `estleg:Part` | Osa (mitmeosalise akti juur) / Part (multipart act root) |
+| peatükk | `estleg:Chapter` | Peatükk / Chapter |
+| jagu | `estleg:Division` | Jagu / Division |
+| jaotis | `estleg:Subdivision` | Jaotis / Subdivision |
+| paragrahv (§) | `estleg:Section`, `estleg:LegalProvision` | Paragrahv / Section (§) |
+| lõige | `estleg:Subsection` | Lõige / Subsection |
+| punkt | no class | The parser keeps sub-points as inline markers plus `estleg:itemNumber` on the lõige (#694). |
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -762,8 +876,10 @@ Extended with SKOS vocabulary for cross-law concept linking.
 | `skos:prefLabel` | `xsd:string` | Preferred term label (Estonian) |
 | `skos:definition` | `xsd:string` | Definition text from source provision |
 | `skos:exactMatch` | `owl:ObjectProperty` | Same concept defined in another law |
-| `skos:closeMatch` | `owl:ObjectProperty` | Similar concept in another law |
+| `skos:closeMatch` | `owl:ObjectProperty` | Similar concept in another law (not emitted since #699) |
 | `estleg:definedIn` | `owl:ObjectProperty` | Provision(s) that define this concept |
+
+`skos:altLabel` on `estleg:Concept` also records orthographic variants (compound spacing, hyphenation) folded into one Concept (#699).
 
 ## Integration Properties (Cross-Linking)
 
@@ -809,7 +925,8 @@ The citation graph is still a single flat `estleg:references` / `estleg:referenc
 ### Subject Classification
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `dcterms:subject` | Act | IRI | Optional act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. When present, SHACL expects a EuroVoc IRI. |
+| `dcterms:subject` | Act | IRI | Optional act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. When present, SHACL expects a EuroVoc IRI. On `estleg:EULegislation`, `dcterms:subject` / `eli:is_about` are the official EuroVoc indexing from CELLAR (`cdm:work_is_about_concept_eurovoc`; numeric or `c_<hex>` ids) and carry `estleg:subjectSource "cellar"`. On Estonian acts they come from the keyword classifier: at most 3 domains, ranked by hits per 1,000 tokens, with a floor of 1 hit per 1,000 tokens. |
+| `estleg:subjectSource` | `EULegislation` | `xsd:string` | Provenance of dcterms:subject; "cellar" = official EuroVoc (#699) |
 
 The JSON validator requires an array for act subjects. A Chapter may instead
 carry a single subject IRI pointing to its topic cluster (#702). EuroVoc's
@@ -989,15 +1106,21 @@ a `CourtDecision`, an EU instrument, etc.
 
 | Property | Domain | Range | Cardinality | Description |
 |----------|--------|-------|-------------|-------------|
-| `estleg:annotates` | Annotation | `owl:Thing` (IRI) | exactly 1 | The legal entity this annotation is about. Range is intentionally unconstrained — an annotation may attach to any legal entity. |
+| `estleg:annotates` | Annotation | `owl:Thing` (IRI) | 1+ | The legal entities this annotation is about: the § nodes it cites, each paired with the act named nearest before it in the same sentence, else the act node. |
 | `estleg:annotationText` | Annotation | `xsd:string` | 1+ | The body of the note. |
 | `estleg:annotationType` | Annotation | `xsd:string` | exactly 1 | One of `guidance`, `commentary`, `practice_note`, `warning`, `interpretation` (SHACL `sh:in` enum). |
 | `estleg:annotationSource` | Annotation | `xsd:string` | 0–1 | Where the note comes from, as a string (e.g. `"Õiguskantsler"`, `"RT kommentaar"`, a publication name). String for now; a future iteration may make it an IRI to a source node. |
 | `estleg:annotationSourceUrl` | Annotation | `xsd:anyURI` | 0–1 | Optional link to the source document. |
 | `estleg:annotationDate` | Annotation | `xsd:date` | 0–1 | When the annotation was authored / published. |
+| `estleg:isExcerpt` | Annotation | `xsd:boolean` | 0–1 | True unless `annotationText` carries the complete source body; a title-only text is an excerpt (#719). |
+| `estleg:sourceTextLength` | Annotation | `xsd:integer` | 0–1 | Character length of the full extracted source body; present only when known (#719). |
+| `estleg:editorialNote` | Annotation | `xsd:string` | 0–1 | Project-authored paraphrase or note; never source text (#719). |
+| `estleg:editorialSource` | Annotation | `xsd:string` | 0–1 | Author of `editorialNote` (this project), never the cited authority (#719). |
+
+`estleg:annotationText` is verbatim source text only; project paraphrase lives in `estleg:editorialNote` with `estleg:editorialSource`; `annotationSource` "Õiguskantsler" is only emitted with `annotationSourceUrl`.
 
 SHACL: `estleg:AnnotationShape` (`sh:targetClass estleg:Annotation`) requires
-`estleg:annotates` (exactly 1, IRI), `estleg:annotationText` (1+, string), and
+`estleg:annotates` (1+, IRI), `estleg:annotationText` (1+, string), and
 `estleg:annotationType` (exactly 1, string, `sh:in` the enum above); `estleg:annotationSource`,
 `estleg:annotationSourceUrl`, and `estleg:annotationDate` are optional with the datatypes above.
 
@@ -1005,23 +1128,28 @@ SHACL: `estleg:AnnotationShape` (`sh:targetClass estleg:Annotation`) requires
 
 ```json
 {
-  "@id": "estleg:Annotation_OK_2020_TsUS_40",
+  "@id": "estleg:Annotation_OK_haaletamise_salajasus",
   "@type": ["owl:NamedIndividual", "estleg:Annotation"],
-  "estleg:annotates": {"@id": "estleg:LegalProvision_TsUS_40"},
-  "estleg:annotationText": "Õiguskantsler on rõhutanud, et tahteavalduse tuvastamisel tuleb arvestada poolte tegelikku tahet, mitte üksnes sõnastust.",
+  "estleg:annotates": [{"@id": "estleg:KOKS_Par_27"}, {"@id": "estleg:KOKS_Par_45"}],
+  "estleg:annotationText": "Hääletamise salajasus\n\nKohaliku omavalitsuse korralduse seaduse (§ 27 ja § 45 lg 3) ja Tallinna põhimääruse (§ 43 lg 3) järgi peab linnapea valimine tõepoolest olema salajane. …",
+  "estleg:isExcerpt": true,
+  "estleg:sourceTextLength": 851,
   "estleg:annotationType": "interpretation",
   "estleg:annotationSource": "Õiguskantsler",
-  "estleg:annotationSourceUrl": {"@type": "xsd:anyURI", "@value": "https://www.oiguskantsler.ee/et/seisukohad"},
-  "estleg:annotationDate": {"@type": "xsd:date", "@value": "2020-03-15"}
+  "estleg:annotationSourceUrl": {"@type": "xsd:anyURI", "@value": "https://www.oiguskantsler.ee/sites/default/files/2024-11/H%C3%A4%C3%A4letamise%20salajasus.pdf"},
+  "estleg:annotationDate": {"@type": "xsd:date", "@value": "2024-04-18"}
 }
 ```
 
+The committed node's `isExcerpt` is `false` (it carries all 851 characters); the
+example above shortens the text with "…", so it is shown as an excerpt.
+
 ##### SPARQL — annotations about a legal entity
 
-The current Õiguskantsler ingestion attaches annotations at the **act** level
-(`estleg:annotates` targets the act root). Load
-`krr_outputs/annotations/*.jsonld` and anchor on the act IRI — here the Kohaliku
-omavalitsuse korralduse seadus (KOKS) act node:
+The Õiguskantsler ingestion points `estleg:annotates` at the cited § nodes when
+available, else at the act node. Load `krr_outputs/annotations/*.jsonld` and
+anchor on the provision or act IRI — here the act node of the Kohaliku
+omavalitsuse korralduse seadus (KOKS); `estleg:KOKS_Par_27` works the same way:
 
 ```sparql
 PREFIX estleg: <https://w3id.org/estleg/>
@@ -1039,7 +1167,7 @@ SELECT ?text ?type ?source WHERE {
 |----------|--------|-------|-------------|
 | `estleg:normativeType` | LegalProvision | NormativeType (IRI) | Obligation, right, permission, prohibition, definition |
 | `estleg:dutyHolder` | LegalProvision | TargetGroup (IRI) | Who must comply. Same closed enum as `targetGroup` (`estleg:TargetGroup_*`). Unmapped sentence-initial phrases are not stored (#460). |
-| `estleg:targetGroup` | LegalProvision | TargetGroup (IRI), multi-valued | Affected group(s): `estleg:TargetGroup_Citizen`, `_Business`, `_PublicBody`, `_Official`, `_NGO` |
+| `estleg:targetGroup` | LegalProvision | TargetGroup (IRI), multi-valued | Affected group(s): `estleg:TargetGroup_Citizen`, `_Business`, `_PublicBody`, `_Official`, `_NGO`. An `owl:ObjectProperty` with `rdfs:range estleg:TargetGroup` since #709. Replaces the deprecated `estleg:targetGroupConcept`. |
 
 Citizen share (#460 sample review): `targetGroup` is not assigned by
 absence-of-others. Weak generic cues (`isik` / `kasutaja` / `valdaja` /
@@ -1336,6 +1464,9 @@ stubs. See the README "Load surfaces" section.
 | `estleg:bodyType` | `Issuer` | `xsd:string` | `"volikogu"` \| `"valitsus"` |
 | `estleg:currentMunicipality` | `Issuer` | `Municipality` | Today's successor for legacy issuers |
 | `estleg:historicalMunicipalityName` | `Issuer` | `xsd:string` | Issuing-time municipality name |
+| `estleg:historicalMunicipality` | `Issuer` | `HistoricalMunicipality` | Pre-merger municipality of an abolished issuer (#712) |
+| `estleg:enactedByHistoricalMunicipality` | `MunicipalRegulation` | `HistoricalMunicipality` | Pre-merger municipality whose body issued the act (abolished municipalities only, #712) |
+| `estleg:countyCode` | `Municipality` | `xsd:string` | EHAK county code (e.g. `0037`, #712) |
 | `estleg:mappingSource` | `Issuer` | `xsd:string` | How the mapping was derived |
 | `estleg:mappingEvidence` | `Issuer` | `xsd:string` | Source citation for curated mappings |
 
@@ -1532,3 +1663,14 @@ with per-run metrics. See `krr_outputs/reports/kov/README.md`. Layer 2b
 adds coverage outputs for `extract_cross_references` (preamble + body-text
 KOV scope) and `generate_inverse_references` (`implementedBy` filtered
 projection).
+
+## Retrieval chunk record (schema 2.0.0, #723)
+
+The retrieval projection under `krr_outputs/retrieval/` emits one JSON record per
+provision text chunk, with keys in this fixed order: `chunk_id`, `provision_iri`,
+`act_iri`, `redaction_id`, `paragraph`, `act_title`, `abbrev`, `rt_url`,
+`valid_from`, `valid_to`, `in_force`, `kehtiv`, `evaluation_date`,
+`ontology_version`, `language`, `part_index`, `part_count`, `text`.
+`chunk_id` is `<provision_iri>#<redaction_id|consolidated>[#part_<k>]`. `rt_url`
+is the redaction's Riigi Teataja page with a `#para<N>[b<k>]` anchor. The full
+field table lives in `krr_outputs/retrieval/README.md`.

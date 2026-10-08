@@ -1112,7 +1112,17 @@ def _emit_closure_stubs(
     exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
     # iter_node_estleg_refs yields canonical compact targets, so compare against
     # the canonical form of every present @id (handles expanded-IRI nodes too).
-    present = {estleg_common.canonical_estleg_ref(k) or k for k in node_by_id}
+    # An overlay join node (#699 EuroVoc subjects, the analytical overlay) that
+    # asserts properties on an id WITHOUT a ``@type`` does not make the target
+    # present for closure purposes: the shaped stub is still minted and folded
+    # into that node below, otherwise a KOV provision stub's ``partOfAct``
+    # would point at a typeless act and fail ``sh:class estleg:Act``.
+    canon_to_key = {
+        (estleg_common.canonical_estleg_ref(k) or k): k for k in node_by_id
+    }
+    present = {
+        canon for canon, key in canon_to_key.items() if node_by_id[key].get("@type")
+    }
     stubs: dict[str, dict] = {}
 
     def dangling_from(nodes) -> set[str]:
@@ -1165,11 +1175,28 @@ def _emit_closure_stubs(
             f"(validate_combined_graph_closure) to flag: {sample}"
         )
 
+    folded = 0
     for nid in sorted(stubs):
         stub = stubs[nid]
+        canon = estleg_common.canonical_estleg_ref(stub["@id"]) or stub["@id"]
+        existing_key = canon_to_key.get(canon)
+        existing = node_by_id.get(existing_key) if existing_key is not None else None
+        if existing is not None and not existing.get("@type"):
+            # Fold the typed stub into the untyped overlay join node so the
+            # overlay's assertions (dcterms:subject, issuedUnder, ...) and the
+            # shape-required stub properties live on ONE node.
+            for key, value in stub.items():
+                if key == "@id":
+                    continue
+                existing.setdefault(key, value)
+            folded += 1
+            continue
         node_by_id[stub["@id"]] = stub
         all_nodes.append(stub)
-    print(f"  Emitted {len(stubs)} graph-closure stub nodes")
+    print(
+        f"  Emitted {len(stubs)} graph-closure stub nodes"
+        + (f" ({folded} folded into untyped overlay join nodes)" if folded else "")
+    )
     return len(stubs)
 
 
@@ -1222,6 +1249,24 @@ _TYPE_ROLLUP_PREFIXES: tuple[tuple[str, str], ...] = (
 )
 
 
+#: #708 external-vocabulary class alignments. Each key also entails the listed
+#: ELI / schema.org classes, exactly as the controlled vocabulary's
+#: ``rdfs:subClassOf`` axioms do (``estleg:Act`` ⊑ ``eli:LegalResource``,
+#: ``schema:Legislation``; ``estleg:ActExpression`` / ``estleg:ProvisionVersion``
+#: ⊑ ``eli:LegalExpression``). The production SPARQL surface runs with no
+#: inference, so without this the mappings were invisible there. The aligned
+#: classes are leaves here: the vocabulary loads no ELI / schema.org T-Box, so
+#: nothing further is entailed from them. A test pins every row to its CV axiom.
+#: ``estleg:LegalProvision`` ⊑ ``eli:LegalResourceSubdivision`` is deliberately
+#: not materialised yet: #708 scopes acts and expressions, and typing ~163k
+#: provisions touches every provision parity fixture.
+_EXTERNAL_TYPE_ALIGNMENTS: dict[str, tuple[str, ...]] = {
+    "estleg:Act": ("eli:LegalResource", "schema:Legislation"),
+    "estleg:ActExpression": ("eli:LegalExpression",),
+    "estleg:ProvisionVersion": ("eli:LegalExpression",),
+}
+
+
 def _materialize_supertypes(types: list[str]) -> list[str]:
     """Forward-chain rdf:type over the subclass hierarchy for one ``@type`` (#519).
 
@@ -1247,6 +1292,7 @@ def _materialize_supertypes(types: list[str]) -> list[str]:
         for prefix, prefix_parent in _TYPE_ROLLUP_PREFIXES:
             if current.startswith(prefix):
                 candidates.append(prefix_parent)
+        candidates.extend(_EXTERNAL_TYPE_ALIGNMENTS.get(current, ()))
         for candidate in candidates:
             if candidate not in present:
                 present[candidate] = None
@@ -1276,6 +1322,74 @@ def _apply_type_rollup(all_nodes: list[dict]) -> int:
             node["@type"] = rolled
             enriched += 1
     return enriched
+
+
+#: #708 property alignments: ``(estleg source, ELI target)``. Each row mirrors
+#: an ``rdfs:subPropertyOf`` axiom in the controlled vocabulary, so the copied
+#: triples are exactly what an RDFS reasoner would entail. Rows sharing a target
+#: are unioned in this order, nearest container first: a lõige gets
+#: ``eli:is_part_of`` its § (``parentProvision``), then its chapter/division
+#: (``isPartOf``), then its act root (``partOfAct``).
+_ELI_PROPERTY_ALIGNMENTS: tuple[tuple[str, str], ...] = (
+    ("estleg:expressionOf", "eli:realizes"),
+    ("estleg:entryIntoForce", "eli:date_entry_in_force"),
+    ("estleg:parentProvision", "eli:is_part_of"),
+    ("estleg:isPartOf", "eli:is_part_of"),
+    ("estleg:partOfAct", "eli:is_part_of"),
+)
+
+
+def materialize_eli_alignments(all_nodes: list[dict]) -> dict[str, int]:
+    """Copy the ELI-aligned estleg properties onto their ELI targets, in place (#708).
+
+    For every node, each ``_ELI_PROPERTY_ALIGNMENTS`` source value the node
+    itself carries is added to the target predicate (de-duplicated, existing
+    target values first, then source order). Values are deep-copied verbatim,
+    so an ``xsd:date`` literal stays an ``xsd:date`` literal and an ``{"@id"}``
+    edge stays an IRI edge. A closure stub is treated like any other node: it
+    gains a target only from a source field it actually carries.
+
+    Deterministic (no set iteration) and idempotent: a second run adds nothing.
+    Class alignments (``eli:LegalResource`` etc.) are not handled here; they
+    ride the #519 type rollup via ``_EXTERNAL_TYPE_ALIGNMENTS``.
+    Returns per-target counts: ``nodes_<target>`` (nodes that gained the
+    predicate or a value of it) and ``values_<target>`` (values added).
+    """
+    targets: list[str] = []
+    for _source, target in _ELI_PROPERTY_ALIGNMENTS:
+        if target not in targets:
+            targets.append(target)
+    stats: dict[str, int] = {}
+    for target in targets:
+        stats[f"nodes_{target}"] = 0
+        stats[f"values_{target}"] = 0
+    for node in all_nodes:
+        for target in targets:
+            additions: list = []
+            seen: dict[str, None] = {}
+            if target in node:
+                for existing in _as_value_list(node[target]):
+                    seen[_value_key(existing)] = None
+            for source, mapped in _ELI_PROPERTY_ALIGNMENTS:
+                if mapped != target or source not in node:
+                    continue
+                for value in _as_value_list(node[source]):
+                    if value is None:
+                        continue
+                    key = _value_key(value)
+                    if key in seen:
+                        continue
+                    seen[key] = None
+                    additions.append(copy.deepcopy(value))
+            if not additions:
+                continue
+            merged = (
+                _as_value_list(node[target]) + additions if target in node else additions
+            )
+            node[target] = merged[0] if len(merged) == 1 else merged
+            stats[f"nodes_{target}"] += 1
+            stats[f"values_{target}"] += len(additions)
+    return stats
 
 
 def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
@@ -1376,6 +1490,11 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     # hasSanction/competentAuthority/annotates/concept links).
     for filepath in estleg_common.iter_combined_overlay_files(krr_dir):
         ingest(filepath)
+    # #712: registry nodes kept outside krr_outputs/ (the 150
+    # estleg:HistoricalMunicipality individuals) are edge targets of issuer and
+    # KOV-act nodes, so fold them in like an overlay rather than stubbing them.
+    for filepath in estleg_common.iter_combined_registry_files(krr_dir):
+        ingest(filepath)
     overlay_node_count = len(all_nodes) - law_node_count
     print(
         f"  Merged {law_node_count} law nodes + {overlay_node_count} overlay "
@@ -1405,11 +1524,27 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     rolled_count = _apply_type_rollup(all_nodes)
     print(f"  Materialized entailed parent types on {rolled_count} nodes (#519)")
 
+    # #708: the public Seadusloome surface queries with no inference, so the
+    # ELI / schema.org alignments must be asserted, not entailed. The class half
+    # (eli:LegalResource, schema:Legislation, eli:LegalExpression) already
+    # landed with the rollup above; this
+    # copies the aligned properties (eli:realizes, eli:date_entry_in_force,
+    # eli:is_part_of). Runs after stubs, so a provision stub that carries
+    # partOfAct also gets eli:is_part_of (an allowlisted stub edge).
+    eli_stats = materialize_eli_alignments(all_nodes)
+    print(f"  Materialized ELI property alignments (#708): {eli_stats}")
+
     # #616: stamp a dataset-level owl:Ontology header (owl:versionInfo +
     # owl:versionIRI) at @graph[0] so the shipped graph is self-describing and a
     # consumer can pin/cite the version. Inert for the closure gate (no estleg:
     # refs); re-emitted every build from the single ONTOLOGY_VERSION constant.
-    all_nodes.insert(0, estleg_common.combined_ontology_header())
+    header = estleg_common.combined_ontology_header()
+    # #720: in-band personal-data flag, from the COMBINED_JSONLD_TARGETS entry.
+    estleg_common.stamp_personal_data_flag(
+        header,
+        estleg_common.combined_target_contains_personal_data(COMBINED_OUTPUT_NAME),
+    )
+    all_nodes.insert(0, header)
 
     combined = {
         "@context": combined_context,

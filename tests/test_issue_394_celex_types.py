@@ -78,8 +78,10 @@ def test_coverage_report_processed_plus_skipped_equals_input():
     doc = json.loads(path.read_text(encoding="utf-8"))
     assert doc["files_processed"] + doc["files_skipped"] == doc["input_files_total"]
     assert "unclassified" not in doc.get("skip_reasons", {})
-    assert doc["files_with_no_output"] == 2310
-    assert doc["files_skipped"] == 4
+    # Pinned to the 2026-10-08 #699 rerun (cap 3, density floor, gated 527);
+    # re-pin whenever classify_eurovoc is rerun over a changed peep set.
+    assert doc["files_with_no_output"] == 2430
+    assert doc["files_skipped"] == 49
 
 
 def test_eurlex_index_splits_override_types():

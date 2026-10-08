@@ -129,7 +129,10 @@ def test_catalogue_gets_byte_size_and_checksum(tree: dict[str, Path]) -> None:
     dist = by_title["combined_ontology.jsonld.gz"]
     assert dist["dcat:byteSize"] == {
         "@value": str(gz.stat().st_size), "@type": "xsd:nonNegativeInteger"}
-    assert dist["spdx:checksum"]["spdx:algorithm"] == {"@id": "spdx:checksumAlgorithm_sha256"}
+    assert dist["spdx:checksum"]["spdx:algorithm"] == {
+        "@id": "spdx:checksumAlgorithm_sha256",
+        "@type": "spdx:ChecksumAlgorithm",
+    }
     assert dist["spdx:checksum"]["spdx:checksumValue"]["@value"] == (
         hashlib.sha256(gz.read_bytes()).hexdigest())
     assert "dcat:byteSize" not in by_title["tree"]

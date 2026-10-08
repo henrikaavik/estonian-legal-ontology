@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -52,23 +53,6 @@
       },
       "estleg:titleNormalized": "jaatmehoolduseeskiri",
       "estleg:regulationTypeBucket": "jaatmehoolduseeskiri",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2825"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/517"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1053973_Map_Reg_1057534_Map"
@@ -101,17 +85,6 @@
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_keskkonnaamet"
-        },
-        {
-          "@id": "estleg:Issuer_ruhnu_vallavolikogu"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -133,6 +106,47 @@
         },
         {
           "@id": "estleg:PakS_Par_30"
+        }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": true,
+        "@type": "xsd:boolean"
+      },
+      "estleg:earliestSupersedingDate": {
+        "@value": "2025-09-01",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2825"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2825"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavolikogu"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
         }
       ]
     },
@@ -198,15 +212,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_2",
@@ -237,18 +257,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_3",
@@ -282,14 +302,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -327,14 +339,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -372,14 +376,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -414,27 +410,24 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavolikogu"
+        }
+      ],
+      "estleg:competenceType": "regulation",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_7",
@@ -468,18 +461,18 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_8",
@@ -510,11 +503,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -574,18 +562,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_11",
@@ -617,11 +602,6 @@
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:dutyHolder": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -692,14 +672,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -734,27 +706,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_15",
@@ -822,18 +785,16 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1053973_Par_17",
@@ -867,18 +828,15 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_18",
@@ -909,27 +867,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_keskkonnaamet"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_19",
@@ -953,11 +902,6 @@
         "@id": "estleg:Reg_1053973_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -1141,11 +1085,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1227,18 +1166,21 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_29",
@@ -1294,18 +1236,16 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1053973_Par_31",
@@ -1336,24 +1276,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
-        }
-      ],
-      "estleg:competenceType": "supervision",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_ruhnu_vallavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1053973_Par_32",
@@ -1443,12 +1380,11 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053973_Map"
       },
-      "estleg:competentAuthority": [
+      "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Issuer_ruhnu_vallavolikogu"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:Similarity_Reg_1053973_Map_Reg_1057534_Map",

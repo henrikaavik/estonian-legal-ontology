@@ -202,9 +202,19 @@ def test_get_law_as_of_invalid_or_out_of_range_returns_note() -> None:
 
 
 # ---------------------------------------------------------------------------
-# 3. get_provision -> {id, paragrahv, label, summary, legal_text, rt_url}
+# 3. get_provision -> {id, paragrahv, label, summary, legal_text, truncated,
+#                      full_length, rt_url}
 # ---------------------------------------------------------------------------
-GET_PROVISION_FIELDS = {"id", "paragrahv", "label", "summary", "legal_text", "rt_url"}
+GET_PROVISION_FIELDS = {
+    "id",
+    "paragrahv",
+    "label",
+    "summary",
+    "legal_text",
+    "truncated",
+    "full_length",
+    "rt_url",
+}
 
 
 def test_get_provision_contract_fields() -> None:
@@ -277,7 +287,7 @@ def test_references_of_contract_fields() -> None:
 
 
 def test_reference_tools_unknown_law_returns_note() -> None:
-    note = [{"note": "law not found: no-such-law-xyz"}]
+    note = [{"note": "seadust ei leitud: no-such-law-xyz"}]
     assert server.who_references("no-such-law-xyz") == note
     assert server.references_of("no-such-law-xyz") == note
 
@@ -301,7 +311,7 @@ def test_drafts_affecting_law_limit_cap_and_empty() -> None:
     assert len(server.drafts_affecting_law("TLS", limit=3)) <= 3
     assert server.drafts_affecting_law("TLS", limit=0) == []
     assert server.drafts_affecting_law("no-such-law-xyz") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
 
 
@@ -328,7 +338,7 @@ def test_court_decisions_limit_cap_and_empty() -> None:
     assert len(server.court_decisions_for_law(KARS, limit=3)) == 3
     assert server.court_decisions_for_law(KARS, limit=0) == []
     assert server.court_decisions_for_law("no-such-law-xyz") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
 
 
@@ -365,7 +375,7 @@ def test_sanctions_for_law_citation_empty_without_rt_source() -> None:
 
 def test_sanctions_for_law_unknown_returns_note() -> None:
     assert server.sanctions_for_law("no-such-law-xyz") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
     assert server.sanctions_for_law(KARS, limit=0) == []
 
@@ -381,7 +391,7 @@ def test_sanctions_for_law_limit_caps_kars() -> None:
 # ---------------------------------------------------------------------------
 # 9. competent_authority_for_law -> {institution, provision_count}
 # ---------------------------------------------------------------------------
-AUTHORITY_FIELDS = {"institution", "provision_count"}
+AUTHORITY_FIELDS = {"institution", "institution_id", "provision_count", "rt_url"}
 
 
 def test_competent_authority_contract_fields_and_ranking() -> None:
@@ -398,7 +408,7 @@ def test_competent_authority_contract_fields_and_ranking() -> None:
 
 def test_competent_authority_unknown_returns_note() -> None:
     assert server.competent_authority_for_law("no-such-law-xyz") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
 
 
@@ -447,6 +457,7 @@ def test_transposition_no_match_returns_empty() -> None:
 #     adds {as_of, redaction_id, valid_from, valid_to, currently_in_force}
 # ---------------------------------------------------------------------------
 AS_OF_FIELDS = GET_PROVISION_FIELDS | {
+    "redaction_rt_url",
     "as_of",
     "redaction_id",
     "valid_from",
@@ -523,6 +534,9 @@ HISTORY_FIELDS = {
     "valid_to",
     "currently_in_force",
     "text",
+    "truncated",
+    "full_length",
+    "rt_url",
 }
 
 
@@ -542,7 +556,7 @@ def test_provision_history_ordered_timeline_and_fields() -> None:
 
 def test_provision_history_unknown_returns_note_or_empty() -> None:
     assert server.provision_history("no-such-law-xyz", "§ 1") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
     # Known law, unknown § — empty success, not a not-found note.
     assert server.provision_history(KARS, "999999") == []
@@ -591,7 +605,7 @@ def test_regulations_for_law_limit_overflow_and_empty() -> None:
     # limit<=0 on a known law is empty success; unknown law is a note.
     assert server.regulations_for_law(KOKS, limit=0) == []
     assert server.regulations_for_law("no-such-law-xyz") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
 
 
@@ -663,7 +677,16 @@ def test_regulations_by_issuer_limit_overflow_and_empty() -> None:
     assert server.regulations_by_issuer("no-such-institution-xyz") == []
 
 
-AMENDMENT_FIELDS = {"event_id", "label", "amendment_date", "entry_into_force", "amends"}
+AMENDMENT_FIELDS = {
+    "event_id",
+    "label",
+    "amendment_date",
+    "entry_into_force",
+    "amends",
+    "rt_reference",
+    "rt_url",
+    "changed_provisions",
+}
 
 
 def test_define_term_and_laws_for_subject() -> None:
@@ -681,6 +704,6 @@ def test_amendment_history_fields_and_empty() -> None:
     for it in items:
         _assert_fields(it, AMENDMENT_FIELDS)
     assert server.amendment_history("no-such-law-xyz") == [
-        {"note": "law not found: no-such-law-xyz"}
+        {"note": "seadust ei leitud: no-such-law-xyz"}
     ]
     assert server.amendment_history(KARS, limit=0) == []
