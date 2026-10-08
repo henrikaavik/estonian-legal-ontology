@@ -15,14 +15,19 @@ This module exposes the pieces that are identical between both pipelines.
 from __future__ import annotations
 
 import html
+import json
 import re
+import tempfile
 import time
 import xml.etree.ElementTree as ET
 from collections.abc import Callable, Iterator
+from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from urllib.parse import urlsplit, urlunsplit
 
-import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
+import requests  # tests monkeypatch ``requests.get``
 
 # Single source of truth: NS, CONTEXT, the Estonian transliteration table,
 # sanitize_id, slugify, and save_json all live in estleg_common. They are
@@ -48,6 +53,7 @@ DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 
 SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
+_TALLINN = ZoneInfo("Europe/Tallinn")
 
 
 class SourceListFetchError(RuntimeError):
@@ -272,24 +278,184 @@ def fetch_acts(
         page += 1
 
 
-def build_xml_url(url: str) -> str:
-    """Build the absolute Riigi Teataja XML URL for an act path/URL.
+# ---------------------------------------------------------------------------
+# Per-act fetch: Riigi Teataja public API (#691)
+# ---------------------------------------------------------------------------
+#
+# Since the RT relaunch on 2026-06-01 the legacy ``/akt/{id}.xml`` path
+# answers HTTP 200 ``text/html`` with the Angular app shell instead of act
+# XML. The act XML now lives at ``/public-api/api/v1/akt/{id}/xml``
+# (served as ``application/octet-stream``) and its JSON metadata sibling at
+# ``/public-api/api/v1/akt/{id}``. ``HEAD`` on the ``/xml`` endpoint is a
+# 302 to a Keycloak login, so every probe must GET. The search API
+# (``SEARCH_URL``) is unchanged and still returns ``url: "/akt/{id}.xml"``;
+# ``build_xml_url`` maps that legacy form onto the public API.
 
-    Relative paths (``/akt/123``) are resolved against ``BASE_URL``; absolute
-    URLs are used as-is. A ``.xml`` suffix is appended only to the URL *path*
-    component when the path does not already end in ``.xml``.
+PUBLIC_API_AKT_PATH = "/public-api/api/v1/akt"
+PUBLIC_API_AKT_URL = BASE_URL + PUBLIC_API_AKT_PATH
 
-    The suffix is applied via ``urlsplit``/``urlunsplit`` so it lands on the
-    path and never on a query string (issue #389): a raw ``url + ".xml"`` on
-    ``/akt/123?version=3`` would have produced ``/akt/123?version=3.xml``,
-    corrupting the query parameter. Operating on the parsed path yields the
-    correct ``/akt/123.xml?version=3``.
+# Schema identity of post-relaunch law XML: the root element's namespace
+# (``xmlns="tyviseadus_1_10.02.2010"``) and the ``xsi:schemaLocation`` XSD.
+RT_LAW_XML_SCHEMA = "tyviseadus_1_10.02.2010"
+# Live canary act: Perekonnaseadus (PKS), a stable high-traffic law that is
+# also in the ``check_rt_staleness`` sample.
+RT_CANARY_ACT_ID = "107052025017"
+
+# Retry convention shared with ``fetch_acts``: ``max_retries`` extra
+# attempts with a linear ``retry_sleep * attempt`` backoff.
+DEFAULT_FETCH_RETRIES = 2
+DEFAULT_RETRY_SLEEP = 1.0
+
+_RT_HOST_SUFFIX = "riigiteataja.ee"
+# RT act ids are numeric globaalIDs; any path-safe token is accepted so
+# fixtures and odd legacy ids still map (RT itself answers 4xx/5xx for them).
+_AKT_ID_RE = re.compile(
+    r"/(?:public-api/api/v1/)?akt/([A-Za-z0-9_-]+?)(?:\.xml|/xml)?/?$"
+)
+_HTML_SNIFF_RE = re.compile(r"^\s*(?:<!doctype\s+html|<html[\s>])", re.IGNORECASE)
+
+
+class RTFormatError(RuntimeError):
+    """Riigi Teataja answered, but not with the expected act payload.
+
+    Raised (never swallowed) when an act endpoint returns HTML — e.g. the
+    Angular app shell the legacy ``/akt/{id}.xml`` path serves since the
+    2026-06-01 relaunch — or XML outside the pinned schema. This is a
+    contract change that needs a code fix, not a transient blip to retry.
     """
-    full_url = BASE_URL + url if url.startswith("/") else url
-    parts = urlsplit(full_url)
-    if not parts.path.endswith(".xml"):
-        parts = parts._replace(path=parts.path + ".xml")
-    return urlunsplit(parts)
+
+
+def rt_act_id(url_or_id: str | int) -> str:
+    """Return the numeric RT act id from an id, act path, or act URL.
+
+    Accepts ``107052025017``, ``/akt/107052025017``, ``/akt/{id}.xml`` (the
+    search API's ``url`` form), ``https://www.riigiteataja.ee/akt/{id}``,
+    and public-API URLs. Query strings and fragments are ignored.
+    """
+    text = str(url_or_id).strip()
+    if text.isdigit():
+        return text
+    path = urlsplit(text).path.rstrip("/")
+    if not path.startswith("/"):
+        path = "/" + path
+    match = _AKT_ID_RE.search(path)
+    if match is None:
+        raise ValueError(f"not a Riigi Teataja act id or act URL: {url_or_id!r}")
+    return match.group(1)
+
+
+def _public_api_url(url_or_id: str | int, suffix: str) -> str:
+    """Public-API URL for an act, keeping a caller's query string.
+
+    Relative paths, bare ids and ``riigiteataja.ee`` URLs resolve against
+    ``BASE_URL``. A foreign absolute host is kept (the host allow-list in
+    ``allowed_get`` still decides whether it may be fetched).
+    """
+    act_id = rt_act_id(url_or_id)
+    text = str(url_or_id).strip()
+    parts = urlsplit(text) if not text.isdigit() else urlsplit("")
+    base = urlsplit(BASE_URL)
+    host = parts.netloc
+    if not host or host.endswith(_RT_HOST_SUFFIX):
+        scheme, netloc = base.scheme, base.netloc
+    else:
+        scheme, netloc = parts.scheme or base.scheme, host
+    path = f"{PUBLIC_API_AKT_PATH}/{act_id}{suffix}"
+    return urlunsplit((scheme, netloc, path, parts.query, ""))
+
+
+def build_xml_url(url: str | int) -> str:
+    """Public-API XML URL for an act id/path/URL (#691).
+
+    ``/akt/123`` and ``/akt/123.xml`` both become
+    ``https://www.riigiteataja.ee/public-api/api/v1/akt/123/xml``. The id is
+    taken from the URL *path*, so a query string never leaks into it and is
+    carried over unchanged (the #389 invariant).
+    """
+    return _public_api_url(url, "/xml")
+
+
+def build_metadata_url(url: str | int) -> str:
+    """Public-API JSON metadata URL for an act id/path/URL (#691)."""
+    return _public_api_url(url, "")
+
+
+def is_html_payload(body: str | bytes, content_type: str | None = None) -> bool:
+    """True when an RT response is an HTML page rather than XML/JSON."""
+    if content_type and "text/html" in content_type.lower():
+        return True
+    head = body[:512]
+    if isinstance(head, bytes):
+        head = head.decode("utf-8", errors="replace")
+    return bool(_HTML_SNIFF_RE.match(head.lstrip("﻿")))
+
+
+def _response_content_type(resp) -> str:
+    headers = getattr(resp, "headers", None) or {}
+    try:
+        return str(headers.get("Content-Type") or headers.get("content-type") or "")
+    except AttributeError:
+        return ""
+
+
+def _is_transient_status(status: int) -> bool:
+    return status == 429 or 500 <= status < 600
+
+
+def _get_with_retry(
+    url: str,
+    *,
+    timeout: int,
+    max_retries: int = DEFAULT_FETCH_RETRIES,
+    retry_sleep: float = DEFAULT_RETRY_SLEEP,
+):
+    """GET *url* via ``allowed_get``; retry network errors, 429 and 5xx.
+
+    Non-transient HTTP errors (4xx) raise immediately. The last transient
+    error is re-raised once the retries are spent.
+    """
+    last_error: Exception | None = None
+    for attempt in range(max_retries + 1):
+        try:
+            resp = allowed_get(url, timeout=timeout)
+            status = int(getattr(resp, "status_code", 200) or 200)
+            if _is_transient_status(status):
+                resp.raise_for_status()
+                raise requests.HTTPError(f"HTTP {status} for {url}")
+            resp.raise_for_status()
+            return resp
+        except requests.HTTPError as e:
+            status = getattr(getattr(e, "response", None), "status_code", None)
+            if status is not None and not _is_transient_status(int(status)):
+                raise
+            last_error = e
+        except (requests.ConnectionError, requests.Timeout) as e:
+            last_error = e
+        if attempt < max_retries:
+            time.sleep(retry_sleep * (attempt + 1))
+    assert last_error is not None
+    raise last_error
+
+
+def _reject_html(resp, url: str, text: str) -> None:
+    content_type = _response_content_type(resp)
+    if is_html_payload(text, content_type):
+        raise RTFormatError(
+            f"Riigi Teataja returned HTML instead of act data for {url} "
+            f"(Content-Type: {content_type or 'unknown'}); the endpoint "
+            "contract changed — see #691"
+        )
+
+
+def _reject_redirect(resp, url: str) -> None:
+    status = int(getattr(resp, "status_code", 200) or 200)
+    if 300 <= status < 400:
+        headers = getattr(resp, "headers", None) or {}
+        location = headers.get("Location") or headers.get("location") or "?"
+        raise RTFormatError(
+            f"Riigi Teataja redirected {url} (HTTP {status}) to {location}; "
+            "the public act endpoint may have become auth-gated — see #691"
+        )
 
 
 def fetch_xml(
@@ -304,15 +470,29 @@ def fetch_xml(
     min_size: int = 200,
     validate_root: Callable[[ET.Element], bool] | None = None,
     on_bytes: Callable[[bytes], None] | None = None,
+    max_retries: int = DEFAULT_FETCH_RETRIES,
+    retry_sleep: float = DEFAULT_RETRY_SLEEP,
+    strict: bool = False,
 ) -> ET.Element | None:
     """Fetch and cache act XML; return its parsed root element.
 
-    ``cache_dir`` overrides the default ``DATA_DIR`` / ``cache_subdir``
-    destination so callers (and tests) can redirect the on-disk cache.
-    ``fallback_cache_name`` is consulted after ``cache_name`` on a cache
-    hit (law tid-qualified then slug-only files, #165). ``validate_root``
-    rejects a parsed tree (HTML/error pages, #601). ``on_bytes`` receives
-    the accepted payload (cache bytes or downloaded UTF-8).
+    The download is a GET of the public-API ``/xml`` endpoint
+    (``build_xml_url``, #691), retried on network errors / 429 / 5xx with
+    the ``fetch_acts`` linear backoff. ``cache_dir`` overrides the default
+    ``DATA_DIR`` / ``cache_subdir`` destination so callers (and tests) can
+    redirect the on-disk cache. ``fallback_cache_name`` is consulted after
+    ``cache_name`` on a cache hit (law tid-qualified then slug-only files,
+    #165). ``validate_root`` rejects a parsed tree (HTML/error pages,
+    #601). ``on_bytes`` receives the accepted payload (cache bytes or
+    downloaded UTF-8).
+
+    An HTML body always raises :class:`RTFormatError` naming the URL — that
+    is an endpoint contract change, and returning ``None`` would let a whole
+    refresh silently ``SKIP`` every act (the pre-#691 failure mode). Other
+    failures (network, HTTP status, redirect, unparseable / undersized /
+    rejected XML) print and return ``None`` unless ``strict`` is set, in
+    which case they propagate — the live schema canary uses this to tell
+    "RT unreachable" apart from "RT changed format".
     """
     dest = cache_dir if cache_dir is not None else (
         DATA_DIR / cache_subdir if cache_subdir else DATA_DIR
@@ -343,26 +523,239 @@ def fetch_xml(
                 on_bytes(cache_path.read_bytes())
             return root
 
-    full_url = build_xml_url(url)
-
+    full_url = str(url)
     try:
-        resp = allowed_get(full_url, timeout=timeout)
-        resp.raise_for_status()
+        full_url = build_xml_url(url)
+        resp = _get_with_retry(
+            full_url,
+            timeout=timeout,
+            max_retries=max_retries,
+            retry_sleep=retry_sleep,
+        )
+        try:
+            _reject_redirect(resp, full_url)
+        except RTFormatError as e:
+            # A redirect can be per-act (e.g. an unpublished redaction behind
+            # the login); only the canary treats it as fatal.
+            if strict:
+                raise
+            print(f"    Fetch error: {e}")
+            return None
         resp.encoding = "utf-8"
         xml_text = resp.text
+        _reject_html(resp, full_url, xml_text)
         if len(xml_text) < min_size:
+            if strict:
+                raise RTFormatError(
+                    f"Riigi Teataja returned {len(xml_text)} bytes for {full_url} "
+                    f"(< min_size={min_size})"
+                )
             return None
-        root = parse_xml(xml_text)
+        try:
+            root = parse_xml(xml_text)
+        except ET.ParseError as e:
+            message = f"Riigi Teataja returned unparseable XML for {full_url}: {e}"
+            if strict:
+                raise RTFormatError(message) from e
+            print(f"    Fetch error: {message}")
+            return None
         if validate_root is not None and not validate_root(root):
+            if strict:
+                raise RTFormatError(
+                    f"Riigi Teataja XML root <{ln(root.tag)}> from {full_url} "
+                    "failed validation"
+                )
             return None
         cache_path = dest / f"{cache_name}.xml"
         cache_path.write_text(xml_text, encoding="utf-8")
         if on_bytes is not None:
             on_bytes(xml_text.encode("utf-8"))
         return root
+    except RTFormatError:
+        raise
     except Exception as e:
-        print(f"    Fetch error: {e}")
+        if strict:
+            raise
+        print(f"    Fetch error ({full_url}): {e}")
         return None
+
+
+def _utc_instant_to_tallinn_date(value: object) -> str | None:
+    """``2024-12-31T22:00:00Z`` → ``2025-01-01`` (Estonian civil date)."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip()
+    try:
+        instant = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        return text[:10] if re.match(r"^\d{4}-\d{2}-\d{2}", text) else None
+    if instant.tzinfo is None:
+        return instant.date().isoformat()
+    return instant.astimezone(_TALLINN).date().isoformat()
+
+
+def parse_act_metadata_json(data: dict) -> dict[str, object]:
+    """Normalise the public-API act metadata JSON (``GET /akt/{id}``).
+
+    Keys mirror :func:`parse_act_metadata` where the two overlap. Dates are
+    Estonian civil dates (the API serves midnight Tallinn as a UTC instant,
+    e.g. ``2024-12-31T22:00:00Z`` for 2025-01-01). ``currentId`` is
+    ``kehtivId`` — the redaction in force now; when it differs from
+    ``actId`` a newer consolidation exists.
+    """
+    if not isinstance(data, dict):
+        raise RTFormatError(f"act metadata is not a JSON object: {type(data).__name__}")
+    params = data.get("aktiParameetrid")
+    params = params if isinstance(params, dict) else {}
+
+    def _opt_str(value: object) -> str | None:
+        if value is None or value == "":
+            return None
+        return str(value)
+
+    return {
+        "currentId": _opt_str(data.get("kehtivId")),
+        "terviktekstId": _opt_str(data.get("grupiId")),
+        "textKind": _opt_str(data.get("tekstiliik")),
+        "documentType": _opt_str(data.get("dokumentliik")),
+        "status": _opt_str(data.get("aktiStaatus")),
+        "title": _opt_str(params.get("pealkiri")),
+        "abbreviation": _opt_str(params.get("lyhend")),
+        "entryIntoForce": _utc_instant_to_tallinn_date(params.get("kehtivuseAlgus")),
+        "repealDate": _utc_instant_to_tallinn_date(params.get("kehtivuseLopp")),
+        "publishedDate": _utc_instant_to_tallinn_date(params.get("avaldamiseKuupaev")),
+        "translationId": _opt_str(data.get("tolkeSeosId")),
+    }
+
+
+def fetch_act_metadata(
+    url_or_id: str | int,
+    *,
+    timeout: int = 30,
+    max_retries: int = DEFAULT_FETCH_RETRIES,
+    retry_sleep: float = DEFAULT_RETRY_SLEEP,
+) -> dict[str, object]:
+    """GET and parse the public-API JSON metadata for one act (#691).
+
+    Returns :func:`parse_act_metadata_json` plus ``actId`` and ``url``.
+    Network / HTTP errors propagate (after retries); an HTML body or a
+    non-JSON payload raises :class:`RTFormatError`.
+    """
+    url = build_metadata_url(url_or_id)
+    resp = _get_with_retry(
+        url, timeout=timeout, max_retries=max_retries, retry_sleep=retry_sleep
+    )
+    _reject_redirect(resp, url)
+    resp.encoding = "utf-8"
+    text = resp.text
+    _reject_html(resp, url, text)
+    try:
+        data = json.loads(text)
+    except ValueError as e:
+        raise RTFormatError(f"Riigi Teataja act metadata at {url} is not JSON: {e}") from e
+    meta = parse_act_metadata_json(data)
+    meta["actId"] = rt_act_id(url_or_id)
+    meta["url"] = url
+    return meta
+
+
+# ---------------------------------------------------------------------------
+# Live schema canary (#691)
+# ---------------------------------------------------------------------------
+
+CANARY_OK = "ok"
+CANARY_UNREACHABLE = "unreachable"
+CANARY_FORMAT_CHANGED = "format-changed"
+
+# Local names the law generator keys off (mirrors the offline fixture
+# canary in tests/test_rt_schema_canary.py).
+RT_REQUIRED_LOCALNAMES = frozenset(
+    {"oigusakt", "metaandmed", "paragrahv", "paragrahvNr", "peatykk"}
+)
+
+
+@dataclass(frozen=True)
+class LiveCanaryResult:
+    status: str
+    url: str
+    detail: str
+
+    @property
+    def ok(self) -> bool:
+        return self.status == CANARY_OK
+
+
+def xml_schema_name(root: ET.Element) -> str | None:
+    """Schema identity of an RT act root: its namespace URI, if any."""
+    tag = root.tag
+    if isinstance(tag, str) and tag.startswith("{"):
+        return tag[1:].split("}", 1)[0]
+    return None
+
+
+def check_act_xml_contract(
+    root: ET.Element, *, expected_schema: str = RT_LAW_XML_SCHEMA
+) -> list[str]:
+    """Return contract violations for a law XML root (empty = conforms)."""
+    problems: list[str] = []
+    if ln(root.tag) != "oigusakt":
+        problems.append(f"root element is <{ln(root.tag)}>, expected <oigusakt>")
+    schema = xml_schema_name(root)
+    if schema != expected_schema:
+        problems.append(f"schema namespace is {schema!r}, expected {expected_schema!r}")
+    names = {ln(el.tag) for el in root.iter()}
+    missing = sorted(RT_REQUIRED_LOCALNAMES - names)
+    if missing:
+        problems.append(f"missing generator-contract elements: {missing}")
+    return problems
+
+
+def run_live_schema_canary(
+    act_id: str = RT_CANARY_ACT_ID,
+    *,
+    timeout: int = 60,
+    max_retries: int = DEFAULT_FETCH_RETRIES,
+    retry_sleep: float = DEFAULT_RETRY_SLEEP,
+    expected_schema: str = RT_LAW_XML_SCHEMA,
+) -> LiveCanaryResult:
+    """GET one live act through :func:`fetch_xml` and classify the outcome.
+
+    * ``ok`` — XML (not HTML) with the pinned schema and generator tags.
+    * ``unreachable`` — network error, timeout, 429 or 5xx after retries:
+      RT is down or throttling, not evidence of a format change.
+    * ``format-changed`` — RT answered, but with HTML, a redirect, a 4xx,
+      unparseable XML, or XML outside the pinned contract.
+    """
+    url = build_xml_url(act_id)
+    with tempfile.TemporaryDirectory(prefix="rt-canary-") as tmp:
+        try:
+            root = fetch_xml(
+                act_id,
+                cache_name=f"canary_{act_id}",
+                cache_dir=Path(tmp),
+                refresh=True,
+                timeout=timeout,
+                max_retries=max_retries,
+                retry_sleep=retry_sleep,
+                strict=True,
+            )
+        except RTFormatError as e:
+            return LiveCanaryResult(CANARY_FORMAT_CHANGED, url, str(e))
+        except (requests.ConnectionError, requests.Timeout) as e:
+            return LiveCanaryResult(CANARY_UNREACHABLE, url, f"{type(e).__name__}: {e}")
+        except requests.HTTPError as e:
+            status = getattr(getattr(e, "response", None), "status_code", None)
+            if status is None or _is_transient_status(int(status)):
+                return LiveCanaryResult(CANARY_UNREACHABLE, url, f"HTTP error: {e}")
+            return LiveCanaryResult(CANARY_FORMAT_CHANGED, url, f"HTTP {status}: {e}")
+    if root is None:  # pragma: no cover - strict=True never returns None
+        return LiveCanaryResult(CANARY_FORMAT_CHANGED, url, "no XML returned")
+    problems = check_act_xml_contract(root, expected_schema=expected_schema)
+    if problems:
+        return LiveCanaryResult(CANARY_FORMAT_CHANGED, url, "; ".join(problems))
+    return LiveCanaryResult(
+        CANARY_OK, url, f"<oigusakt> in schema {xml_schema_name(root)}"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -36,10 +36,10 @@ on:
       - '.github/workflows/**'
       - 'docs/**'
       - 'README.md'
-  # Weekly committed-artifact drift check (#479) and RT content-
-  # staleness canary (#531). Re-runs the same validate/SHACL jobs
-  # against the tree on main; does not fetch Riigi Teataja or run
-  # generate_* ingest. ``check_rt_staleness.py --fetch`` is operator-run.
+  # Weekly committed-artifact drift check (#479), corpus freshness gate
+  # (#531/#693) and live RT schema canary (#691, one GET). Re-runs the same
+  # validate/SHACL jobs against the tree on main; does not run generate_*
+  # ingest. ``check_rt_staleness.py --fetch`` is operator-run.
   schedule:
     - cron: "0 6 * * 1"
 
@@ -192,9 +192,14 @@ jobs:
       - name: Generator import + fixture smoke
         run: python3 -m pytest -q tests/test_rt_schema_canary.py tests/test_generate_all_laws.py --tb=line
 
-  # #531: Monday cron also fires this job. Default mode is offline
-  # (committed estleg:kehtiv vs BUILD_EVALUATION_DATE + SLA_MAX_LAG_DAYS).
-  # ``--fetch`` (GET live RT akt XML) is operator-run, not used in CI.
+  # #531/#693: Monday cron also fires this job. The freshness gate is
+  # offline: committed snapshot stamps (laws: estleg:kehtiv; other corpora:
+  # their index stamp) vs TODAY, against the per-corpus lag budgets in
+  # check_rt_staleness.CORPUS_BUDGETS. It is expected to be red until the
+  # corpora are refreshed: the law snapshot is 2026-05-24 against a 45-day
+  # SLA, and a green result against a pinned date was meaningless (#693).
+  # #691: a separate step GETs one live act from the RT public API.
+  # ``--fetch`` (live per-act comparison) stays operator-run.
   rt-staleness:
     name: RT content-staleness canary
     runs-on: ubuntu-latest
@@ -211,8 +216,36 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install -e ".[dev]"
 
-      - name: Check committed kehtiv vs SLA
-        run: python3 scripts/check_rt_staleness.py
+      # Exit 0 = schema OK, or RT unreachable (emits a ::warning::).
+      # Exit 1 = RT answered but HTML / a redirect / a different schema came
+      # back: the ingest contract changed and the next refresh would break.
+      - name: "Live RT schema canary (GET one act, #691)"
+        if: ${{ !cancelled() }}
+        run: python3 scripts/check_rt_staleness.py --schema-canary
+
+      - name: "Corpus freshness vs today (#693)"
+        if: ${{ !cancelled() }}
+        run: |
+          set -o pipefail
+          if python3 scripts/check_rt_staleness.py | tee freshness.txt; then
+            status=0
+          else
+            status=$?
+          fi
+          {
+            echo "### Corpus freshness (#693)"
+            echo
+            echo "Committed snapshot stamps measured against today with the per-corpus lag budgets."
+            if [ "$status" -ne 0 ]; then
+              echo "**Behind SLA.** This is the honest result until the corpora are refreshed."
+              echo "Remediation: refresh via the RT public-API fetch path (#691) and commit the new snapshot."
+            fi
+            echo
+            echo '```'
+            cat freshness.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
 
   json-validation:
     runs-on: ubuntu-latest
