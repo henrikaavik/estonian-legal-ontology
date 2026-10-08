@@ -156,6 +156,7 @@ def test_canary_5xx_is_unreachable(monkeypatch: pytest.MonkeyPatch) -> None:
 LIVE = os.environ.get("ESTLEG_LIVE_CANARY") == "1"
 
 
+@pytest.mark.live
 @pytest.mark.skipif(not LIVE, reason="set ESTLEG_LIVE_CANARY=1 to GET one live RT act")
 def test_live_rt_act_xml_matches_pinned_schema() -> None:
     """#691: GET one live act's XML via ``fetch_xml`` and check the contract."""

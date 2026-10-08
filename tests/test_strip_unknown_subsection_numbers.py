@@ -123,10 +123,30 @@ def test_process_file_dry_run_does_not_write(tmp_path: Path):
     assert path.read_text(encoding="utf-8") == before
 
 
-def test_main_runs_against_real_corpus_idempotently(capsys):
-    """After the migration has been applied to the corpus, main() reports
-    zero remaining placeholders (proves idempotency on real data)."""
-    rc = mod.main([])
-    assert rc == 0
-    out = capsys.readouterr().out
-    assert "Subsection numbers stripped: 0" in out
+def test_main_strips_then_is_idempotent_on_isolated_corpus(isolated_krr, capsys):
+    """main() strips staged placeholders once, then a re-run is a no-op.
+
+    ``main`` walks ``estleg_common.iter_peep_files()``, so the isolated
+    tree is bound onto ``estleg_common`` (#706: never the real corpus).
+    """
+    from estleg import estleg_common
+
+    isolated_krr.bind(estleg_common)
+    graph = [{"@id": "a", SUBSECTION_NUMBER_KEY: "Unknown_2"}]
+    isolated_krr.write_json("law_peep.json", {"@graph": graph})
+    isolated_krr.write_json("regulations/riik/reg_peep.json", {"@graph": graph})
+
+    assert mod.main(["--dry-run"]) == 0
+    assert "Subsection numbers would strip: 2" in capsys.readouterr().out
+    assert mod.main([]) == 0
+    assert "Subsection numbers stripped: 2" in capsys.readouterr().out
+    assert mod.main([]) == 0
+    assert "Subsection numbers stripped: 0" in capsys.readouterr().out
+
+
+@pytest.mark.corpus
+def test_real_corpus_has_no_unknown_placeholders(corpus_krr, capsys):
+    """Corpus gate: zero placeholders remain in the real corpus (dry run only)."""
+    corpus_krr.path("regulations/riik")
+    assert mod.main(["--dry-run"]) == 0
+    assert "Subsection numbers would strip: 0" in capsys.readouterr().out

@@ -4,7 +4,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import backfill_eu_provenance as bep
+from tests._script_loader import load_script
+
+bep = load_script("scripts/archive/backfill_eu_provenance.py")
 
 CELEX_LEG = "32016R0679"
 CELEX_DEC = "61999TO0159"
