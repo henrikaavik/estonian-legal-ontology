@@ -1,0 +1,196 @@
+name: Refresh regulations
+
+# Monthly regulations ingest from the Riigi Teataja public API (#722).
+#
+# DISABLED BY DEFAULT. The job runs only when the repository variable
+# ESTLEG_REFRESH_ENABLED is set to 'true' (Settings > Secrets and variables >
+# Actions > Variables). Two decisions belong to the maintainer before it is
+# enabled:
+#   1. Authority: whether a scheduled job may call the public RT API monthly
+#      (~14,871 XML GETs at <= 4 req/s, ~1 h), and at what rate.
+#   2. Identity: this workflow opens its PR with the default GITHUB_TOKEN.
+#      PRs opened by GITHUB_TOKEN do NOT trigger other workflows, so
+#      validate.yml will not run on them until someone pushes to the branch
+#      or re-runs it. Swap in a GitHub App / bot token to change that.
+#
+# What it does: regenerate krr_outputs/regulations/{riik,kov} with
+# --refresh --regen-state (resumable: the ledger and XML cache are restored
+# from the Actions cache on a re-run), then open a PR with the data and an
+# index (manifest) diff summary. Provision IRIs use --iri-scheme auto, so a
+# refresh never renames a published IRI; the MAJOR rename is a separate,
+# scheduled change (docs/RELEASE.md, "Provision IRIs and the pending MAJOR
+# rename").
+
+on:
+  workflow_dispatch:
+    inputs:
+      kehtiv:
+        description: "Snapshot date YYYY-MM-DD (default: today, UTC)"
+        required: false
+        default: ""
+      workers:
+        description: "Concurrent RT fetches"
+        required: false
+        default: "4"
+  schedule:
+    # 03:17 UTC on the 2nd of each month (off the hour to spread load).
+    - cron: "17 3 2 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-regulations
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh regulations from RT
+    if: ${{ vars.ESTLEG_REFRESH_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install
+        run: python3 -m pip install -e ".[dev]" -c constraints.txt
+
+      - name: Resolve snapshot date
+        id: snap
+        env:
+          INPUT_KEHTIV: ${{ github.event.inputs.kehtiv }}
+          INPUT_WORKERS: ${{ github.event.inputs.workers }}
+        run: |
+          kehtiv="${INPUT_KEHTIV:-$(date -u +%F)}"
+          if ! [[ "$kehtiv" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "kehtiv must be YYYY-MM-DD, got: $kehtiv" >&2
+            exit 2
+          fi
+          workers="${INPUT_WORKERS:-4}"
+          if ! [[ "$workers" =~ ^[1-8]$ ]]; then
+            echo "workers must be 1-8, got: $workers" >&2
+            exit 2
+          fi
+          echo "kehtiv=$kehtiv" >> "$GITHUB_OUTPUT"
+          echo "workers=$workers" >> "$GITHUB_OUTPUT"
+          echo "branch=refresh/regulations-$kehtiv" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the pre-refresh indexes for the manifest diff
+        run: |
+          mkdir -p "$RUNNER_TEMP/before"
+          cp krr_outputs/regulations/riik/REGULATIONS_RIIK_INDEX.json "$RUNNER_TEMP/before/"
+          cp krr_outputs/regulations/kov/REGULATIONS_KOV_INDEX.json "$RUNNER_TEMP/before/"
+
+      # Restore/save are split so the ledger is saved even when a refresh
+      # step fails or times out; the next run for the same kehtiv resumes.
+      - name: Restore XML cache and regen ledger (resume)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/riigiteataja/maarus
+            data/riigiteataja/maarus_kov
+            krr_outputs/.cache
+          key: regulations-${{ steps.snap.outputs.kehtiv }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            regulations-${{ steps.snap.outputs.kehtiv }}-
+
+      - name: Refresh state regulations
+        run: |
+          python3 scripts/generate_regulations.py \
+            --kehtiv "${{ steps.snap.outputs.kehtiv }}" \
+            --refresh --regen-state \
+            --workers "${{ steps.snap.outputs.workers }}"
+
+      - name: Refresh municipal regulations
+        run: |
+          python3 scripts/generate_regulations.py --kov \
+            --kehtiv "${{ steps.snap.outputs.kehtiv }}" \
+            --refresh --regen-state \
+            --workers "${{ steps.snap.outputs.workers }}"
+
+      - name: Save XML cache and regen ledger
+        if: ${{ always() && steps.snap.outcome == 'success' }}
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data/riigiteataja/maarus
+            data/riigiteataja/maarus_kov
+            krr_outputs/.cache
+          key: regulations-${{ steps.snap.outputs.kehtiv }}-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Build the manifest diff
+        run: |
+          python3 - "$RUNNER_TEMP/before" > "$RUNNER_TEMP/pr_body.md" <<'PY'
+          import json, sys
+          from pathlib import Path
+
+          before_dir = Path(sys.argv[1])
+          pairs = [
+              ("riik", "krr_outputs/regulations/riik/REGULATIONS_RIIK_INDEX.json"),
+              ("kov", "krr_outputs/regulations/kov/REGULATIONS_KOV_INDEX.json"),
+          ]
+          keys = ["kehtiv", "totalRegulations", "activeRegulations",
+                  "repealedBeforeSnapshotCount", "totalParagraphs", "totalAnnexes",
+                  "noStructuredBodyCount", "htmlFallbackCount"]
+          run_keys = ["generationMode", "complete", "uniqueActs", "newlyGenerated",
+                      "refreshed", "unchanged", "failedFetches", "regenStateSkipped",
+                      "networkRequests", "subsectionsGenerated", "provisionIriScheme",
+                      "sourceRemovedFromSnapshotCount"]
+          print("Automated monthly regulations refresh (#722).\n")
+          print("Provision IRIs: `--iri-scheme auto` (no published IRI renamed).\n")
+          for name, path in pairs:
+              old = json.loads((before_dir / Path(path).name).read_text(encoding="utf-8"))
+              new = json.loads(Path(path).read_text(encoding="utf-8"))
+              print(f"### {name}\n")
+              print("| field | before | after |\n|---|---|---|")
+              for k in keys:
+                  print(f"| {k} | {old.get(k)} | {new.get(k)} |")
+              print("\nRun block:\n")
+              print("| field | value |\n|---|---|")
+              run = new.get("run") or {}
+              for k in run_keys:
+                  print(f"| {k} | {json.dumps(run.get(k), ensure_ascii=False)} |")
+              removed = run.get("sourceRemovedFromSnapshot") or []
+              if removed:
+                  print(f"\nRemoved from the RT snapshot ({len(removed)}):\n")
+                  for rel in removed[:50]:
+                      print(f"- `{rel}`")
+              old_files, new_files = set(old.get("files") or []), set(new.get("files") or [])
+              print(f"\nFiles added: {len(new_files - old_files)}, files dropped: {len(old_files - new_files)}\n")
+          print("Re-run the enrichment pipeline (`run_all_integration.py`) before release: "
+                "regenerated peeps carry no enrichment layers.\n")
+          print("PRs opened with GITHUB_TOKEN do not trigger validate.yml; push to the branch "
+                "or re-run CI to validate.")
+          PY
+          cat "$RUNNER_TEMP/pr_body.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open the pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ steps.snap.outputs.branch }}
+          KEHTIV: ${{ steps.snap.outputs.kehtiv }}
+        run: |
+          if [ -z "$(git status --porcelain -- krr_outputs/regulations)" ]; then
+            echo "No regulation changes; nothing to propose."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add -- krr_outputs/regulations
+          git commit -q -m "Refresh regulations from Riigi Teataja (kehtiv $KEHTIV)" \
+            -m "Automated by .github/workflows/refresh-regulations.yml (#722)."
+          git push --force-with-lease origin "$BRANCH"
+          if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            gh pr edit "$BRANCH" --body-file "$RUNNER_TEMP/pr_body.md"
+          else
+            gh pr create --base main --head "$BRANCH" \
+              --title "Refresh regulations (kehtiv $KEHTIV)" \
+              --body-file "$RUNNER_TEMP/pr_body.md"
+          fi
