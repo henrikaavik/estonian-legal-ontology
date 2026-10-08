@@ -82,6 +82,7 @@ from estleg.derive_court_interpretation_staleness import (
     _types,
 )
 from estleg.estleg_common import KRR_DIR, save_json
+from estleg.kov_pipeline_coverage import resolve_pipeline_version
 
 KOV_DIR = KRR_DIR / "regulations" / "kov"
 REPORT_PATH = KRR_DIR / "reports" / "kov" / "derive_kov_enabling_staleness_coverage.json"
@@ -414,6 +415,9 @@ def build_report(stats: Counter, eval_date: str | None, top: int = 15) -> dict:
     outdated_by_prov = prefixed("provision_outdated:")
     top_provisions = sorted(resolved_by_prov.items(), key=lambda kv: (-kv[1], kv[0]))[:top]
     return {
+        # #704 pipeline-version gate: every coverage report names the commit
+        # that produced it (git short SHA; "unknown" outside a checkout).
+        "pipeline_version": resolve_pipeline_version(),
         "pipeline": "derive_kov_enabling_staleness",
         "issue": "#712",
         "as_of_override": eval_date,

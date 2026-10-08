@@ -1,8 +1,8 @@
 # Duplicate `@id` Report
 
-Generated from `krr_outputs/` at commit `c0140d497e74f65bc4cd5a87487bac6786fc5792` on 2026-10-08 18:04 UTC by `scripts/generate_duplicate_ids_report.py`. Do not hand-edit.
+Generated from `krr_outputs/` at commit `3616fcd874fa4031a5e37ef7d16da0e4645411c0` on 2026-10-08 19:07 UTC by `scripts/generate_duplicate_ids_report.py`. Do not hand-edit.
 
-Files scanned: 29,267.
+Files scanned: 27,027.
 
 ## In-file duplicates
 
