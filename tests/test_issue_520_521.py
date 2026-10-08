@@ -162,17 +162,17 @@ def test_analytical_overlay_flags_and_reified_similarity() -> None:
         },
     ]
     planned = plan_analytical_updates(nodes)
-    assert planned["estleg:TMS_Map"]["estleg:hasNoCompetentAuthority"]["@value"] == (
+    assert planned["estleg:TMS_Map"]["estleg:competentAuthorityNotExtracted"]["@value"] == (
         "true"
     )
     assert planned["estleg:TMS_Map"]["estleg:competentAuthorityCount"] == 0
-    assert "estleg:hasNoCompetentAuthority" not in planned["estleg:PKS_Map"]
+    assert "estleg:competentAuthorityNotExtracted" not in planned["estleg:PKS_Map"]
     assert planned["estleg:PKS_Par_1"]["estleg:inboundCitationCount"] == 2
     assert planned["estleg:PKS_Par_1"]["estleg:interpretationCount"] == 1
-    assert planned["estleg:EU_32000L0060"]["estleg:hasNoTransposition"]["@value"] == (
+    assert planned["estleg:EU_32000L0060"]["estleg:noTranspositionEdgeInCorpus"]["@value"] == (
         "true"
     )
-    assert "estleg:hasNoTransposition" not in planned.get("estleg:EU_32016L0679", {})
+    assert "estleg:noTranspositionEdgeInCorpus" not in planned.get("estleg:EU_32016L0679", {})
     overlay_gaps = build_analytical_overlay(
         nodes,
         similarity_pairs=[],
@@ -181,7 +181,7 @@ def test_analytical_overlay_flags_and_reified_similarity() -> None:
     gap_ids = {
         n["@id"]
         for n in overlay_gaps["@graph"]
-        if isinstance(n, dict) and n.get("estleg:hasNoTransposition")
+        if isinstance(n, dict) and n.get("estleg:noTranspositionEdgeInCorpus")
     }
     assert "estleg:EU_31990L0314" in gap_ids
 
@@ -282,8 +282,8 @@ def test_combined_builder_hooks_520_521(tmp_path: Path) -> None:
     assert by_id["estleg:PKS_Par_1_Lg_1"]["estleg:partOfAct"]["@id"] == (
         "estleg:PKS_Map"
     )
-    assert "estleg:hasNoTransposition" not in by_id["estleg:EU_32000L0060"]
-    assert by_id["estleg:EU_31999L0031"]["estleg:hasNoTransposition"]["@value"] == (
+    assert "estleg:noTranspositionEdgeInCorpus" not in by_id["estleg:EU_32000L0060"]
+    assert by_id["estleg:EU_31999L0031"]["estleg:noTranspositionEdgeInCorpus"]["@value"] == (
         "true"
     )
 
@@ -293,12 +293,14 @@ def test_cv_and_docs_declare_520_521_terms() -> None:
     assert index["estleg:governs"]["owl:inverseOf"]["@id"] == (
         "estleg:competentAuthority"
     )
-    assert index["estleg:hasNoTransposition"]["rdfs:range"]["@id"] == "xsd:boolean"
+    assert index["estleg:noTranspositionEdgeInCorpus"]["rdfs:range"]["@id"] == (
+        "xsd:boolean"
+    )
     assert index["estleg:similarFrom"]["rdfs:domain"]["@id"] == "estleg:Similarity"
     assert "owl:TransitiveProperty" in index["estleg:isPartOf"]["@type"]
     text = SCHEMA_REF.read_text(encoding="utf-8")
     assert "inboundCitationCount" in text
-    assert "hasNoTransposition" in text
+    assert "noTranspositionEdgeInCorpus" in text
     assert "governs" in text
     assert "analytical_overlay.jsonld" in text
     source = FIX_ALL.read_text(encoding="utf-8")
@@ -354,9 +356,9 @@ def test_committed_combined_has_520_521_edges() -> None:
             types = [types]
         if "estleg:Subsection" in types and node.get("estleg:partOfAct"):
             subsection_part += 1
-        if node.get("estleg:hasNoCompetentAuthority"):
+        if node.get("estleg:competentAuthorityNotExtracted"):
             gap_auth += 1
-        if node.get("estleg:hasNoTransposition"):
+        if node.get("estleg:noTranspositionEdgeInCorpus"):
             gap_dir += 1
         if node.get("estleg:inboundCitationCount"):
             inbound += 1
@@ -378,6 +380,6 @@ def test_committed_combined_has_520_521_edges() -> None:
     overlay_gaps = [
         n
         for n in overlay.get("@graph") or []
-        if isinstance(n, dict) and n.get("estleg:hasNoTransposition")
+        if isinstance(n, dict) and n.get("estleg:noTranspositionEdgeInCorpus")
     ]
     assert overlay_gaps
