@@ -7,6 +7,13 @@ files keep an existing ``owl:Ontology`` head (upgraded with Dataset types and
 the CC BY 4.0 compilation license) or receive a thin
 ``combined_dataset_header()`` variant.
 
+#705: every head also gets ``owl:versionInfo`` = ``ONTOLOGY_VERSION`` and
+``owl:versionIRI`` = ``<ONTOLOGY_IRI>/<version>``, overwritten unconditionally
+(they are build-derived, not curated). ``estleg_common.apply_inband_dataset_fields``
+does not write them yet, so this module stamps them itself
+(:func:`stamp_version_fields`). ``rebuild_subcorpus_combined`` calls the same
+helper, so a fresh eurlex / curia / eelnoud rebuild produces stamped heads.
+
 Git-LFS pointer stubs are skipped (or pulled once for the flagship file).
 Writes go through ``estleg_common.save_json`` (atomic).
 
@@ -24,6 +31,8 @@ from pathlib import Path
 from estleg.estleg_common import (
     COMBINED_JSONLD_TARGETS,
     KRR_DIR,
+    ONTOLOGY_IRI,
+    ONTOLOGY_VERSION,
     save_json,
     stamp_combined_dataset_head,
 )
@@ -63,6 +72,31 @@ def try_lfs_pull(relpath: str) -> bool:
     return path.is_file() and not is_lfs_pointer(path)
 
 
+def stamp_version_fields(node: dict, version: str = ONTOLOGY_VERSION) -> bool:
+    """Overwrite ``owl:versionInfo`` / ``owl:versionIRI`` on a head (#705).
+
+    Returns True when the node changed.
+    """
+    wanted = {
+        "owl:versionInfo": version,
+        "owl:versionIRI": {"@id": f"{ONTOLOGY_IRI}/{version}"},
+    }
+    changed = any(node.get(key) != value for key, value in wanted.items())
+    node.update(wanted)
+    return changed
+
+
+def head_version(path: Path) -> str | None:
+    """``owl:versionInfo`` of ``@graph[0]`` in ``path`` (None when absent)."""
+    with path.open(encoding="utf-8") as handle:
+        doc = json.load(handle)
+    graph = doc.get("@graph") if isinstance(doc, dict) else None
+    if not isinstance(graph, list) or not graph or not isinstance(graph[0], dict):
+        return None
+    value = graph[0].get("owl:versionInfo")
+    return value if isinstance(value, str) else None
+
+
 def stamp_file(
     path: Path,
     *,
@@ -79,6 +113,7 @@ def stamp_file(
         label=label,
         ontology_id=ontology_id,
     )
+    stamp_version_fields(doc["@graph"][0])
     if dry_run:
         return "dry-run (would write)"
     save_json(path, doc)

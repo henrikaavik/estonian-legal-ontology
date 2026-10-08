@@ -64,7 +64,6 @@ Originally fixed GitHub issues: #2/#17 (namespace), #3/#21 (AÕS naming),
 """
 
 import copy
-import datetime as _dt
 import hashlib
 import json
 import os
@@ -182,43 +181,32 @@ INDEX_EXCLUDED_PEEPS = {
     "issuers_kov_peep.json",
     "municipalities_peep.json",
 }
-DEFAULT_REGISTRY_EXCEPTIONS = {
-    "kriminaalmenetluse_peep.json": {
-        "category": "procedure_map",
-        "reason": "procedure-stage concept map without provision nodes",
-    },
-    "tsiviilseadustik_osa1_peep.json": {
-        "category": "concept_map",
-        "reason": "legacy concept map without provision nodes",
-    },
-    "tsiviilseadustik_osa5_peep.json": {
-        "category": "concept_map",
-        "reason": "legacy concept map without provision nodes",
-    },
-    "tsiviilseadustik_osa6_peep.json": {
-        "category": "concept_map",
-        "reason": "legacy concept-only sidecar without act node",
-    },
-    "tsiviilseadustik_osa7_peep.json": {
-        "category": "concept_map",
-        "reason": "legacy concept-only sidecar without act node",
-    },
-    # #426: duplicate legacy statute peeps (orthography / truncation /
-    # renaming variants) are deprecated in place — their roots carry
-    # owl:deprecated + dcterms:isReplacedBy and they are pulled out of the
-    # law count into INDEX.json's `deprecated_laws` section so total_laws
-    # stops double-counting the same statute. The authoritative list lives
-    # in data/legacy_statute_decisions.json.
-    "deprecated_duplicates": {
-        "category": "deprecated_duplicate",
-        "reason": (
-            "duplicate legacy statute peeps with verdict 'deprecate' in "
-            "data/legacy_statute_decisions.json (#426); excluded from "
-            "total_laws/total_files and listed under deprecated_laws with "
-            "dcterms:isReplacedBy targets"
-        ),
-    },
-}
+# #704: the registry_exceptions seed is committed data, not code. It lives in
+# data/registry_exceptions.json next to legacy_statute_decisions.json;
+# generate_index() starts from it and unions whatever INDEX.json already
+# carries. KNOWN_MULTIPART_ANNOTATIONS (multipart_coverage) is separate and
+# unchanged.
+REGISTRY_EXCEPTIONS_PATH = REPO_ROOT / "data" / "registry_exceptions.json"
+
+
+def load_registry_exceptions(path: Path | None = None) -> dict[str, dict]:
+    """Return the committed ``registry_exceptions`` seed (#704).
+
+    A missing file is a hard error: silently starting from an empty seed would
+    drop the procedure-map / concept-map / deprecated-duplicate notes from a
+    rebuilt INDEX.json whenever the existing INDEX is absent.
+    """
+    seed_path = REGISTRY_EXCEPTIONS_PATH if path is None else path
+    with open(seed_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    exceptions = data.get("registry_exceptions") if isinstance(data, dict) else None
+    if not isinstance(exceptions, dict):
+        raise ValueError(f"{seed_path}: no registry_exceptions object")
+    return exceptions
+
+
+# Back-compat name for importers; the values come from the data file.
+DEFAULT_REGISTRY_EXCEPTIONS = load_registry_exceptions()
 
 # #426: legacy duplicate-statute decisions. The companion file lists every
 # legacy peep FILE with verdict "deprecate" (whose root node now carries
@@ -734,7 +722,7 @@ def generate_index():
     laws = {}
     deprecated_groups: dict[str, dict] = {}
     index_path = KRR_DIR / "INDEX.json"
-    registry_exceptions = dict(DEFAULT_REGISTRY_EXCEPTIONS)
+    registry_exceptions = dict(load_registry_exceptions())
     existing_laws_by_name: dict[str, dict] = {}
     if index_path.exists():
         try:
@@ -794,11 +782,12 @@ def generate_index():
             laws[name] = {"base_name": name, "files": [], "parts": []}
         laws[name]["files"].append(filepath.name)
 
-    # `generated` was hardcoded to a checked-in date string (#159), which
-    # made staleness/cache-busting unusable. Use today's UTC ISO date so
-    # consumers can detect when the registry actually changed.
+    # `generated` is the declared build evaluation date (#704), not the wall
+    # clock: INDEX.json is a hashed release artifact, and date.today() put
+    # the run day into its content hash and churned the file on every
+    # rebuild. Change it with ESTLEG_BUILD_EVALUATION_DATE.
     index = {
-        "generated": _dt.date.today().isoformat(),
+        "generated": estleg_common.BUILD_EVALUATION_DATE,
         "total_files": sum(len(law["files"]) for law in laws.values()),
         "total_laws": len(laws),
         "laws": [],

@@ -69,6 +69,16 @@ def fake_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
         (krr / sub).mkdir(parents=True, exist_ok=True)
         (krr / sub / name).write_text("{}", encoding="utf-8")
 
+    # #705: the release-asset manifest and one asset it lists.
+    release = repo / "release"
+    release.mkdir()
+    (release / "LICENSE").write_text("license\n", encoding="utf-8")
+    import hashlib
+
+    digest = hashlib.sha256(b"license\n").hexdigest()
+    (release / "SHA256SUMS").write_text(f"{digest}  LICENSE\n", encoding="utf-8")
+    monkeypatch.setattr(r, "RELEASE_ASSET_DIR", release, raising=True)
+
     # A stub file per step so the scripts are not "missing".
     for step in r.STEPS:
         (scripts_dir / step["script"]).write_text("# stub\n", encoding="utf-8")
@@ -108,12 +118,13 @@ class TestDAGValidity:
         assert topo.index("generate_transposition_mapping.py") < topo.index(
             "generate_harmonisation_links.py"
         )
-        # The combined-ontology rebuild (build_release_artifacts.py) must be
-        # last — it depends on every enrichment step and regenerates the
-        # release artifact after enrichment (issue #252 / #467). The
-        # similarity aggregation runs immediately before it.
-        assert topo[-1] == "build_release_artifacts.py"
-        assert topo[-2] == "generate_similarity_index.py"
+        # The combined-ontology rebuild (build_release_artifacts.py) is the
+        # last enrichment-side step (issue #252 / #467); only the package
+        # steps follow it, ending with the release-asset build (#705). The
+        # similarity aggregation runs immediately before the rebuild.
+        assert topo[-1] == "build_release_assets.py"
+        assert topo[-3] == "build_release_artifacts.py"
+        assert topo[-4] == "generate_similarity_index.py"
 
     def test_cyclic_dag_is_rejected(self) -> None:
         cyclic = [
@@ -628,16 +639,22 @@ class TestReleaseManifestShape:
             assert key in manifest, key
         assert manifest["mode"] == "release-build"
         # DAG section: topo order + per-step reads/writes/depends.
-        assert manifest["dag"]["topoOrder"][0] == "extract_cross_references.py"
-        # build_release_artifacts.py rebuilds combined_ontology.jsonld last
-        # (issue #252 / #467).
-        assert manifest["dag"]["topoOrder"][-1] == "build_release_artifacts.py"
+        # Ingest-tier steps (#704) lead the topo order.
+        assert manifest["dag"]["topoOrder"][0] == "generate_provision_versions.py"
+        assert manifest["dag"]["topoOrder"][-1] == "build_release_assets.py"
+        # build_release_artifacts.py rebuilds combined_ontology.jsonld as the
+        # last enrichment-side step (issue #252 / #467); packaging follows.
+        assert manifest["dag"]["topoOrder"][-3] == "build_release_artifacts.py"
         assert len(manifest["dag"]["steps"]) == len(r.STEPS)
         sample = manifest["dag"]["steps"][0]
         assert {"name", "dependsOn", "writes", "reads"} <= set(sample)
         # Step ledger: one entry per step, all succeeded.
         assert len(manifest["stepLedger"]) == len(r.STEPS)
-        assert all(e["status"] == "succeeded" for e in manifest["stepLedger"])
+        # Ingest-tier steps are recorded, not run, by default (#704).
+        assert all(
+            e["status"] == ("skipped_ingest" if e.get("tier") == r.TIER_INGEST else "succeeded")
+            for e in manifest["stepLedger"]
+        )
         assert manifest["stepSummary"]["succeeded"] == len(r.STEPS)
         assert manifest["stepSummary"]["failed"] == 0
         # Validators: all three, all passed.
@@ -650,6 +667,8 @@ class TestReleaseManifestShape:
         assert isinstance(arts["contentHash"], str) and len(arts["contentHash"]) == 64
         assert "krr_outputs/combined_ontology.jsonld" in arts["files"]
         assert "metadata.jsonld" in arts["files"]
+        assert "release/SHA256SUMS" in arts["files"]
+        assert "release/LICENSE" in arts["files"]
         assert arts["missing"] == []
         # Overall verdict.
         assert manifest["releaseOk"] is True
@@ -685,7 +704,9 @@ class TestReleaseOkOnFailure:
         self, fake_repo: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         # The second enrichment step fails; everything else would pass.
-        failing_step = r.STEPS[1]["script"]
+        # (Ingest-tier steps are not executed by default, #704.)
+        enrichment = [s for s in r.STEPS if r.step_tier(s) != r.TIER_INGEST]
+        failing_step = enrichment[1]["script"]
 
         def fake_run(cmd, **kwargs):
             stdout = kwargs.get("stdout")
@@ -710,7 +731,7 @@ class TestReleaseOkOnFailure:
         # The failing step is recorded.
         ledger_by_name = {e["name"]: e for e in manifest["stepLedger"]
                           if "status" in e}
-        assert ledger_by_name[r.STEPS[1]["name"]]["status"] == "failed"
+        assert ledger_by_name[enrichment[1]["name"]]["status"] == "failed"
         # Release validators were skipped because generation failed.
         assert all(v["status"] == "skipped_steps_failed"
                    for v in manifest["validators"])

@@ -330,7 +330,11 @@ class TestDryRunSummary:
     ) -> None:
         out = self._run_main_dry(fake_krr, monkeypatch, capsys)
 
-        expected_planned = len(run_all_integration.PIPELINE)
+        # Ingest-tier steps are recorded as skipped_ingest, not planned (#704).
+        expected_planned = sum(
+            1 for s in run_all_integration.STEPS
+            if run_all_integration.step_tier(s) != run_all_integration.TIER_INGEST
+        )
         assert f"Planned:   {expected_planned}" in out, out
         # The misleading "Succeeded: 0" line must NOT appear in dry-run.
         assert "Succeeded: 0" not in out, out
@@ -432,6 +436,7 @@ class TestCombinedOntologyRebuildStep:
             s["name"]
             for s in run_all_integration.STEPS
             if s["name"] != self.REBUILD_STEP
+            and run_all_integration.step_tier(s) != run_all_integration.TIER_PACKAGE
         ]
         deps = set(self._step(self.REBUILD_STEP)["depends_on"])
         missing = set(enrichment) - deps
@@ -440,14 +445,25 @@ class TestCombinedOntologyRebuildStep:
             f"{sorted(missing)}"
         )
 
-    def test_rebuild_step_topo_sorts_strictly_last(self) -> None:
+    def test_rebuild_step_is_the_last_enrichment_step(self) -> None:
+        """#705: the rebuild is the last ENRICHMENT-side step; only
+        package-tier steps (which read the built corpus) may follow it."""
         topo = run_all_integration.validate_dag(
             run_all_integration.STEPS, run_all_integration.COMMITTED_INPUTS
         )
-        assert topo[-1] == self.REBUILD_STEP, (
-            "the combined-ontology rebuild must be the final step so it runs "
-            "after all enrichment and before the release validators"
-        )
+        by_name = {s["name"]: s for s in run_all_integration.STEPS}
+        after = topo[topo.index(self.REBUILD_STEP) + 1:]
+        assert after, "the release-asset packaging step must follow the rebuild"
+        for name in after:
+            assert run_all_integration.step_tier(by_name[name]) == (
+                run_all_integration.TIER_PACKAGE
+            ), f"{name} runs after the rebuild but is not a package step"
+        assert topo[-1] == "build_release_assets.py"
+
+    def test_package_steps_depend_on_the_rebuild(self) -> None:
+        for step in run_all_integration.STEPS:
+            if run_all_integration.step_tier(step) == run_all_integration.TIER_PACKAGE:
+                assert self.REBUILD_STEP in step["depends_on"], step["name"]
 
     def test_rebuild_runs_before_release_validators(self) -> None:
         """The release validators run from ``main()`` only after ``run_dag``
@@ -541,12 +557,19 @@ class TestTemporalEvaluationDateIsDeclared:
         step = {"command": ["echo", "hi"], "args": ["--ignored"]}
         assert run_all_integration.step_command(step) == ["echo", "hi"]
 
+    # Steps whose CLI takes --evaluation-date; each must pass the pinned
+    # BUILD_EVALUATION_DATE (#704 added the version-derived act status).
+    EVALUATION_DATE_STEPS = frozenset({TEMPORAL_STEP, "derive_act_temporal_status.py"})
+
     def test_no_step_other_than_temporal_passes_evaluation_date(self) -> None:
         # Spot-guard against the flag leaking onto an unrelated step.
         for s in run_all_integration.STEPS:
-            if s["name"] == self.TEMPORAL_STEP:
+            args = s.get("args", [])
+            if s["name"] in self.EVALUATION_DATE_STEPS:
+                i = args.index("--evaluation-date")
+                assert args[i + 1] == run_all_integration.BUILD_EVALUATION_DATE
                 continue
-            assert "--evaluation-date" not in s.get("args", [])
+            assert "--evaluation-date" not in args
 
 
 # ---------------------------------------------------------------------------
