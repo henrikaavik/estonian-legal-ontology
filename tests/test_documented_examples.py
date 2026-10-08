@@ -198,7 +198,9 @@ SPARQL_SPECS: dict[str, tuple[_SparqlSpec, ...]] = {
         _SparqlSpec(
             marker="<http://eurovoc.europa.eu/4050>",
             name="EuroVoc subject classification (forward)",
-            files=("alaealise_mojutusvahendite_seadus_peep.json",),
+            # #699 re-stamped the Estonian subjects (cap 3, gated 527); the
+            # civil-service act still carries EuroVoc 4050 at the act level.
+            files=("avaliku_teenistuse_seadus_peep.json",),
         ),
         _SparqlSpec(
             marker='FILTER(STR(?title) = "Perekonnaseadus")',
@@ -304,7 +306,7 @@ SPARQL_SPECS: dict[str, tuple[_SparqlSpec, ...]] = {
         _SparqlSpec(
             marker="dcterms:subject <http://eurovoc.europa.eu/4050> ;",
             name="acts on a specific EuroVoc topic",
-            files=("alaealise_mojutusvahendite_seadus_peep.json",),
+            files=("avaliku_teenistuse_seadus_peep.json",),
         ),
         _SparqlSpec(
             marker="?provision estleg:hasSanction ?sanction ;",
