@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Materialize reified SKOS target-group concepts onto provisions (#609).
+"""RETIRED (#709): materialized reified SKOS target-group concepts (#609).
+
+Since #460 ``estleg:targetGroup`` itself carries the ``estleg:TargetGroup_*``
+IRIs, and #709 declares it an ``owl:ObjectProperty`` with range
+``estleg:TargetGroup``. The ``estleg:targetGroupConcept`` edges this module
+wrote only duplicated a subset of them; the term is ``owl:deprecated`` in the
+CV and ``estleg.retire_target_group_concept`` removes the edges. ``main`` now
+refuses to run so the duplicate is never re-emitted; the pure functions stay
+importable for the historical tests.
+
+Original description follows.
 
 The usefulness review (#609) flagged that a provision's addressee category ships
 only as the legacy *bare-string* ``estleg:targetGroup`` enum (``"citizen"``,
@@ -224,7 +234,21 @@ def run(should_write: bool, krr_dir: Path | None = None) -> Stats:
     return stats
 
 
+RETIRED_MESSAGE = (
+    "materialize_target_group_concepts_609 is retired (#709): estleg:targetGroup "
+    "already carries the estleg:TargetGroup_* IRIs and estleg:targetGroupConcept "
+    "is deprecated. Run scripts/retire_target_group_concept.py to remove the "
+    "duplicate edges instead."
+)
+
+
 def main(argv: list[str] | None = None) -> int:
+    """Refuse to re-emit the retired property (#709); returns exit code 2."""
+    print(RETIRED_MESSAGE)
+    return 2
+
+
+def _legacy_main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--apply",

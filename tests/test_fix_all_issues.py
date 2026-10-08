@@ -116,7 +116,13 @@ def test_combined_builder_is_idempotent(tmp_path):
         "estleg:Vocab_X",
         estleg_common.ONTOLOGY_IRI,
     }
-    assert second["@graph"][0] == estleg_common.combined_ontology_header()
+    # #720: plus the in-band personal-data flag from COMBINED_JSONLD_TARGETS.
+    expected_head = estleg_common.combined_ontology_header()
+    estleg_common.stamp_personal_data_flag(
+        expected_head,
+        estleg_common.combined_target_contains_personal_data("combined_ontology.jsonld"),
+    )
+    assert second["@graph"][0] == expected_head
 
 
 def test_combined_builder_skips_unallowed_root_jsonld(tmp_path):
@@ -2138,3 +2144,121 @@ def test_combined_stubs_carry_only_allowlisted_edges_after_inverse_pass(tmp_path
         assert leaked == set(), (nid, leaked)
         dangling = [t for _, t in refs if t not in present]
         assert dangling == [], (nid, dangling)
+
+
+def test_combined_folds_in_historical_municipalities_registry(tmp_path):
+    """#712: the EHAK historical-municipality registry lives outside krr_outputs/,
+    but issuer / KOV-act edges point at its nodes, so combined must carry them
+    in full (not as stubs) for a combined-only graph to stay closed."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Issuer_X",
+                    "@type": ["owl:NamedIndividual"],
+                    "estleg:historicalMunicipality": {"@id": "estleg:HistoricalMunicipality_0105"},
+                }
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "data" / "ehak" / "historical_municipalities.jsonld",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:HistoricalMunicipality_0105",
+                    "@type": ["owl:NamedIndividual", "estleg:HistoricalMunicipality"],
+                    "rdfs:label": "Abja vald",
+                    "estleg:formerEhakCode": "0105",
+                }
+            ]
+        },
+    )
+    from estleg import estleg_common
+
+    assert estleg_common.iter_combined_registry_files(krr) == [
+        tmp_path / "data" / "ehak" / "historical_municipalities.jsonld"
+    ]
+    fix_all_issues.generate_combined_jsonld(krr)
+    nodes = {n["@id"]: n for n in read_json(krr / "combined_ontology.jsonld")["@graph"]}
+    hm = nodes["estleg:HistoricalMunicipality_0105"]
+    assert hm["estleg:formerEhakCode"] == "0105"
+    assert estleg_common.STUB_NODE_MARKER not in hm
+
+
+def test_combined_registry_files_absent_is_empty(tmp_path):
+    from estleg import estleg_common
+
+    assert estleg_common.iter_combined_registry_files(tmp_path / "krr_outputs") == []
+
+
+def test_closure_stub_is_folded_into_an_untyped_overlay_join_node(tmp_path):
+    """#699 overlay join nodes must not suppress the typed act stub (#488).
+
+    The EuroVoc overlay asserts ``dcterms:subject`` on regulation roots that
+    are not in the law corpus. Before the fix, that untyped join node counted
+    as "present", no ``estleg:Act`` stub was minted, and every KOV provision
+    stub whose ``partOfAct`` pointed at it failed ``sh:class estleg:Act`` in
+    the standalone gate (5,039 violations on the 2026-10 tree).
+    """
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:summary": "Summary",
+                    "estleg:references": {"@id": "estleg:Reg_9_Par_1"},
+                }
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "regulations" / "kov" / "x_vallavolikogu" / "reg_9_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_9_Map",
+                    "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+                    "rdfs:label": "Reg 9",
+                    "estleg:enactedBy": {"@id": "estleg:Issuer_x_vallavolikogu"},
+                },
+                {
+                    "@id": "estleg:Reg_9_Par_1",
+                    "@type": ["estleg:LegalProvision", "estleg:KovProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:summary": "KOV summary",
+                    "estleg:partOfAct": {"@id": "estleg:Reg_9_Map"},
+                },
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "eurovoc" / "eurovoc_overlay.jsonld",
+        {
+            "@graph": [
+                {"@id": "estleg:EuroVocOverlay", "@type": ["owl:Ontology"]},
+                {
+                    "@id": "estleg:Reg_9_Map",
+                    "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/68"}],
+                },
+            ]
+        },
+    )
+    write_json(tmp_path / "controlled_vocabulary.jsonld", {"@graph": [{"@id": "estleg:Act"}]})
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    combined = read_json(tmp_path / "combined_ontology.jsonld")
+
+    roots = [n for n in combined["@graph"] if n.get("@id") == "estleg:Reg_9_Map"]
+    assert len(roots) == 1, "the overlay join node and the stub must be ONE node"
+    root = roots[0]
+    assert "estleg:Act" in root["@type"]
+    assert root["estleg:isStubNode"] is True
+    assert root["dcterms:subject"] == [{"@id": "http://eurovoc.europa.eu/68"}]
+    provision = next(n for n in combined["@graph"] if n.get("@id") == "estleg:Reg_9_Par_1")
+    assert provision["estleg:partOfAct"] == {"@id": "estleg:Reg_9_Map"}

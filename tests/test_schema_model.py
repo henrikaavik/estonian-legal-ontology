@@ -35,6 +35,7 @@ CONTEXT = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "eli": "http://data.europa.eu/eli/ontology#",
 }
 
 
@@ -96,8 +97,9 @@ ANNOTATION_DATATYPE_PROPS = [
 # Vocabulary terms — issues #214 / #215
 # ---------------------------------------------------------------------------
 
+# estleg:targetGroup left this list in #709: its values are TargetGroup_* IRIs,
+# so it is an owl:ObjectProperty (see test_target_group_is_an_object_property).
 TARGET_GROUP_DATATYPE_PROPS = [
-    "estleg:targetGroup",
     "estleg:competenceArea",
 ]
 COMPETENCE_OBJECT_PROPS = ["estleg:grantedBy"]
@@ -134,6 +136,13 @@ def test_new_datatype_properties_declared(term):
     assert _has_type(node, "owl:DatatypeProperty"), f"{term} is not an owl:DatatypeProperty"
     assert node.get("rdfs:label"), f"{term} lacks rdfs:label"
     assert node.get("rdfs:comment"), f"{term} lacks rdfs:comment"
+
+
+def test_target_group_is_an_object_property():
+    node = _vocab_index()["estleg:targetGroup"]
+    assert _has_type(node, "owl:ObjectProperty")
+    assert not _has_type(node, "owl:DatatypeProperty")
+    assert node.get("rdfs:range") == {"@id": "estleg:TargetGroup"}
 
 
 def test_hasversion_versionof_inverse_pair_declared():
@@ -231,6 +240,8 @@ _ANN_VALID = {
     "estleg:annotationSource": "Õiguskantsler",
     "estleg:annotationSourceUrl": {"@type": "xsd:anyURI", "@value": "https://www.oiguskantsler.ee/et/arvamus"},
     "estleg:annotationDate": {"@type": "xsd:date", "@value": "2020-03-15"},
+    # #719: required; the text above is a title-plus-excerpt, not the full body.
+    "estleg:isExcerpt": {"@type": "xsd:boolean", "@value": "true"},
 }
 
 
@@ -247,6 +258,7 @@ class TestAnnotationShape:
             "estleg:annotates": {"@id": "estleg:KOKS_Par_22"},
             "estleg:annotationText": "Praktikas kohaldatakse seda paindlikult.",
             "estleg:annotationType": "practice_note",
+            "estleg:isExcerpt": {"@type": "xsd:boolean", "@value": "true"},  # #719
         })
         assert ok, msg
 
@@ -302,6 +314,7 @@ def test_legal_provision_with_version_links_conforms():
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 1",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
         "estleg:summary": "Test provision used in the schema-model test.",
         "estleg:hasVersion": [
             {"@id": "estleg:LegalProvision_TEST_1_v1"},
@@ -319,6 +332,7 @@ def test_legal_provision_without_version_links_still_conforms():
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 2",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
         "estleg:summary": "Provision with no version history populated.",
     })
     assert ok, msg
@@ -346,6 +360,7 @@ def test_legal_provision_accepts_target_group_enum_values(target_group):
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 10",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
         "estleg:summary": "Provision with a classified target group.",
         "estleg:targetGroup": {"@id": target_group},
     })
@@ -359,6 +374,7 @@ def test_legal_provision_accepts_multiple_target_groups():
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 11",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
         "estleg:summary": "Provision affecting several target groups.",
         "estleg:targetGroup": [
             {"@id": "estleg:TargetGroup_Citizen"},
@@ -376,6 +392,7 @@ def test_legal_provision_rejects_unknown_target_group():
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 12",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
         "estleg:summary": "Provision with an invalid target group.",
         "estleg:targetGroup": "aliens",
     })

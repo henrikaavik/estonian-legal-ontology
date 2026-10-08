@@ -1,5 +1,5 @@
 {
-  "_comment": "Curated Institution slug → Wikidata QID map (#518). Slugs match krr_outputs/institutions/institution_<slug>.json. QIDs taken from the English/Estonian Wikipedia sitelink (wikibase_item), not scraped at test time. Issue #518 listed different Q-numbers; those items are unrelated (Klis / Francis turbine / Maritime Academy / TV.com) and are not used.",
+  "_comment": "Curated Institution slug → Wikidata QID map (#518). Slugs match krr_outputs/institutions/institution_<slug>.json. QIDs taken from the English/Estonian Wikipedia sitelink (wikibase_item), not scraped at test time. Issue #518 listed different Q-numbers; those items are unrelated (Klis / Francis turbine / Maritime Academy / TV.com) and are not used. #718: 'qid' is an identity link (emitted as owl:sameAs) and is unique across slugs except the abbreviation aliases mta/ppa/ttja/harno; 'seeAlsoQid' is a non-identity link (emitted as rdfs:seeAlso) for concept-level classes and for predecessor names that Wikidata folds into the successor's item; 'qidNote' records why. QIDs were checked on 2026-10-08 via wbsearchentities/wbgetentities (cache: data/wikidata_institution_cache.json).",
   "riigikohus": {
     "qid": "Q1514159",
     "label": "Riigikohus",
@@ -35,11 +35,13 @@
     }
   },
   "abiminister": {
-    "qid": "Q31273169",
+    "qid": null,
     "label": "abiminister",
     "sitelinks": {
       "etwiki": "Abiminister"
-    }
+    },
+    "seeAlsoQid": "Q31273169",
+    "qidNote": "Q31273169 is the generic position type 'assistant minister', not an Estonian office (#718)."
   },
   "andmekaitseinspektsioon": {
     "qid": "Q16410295",
@@ -56,11 +58,13 @@
     }
   },
   "halduskohus": {
-    "qid": "Q1641572",
+    "qid": null,
     "label": "halduskohus",
     "sitelinks": {
       "etwiki": "Halduskohus"
-    }
+    },
+    "seeAlsoQid": "Q1641572",
+    "qidNote": "Q1641572 is the court type 'administrative court'; Estonia has two administrative courts, so the tier slug has no single institution item (#718)."
   },
   "haridus_ja_noorteamet": {
     "qid": "Q116057137",
@@ -77,18 +81,21 @@
     }
   },
   "haridusministeerium": {
-    "qid": "Q12363440",
+    "qid": null,
     "label": "Haridusministeerium",
     "sitelinks": {
       "etwiki": "Haridus- ja Teadusministeerium"
-    }
+    },
+    "seeAlsoQid": "Q12363440",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Haridus- ja Teadusministeerium, Q12363440); owl:sameAs identity is held by the successor slug 'haridus_ja_teadusministeerium', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "haridusminister": {
-    "qid": "Q4018482",
+    "qid": "Q6866110",
     "label": "haridusminister",
     "sitelinks": {
       "etwiki": "Haridusminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q6866110 ('Eesti haridus- ja teadusminister' on Wikidata) replaces Q4018482 (generic 'education minister') (#718)."
   },
   "justiits_ja_digiministeerium": {
     "qid": "Q6867302",
@@ -98,18 +105,21 @@
     }
   },
   "justiitsministeerium": {
-    "qid": "Q6867302",
+    "qid": null,
     "label": "Justiitsministeerium",
     "sitelinks": {
       "etwiki": "Justiits- ja Digiministeerium"
-    }
+    },
+    "seeAlsoQid": "Q6867302",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Justiits- ja Digiministeerium, Q6867302); owl:sameAs identity is held by the successor slug 'justiits_ja_digiministeerium', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "justiitsminister": {
-    "qid": "Q17763739",
+    "qid": "Q20528230",
     "label": "Justiitsminister",
     "sitelinks": {
       "etwiki": "Justiitsminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q20528230 ('justiits- ja digiminister' on Wikidata) replaces Q17763739 (generic 'justice minister') (#718)."
   },
   "kaitseministeerium": {
     "qid": "Q6866745",
@@ -119,11 +129,12 @@
     }
   },
   "kaitseminister": {
-    "qid": "Q2518691",
+    "qid": "Q3741249",
     "label": "kaitseminister",
     "sitelinks": {
       "etwiki": "Kaitseminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q3741249 ('Eesti kaitseminister' on Wikidata) replaces Q2518691 (generic 'defence minister') (#718)."
   },
   "kaitsepolitseiamet": {
     "qid": "Q1721811",
@@ -140,11 +151,13 @@
     }
   },
   "keeleinspektsioon": {
-    "qid": "Q4536526",
+    "qid": null,
     "label": "Keeleinspektsioon",
     "sitelinks": {
       "etwiki": "Keeleamet"
-    }
+    },
+    "seeAlsoQid": "Q4536526",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Keeleamet, Q4536526); owl:sameAs identity is held by the successor slug 'keeleamet', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "keskkonnaamet": {
     "qid": "Q12366841",
@@ -154,18 +167,21 @@
     }
   },
   "keskkonnaministeerium": {
-    "qid": "Q16408655",
+    "qid": null,
     "label": "Keskkonnaministeerium",
     "sitelinks": {
       "etwiki": "Kliimaministeerium"
-    }
+    },
+    "seeAlsoQid": "Q16408655",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Kliimaministeerium, Q16408655); owl:sameAs identity is held by the successor slug 'kliimaministeerium', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "keskkonnaminister": {
-    "qid": "Q1449973",
+    "qid": "Q12361541",
     "label": "keskkonnaminister",
     "sitelinks": {
       "etwiki": "Keskkonnaminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q12361541 ('kliimaminister' on Wikidata) replaces Q1449973 (generic 'environment minister') (#718)."
   },
   "kliimaministeerium": {
     "qid": "Q16408655",
@@ -175,18 +191,22 @@
     }
   },
   "kohalik_omavalitsus": {
-    "qid": "Q6621940",
+    "qid": null,
     "label": "Kohalik omavalitsus",
     "sitelinks": {
       "etwiki": "Kohalik omavalitsus"
-    }
+    },
+    "seeAlsoQid": "Q6621940",
+    "qidNote": "Q6621940 is the concept 'local self-government', not an institution (#718)."
   },
   "kohus": {
-    "qid": "Q41487",
+    "qid": null,
     "label": "Kohus",
     "sitelinks": {
       "etwiki": "Kohus"
-    }
+    },
+    "seeAlsoQid": "Q41487",
+    "qidNote": "Q41487 is the class 'court', not an institution; the slug is a generic surface token (#718)."
   },
   "konkurentsiamet": {
     "qid": "Q16411123",
@@ -203,18 +223,21 @@
     }
   },
   "kultuuriminister": {
-    "qid": "Q2621182",
+    "qid": "Q16402952",
     "label": "kultuuriminister",
     "sitelinks": {
       "etwiki": "Kultuuriminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q16402952 ('Kultuuriminister' on Wikidata) replaces Q2621182 (generic 'minister of culture') (#718)."
   },
   "linn": {
-    "qid": "Q515",
+    "qid": null,
     "label": "linn",
     "sitelinks": {
       "etwiki": "Linn"
-    }
+    },
+    "seeAlsoQid": "Q515",
+    "qidNote": "Q515 is the class 'city', not an institution; the slug is a generic surface token (#718)."
   },
   "maa_ja_ruumiamet": {
     "qid": "Q5401570",
@@ -224,18 +247,22 @@
     }
   },
   "maaeluministeerium": {
-    "qid": "Q12373165",
+    "qid": null,
     "label": "Maaeluministeerium",
     "sitelinks": {
       "etwiki": "Regionaal- ja Põllumajandusministeerium"
-    }
+    },
+    "seeAlsoQid": "Q12373165",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Regionaal- ja Põllumajandusministeerium, Q12373165); owl:sameAs identity is held by the successor slug 'regionaal_ja_pollumajandusministeerium', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "maakohus": {
-    "qid": "Q23042707",
+    "qid": null,
     "label": "maakohus",
     "sitelinks": {
       "etwiki": "Maakohus"
-    }
+    },
+    "seeAlsoQid": "Q23042707",
+    "qidNote": "Q23042707 is the court type 'county court'; Estonia has four county courts, so the tier slug has no single institution item (#718)."
   },
   "majandus_ja_kommunikatsiooniministeerium": {
     "qid": "Q6866797",
@@ -245,11 +272,13 @@
     }
   },
   "majandusminister": {
-    "qid": "Q17618153",
+    "qid": null,
     "label": "majandusminister",
     "sitelinks": {
       "etwiki": "Majandusminister"
-    }
+    },
+    "seeAlsoQid": "Q17618153",
+    "qidNote": "Q17618153 is the generic 'economy minister' class; the Estonian post was renamed several times and no single office item fits the slug (#718)."
   },
   "maksu_ja_tolliamet": {
     "qid": "Q16411346",
@@ -280,11 +309,12 @@
     }
   },
   "peaminister": {
-    "qid": "Q14212",
+    "qid": "Q737115",
     "label": "peaminister",
     "sitelinks": {
       "etwiki": "Peaminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q737115 ('Eesti peaminister' on Wikidata) replaces Q14212 (the generic class 'prime minister') (#718)."
   },
   "politsei_ja_piirivalveamet": {
     "qid": "Q7209550",
@@ -301,18 +331,22 @@
     }
   },
   "pollumajandusministeerium": {
-    "qid": "Q12373165",
+    "qid": null,
     "label": "Põllumajandusministeerium",
     "sitelinks": {
       "etwiki": "Regionaal- ja Põllumajandusministeerium"
-    }
+    },
+    "seeAlsoQid": "Q12373165",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Regionaal- ja Põllumajandusministeerium, Q12373165); owl:sameAs identity is held by the successor slug 'regionaal_ja_pollumajandusministeerium', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "pollumajandusminister": {
-    "qid": "Q10540834",
+    "qid": null,
     "label": "põllumajandusminister",
     "sitelinks": {
       "etwiki": "Põllumajandusminister"
-    }
+    },
+    "seeAlsoQid": "Q10540834",
+    "qidNote": "Q10540834 is the generic 'agriculture minister' class; the Estonian post was renamed (maaeluminister Q24060239, regionaal- ja põllumajandusminister Q23268238) and no single office item fits the slug (#718)."
   },
   "rahandusministeerium": {
     "qid": "Q12373345",
@@ -322,11 +356,12 @@
     }
   },
   "rahandusminister": {
-    "qid": "Q7614320",
+    "qid": "Q21103025",
     "label": "Rahandusminister",
     "sitelinks": {
       "etwiki": "Rahandusminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q21103025 ('Rahandusminister' on Wikidata) replaces Q7614320 (generic 'finance minister') (#718)."
   },
   "raudteeamet": {
     "qid": "Q12373627",
@@ -350,11 +385,13 @@
     }
   },
   "ringkonnakohus": {
-    "qid": "Q6311907",
+    "qid": null,
     "label": "ringkonnakohus",
     "sitelinks": {
       "etwiki": "Ringkonnakohus"
-    }
+    },
+    "seeAlsoQid": "Q6311907",
+    "qidNote": "Q6311907 is the court type 'circuit court'; Estonia has two circuit courts, so the tier slug has no single institution item (#718)."
   },
   "sideamet": {
     "qid": "Q12374938",
@@ -378,18 +415,20 @@
     }
   },
   "siseminister": {
-    "qid": "Q17578116",
+    "qid": "Q6866431",
     "label": "siseminister",
     "sitelinks": {
       "etwiki": "Siseminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q6866431 ('Eesti Vabariigi siseminister' on Wikidata) replaces Q17578116 (generic 'interior minister') (#718)."
   },
   "sotsiaalkaitseminister": {
-    "qid": "Q16402881",
+    "qid": "Q24060088",
     "label": "sotsiaalkaitseminister",
     "sitelinks": {
       "etwiki": "Eesti sotsiaalminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q24060088 ('Sotsiaalkaitseminister' on Wikidata) replaces Q16402881 (that item is the Minister of Social Affairs) (#718)."
   },
   "sotsiaalkindlustusamet": {
     "qid": "Q20529203",
@@ -406,11 +445,12 @@
     }
   },
   "sotsiaalminister": {
-    "qid": "Q22690704",
+    "qid": "Q16402881",
     "label": "sotsiaalminister",
     "sitelinks": {
       "etwiki": "Sotsiaalminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q16402881 ('Eesti sotsiaalminister' on Wikidata) replaces Q22690704 (generic 'minister of social affairs') (#718)."
   },
   "statistikaamet": {
     "qid": "Q3738605",
@@ -434,11 +474,13 @@
     }
   },
   "teabeamet": {
-    "qid": "Q12376592",
+    "qid": null,
     "label": "Teabeamet",
     "sitelinks": {
       "etwiki": "Välisluureamet"
-    }
+    },
+    "seeAlsoQid": "Q12376592",
+    "qidNote": "Wikidata models this rename as one continuous organisation item (Välisluureamet, Q12376592); owl:sameAs identity is held by the successor slug 'valisluureamet', this predecessor-name node links to the item via rdfs:seeAlso only (#718)."
   },
   "teede_ja_sideministeerium": {
     "qid": "Q31277231",
@@ -469,11 +511,13 @@
     }
   },
   "tooturuamet": {
-    "qid": "Q12361481",
+    "qid": null,
     "label": "Tööturuamet",
     "sitelinks": {
       "etwiki": "Eesti Töötukassa"
-    }
+    },
+    "seeAlsoQid": "Q12361481",
+    "qidNote": "Q12361481 is Eesti Töötukassa, a separate legal person that took over Tööturuamet's functions in 2009; not owl:sameAs (#718)."
   },
   "transpordiamet": {
     "qid": "Q105101732",
@@ -483,11 +527,13 @@
     }
   },
   "vald": {
-    "qid": "Q28122896",
+    "qid": null,
     "label": "Vald",
     "sitelinks": {
       "etwiki": "Vald"
-    }
+    },
+    "seeAlsoQid": "Q28122896",
+    "qidNote": "Q28122896 is the class 'rural municipality of Estonia', not an institution; the slug is a generic surface token (#718)."
   },
   "valisluureamet": {
     "qid": "Q12376592",
@@ -504,11 +550,12 @@
     }
   },
   "valisminister": {
-    "qid": "Q7330070",
+    "qid": "Q1760777",
     "label": "välisminister",
     "sitelinks": {
       "etwiki": "Välisminister"
-    }
+    },
+    "qidNote": "Estonia-specific office item Q1760777 ('Eesti välisminister' on Wikidata) replaces Q7330070 (generic 'foreign minister') (#718)."
   },
   "keskkonnainspektsioon": {
     "qid": "Q12366851",
@@ -544,5 +591,55 @@
     "sitelinks": {
       "etwiki": "Haridus- ja Noorteamet"
     }
+  },
+  "lennuamet": {
+    "qid": "Q1351835",
+    "label": "Lennuamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "maanteeamet": {
+    "qid": "Q12369367",
+    "label": "Maanteeamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "politseiamet": {
+    "qid": "Q12372632",
+    "label": "Politseiamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "piirivalveamet": {
+    "qid": "Q12372433",
+    "label": "Piirivalveamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "kodakondsus_ja_migratsiooniamet": {
+    "qid": "Q4476390",
+    "label": "Kodakondsus- ja Migratsiooniamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "tervishoiuamet": {
+    "qid": "Q12376789",
+    "label": "Tervishoiuamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "tervisekaitseinspektsioon": {
+    "qid": "Q12376790",
+    "label": "Tervisekaitseinspektsioon",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "tarbijakaitseamet": {
+    "qid": "Q12376349",
+    "label": "Tarbijakaitseamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "veterinaar_ja_toiduamet": {
+    "qid": "Q20530239",
+    "label": "Veterinaar- ja Toiduamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
+  },
+  "pollumajandusamet": {
+    "qid": "Q25514673",
+    "label": "Põllumajandusamet",
+    "qidNote": "Predecessor agency item (Wikidata P1366 'replaced by' its successor), added for the #718 predecessor node."
   }
 }

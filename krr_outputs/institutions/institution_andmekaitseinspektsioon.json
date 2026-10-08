@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,6 +22,10 @@
       ],
       "rdfs:label": "Andmekaitse Inspektsioon",
       "estleg:institutionType": "agency",
+      "owl:sameAs": {
+        "@id": "http://www.wikidata.org/entity/Q16410295"
+      },
+      "estleg:registrikood": "70004235",
       "estleg:hasCompetence": [
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon_competence_enforcement"
@@ -27,10 +36,7 @@
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon_competence_supervision"
         }
-      ],
-      "owl:sameAs": {
-        "@id": "http://www.wikidata.org/entity/Q16410295"
-      }
+      ]
     },
     {
       "@id": "estleg:Institution_andmekaitseinspektsioon_competence_enforcement",
@@ -38,7 +44,7 @@
         "owl:NamedIndividual",
         "estleg:Competence"
       ],
-      "rdfs:label": "Andmekaitseinspektsioon – enforcement",
+      "rdfs:label": "Andmekaitse Inspektsioon – enforcement",
       "estleg:competenceType": "enforcement",
       "estleg:institution": {
         "@id": "estleg:Institution_andmekaitseinspektsioon"
@@ -48,10 +54,40 @@
           "@id": "estleg:AVTS_Par_45"
         },
         {
+          "@id": "estleg:AVTS_Par_45_Lg_1"
+        },
+        {
+          "@id": "estleg:AVTS_Par_51"
+        },
+        {
+          "@id": "estleg:AVTS_Par_51_Lg_1"
+        },
+        {
+          "@id": "estleg:ESS_Par_133"
+        },
+        {
+          "@id": "estleg:ESS_Par_133_Lg_4"
+        },
+        {
+          "@id": "estleg:ISIKUA_Par_6"
+        },
+        {
+          "@id": "estleg:ISIKUA_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:ISIKUA_Par_6_Lg_5"
+        },
+        {
           "@id": "estleg:ISIKUA_Par_56"
         },
         {
+          "@id": "estleg:ISIKUA_Par_56_Lg_1"
+        },
+        {
           "@id": "estleg:KARIST_Par_33"
+        },
+        {
+          "@id": "estleg:KARIST_Par_33_Lg_1"
         },
         {
           "@id": "estleg:PoLS_Par_24"
@@ -93,9 +129,6 @@
           "@id": "estleg:Reg_1049368_Par_16"
         },
         {
-          "@id": "estleg:Reg_1058561_Par_18"
-        },
-        {
           "@id": "estleg:Reg_1061024_Par_14"
         },
         {
@@ -135,22 +168,37 @@
           "@id": "estleg:Reg_1047553_Par_21"
         },
         {
-          "@id": "estleg:Reg_1029055_Par_18"
+          "@id": "estleg:Reg_1057352_Par_15"
         },
         {
-          "@id": "estleg:Reg_323286_Par_20"
+          "@id": "estleg:Reg_1047480_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1029055_Par_18"
         },
         {
           "@id": "estleg:Reg_1049915_Par_27"
         },
         {
+          "@id": "estleg:Reg_1023137_Par_5"
+        },
+        {
           "@id": "estleg:Reg_1001852_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_301966_Par_19"
+        },
+        {
+          "@id": "estleg:Reg_1041520_Par_14"
         },
         {
           "@id": "estleg:Reg_1012583_Par_12"
         },
         {
           "@id": "estleg:Reg_1001104_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_16"
         },
         {
           "@id": "estleg:Reg_1046452_Par_19"
@@ -162,13 +210,25 @@
           "@id": "estleg:Reg_1046428_Par_76"
         },
         {
+          "@id": "estleg:Reg_1039823_Par_17"
+        },
+        {
+          "@id": "estleg:Reg_1057193_Par_14"
+        },
+        {
           "@id": "estleg:Reg_339863_Par_27"
+        },
+        {
+          "@id": "estleg:Reg_1028185_Par_18"
         },
         {
           "@id": "estleg:Reg_1050868_Par_27"
         },
         {
           "@id": "estleg:Reg_1050393_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_319477_Par_7"
         },
         {
           "@id": "estleg:Reg_1008322_Par_14"
@@ -181,10 +241,13 @@
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "45",
+        "@value": "63",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "data_protection"
+      "estleg:competenceArea": "data_protection",
+      "estleg:grantedBy": {
+        "@id": "estleg:ISIKUA_Map"
+      }
     },
     {
       "@id": "estleg:Institution_andmekaitseinspektsioon_competence_general",
@@ -192,80 +255,62 @@
         "owl:NamedIndividual",
         "estleg:Competence"
       ],
-      "rdfs:label": "Andmekaitseinspektsioon – general",
+      "rdfs:label": "Andmekaitse Inspektsioon – general",
       "estleg:competenceType": "general",
       "estleg:institution": {
         "@id": "estleg:Institution_andmekaitseinspektsioon"
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:ANDMEK_Par_51_55"
-        },
-        {
-          "@id": "estleg:AVTS_Par_51"
-        },
-        {
-          "@id": "estleg:AVTS_Par_52"
-        },
-        {
-          "@id": "estleg:AVTS_Par_54"
-        },
-        {
-          "@id": "estleg:AVTS_Par_54_1"
-        },
-        {
-          "@id": "estleg:EUTS_Par_17"
-        },
-        {
-          "@id": "estleg:EUTS_Par_19"
+          "@id": "estleg:AVTS_Par_45_Lg_4"
         },
         {
           "@id": "estleg:EKodAS_Par_4"
         },
         {
+          "@id": "estleg:EKodAS_Par_4_Lg_2"
+        },
+        {
           "@id": "estleg:ISIKUA_Par_2_1"
         },
         {
-          "@id": "estleg:ISIKUA_Par_55"
+          "@id": "estleg:ISIKUA_Par_2_1_Lg_1"
         },
         {
-          "@id": "estleg:ISIKUA_Par_73"
+          "@id": "estleg:ISIKUA_Par_39"
         },
         {
-          "@id": "estleg:RTRT_Par_69"
+          "@id": "estleg:ISIKUA_Par_39_Lg_3"
         },
         {
-          "@id": "estleg:Reg_310585_Par_1"
+          "@id": "estleg:ISIKUA_Par_39_Lg_4"
         },
         {
-          "@id": "estleg:Reg_1052838_Par_14"
+          "@id": "estleg:ISIKUA_Par_61"
         },
         {
-          "@id": "estleg:Reg_1061968_Par_12"
+          "@id": "estleg:ISIKUA_Par_61_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1039676_Par_48"
+          "@id": "estleg:Reg_1061491_Par_19"
         },
         {
-          "@id": "estleg:Reg_1038859_Par_5"
+          "@id": "estleg:Reg_319477_Par_12"
         },
         {
-          "@id": "estleg:Reg_1034955_Par_15"
+          "@id": "estleg:vaartpaberite_registri_pidamise_seadus_Par_7_1"
         },
         {
-          "@id": "estleg:RStS_Par_41"
-        },
-        {
-          "@id": "estleg:VTMS_Par_31_2"
+          "@id": "estleg:vaartpaberite_registri_pidamise_seadus_Par_7_1_Lg_6"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "20",
+        "@value": "14",
         "@type": "xsd:integer"
       },
       "estleg:competenceArea": "data_protection",
       "estleg:grantedBy": {
-        "@id": "estleg:AVTS_Map"
+        "@id": "estleg:ISIKUA_Map"
       }
     },
     {
@@ -274,7 +319,7 @@
         "owl:NamedIndividual",
         "estleg:Competence"
       ],
-      "rdfs:label": "Andmekaitseinspektsioon – supervision",
+      "rdfs:label": "Andmekaitse Inspektsioon – supervision",
       "estleg:competenceType": "supervision",
       "estleg:institution": {
         "@id": "estleg:Institution_andmekaitseinspektsioon"
@@ -284,137 +329,35 @@
           "@id": "estleg:AVTS_Par_44"
         },
         {
-          "@id": "estleg:AVTS_Par_46"
-        },
-        {
-          "@id": "estleg:AVTS_Par_50"
-        },
-        {
-          "@id": "estleg:AVTS_Par_53"
-        },
-        {
-          "@id": "estleg:euroopa_liidu_lepingu_artikli_k_3_alusel_Par_3"
-        },
-        {
-          "@id": "estleg:euroopa_liidu_lepingu_artiklil_k_3_pohin_Par_3"
+          "@id": "estleg:AVTS_Par_44_Lg_1"
         },
         {
           "@id": "estleg:IGUS_Par_34"
         },
         {
-          "@id": "estleg:ISIKUA_Par_28"
-        },
-        {
-          "@id": "estleg:ISIKUA_Par_51"
-        },
-        {
-          "@id": "estleg:ISIKUA_Par_57"
-        },
-        {
-          "@id": "estleg:ISIKUA_Par_58"
-        },
-        {
-          "@id": "estleg:ISIKUA_Par_59"
-        },
-        {
-          "@id": "estleg:ISIKUA_Par_61"
+          "@id": "estleg:IGUS_Par_34_Lg_1"
         },
         {
           "@id": "estleg:RRS_Par_60"
         },
         {
-          "@id": "estleg:Reg_1050278_Par_13"
-        },
-        {
-          "@id": "estleg:Reg_1061491_Par_19"
-        },
-        {
-          "@id": "estleg:Reg_1039055_Par_17"
-        },
-        {
-          "@id": "estleg:Reg_1036047_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1057352_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_1047480_Par_10"
+          "@id": "estleg:RRS_Par_60_Lg_1"
         },
         {
           "@id": "estleg:Reg_346401_Par_27"
         },
         {
-          "@id": "estleg:Reg_1023137_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_1048075_Par_23"
-        },
-        {
-          "@id": "estleg:Reg_1047743_Par_21"
-        },
-        {
-          "@id": "estleg:Reg_1054930_Par_22"
-        },
-        {
-          "@id": "estleg:Reg_301966_Par_19"
-        },
-        {
-          "@id": "estleg:Reg_1060262_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1060262_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1041520_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1043851_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1027701_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1039823_Par_17"
-        },
-        {
-          "@id": "estleg:Reg_1057193_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1036511_Par_21"
-        },
-        {
-          "@id": "estleg:Reg_1028185_Par_18"
-        },
-        {
-          "@id": "estleg:Reg_1041143_Par_11"
-        },
-        {
-          "@id": "estleg:Reg_1036237_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1063117_Par_16"
+          "@id": "estleg:Reg_323286_Par_20"
         },
         {
           "@id": "estleg:Reg_339858_Par_24"
-        },
-        {
-          "@id": "estleg:Reg_1043729_Par_25"
-        },
-        {
-          "@id": "estleg:Reg_1036829_Par_22"
-        },
-        {
-          "@id": "estleg:tsiviilkohtumenetluse_seadustik_Osa11_Par_497_4"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "42",
+        "@value": "9",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "data_protection",
-      "estleg:grantedBy": {
-        "@id": "estleg:ISIKUA_Map"
-      }
+      "estleg:competenceArea": "data_protection"
     }
   ]
 }

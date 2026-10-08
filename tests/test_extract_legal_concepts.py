@@ -498,88 +498,16 @@ class TestIssue171DeterministicOrdering:
         )
 
 
-class TestIssue171CloseMatchCrossProduct:
-    """Finding 4 (#171): closeMatch links the FULL entries_a × entries_b
-    cross-product with bidirectional arcs, not just the first."""
+class TestIssue699NoEditDistanceMatcher:
+    """#699 superseded #171 Finding 4/5 and #278: the Levenshtein <= 2
+    closeMatch matcher (and its bucketing helper) is gone, because it
+    asserted near-equivalence between unrelated words (laev/laps)."""
 
-    def test_bucketed_pairs_returns_all_close_matches(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # 'auto' / 'auta' / 'auto1' all within edit distance < 3.
-        terms = ["auto", "auta", "auts"]
-        pairs = _bucketed_close_match_pairs(terms)
-        # Pair (auto, auta) and (auto, auts) must both appear (distance 1)
-        pair_set = {(t1, t2) for t1, t2, _d in pairs}
-        assert ("auta", "auto") in pair_set
-        assert ("auto", "auts") in pair_set
-        assert ("auta", "auts") in pair_set
+    def test_edit_distance_helpers_removed(self):
+        from estleg import extract_legal_concepts as mod
 
-
-class TestIssue171BucketingPerformance:
-    """Finding 5 (#171): the bucketing strategy must NOT silently skip
-    pairs when the corpus exceeds the old 5000-cap."""
-
-    def test_bucketing_finds_pairs_in_large_corpus(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # Build a 200-term corpus seeded with two known close pairs
-        # ("isiku" / "isikud", distance 1; "auto" / "auts", distance 1)
-        # and many unrelated short terms.
-        terms = [f"term{i:03d}" for i in range(200)]
-        terms.extend(["isikud", "isiku", "auto", "auts"])
-        pairs = _bucketed_close_match_pairs(terms)
-        pair_set = {(t1, t2) for t1, t2, _d in pairs}
-        assert ("isiku", "isikud") in pair_set
-        assert ("auto", "auts") in pair_set
-
-
-class TestIssue278LeadingEditBuckets:
-    """#278: the old ``(first_2_chars, length)`` signature only ever
-    compared terms sharing their leading two characters, so every
-    edit-distance ≤ 2 pair differing in a *leading* character or
-    transposing the first two characters was silently missed. The
-    deletion-variant index must co-locate those pairs."""
-
-    @staticmethod
-    def _linked(pairs, a, b):
-        s = {(t1, t2) for t1, t2, _d in pairs}
-        return (a, b) in s or (b, a) in s
-
-    def test_leading_char_substitution_linked(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # d=1, differs only in the FIRST character — never shared a bucket
-        # under the old prefix signature.
-        pairs = _bucketed_close_match_pairs(["tasu", "kasu"])
-        assert self._linked(pairs, "tasu", "kasu"), pairs
-        # Distance is reported as 1.
-        assert any(d == 1 for *_p, d in pairs), pairs
-
-    def test_transposed_first_two_chars_linked(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # Transposing the first two characters is a distance-2 edit and
-        # changes the leading 2-char prefix, so the old bucketing missed it.
-        pairs = _bucketed_close_match_pairs(["liige", "ilige"])
-        assert self._linked(pairs, "liige", "ilige"), pairs
-
-    def test_double_leading_substitution_linked(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # Both leading chars differ (d=2) — the hardest case for any
-        # prefix-keyed scheme.
-        pairs = _bucketed_close_match_pairs(["xxabc", "yyabc"])
-        assert self._linked(pairs, "xxabc", "yyabc"), pairs
-
-    def test_distance_three_not_linked(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # Guard: pairs at edit distance >= 3 must still be excluded.
-        pairs = _bucketed_close_match_pairs(["abcd", "wxyz"])
-        assert not self._linked(pairs, "abcd", "wxyz"), pairs
-
-    def test_leading_edit_found_in_large_corpus(self):
-        from estleg.extract_legal_concepts import _bucketed_close_match_pairs
-        # The leading-char pair must surface even buried in a large,
-        # otherwise-unrelated vocabulary.
-        terms = [f"word{i:03d}" for i in range(200)]
-        terms.extend(["tasu", "kasu"])
-        pairs = _bucketed_close_match_pairs(terms)
-        assert self._linked(pairs, "tasu", "kasu"), "leading pair lost in corpus"
+        assert not hasattr(mod, "_bucketed_close_match_pairs")
+        assert not hasattr(mod, "edit_distance")
 
 
 def _expected_pipeline_triples(graph: list[dict]) -> int:
@@ -589,7 +517,7 @@ def _expected_pipeline_triples(graph: list[dict]) -> int:
     non-noise terms), and each canonical Concept node's ``skos:prefLabel`` /
     ``estleg:definitionCount`` / ``estleg:hasDefinitionNode`` /
     ``skos:altLabel`` / ``skos:definition`` /
-    ``estleg:definitionVariantCount`` / ``skos:closeMatch`` triples.
+    ``estleg:definitionVariantCount`` triples (#699: no closeMatch).
 
     #326: the ``skos:exactMatch`` LegalConcept→Concept arc was removed, so it
     no longer contributes to the triple count."""
@@ -612,7 +540,6 @@ def _expected_pipeline_triples(graph: list[dict]) -> int:
             total += _n(n, "skos:altLabel")
             total += _n(n, "skos:definition")
             total += _n(n, "estleg:definitionVariantCount")
-            total += _n(n, "skos:closeMatch")
     return total
 
 
@@ -1051,13 +978,13 @@ class TestIssue134NoiseFilterEndToEnd:
         )
 
 
-class TestIssue134CloseMatchIsConceptToConcept:
-    """skos:closeMatch now connects canonical Concept nodes to each other
-    (bidirectional), never the provision-local definition nodes."""
+class TestIssue699NoCloseMatchEmitted:
+    """#699: no skos:closeMatch is emitted at all. Near-spellings of
+    different words stay separate Concepts with no link; orthographic
+    variants of one word fold into a single Concept with skos:altLabel."""
 
-    def test_close_match_between_concepts(self, tmp_path, monkeypatch):
-        # 'isik' / 'isiku' — edit distance 1, both ≥4 chars (pass the
-        # bucketing min_len), so they should be linked as close matches.
+    def test_near_spelling_concepts_not_linked(self, tmp_path, monkeypatch):
+        # 'isik' / 'isiku' — edit distance 1: formerly a closeMatch pair.
         graph = _run_extractor(
             tmp_path, monkeypatch,
             peeps={"law_a": _peep_text("law_a", "Test law A")},
@@ -1065,21 +992,32 @@ class TestIssue134CloseMatchIsConceptToConcept:
                 "1) isik — füüsiline isik üks; 2) isiku — füüsilise isiku oma;"
             )},
         )
-        ci = _by_id(graph, "estleg:Concept_isik")
-        cu = _by_id(graph, "estleg:Concept_isiku")
-        assert ci is not None and cu is not None
+        assert _by_id(graph, "estleg:Concept_isik") is not None
+        assert _by_id(graph, "estleg:Concept_isiku") is not None
+        for node in graph:
+            assert "skos:closeMatch" not in node, node["@id"]
 
-        def _refs(node, prop):
-            v = node.get(prop) or []
-            return [r["@id"] for r in (v if isinstance(v, list) else [v])]
-
-        # Bidirectional Concept ↔ Concept.
-        assert "estleg:Concept_isiku" in _refs(ci, "skos:closeMatch")
-        assert "estleg:Concept_isik" in _refs(cu, "skos:closeMatch")
-
-        # No provision-local definition node carries skos:closeMatch.
+    def test_orthographic_variants_fold_to_alt_label(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) teenuse pakkuja — isik, kes pakub teenust; "
+                "2) teenusepakkuja — isik, kes osutab teenust;"
+            )},
+        )
+        concepts = [
+            n for n in graph if "estleg:Concept" in (n.get("@type") or [])
+        ]
+        assert len(concepts) == 1, [c["@id"] for c in concepts]
+        node = concepts[0]
+        labels = {node["skos:prefLabel"]["@value"]} | {
+            lit["@value"] for lit in node.get("skos:altLabel", [])
+        }
+        assert labels == {"teenuse pakkuja", "teenusepakkuja"}
+        # Both provision-local definitions now hang off the survivor.
         for lc in _legal_concept_nodes(graph):
-            assert "skos:closeMatch" not in lc, lc["@id"]
+            assert lc["estleg:definesConcept"] == {"@id": node["@id"]}
 
 
 class TestFindingF3HasDefinitionNode:

@@ -16,6 +16,7 @@ from estleg.extract_institutional_competence import (
     named_institution_by_suffix,
     preferred_institution_type,
     wikidata_iri_for_slug,
+    wikidata_see_also_iri_for_slug,
 )
 REPO = Path(__file__).resolve().parent.parent
 INST_DIR = REPO / "krr_outputs" / "institutions"
@@ -87,7 +88,10 @@ def test_abbreviation_alias_nodes_exist() -> None:
 
 
 def test_real_institutions_mostly_have_wikidata() -> None:
-    wd = load_wikidata_institutions()
+    """#718: a real institution is "linked" by an identity QID (owl:sameAs)
+    or by a documented non-identity seeAlsoQid (court tiers, predecessor
+    names Wikidata folds into the successor's item)."""
+    wd = load_wikidata_institutions(include_see_also=True)
     named = named_institution_by_suffix()
     real = 0
     with_wd = 0
@@ -103,7 +107,7 @@ def test_real_institutions_mostly_have_wikidata() -> None:
         if not is_real:
             continue
         real += 1
-        if wikidata_iri_for_slug(slug, wd):
+        if wikidata_iri_for_slug(slug, wd) or wikidata_see_also_iri_for_slug(slug, wd):
             with_wd += 1
     assert real >= 50
     assert with_wd / real >= 0.80

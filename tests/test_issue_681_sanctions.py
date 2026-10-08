@@ -930,7 +930,14 @@ class TestDeprecatedActNotInForce:
     def _act(self, **overrides) -> dict:
         node = {
             "@id": "estleg:TEST_Map",
-            "@type": ["owl:NamedIndividual", "estleg:Act"],
+            # #708: a combined Act carries its materialised ELI / schema.org
+            # types (ActEliLegalResourceShape / ActSchemaLegislationShape).
+            "@type": [
+                "owl:NamedIndividual",
+                "estleg:Act",
+                "http://data.europa.eu/eli/ontology#LegalResource",
+                "https://schema.org/Legislation",
+            ],
             "rdfs:label": "Test act (issue #682)",
         }
         node.update(overrides)

@@ -7,11 +7,11 @@
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `da4fbdd0b893782727978993bc9955f712db654e`, 2026-10-08 15:55 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `c0140d497e74f65bc4cd5a87487bac6786fc5792`, 2026-10-08 18:04 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
-| Files validated | 26,961 |
+| Files validated | 26,975 |
 | Errors | 0 |
 | Warnings | 2 |
 | Result | **PASSED** |

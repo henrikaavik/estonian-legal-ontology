@@ -30,6 +30,15 @@ def _shacl_conforms(graph_json: dict) -> tuple[bool, str]:
     """
     pyshacl = pytest.importorskip("pyshacl")
     rdflib = pytest.importorskip("rdflib")
+    # #708: validate the graph as the combined build ships it. The test data
+    # graph carries no controlled vocabulary, so nothing would entail the
+    # ELI / schema.org alignments that the build materialises.
+    from estleg import fix_all_issues
+
+    graph_json = copy.deepcopy(graph_json)
+    nodes = [n for n in graph_json.get("@graph", []) if isinstance(n, dict)]
+    fix_all_issues._apply_type_rollup(nodes)
+    fix_all_issues.materialize_eli_alignments(nodes)
     data_graph = rdflib.Graph()
     data_graph.parse(data=json.dumps(graph_json), format="json-ld")
     shapes_graph = rdflib.Graph().parse(str(_SHAPES_PATH), format="turtle")

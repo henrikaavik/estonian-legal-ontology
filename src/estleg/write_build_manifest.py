@@ -182,6 +182,20 @@ def is_release_asset_url(url: str, version: str = ONTOLOGY_VERSION) -> bool:
     )
 
 
+def is_tag_pinned_url(url: str, version: str = ONTOLOGY_VERSION) -> bool:
+    """True when a GitHub catalog URL pins the immutable ``v<version>`` tag (#710).
+
+    Covers tree/blob/raw paths and the tag source archive as well as the
+    tagged release-asset downloads, so the DCAT-AP catalogue can pin every
+    distribution to the release it describes instead of a pre-release SHA.
+    """
+    if "github.com/henrikaavik/estonian-legal-ontology" not in url:
+        return False
+    tag = f"v{version}"
+    markers = (f"/tree/{tag}/", f"/blob/{tag}/", f"/raw/{tag}/", f"/archive/refs/tags/{tag}.zip")
+    return is_release_asset_url(url, version) or any(m in url for m in markers)
+
+
 def catalog_modified(metadata_path: Path = METADATA_PATH) -> str | None:
     """``dcterms:modified`` date from ``metadata.jsonld``."""
     if not metadata_path.is_file():

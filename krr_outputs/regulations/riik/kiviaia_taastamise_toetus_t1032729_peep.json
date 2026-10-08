@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -31,20 +32,6 @@
       "estleg:globalId": "105052020014",
       "estleg:terviktekstId": "1032729",
       "estleg:preambleText": "Määrus kehtestatakse Euroopa Liidu ühise põllumajanduspoliitika rakendamise seaduse § 67 lõike 2 alusel.",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2442"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/525"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/517"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        }
-      ],
       "estleg:entryIntoForce": {
         "@value": "2016-01-15",
         "@type": "xsd:date"
@@ -76,20 +63,6 @@
           "@id": "estleg:Amendment_Reg_1032729_453fe8d37c"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Institution_vald"
-        },
-        {
-          "@id": "estleg:Institution_pollumajandusminister"
-        },
-        {
-          "@id": "estleg:Institution_muinsuskaitseamet"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -110,6 +83,28 @@
         },
         {
           "@id": "estleg:ELUP_Par_79_Lg_1"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2442"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2442"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/525"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/517"
         }
       ]
     },
@@ -213,14 +208,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -297,14 +284,6 @@
           "@id": "estleg:Reg_1059123_Par_6"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -334,20 +313,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Institution_vald"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -360,6 +325,14 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1032729_Par_6_v1032729"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        },
+        {
+          "@id": "estleg:Institution_vald"
         }
       ]
     },
@@ -436,11 +409,6 @@
           "@id": "estleg:Reg_1037829_Par_25"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -510,20 +478,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_pollumajandusminister"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -531,6 +485,11 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1032729_Par_10_v1032729"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_pollumajandusminister"
         }
       ]
     },
@@ -548,15 +507,14 @@
       },
       "estleg:summary": "1 (1) Kui kõigi taotluste rahastamise summa ei ületa toetuseks ettenähtud vahendeid üle 20 protsendi, kaasab PRIA pärast hindamistulemuste alusel koostatud taotluste paremusjärjestuse moodustamist menetlusse Muinsuskaitseameti (edaspidi MKA) eksperdi, kes annab kiviaia määrangu. Kui kõigi taotluste rahastamise summa ei ületa toetuseks ettenähtud vahendeid üle 20 protsendi, kaasab PRIA pärast hindamistulemuste alusel koostatud taotluste paremusjärjestuse moodustamist menetlusse Muinsuskaitseameti",
       "estleg:legalText": "1 (1) Kui kõigi taotluste rahastamise summa ei ületa toetuseks ettenähtud vahendeid üle 20 protsendi, kaasab PRIA pärast hindamistulemuste alusel koostatud taotluste paremusjärjestuse moodustamist menetlusse Muinsuskaitseameti (edaspidi MKA) eksperdi, kes annab kiviaia määrangu. Kui kõigi taotluste rahastamise summa ei ületa toetuseks ettenähtud vahendeid üle 20 protsendi, kaasab PRIA pärast hindamistulemuste alusel koostatud taotluste paremusjärjestuse moodustamist menetlusse Muinsuskaitseameti (edaspidi MKA) eksperdi, kes annab kiviaia määrangu. 2 (2) Kui kõigi taotluste rahastamise summa ületab toetuseks ettenähtud vahendeid üle 20 protsendi, kaasab PRIA kiviaia määrangu andva MKA eksperdi menetlusse pärast hindamistulemuste alusel koostatud taotluste paremusjärjestuse kohaselt rahuldamisele kuulunud taotluste nõuetele vastavuse kontrollimist. Kui kõigi taotluste rahastamise summa ületab toetuseks ettenähtud vahendeid üle 20 protsendi, kaasab PRIA kiviaia määrangu andva MKA eksperdi menetlusse pärast hindamistulemuste alusel koostatud taotluste paremusjärjestuse kohaselt rahuldamisele kuulunud taotluste nõuetele vastavuse kontrollimist. 3 (3) Kiviaia määrang on MKA eksperdi poolt piirkonnale iseloomuliku kiviaia tüübi ja kujunduse, sealhulgas kõrguse ja laiuse, piirkonnale omaste kivide ja asjaomase ladumisviisi määramine, kiviaia läbilõike joonise visandamine, kiviaias või kiviaia ja põllumajandusmaa piiri vahelisel alal puude ja põõsaste olemasolu korral nende allesjätmise või eemaldamise ning kiviaia taastamise vajaduse otsustamine. Kiviaia määrang on MKA eksperdi poolt piirkonnale iseloomuliku kiviaia tüübi ja kujunduse, sealhulgas kõrguse ja laiuse, piirkonnale omaste kivide ja asjaomase ladumisviisi määramine, kiviaia läbilõike joonise visandamine, kiviaias või kiviaia ja põllumajandusmaa piiri vahelisel alal puude ja põõsaste olemasolu korral nende allesjätmise või eemaldamise ning kiviaia taastamise vajaduse otsustamine.",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_muinsuskaitseamet"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1032729_Par_11_v1032729"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
         }
       ]
     },
@@ -594,11 +552,6 @@
         },
         {
           "@id": "estleg:Reg_1030783_Par_14"
-        }
-      ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
@@ -652,11 +605,6 @@
           "@id": "estleg:Reg_302429_Par_22"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -682,14 +630,6 @@
       "estleg:summary": "1 (1) Toetuse saaja taastab määruses sätestatud nõuetele vastava ja § 11 lõikes 3 nimetatud kiviaia määrangu kohase kiviaia kahe aasta jooksul arvates taotluse rahuldamise otsuse tegemise päevale järgnevast päevast. Toetuse saaja taastab määruses sätestatud nõuetele vastava ja § 11 lõikes 3 nimetatud kiviaia määrangu kohase kiviaia kahe aasta jooksul arvates taotluse rahuldamise otsuse tegemise päevale järgnevast päevast. 2 (2) Toetuse saaja esitab pärast taastatava kiviaia ühe osa või täies mah",
       "estleg:legalText": "1 (1) Toetuse saaja taastab määruses sätestatud nõuetele vastava ja § 11 lõikes 3 nimetatud kiviaia määrangu kohase kiviaia kahe aasta jooksul arvates taotluse rahuldamise otsuse tegemise päevale järgnevast päevast. Toetuse saaja taastab määruses sätestatud nõuetele vastava ja § 11 lõikes 3 nimetatud kiviaia määrangu kohase kiviaia kahe aasta jooksul arvates taotluse rahuldamise otsuse tegemise päevale järgnevast päevast. 2 (2) Toetuse saaja esitab pärast taastatava kiviaia ühe osa või täies mahus taastamist kahe aasta jooksul arvates taotluse rahuldamise otsuse tegemisest PRIAle kiviaia taastamise aruande. Toetuse saaja esitab pärast taastatava kiviaia ühe osa või täies mahus taastamist kahe aasta jooksul arvates taotluse rahuldamise otsuse tegemisest PRIAle kiviaia taastamise aruande. 3 (3) PRIA koostab kiviaia taastamise aruande vormi ja avaldab selle oma veebilehel. PRIA koostab kiviaia taastamise aruande vormi ja avaldab selle oma veebilehel. 4 (4) Kiviaia taastamise aruanne sisaldab vähemalt järgmisi andmeid: 1 1) haldusmenetluse seaduse § 14 lõike 3 punktides 1–4 nimetatud andmed; 2 2) toetuse saaja isiku- või registrikood; 3 3) taotluse viitenumber; 4 4) andmed selle kohta, kas toetuse saaja esitab lõikes 2 nimetatud aruande taastatava kiviaia ühe osa või täies mahus taastamise kohta; 5 5) andmed kiviaia taastamise tööde tegija, kasutatud kivide päritolu, kiviaia taastamiseks kulunud aja ja taastatud kiviaia asukoha kohta; 6 6) andmed taastatud kiviaia pikkuse, kõrguse, alumise kivirea laiuse, ülemise kivirea laiuse ja mahu kohta; 7 7) kuludokumendid, kui on ostetud teenust, materjale või kive; 8 8) MKA kinnitus, et toetuse saaja on taastanud kiviaia § 11 lõikes 3 nimetatud kiviaia määrangu kohaselt. Kiviaia taastamise aruanne sisaldab vähemalt järgmisi andmeid: haldusmenetluse seaduse § 14 lõike 3 punktides 1–4 nimetatud andmed; toetuse saaja isiku- või registrikood; taotluse viitenumber; andmed selle kohta, kas toetuse saaja esitab lõikes 2 nimetatud aruande taastatava kiviaia ühe osa või täies mahus taastamise kohta; andmed kiviaia taastamise tööde tegija, kasutatud kivide päritolu, kiviaia taastamiseks kulunud aja ja taastatud kiviaia asukoha kohta; andmed taastatud kiviaia pikkuse, kõrguse, alumise kivirea laiuse, ülemise kivirea laiuse ja mahu kohta; kuludokumendid, kui on ostetud teenust, materjale või kive; MKA kinnitus, et toetuse saaja on taastanud kiviaia § 11 lõikes 3 nimetatud kiviaia määrangu kohaselt. 5 (5) Toetuse saaja võib ühe kalendriaasta jooksul esitada ühe lõikes 2 nimetatud aruande. Toetuse saaja võib ühe kalendriaasta jooksul esitada ühe lõikes 2 nimetatud aruande. 6 (6) Toetuse saaja on kohustatud: 1 1) tagama lõike 1 kohaselt taastatud kiviaia säilimise vähemalt viis aastat arvates PRIA poolt viimase toetusosa väljamaksmisest; 2 2) eristama selgelt oma raamatupidamises toetuse kasutamisega seotud kulud ning neid kajastavad kulu- ja maksedokumendid muudest kulu- ja maksedokumentidest; 3 3) säilitama toetusega seotud dokumente vähemalt viis aastat arvates PRIA poolt viimase toetusosa väljamaksmisest; 4 4) võimaldama teostada toetuse sihipärase ja tähtaegse kasutamise üle järelevalvet ja teha muid toetuse saamisega seotud kontrolle ning osutama selleks igakülgset abi; 5 5) esitama järelevalve teostamiseks või muu kontrolli tegemiseks vajalikud andmed ja dokumendid määratud tähtaja jooksul; 6 6) esitama toetuse kasutamisega seotud seireks vajalikku teavet. Toetuse saaja on kohustatud: tagama lõike 1 kohaselt taastatud kiviaia säilimise vähemalt viis aastat arvates PRIA poolt viimase toetusosa väljamaksmisest; eristama selgelt oma raamatupidamises toetuse kasutamisega seotud kulud ning neid kajastavad kulu- ja maksedokumendid muudest kulu- ja maksedokumentidest; säilitama toetusega seotud dokumente vähemalt viis aastat arvates PRIA poolt viimase toetusosa väljamaksmisest; võimaldama teostada toetuse sihipärase ja tähtaegse kasutamise üle järelevalvet ja teha muid toetuse saamisega seotud kontrolle ning osutama selleks igakülgset abi; esitama järelevalve teostamiseks või muu kontrolli tegemiseks vajalikud andmed ja dokumendid määratud tähtaja jooksul; esitama toetuse kasutamisega seotud seireks vajalikku teavet.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -743,11 +683,6 @@
           "@id": "estleg:Reg_1047486_Par_14"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -794,11 +729,6 @@
           "@id": "estleg:Reg_1033726_Par_17"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -837,11 +767,6 @@
         },
         {
           "@id": "estleg:Reg_1035815_Par_18"
-        }
-      ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {

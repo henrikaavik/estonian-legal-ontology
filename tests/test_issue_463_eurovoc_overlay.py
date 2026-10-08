@@ -54,7 +54,7 @@ def test_classify_main_writes_overlay_not_peep(tmp_path: Path, monkeypatch) -> N
                     {
                         "@id": "estleg:PKS_Par_1",
                         "@type": ["estleg:LegalProvision"],
-                        "estleg:summary": "põhiseadus riigikogu president",
+                        "estleg:summary": "põhiseadus põhiseaduslik rahvahääletus",
                     },
                 ],
             }

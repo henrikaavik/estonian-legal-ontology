@@ -889,3 +889,208 @@ class TestLoadLawPathsFailThreshold:
         # Tolerance threshold met exactly → still passes (only > N
         # triggers the hard fail).
         assert rc == 0
+
+
+# --- #712: historical-issuer dimension + EHAK county codes -------------------
+
+_ABJA_ISSUER = {
+    "slug": "abja_vallavolikogu",
+    "displayName": "Abja Vallavolikogu",
+    "bodyType": "volikogu",
+    "currentMunicipalityCode": "0480",
+    "mappingSource": "haldusreform-2017",
+    "mappingEvidence": (
+        "Wikidata: Abja vald (EHAK 0105) -> Mulgi vald (EHAK 0480); "
+        "per RT I 21.06.2017 1"
+    ),
+    "historicalMunicipalityName": "Abja",
+}
+_MULGI_ISSUER = {
+    "slug": "mulgi_vallavolikogu",
+    "displayName": "Mulgi Vallavolikogu",
+    "bodyType": "volikogu",
+    "currentMunicipalityCode": "0480",
+    "mappingSource": "auto-match",
+    "mappingEvidence": "",
+    "historicalMunicipalityName": "",
+}
+
+
+class TestHistoricalIssuerDimension:
+    def _historical_by_slug(self):
+        from estleg.enrich_kov_layer1 import historical_municipality_by_issuer
+        from estleg.kov_registry import extract_historical_municipalities
+        return historical_municipality_by_issuer(
+            extract_historical_municipalities([_ABJA_ISSUER, _MULGI_ISSUER])
+        )
+
+    def test_issuer_slug_inversion(self):
+        assert self._historical_by_slug() == {"abja_vallavolikogu": "0105"}
+
+    def test_issuer_doc_links_historical_municipality(self):
+        from estleg.enrich_kov_layer1 import build_issuer_doc
+        doc = build_issuer_doc({
+            "abja_vallavolikogu": _ABJA_ISSUER,
+            "mulgi_vallavolikogu": _MULGI_ISSUER,
+        })
+        nodes = {n["@id"]: n for n in doc["@graph"]}
+        abja = nodes["estleg:Issuer_abja_vallavolikogu"]
+        assert abja["estleg:historicalMunicipality"] == {
+            "@id": "estleg:HistoricalMunicipality_0105"
+        }
+        # The legacy literal is unchanged; current issuers get no edge.
+        assert abja["estleg:historicalMunicipalityName"] == "Abja"
+        assert "estleg:historicalMunicipality" not in nodes[
+            "estleg:Issuer_mulgi_vallavolikogu"
+        ]
+
+    def test_historical_node_has_diacritic_correct_name(self):
+        from estleg.enrich_kov_layer1 import build_historical_municipality_doc
+        from estleg.kov_registry import extract_historical_municipalities
+        issuer = dict(_ABJA_ISSUER, slug="poltsamaa_vallavolikogu",
+                      mappingEvidence="Wikidata: Põltsamaa vald (EHAK 0618) -> "
+                                      "Mulgi vald (EHAK 0480); per RT I 21.06.2017 1")
+        doc = build_historical_municipality_doc(
+            extract_historical_municipalities([issuer])
+        )
+        node = doc["@graph"][1]
+        assert node["estleg:formerName"] == "Põltsamaa vald"
+        assert node["rdfs:label"] == "Põltsamaa vald"
+
+    def test_act_stamp_abolished_and_current(self):
+        from estleg.enrich_kov_layer1 import stamp_kov_act_historical_municipality
+        mapping = self._historical_by_slug()
+        act = {"estleg:enactedBy": {"@id": "estleg:Issuer_abja_vallavolikogu"},
+               "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0480"}}
+        assert stamp_kov_act_historical_municipality(act, mapping) is True
+        assert act["estleg:enactedByHistoricalMunicipality"] == {
+            "@id": "estleg:HistoricalMunicipality_0105"
+        }
+        # Successor edge is kept.
+        assert act["estleg:enactedByMunicipality"] == {
+            "@id": "estleg:Municipality_EHAK_0480"
+        }
+        assert stamp_kov_act_historical_municipality(act, mapping) is False
+
+        current = {"estleg:enactedBy": {"@id": "estleg:Issuer_mulgi_vallavolikogu"},
+                   "estleg:enactedByHistoricalMunicipality": {"@id": "stale"}}
+        assert stamp_kov_act_historical_municipality(current, mapping) is True
+        assert "estleg:enactedByHistoricalMunicipality" not in current
+
+    def test_enrich_act_file_stamps_historical_and_is_idempotent(self, tmp_path):
+        from estleg.enrich_kov_layer1 import enrich_kov_act_file
+        dest = tmp_path / "act.json"
+        shutil.copy(SAMPLE_KOV_ACT, dest)
+        mapping = self._historical_by_slug()
+        assert enrich_kov_act_file(dest, _ABJA_ISSUER, mapping) is True
+        doc = json.loads(dest.read_text(encoding="utf-8"))
+        act = next(n for n in doc["@graph"]
+                   if "estleg:MunicipalRegulation" in n.get("@type", []))
+        assert act["estleg:enactedByHistoricalMunicipality"] == {
+            "@id": "estleg:HistoricalMunicipality_0105"
+        }
+        assert enrich_kov_act_file(dest, _ABJA_ISSUER, mapping) is False
+
+    def test_historical_only_mode_touches_only_the_new_key(
+        self, tmp_path, monkeypatch,
+    ):
+        from estleg import enrich_kov_layer1 as mod
+        krr = tmp_path / "krr_outputs"
+        ehak = tmp_path / "data" / "ehak"
+        ehak.mkdir(parents=True)
+        shutil.copy(MIN_MUNICIPALITIES, ehak / "municipalities.json")
+        shutil.copy(REPO_ROOT / "data" / "ehak" / "counties.json", ehak / "counties.json")
+        (ehak / "issuers.json").write_text(
+            json.dumps([_ABJA_ISSUER, _MULGI_ISSUER]), encoding="utf-8",
+        )
+        kov_dir = krr / "regulations" / "kov" / "abja_vallavolikogu"
+        kov_dir.mkdir(parents=True)
+        doc = json.loads(SAMPLE_KOV_ACT.read_text(encoding="utf-8"))
+        act = next(n for n in doc["@graph"]
+                   if "estleg:MunicipalRegulation" in n.get("@type", []))
+        act["estleg:enactedBy"] = {"@id": "estleg:Issuer_abja_vallavolikogu"}
+        act["estleg:titleNormalized"] = "deliberately stale"
+        peep = kov_dir / "a_peep.json"
+        peep.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
+                        encoding="utf-8")
+        for name, value in (
+            ("REPO_ROOT", tmp_path), ("KRR_DIR", krr), ("EHAK_DIR", ehak),
+            ("KOV_DIR", krr / "regulations" / "kov"),
+            ("MUNICIPALITIES_OUT", krr / "municipalities_peep.json"),
+            ("ISSUERS_OUT", krr / "issuers_kov_peep.json"),
+        ):
+            monkeypatch.setattr(mod, name, value)
+
+        assert mod.main(["--historical-only"]) == 0
+        out = json.loads(peep.read_text(encoding="utf-8"))
+        act_out = next(n for n in out["@graph"]
+                       if "estleg:MunicipalRegulation" in n.get("@type", []))
+        assert act_out["estleg:enactedByHistoricalMunicipality"] == {
+            "@id": "estleg:HistoricalMunicipality_0105"
+        }
+        # Unrelated Layer 1 fields are not recomputed in this mode.
+        assert act_out["estleg:titleNormalized"] == "deliberately stale"
+        act_out.pop("estleg:enactedByHistoricalMunicipality")
+        assert out == doc
+
+        issuers = json.loads((krr / "issuers_kov_peep.json").read_text())
+        abja = next(n for n in issuers["@graph"]
+                    if n["@id"] == "estleg:Issuer_abja_vallavolikogu")
+        assert abja["estleg:historicalMunicipality"]["@id"] == (
+            "estleg:HistoricalMunicipality_0105"
+        )
+        muns = json.loads((krr / "municipalities_peep.json").read_text())
+        mulgi = next(n for n in muns["@graph"]
+                     if n["@id"] == "estleg:Municipality_EHAK_0480")
+        assert mulgi["estleg:countyCode"] == "0084"
+        assert mulgi["estleg:county"] == "Viljandi maakond"
+
+        before = peep.read_text(encoding="utf-8")
+        assert mod.main(["--historical-only"]) == 0
+        assert peep.read_text(encoding="utf-8") == before
+
+
+class TestCountyCodes:
+    def test_committed_county_file_covers_every_municipality_county(self):
+        from estleg.enrich_kov_layer1 import load_county_codes
+        from estleg.kov_registry import load_municipalities
+        codes = load_county_codes(REPO_ROOT / "data" / "ehak" / "counties.json")
+        assert len(codes) == 15
+        assert codes["Harju maakond"] == "0037"
+        assert codes["Ida-Viru maakond"] == "0045"
+        assert codes["Võru maakond"] == "0087"
+        muns = load_municipalities(REPO_ROOT / "data" / "ehak" / "municipalities.json")
+        assert {m["county"] for m in muns.values()} <= set(codes)
+
+    def test_municipality_doc_emits_county_code(self):
+        from estleg.kov_registry import load_municipalities
+        doc = build_municipality_doc(
+            load_municipalities(MIN_MUNICIPALITIES),
+            wikidata_by_code={},
+            county_codes={"Harju maakond": "0037"},
+        )
+        nodes = {n["@id"]: n for n in doc["@graph"]}
+        assert nodes["estleg:Municipality_EHAK_0784"]["estleg:countyCode"] == "0037"
+        assert "estleg:countyCode" not in nodes["estleg:Municipality_EHAK_0793"]
+
+    def test_bad_county_code_rejected(self, tmp_path):
+        from estleg.enrich_kov_layer1 import load_county_codes
+        bad = tmp_path / "counties.json"
+        bad.write_text(json.dumps({"counties": [{"ehakCode": "37", "name": "X"}]}),
+                       encoding="utf-8")
+        with pytest.raises(ValueError):
+            load_county_codes(bad)
+        assert load_county_codes(tmp_path / "missing.json") == {}
+
+    def test_committed_registry_counts(self):
+        """The historical-issuer dimension on the committed data (#712)."""
+        issuers = json.loads((REPO_ROOT / "krr_outputs" / "issuers_kov_peep.json")
+                             .read_text(encoding="utf-8"))["@graph"]
+        linked = [n for n in issuers if "estleg:historicalMunicipality" in n]
+        abolished = [n for n in issuers
+                     if n.get("estleg:municipalityStatus") == "abolished"]
+        assert linked and len(linked) == len(abolished)
+        muns = json.loads((REPO_ROOT / "krr_outputs" / "municipalities_peep.json")
+                          .read_text(encoding="utf-8"))["@graph"]
+        mun_nodes = [n for n in muns if "estleg:Municipality" in n.get("@type", [])]
+        assert all("estleg:countyCode" in n for n in mun_nodes)

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -23,6 +28,9 @@
         },
         {
           "@id": "estleg:Institution_haldusamet_competence_general"
+        },
+        {
+          "@id": "estleg:Institution_haldusamet_competence_regulation"
         },
         {
           "@id": "estleg:Institution_haldusamet_competence_supervision"
@@ -51,20 +59,26 @@
           "@id": "estleg:Reg_1028530_Par_5"
         },
         {
-          "@id": "estleg:Reg_1003305_Par_9"
+          "@id": "estleg:Reg_1028530_Par_7"
         },
         {
           "@id": "estleg:Reg_1010469_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1051869_Par_21"
         },
         {
           "@id": "estleg:Reg_1061123_Par_10"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "6",
+        "@value": "7",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "general"
+      "estleg:competenceArea": "general",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_1028530_Map"
+      }
     },
     {
       "@id": "estleg:Institution_haldusamet_competence_general",
@@ -79,9 +93,6 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:Reg_1028307_Par_9"
-        },
-        {
           "@id": "estleg:Reg_1053923_Par_5"
         },
         {
@@ -91,91 +102,62 @@
           "@id": "estleg:Reg_1053923_Par_7"
         },
         {
-          "@id": "estleg:Reg_1053923_Par_8"
+          "@id": "estleg:Reg_1053923_Par_10"
         },
         {
-          "@id": "estleg:Reg_1053923_Par_9"
+          "@id": "estleg:Reg_1034364_Par_4"
         },
         {
-          "@id": "estleg:Reg_1052244_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1052244_Par_13"
+          "@id": "estleg:Reg_1034364_Par_5"
         },
         {
           "@id": "estleg:Reg_1034364_Par_9"
         },
         {
-          "@id": "estleg:Reg_1034364_Par_10"
+          "@id": "estleg:Reg_1050444_Par_1"
         },
         {
-          "@id": "estleg:Reg_1034364_Par_11"
-        },
-        {
-          "@id": "estleg:Reg_1010469_Par_6"
-        },
-        {
-          "@id": "estleg:Reg_1051869_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1051869_Par_21"
+          "@id": "estleg:Reg_1057157_Par_7"
         },
         {
           "@id": "estleg:Reg_1051869_Par_22"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_6"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_11"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_13"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_17"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_18"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_19"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_25"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_28"
-        },
-        {
-          "@id": "estleg:Reg_1061123_Par_33"
-        },
-        {
-          "@id": "estleg:Reg_1049426_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1056575_Par_17"
         },
         {
           "@id": "estleg:Reg_1056575_Par_18"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "30",
+        "@value": "11",
         "@type": "xsd:integer"
       },
       "estleg:competenceArea": "general",
       "estleg:grantedBy": {
-        "@id": "estleg:Reg_1061123_Map"
+        "@id": "estleg:Reg_1053923_Map"
+      }
+    },
+    {
+      "@id": "estleg:Institution_haldusamet_competence_regulation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Competence"
+      ],
+      "rdfs:label": "haldusamet – regulation",
+      "estleg:competenceType": "regulation",
+      "estleg:institution": {
+        "@id": "estleg:Institution_haldusamet"
+      },
+      "estleg:appliesToProvision": [
+        {
+          "@id": "estleg:Reg_1053923_Par_9"
+        }
+      ],
+      "estleg:appliesToProvisionCount": {
+        "@value": "1",
+        "@type": "xsd:integer"
+      },
+      "estleg:competenceArea": "general",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_1053923_Map"
       }
     },
     {
@@ -191,20 +173,17 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:Reg_1053923_Par_10"
-        },
-        {
           "@id": "estleg:Reg_1042731_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1028530_Par_7"
         }
       ],
       "estleg:appliesToProvisionCount": {
-        "@value": "3",
+        "@value": "1",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "general"
+      "estleg:competenceArea": "general",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_1042731_Map"
+      }
     }
   ]
 }

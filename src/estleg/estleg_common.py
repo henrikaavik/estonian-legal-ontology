@@ -362,6 +362,11 @@ PUBLIC_LOAD_SUBDIRS: tuple[str, ...] = (
     "harmonisation",
     "regulations",
     "analytical",
+    # #699: the EuroVoc overlay (dcterms:subject / eli:is_about join nodes on
+    # act IRIs). Also in COMBINED_OVERLAY_SUBDIRS; listing it here makes
+    # validate_all treat its untyped join nodes as a sidecar surface rather than
+    # as duplicate @ids.
+    "eurovoc",
 )
 
 PUBLIC_LOAD_JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
@@ -643,6 +648,11 @@ STUB_SEMANTIC_EDGE_PREDICATES: frozenset[str] = frozenset(
         # construction: the inverse pass mints it only from a node already
         # present in combined, so its target can never dangle.
         "estleg:references",
+        # #708: the build copies estleg:partOfAct onto eli:is_part_of
+        # (fix_all_issues.materialize_eli_alignments), so a provision stub that
+        # carries partOfAct carries the same target under eli:is_part_of. It is
+        # closed by construction: the target is the partOfAct target.
+        "eli:is_part_of",
     }
 )
 
@@ -672,6 +682,28 @@ def required_closure_props(node_type: object) -> tuple[str, ...]:
             if prop not in out:
                 out.append(prop)
     return tuple(out)
+
+
+#: #712: registry JSON-LD files outside ``krr_outputs/`` that combined merges,
+#: relative to the repository root (``krr_dir.parent``). They stay out of
+#: ``krr_outputs/`` to keep the krr file-count statistics stable, but their nodes
+#: are edge targets (estleg:historicalMunicipality /
+#: estleg:enactedByHistoricalMunicipality), so combined must carry them for a
+#: combined-only graph to stay closed. validate_seadusloome_sync and
+#: shacl_validate_all load the same file by path.
+COMBINED_REGISTRY_RELPATHS: tuple[str, ...] = (
+    "data/ehak/historical_municipalities.jsonld",
+)
+
+
+def iter_combined_registry_files(krr_dir: Path) -> list[Path]:
+    """Return the existing registry files merged into combined (#712).
+
+    Kept separate from :func:`iter_combined_overlay_files` because callers of
+    that function resolve each overlay path relative to ``krr_dir``.
+    """
+    root = krr_dir.parent
+    return [root / rel for rel in COMBINED_REGISTRY_RELPATHS if (root / rel).is_file()]
 
 
 def iter_combined_overlay_files(krr_dir: Path) -> list[Path]:
@@ -860,6 +892,16 @@ ONTOLOGY_IRI = NS.rstrip("#/")
 ONTOLOGY_VERSION_IRI = f"{ONTOLOGY_IRI}/{ONTOLOGY_VERSION}"
 
 
+COMBINED_RIGHTS_STATEMENT = (
+    "Layered rights (DRAFT). This graph is NOT licensed as a whole: it is "
+    "predominantly third-party legal text (Riigi Teataja, EIS, RIK/Riigikohus; "
+    "EU material (c) European Union, reused under Commission Decision "
+    "2011/833/EU) that keeps its source terms. Only the original compilation "
+    "layer (selection and arrangement, minted estleg: IRIs, TBox, derived "
+    "links) is offered under CC BY 4.0. See NOTICE and docs/DATA_RIGHTS.md."
+)
+
+
 def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
     """Build the ``owl:Ontology`` / Dataset header stamped into combined (#616, #517).
 
@@ -868,7 +910,8 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
     returns a single header node (inserted at ``@graph[0]`` by the builder)
     carrying ``owl:versionInfo`` + ``owl:versionIRI`` so the shipped graph is
     self-describing, plus the in-band VoID/DCAT Dataset typing and the
-    compilation-layer CC BY 4.0 license / publisher (#517). It carries no
+    publisher and a layered ``dcterms:rights`` statement (#517, #710: only the
+    compilation layer is CC BY 4.0, so there is no whole-graph licence). It carries no
     ``estleg:`` object references (and no ``void:exampleResource`` pointing at
     a corpus node), so it is inert for the graph-closure gate. No wall-clock
     date — keeping the build deterministic (the version string is the
@@ -887,7 +930,10 @@ def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
             "@language": "en",
         },
         "dcterms:publisher": {"@id": "https://github.com/henrikaavik"},
-        "dcterms:license": {"@id": "https://creativecommons.org/licenses/by/4.0/"},
+        # #710: no whole-graph dcterms:license. The graph is predominantly
+        # third-party legal text; only the compilation layer is CC BY 4.0
+        # (NOTICE, docs/DATA_RIGHTS.md, metadata.jsonld per-distribution licences).
+        "dcterms:rights": COMBINED_RIGHTS_STATEMENT,
         "owl:versionInfo": version,
         "owl:versionIRI": {"@id": f"{ONTOLOGY_IRI}/{version}"},
         "void:uriSpace": NS,
@@ -944,37 +990,51 @@ COMBINED_DATASET_CONTEXT_PREFIXES: tuple[str, ...] = (
 # Combined JSON-LD distributions that carry an in-band Dataset head (#517).
 # ``relpath`` is relative to ``krr_outputs/``. Flagship uses
 # :func:`combined_ontology_header` unchanged; others may rename the label.
+# #720: ``contains_personal_data`` is stamped in-band on each head as
+# ``estleg:containsPersonalData`` (mirrors the metadata.jsonld distributions).
+# CURIA carries named-party EU decisions. The flagship is False on a measured
+# basis: its Riigikohus layer is 9,339 closure stubs (label "RK <case number>",
+# decisionLink, decisionDate; no names in-graph as of 2026-10-08) and the full
+# decisions stay in the riigikohus/ bucket, which is not a combined target; the
+# flag therefore agrees with the un-flagged laws distribution in metadata.jsonld.
+# eelnoud is not assessed for author names and is False pending that review.
 COMBINED_JSONLD_TARGETS: tuple[dict[str, object], ...] = (
     {
         "relpath": "combined_ontology.jsonld",
         "flagship": True,
         "label": None,
+        "contains_personal_data": False,
     },
     {
         "relpath": "eurlex/eurlex_combined.jsonld",
         "flagship": False,
         "label": "Estonian Legal Ontology — EUR-Lex combined",
+        "contains_personal_data": False,
     },
     {
         "relpath": "curia/curia_combined.jsonld",
         "flagship": False,
         "label": "Estonian Legal Ontology — CURIA combined",
+        "contains_personal_data": True,
     },
     {
         "relpath": "eelnoud/eelnoud_combined.jsonld",
         "flagship": False,
         "label": "Estonian Legal Ontology — drafts combined",
+        "contains_personal_data": False,
     },
     {
         "relpath": "concepts/concepts_combined.jsonld",
         "flagship": False,
         "label": "Estonian Legal Ontology — concepts combined",
+        "contains_personal_data": False,
     },
     {
         "relpath": "act_expressions_combined.jsonld",
         "flagship": False,
         "label": "Estonian Legal Ontology — act expressions combined",
         "ontology_id": f"{ONTOLOGY_IRI}/dataset/act-expressions",
+        "contains_personal_data": False,
     },
 )
 
@@ -1045,7 +1105,9 @@ def apply_inband_dataset_fields(node: dict, *, label: str | None = None) -> dict
         node["dcterms:title"] = {"@value": label, "@language": "en"}
     elif "dcterms:title" not in node:
         node["dcterms:title"] = template["dcterms:title"]
-    for key in ("dcterms:publisher", "dcterms:license", "void:uriSpace"):
+    # #710: drop a stale whole-graph licence; the rights statement replaces it.
+    node.pop("dcterms:license", None)
+    for key in ("dcterms:publisher", "dcterms:rights", "void:uriSpace"):
         if key not in node:
             node[key] = template[key]
     # #705: the version keys are build-derived, so they are overwritten
@@ -1056,19 +1118,43 @@ def apply_inband_dataset_fields(node: dict, *, label: str | None = None) -> dict
     return node
 
 
+def combined_target_contains_personal_data(relpath: str) -> bool | None:
+    """The #720 personal-data flag of a ``COMBINED_JSONLD_TARGETS`` entry.
+
+    Returns ``None`` for a path that is not a registered combined target.
+    """
+    for target in COMBINED_JSONLD_TARGETS:
+        if target.get("relpath") == relpath:
+            value = target.get("contains_personal_data")
+            return value if isinstance(value, bool) else None
+    return None
+
+
+def stamp_personal_data_flag(head: dict, contains_personal_data: bool | None) -> None:
+    """Stamp the #720 ``estleg:containsPersonalData`` flag on a Dataset head."""
+    if contains_personal_data is not None:
+        head["estleg:containsPersonalData"] = {
+            "@value": contains_personal_data,
+            "@type": "xsd:boolean",
+        }
+
+
 def stamp_combined_dataset_head(
     doc: dict,
     *,
     flagship: bool = False,
     label: str | None = None,
     ontology_id: str | None = None,
+    contains_personal_data: bool | None = None,
 ) -> dict:
     """Insert or upgrade ``@graph[0]`` as an in-band Dataset head (#517).
 
     Flagship ``combined_ontology.jsonld`` always gets
     :func:`combined_ontology_header` at ``@graph[0]``. Other combined files
-    keep an existing ``owl:Ontology`` head (adding Dataset types + license)
+    keep an existing ``owl:Ontology`` head (adding Dataset types + rights)
     or receive :func:`combined_dataset_header` when no head is present.
+    ``contains_personal_data`` (#720), when given, is stamped on the chosen
+    head as ``estleg:containsPersonalData``.
     """
     doc["@context"] = merge_dataset_context(doc.get("@context"))
     graph = doc.get("@graph")
@@ -1082,16 +1168,14 @@ def stamp_combined_dataset_head(
             graph[0] = header
         else:
             graph.insert(0, header)
-        return doc
-
-    if graph and is_ontology_or_dataset_head(graph[0]):
+    elif graph and is_ontology_or_dataset_head(graph[0]):
         apply_inband_dataset_fields(graph[0], label=label)
-        return doc
-
-    graph.insert(
-        0,
-        combined_dataset_header(label=label, ontology_id=ontology_id),
-    )
+    else:
+        graph.insert(
+            0,
+            combined_dataset_header(label=label, ontology_id=ontology_id),
+        )
+    stamp_personal_data_flag(graph[0], contains_personal_data)
     return doc
 
 # ---------------------------------------------------------------------------
@@ -1709,7 +1793,7 @@ PINNED_RUN_TIMESTAMP: str = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 # mechanism that keeps local and CI file counts identical.
 #
 # The corpus count this exclusion yields is pinned by ``metadata.jsonld``
-# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 27008), which
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 27023), which
 # ``validate_metadata_catalog`` enforces — treat that file as the source of
 # truth rather than this prose. Any change here that moves that number means
 # the classifier was broadened or narrowed incorrectly.
@@ -1726,7 +1810,7 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
 # known integration-report directory) so the pinned ``metadata.jsonld``
-# count (currently 27008) is unchanged: the only ``*.json`` currently living under
+# count (currently 27023) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from

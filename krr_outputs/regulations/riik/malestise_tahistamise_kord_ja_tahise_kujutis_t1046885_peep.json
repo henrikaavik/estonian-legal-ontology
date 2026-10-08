@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -39,14 +40,6 @@
           "@id": "estleg:Reg_1046885_Annex_2"
         }
       ],
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2924"
-        }
-      ],
       "estleg:entryIntoForce": {
         "@value": "2019-05-02",
         "@type": "xsd:date"
@@ -56,14 +49,6 @@
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_muinsuskaitseamet"
-        },
-        {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -76,6 +61,27 @@
       "estleg:implementsCitation": [
         {
           "@id": "estleg:Citation_Reg_1046885_Map_1"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2924"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
         }
       ]
     },
@@ -136,12 +142,6 @@
       },
       "estleg:summary": "1 (1) Mälestisi tähistatakse käesolevas määruses sätestatud korras ja kehtestatud tähisega. Mälestisi tähistatakse käesolevas määruses sätestatud korras ja kehtestatud tähisega. 2 (2) Veealuseid mälestisi ja vallasmälestisi võib tähistada. Veealuseid mälestisi ja vallasmälestisi võib tähistada. 3 (3) Mälestise tähistamist korraldab Muinsuskaitseamet. Mälestise tähistamist korraldab Muinsuskaitseamet. 4 (4) Mälestise tähistamisel jälgitakse, et: 1 1) tähise paigutus- või kinnitusviis ei kahjustak",
       "estleg:legalText": "1 (1) Mälestisi tähistatakse käesolevas määruses sätestatud korras ja kehtestatud tähisega. Mälestisi tähistatakse käesolevas määruses sätestatud korras ja kehtestatud tähisega. 2 (2) Veealuseid mälestisi ja vallasmälestisi võib tähistada. Veealuseid mälestisi ja vallasmälestisi võib tähistada. 3 (3) Mälestise tähistamist korraldab Muinsuskaitseamet. Mälestise tähistamist korraldab Muinsuskaitseamet. 4 (4) Mälestise tähistamisel jälgitakse, et: 1 1) tähise paigutus- või kinnitusviis ei kahjustaks mälestist ega piiraks selle vaadeldavust; 2 2) tähise paigutus- või kinnitusviis oleks püsiv, vältimaks tähise juhuslikku eemaldumist; 3 3) tähis oleks vajadusel eemaldatav; 4 4) tähis oleks ohutu. Mälestise tähistamisel jälgitakse, et: tähise paigutus- või kinnitusviis ei kahjustaks mälestist ega piiraks selle vaadeldavust; tähise paigutus- või kinnitusviis oleks püsiv, vältimaks tähise juhuslikku eemaldumist; tähis oleks vajadusel eemaldatav; tähis oleks ohutu.",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_muinsuskaitseamet"
-        }
-      ],
-      "estleg:competenceType": "enforcement",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -153,7 +153,13 @@
         {
           "@id": "estleg:Reg_1046885_Par_2_v1046885"
         }
-      ]
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:Reg_1046885_Par_3",
@@ -214,17 +220,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_muinsuskaitseamet"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -232,6 +227,11 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1046885_Par_5_v1046885"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
         }
       ]
     },
@@ -296,15 +296,14 @@
       },
       "estleg:summary": "Enne käesoleva määruse jõustumist kehtinud kultuuriministri 17. juuni 2011. a määruse nr 12 „Mälestise tähistamise kord ja tähise kujutis“ alusel ja korras paigaldatud arheoloogiamälestiste tähised asendatakse uue tähisega, kui loomuliku kulumise tõttu tekib vajadus nende väljavahetamiseks või kleebiste uuendamiseks.",
       "estleg:legalText": "Enne käesoleva määruse jõustumist kehtinud kultuuriministri 17. juuni 2011. a määruse nr 12 „Mälestise tähistamise kord ja tähise kujutis“ alusel ja korras paigaldatud arheoloogiamälestiste tähised asendatakse uue tähisega, kui loomuliku kulumise tõttu tekib vajadus nende väljavahetamiseks või kleebiste uuendamiseks. Enne käesoleva määruse jõustumist kehtinud kultuuriministri 17. juuni 2011. a määruse nr 12 „Mälestise tähistamise kord ja tähise kujutis“ alusel ja korras paigaldatud arheoloogiamälestiste tähised asendatakse uue tähisega, kui loomuliku kulumise tõttu tekib vajadus nende väljavahetamiseks või kleebiste uuendamiseks.",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1046885_Par_8_v1046885"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kultuuriminister"
         }
       ]
     },

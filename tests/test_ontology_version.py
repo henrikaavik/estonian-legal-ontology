@@ -46,7 +46,8 @@ def test_combined_ontology_header_is_wellformed_and_inert():
     assert "owl:Ontology" in header["@type"]
     assert "void:Dataset" in header["@type"]
     assert "dcat:Dataset" in header["@type"]
-    assert header["dcterms:license"]["@id"].endswith("/by/4.0/")
+    assert "dcterms:license" not in header  # #710: layered rights, no whole-graph licence
+    assert "NOT licensed as a whole" in header["dcterms:rights"]
     assert header["owl:versionInfo"] == estleg_common.ONTOLOGY_VERSION
     assert header["owl:versionIRI"]["@id"].endswith(estleg_common.ONTOLOGY_VERSION)
     # #516: under the w3id SLASH namespace the version IRI compacts to
@@ -82,7 +83,11 @@ def test_version_header_is_exempt_from_combined_parity(tmp_path):
     combined = {
         "@graph": [
             estleg_common.combined_ontology_header(),
-            {"@id": "estleg:A", "@type": ["estleg:Act"]},
+            # #708: the build's rollup also asserts Act's ELI / schema.org types.
+            {
+                "@id": "estleg:A",
+                "@type": ["estleg:Act", "eli:LegalResource", "schema:Legislation"],
+            },
         ]
     }
     combined_path = tmp_path / "combined_ontology.jsonld"

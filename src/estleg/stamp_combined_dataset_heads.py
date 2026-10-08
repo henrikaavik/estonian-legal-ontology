@@ -104,6 +104,7 @@ def stamp_file(
     label: str | None,
     ontology_id: str | None,
     dry_run: bool,
+    contains_personal_data: bool | None = None,
 ) -> str:
     with path.open(encoding="utf-8") as handle:
         doc = json.load(handle)
@@ -112,6 +113,7 @@ def stamp_file(
         flagship=flagship,
         label=label,
         ontology_id=ontology_id,
+        contains_personal_data=contains_personal_data,
     )
     stamp_version_fields(doc["@graph"][0])
     if dry_run:
@@ -141,6 +143,8 @@ def main(argv: list[str] | None = None) -> int:
         raw_ontology_id = spec.get("ontology_id")
         label = raw_label if isinstance(raw_label, str) else None
         ontology_id = raw_ontology_id if isinstance(raw_ontology_id, str) else None
+        raw_personal = spec.get("contains_personal_data")  # #720
+        contains_personal_data = raw_personal if isinstance(raw_personal, bool) else None
 
         if not path.is_file():
             print(f"  SKIP {relpath}: not present")
@@ -169,6 +173,7 @@ def main(argv: list[str] | None = None) -> int:
             label=label,
             ontology_id=ontology_id,
             dry_run=args.dry_run,
+            contains_personal_data=contains_personal_data,
         )
         size_after = path.stat().st_size
         print(f"  {action.upper()} {relpath} ({size_after} bytes)")

@@ -633,9 +633,9 @@ def _eurovoc_krr(tmp_path: Path) -> tuple[Path, list[Path]]:
     krr.mkdir(exist_ok=True)
     peeps = []
     for slug, text in (
-        ("AAA", "põhiseadus riigikogu president"),
-        ("BBB", "põhiseadus riigikogu president"),
-        ("CCC", "põhiseadus riigikogu president"),
+        ("AAA", "põhiseadus põhiseaduslik rahvahääletus"),
+        ("BBB", "põhiseadus põhiseaduslik rahvahääletus"),
+        ("CCC", "põhiseadus põhiseaduslik rahvahääletus"),
     ):
         peep = krr / f"{slug.lower()}_peep.json"
         peep.write_text(

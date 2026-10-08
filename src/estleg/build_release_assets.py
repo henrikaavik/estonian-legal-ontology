@@ -309,7 +309,11 @@ def _iri(value: object) -> str | None:
 def checksum_node(sha256: str) -> dict:
     return {
         "@type": "spdx:Checksum",
-        "spdx:algorithm": {"@id": "spdx:checksumAlgorithm_sha256"},
+        # #710: typed so the DCAT-AP 3.0.1 range shape (spdx:ChecksumAlgorithm) holds.
+        "spdx:algorithm": {
+            "@id": "spdx:checksumAlgorithm_sha256",
+            "@type": "spdx:ChecksumAlgorithm",
+        },
         "spdx:checksumValue": {"@value": sha256, "@type": "xsd:hexBinary"},
     }
 

@@ -134,7 +134,7 @@ def test_mapped_institutions_match_labels_and_qids() -> None:
         set(mapped)
     )
     for slug, entry in mapped.items():
-        qid = entry["qid"] if isinstance(entry, dict) else entry
+        qid = entry.get("qid") if isinstance(entry, dict) else entry
         path = INSTITUTIONS_DIR / f"institution_{slug}.json"
         doc = json.loads(path.read_text(encoding="utf-8"))
         node = next(
@@ -144,7 +144,16 @@ def test_mapped_institutions_match_labels_and_qids() -> None:
         )
         if isinstance(entry, dict) and entry.get("label"):
             assert node.get("rdfs:label") == entry["label"]
-        assert wikidata_entity_iri(qid) in _id_values(node.get("owl:sameAs"))
+        same_as = _id_values(node.get("owl:sameAs"))
+        if qid:
+            assert wikidata_entity_iri(qid) in same_as
+            continue
+        # #718: concept-level classes and predecessor names that Wikidata
+        # folds into the successor's item are linked by rdfs:seeAlso only,
+        # never by an owl:sameAs identity link.
+        see_also_qid = entry["seeAlsoQid"]
+        assert _id_values(node.get("rdfs:seeAlso")) == [wikidata_entity_iri(see_also_qid)]
+        assert not any(WIKIDATA_ENTITY in iri for iri in same_as), slug
 
 
 def test_ps_act_sameas_constitution() -> None:

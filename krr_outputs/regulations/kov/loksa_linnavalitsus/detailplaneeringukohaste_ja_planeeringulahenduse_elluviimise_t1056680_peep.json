@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,23 +39,6 @@
       },
       "estleg:titleNormalized": "detailplaneeringukohaste ja planeeringulahenduse elluviimiseks otseselt vajalike ning sellega funktsionaalselt seotud ehitiste valjaehitamise ja valjaehitamisega seotud kulude kandmise kord",
       "estleg:regulationTypeBucket": "kandmise kord",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/517"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1056680_Map_Reg_1055786_Map"
@@ -84,11 +68,6 @@
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -110,6 +89,40 @@
         },
         {
           "@id": "estleg:PLANEE_2_Par_129_Lg_1"
+        }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": false,
+        "@type": "xsd:boolean"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_linn"
         }
       ]
     },
@@ -135,11 +148,6 @@
         "@id": "estleg:Reg_1056680_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -171,14 +179,6 @@
         "@id": "estleg:Reg_1056680_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -220,24 +220,27 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ],
+      "estleg:competenceType": "regulation",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        },
+        {
+          "@id": "estleg:Institution_paasteamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056680_Par_4",
@@ -265,15 +268,15 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056680_Par_5",
@@ -304,20 +307,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Issuer_loksa_linnavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -325,6 +314,20 @@
       "estleg:references": [
         {
           "@id": "estleg:PLANEE_2_Par_131"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_loksa_linnavalitsus"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        },
+        {
+          "@id": "estleg:Issuer_loksa_linnavolikogu"
         }
       ]
     },
@@ -350,11 +353,6 @@
         "@id": "estleg:Reg_1056680_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -400,15 +398,15 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1056680_Par_8",

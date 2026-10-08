@@ -10,7 +10,9 @@
     "eli": "http://data.europa.eu/eli/ontology#",
     "eli-dl": "http://data.europa.eu/eli/eli-draft-legislation-ontology#",
     "prov": "http://www.w3.org/ns/prov#",
-    "schema": "https://schema.org/"
+    "schema": "https://schema.org/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "org": "http://www.w3.org/ns/org#"
   },
   "@graph": [
     {
@@ -139,6 +141,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Kohtuasja liik (Case Type)",
@@ -169,7 +174,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A chapter (peatükk) grouping provisions inside an act."
+      "rdfs:comment": "A peatükk (chapter) grouping provisions inside an act or an osa (estleg:LegalPart)."
     },
     {
       "@id": "estleg:Citation",
@@ -210,6 +215,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Kanooniline mõiste",
@@ -251,6 +259,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Lahendi liik (Decision Type)",
@@ -281,7 +292,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A division (jagu / jaotis) grouping provisions inside a chapter."
+      "rdfs:comment": "A jagu (division) grouping provisions inside a peatükk (estleg:Chapter). The next level down is jaotis (estleg:Subdivision)."
     },
     {
       "@id": "estleg:DomesticRegulation",
@@ -321,7 +332,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses.",
+      "rdfs:comment": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses. ELI-DL v3: rdfs:subClassOf eli-dl:DraftLegislationWork (#443).",
       "dc:description": "A legislative draft that has not yet been enacted into law but is in the legislative process."
     },
     {
@@ -329,6 +340,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Eelnõu liik",
@@ -381,6 +395,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "EL kohtulahendi liik (EU Court Decision Type)",
@@ -398,6 +415,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "EL õigusakti liik",
@@ -450,6 +470,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Üldosa mõiste",
@@ -521,6 +544,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "org:Organization"
+      },
       "rdfs:label": [
         {
           "@value": "Institutsioon",
@@ -532,6 +558,26 @@
         }
       ],
       "rdfs:comment": "A public institution that issues, enforces, or is competent for law. Superclass of estleg:Issuer and estleg:EUInstitution."
+    },
+    {
+      "@id": "estleg:InstitutionType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:label": [
+        {
+          "@value": "Institutsiooni liik",
+          "@language": "et"
+        },
+        {
+          "@value": "Institution Type",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed SKOS value set behind the estleg:institutionType string tokens (#709). Members live in estleg:InstitutionTypeScheme and carry the token as skos:notation."
     },
     {
       "@id": "estleg:Issuer",
@@ -598,6 +644,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Õigusmõiste",
@@ -617,15 +666,15 @@
       ],
       "rdfs:label": [
         {
-          "@value": "Õiguslik osa",
+          "@value": "Osa (struktuuriüksus)",
           "@language": "et"
         },
         {
-          "@value": "Legal Part",
+          "@value": "Part (structural unit)",
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A part (osa) node within a structured act, distinct from the multipart-file estleg:Part split. Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
+      "rdfs:comment": "An osa (part) as a structural unit of an act's hierarchy, above estleg:Chapter (peatükk), e.g. \"2. osa – ERIOSA\" of the KarS special part module. Distinct from estleg:Part, the per-file root of a multipart act (#566)."
     },
     {
       "@id": "estleg:LegalProvision",
@@ -652,6 +701,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Seadusandlik etapp (Legislative Phase)",
@@ -752,6 +804,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Normatiivne liik",
@@ -791,15 +846,15 @@
       ],
       "rdfs:label": [
         {
-          "@value": "Osa",
+          "@value": "Osa (mitmeosalise akti juur)",
           "@language": "et"
         },
         {
-          "@value": "Part",
+          "@value": "Part (multipart act root)",
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Multipart act part node used for large laws split into osa files."
+      "rdfs:comment": "The root node of one osa (part) of a multipart act that ships as one file per osa (#566), e.g. the TsÜS / VÕS osa peeps. It repeats the act's metadata. The osa as a structural unit inside an act's hierarchy is estleg:LegalPart."
     },
     {
       "@id": "estleg:PresidentialDecree",
@@ -883,6 +938,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Viite liik (Reference Type)",
@@ -939,15 +997,15 @@
       },
       "rdfs:label": [
         {
-          "@value": "Jaotis",
+          "@value": "Paragrahv",
           "@language": "et"
         },
         {
-          "@value": "Section",
+          "@value": "Section (§)",
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A structural section (jagu) node of an act's hierarchy. Declared in the curated TBox for issue #566 — it is used as @type on hierarchy nodes in combined_ontology.jsonld but was previously absent from the curated vocabulary, leaving a consumer that loads only the TBox with an undeclared class."
+      "rdfs:comment": "A paragrahv (§, \"section\" in Riigi Teataja English translations): the numbered provision level directly above lõige (estleg:Subsection). Used by the KarS special-part and TsÜS osa 7 OWL modules and the TsÜS / VÕS osa peeps; every instance also carries estleg:LegalProvision, which is the class the main law generator emits for the same level. Not a container: the jagu and jaotis levels are estleg:Division and estleg:Subdivision (#709)."
     },
     {
       "@id": "estleg:Similarity",
@@ -973,7 +1031,7 @@
       ],
       "rdfs:label": [
         {
-          "@value": "Alljaotis",
+          "@value": "Jaotis",
           "@language": "et"
         },
         {
@@ -981,7 +1039,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A finer subdivision (alljaotis) under a Division."
+      "rdfs:comment": "A jaotis (subdivision) grouping provisions inside a jagu (estleg:Division), e.g. \"1. jaotis – Tervist kahjustavad süüteod\" in the KarS special part."
     },
     {
       "@id": "estleg:Subsection",
@@ -1001,7 +1059,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "A numbered subsection (lõige) of an estleg:LegalProvision — the level Estonian legal citations actually reference (\"TsÜS § 14 lg 2\"). One node per lõige of a paragrahv that has lõige structure; it carries the lõige number (estleg:subsectionNumber), the lõige's own text (estleg:legalText, including the inline (N) punkt markers, mirroring the provision-level legalText), and an estleg:parentProvision link back to the § node. The parent provision keeps its full concatenated estleg:legalText for backward compatibility — the subsections sum to it. Defined for issue #132 (lõige level); modelling the punkt/alapunkt level below lõige is deferred to a follow-up."
+      "rdfs:comment": "A numbered subsection (lõige) of an estleg:LegalProvision — the level Estonian legal citations actually reference (\"TsÜS § 14 lg 2\"). One node per lõige of a paragrahv that has lõige structure; it carries the lõige number (estleg:subsectionNumber), the lõige's own text (estleg:legalText, including the inline (N) punkt markers, mirroring the provision-level legalText), and an estleg:parentProvision link back to the § node. The parent provision keeps its full concatenated estleg:legalText for backward compatibility — the subsections sum to it. Defined for issue #132. The punkt (clause) level below lõige has no class: the parser keeps sub-points as inline markers plus estleg:itemNumber on the lõige (#694, #709)."
     },
     {
       "@id": "estleg:TargetGroup",
@@ -1048,6 +1106,9 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
       "rdfs:label": [
         {
           "@value": "Teemaklaster",
@@ -1320,7 +1381,6 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "owl:deprecated": true,
       "rdfs:label": [
         {
           "@value": "muudab seadust",
@@ -1331,7 +1391,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Deprecated (issue #344): declared but never populated — the formal draft→provision IRI link is not resolved. Drafts record the affected law as a literal via estleg:affectedLawName (the canonical, populated property) instead. Retained for backward compatibility; do not emit new references.",
+      "rdfs:comment": "Links a draft bill (estleg:DraftLegislation) to the enacted act it proposes to amend. The object is always an act root IRI, never a provision: the law's _Map node, or the lowest _OsaN root of a multipart act without one (extract_draft_impact.prefer_act_iri, #379). Populated on the drafts whose affected law resolves to a corpus act; estleg:affectedLawName keeps the law's name as a literal on every draft. Provision-level impact is not resolved.",
       "rdfs:domain": {
         "@id": "estleg:DraftLegislation"
       },
@@ -1566,7 +1626,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Full number of provisions a Competence node applies to, recorded alongside the (capped) estleg:appliesToProvision list on per-institution files — so consumers see the true total even when the IRI list is truncated for size (see scripts/extract_institutional_competence.py).",
+      "rdfs:comment": "Number of provisions a Competence node applies to, recorded alongside its estleg:appliesToProvision list on the per-institution files. The list is no longer capped (#718), so the count equals the list length; it is kept for consumers that read the total without walking the list (see src/estleg/extract_institutional_competence.py).",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
@@ -2106,10 +2166,18 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Boolean flag on a dcat:Distribution (or other resource) asserting that it contains personal data about identifiable natural persons within the meaning of the GDPR (e.g. names and case details of parties in court decisions). When true, republication is governed by data-protection law, not merely copyright — see docs/DATA_PROTECTION.md. Introduced for tickets #545/#546.",
+      "rdfs:comment": "Boolean flag asserting that a resource contains personal data about identifiable natural persons within the meaning of the GDPR (e.g. names and case details of parties in court decisions). It applies to catalogue distributions (dcat:Distribution) and to the in-band dataset heads of the combined aggregates (dcat:Dataset), so the domain is left open (#720). When true, republication is governed by data-protection law, not merely copyright — see docs/DATA_PROTECTION.md. Introduced for tickets #545/#546.",
       "rdfs:domain": {
-        "@id": "dcat:Distribution"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "dcat:Distribution"
+        },
+        {
+          "@id": "dcat:Dataset"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:boolean"
       }
@@ -2202,6 +2270,34 @@
       "rdfs:domain": {
         "@id": "estleg:Municipality"
       },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:countyCode",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "maakonna EHAK-kood",
+          "@language": "et"
+        },
+        {
+          "@value": "county EHAK code",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "The 4-character EHAK (Statistics Estonia administrative classifier) code of the county (maakond) the municipality belongs to, e.g. '0037' for Harju maakond. estleg:county keeps the label. The codes come from data/ehak/counties.json and equal the ISO 3166-2:EE county numbers (2020 recode). Written by enrich_kov_layer1.py (#712).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Municipality"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:string"
       }
@@ -2713,8 +2809,16 @@
       ],
       "rdfs:comment": "When estleg:interpretationOutdated is true, the earliest date on which an interpreted provision was superseded by a newer redaction after the decisionDate (issue #618). Derived offline by scripts/derive_court_interpretation_staleness.py.",
       "rdfs:domain": {
-        "@id": "estleg:CourtDecision"
+        "@id": "owl:Thing"
       },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:CourtDecision"
+        },
+        {
+          "@id": "estleg:MunicipalRegulation"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:date"
       }
@@ -2741,6 +2845,62 @@
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:editorialNote",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "toimetuse märkus",
+          "@language": "et"
+        },
+        {
+          "@value": "editorial note",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Project-authored paraphrase or note; never source text (#719).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Annotation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:editorialSource",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "toimetuse märkuse autor",
+          "@language": "et"
+        },
+        {
+          "@value": "editorial source",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Author of editorialNote (this project), never the cited authority (#719).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Annotation"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:string"
       }
@@ -2838,6 +2998,34 @@
       }
     },
     {
+      "@id": "estleg:enablingProvisionOutdated",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "volitusnorm muutunud",
+          "@language": "et"
+        },
+        {
+          "@value": "enabling provision outdated",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Boolean on a municipal regulation root: true when at least one national enabling provision it was issued under (via estleg:implementsCitation / estleg:citationTarget) has a redaction with different text that took effect after the regulation's estleg:entryIntoForce. Stamped only when a cited provision resolved to a version in force on that date; see estleg:earliestSupersedingDate. Written by derive_kov_enabling_staleness.py (#712).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:MunicipalRegulation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
       "@id": "estleg:enactedAs",
       "@type": [
         "owl:ObjectProperty"
@@ -2894,6 +3082,34 @@
       ],
       "rdfs:range": {
         "@id": "estleg:Issuer"
+      }
+    },
+    {
+      "@id": "estleg:enactedByHistoricalMunicipality",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kehtestanud endine omavalitsus",
+          "@language": "et"
+        },
+        {
+          "@value": "enacted by historical municipality",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links a municipal regulation issued by a body of a municipality abolished by territorial reform (chiefly the 2017 haldusreform) to the pre-merger estleg:HistoricalMunicipality. estleg:enactedByMunicipality keeps pointing at the current successor municipality. Set only on acts whose estleg:municipalityStatus is 'abolished'. Written by enrich_kov_layer1.py (#712).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:MunicipalRegulation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "estleg:HistoricalMunicipality"
       }
     },
     {
@@ -3806,6 +4022,34 @@
       }
     },
     {
+      "@id": "estleg:historicalMunicipality",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "endine omavalitsus",
+          "@language": "et"
+        },
+        {
+          "@value": "historical municipality",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links a KOV issuing body (volikogu or valitsus) of an abolished municipality to the pre-merger estleg:HistoricalMunicipality it belonged to. It is the IRI counterpart of the slug-derived estleg:historicalMunicipalityName literal. The correctly accented name is the target's estleg:formerName. Written by enrich_kov_layer1.py (#712).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Issuer"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "estleg:HistoricalMunicipality"
+      }
+    },
+    {
       "@id": "estleg:historicalMunicipalityName",
       "@type": [
         "owl:DatatypeProperty"
@@ -4094,7 +4338,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Kind of institution (ministry, board, court, municipality, …).",
+      "rdfs:comment": "Coarse kind of institution as an xsd:string token: ministry, minister, agency, court, local_government, parliament, head_of_state, or government. The ABox keeps the token (as estleg:temporalStatus does, #522); each token is the skos:notation of an estleg:InstitutionType individual in estleg:InstitutionTypeScheme (e.g. \"ministry\" = estleg:InstitutionType_Ministry), so the value set is a SKOS concept scheme with Estonian and English labels (#709).",
       "rdfs:domain": {
         "@id": "estleg:Institution"
       },
@@ -4285,6 +4529,34 @@
       }
     },
     {
+      "@id": "estleg:isExcerpt",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "katkend",
+          "@language": "et"
+        },
+        {
+          "@value": "is excerpt",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True unless annotationText carries the complete source body; a title-only text is an excerpt (#719).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Annotation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
       "@id": "estleg:isKov",
       "@type": [
         "owl:DatatypeProperty"
@@ -4339,6 +4611,9 @@
         "owl:ObjectProperty",
         "owl:TransitiveProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "eli:is_part_of"
+      },
       "rdfs:label": [
         {
           "@value": "on osa",
@@ -4886,6 +5161,42 @@
       }
     },
     {
+      "@id": "estleg:mentionsInstitution",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "mainib asutust",
+          "@language": "et"
+        },
+        {
+          "@value": "mentions institution",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "An institution the provision names without being bound as its competentAuthority: consultation partner, addressee, descriptive genitive or predecessor name (#718). Objects are estleg:Institution_* or KOV estleg:Issuer_* nodes, so the range stays open.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Institution"
+        },
+        {
+          "@id": "estleg:Issuer"
+        }
+      ]
+    },
+    {
       "@id": "estleg:mergedAt",
       "@type": [
         "owl:DatatypeProperty"
@@ -5212,6 +5523,9 @@
       "@type": [
         "owl:ObjectProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "eli:is_part_of"
+      },
       "rdfs:label": [
         {
           "@value": "ülemsäte",
@@ -5239,6 +5553,9 @@
         "owl:ObjectProperty",
         "owl:FunctionalProperty"
       ],
+      "rdfs:subPropertyOf": {
+        "@id": "eli:is_part_of"
+      },
       "rdfs:label": [
         {
           "@value": "osa aktist",
@@ -5368,6 +5685,37 @@
       },
       "rdfs:range": {
         "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:predecessorInstitution",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "eelkäija asutus",
+          "@language": "et"
+        },
+        {
+          "@value": "predecessor institution",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links an institution to the institution it replaced (rename, merger or split). Inverse of estleg:successorInstitution (#718).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "estleg:Institution"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:successorInstitution"
       }
     },
     {
@@ -5568,7 +5916,7 @@
               "@id": "estleg:Citation"
             },
             {
-              "@id": "rdf:Statement"
+              "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"
             }
           ]
         }
@@ -5653,6 +6001,34 @@
       },
       "owl:inverseOf": {
         "@id": "estleg:referencedBy"
+      }
+    },
+    {
+      "@id": "estleg:registrikood",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "registrikood",
+          "@language": "et"
+        },
+        {
+          "@value": "registry code",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "The Estonian registry code of the legal person; a rename predecessor shares its successor's code (#718).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:string"
       }
     },
     {
@@ -6310,6 +6686,34 @@
       }
     },
     {
+      "@id": "estleg:sourceTextLength",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "allikateksti pikkus",
+          "@language": "et"
+        },
+        {
+          "@value": "source text length",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Character length of the full extracted source body; present only when known (#719).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Annotation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
       "@id": "estleg:sourceUrl",
       "@type": [
         "owl:DatatypeProperty"
@@ -6330,6 +6734,34 @@
       },
       "rdfs:range": {
         "@id": "xsd:anyURI"
+      }
+    },
+    {
+      "@id": "estleg:subjectSource",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "teema allikas",
+          "@language": "et"
+        },
+        {
+          "@value": "subject source",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Provenance of dcterms:subject on this node: 'cellar' = official EuroVoc indexing from the Publications Office (cdm:work_is_about_concept_eurovoc), #699.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:EULegislation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:string"
       }
     },
     {
@@ -6376,6 +6808,37 @@
       },
       "rdfs:range": {
         "@id": "estleg:Municipality"
+      }
+    },
+    {
+      "@id": "estleg:successorInstitution",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "järglasasutus",
+          "@language": "et"
+        },
+        {
+          "@value": "successor institution",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links an institution to the institution that replaced it (rename, merger or split). Inverse of estleg:predecessorInstitution (#718).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "estleg:Institution"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:predecessorInstitution"
       }
     },
     {
@@ -6479,7 +6942,7 @@
     {
       "@id": "estleg:targetGroup",
       "@type": [
-        "owl:DatatypeProperty"
+        "owl:ObjectProperty"
       ],
       "rdfs:label": [
         {
@@ -6491,12 +6954,12 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Closed target-group classification for LegalProvision deontic effects. Values are estleg:TargetGroup individuals (#460). HEURISTIC: derived by keyword/dutyHolder matching over the provision text (#576), preferring the dutyHolder's subject and capping an unanchored body-text union; treat as an advisory addressee indicator, not a definitive legal determination. estleg:targetGroupConcept (#609) materializes the equivalent first-class SKOS concept (estleg:TargetGroup_*), bridged by skos:notation.",
+      "rdfs:comment": "Closed target-group classification for LegalProvision deontic effects. Values are estleg:TargetGroup individuals (skos:Concepts in estleg:TargetGroupScheme), written as IRIs since #460; #709 declares the property an owl:ObjectProperty to match. HEURISTIC: derived by keyword/dutyHolder matching over the provision text (#576), preferring the dutyHolder's subject and capping an unanchored body-text union; treat as an advisory addressee indicator, not a definitive legal determination. Replaces the deprecated estleg:targetGroupConcept.",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
       "rdfs:range": {
-        "@id": "xsd:string"
+        "@id": "estleg:TargetGroup"
       }
     },
     {
@@ -6504,6 +6967,10 @@
       "@type": [
         "owl:ObjectProperty"
       ],
+      "owl:deprecated": true,
+      "dcterms:isReplacedBy": {
+        "@id": "estleg:targetGroup"
+      },
       "rdfs:label": [
         {
           "@value": "sihtrühma mõiste",
@@ -6514,7 +6981,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Links a provision to the reified estleg:TargetGroup skos:Concept(s) for its estleg:targetGroup classification (#609). Materialized alongside the retained legacy estleg:targetGroup string so the addressee category is a first-class, navigable, multilingually-labelled SKOS concept rather than a bare string. Inherits the heuristic caveat of estleg:targetGroup (#576).",
+      "rdfs:comment": "Deprecated (issue #709): a partial duplicate of estleg:targetGroup, materialised by #609 when targetGroup still carried enum strings. Since #460 estleg:targetGroup itself holds the estleg:TargetGroup_* IRIs and is an owl:ObjectProperty with range estleg:TargetGroup; query that instead. Retained so old queries parse; no longer emitted, and scripts/retire_target_group_concept.py removes existing edges.",
       "rdfs:domain": {
         "@id": "estleg:LegalProvision"
       },
@@ -6773,6 +7240,62 @@
       }
     },
     {
+      "@id": "estleg:validFrom",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kehtib alates",
+          "@language": "et"
+        },
+        {
+          "@value": "valid from",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Inclusive start of the node's identity under this name; an open start is omitted (#718).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:validTo",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kehtib kuni",
+          "@language": "et"
+        },
+        {
+          "@value": "valid to",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Inclusive end of the node's identity under this name; an open end is omitted (#718).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
       "@id": "estleg:versionOf",
       "@type": [
         "owl:ObjectProperty"
@@ -6896,10 +7419,86 @@
       }
     },
     {
+      "@id": "estleg:xteeMemberCode",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "X-tee liikmekood",
+          "@language": "et"
+        },
+        {
+          "@value": "X-tee member code",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "The X-tee member id EE/GOV/<registrikood>, only on current institutions (#718).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:CaseTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Kohtuasja liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Case type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Kohtuasja liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Case type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:CaseType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:CaseType_Administrative"
+        },
+        {
+          "@id": "estleg:CaseType_Civil"
+        },
+        {
+          "@id": "estleg:CaseType_ConstitutionalReview"
+        },
+        {
+          "@id": "estleg:CaseType_Criminal"
+        },
+        {
+          "@id": "estleg:CaseType_Misdemeanor"
+        },
+        {
+          "@id": "estleg:CaseType_Other"
+        }
+      ]
+    },
+    {
       "@id": "estleg:CaseType_Administrative",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -6915,13 +7514,20 @@
         "@value": "Administrative Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "3"
+      "estleg:caseTypeCode": "3",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Civil",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -6937,13 +7543,20 @@
         "@value": "Civil Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "2"
+      "estleg:caseTypeCode": "2",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_ConstitutionalReview",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -6959,13 +7572,20 @@
         "@value": "Constitutional Review",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "5"
+      "estleg:caseTypeCode": "5",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Criminal",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -6981,13 +7601,20 @@
         "@value": "Criminal Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "1"
+      "estleg:caseTypeCode": "1",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Misdemeanor",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7003,13 +7630,20 @@
         "@value": "Misdemeanor Case",
         "@language": "en"
       },
-      "estleg:caseTypeCode": "4"
+      "estleg:caseTypeCode": "4",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      }
     },
     {
       "@id": "estleg:CaseType_Other",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:CaseType"
+        "estleg:CaseType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7021,13 +7655,66 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "skos:prefLabel": {
+        "@value": "Other Case",
+        "@language": "en"
+      },
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "skos:inScheme": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:CaseTypeScheme"
+      },
+      "estleg:caseTypeCode": "Other"
+    },
+    {
+      "@id": "estleg:DecisionTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Kohtulahendi liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Decision type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Kohtulahendi liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Decision type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:DecisionType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:DecisionType_Judgment"
+        },
+        {
+          "@id": "estleg:DecisionType_OrderRuling"
+        },
+        {
+          "@id": "estleg:DecisionType_Resolution"
+        },
+        {
+          "@id": "estleg:DecisionType_Ruling"
+        }
+      ]
     },
     {
       "@id": "estleg:DecisionType_Judgment",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7042,13 +7729,20 @@
       "skos:prefLabel": {
         "@value": "Judgment",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
     },
     {
       "@id": "estleg:DecisionType_OrderRuling",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
       "owl:deprecated": true,
       "rdfs:label": [
@@ -7068,13 +7762,20 @@
       "rdfs:comment": {
         "@value": "Deprecated (issue #344): declared but never used in the corpus — kohtumäärus decisions use estleg:DecisionType_Ruling instead. Retained for backward compatibility; do not emit new references.",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
     },
     {
       "@id": "estleg:DecisionType_Resolution",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
       "owl:deprecated": true,
       "rdfs:label": [
@@ -7094,13 +7795,20 @@
       "rdfs:comment": {
         "@value": "Deprecated (issue #344): declared but never used in the corpus — the extractor classifies every Riigikohus decision as estleg:DecisionType_Judgment or estleg:DecisionType_Ruling. Retained for backward compatibility; do not emit new references.",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
     },
     {
       "@id": "estleg:DecisionType_Ruling",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DecisionType"
+        "estleg:DecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7115,13 +7823,85 @@
       "skos:prefLabel": {
         "@value": "Ruling",
         "@language": "en"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:DecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DecisionTypeScheme"
       }
+    },
+    {
+      "@id": "estleg:DraftTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Eelnõu liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Draft type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Eelnõu liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Draft type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:DraftType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:DraftType_ActionPlan"
+        },
+        {
+          "@id": "estleg:DraftType_AmendmentBill"
+        },
+        {
+          "@id": "estleg:DraftType_Bill"
+        },
+        {
+          "@id": "estleg:DraftType_CitizenshipDecision"
+        },
+        {
+          "@id": "estleg:DraftType_DraftIntent"
+        },
+        {
+          "@id": "estleg:DraftType_EUPosition"
+        },
+        {
+          "@id": "estleg:DraftType_GovernmentOrder"
+        },
+        {
+          "@id": "estleg:DraftType_GovernmentRegulation"
+        },
+        {
+          "@id": "estleg:DraftType_MinisterialRegulation"
+        },
+        {
+          "@id": "estleg:DraftType_Other"
+        },
+        {
+          "@id": "estleg:DraftType_Regulation"
+        },
+        {
+          "@id": "estleg:DraftType_Report"
+        }
+      ]
     },
     {
       "@id": "estleg:DraftType_ActionPlan",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7133,13 +7913,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Action Plan"
+      "skos:prefLabel": "Action Plan",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_AmendmentBill",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7151,13 +7938,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Amendment Bill"
+      "skos:prefLabel": "Amendment Bill",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_Bill",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7169,13 +7963,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Bill"
+      "skos:prefLabel": "Bill",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_CitizenshipDecision",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7187,13 +7988,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Citizenship Decision"
+      "skos:prefLabel": "Citizenship Decision",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_DraftIntent",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7205,13 +8013,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Draft Intent / Pre-draft"
+      "skos:prefLabel": "Draft Intent / Pre-draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_EUPosition",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7223,13 +8038,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "EU Position Draft"
+      "skos:prefLabel": "EU Position Draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_GovernmentOrder",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7241,13 +8063,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Government Order Draft"
+      "skos:prefLabel": "Government Order Draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_GovernmentRegulation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7259,13 +8088,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Government Regulation Draft"
+      "skos:prefLabel": "Government Regulation Draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_MinisterialRegulation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7277,13 +8113,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Ministerial Regulation Draft"
+      "skos:prefLabel": "Ministerial Regulation Draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_Other",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7295,13 +8138,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Other Draft"
+      "skos:prefLabel": "Other Draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_Regulation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7313,13 +8163,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Regulation Draft"
+      "skos:prefLabel": "Regulation Draft",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
     },
     {
       "@id": "estleg:DraftType_Report",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:DraftType"
+        "estleg:DraftType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7331,7 +8188,57 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Report"
+      "skos:prefLabel": "Report",
+      "skos:inScheme": {
+        "@id": "estleg:DraftTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:DraftTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:EUCourtDecisionTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "EL-i kohtulahendi liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "EU court decision type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "EL-i kohtulahendi liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "EU court decision type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:EUCourtDecisionType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:EUDecType_AGOpinion"
+        },
+        {
+          "@id": "estleg:EUDecType_CourtOpinion"
+        },
+        {
+          "@id": "estleg:EUDecType_Judgment"
+        },
+        {
+          "@id": "estleg:EUDecType_Order"
+        },
+        {
+          "@id": "estleg:EUDecType_Other"
+        }
+      ]
     },
     {
       "@id": "estleg:EUCourt_CivilServiceTribunal",
@@ -7438,7 +8345,8 @@
       "@id": "estleg:EUDecType_AGOpinion",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUCourtDecisionType"
+        "estleg:EUCourtDecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7450,13 +8358,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Advocate General Opinion"
+      "skos:prefLabel": "Advocate General Opinion",
+      "skos:inScheme": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDecType_CourtOpinion",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUCourtDecisionType"
+        "estleg:EUCourtDecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7468,13 +8383,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Court Opinion"
+      "skos:prefLabel": "Court Opinion",
+      "skos:inScheme": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDecType_Judgment",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUCourtDecisionType"
+        "estleg:EUCourtDecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7486,13 +8408,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Judgment"
+      "skos:prefLabel": "Judgment",
+      "skos:inScheme": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDecType_Order",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUCourtDecisionType"
+        "estleg:EUCourtDecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7504,13 +8433,20 @@
           "@language": "en"
         }
       ],
-      "skos:prefLabel": "Order"
+      "skos:prefLabel": "Order",
+      "skos:inScheme": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDecType_Other",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUCourtDecisionType"
+        "estleg:EUCourtDecisionType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7521,13 +8457,20 @@
           "@value": "Other",
           "@language": "en"
         }
-      ]
+      ],
+      "skos:inScheme": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUCourtDecisionTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDocType_Decision",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUDocumentType"
+        "estleg:EUDocumentType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7540,13 +8483,20 @@
         }
       ],
       "skos:prefLabel": "EU Decision",
-      "rdfs:comment": "Euroopa Liidu otsus – konkreetsele adressaadile suunatud siduv akt."
+      "rdfs:comment": "Euroopa Liidu otsus – konkreetsele adressaadile suunatud siduv akt.",
+      "skos:inScheme": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDocType_Directive",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUDocumentType"
+        "estleg:EUDocumentType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7559,13 +8509,20 @@
         }
       ],
       "skos:prefLabel": "EU Directive",
-      "rdfs:comment": "Euroopa Liidu direktiiv – liikmesriikide poolt ülevõetav õigusakt."
+      "rdfs:comment": "Euroopa Liidu direktiiv – liikmesriikide poolt ülevõetav õigusakt.",
+      "skos:inScheme": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDocType_InternationalAgreement",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUDocumentType"
+        "estleg:EUDocumentType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7584,13 +8541,20 @@
       "rdfs:comment": {
         "@value": "Rahvusvaheline kokkulepe (CELEX-i sektor 4) — nt ÜRO Euroopa Majanduskomisjoni (UN-ECE) sõidukite tüübikinnituse eeskirjad.",
         "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUDocumentTypeScheme"
       }
     },
     {
       "@id": "estleg:EUDocType_ParliamentPosition",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUDocumentType"
+        "estleg:EUDocumentType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7603,13 +8567,20 @@
         }
       ],
       "skos:prefLabel": "European Parliament position (text adopted)",
-      "rdfs:comment": "Euroopa Parlamendi vastuvõetud tekst (CELEX sektor 5, AP) – ettevalmistav akt, mitte jõustunud määrus (#588)."
+      "rdfs:comment": "Euroopa Parlamendi vastuvõetud tekst (CELEX sektor 5, AP) – ettevalmistav akt, mitte jõustunud määrus (#588).",
+      "skos:inScheme": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      }
     },
     {
       "@id": "estleg:EUDocType_Regulation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:EUDocumentType"
+        "estleg:EUDocumentType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -7622,7 +8593,57 @@
         }
       ],
       "skos:prefLabel": "EU Regulation",
-      "rdfs:comment": "Euroopa Liidu määrus – otsekohaldatav õigusakt kõigis liikmesriikides."
+      "rdfs:comment": "Euroopa Liidu määrus – otsekohaldatav õigusakt kõigis liikmesriikides.",
+      "skos:inScheme": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:EUDocumentTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:EUDocumentTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "EL-i dokumendiliikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "EU document type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "EL-i dokumendiliikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "EU document type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:EUDocumentType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:EUDocType_Decision"
+        },
+        {
+          "@id": "estleg:EUDocType_Directive"
+        },
+        {
+          "@id": "estleg:EUDocType_InternationalAgreement"
+        },
+        {
+          "@id": "estleg:EUDocType_ParliamentPosition"
+        },
+        {
+          "@id": "estleg:EUDocType_Regulation"
+        }
+      ]
     },
     {
       "@id": "estleg:EUInst_CASSTM",
@@ -7640,7 +8661,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CASSTM"
+      }
     },
     {
       "@id": "estleg:EUInst_CCSS",
@@ -7658,7 +8682,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CCSS"
+      }
     },
     {
       "@id": "estleg:EUInst_CDT",
@@ -7676,7 +8703,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CDT"
+      }
     },
     {
       "@id": "estleg:EUInst_CEDEFOP",
@@ -7694,7 +8724,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CEDEFOP"
+      }
     },
     {
       "@id": "estleg:EUInst_CJ",
@@ -7712,7 +8745,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CJ"
+      }
     },
     {
       "@id": "estleg:EUInst_CLIMA",
@@ -7730,7 +8766,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CLIMA"
+      }
     },
     {
       "@id": "estleg:EUInst_CMTCOOPECSMR",
@@ -7856,7 +8895,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/COR"
+      }
     },
     {
       "@id": "estleg:EUInst_COUEUR",
@@ -7910,7 +8952,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CST"
+      }
     },
     {
       "@id": "estleg:EUInst_CURIA",
@@ -7928,7 +8973,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CURIA"
+      }
     },
     {
       "@id": "estleg:EUInst_CouncilOfEU",
@@ -7947,7 +8995,10 @@
         }
       ],
       "skos:prefLabel": "Council of the European Union",
-      "estleg:euInstitutionCode": "CONSIL"
+      "estleg:euInstitutionCode": "CONSIL",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/CONSIL"
+      }
     },
     {
       "@id": "estleg:EUInst_DG01",
@@ -7965,7 +9016,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/DG01"
+      }
     },
     {
       "@id": "estleg:EUInst_DG03",
@@ -7983,7 +9037,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/DG03"
+      }
     },
     {
       "@id": "estleg:EUInst_DG07",
@@ -8001,7 +9058,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/DG07"
+      }
     },
     {
       "@id": "estleg:EUInst_DGT",
@@ -8019,7 +9079,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/DGT"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_AGRI",
@@ -8038,7 +9101,10 @@
         }
       ],
       "skos:prefLabel": "DG Agriculture",
-      "estleg:euInstitutionCode": "AGRI"
+      "estleg:euInstitutionCode": "AGRI",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/AGRI"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_COMP",
@@ -8057,7 +9123,10 @@
         }
       ],
       "skos:prefLabel": "DG Competition",
-      "estleg:euInstitutionCode": "COMP"
+      "estleg:euInstitutionCode": "COMP",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/COMP"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_ENER",
@@ -8076,7 +9145,10 @@
         }
       ],
       "skos:prefLabel": "DG Energy",
-      "estleg:euInstitutionCode": "ENER"
+      "estleg:euInstitutionCode": "ENER",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/ENER"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_ENV",
@@ -8095,7 +9167,10 @@
         }
       ],
       "skos:prefLabel": "DG Environment",
-      "estleg:euInstitutionCode": "ENV"
+      "estleg:euInstitutionCode": "ENV",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/ENV"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_GROW",
@@ -8114,7 +9189,10 @@
         }
       ],
       "skos:prefLabel": "DG Internal Market",
-      "estleg:euInstitutionCode": "GROW"
+      "estleg:euInstitutionCode": "GROW",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/GROW"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_MARE",
@@ -8133,7 +9211,10 @@
         }
       ],
       "skos:prefLabel": "DG Maritime Affairs and Fisheries",
-      "estleg:euInstitutionCode": "MARE"
+      "estleg:euInstitutionCode": "MARE",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/MARE"
+      }
     },
     {
       "@id": "estleg:EUInst_DG_SANTE",
@@ -8152,7 +9233,10 @@
         }
       ],
       "skos:prefLabel": "DG Health and Food Safety",
-      "estleg:euInstitutionCode": "SANTE"
+      "estleg:euInstitutionCode": "SANTE",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/SANTE"
+      }
     },
     {
       "@id": "estleg:EUInst_ECA",
@@ -8170,7 +9254,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/ECA"
+      }
     },
     {
       "@id": "estleg:EUInst_EDPS",
@@ -8188,7 +9275,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EDPS"
+      }
     },
     {
       "@id": "estleg:EUInst_EEA",
@@ -8206,7 +9296,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EEA"
+      }
     },
     {
       "@id": "estleg:EUInst_EESC",
@@ -8224,7 +9317,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EESC"
+      }
     },
     {
       "@id": "estleg:EUInst_EIBGOV",
@@ -8440,7 +9536,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/ESTAT"
+      }
     },
     {
       "@id": "estleg:EUInst_EURATOM",
@@ -8458,7 +9557,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EURATOM"
+      }
     },
     {
       "@id": "estleg:EUInst_EURCOM",
@@ -8476,7 +9578,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EURCOM"
+      }
     },
     {
       "@id": "estleg:EUInst_EURCOU",
@@ -8494,7 +9599,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EURCOU"
+      }
     },
     {
       "@id": "estleg:EUInst_EUROFOUND",
@@ -8512,7 +9620,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EUROFOUND"
+      }
     },
     {
       "@id": "estleg:EUInst_EUROJUST",
@@ -8530,7 +9641,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EUROJUST"
+      }
     },
     {
       "@id": "estleg:EUInst_EUROPOL",
@@ -8548,7 +9662,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EUROPOL"
+      }
     },
     {
       "@id": "estleg:EUInst_EuropeanCentralBank",
@@ -8567,7 +9684,10 @@
         }
       ],
       "skos:prefLabel": "European Central Bank",
-      "estleg:euInstitutionCode": "ECB"
+      "estleg:euInstitutionCode": "ECB",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/ECB"
+      }
     },
     {
       "@id": "estleg:EUInst_EuropeanCommission",
@@ -8586,7 +9706,10 @@
         }
       ],
       "skos:prefLabel": "European Commission",
-      "estleg:euInstitutionCode": "COM"
+      "estleg:euInstitutionCode": "COM",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/COM"
+      }
     },
     {
       "@id": "estleg:EUInst_EuropeanParliament",
@@ -8605,7 +9728,10 @@
         }
       ],
       "skos:prefLabel": "European Parliament",
-      "estleg:euInstitutionCode": "EP"
+      "estleg:euInstitutionCode": "EP",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/EP"
+      }
     },
     {
       "@id": "estleg:EUInst_FISMA",
@@ -8623,7 +9749,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/FISMA"
+      }
     },
     {
       "@id": "estleg:EUInst_FPI",
@@ -8641,7 +9770,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/FPI"
+      }
     },
     {
       "@id": "estleg:EUInst_FRA",
@@ -8659,7 +9791,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/FRA"
+      }
     },
     {
       "@id": "estleg:EUInst_GCEU",
@@ -8677,7 +9812,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/GCEU"
+      }
     },
     {
       "@id": "estleg:EUInst_GOVREP",
@@ -8695,7 +9833,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/GOVREP"
+      }
     },
     {
       "@id": "estleg:EUInst_HRUFASP",
@@ -8713,7 +9854,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/HRUFASP"
+      }
     },
     {
       "@id": "estleg:EUInst_MKD",
@@ -8749,7 +9893,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/MOVE"
+      }
     },
     {
       "@id": "estleg:EUInst_OMB",
@@ -8767,7 +9914,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/OMB"
+      }
     },
     {
       "@id": "estleg:EUInst_OSHA",
@@ -8785,7 +9935,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/OSHA"
+      }
     },
     {
       "@id": "estleg:EUInst_TAXUD",
@@ -8803,7 +9956,10 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/TAXUD"
+      }
     },
     {
       "@id": "estleg:EUInst_UNECE",
@@ -8821,7 +9977,343 @@
           "@language": "en"
         }
       ],
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "estleg:referenceStatus": "fallbackMaterialized",
+      "owl:sameAs": {
+        "@id": "http://publications.europa.eu/resource/authority/corporate-body/UNECE"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Institutsiooni liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Institution type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Institutsiooni liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Institution type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:InstitutionType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:InstitutionType_Agency"
+        },
+        {
+          "@id": "estleg:InstitutionType_Court"
+        },
+        {
+          "@id": "estleg:InstitutionType_Government"
+        },
+        {
+          "@id": "estleg:InstitutionType_HeadOfState"
+        },
+        {
+          "@id": "estleg:InstitutionType_LocalGovernment"
+        },
+        {
+          "@id": "estleg:InstitutionType_Minister"
+        },
+        {
+          "@id": "estleg:InstitutionType_Ministry"
+        },
+        {
+          "@id": "estleg:InstitutionType_Parliament"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:InstitutionType_Agency",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "amet või asutus",
+          "@language": "et"
+        },
+        {
+          "@value": "agency",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "amet või asutus",
+          "@language": "et"
+        },
+        {
+          "@value": "agency",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "agency",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_Court",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohus",
+          "@language": "et"
+        },
+        {
+          "@value": "court",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "kohus",
+          "@language": "et"
+        },
+        {
+          "@value": "court",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "court",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_Government",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "valitsus",
+          "@language": "et"
+        },
+        {
+          "@value": "government",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "valitsus",
+          "@language": "et"
+        },
+        {
+          "@value": "government",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "government",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_HeadOfState",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "riigipea",
+          "@language": "et"
+        },
+        {
+          "@value": "head of state",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "riigipea",
+          "@language": "et"
+        },
+        {
+          "@value": "head of state",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "head_of_state",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_LocalGovernment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kohalik omavalitsus",
+          "@language": "et"
+        },
+        {
+          "@value": "local government",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "kohalik omavalitsus",
+          "@language": "et"
+        },
+        {
+          "@value": "local government",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "local_government",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_Minister",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "minister",
+          "@language": "et"
+        },
+        {
+          "@value": "minister",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "minister",
+          "@language": "et"
+        },
+        {
+          "@value": "minister",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "minister",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_Ministry",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "ministeerium",
+          "@language": "et"
+        },
+        {
+          "@value": "ministry",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "ministeerium",
+          "@language": "et"
+        },
+        {
+          "@value": "ministry",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "ministry",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:InstitutionType_Parliament",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:InstitutionType",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "parlament",
+          "@language": "et"
+        },
+        {
+          "@value": "parliament",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "parlament",
+          "@language": "et"
+        },
+        {
+          "@value": "parliament",
+          "@language": "en"
+        }
+      ],
+      "skos:notation": "parliament",
+      "skos:inScheme": {
+        "@id": "estleg:InstitutionTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:InstitutionTypeScheme"
+      }
     },
     {
       "@id": "estleg:LegalConceptScheme",
@@ -8852,10 +10344,58 @@
       "dcterms:title": "Legal Concept Scheme"
     },
     {
+      "@id": "estleg:LegislativePhaseScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Menetlusetappide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Legislative phase scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Menetlusetappide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Legislative phase scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:LegislativePhase individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Phase_Enacted"
+        },
+        {
+          "@id": "estleg:Phase_PublicConsultation"
+        },
+        {
+          "@id": "estleg:Phase_Rejected"
+        },
+        {
+          "@id": "estleg:Phase_Review"
+        },
+        {
+          "@id": "estleg:Phase_Submission"
+        },
+        {
+          "@id": "estleg:Phase_Withdrawn"
+        }
+      ]
+    },
+    {
       "@id": "estleg:NormType_Definition",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:NormativeType"
+        "estleg:NormativeType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -8875,13 +10415,20 @@
         {
           "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#ConstitutiveStatement"
         }
-      ]
+      ],
+      "skos:inScheme": {
+        "@id": "estleg:NormativeTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:NormativeTypeScheme"
+      }
     },
     {
       "@id": "estleg:NormType_Obligation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:NormativeType"
+        "estleg:NormativeType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -8901,13 +10448,20 @@
         {
           "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Obligation"
         }
-      ]
+      ],
+      "skos:inScheme": {
+        "@id": "estleg:NormativeTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:NormativeTypeScheme"
+      }
     },
     {
       "@id": "estleg:NormType_Permission",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:NormativeType"
+        "estleg:NormativeType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -8927,13 +10481,20 @@
         {
           "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Permission"
         }
-      ]
+      ],
+      "skos:inScheme": {
+        "@id": "estleg:NormativeTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:NormativeTypeScheme"
+      }
     },
     {
       "@id": "estleg:NormType_Prohibition",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:NormativeType"
+        "estleg:NormativeType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -8953,13 +10514,20 @@
         {
           "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Prohibition"
         }
-      ]
+      ],
+      "skos:inScheme": {
+        "@id": "estleg:NormativeTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:NormativeTypeScheme"
+      }
     },
     {
       "@id": "estleg:NormType_Right",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:NormativeType"
+        "estleg:NormativeType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -8979,6 +10547,56 @@
         {
           "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Right"
         }
+      ],
+      "skos:inScheme": {
+        "@id": "estleg:NormativeTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:NormativeTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:NormativeTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Normatiivsete liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Normative type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Normatiivsete liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Normative type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:NormativeType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:NormType_Definition"
+        },
+        {
+          "@id": "estleg:NormType_Obligation"
+        },
+        {
+          "@id": "estleg:NormType_Permission"
+        },
+        {
+          "@id": "estleg:NormType_Prohibition"
+        },
+        {
+          "@id": "estleg:NormType_Right"
+        }
       ]
     },
     {
@@ -8986,7 +10604,8 @@
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegislativePhase",
-        "eli-dl:ProcessStage"
+        "eli-dl:ProcessStage",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9003,6 +10622,12 @@
       "estleg:phaseOrder": {
         "@value": "4",
         "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
       }
     },
     {
@@ -9010,7 +10635,8 @@
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegislativePhase",
-        "eli-dl:ProcessStage"
+        "eli-dl:ProcessStage",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9027,6 +10653,12 @@
       "estleg:phaseOrder": {
         "@value": "1",
         "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
       }
     },
     {
@@ -9034,7 +10666,8 @@
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegislativePhase",
-        "eli-dl:ProcessStage"
+        "eli-dl:ProcessStage",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9051,6 +10684,12 @@
       "estleg:phaseOrder": {
         "@value": "6",
         "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
       }
     },
     {
@@ -9058,7 +10697,8 @@
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegislativePhase",
-        "eli-dl:ProcessStage"
+        "eli-dl:ProcessStage",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9075,6 +10715,12 @@
       "estleg:phaseOrder": {
         "@value": "2",
         "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
       }
     },
     {
@@ -9082,7 +10728,8 @@
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegislativePhase",
-        "eli-dl:ProcessStage"
+        "eli-dl:ProcessStage",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9099,6 +10746,12 @@
       "estleg:phaseOrder": {
         "@value": "3",
         "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
       }
     },
     {
@@ -9106,7 +10759,8 @@
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegislativePhase",
-        "eli-dl:ProcessStage"
+        "eli-dl:ProcessStage",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9123,13 +10777,20 @@
       "estleg:phaseOrder": {
         "@value": "5",
         "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
       }
     },
     {
       "@id": "estleg:RefType_Citation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:ReferenceType"
+        "estleg:ReferenceType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9145,13 +10806,20 @@
         "@value": "Citation",
         "@language": "en"
       },
-      "rdfs:comment": "A general citation or mention, without repeal / legal-basis / exception / derogation force (issue #513)."
+      "rdfs:comment": "A general citation or mention, without repeal / legal-basis / exception / derogation force (issue #513).",
+      "skos:inScheme": {
+        "@id": "estleg:ReferenceTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:ReferenceTypeScheme"
+      }
     },
     {
       "@id": "estleg:RefType_Derogation",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:ReferenceType"
+        "estleg:ReferenceType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9167,13 +10835,20 @@
         "@value": "Derogation",
         "@language": "en"
       },
-      "rdfs:comment": "The citing provision derogates from the cited target (issue #513)."
+      "rdfs:comment": "The citing provision derogates from the cited target (issue #513).",
+      "skos:inScheme": {
+        "@id": "estleg:ReferenceTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:ReferenceTypeScheme"
+      }
     },
     {
       "@id": "estleg:RefType_Exception",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:ReferenceType"
+        "estleg:ReferenceType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9189,13 +10864,20 @@
         "@value": "Exception",
         "@language": "en"
       },
-      "rdfs:comment": "The citing provision is an exception to the general rule in the cited target (issue #513)."
+      "rdfs:comment": "The citing provision is an exception to the general rule in the cited target (issue #513).",
+      "skos:inScheme": {
+        "@id": "estleg:ReferenceTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:ReferenceTypeScheme"
+      }
     },
     {
       "@id": "estleg:RefType_LegalBasis",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:ReferenceType"
+        "estleg:ReferenceType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9211,13 +10893,20 @@
         "@value": "Legal basis",
         "@language": "en"
       },
-      "rdfs:comment": "The cited target is the enabling legal basis (kehtestatakse … alusel) for the citing act or provision (issue #513)."
+      "rdfs:comment": "The cited target is the enabling legal basis (kehtestatakse … alusel) for the citing act or provision (issue #513).",
+      "skos:inScheme": {
+        "@id": "estleg:ReferenceTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:ReferenceTypeScheme"
+      }
     },
     {
       "@id": "estleg:RefType_Repeal",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:ReferenceType"
+        "estleg:ReferenceType",
+        "skos:Concept"
       ],
       "rdfs:label": [
         {
@@ -9233,7 +10922,57 @@
         "@value": "Repeal",
         "@language": "en"
       },
-      "rdfs:comment": "The citing provision or act repeals (tunnistatakse kehtetuks) the cited target (issue #513)."
+      "rdfs:comment": "The citing provision or act repeals (tunnistatakse kehtetuks) the cited target (issue #513).",
+      "skos:inScheme": {
+        "@id": "estleg:ReferenceTypeScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:ReferenceTypeScheme"
+      }
+    },
+    {
+      "@id": "estleg:ReferenceTypeScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Viite liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Reference type scheme",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": [
+        {
+          "@value": "Viite liikide skeem",
+          "@language": "et"
+        },
+        {
+          "@value": "Reference type scheme",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Closed value set of estleg:ReferenceType individuals as SKOS concepts (#709).",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:RefType_Citation"
+        },
+        {
+          "@id": "estleg:RefType_Derogation"
+        },
+        {
+          "@id": "estleg:RefType_Exception"
+        },
+        {
+          "@id": "estleg:RefType_LegalBasis"
+        },
+        {
+          "@id": "estleg:RefType_Repeal"
+        }
+      ]
     },
     {
       "@id": "estleg:TargetGroupScheme",

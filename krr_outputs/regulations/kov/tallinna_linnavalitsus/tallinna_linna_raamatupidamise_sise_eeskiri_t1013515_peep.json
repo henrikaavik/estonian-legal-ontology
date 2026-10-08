@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -38,23 +39,6 @@
       },
       "estleg:titleNormalized": "raamatupidamise sise-eeskiri",
       "estleg:regulationTypeBucket": "sise eeskiri",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/54"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/557"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/1021"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2149"
-        }
-      ],
       "estleg:similarAct": [
         {
           "@id": "estleg:Similarity_Reg_1013515_Map_Reg_1056998_Map"
@@ -165,17 +149,6 @@
           "@id": "estleg:Amendment_Reg_1013515_90e813d22e"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Issuer_tallinna_linnavolikogu"
-        },
-        {
-          "@id": "estleg:Institution_kohus"
-        }
-      ],
       "estleg:municipalityStatus": "current",
       "estleg:assertionConfidence": {
         "@value": "0.55",
@@ -195,6 +168,56 @@
         },
         {
           "@id": "estleg:Citation_Reg_1013515_Map_2"
+        }
+      ],
+      "estleg:enablingProvisionOutdated": {
+        "@value": true,
+        "@type": "xsd:boolean"
+      },
+      "estleg:earliestSupersedingDate": {
+        "@value": "2013-04-01",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/1021"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/1021"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2149"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_linn"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        },
+        {
+          "@id": "estleg:Institution_tooturuamet"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
         }
       ]
     },
@@ -219,12 +242,11 @@
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1013515_Map"
       },
-      "estleg:competentAuthority": [
+      "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_linn"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_2",
@@ -277,18 +299,24 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_4",
@@ -319,18 +347,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_5",
@@ -361,11 +386,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -391,7 +411,12 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1013515_Map"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_7",
@@ -444,18 +469,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        },
+        {
+          "@id": "estleg:Institution_maksuamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_9",
@@ -484,14 +509,6 @@
         },
         {
           "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
@@ -525,15 +542,15 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_NGO"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_11",
@@ -564,18 +581,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        },
+        {
+          "@id": "estleg:Issuer_tallinna_linnavolikogu"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_12",
@@ -599,11 +616,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -642,14 +654,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -677,11 +681,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -720,11 +719,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -752,11 +746,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -792,11 +781,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -828,11 +812,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -860,11 +839,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -903,18 +877,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_21",
@@ -938,11 +909,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -974,11 +940,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -1046,24 +1007,16 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Issuer_tallinna_linnavolikogu"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1013515_Par_25",
@@ -1087,14 +1040,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -1133,11 +1078,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1165,11 +1105,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Official"
         }
@@ -1206,7 +1141,12 @@
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksuamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_29",
@@ -1329,11 +1269,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1394,11 +1329,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1452,11 +1382,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1484,14 +1409,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_NGO"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -1530,11 +1447,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1562,11 +1474,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -1602,11 +1509,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1634,11 +1536,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -1674,11 +1571,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1710,11 +1602,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1742,11 +1629,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -1807,18 +1689,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksuamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_47",
@@ -1847,14 +1726,6 @@
         },
         {
           "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
@@ -1889,14 +1760,6 @@
         },
         {
           "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
@@ -1955,18 +1818,16 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Reg_1013515_Par_49",
@@ -1997,18 +1858,16 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Reg_1013515_Par_49_52",
@@ -2032,11 +1891,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -2075,18 +1929,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_51",
@@ -2120,18 +1971,19 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        },
+        {
+          "@id": "estleg:Institution_tooturuamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1013515_Par_52",
@@ -2159,15 +2011,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksuamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_53",
@@ -2201,14 +2053,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2236,14 +2080,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_NGO"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Business"
         },
@@ -2304,11 +2140,6 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_NGO"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2362,11 +2193,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2401,18 +2227,16 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Reg_1013515_Par_60",
@@ -2465,14 +2289,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2513,14 +2329,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2552,11 +2360,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2584,14 +2387,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -2652,11 +2447,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2710,11 +2500,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2749,14 +2534,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2784,11 +2561,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -2897,11 +2669,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2929,11 +2696,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -3016,18 +2778,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_78",
@@ -3058,18 +2817,15 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_79",
@@ -3119,11 +2875,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3158,18 +2909,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Issuer_tallinna_linnavalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_82",
@@ -3226,17 +2974,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3262,7 +2999,12 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1013515_Map"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_linn"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_85",
@@ -3315,14 +3057,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Business"
-        },
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3348,7 +3082,12 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1013515_Map"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksuamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_87",
@@ -3372,11 +3111,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -3408,11 +3142,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
@@ -3451,11 +3180,6 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3481,7 +3205,12 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1013515_Map"
-      }
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksuamet"
+        }
+      ]
     },
     {
       "@id": "estleg:Reg_1013515_Par_91",
@@ -3505,14 +3234,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
@@ -3551,11 +3272,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3590,14 +3306,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:targetGroupConcept": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3625,14 +3333,6 @@
         "@id": "estleg:Reg_1013515_Map"
       },
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
-      "estleg:targetGroupConcept": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },

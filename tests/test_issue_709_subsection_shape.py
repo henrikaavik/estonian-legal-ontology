@@ -23,6 +23,7 @@ CONTEXT = {
     "estleg": "https://w3id.org/estleg/",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "eli": "http://data.europa.eu/eli/ontology#",
 }
 # The vocabulary rides along in every bucket and is embedded in combined.
 SUBCLASS_AXIOM = {
@@ -46,6 +47,8 @@ def _paragraph(**overrides) -> dict:
         "estleg:paragrahv": "TEST § 1",
         "estleg:summary": "Sätestab seaduse reguleerimisala.",
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        # #708: combined copies the containment edges onto eli:is_part_of.
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},
     }
     node.update(overrides)
     return {k: v for k, v in node.items() if v is not None}
@@ -57,6 +60,7 @@ def _subsection(*types: str, **extra) -> dict:
         "@type": ["owl:NamedIndividual", *types],
         "estleg:legalText": "(1) Käesolev seadus sätestab reguleerimisala.",
         "estleg:parentProvision": {"@id": "estleg:TEST_Par_1"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Par_1"},  # #708
         **extra,
     }
 

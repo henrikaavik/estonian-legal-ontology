@@ -134,7 +134,8 @@ def test_stamp_upgrades_existing_ontology_head() -> None:
     assert head["@id"] == "estleg:EURlex_Combined_Map"
     assert "void:Dataset" in head["@type"]
     assert "dcat:Dataset" in head["@type"]
-    assert head["dcterms:license"]["@id"].endswith("/by/4.0/")
+    assert "dcterms:license" not in head  # #710
+    assert "CC BY 4.0" in head["dcterms:rights"]
     assert head["dcterms:publisher"]["@id"] == "https://github.com/henrikaavik"
     assert head["dc:source"] == "EUR-Lex"
     assert doc["@graph"][1]["@id"] == "estleg:EU_1"

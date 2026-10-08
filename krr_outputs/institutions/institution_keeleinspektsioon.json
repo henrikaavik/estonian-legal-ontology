@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,39 +22,23 @@
       ],
       "rdfs:label": "Keeleinspektsioon",
       "estleg:institutionType": "agency",
-      "estleg:hasCompetence": [
-        {
-          "@id": "estleg:Institution_keeleinspektsioon_competence_general"
-        }
-      ],
-      "owl:sameAs": {
+      "rdfs:seeAlso": {
         "@id": "http://www.wikidata.org/entity/Q4536526"
-      }
-    },
-    {
-      "@id": "estleg:Institution_keeleinspektsioon_competence_general",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Competence"
-      ],
-      "rdfs:label": "Keeleinspektsioon – general",
-      "estleg:competenceType": "general",
-      "estleg:institution": {
-        "@id": "estleg:Institution_keeleinspektsioon"
       },
-      "estleg:appliesToProvision": [
+      "estleg:registrikood": "70003690",
+      "estleg:validFrom": {
+        "@value": "1998-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:validTo": {
+        "@value": "2020-07-31",
+        "@type": "xsd:date"
+      },
+      "estleg:successorInstitution": [
         {
-          "@id": "estleg:Reg_1050040_Par_13"
+          "@id": "estleg:Institution_keeleamet"
         }
-      ],
-      "estleg:appliesToProvisionCount": {
-        "@value": "1",
-        "@type": "xsd:integer"
-      },
-      "estleg:competenceArea": "general",
-      "estleg:grantedBy": {
-        "@id": "estleg:Reg_1050040_Map"
-      }
+      ]
     }
   ]
 }
