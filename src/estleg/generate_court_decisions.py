@@ -43,7 +43,7 @@ import re
 import sys
 import time
 import urllib.parse
-from datetime import datetime
+from datetime import date, datetime
 from functools import partial
 from pathlib import Path
 
@@ -531,17 +531,55 @@ def parse_html_table(html_text: str) -> list[dict]:
     return _parse_with_regex(html_text)
 
 
-def fetch_year(year: int) -> list[dict]:
-    """Fetch all decisions for a given year."""
-    # First request to get total count
-    resp = allowed_get(
-        SEARCH_URL,
-        params={"aasta": year, "pageSize": PAGE_SIZE},
-        timeout=30,
-    )
-    resp.raise_for_status()
+# --- Year sweep (#693) --------------------------------------------------------
+START_YEAR = 1993
+YEAR_RETRIES = 3  # attempts per search-results page
+YEAR_BACKOFF = 2.0  # base seconds for exponential backoff between retries
 
-    total_match = re.search(r"Tulemusi leiti kokku:\s*(\d+)", resp.text)
+
+class PartialYearError(RuntimeError):
+    """A year's search sweep could not be completed after retries."""
+
+
+def default_end_year(evaluation: date | None = None) -> int:
+    """Last year to sweep: the evaluation date's year (default: today).
+
+    Replaces the hard-coded ``end_year = 2026`` (#693) so a run in a new
+    calendar year picks the new year up instead of silently stopping.
+    """
+    return (evaluation or date.today()).year
+
+
+def _get_search_page(params: dict[str, object]) -> str:
+    """GET one rikos search-results page, retrying transient failures."""
+    last_exc: BaseException | None = None
+    for attempt in range(YEAR_RETRIES):
+        try:
+            resp = allowed_get(SEARCH_URL, params=params, timeout=30)
+            resp.raise_for_status()
+            return resp.text
+        except Exception as exc:  # noqa: BLE001 — broad to retry network/HTTP blips
+            last_exc = exc
+            if attempt < YEAR_RETRIES - 1:
+                time.sleep(YEAR_BACKOFF * (2 ** attempt))
+    raise PartialYearError(
+        f"rikos page {params.get('lk', 1)} for year {params.get('aasta')} "
+        f"failed after {YEAR_RETRIES} attempts: {last_exc}"
+    ) from last_exc
+
+
+def fetch_year(year: int) -> list[dict]:
+    """Fetch all decisions for a given year.
+
+    Every page is retried (``YEAR_RETRIES``, exponential backoff). A page
+    that still fails raises :class:`PartialYearError` — the caller decides
+    whether a partial year is acceptable (``--allow-partial``); it is never
+    silently dropped (#693).
+    """
+    # First request to get total count
+    first_page = _get_search_page({"aasta": year, "pageSize": PAGE_SIZE})
+
+    total_match = re.search(r"Tulemusi leiti kokku:\s*(\d+)", first_page)
     total = int(total_match.group(1)) if total_match else 0
 
     if total == 0:
@@ -550,17 +588,14 @@ def fetch_year(year: int) -> list[dict]:
     total_pages = math.ceil(total / PAGE_SIZE)
     print(f"  Year {year}: {total} decisions, {total_pages} pages")
 
-    all_decisions = parse_html_table(resp.text)
+    all_decisions = parse_html_table(first_page)
 
     for page in range(2, total_pages + 1):
         time.sleep(RATE_DELAY)
-        resp = allowed_get(
-            SEARCH_URL,
-            params={"aasta": year, "pageSize": PAGE_SIZE, "lk": page},
-            timeout=30,
+        page_text = _get_search_page(
+            {"aasta": year, "pageSize": PAGE_SIZE, "lk": page}
         )
-        resp.raise_for_status()
-        page_decisions = parse_html_table(resp.text)
+        page_decisions = parse_html_table(page_text)
         all_decisions.extend(page_decisions)
         if page % 5 == 0:
             print(f"    Page {page}/{total_pages} ({len(all_decisions)} so far)")
@@ -1816,7 +1851,32 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "fresh HTTP fetches."
         ),
     )
-    return parser.parse_args(argv)
+    parser.add_argument(
+        "--evaluation-date",
+        default=None,
+        metavar="YYYY-MM-DD",
+        help=(
+            "As-of date of the sweep (default: today). Sets the last year "
+            "swept and the index ``fetched`` stamp (#693)."
+        ),
+    )
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help=(
+            "Continue and write partial output (with ``partial: true`` and "
+            "``partial_years`` in the index, exit code 2) if a year's search "
+            "pages still fail after retries. Without it such a failure "
+            "aborts the run before the index is rewritten."
+        ),
+    )
+    args = parser.parse_args(argv)
+    if args.evaluation_date is not None:
+        try:
+            args.evaluation_date = date.fromisoformat(args.evaluation_date)
+        except ValueError:
+            parser.error(f"--evaluation-date must be YYYY-MM-DD, got {args.evaluation_date!r}")
+    return args
 
 
 def run_full_text_enrichment(args: argparse.Namespace) -> None:
@@ -1853,8 +1913,9 @@ def main(argv: list[str] | None = None):
         run_full_text_enrichment(args)
         return
 
-    start_year = 1993
-    end_year = 2026
+    evaluation = args.evaluation_date or date.today()
+    start_year = START_YEAR
+    end_year = default_end_year(evaluation)
 
     print("=" * 60)
     print("Fetching Supreme Court decisions from RIK")
@@ -1870,13 +1931,22 @@ def main(argv: list[str] | None = None):
 
     all_decisions: list[dict] = []
     year_stats: dict[int, int] = {}
+    partial_years: list[int] = []
 
     for year in range(end_year, start_year - 1, -1):
         print(f"\n--- Year {year} ---")
         try:
             decisions = fetch_year(year)
         except Exception as e:
-            print(f"  ERROR: {e}")
+            # #693: a failed year used to be printed and skipped, leaving a
+            # silently partial corpus and exit 0. Abort unless the operator
+            # explicitly accepts a partial run.
+            if not args.allow_partial:
+                print(f"  ERROR: {e}")
+                print("  Aborting (rerun later, or pass --allow-partial).")
+                raise
+            print(f"  ERROR (partial run): {e}")
+            partial_years.append(year)
             continue
 
         if not decisions:
@@ -1930,13 +2000,21 @@ def main(argv: list[str] | None = None):
 
     # Generate index
     print("\n--- Generating index ---")
+    partial = bool(partial_years)
     index = {
         "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
+        # #693: the as-of date of this live sweep. Unlike ``generated`` it
+        # changes only when the data is re-fetched, and it is what the
+        # freshness gate (check_rt_staleness) measures.
+        "fetched": evaluation.isoformat(),
         "source": "https://rikos.rik.ee",
+        "partial": partial,
         "total_decisions": len(all_decisions),
         "years": {str(y): c for y, c in sorted(year_stats.items(), reverse=True)},
         "case_type_counts": {},
     }
+    if partial:
+        index["partial_years"] = sorted(partial_years, reverse=True)
 
     # Count by case type — overall AND per-year breakdown so we can
     # validate the prefix distribution looks sensible (e.g. roughly
@@ -1968,6 +2046,13 @@ def main(argv: list[str] | None = None):
     for type_id, count in sorted(type_counts.items(), key=lambda x: -x[1]):
         print(f"  {type_id}: {count}")
     print("=" * 60)
+
+    if partial:
+        # ``--allow-partial`` was set (otherwise we would have raised).
+        # Non-zero exit signals downstream pipelines to retry as soon as a
+        # clean run is possible — same convention as generate_eu_*.py.
+        print(f"PARTIAL: years {index['partial_years']} could not be fetched.")
+        sys.exit(2)
 
 
 if __name__ == "__main__":

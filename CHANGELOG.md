@@ -62,6 +62,47 @@ All notable changes to this project will be documented in this file.
   `act_expressions_combined.jsonld`, `controlled_vocabulary.jsonld`,
   `docs/DUPLICATE_IDS_REPORT.md`, `docs/VALIDATION_REPORT.md`.
 
+### 2026-09 public-sector readiness — RT public API and honest freshness gates (#676, tickets #691, #693)
+
+The corpus can be refreshed from Riigi Teataja again, and the freshness gate
+now measures against today. No corpus data is regenerated here, so **the
+`rt-staleness` CI job is red by design** until the corpora are refreshed.
+
+- **Per-act fetch moved to the RT public API (#691).** Since the RT relaunch
+  on 2026-06-01, `/akt/{id}.xml` returns the HTML app shell, so every refresh
+  silently skipped every act. `build_xml_url` now maps any act id or URL,
+  including the search API's `/akt/{id}.xml`, onto
+  `/public-api/api/v1/akt/{id}/xml`. A new `build_metadata_url` /
+  `fetch_act_metadata` pair reads the JSON sibling (`kehtivId`, `grupiId`,
+  `lyhend`, `kehtivuseAlgus`, `tolkeSeosId`). `fetch_xml` retries network
+  errors, 429 and 5xx with the `fetch_acts` backoff. An HTML body raises
+  `RTFormatError` naming the URL instead of a bare `ParseError`.
+- **Live schema canary (#691).** `tests/test_rt_schema_canary.py` pins the
+  schema identity `tyviseadus_1_10.02.2010` on the offline fixture and adds an
+  opt-in live test (`ESTLEG_LIVE_CANARY=1`) that GETs one act through
+  `fetch_xml`. The `rt-staleness` job runs the same probe as
+  `check_rt_staleness.py --schema-canary`. "RT unreachable" is a warning and
+  "RT answered with HTML, a redirect or another schema" fails the job.
+- **The freshness gate measures against today (#693).** It used
+  `BUILD_EVALUATION_DATE` (2026-06-01), so it could never fail. That pin stays
+  the byte-stable `generated` stamp (#295). Only the gate moved, and
+  `--evaluation-date` still reproduces a past run. On 2026-10-08 the law
+  snapshot (`estleg:kehtiv` 2026-05-24) is 137 days behind a 45-day SLA. That
+  failure is the honest result. Refreshing through the #691 fetch path is the
+  remediation the gate prints.
+- **Every advertised corpus has a lag budget (#693).** The gate also checks
+  state and KOV regulations (60 d), drafts (60 d), Riigikohus, the lower-court
+  sample, EUR-Lex and CURIA (120 d each) against their committed index stamp.
+  Each `dcat:distribution` in `metadata.jsonld` now publishes its
+  `dcterms:accrualPeriodicity`, and a test keeps code and metadata equal. The
+  table and rationale are in `docs/RELEASE.md`.
+- **Riigikohus sweeps are current and loud when partial (#693).** The last
+  year swept follows the evaluation date instead of a hard-coded 2026. Each
+  search page is retried. A year that still fails aborts the run, unless
+  `--allow-partial` is set, which writes `partial: true` and `partial_years`
+  to the index and exits 2 like the EU generators. The index gains a
+  `fetched` date that the freshness gate reads.
+
 ### 2026-09 public-sector readiness — T-Box axioms (#676, ticket #709, part 1)
 
 Repairs the `rdfs:domain` / `rdfs:range` axioms that manufactured most of the
