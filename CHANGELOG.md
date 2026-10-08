@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 3 — Fix cross-law citation boundaries and expand resolver coverage
+
+- **Cross-law citation boundaries and resolver coverage (#696).** The in-law abbreviation pattern now has a Unicode left word boundary: `MTÜS § 12`, `ELS § 7` and `XTMS § 4` no longer resolve to TÜS, LS or TMS, and the old "RPS § 7" → Põhiseadus mislinks are gone. `KNOWN_ABBREVIATIONS` is derived from `data/law_abbreviations.json` with the official Riigi Teataja lyhend first (95 → 287 keys, a documented alias table for legacy keys, a drift test against the registry); the registry settled the TTKS, KELS, AVVKHS and KOS collisions and the aliases KHaS and ATS were added. Resolvers build provision IRIs from the registry's corpus prefix checked against the corpus `sourceAct`, so RÕS and REOS resolve to `ROS_2_*` / `REOS_2_*`. The in-law pass resolves full-name genitive citations against every registry or corpus law title (not only the 74-entry list), with guards against year, period and series short-name mislinks. Unresolved court citations and unresolvable `referencedLaw` values are kept as target-less `estleg:Citation` nodes instead of being dropped. Corpus effect: in-law cross-law references 8,505 → 13,253, court `interpretsLaw` links 89,712 → 111,224; the combined graph and overlay are rebuilt.
+
 ### 2026-09 public-sector readiness — Tier 1, green the data gates (#676; #702, #705, #709 residues)
 
 - **SHACL value lists and interval semantics.** `ActTemporalShape` admits

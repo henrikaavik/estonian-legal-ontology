@@ -1,6 +1,6 @@
 # Duplicate `@id` Report
 
-Generated from `krr_outputs/` at commit `26e7e73d83bdfdbb1fe78c1fbf9dcd9ef8e37639` on 2026-10-08 15:09 UTC by `scripts/generate_duplicate_ids_report.py`. Do not hand-edit.
+Generated from `krr_outputs/` at commit `da4fbdd0b893782727978993bc9955f712db654e` on 2026-10-08 15:45 UTC by `scripts/generate_duplicate_ids_report.py`. Do not hand-edit.
 
 Files scanned: 27,012.
 
@@ -14,5 +14,5 @@ None.
 
 One `@id` declared in more than one file. This is expected for shared vocabulary and closure stubs, so it is reported as context rather than as an error.
 
-**393940 `@id`(s) appear in more than one file.**
+**392550 `@id`(s) appear in more than one file.**
 

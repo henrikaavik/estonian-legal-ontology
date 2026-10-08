@@ -23,127 +23,215 @@ from urllib.parse import urljoin, urlsplit
 import requests
 
 # ---------------------------------------------------------------------------
-# Well-known abbreviation -> full law name mappings (union of both scripts)
+# Law abbreviation -> full law name, derived from the registry (#696)
+#
+# ``data/law_abbreviations.json`` is the single source of truth for law
+# abbreviations (AGENTS.md "abbreviation registry"). ``KNOWN_ABBREVIATIONS``
+# is DERIVED from it at import time:
+#
+#   1. every ``source == "rt_api"`` entry contributes its official Riigi
+#      Teataja ``lyhend`` -> law title. A registry abbrev carrying a
+#      compact-prefix collision suffix (``RÕS_2``, ``REOS_2``) is cited in
+#      text without the suffix, so the suffix is stripped for the key; when
+#      two rt_api laws then share a key (``EKSS`` / ``EKSS_2``) the entry
+#      that owns the UNSUFFIXED prefix wins;
+#   2. ``_CITATION_ALIASES`` adds the documented exceptions: abbreviations
+#      used in legal text whose law is either absent from the registry or
+#      registered under a non-lyhend corpus prefix (``KarS`` ->
+#      ``KARIST_2``). An alias may never shadow an rt_api lyhend of another
+#      law — the official lyhend wins (``TTKS``, ``KELS``, ``AVVKHS``,
+#      ``KOS``) — and ``tests/test_known_abbreviations_registry.py`` fails
+#      on any such drift.
+#
+# Values are the canonical law title (== the corpus ``estleg:sourceAct``),
+# which the resolvers use as their sourceAct fallback. The registry
+# abbrev(s) for each key are exposed separately in
+# ``KNOWN_ABBREVIATION_REGISTRY_ABBREVS`` so resolvers mint IRIs through
+# the registry's corpus prefix (``sanitize_id(abbrev)``) rather than by
+# re-slugifying titles.
 # ---------------------------------------------------------------------------
-KNOWN_ABBREVIATIONS: dict[str, str] = {
+LAW_ABBREVIATIONS_PATH = Path(__file__).resolve().parents[2] / "data" / "law_abbreviations.json"
+
+# Registry entries whose ``title`` field is not a usable law title.
+_REGISTRY_TITLE_OVERRIDES: dict[str, str] = {
+    # The RT API returned the act URL instead of the title for this law.
+    "elektrituruseadus": "Elektrituruseadus",
+}
+
+# Documented exceptions (see the block comment above): citation
+# abbreviation -> canonical law title. Every key here is either an official
+# lyhend that the registry records under a legacy corpus prefix, or a
+# legacy synthetic key that committed data / FULLNAME_GENITIVE still uses.
+_CITATION_ALIASES: dict[str, str] = {
     "KarS": "Karistusseadustik",
     "VÕS": "Võlaõigusseadus",
-    "TsÜS": "Tsiviilseadustiku üldosa seadus",
     "AÕS": "Asjaõigusseadus",
     "PKS": "Perekonnaseadus",
     "ÄS": "Äriseadustik",
     "HMS": "Haldusmenetluse seadus",
     "TsMS": "Tsiviilkohtumenetluse seadustik",
     "KrMS": "Kriminaalmenetluse seadustik",
-    "TMS": "Täitemenetluse seadustik",
-    # #350: court texts cite VTMS / HKMS. Register the real laws so the
-    # longer alternation cannot fall through to TMS / KMS, and so a
-    # citation resolves to the existing peeps (estleg:VTMS_* / HALDUS_*).
-    "VTMS": "Väärteomenetluse seadustik",
+    # #350: court texts cite HKMS; registered so it resolves to HALDUS_*.
     "HKMS": "Halduskohtumenetluse seadustik",
     "KOKS": "Kohaliku omavalitsuse korralduse seadus",
     "PS": "Eesti Vabariigi põhiseadus",
     "PankrS": "Pankrotiseadus",
     "MKS": "Maksukorralduse seadus",
     "TLS": "Töölepingu seadus",
+    # The registry's ``RLS`` is an auto-derived acronym (Riigikogu liikme
+    # staatuse seadus), not an official lyhend; RLS is the Riigilõivuseadus.
     "RLS": "Riigilõivuseadus",
-    "TTKS": "Töötervishoiu ja tööohutuse seadus",
     "TKS": "Tolliseadus",
     "TPTS": "Tööturuteenuste ja -toetuste seadus",
     "IKS": "Isikuandmete kaitse seadus",
     "RahaPTS": "Rahapesu ja terrorismi rahastamise tõkestamise seadus",
-    "KELS": "Kõrgharidusseadus",
-    "PPVS": "Politsei ja piirivalve seadus",  # #588: was wrongly "Planeerimisseadus" (the Planning Act)
-    "AVVKHS": "Avaliku teenistuse seadus",
+    # #696: KELS is the rt_api lyhend of the Koolieelse lasteasutuse seadus.
+    "KHaS": "Kõrgharidusseadus",
+    "PPVS": "Politsei ja piirivalve seadus",  # #588
+    # #696: AVVKHS is the rt_api lyhend of the Riigi poolt ... hüvitamise seadus.
+    "ATS": "Avaliku teenistuse seadus",
     "RHS": "Riigihangete seadus",
     "SHS": "Sotsiaalhoolekande seadus",
-    "ELTS": "Elektrituruseadus",
     "EhS": "Ehitusseadus",
     "KVS": "Korruptsioonivastane seadus",
     "MSVS": "Meresõiduvahendite seadus",
-    "RSVS": "Riigisaladuse seadus",  # #588: was wrongly "Relvaseadus" (the Weapons Act)
-    "PlanS": "Planeerimisseadus",  # #588: the Planning Act's real abbreviation (the genitive used to mislabel it as PPVS)
-    "RelvS": "Relvaseadus",  # #588: the Weapons Act's real abbreviation (the genitive used to mislabel it as RSVS)
+    "RSVS": "Riigisaladuse seadus",  # #588
+    "PlanS": "Planeerimisseadus",  # #588
     "EKS": "Elektroonilise side seadus",
     "KES": "Keskkonnaseadustiku eriosa seadus",
-    "LKS": "Looduskaitseseadus",
     "KeÜS": "Keskkonnaseadustiku üldosa seadus",
     "MaaRS": "Maareformi seadus",
-    "KOS": "Kinnisasja omandamise kitsendamise seadus",
-    "RavS": "Ravimiseadus",
     "AVTS": "Avaliku teabe seadus",
     "KLS": "Kalapüügiseadus",
     "KAVS": "Kaitseväeteenistuse seadus",
     "TTÜKS": "Tööstusomandi kaitse seadus",
-    "KMS": "Käibemaksuseadus",
     "TuMS": "Tulumaksuseadus",
     "SMMS": "Sotsiaalmaksuseadus",
     "KindlTS": "Kindlustustegevuse seadus",
-    # M7 additions — KOV enabling laws that have peep files in the corpus.
-    # Values MUST match the canonical estleg:sourceAct on the act's
-    # provisions. Verified by the validation one-liner in Task 1 Step 7
-    # of the Layer 2b plan.
-    # Note on underscore-suffixed keys: `RHS_HÄDA` and `KELS_LASTEAS`
-    # disambiguate from already-registered abbreviations (RHS for
-    # Riigihangete seadus, KELS for Kõrgharidusseadus). Future
-    # collisions should follow the same `_<HINT>` pattern.
     "PGS": "Põhikooli- ja gümnaasiumiseadus",
-    "KELS_LASTEAS": "Koolieelse lasteasutuse seadus",
-    "HuviKS": "Huvikooli seadus",
     "RuumS": "Ruumiandmete seadus",
     "ÜVVKS": "Ühisveevärgi ja -kanalisatsiooni seadus",
     "KaugKS": "Kaugkütteseadus",
     "ElamuS": "Elamuseadus",
     "RaamatS": "Rahvaraamatukogu seadus",
-    "RHS_HÄDA": "Hädaolukorra seadus",
-    "EhSE": "Ehitusseadustik",
-    "JäätS": "Jäätmeseadus",
-    "TeeS": "Teeseadus",
+    "RHS_HÄDA": "Hädaolukorra seadus",  # legacy synthetic key
+    "EhSE": "Ehitusseadustik",  # legacy synthetic key (court data uses it)
     "RahvaS": "Rahvahääletuse seadus",
     "RKVS": "Riigikogu valimise seadus",
     "RaamatPS": "Raamatupidamise seadus",
     "ÜTS": "Ühistranspordiseadus",
-    # #390 — four enabling laws that were genitive-recognised but
-    # resolver-fallthrough because they had no KNOWN_ABBREVIATIONS entry,
-    # though their peep files exist. Adding them lets the preamble pass
-    # (and Pattern 3 cross-refs) chain genitive -> abbrev -> sourceAct ->
-    # prefix -> act_iri. Values are the canonical estleg:sourceAct strings.
-    "KNS": "Kohanimeseadus",
-    "AluS": "Alusharidusseadus",
-    "KOFS": "Kohaliku omavalitsuse üksuse finantsjuhtimise seadus",
-    "KOVVS": "Kohaliku omavalitsuse volikogu valimise seadus",
-    # #363 — 25 heavily-cited corpus laws that had NO abbreviation, so
-    # their genitive citation forms could not resolve through Pattern 3.
-    # Each value is the canonical estleg:sourceAct verified against the
-    # corpus peep file; the matching genitive is registered in
-    # FULLNAME_GENITIVE below. New abbreviations use a non-colliding
-    # short form (checked against every existing key).
-    "KorrS": "Korrakaitseseadus",
-    "RES": "Riigieelarve seadus",
-    "VeeS": "Veeseadus",
-    "LS": "Liiklusseadus",
-    "VPTS": "Väärtpaberituru seadus",
-    "VKTS": "Välisriigi kutsekvalifikatsiooni tunnustamise seadus",
-    "KeÜSE": "Keskkonnaseadustiku üldosa seadus",
-    "MsÜS": "Majandustegevuse seadustiku üldosa seadus",
-    "KAS": "Krediidiasutuste seadus",
-    "AÕKS": "Atmosfääriõhu kaitse seadus",
-    "TOAS": "Tööstusomandi õiguskorralduse aluste seadus",
-    "KoPS": "Kogumispensionide seadus",
-    "PPVSE": "Politsei ja piirivalve seadus",
-    "ÄRS": "Äriregistri seadus",
-    "KarRS": "Karistusregistri seadus",
-    "RaKS": "Ravikindlustuse seadus",
-    "NotS": "Notariaadiseadus",
-    "TÜS": "Tulundusühistuseadus",
-    "VMS": "Välismaalaste seadus",
-    "JAS": "Julgeolekuasutuste seadus",
-    "ITDS": "Isikut tõendavate dokumentide seadus",
-    "TTKSE": "Tervishoiuteenuste korraldamise seadus",
-    "FIS": "Finantsinspektsiooni seadus",
-    "LasteKS": "Lastekaitseseadus",
-    "MERAS": "Makseasutuste ja e-raha asutuste seadus",
+    "KNS": "Kohanimeseadus",  # #390
+    "AluS": "Alusharidusseadus",  # #390
+    "KOFS": "Kohaliku omavalitsuse üksuse finantsjuhtimise seadus",  # #390
+    "KOVVS": "Kohaliku omavalitsuse volikogu valimise seadus",  # #390
+    "KorrS": "Korrakaitseseadus",  # #363
+    "RES": "Riigieelarve seadus",  # #363
+    "VeeS": "Veeseadus",  # #363
+    "LS": "Liiklusseadus",  # #363
+    "VKTS": "Välisriigi kutsekvalifikatsiooni tunnustamise seadus",  # #363
+    "KeÜSE": "Keskkonnaseadustiku üldosa seadus",  # legacy synthetic key
+    "MsÜS": "Majandustegevuse seadustiku üldosa seadus",  # #363
+    "KAS": "Krediidiasutuste seadus",  # #363
+    "AÕKS": "Atmosfääriõhu kaitse seadus",  # #363
+    "TOAS": "Tööstusomandi õiguskorralduse aluste seadus",  # #363
+    "PPVSE": "Politsei ja piirivalve seadus",  # legacy synthetic key
+    "ÄRS": "Äriregistri seadus",  # #363
+    "KarRS": "Karistusregistri seadus",  # #363
+    "VMS": "Välismaalaste seadus",  # #363
+    "ITDS": "Isikut tõendavate dokumentide seadus",  # #363
+    "LasteKS": "Lastekaitseseadus",  # #363
+    "MERAS": "Makseasutuste ja e-raha asutuste seadus",  # #363
 }
+
+# Registry sources in preference order (the official RT lyhend first).
+_REGISTRY_SOURCE_RANK: dict[str, int] = {"rt_api": 0, "existing": 1, "auto": 2}
+
+_COLLISION_SUFFIX_RE = re.compile(r"_\d+$")
+
+
+def registry_cited_abbrev(registry_abbrev: str) -> str:
+    """Return the in-text citation form of a registry abbrev (``RÕS_2`` -> ``RÕS``)."""
+    return _COLLISION_SUFFIX_RE.sub("", registry_abbrev)
+
+
+def registry_law_title(slug: str, entry: dict) -> str:
+    """Return the canonical law title of one registry entry.
+
+    Strips the trailing provenance parenthetical some entries carry
+    (``"Advokatuuriseadus (Riigi Teataja, kehtiv terviktekst)"``) and
+    applies ``_REGISTRY_TITLE_OVERRIDES`` for broken titles.
+    """
+    if slug in _REGISTRY_TITLE_OVERRIDES:
+        return _REGISTRY_TITLE_OVERRIDES[slug]
+    title = str(entry.get("title") or "")
+    return re.sub(r"\s*\(.*\)\s*$", "", title).strip()
+
+
+def load_law_abbreviation_registry(path: Path | None = None) -> dict[str, dict]:
+    """Load ``data/law_abbreviations.json`` (``{}`` when absent/unreadable)."""
+    try:
+        data = json.loads((path or LAW_ABBREVIATIONS_PATH).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def build_known_abbreviations(
+    registry: dict[str, dict],
+    aliases: dict[str, str] | None = None,
+) -> tuple[dict[str, str], dict[str, tuple[str, ...]], dict[str, tuple[str, ...]]]:
+    """Derive the abbreviation tables from the registry (#696).
+
+    Returns ``(known, abbrev_to_registry_abbrevs, title_to_registry_abbrevs)``:
+
+    * ``known`` — citation abbrev -> canonical law title (rt_api lyhend
+      first, then ``aliases`` that do not collide with an rt_api key);
+    * ``abbrev_to_registry_abbrevs`` — citation abbrev -> the registry
+      abbrev(s) of that law, preference-ordered (rt_api first). Resolvers
+      mint the corpus prefix as ``sanitize_id(registry_abbrev)``;
+    * ``title_to_registry_abbrevs`` — casefolded law title -> registry
+      abbrev(s), preference-ordered (the full-name resolver's index).
+    """
+    aliases = _CITATION_ALIASES if aliases is None else aliases
+    title_to_entries: dict[str, list[tuple[int, int, str]]] = {}
+    known: dict[str, str] = {}
+    abbrev_regs: dict[str, tuple[str, ...]] = {}
+    for slug in sorted(registry):
+        entry = registry[slug]
+        if not isinstance(entry, dict) or not entry.get("abbrev"):
+            continue
+        reg_abbrev = str(entry["abbrev"])
+        title = registry_law_title(slug, entry)
+        rank = _REGISTRY_SOURCE_RANK.get(str(entry.get("source")), 3)
+        suffixed = int(reg_abbrev != registry_cited_abbrev(reg_abbrev))
+        if title:
+            title_to_entries.setdefault(title.casefold(), []).append(
+                (rank, suffixed, reg_abbrev)
+            )
+        if entry.get("source") != "rt_api" or not title:
+            continue
+        cited = registry_cited_abbrev(reg_abbrev)
+        if cited in known and suffixed:
+            continue  # the entry owning the unsuffixed prefix wins
+        known[cited] = title
+        abbrev_regs[cited] = (reg_abbrev,)
+    title_index = {
+        t: tuple(a for _r, _s, a in sorted(entries))
+        for t, entries in title_to_entries.items()
+    }
+    for alias, title in aliases.items():
+        if alias in known:
+            continue  # the official rt_api lyhend wins over an alias
+        known[alias] = title
+        abbrev_regs[alias] = title_index.get(title.casefold(), ())
+    return known, abbrev_regs, title_index
+
+
+(
+    KNOWN_ABBREVIATIONS,
+    KNOWN_ABBREVIATION_REGISTRY_ABBREVS,
+    LAW_TITLE_REGISTRY_ABBREVS,
+) = build_known_abbreviations(load_law_abbreviation_registry())
 
 # ---------------------------------------------------------------------------
 # Genitive / partitive full-name forms -> abbreviation
@@ -177,7 +265,7 @@ FULLNAME_GENITIVE: dict[str, str] = {
     # genitives resolve end-to-end instead of falling through.
     "kohanimeseaduse": "KNS",
     "põhikooli- ja gümnaasiumiseaduse": "PGS",
-    "koolieelse lasteasutuse seaduse": "KELS_LASTEAS",
+    "koolieelse lasteasutuse seaduse": "KELS",  # #696: official lyhend
     "alusharidusseaduse": "AluS",
     "huvikooli seaduse": "HuviKS",
     "ruumiandmete seaduse": "RuumS",
@@ -197,7 +285,7 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "ühistranspordiseaduse": "ÜTS",
     "sotsiaalhoolekande seaduse": "SHS",
     "avaliku teabe seaduse": "AVTS",
-    "avaliku teenistuse seaduse": "AVVKHS",
+    "avaliku teenistuse seaduse": "ATS",  # #696: AVVKHS is another law
     "planeerimisseaduse": "PlanS",
     # #363 — genitive forms for laws whose abbreviation ALREADY existed
     # in KNOWN_ABBREVIATIONS but lacked a genitive entry, so Pattern 3
@@ -236,7 +324,7 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "välismaalaste seaduse": "VMS",
     "julgeolekuasutuste seaduse": "JAS",
     "isikut tõendavate dokumentide seaduse": "ITDS",
-    "tervishoiuteenuste korraldamise seaduse": "TTKSE",
+    "tervishoiuteenuste korraldamise seaduse": "TTKS",  # #696: official lyhend
     "finantsinspektsiooni seaduse": "FIS",
     "lastekaitseseaduse": "LasteKS",
     "makseasutuste ja e-raha asutuste seaduse": "MERAS",
@@ -960,6 +1048,11 @@ def apply_inband_dataset_fields(node: dict, *, label: str | None = None) -> dict
     for key in ("dcterms:publisher", "dcterms:license", "void:uriSpace"):
         if key not in node:
             node[key] = template[key]
+    # #705: the version keys are build-derived, so they are overwritten
+    # unconditionally -- every combined head (sub-corpus aggregates included)
+    # must say which ontology version produced it.
+    node["owl:versionInfo"] = ONTOLOGY_VERSION
+    node["owl:versionIRI"] = {"@id": ONTOLOGY_VERSION_IRI}
     return node
 
 
