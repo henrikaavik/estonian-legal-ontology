@@ -671,7 +671,11 @@ def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
 
 
 def laws_for_subject(subject: str, limit: int = 20) -> list[dict[str, str]]:
-    """Laws whose EuroVoc ``dcterms:subject`` IRI or title contains ``subject`` (#504)."""
+    """Laws whose EuroVoc ``dcterms:subject`` IRI or title contains ``subject`` (#504).
+
+    Each row carries the act's ``rt_url`` (riigiteataja.ee, or "" when the act
+    records no riigiteataja source -- the same contract as ``get_law``, #714).
+    """
     if not subject or not subject.strip() or limit <= 0:
         return []
     needle = _fold(subject.strip())
@@ -686,9 +690,10 @@ def laws_for_subject(subject: str, limit: int = 20) -> list[dict[str, str]]:
         out.append(
             {
                 "name": rec.name,
-                "title": rec.title,
+                "title": act_title(act) or rec.title,
                 "abbrev": display_abbrev(rec),
                 "subjects": " ".join(iris),
+                "rt_url": rt_url(act),
             }
         )
         if len(out) >= limit:
@@ -700,7 +705,11 @@ def define_term(term: str, limit: int = 10) -> list[dict[str, str]]:
     """Lookup ``estleg:LegalConcept`` / Concept nodes by prefLabel (#501/#540).
 
     Reads ``krr_outputs/concepts/concepts_combined.jsonld`` via the overlay
-    loader -- not the law peeps.
+    loader -- not the law peeps. Each row carries the citation of the act that
+    defines the term (#714): ``defined_in`` (the first ``estleg:definedIn``
+    provision IRI, or ""), ``source_act`` (its title as recorded on the
+    concept) and ``rt_url`` (that act's riigiteataja.ee URL, or "" when the
+    defining act is unknown or records no riigiteataja source).
     """
     if not term or not term.strip() or limit <= 0:
         return []
@@ -714,11 +723,15 @@ def define_term(term: str, limit: int = 10) -> list[dict[str, str]]:
         label = _text(node.get("skos:prefLabel")) or _text(node.get("rdfs:label"))
         if needle not in _fold(label):
             continue
+        defined_in = next(iter(_ids_of(node.get("estleg:definedIn"))), "")
         out.append(
             {
                 "id": _id_of(node) or "",
                 "label": label,
                 "definition": _text(node.get("skos:definition") or node.get("estleg:definition")),
+                "defined_in": defined_in,
+                "source_act": _text(node.get("estleg:sourceAct")),
+                "rt_url": citation_url_for_iri(defined_in),
             }
         )
         if len(out) >= limit:
@@ -1003,6 +1016,80 @@ def rt_url_for_slug(slug: str) -> str:
     return rt_url(act_node(load_law_graph(rec)))
 
 
+def _guarded_rt(url: str) -> str:
+    """``url`` when it is a riigiteataja.ee URL (``.xml`` stripped), else "".
+
+    The same host guard :func:`rt_url` applies (#680), for the places that read
+    a plain-string RT URL (``estleg:rtUrl`` on provision versions) rather than
+    an act node.
+    """
+    url = (url or "").strip()
+    if not url or not _is_rt_host(url):
+        return ""
+    return url[: -len(".xml")] if url.endswith(".xml") else url
+
+
+# Structural tail of a provision / chapter IRI body: the first structural
+# segment (``_Osa<n>``, ``_Par``, ``_Lg``, ``_Map``, ...) and everything after
+# it. Stripping it leaves the law's IRI prefix (``KARIST_2_Osa1_Par_13`` ->
+# ``KARIST_2``; ``KOKS_Par_6_Lg_3`` -> ``KOKS``).
+_STRUCTURAL_TAIL = re.compile(
+    r"_(?:Osa\d+|Par|Lg|Chapter|Division|Peatukk|Jagu|Map|ProcedureMap)(?:_.*)?$"
+)
+_REG_IRI = re.compile(r"^estleg:Reg_(\d+)(?:_|$)")
+
+
+@lru_cache(maxsize=4096)
+def law_slug_for_iri(iri: str) -> str | None:
+    """Map any law / provision IRI to its law slug, or ``None`` (#714).
+
+    Tries the registry-abbreviation longest-prefix match first
+    (:func:`_law_slug_from_iri`), then strips the structural tail
+    (``_Osa1_Par_13``, ``_Par_6_Lg_3``, ``_Map_2026``) and resolves the bare
+    prefix through :func:`_law_slug_from_issued_under` (act-node prefix index,
+    then the human-abbreviation resolver). That second step is what resolves
+    prefixes absent from the registry, such as ``KOKS`` in the KOV citation
+    targets. Regulation IRIs (``estleg:Reg_…``) are not laws and yield ``None``.
+    """
+    if not iri or _REG_IRI.match(iri):
+        return None
+    slug = _law_slug_from_iri(iri)
+    if slug:
+        return slug
+    body = iri[len("estleg:"):] if iri.startswith("estleg:") else iri
+    prefix = _STRUCTURAL_TAIL.sub("", body) or body
+    return _law_slug_from_issued_under(f"estleg:{prefix}")
+
+
+@lru_cache(maxsize=1)
+def _regulation_rt_by_reg_id() -> dict[str, str]:
+    """``terviktekstId`` -> the regulation's riigiteataja.ee URL.
+
+    A regulation's IRIs embed its ``terviktekstId`` (``estleg:Reg_1003627_Par_2``)
+    but its RT URL uses the publication id, so the URL has to be looked up,
+    never built from the IRI. Built once from :func:`_regulation_records`.
+    """
+    return {r.reg_id: r.rt_url for r in _regulation_records() if r.reg_id and r.rt_url}
+
+
+def citation_url_for_iri(iri: str) -> str:
+    """The riigiteataja.ee citation for a law / regulation / provision IRI (#714).
+
+    A regulation IRI (``estleg:Reg_<terviktekstId>…``) yields that
+    regulation's RT URL; any other IRI is mapped to its law via
+    :func:`law_slug_for_iri` and yields the act's RT URL. Returns "" when the
+    IRI is empty, unresolvable, or its act records no riigiteataja source --
+    the same "empty string, never another host" contract as :func:`rt_url`.
+    """
+    if not iri:
+        return ""
+    m = _REG_IRI.match(iri)
+    if m:
+        return _regulation_rt_by_reg_id().get(m.group(1), "")
+    slug = law_slug_for_iri(iri)
+    return rt_url_for_slug(slug) if slug else ""
+
+
 def eurlex_url(celex: str) -> str:
     """Build the EUR-Lex URL for a CELEX number."""
     celex = (celex or "").strip()
@@ -1281,23 +1368,44 @@ def _amendment_graph_for(record: LawRecord) -> Graph:
     return _graph_of(base / f"amendments_{base_slug}.json")
 
 
-def amendment_events(record: LawRecord, limit: int = 50) -> list[dict[str, str]]:
-    """Effected ``AmendmentEvent`` rows from the law's amendments sidecar (#502)."""
+def _amendment_event_row(node: Node, act_rt_url: str) -> dict[str, Any]:
+    """One citation-bearing amendment-event row (shared by two tools, #714).
+
+    ``rt_reference`` is the Riigi Teataja reference of the amending act as the
+    event records it -- a publication reference ("RT I, 2002, 86, 504") or an
+    RT URL -- else "". ``rt_url`` is the amending act's riigiteataja.ee URL
+    when ``rt_reference`` is one, otherwise the amended act's URL, otherwise
+    "" (the host-guarded contract of every other tool). ``changed_provisions``
+    counts the provision redactions the event produced
+    (``estleg:resultedInVersion``, present on the version-layer ``_vf_``
+    events; 0 on the others).
+    """
+    reference = _text(node.get("estleg:rtReference")) or _text(node.get("estleg:amendingAct"))
+    return {
+        "event_id": node.get("@id", "") if isinstance(node.get("@id"), str) else "",
+        "label": _text(node.get("rdfs:label")),
+        "amendment_date": _date_text(node.get("estleg:amendmentDate")),
+        "entry_into_force": _date_text(node.get("estleg:entryIntoForce")),
+        "amends": _id_of(node.get("estleg:amends")),
+        "rt_reference": reference,
+        "rt_url": _guarded_rt(reference) or act_rt_url,
+        "changed_provisions": len(_ids_of(node.get("estleg:resultedInVersion"))),
+    }
+
+
+def amendment_events(record: LawRecord, limit: int = 50) -> list[dict[str, Any]]:
+    """Effected ``AmendmentEvent`` rows from the law's amendments sidecar (#502).
+
+    Every row carries a citation (#714): see :func:`_amendment_event_row`.
+    """
     if limit <= 0:
         return []
-    rows: list[dict[str, str]] = []
+    act_url = rt_url_for_slug(record.name)
+    rows: list[dict[str, Any]] = []
     for node in _amendment_graph_for(record):
         if "estleg:AmendmentEvent" not in _types_of(node):
             continue
-        rows.append(
-            {
-                "event_id": _id_of(node) or "",
-                "label": _text(node.get("rdfs:label")),
-                "amendment_date": _text(node.get("estleg:amendmentDate")),
-                "entry_into_force": _text(node.get("estleg:entryIntoForce")),
-                "amends": _id_of(node.get("estleg:amends")),
-            }
-        )
+        rows.append(_amendment_event_row(node, act_url))
         if len(rows) >= limit:
             break
     return rows
@@ -1425,7 +1533,9 @@ def _provision_version_index(base_slug: str) -> dict[str, list[dict[str, Any]]]:
     Loads ``provision_versions/<base_slug>.jsonld`` once per law and caches it
     (the data layer reads sidecars per law rather than loading the whole
     corpus, so the 124k version nodes are never all held at once). Each timeline
-    entry is a compact dict ``{id, redaction_id, valid_from, valid_to, text}``
+    entry is a compact dict ``{id, redaction_id, valid_from, valid_to, text,
+    rt_url}`` (``rt_url`` is the redaction's own riigiteataja.ee URL from
+    ``estleg:rtUrl``, host-guarded, or "")
     sorted by ``valid_from`` ascending; ``valid_to`` is "" for the still-in-force
     redaction. Returns ``{}`` when the law has no versions sidecar.
     """
@@ -1444,6 +1554,7 @@ def _provision_version_index(base_slug: str) -> dict[str, list[dict[str, Any]]]:
                 "valid_from": _date_text(node.get("estleg:versionValidFrom")),
                 "valid_to": _date_text(node.get("estleg:versionValidTo")),
                 "text": _text(node.get("estleg:versionText")),
+                "rt_url": _guarded_rt(_text(node.get("estleg:rtUrl"))),
             }
         )
     for versions in out.values():
@@ -1577,6 +1688,7 @@ class RegulationRecord:
         "issued_under",
         "citations",
         "num_provisions",
+        "citation_links",
     )
 
     def __init__(
@@ -1595,6 +1707,7 @@ class RegulationRecord:
         issued_under: list[str],
         citations: list[str],
         num_provisions: int,
+        citation_links: list[dict[str, str]] | None = None,
     ) -> None:
         self.reg_id = reg_id
         self.global_id = global_id
@@ -1609,6 +1722,10 @@ class RegulationRecord:
         self.issued_under = issued_under
         self.citations = citations
         self.num_provisions = num_provisions
+        # ``implementsCitation`` nodes with their machine target (#714):
+        # [{text, target, detail}], ``target`` being the cited law-provision
+        # IRI (``estleg:KOKS_Par_6_Lg_3``) or "" when only text was extracted.
+        self.citation_links = list(citation_links or [])
 
     def __repr__(self) -> str:  # pragma: no cover - debug aid
         return f"RegulationRecord(reg_id={self.reg_id!r}, title={self.title!r})"
@@ -1652,6 +1769,7 @@ def _regulation_record_from_graph(
     """
     map_node: Node | None = None
     citation_text: dict[str, str] = {}
+    citation_nodes: dict[str, Node] = {}
     num_provisions = 0
     for node in graph:
         types = _types_of(node)
@@ -1661,6 +1779,7 @@ def _regulation_record_from_graph(
             cid = node.get("@id")
             if isinstance(cid, str):
                 citation_text[cid] = _text(node.get("estleg:citationText"))
+                citation_nodes[cid] = node
         if _types_are_regulation_provision(types):
             num_provisions += 1
     if map_node is None:
@@ -1669,6 +1788,15 @@ def _regulation_record_from_graph(
         t
         for c in _ids_of(map_node.get("estleg:implementsCitation"))
         if (t := citation_text.get(c, ""))
+    ]
+    citation_links = [
+        {
+            "text": _text(cnode.get("estleg:citationText")),
+            "target": _id_of(cnode.get("estleg:citationTarget")),
+            "detail": _text(cnode.get("estleg:citationDetail")),
+        }
+        for c in _ids_of(map_node.get("estleg:implementsCitation"))
+        if (cnode := citation_nodes.get(c)) is not None
     ]
     title = _text(map_node.get("dc:source")) or _text(map_node.get("rdfs:label"))
     return RegulationRecord(
@@ -1685,6 +1813,7 @@ def _regulation_record_from_graph(
         issued_under=_ids_of(map_node.get("estleg:issuedUnder")),
         citations=citations,
         num_provisions=num_provisions,
+        citation_links=citation_links,
     )
 
 
@@ -1898,7 +2027,10 @@ def harmonisation_for_directive(celex: str, limit: int = 20) -> list[dict[str, s
 
     Opens ``harmonisation/harmonisation_by_directive/harm_<celex>.json`` via
     :func:`overlay_graph`. Returns ``[]`` when the CELEX is empty, ``limit``
-    is not positive, or no harm file exists.
+    is not positive, or no harm file exists. Every row carries a citation
+    (#714): ``eurlex_url`` for the shared directive, and ``rt_url`` -- the
+    riigiteataja.ee URL of the Estonian act the row harmonises, or "" for a
+    foreign member-state measure (or an Estonian act with no RT source).
     """
     if limit <= 0:
         return []
@@ -1916,6 +2048,15 @@ def harmonisation_for_directive(celex: str, limit: int = 20) -> list[dict[str, s
                 "member_state": _text(node.get("estleg:memberStateCode")),
                 "national_celex": _text(node.get("estleg:nationalCelex")),
                 "harmonises": " ".join(_ids_of(node.get("estleg:harmonises"))),
+                "eurlex_url": eurlex_url(needle),
+                "rt_url": next(
+                    (
+                        u
+                        for iri in _ids_of(node.get("estleg:harmonises"))
+                        if (u := citation_url_for_iri(iri))
+                    ),
+                    "",
+                ),
             }
         )
         if len(rows) >= limit:
@@ -1978,7 +2119,7 @@ def layers_available() -> list[dict[str, str]]:
             "amendments/amendments_*.json",
             "amendments",
             "wired",
-            "amendment_history, drafts_affecting_law",
+            "amendment_history, drafts_affecting_law, what_changed",
             "",
         ),
         (
@@ -1986,7 +2127,8 @@ def layers_available() -> list[dict[str, str]]:
             "regulations/riik + regulations/kov",
             "regulations",
             "wired",
-            "regulations_for_law, get_regulation, regulations_by_issuer",
+            "regulations_for_law, get_regulation, regulations_by_issuer, "
+            "kov_regulations_citing",
             "",
         ),
         (
@@ -1994,7 +2136,8 @@ def layers_available() -> list[dict[str, str]]:
             "provision_versions/*.jsonld",
             "provision_versions",
             "wired",
-            "get_provision(as_of), provision_history, get_law(as_of)",
+            "get_provision(as_of), provision_history, get_law(as_of), "
+            "what_changed, explain_provision",
             "",
         ),
         (
@@ -2034,16 +2177,24 @@ def layers_available() -> list[dict[str, str]]:
             "reports/transposition_mapping.json",
             "reports/transposition_mapping.json",
             "wired",
-            "transposition",
+            "transposition, transposition_gaps",
             "",
         ),
         (
+            "eurlex_directives",
+            "eurlex/eurlex_directives_peep.json",
+            "eurlex/eurlex_directives_peep.json",
+            "wired",
+            "transposition_gaps",
+            "inForce + transposedBy per directive (#701 gap semantics)",
+        ),
+        (
             "eurlex",
-            "eurlex/*_peep.json",
+            "eurlex/eurlex_{decisions,regulations}_peep.json, eurlex_combined.jsonld",
             "eurlex",
             "excluded",
             "",
-            "Reached via transposition + CELEX URLs, not the eurlex peeps",
+            "Reached via transposition + CELEX URLs; eurlex_combined is Git LFS",
         ),
         (
             "annotations",
@@ -2212,6 +2363,490 @@ def eu_case_law_for_directive(celex: str, limit: int = 20) -> list[dict[str, str
     return rows
 
 
+# ---------------------------------------------------------------------------
+# Provision references from free text / IRIs (#714: the four new tools)
+# ---------------------------------------------------------------------------
+_PAR_IN_IRI = re.compile(r"_Par_(\d+(?:_\d+)?)(?=_|$)")
+
+
+def paragraph_key_from_iri(iri: str) -> str:
+    """The normalised § key encoded in a provision IRI ("" when none).
+
+    ``estleg:KARIST_2_Osa1_Par_13`` -> ``"13"``; ``…_Par_22_1_Lg_3`` ->
+    ``"22_1"`` (§ 22¹), the same key :func:`_normalise_paragraph` produces for
+    a typed "§ 22¹", so an IRI and a user-typed reference compare equal.
+    """
+    m = _PAR_IN_IRI.search(iri or "")
+    return m.group(1) if m else ""
+
+
+def provision_by_iri(iri: str) -> tuple[LawRecord, Node] | None:
+    """Resolve a provision IRI to ``(law record, § node)`` or ``None``."""
+    iri = (iri or "").strip()
+    if not iri.startswith("estleg:"):
+        return None
+    slug = law_slug_for_iri(iri)
+    rec = _records_by_slug().get(slug) if slug else None
+    if rec is None:
+        return None
+    for node in provision_nodes(load_law_graph(rec)):
+        if node.get("@id") == iri:
+            return rec, node
+    return None
+
+
+def split_law_and_paragraph(text: str) -> tuple[str, str]:
+    """Split "KarS § 13" / "KarS §13 lg 2" into ``("KarS", "§ 13")``.
+
+    Text with no ``§`` is returned whole as the law part with an empty
+    paragraph. A subsection suffix ("lg 2", "lõige 2") is dropped: the tools
+    operate at section (§) granularity.
+    """
+    raw = (text or "").strip()
+    if "§" not in raw:
+        return raw, ""
+    law, _, rest = raw.partition("§")
+    par = re.split(r"\s+(?:lg|lõige|lõike|lõiget|p|punkt)\b", rest.strip(), maxsplit=1)[0]
+    return law.strip().rstrip(","), f"§ {par.strip()}" if par.strip() else ""
+
+
+def resolve_law_and_paragraph(
+    text: str, paragraph: str | None = None
+) -> tuple[LawRecord | None, str]:
+    """Resolve a law, a "law § n" reference, or a provision IRI to ``(law, §)``.
+
+    The § part is a reference string ("§ 13", or the IRI's § key such as
+    "22_1") or "" when none was given; an explicit ``paragraph`` argument wins
+    over one embedded in ``text``. The § is *not* checked against the current
+    law graph here, so a caller can still reason about a repealed section.
+    """
+    raw = (text or "").strip()
+    if raw.startswith("estleg:"):
+        slug = law_slug_for_iri(raw)
+        rec = _records_by_slug().get(slug) if slug else None
+        return rec, (paragraph or paragraph_key_from_iri(raw)) if rec else ""
+    law_part, par_part = split_law_and_paragraph(raw)
+    rec = resolve_law(law_part) if law_part else None
+    if rec is None:
+        rec, par_part = resolve_law(raw), ""
+    if rec is None:
+        return None, ""
+    return rec, paragraph or par_part
+
+
+def resolve_act_or_provision(
+    text: str, paragraph: str | None = None
+) -> tuple[LawRecord | None, Node | None, str]:
+    """Resolve a law, a "law § n" reference, or a provision IRI to a § node.
+
+    Returns ``(record, provision_node_or_None, problem)`` where ``problem`` is
+    "" on success, ``"law"`` when no law matched, and ``"paragraph"`` when the
+    law matched but the requested § is not in its current graph. A bare law
+    (no §) succeeds with a ``None`` node.
+    """
+    raw = (text or "").strip()
+    if raw.startswith("estleg:") and not paragraph:
+        hit = provision_by_iri(raw)
+        if hit is not None:
+            return hit[0], hit[1], ""
+    rec, par = resolve_law_and_paragraph(raw, paragraph)
+    if rec is None:
+        return None, None, "law"
+    if not par:
+        return rec, None, ""
+    node = find_provision(load_law_graph(rec), par)
+    return rec, node, "" if node is not None else "paragraph"
+
+
+def provision_display(node: Node | None, iri: str = "") -> str:
+    """"§ 13" style display for a § node, falling back to the IRI's § key."""
+    if node is not None:
+        par = clean_display(_text(node.get("estleg:paragrahv"))).strip().rstrip(".")
+        if par:
+            return par
+    key = paragraph_key_from_iri(iri)
+    if not key:
+        return ""
+    base, _, sup = key.partition("_")
+    return f"§ {base}" + "".join(_SUP_DISPLAY.get(c, c) for c in sup)
+
+
+# ---------------------------------------------------------------------------
+# what_changed: provision-level change log over a date window (#714)
+# ---------------------------------------------------------------------------
+def _next_day(iso: str) -> str:
+    try:
+        return date.fromordinal(date.fromisoformat(iso).toordinal() + 1).isoformat()
+    except ValueError:
+        return ""
+
+
+def _version_event_index(record: LawRecord) -> dict[str, str]:
+    """Version-node IRI -> the ``_vf_`` amendment event that produced it."""
+    out: dict[str, str] = {}
+    for node in _amendment_graph_for(record):
+        if "estleg:AmendmentEvent" not in _types_of(node):
+            continue
+        eid = node.get("@id")
+        if not isinstance(eid, str):
+            continue
+        for version_iri in _ids_of(node.get("estleg:resultedInVersion")):
+            out.setdefault(version_iri, eid)
+    return out
+
+
+def provision_changes(
+    record: LawRecord,
+    since: str,
+    until: str,
+    provision_iri: str | None = None,
+) -> list[dict[str, Any]]:
+    """Provision redaction changes of a law effective within ``[since, until]``.
+
+    Derived from the ``provision_versions/`` timelines (and, for the event
+    link, the amendments sidecar's ``resultedInVersion``). Each row is one
+    change effective on ``date``:
+
+    * ``amended`` -- a new redaction replaced an earlier one;
+    * ``added`` -- the provision's first redaction, starting after the law's
+      recorded history begins (a section inserted later);
+    * ``first_recorded`` -- the first redaction at the start of the recorded
+      history (the baseline, not a legislative change);
+    * ``ceased`` -- the last redaction's ``valid_to`` passed with no
+      successor (repealed or renumbered); ``date`` is the first day it was no
+      longer in force.
+
+    Both bounds are inclusive ISO dates. Rows are ordered by date then
+    provision IRI and carry ``{date, change, provision_id, redaction_id,
+    previous_redaction_id, valid_from, valid_to, amendment_event, rt_url}``;
+    ``rt_url`` is the redaction's own riigiteataja.ee URL when recorded, else
+    "". Returns ``[]`` for a law with no version history.
+    """
+    index = law_version_index(record)
+    if not index:
+        return []
+    earliest, _ = version_coverage_span(index)
+    events = _version_event_index(record)
+    if provision_iri:
+        timelines = [(provision_iri, index.get(provision_iri, []))]
+    else:
+        timelines = sorted(index.items())
+    rows: list[dict[str, Any]] = []
+    for piri, versions in timelines:
+        for i, version in enumerate(versions):
+            valid_from = version.get("valid_from") or ""
+            prev = versions[i - 1] if i > 0 else None
+            if valid_from and since <= valid_from <= until:
+                if prev is not None:
+                    change = "amended"
+                elif valid_from > earliest:
+                    change = "added"
+                else:
+                    change = "first_recorded"
+                rows.append(
+                    {
+                        "date": valid_from,
+                        "change": change,
+                        "provision_id": piri,
+                        "redaction_id": version.get("redaction_id", ""),
+                        "previous_redaction_id": prev.get("redaction_id", "") if prev else "",
+                        "valid_from": valid_from,
+                        "valid_to": version.get("valid_to") or None,
+                        "amendment_event": events.get(version.get("id", ""), ""),
+                        "rt_url": version.get("rt_url", ""),
+                    }
+                )
+            valid_to = version.get("valid_to") or ""
+            if valid_to and i == len(versions) - 1:
+                ceased_on = _next_day(valid_to)
+                if ceased_on and since <= ceased_on <= until:
+                    rows.append(
+                        {
+                            "date": ceased_on,
+                            "change": "ceased",
+                            "provision_id": piri,
+                            "redaction_id": "",
+                            "previous_redaction_id": version.get("redaction_id", ""),
+                            "valid_from": valid_from,
+                            "valid_to": valid_to,
+                            "amendment_event": "",
+                            "rt_url": version.get("rt_url", ""),
+                        }
+                    )
+    rows.sort(key=lambda r: (r["date"], r["provision_id"], r["change"]))
+    return rows
+
+
+def amendment_events_between(
+    record: LawRecord, since: str, until: str
+) -> list[dict[str, Any]]:
+    """Amendment events whose entry into force (or date) lies in the window.
+
+    Rows are :func:`_amendment_event_row` dicts ordered by date; an event
+    with neither ``entryIntoForce`` nor ``amendmentDate`` cannot be placed in
+    a window and is skipped.
+    """
+    act_url = rt_url_for_slug(record.name)
+    rows: list[dict[str, Any]] = []
+    for node in _amendment_graph_for(record):
+        if "estleg:AmendmentEvent" not in _types_of(node):
+            continue
+        row = _amendment_event_row(node, act_url)
+        when = row["entry_into_force"] or row["amendment_date"]
+        if when and since <= when <= until:
+            rows.append(row)
+    rows.sort(key=lambda r: (r["entry_into_force"] or r["amendment_date"], r["event_id"]))
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# transposition_gaps: in-force directives without a transposition edge (#714)
+# ---------------------------------------------------------------------------
+_EURLEX_DIRECTIVES_REL = ("eurlex", "eurlex_directives_peep.json")
+
+
+def _json_bool(value: Any) -> bool | None:
+    """xsd:boolean JSON-LD value -> bool, or ``None`` when absent / unparseable."""
+    if isinstance(value, bool):
+        return value
+    raw = value.get("@value") if isinstance(value, dict) else value
+    if isinstance(raw, str):
+        if raw.strip().lower() == "true":
+            return True
+        if raw.strip().lower() == "false":
+            return False
+    return None
+
+
+@lru_cache(maxsize=1)
+def _eu_directives() -> dict[str, dict[str, Any]]:
+    """CELEX -> compact directive record from the EUR-Lex directives peep.
+
+    Reads only ``eurlex/eurlex_directives_peep.json`` (a regular git blob, not
+    the LFS ``eurlex_combined.jsonld`` or the LFS analytical overlay). Each
+    record is ``{iri, celex, title, in_force, deadline, eurlex_url,
+    transposed_by}`` with ``in_force`` True / False / None (unknown).
+    """
+    out: dict[str, dict[str, Any]] = {}
+    for node in _graph_of(krr_dir().joinpath(*_EURLEX_DIRECTIVES_REL)):
+        iri = node.get("@id")
+        celex = _text(node.get("estleg:celexNumber"))
+        if not isinstance(iri, str) or not celex:
+            continue
+        link = _text(node.get("estleg:eurLexLink")) or eurlex_url(celex)
+        out[celex] = {
+            "iri": iri,
+            "celex": celex,
+            "title": _text(node.get("rdfs:label")) or _text(node.get("dcterms:title")),
+            "in_force": _json_bool(node.get("estleg:inForce")),
+            "deadline": _date_text(node.get("estleg:transpositionDeadline")),
+            "eurlex_url": link,
+            "transposed_by": _ids_of(node.get("estleg:transposedBy")),
+        }
+    return out
+
+
+@lru_cache(maxsize=1)
+def _transposing_laws_by_celex() -> dict[str, list[str]]:
+    """CELEX -> law slugs that transpose it, from every corpus edge we can read.
+
+    Unions the directive's own ``estleg:transposedBy`` (resolved to law
+    slugs) with ``reports/transposition_mapping.json`` rows. This is the
+    same edge set the analytical overlay's ``noTranspositionEdgeInCorpus``
+    flag (#701) is computed from, read without the LFS overlay itself.
+    """
+    out: dict[str, list[str]] = {}
+
+    def add(celex: str, slug: str | None) -> None:
+        if celex and slug and slug not in out.setdefault(celex, []):
+            out[celex].append(slug)
+
+    for celex, rec in _eu_directives().items():
+        out.setdefault(celex, [])
+        for iri in rec["transposed_by"]:
+            add(celex, law_slug_for_iri(iri))
+    for row in _transposition_mappings():
+        celex = _text(row.get("directive_celex"))
+        slug = _text(row.get("matched_law_name"))
+        add(celex, slug if slug in _records_by_slug() else law_slug_for_iri(slug))
+    return out
+
+
+def transposition_status(celex: str) -> dict[str, Any] | None:
+    """Corpus transposition status of one directive CELEX, or ``None``.
+
+    ``None`` when the CELEX is not in the EUR-Lex directives peep. Otherwise
+    ``{celex, title, in_force, transposition_deadline, eurlex_url,
+    transposing_laws: [{name, title, rt_url}], coverage_flag}`` where
+    ``coverage_flag`` is ``"noTranspositionEdgeInCorpus"`` exactly when the
+    directive is in force and the corpus holds no transposition edge for it
+    (the #701 semantics: a corpus-coverage fact, not a legal finding), else "".
+    """
+    rec = _eu_directives().get(normalize_celex(celex))
+    if rec is None:
+        return None
+    slugs = _transposing_laws_by_celex().get(rec["celex"], [])
+    records = _records_by_slug()
+    laws = [
+        {
+            "name": slug,
+            "title": records[slug].title if slug in records else _title_from_slug(slug),
+            "rt_url": rt_url_for_slug(slug),
+        }
+        for slug in slugs
+    ]
+    gap = rec["in_force"] is True and not laws
+    return {
+        "celex": rec["celex"],
+        "title": rec["title"],
+        "in_force": rec["in_force"],
+        "transposition_deadline": rec["deadline"],
+        "eurlex_url": rec["eurlex_url"],
+        "transposing_laws": laws,
+        "coverage_flag": "noTranspositionEdgeInCorpus" if gap else "",
+    }
+
+
+def in_force_directive_count() -> int:
+    """How many directives the EUR-Lex peep marks ``estleg:inForce`` true."""
+    return sum(1 for rec in _eu_directives().values() if rec["in_force"] is True)
+
+
+def transposition_gaps() -> list[dict[str, Any]]:
+    """In-force directives with no transposition edge in the corpus (#701).
+
+    Rows are ``{celex, title, transposition_deadline, eurlex_url,
+    coverage_flag}`` ordered by deadline (oldest first; undated last), then
+    CELEX. Only ``in_force is True`` directives qualify, matching the
+    analytical overlay's rule; a directive whose force is unknown is not
+    reported as a gap.
+    """
+    edges = _transposing_laws_by_celex()
+    rows = [
+        {
+            "celex": rec["celex"],
+            "title": rec["title"],
+            "transposition_deadline": rec["deadline"],
+            "eurlex_url": rec["eurlex_url"],
+            "coverage_flag": "noTranspositionEdgeInCorpus",
+        }
+        for rec in _eu_directives().values()
+        if rec["in_force"] is True and not edges.get(rec["celex"])
+    ]
+    rows.sort(key=lambda r: (r["transposition_deadline"] or "9999", r["celex"]))
+    return rows
+
+
+# ---------------------------------------------------------------------------
+# kov_regulations_citing: municipal regulations citing a law / § (#714)
+# ---------------------------------------------------------------------------
+@lru_cache(maxsize=1)
+def _kov_citation_index() -> dict[str, list[tuple[RegulationRecord, tuple[dict[str, str], ...]]]]:
+    """Law slug -> [(KOV regulation, matched citation links)].
+
+    A municipal regulation is indexed under a law when one of its
+    ``implementsCitation`` targets resolves to that law (the link is kept so
+    a § filter can apply), or -- with no matching citation -- when its
+    ``issuedUnder`` points at the law (an empty link tuple then).
+    """
+    out: dict[str, list[tuple[RegulationRecord, tuple[dict[str, str], ...]]]] = {}
+    for reg in _regulation_records():
+        if not reg.is_kov:
+            continue
+        by_slug: dict[str, list[dict[str, str]]] = {}
+        for link in reg.citation_links:
+            slug = law_slug_for_iri(link.get("target", ""))
+            if slug:
+                by_slug.setdefault(slug, []).append(link)
+        for iri in reg.issued_under:
+            slug = _law_slug_from_issued_under(iri)
+            if slug:
+                by_slug.setdefault(slug, [])
+        for slug, links in by_slug.items():
+            out.setdefault(slug, []).append((reg, tuple(links)))
+    return out
+
+
+def kov_regulations_citing(
+    law_slug: str, paragraph: str | None = None
+) -> list[tuple[RegulationRecord, list[dict[str, str]]]]:
+    """KOV regulations citing a law, optionally only those citing one §.
+
+    Without ``paragraph`` every municipal regulation that cites the law or is
+    issued under it is returned with all its citation links to that law. With
+    ``paragraph`` only regulations whose citation target names that § are
+    kept, each with just the matching links (an ``issuedUnder``-only
+    regulation cannot be placed at § level and is dropped).
+    """
+    entries = _kov_citation_index().get(law_slug, [])
+    key = _normalise_paragraph(paragraph) if paragraph else ""
+    out: list[tuple[RegulationRecord, list[dict[str, str]]]] = []
+    for reg, links in entries:
+        if not key:
+            out.append((reg, list(links)))
+            continue
+        matched = [ln for ln in links if paragraph_key_from_iri(ln.get("target", "")) == key]
+        if matched:
+            out.append((reg, matched))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# explain_provision helpers (#714)
+# ---------------------------------------------------------------------------
+def sanctions_for_provision(record: LawRecord, provision_iri: str) -> list[dict[str, str]]:
+    """Sanction rows whose ``applicableProvision`` is ``provision_iri``."""
+    rows: list[dict[str, str]] = []
+    for node in _sanction_graph_for(record):
+        if "estleg:Sanction" not in _types_of(node):
+            continue
+        if _id_of(node.get("estleg:applicableProvision")) != provision_iri:
+            continue
+        min_p = _text(node.get("estleg:minPenalty"))
+        max_p = _text(node.get("estleg:maxPenalty"))
+        rows.append(
+            {
+                "sanction_type": _text(node.get("estleg:sanctionType")),
+                "penalty": f"{min_p} to {max_p}" if min_p and max_p else (max_p or min_p),
+            }
+        )
+    return rows
+
+
+def provision_reference_rows(
+    record: LawRecord, node: Node, predicate: str
+) -> list[dict[str, str]]:
+    """Resolved ``estleg:references`` / ``estleg:referencedBy`` rows of one §.
+
+    Rows are ``{id, label, law, rt_url}``: ``label`` is the § display when the
+    target is in the same law (or "" otherwise), ``law`` the target law's title
+    when resolvable, ``rt_url`` its riigiteataja.ee URL or "".
+    """
+    graph_labels = {
+        n.get("@id"): provision_label(n)
+        for n in provision_nodes(load_law_graph(record))
+        if isinstance(n.get("@id"), str)
+    }
+    records = _records_by_slug()
+    rows: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for ref in _ids_of(node.get(predicate)):
+        if ref in seen:
+            continue
+        seen.add(ref)
+        slug = law_slug_for_iri(ref)
+        target = records.get(slug) if slug else None
+        rows.append(
+            {
+                "id": ref,
+                "label": graph_labels.get(ref, "") or provision_display(None, ref),
+                "law": target.title if target else "",
+                "rt_url": rt_url_for_slug(slug) if slug else "",
+            }
+        )
+    return rows
+
+
 __all__ = [
     "Graph",
     "LawRecord",
@@ -2222,8 +2857,10 @@ __all__ = [
     "act_node",
     "act_title",
     "amendment_events",
+    "amendment_events_between",
     "amendment_link_drafts",
     "chapter_nodes",
+    "citation_url_for_iri",
     "clean_display",
     "corpus_root",
     "count_provisions_in_force",
@@ -2236,7 +2873,9 @@ __all__ = [
     "find_provision",
     "harmonisation_for_directive",
     "institution_label",
+    "kov_regulations_citing",
     "krr_dir",
+    "law_slug_for_iri",
     "law_version_index",
     "laws_for_subject",
     "layers_available",
@@ -2246,17 +2885,29 @@ __all__ = [
     "ontology_version",
     "overlay_graph",
     "overlay_path",
+    "paragraph_key_from_iri",
+    "provision_by_iri",
+    "provision_changes",
+    "provision_display",
     "provision_label",
     "provision_nodes",
+    "provision_reference_rows",
     "provision_version_timeline",
     "regulations_by_issuer",
     "regulations_for_law",
+    "in_force_directive_count",
+    "resolve_act_or_provision",
+    "resolve_law_and_paragraph",
     "resolve_law",
     "resolve_regulation",
     "rt_url",
     "rt_url_for_slug",
+    "sanctions_for_provision",
     "search_law_records",
+    "split_law_and_paragraph",
+    "transposition_gaps",
     "transposition_matches",
+    "transposition_status",
     "version_coverage_span",
     "version_in_force_on",
 ]
