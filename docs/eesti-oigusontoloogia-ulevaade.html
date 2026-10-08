@@ -484,25 +484,37 @@
     <p class="lead">
       See dokument selgitab, mis on selles repos olev Eesti õigusontoloogia, millistest avalikest andmeallikatest see koosneb,
       kuidas andmeid uuendada, kuidas ontoloogia sisemine struktuur töötab ning milliseid praktilisi kasutusjuhte see avab
-      ministeeriumidele.
+      ministeeriumidele. Lühike õiguslik andmekirjeldus (katvus, allikad, värskus, isikuandmed, õigused, viitamine ja kontakt)
+      on dokumendis <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/ANDMED.et.md">ANDMED.et.md</a>.
     </p>
     <div class="meta">
-      <span class="pill">Seis: 7. september 2026</span>
+      <span class="pill">Seis: 8. oktoober 2026</span>
+      <span class="pill">Versioon: 1.0.0</span>
       <span class="pill">Teksti seisukuupäev: aktipõhine</span>
       <span class="pill">Formaat: JSON-LD / RDF</span>
       <span class="pill">Nimeruum: <code>https://w3id.org/estleg/</code></span>
     </div>
     <div class="stats">
-      <div class="stat"><b>1 122 / 1 195</b><span>seaduse registrikirjet / seadusefaili</span></div>
-      <div class="stat"><b>14 871</b><span>riigi ja KOV määrust kokku</span></div>
-      <div class="stat"><b>90 468</b><span>eelnõu, kohtulahendi ja EL-akti kirjet</span></div>
-      <div class="stat"><b>122 / 2</b><span>JSON-valideerimise vigu / hoiatusi (7.09.2026)</span></div>
+      <div class="stat"><b>1 122 / 1 195</b><span>seaduse registrikirjet / seadusefaili (indeks 1.06.2026)</span></div>
+      <div class="stat"><b>3 812</b><span>riigi määrust (seis 1.05.2026)</span></div>
+      <div class="stat"><b>11 059</b><span>KOV määrust (seis 1.05.2026)</span></div>
+      <div class="stat"><b>22 832</b><span>eelnõu (EIS, 7.03.2026)</span></div>
+      <div class="stat"><b>12 104</b><span>Riigikohtu lahendit (1993–2026)</span></div>
+      <div class="stat"><b>33 242</b><span>EL õigusakti (EUR-Lex, 3.03.2026)</span></div>
+      <div class="stat"><b>22 290</b><span>EL kohtulahendit (CURIA, 3.03.2026)</span></div>
+      <div class="stat"><b>26 961</b><span>valideeritavat faili 27 008-st</span></div>
     </div>
+    <p class="small">
+      Arvud on mõõdetud 8. oktoobril 2026 hoidla indeksitest (<code>krr_outputs/INDEX.json</code> ja alamkorpuste
+      <code>*_INDEX.json</code>). Kuupäevad on korpuste koostamise templid, mitte õigusteksti kehtivuskuupäevad.
+    </p>
     <p class="note warning">
       Korpus ei läbi veel kõiki kvaliteediväravaid. Tier 0 ja valideerija parandused (#702) on põhiharusse ühendatud,
       kuid mitmes SHACL-kontrollis on endiselt vead. Täpsed tulemused on
-      <a href="VALIDATION_REPORT.md">valideerimisraportis</a>.
-      Viimane väljalase on 19. augusti <code>v1.0.0</code>; septembri parandustega uut väljalaset veel ei ole.
+      <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/VALIDATION_REPORT.md">valideerimisraportis</a>.
+      Viimane väljalase on 19. augusti <code>v1.0.0</code>; hilisemate parandustega uut väljalaset veel ei ole.
+      8. oktoobri seisuga ei täida ükski korpus oma värskuse eesmärki: seaduste tekst on 137 ja määrused 160 päeva vanad.
+      Andmestik ei ole ametlik õigusallikas; kehtiv tekst on Riigi Teatajas ja EUR-Lexis.
     </p>
   </header>
 
@@ -575,14 +587,14 @@
         <tr>
           <td>Riigi Teataja</td>
           <td>Seadused ja nende valitud redaktsioonide XML-tekstid.</td>
-          <td><code>https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&amp;dokument=seadus</code>, <code>https://www.riigiteataja.ee/akt/GLOBALID.xml</code></td>
-          <td><code>python3 scripts/generate_all_laws.py --refresh --kehtiv YYYY-MM-DD</code>; RT API migratsioon #691 on veel avatud.</td>
+          <td><code>https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&amp;dokument=seadus</code>, <code>https://www.riigiteataja.ee/public-api/api/v1/akt/GLOBALID/xml</code></td>
+          <td><code>python3 scripts/generate_all_laws.py --refresh --kehtiv YYYY-MM-DD</code></td>
         </tr>
         <tr>
           <td>Riigi Teataja</td>
           <td>Riigi ja KOV määrused, volitusnormide preambulid, paragrahvid, lisad ja metaandmed.</td>
           <td><code>.../otsi?leht=N&amp;dokument=määrus</code>, sama XML skeem; KOV väljundid <code>krr_outputs/regulations/kov/</code></td>
-          <td><code>python3 scripts/generate_regulations.py --refresh --kehtiv YYYY-MM-DD</code>; KOV jaoks lisa <code>--kov</code>. RT API migratsioon #691 on veel avatud.</td>
+          <td><code>python3 scripts/generate_regulations.py --refresh --kehtiv YYYY-MM-DD</code>; KOV jaoks lisa <code>--kov</code>.</td>
         </tr>
         <tr>
           <td>EIS ehk eelnõude infosüsteem</td>
@@ -639,25 +651,27 @@
       Riigi Teataja uuel platvormil (alates 1. juunist 2026) tagastab vana aadress
       <code>/akt/{id}.xml</code> XML-i asemel HTML-rakenduse. Generaatorid laadivad akti XML-i nüüd
       aadressilt <code>/public-api/api/v1/akt/{id}/xml</code> (töö #691); HTML-vastus katkestab töö
-      selge veaga. Allolev järjekord kirjeldab operaatori töövoogu. Seadista Python 3.11+ keskkond
-      <a href="../README.md#setup">paigaldusjuhendi</a> järgi.
+      selge veaga. Allolev järjekord kirjeldab operaatori töövoogu. Täpsed käsud ja lipud on
+      <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/OPERATOR_RUNBOOK.md">käitaja juhendis</a> (inglise keeles); Python 3.11+ keskkonna seadistus on
+      <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/README.md#setup">paigaldusjuhendis</a>.
     </p>
     <h3>Täisuuenduse töövoog</h3>
     <div class="flow">
       <div class="step"><strong>1. Snapshot</strong><span>Vali õigusandmete kuupäev, nt <code>2026-05-01</code>, et väljund oleks korratav.</span></div>
       <div class="step"><strong>2. Allikate tõmme</strong><span>Käivita seaduste, määruste, eelnõude, Riigikohtu ja EUR-Lexi generaatorid.</span></div>
       <div class="step"><strong>3. KOV register</strong><span>Kui KOV määrused muutusid, uuenda väljaandjate ja EHAK seosed.</span></div>
-      <div class="step"><strong>4. Rikastuskihid</strong><span>Käivita <code>run_all_integration.py --validate-each</code>, mis hoiab sõltuvused järjekorras.</span></div>
+      <div class="step"><strong>4. Rikastuskihid</strong><span>Käivita <code>run_all_integration.py --validate-each</code>; 29-sammuline sõltuvusgraaf hoiab järjekorra.</span></div>
       <div class="step"><strong>5. Kontroll</strong><span>Käivita testid, SHACL ja <code>validate_all.py</code>; uuenda <code>metadata.jsonld</code>.</span></div>
     </div>
 
-    <pre><code># Operaatori näidiskäsud; RT migratsioon #691 peab esmalt olema lahendatud.
+    <pre><code># Operaatori näidiskäsud; täielik juhend: docs/OPERATOR_RUNBOOK.md
 # Asenda näite 2026-05-01 soovitud seisukuupäevaga.
 python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
 python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01
 python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01 --kov
 python3 scripts/generate_draft_legislation.py
 python3 scripts/generate_court_decisions.py
+python3 scripts/screen_court_personal_data.py
 python3 scripts/generate_eu_legislation.py
 python3 scripts/generate_eu_court_decisions.py
 python3 scripts/build_kov_registry.py
@@ -892,6 +906,83 @@ python3 scripts/generate_duplicate_ids_report.py</code></pre>
     </div>
   </section>
 
+  <section class="band" id="litsents">
+    <h2>8. Litsents Ja Õigused</h2>
+    <p>
+      Andmestik on kihiline kogumik ning õigused kehtivad kahel tasandil. Taaskasutaja peab järgima mõlemat.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Kiht</th>
+          <th>Õiguslik seis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Tarkvara (<code>src/</code>, <code>scripts/</code>, <code>mcp_server/</code>, <code>tests/</code>)</td><td>MIT litsents (<a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/LICENSE">LICENSE</a>). MIT ei kata andmeid.</td></tr>
+        <tr><td>Eesti õigusaktid, eelnõud, kohtulahendid</td><td>Ei ole autoriõiguse objektid (autoriõiguse seaduse § 5). Riigi Teataja konsolideeritud masinloetavale tootele ja andmebaasile võivad kehtida Riigi Teataja kasutustingimused ja andmebaasi sui generis õigus; need on veel kontrollimata.</td></tr>
+        <tr><td>EL õigusaktid, CURIA lahendid, EuroVoc</td><td>© Euroopa Liit, taaskasutus komisjoni otsuse 2011/833/EL alusel allikale viidates ja sisu moonutamata.</td></tr>
+        <tr><td>Projekti enda kiht: valik ja korraldus, seosed, <code>estleg:</code> IRI-d, ontoloogia, tuletatud klassifikatsioonid</td><td><strong>CC BY 4.0</strong> (<a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/CITATION.cff">CITATION.cff</a>). See ei anna õigusi kolmandate isikute tekstidele.</td></tr>
+      </tbody>
+    </table>
+    <p class="small">
+      Lähtedokumendid: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/NOTICE">NOTICE</a> ja <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/DATA_RIGHTS.md">DATA_RIGHTS.md</a> (inglise keeles).
+      Õiguste kirjeldus on eelnõu, mis ootab õiguslikku kinnitust.
+    </p>
+  </section>
+
+  <section id="isikuandmed">
+    <h2>9. Isikuandmed Ja GDPR</h2>
+    <p>
+      Kaks kohtulahendite alamkorpust sisaldavad isikuandmeid ning on kataloogis tähistatud
+      <code>estleg:containsPersonalData: true</code>.
+    </p>
+    <ul>
+      <li><strong>Riigikohus</strong> (<code>krr_outputs/riigikohus/</code>, 12 104 lahendit): kokkuvõtetes ja täistekstis võivad
+        esineda isikute nimed. Kriminaalasjades on süüdistus seotud tuvastatava isikuga; sellistele andmetele kehtib
+        isikuandmete kaitse üldmääruse <strong>artikkel 10</strong>.</li>
+      <li><strong>CURIA</strong> (<code>krr_outputs/curia/</code>, 22 290 lahendit): menetlusosaliste nimed on lahendi pealkirjas.</li>
+      <li><strong>Isikukoodid on eemaldatud</strong>: 27 isikukoodi 21 Riigikohtu lahendis on asendatud ja valideerija keelab nende
+        avaldamise. <strong>Nimesid ei ole eemaldatud</strong>; see küsimus on lahtine (#720).</li>
+    </ul>
+    <p class="note warning">
+      Kes laadib alla ja avaldab uuesti Riigikohtu või CURIA alamkorpuse, muutub nende isikuandmete
+      <strong>iseseisvaks vastutavaks töötlejaks</strong>. Tal peab olema oma õiguslik alus ning ta vastutab ise teavitamise
+      ja andmesubjekti õiguste eest. Projekti seisukoht ei laiene taaskasutajale.
+    </p>
+    <p class="small">
+      Töötlemise register (GDPR art 30 eeskujul) on koostatud. Tööhüpotees on õigustatud huvi (art 6 lg 1 p f).
+      Lahtised on neli otsust: vastutav töötleja, nimede käsitlus, art 6 ja art 10 alus ning taasisikustamise kontroll.
+      Andmesubjekti pöördumised käivad <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/SECURITY.md">SECURITY.md</a> kaudu. Lähtedokument: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/DATA_PROTECTION.md">DATA_PROTECTION.md</a> (inglise keeles).
+    </p>
+  </section>
+
+  <section class="band" id="viitamine">
+    <h2>10. Viitamine</h2>
+    <p>
+      Viita konkreetsele versioonile, mitte hoidla <code>main</code> harule. Seo andmed versiooni IRI-ga
+      <code>owl:versionIRI</code> <a href="https://w3id.org/estleg/1.0.0"><code>https://w3id.org/estleg/1.0.0</code></a>.
+      Masinloetav viitekirje on failis <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/CITATION.cff">CITATION.cff</a>.
+    </p>
+    <pre><code>Aavik, H. (2026). Estonian Legal Ontology (versioon 1.0.0) [andmestik].
+https://w3id.org/estleg/1.0.0</code></pre>
+    <p class="small">Zenodo DOI on veel loomata. Versioonimata <code>estleg:</code> IRI ei ole püsiv võõrvõti eri hoidlakoopiate vahel.</p>
+  </section>
+
+  <section id="versioon">
+    <h2>11. Versioon 1.0.0</h2>
+    <p>
+      Viimane väljalase on <strong>1.0.0</strong> (<code>owl:versionInfo</code>), avaldatud 19. augustil 2026 sildiga
+      <a href="https://github.com/henrikaavik/estonian-legal-ontology/releases/tag/v1.0.0"><code>v1.0.0</code></a>.
+      Hilisemad parandused põhiharus ei ole veel uus väljalase. Stabiilsuslepe (milliseid omadusi võib salvestada ja
+      milliseid käsitleda heuristilistena) on dokumendis <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/STABILITY.md">STABILITY.md</a>.
+    </p>
+    <p>
+      Küsimused ja vead: <a href="https://github.com/henrikaavik/estonian-legal-ontology/issues">GitHubi teemad</a>.
+      Turvaprobleemid ja isikuandmete päringud, mida ei tohi avalikult postitada: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/SECURITY.md">SECURITY.md</a>.
+    </p>
+  </section>
+
   <section class="band">
     <h2>Valideerimine Ja Kvaliteediseis</h2>
     <table>
@@ -903,7 +994,7 @@ python3 scripts/generate_duplicate_ids_report.py</code></pre>
       </thead>
       <tbody>
         <tr><td>Valideeritud failid</td><td>26 961</td></tr>
-        <tr><td>JSON/JSON-LD vead</td><td>122 (failiaegadel põhinev kontroll võib arvu muuta)</td></tr>
+        <tr><td>JSON/JSON-LD vead</td><td>122 (7.09.2026; failiaegadel põhinev kontroll võib arvu muuta)</td></tr>
         <tr><td>Hoiatused</td><td>2</td></tr>
         <tr><td>SHACL alamkorpused</td><td><code>eurlex</code> ja <code>curia</code> läbivad kontrolli. <code>laws</code>, <code>kov</code>, <code>riigikohus</code>, <code>drafts</code> ja <code>sidecars</code> ei läbi.</td></tr>
         <tr><td>Seadusloome sünkroonimise värav</td><td>Ei läbi; nõutav on null hoiatust ja rikkumist.</td></tr>
@@ -911,8 +1002,8 @@ python3 scripts/generate_duplicate_ids_report.py</code></pre>
       </tbody>
     </table>
     <p class="small">
-      Allikas: <a href="VALIDATION_REPORT.md">7. septembri valideerimisraport</a> ja
-      <a href="README.md#project-status">projekti seis</a>. Metaandmete uuendamise kuupäev ei tõenda aktiteksti värskust.
+      Allikas: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/VALIDATION_REPORT.md">7. septembri valideerimisraport</a> ja
+      <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/README.md#project-status">projekti seis</a>. Valideeritavate failide arv 26 961 on uuesti mõõdetud 8. oktoobril 2026. Metaandmete uuendamise kuupäev ei tõenda aktiteksti värskust.
       Põhikontrollid: JSON süntaks, <code>@context</code>, <code>@type</code> kuju, kuupäevad, korduvad ID-d,
       sisemiste <code>estleg:</code> viidete lahenduvus, indeksite ja tegeliku failipuu kooskõla, allika IRI kuju,
       KOV ja riigi määruste registrid ning institutsiooninimede normaliseeritud duplikaadid.
@@ -933,7 +1024,9 @@ python3 scripts/generate_duplicate_ids_report.py</code></pre>
   </section>
 
   <div class="footer">
-    Koostatud repo <code>https://github.com/henrikaavik/estonian-legal-ontology</code> failide põhjal. Image 2.0 pildipõhjad:
+    Koostatud repo <code>https://github.com/henrikaavik/estonian-legal-ontology</code> failide põhjal, seis 8. oktoober 2026.
+    Andmekirjeldus: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/ANDMED.et.md">ANDMED.et.md</a>. Isikuandmed ja õigused (inglise keeles):
+    <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/DATA_PROTECTION.md">DATA_PROTECTION.md</a>, <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/DATA_RIGHTS.md">DATA_RIGHTS.md</a>. Image 2.0 pildipõhjad:
     <code>docs/assets/ontology-overview/data-pipeline-image2.png</code> ja
     <code>docs/assets/ontology-overview/structure-graph-image2.png</code>.
   </div>

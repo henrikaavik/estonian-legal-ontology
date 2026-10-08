@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Tier 1 wave 5 — #721
+### Tier 1 wave 5 — #715, #721
 
+- **Estonian data statement and public overview (#715).** Estonian data statement `docs/ANDMED.et.md` with test-checked corpus counts; refreshed Estonian overview (licence, GDPR, citation, version 1.0.0, counts measured 2026-10-08) published via a new SHA-pinned GitHub Pages workflow (enablement pending); README audience router; operator commands moved to `docs/OPERATOR_RUNBOOK.md`.
 - **Governance, licensing and CI hardening (#721).** New GOVERNANCE.md, SECURITY.md and consumer-facing docs/RELEASE_NOTES.md. LICENSE is the bare MIT text again, so scanners detect it. Its scope note is in NOTICE, and REUSE.toml with LICENSES/ gives every path an SPDX licence (code MIT, compilation layer CC-BY-4.0, third-party text under source terms). pyproject.toml declares `license = "MIT"` (PEP 639). Workflow actions are pinned to commit SHAs, pytest runs on Python 3.11 to 3.13, and a Makefile gives CI and contributors one `make check` / `make lint`. The five DATA_RIGHTS verification items are dated, and one is closed from repository evidence.
 
 ### Tier 1 wave 4 — standards, coverage and product layers (#699, #708, #709, #710, #712, #714, #718, #719, #722, #723)
