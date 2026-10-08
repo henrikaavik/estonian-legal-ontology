@@ -78,11 +78,36 @@ def ln(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
 
+_SUPERSCRIPT_DIGITS = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+
+
+def _child_text(el: ET.Element) -> str:
+    """Flatten an element's text including nested children.
+
+    Riigi Teataja titles may carry a ``<sup>`` child (``§ 217<sup>2</sup>``);
+    ``el.text`` alone stops at that child (#694). Superscript digits are
+    rendered as Unicode superscripts so the title reads ``§ 217²``.
+    """
+    parts = [el.text or ""]
+    for child in el:
+        text = _child_text(child)
+        if ln(child.tag) == "sup":
+            text = text.translate(_SUPERSCRIPT_DIGITS)
+        parts.append(text)
+        parts.append(child.tail or "")
+    return "".join(parts)
+
+
 def ct(el: ET.Element, name: str) -> str | None:
-    """Return the text of the first direct child whose local tag matches `name`."""
+    """Return the text of the first direct child whose local tag matches `name`.
+
+    Nested markup inside the child (``<sup>``) is flattened, not truncated.
+    """
     for c in el:
-        if ln(c.tag) == name and c.text:
-            return c.text.strip()
+        if ln(c.tag) == name:
+            text = _child_text(c).strip()
+            if text:
+                return text
     return None
 
 
