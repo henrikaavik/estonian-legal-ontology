@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 5 — #725, #724
+
+- **Added `docs/proposals/2026-10-satla-reference-resolution.md` (#725, review 3.2).** It is a Proposed ADR for a read-only service that resolves act + § + lõige to an estleg IRI and an RT address, with explicit unknown, ambiguous and degraded answers. It is grounded in measured coverage: 984 of 1,119 law roots carry an RT source, none carry an Estonian ELI, 78.6 % of § have lõige nodes and 96.8 % have version history. It sets out the API, data contract, operating options, a bounded pilot with pass thresholds, and the decisions only the maintainer can take. No resolver code is added.
+- **Added docs/proposals/2026-10-draft-provision-impact.md, a proposed ADR for #724.** It covers provision-level draft impact (`estleg:amendsProvision`) and a HÕNTE impact-area SKOS scheme, grounded in a feasibility study of the 22,832-draft EIS layer. The study found that feed titles yield provision-level targets for at most 98 drafts (0.43%), so the work is gated on EIS/Sätla attachment rights. The ADR defines a bounded three-track pilot with go/no-go targets. It also records two rights-free bugs in act-level `amendsLaw` resolution.
 ### Tier 1 wave 5 — #715, #721
 
 - **Estonian data statement and public overview (#715).** Estonian data statement `docs/ANDMED.et.md` with test-checked corpus counts; refreshed Estonian overview (licence, GDPR, citation, version 1.0.0, counts measured 2026-10-08) published via a new SHA-pinned GitHub Pages workflow (enablement pending); README audience router; operator commands moved to `docs/OPERATOR_RUNBOOK.md`.
