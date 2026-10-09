@@ -172,19 +172,22 @@ draft wording, so query bodies are not logged (see [Risks](#risks)).
 
 ## API sketch
 
-Base path `/resolve/v1`. JSON over HTTPS, UTF-8 in and out, `GET` for single
-lookups and `POST` for batches.
+Base path `/resolve/v1`. JSON over HTTPS, UTF-8 in and out. Citation strings
+use `POST` bodies for both single and batch requests; `GET` is reserved for
+public identifier lookups and metadata. Unpublished wording must never enter
+URL paths or query strings, where infrastructure logs and browser history
+can retain it.
 
 | Endpoint | Purpose |
 |---|---|
-| `GET /resolve/v1/reference?q=<citation>[&as_of=<date>]` | Parse and resolve one citation string |
+| `POST /resolve/v1/reference` | Parse and resolve one citation; JSON body contains `query` and optional `as_of` |
 | `POST /resolve/v1/references` | Batch of up to 200 citation strings (one draft's references) |
 | `GET /resolve/v1/iri/<local-name>` | estleg IRI → level, canonical citation, RT address |
 | `GET /resolve/v1/rt/<rt-id>` | RT act or redaction id → estleg act or version IRI |
 | `GET /resolve/v1/meta` | Dataset version, build commit, snapshot dates, coverage figures |
 
-Example: `GET /resolve/v1/reference?q=KarS%20§%20141%20lg%201`, using real corpus
-values.
+Example: `POST /resolve/v1/reference` with body
+`{"query": "KarS § 141 lg 1"}`, using real corpus values.
 
 ```json
 {
@@ -209,7 +212,7 @@ values.
 }
 ```
 
-With `&as_of=2015-06-01` the answer adds the § redaction:
+With `"as_of": "2015-06-01"` in the request body, the answer adds the § redaction:
 
 ```json
 "version": {
@@ -345,8 +348,12 @@ measured results".
   carries its snapshot date. The ELI field stays `null` until #707, because
   minting before RT confirms the template would create wrong identifiers.
 - **Confidential drafts.** Unpublished draft wording may reach the service.
-  Log only counters and status codes, never query bodies. If a third party
-  hosts it, this needs a written agreement.
+  Citation input travels only in POST bodies. Log only route templates,
+  counters and status codes; exclude bodies and response payloads from
+  application, proxy, CDN, tracing and error logs. Citation responses use
+  `Cache-Control: no-store`, and intermediaries must not cache them. POST
+  alone is insufficient: the pilot must verify this across the whole request
+  path. If a third party hosts it, this needs a written agreement.
 - **Upstream change and licence.** The 2026-06-01 RT relaunch already broke
   the `.xml` addresses, so the service emits and tests the human `/akt/<id>`
   form. The data-rights position is a draft, so it returns identifiers and
