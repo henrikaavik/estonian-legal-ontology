@@ -45,6 +45,17 @@ def _from_storage(term):
 class DiskStore(OxigraphStore):
     """Use Oxigraph's disk indexes but keep RDFLib query semantics."""
 
+    def __len__(self, context=None):
+        if context is None:
+            return super().__len__(context)
+        # Within one graph every triple is already unique. The adapter's
+        # default COUNT(DISTINCT TRIPLE(...)) materialises every decoded term
+        # in a hash set, undoing the memory benefit of a disk-backed graph.
+        return int(next(self._inner.query(
+            "SELECT (COUNT(*) AS ?count) WHERE { ?s ?p ?o }",
+            default_graph=to_ox(context),
+        ))[0].value)
+
     def query(self, *args, **kwargs):
         # Graph.query explicitly falls back to RDFLib on NotImplementedError.
         raise NotImplementedError

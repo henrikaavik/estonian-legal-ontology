@@ -33,6 +33,7 @@ def test_jsonld_disk_and_memory_have_same_graph_and_shacl_results(tmp_path, vali
     assert not errors
     try:
         assert isomorphic(memory, disk)
+        assert len(disk) == len(memory)
         assert (EX.hidden, EX.name, None) not in disk
         shapes = Graph().parse(data=f"""
             @prefix ex: <{EX}> .
@@ -66,6 +67,8 @@ def test_disk_store_preserves_lexical_values_and_uses_rdflib_queries(tmp_path):
         graph.add((EX.subject, EX.value, value))
         graph.add((EX.subject, EX.name, Literal("same")))
         graph.add((EX.subject, EX.name, Literal("same", datatype=XSD.string)))
+        graph.add((EX.subject, EX.name, Literal("same")))
+        assert len(graph) == 3
         assert len(list(graph.objects(EX.subject, EX.name))) == 2
         assert graph.value(EX.subject, EX.value) == value
         assert str(graph.value(EX.subject, EX.value)) == "01"
