@@ -429,11 +429,12 @@ jobs:
 
   semantic-validation:
     runs-on: ubuntu-latest
-    # ``kov`` walks ~11k municipal regulation peep files into a single
-    # graph before pyshacl runs, so the default GitHub step timeout is
-    # tight. 30 minutes leaves comfortable headroom for the largest
-    # bucket while still failing fast on a genuine hang.
-    timeout-minutes: 30
+    # The large laws/KOV graphs exceeded the former 30-minute job budget
+    # after the corpus refresh. Allow setup plus full RDFS/SHACL validation
+    # to complete; every existing constraint still runs.
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: '1'
     strategy:
       fail-fast: false
       matrix:
@@ -495,6 +496,8 @@ jobs:
   seadusloome-zero-warning:
     name: Seadusloome zero-warning gate
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
