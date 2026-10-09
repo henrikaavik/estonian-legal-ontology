@@ -625,8 +625,8 @@ def resolve_citations(
 ) -> list[str]:
     """Resolve citations to existing provision IRIs.
 
-    #696: when ``unresolved`` is a list, every citation that resolved NONE
-    of its §§ is appended to it, so the caller can keep it as a
+    #696: when ``unresolved`` is a list, every citation with unresolved
+    §§ is appended with those section numbers, so the caller can keep it as a
     target-less ``estleg:Citation`` node (the in-law #514 behaviour)
     instead of silently dropping it.
 
@@ -651,7 +651,7 @@ def resolve_citations(
             if unresolved is not None:
                 unresolved.append(cit)
             continue
-        hits_before = len(resolved)
+        missing_paragraphs: list[str] = []
         lg = cit.get("lg")
         if isinstance(lg, str):
             lg = lg.strip() or None
@@ -662,6 +662,7 @@ def resolve_citations(
                 par_num, prefixes, prefix_to_provisions, lg=lg
             )
             if not hits:
+                missing_paragraphs.append(par_num)
                 continue
             if len(hits) > 1:
                 # Same § lives in multiple Parts of the same source act —
@@ -673,8 +674,8 @@ def resolve_citations(
             else:
                 chosen = hits[0]
             resolved.append(chosen)
-        if unresolved is not None and len(resolved) == hits_before:
-            unresolved.append(cit)
+        if unresolved is not None and missing_paragraphs:
+            unresolved.append({**cit, "paragraphs": missing_paragraphs})
     return list(dict.fromkeys(resolved))  # deduplicate
 
 
@@ -742,16 +743,23 @@ def is_court_pass_unresolved_citation(node: object) -> bool:
     types = node.get("@type") or []
     if isinstance(types, str):
         types = [types]
+    source = node.get("estleg:citationSource")
+    source_id = source.get("@id") if isinstance(source, dict) else None
+    if not isinstance(source_id, str) or not node.get("estleg:citationDetail"):
+        return False
+    owned_prefix = build_citation_iri(source_id, 0).removesuffix("0")
     return (
         "estleg:Citation" in types
         and "estleg:citationTarget" not in node
         and REFERENCED_LAW_CITATION_INFIX not in str(node.get("@id", ""))
+        and re.fullmatch(re.escape(owned_prefix) + r"\d+", str(node.get("@id", ""))) is not None
     )
 
 
 def build_unresolved_court_citations(
     decision_iri: str,
     unresolved: list[dict],
+    existing_ids: set[str] | None = None,
 ) -> list[dict]:
     """Build target-less Citation nodes for unresolved state citations (#696).
 
@@ -761,15 +769,23 @@ def build_unresolved_court_citations(
     dropped. Duplicate (law_ref, text) pairs within one decision collapse.
     """
     nodes: list[dict] = []
+    taken = existing_ids if existing_ids is not None else set()
+    seq = 0
     seen: set[tuple[str, str]] = set()
     for cit in unresolved:
         key = (str(cit.get("law_ref") or ""), str(cit.get("citationText") or ""))
         if key in seen:
             continue
         seen.add(key)
+        seq += 1
+        iri = build_citation_iri(decision_iri, seq)
+        while iri in taken:
+            seq += 1
+            iri = build_citation_iri(decision_iri, seq)
+        taken.add(iri)
         nodes.append(
             build_citation_node(
-                iri=build_citation_iri(decision_iri, len(nodes) + 1),
+                iri=iri,
                 target_iri=None,
                 citation_detail=key[0] or None,
                 citation_text=key[1] or None,
@@ -850,6 +866,7 @@ def process_court_files(
             graph[:] = kept_nodes
             modified = True
         new_citation_nodes: list[dict] = []
+        existing_ids = {n["@id"] for n in graph if isinstance(n, dict) and isinstance(n.get("@id"), str)}
 
         for node in graph:
             node_id = node.get("@id", "")
@@ -914,7 +931,7 @@ def process_court_files(
             )
             if unresolved_state and node_id:
                 new_citation_nodes.extend(
-                    build_unresolved_court_citations(node_id, unresolved_state)
+                    build_unresolved_court_citations(node_id, unresolved_state, existing_ids)
                 )
             stats["state_citations_unresolved"] += len(unresolved_state)
             state_link_count += len(state_iris)
