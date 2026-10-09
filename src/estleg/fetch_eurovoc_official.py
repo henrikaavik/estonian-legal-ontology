@@ -41,6 +41,7 @@ from pathlib import Path
 
 from estleg.estleg_common import save_json
 from estleg.eurlex_common import sparql_query, sparql_query_with_retry
+from estleg.heuristic_overrides import ensure_prov_context, finalize_node, load_overrides
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -254,13 +255,22 @@ def stamp_official_subjects(node: dict, ids: Iterable[str] | None) -> bool:
     """
     before = {p: node.get(p) for p in (*SUBJECT_PREDICATES, SUBJECT_SOURCE_PREDICATE)}
     refs = official_subject_refs(ids or ())
-    if refs:
+    if refs or node.get(SUBJECT_SOURCE_PREDICATE) == SUBJECT_SOURCE_CELLAR:
         for pred in SUBJECT_PREDICATES:
-            node[pred] = [dict(r) for r in refs]
-        node[SUBJECT_SOURCE_PREDICATE] = SUBJECT_SOURCE_CELLAR
-    elif node.get(SUBJECT_SOURCE_PREDICATE) == SUBJECT_SOURCE_CELLAR:
-        for pred in (*SUBJECT_PREDICATES, SUBJECT_SOURCE_PREDICATE):
-            node.pop(pred, None)
+            old = node.get(pred, [])
+            old = old if isinstance(old, list) else [old]
+            kept = [r for r in old if not (
+                isinstance(r, dict) and str(r.get("@id", "")).startswith(EUROVOC_URI_BASE)
+            )]
+            values = kept + [dict(r) for r in refs]
+            if values:
+                node[pred] = values
+            else:
+                node.pop(pred, None)
+        if refs:
+            node[SUBJECT_SOURCE_PREDICATE] = SUBJECT_SOURCE_CELLAR
+        else:
+            node.pop(SUBJECT_SOURCE_PREDICATE, None)
     after = {p: node.get(p) for p in before}
     return before != after
 
@@ -298,11 +308,12 @@ def stamp_eurlex_peeps(
     """Stamp official subjects on every EU act in the eurlex peeps.
 
     CELEX absent from ``subjects`` (never answered by CELLAR) keep whatever
-    they had. A node whose ``dcterms:subject`` a human override owns (#700)
-    is skipped. Returns coverage counters.
+    they had. Human overrides are applied last, including removals (#700).
+    Returns coverage counters.
     """
     stats = {"acts": 0, "with_subjects": 0, "unresolved": 0, "changed": 0,
              "override_skipped": 0, "files_written": 0}
+    overrides = load_overrides() if overrides is None else overrides
     for name in EURLEX_PEEP_NAMES:
         path = eurlex_dir / name
         if not path.exists():
@@ -311,19 +322,27 @@ def stamp_eurlex_peeps(
         changed_file = False
         for node in iter_eu_act_nodes(doc.get("@graph", [])):
             stats["acts"] += 1
-            if overrides is not None and overrides.owns(node.get("@id"), "dcterms:subject"):
+            changed = False
+            if overrides.owns(node.get("@id"), "dcterms:subject"):
                 stats["override_skipped"] += 1
-                continue
-            celex = node["estleg:celexNumber"]
-            if celex not in subjects:
-                stats["unresolved"] += 1
-                continue
-            if subjects[celex]:
-                stats["with_subjects"] += 1
-            if stamp_official_subjects(node, subjects[celex]):
+                if SUBJECT_SOURCE_PREDICATE in node:
+                    del node[SUBJECT_SOURCE_PREDICATE]
+                    changed = True
+            else:
+                celex = node["estleg:celexNumber"]
+                if celex not in subjects:
+                    stats["unresolved"] += 1
+                    continue
+                if subjects[celex]:
+                    stats["with_subjects"] += 1
+                changed = stamp_official_subjects(node, subjects[celex])
+            changed |= finalize_node(node, overrides, ("dcterms:subject",))
+            if changed:
                 stats["changed"] += 1
                 changed_file = True
         if changed_file:
+            if any("prov:wasAttributedTo" in n for n in doc.get("@graph", [])):
+                ensure_prov_context(doc)
             save_json(path, doc)
             stats["files_written"] += 1
     return stats
