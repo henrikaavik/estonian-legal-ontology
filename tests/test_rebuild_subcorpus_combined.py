@@ -230,7 +230,10 @@ def test_committed_aggregate_equals_fresh_rebuild(name: str) -> None:
         f"{spec.combined_path_rel} is an un-materialised LFS pointer; run git lfs pull"
     )
     doc, _ = rsc.build_subcorpus_combined(name, krr)
-    assert committed.read_text(encoding="utf-8") == rsc.serialize(doc), (
+    # Keep byte-for-byte parity, but avoid pytest constructing a million-line
+    # string diff when a large aggregate drifts (which can take 20 minutes).
+    matches = committed.read_text(encoding="utf-8") == rsc.serialize(doc)
+    assert matches, (
         f"{spec.combined_path_rel} drifted from its sources; run "
         f"`python3 scripts/rebuild_subcorpus_combined.py --subcorpus {name}`"
     )
