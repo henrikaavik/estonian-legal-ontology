@@ -1321,7 +1321,7 @@ def krr_outputs_git_clean() -> bool | None:
     """
     try:
         proc = subprocess.run(
-            ["git", "status", "--porcelain", "--", str(KRR_DIR)],
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", str(KRR_DIR)],
             cwd=str(REPO_ROOT),
             capture_output=True,
             text=True,

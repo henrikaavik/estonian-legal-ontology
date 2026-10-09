@@ -711,7 +711,8 @@ python3 scripts/generate_regulations.py --kov --kehtiv YYYY-MM-DD --refresh --re
 - **`--regen-state [PATH]`** writes a per-act ledger. By default it goes to
   `krr_outputs/.cache/regen_state_regulations_{riik,kov}.json`, which is
   git-ignored. A rerun skips acts already completed for the same `kehtiv`
-  and `globalId` whose output file still exists. Acts that failed are
+  and `globalId` whose output file still matches the ledger's SHA-256.
+  An explicit IRI scheme change also invalidates a completed entry. Acts that failed are
   retried. `--reset-regen-state` discards the ledger.
 - **`--workers N`** (default 4) sets how many XML fetches run at once.
   `--max-rps` (default 4) caps request starts per second across all
@@ -752,9 +753,11 @@ modes, selected with `--iri-scheme`:
 - `law` uses the law helpers.
 - `legacy` reproduces the committed IRIs byte for byte. This was verified on
   three acts fetched from the public API.
-- `auto` is the default. Acts with no committed peep get `law`; acts that
-  already have one keep `legacy`. A refresh therefore never renames a
-  published IRI.
+- `auto` is the default. New acts get `law`; existing acts retain their
+  recorded scheme. Each generated act records `dcterms:conformsTo` as
+  `https://w3id.org/estleg/iri-scheme/regulations/law` or the corresponding
+  `legacy` profile. Older peeps without a profile use `legacy`. Repeated
+  refreshes therefore keep the scheme chosen on the first generation.
 
 Moving the committed corpus to `law` is a **MAJOR** change under
 `docs/STABILITY.md`. It must be scheduled with a rename map, not run as a
