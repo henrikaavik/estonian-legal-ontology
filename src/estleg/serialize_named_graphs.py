@@ -15,9 +15,17 @@ Each public load surface is a SPARQL GRAPH:
     python3 -m estleg.serialize_named_graphs --write-sample
 
 The full dump (``krr_outputs/estleg_all.nq.gz``) is generated, gitignored,
-and is the release-asset payload for #473. The committed sample at
+and is the release-asset payload for #473 (``build_release_assets`` writes it
+to the repo-root ``release/``). The committed sample at
 ``krr_outputs/exports/estleg_all_sample.nq.gz`` is what
 ``docker compose up`` loads by default.
+
+Fail-closed (#705): ``--write`` exits 1 without writing when any slot has no
+source, unless ``--allow-partial`` is given. A slot source is either a single
+file (the first one present wins) or a glob over a peep tree; the regulations
+and riigikohus slots read their peep trees directly because neither corpus has
+a combined aggregate. Large single-``@graph`` JSON-LD sources are parsed in
+node batches so the dump stays within a few GB of memory.
 """
 
 from __future__ import annotations
@@ -34,8 +42,11 @@ from pathlib import Path
 from estleg.estleg_common import KRR_DIR
 from estleg.serialize_corpus import (
     GRAPH_IRI_PREFIX,
+    _peek_jsonld_context,
     graph_from_jsonld,
     is_lfs_pointer,
+    iter_graph_nodes,
+    nquad_from_ntriple,
     serialize_graph,
 )
 
@@ -52,10 +63,24 @@ FULL_DUMP = KRR_DIR / "estleg_all.nq.gz"
 
 _GRAPH_TAIL = re.compile(r"<https://w3id\.org/estleg/graph/[^>\s]+>\s*\.\s*$")
 
+# Files larger than this are parsed in node batches (combined aggregates).
+STREAM_THRESHOLD_BYTES = 64 * 1024 * 1024
+STREAM_BATCH_NODES = 5000
+_GLOB_CHARS = frozenset("*?[")
+
+
+class MissingSlotError(RuntimeError):
+    """A named-graph slot has no usable source (#705 fail-closed)."""
+
 
 @dataclass(frozen=True)
 class CorpusSlot:
-    """One named graph in the #474 dump."""
+    """One named graph in the #474 dump.
+
+    ``sources`` are alternatives tried in order. A plain path is one file; a
+    glob (``riigikohus/*_peep.json``) contributes every match, sorted. The first
+    alternative that resolves to at least one real (non-LFS-pointer) file wins.
+    """
 
     name: str
     graph_iri: str
@@ -64,16 +89,11 @@ class CorpusSlot:
 
 SLOTS: tuple[CorpusSlot, ...] = (
     CorpusSlot("laws", GRAPH_LAWS, ("combined_ontology.nq", "combined_ontology.jsonld")),
-    CorpusSlot(
-        "regulations",
-        GRAPH_REGULATIONS,
-        ("regulations/REGULATIONS_COMBINED.jsonld",),
-    ),
-    CorpusSlot(
-        "riigikohus",
-        GRAPH_RIIGIKOHUS,
-        ("riigikohus/riigikohus_combined.jsonld",),
-    ),
+    # #705: neither corpus has a combined aggregate (the old
+    # REGULATIONS_COMBINED.jsonld / riigikohus_combined.jsonld targets never
+    # existed, so these slots were silently empty); read the peep trees.
+    CorpusSlot("regulations", GRAPH_REGULATIONS, ("regulations/**/*_peep.json",)),
+    CorpusSlot("riigikohus", GRAPH_RIIGIKOHUS, ("riigikohus/*_peep.json",)),
     CorpusSlot("eurlex", GRAPH_EURLEX, ("eurlex/eurlex_combined.jsonld",)),
     CorpusSlot("curia", GRAPH_CURIA, ("curia/curia_combined.jsonld",)),
     CorpusSlot("drafts", GRAPH_DRAFTS, ("eelnoud/eelnoud_combined.jsonld",)),
@@ -110,6 +130,10 @@ def nquads_from_jsonld(data: dict, graph_iri: str) -> str:
     return serialize_graph(graph, "nq", graph_iri=graph_iri)
 
 
+def _is_glob(relpath: str) -> bool:
+    return any(ch in relpath for ch in _GLOB_CHARS)
+
+
 def _resolve_source(krr_dir: Path, relpath: str) -> Path | None:
     path = krr_dir / relpath
     if path.is_file() and not is_lfs_pointer(path):
@@ -117,24 +141,89 @@ def _resolve_source(krr_dir: Path, relpath: str) -> Path | None:
     return None
 
 
-def iter_slot_nquads(slot: CorpusSlot, krr_dir: Path) -> Iterator[str]:
-    """Yield N-Quads lines for the first available source of ``slot``."""
+def resolve_slot_files(
+    slot: CorpusSlot,
+    krr_dir: Path,
+    overrides: dict[str, Path] | None = None,
+) -> list[Path]:
+    """Files backing ``slot``: the first source alternative that resolves.
+
+    ``overrides`` maps a source relpath (e.g. ``combined_ontology.nq``) to a
+    file outside ``krr_dir``; the release-asset step uses it to feed the laws
+    slot the dump it just regenerated under ``release/`` instead of the
+    committed copy (#705). A glob alternative containing an LFS pointer is
+    rejected outright (raising :class:`MissingSlotError`) rather than dumped
+    partially.
+    """
     for relpath in slot.sources:
+        override = (overrides or {}).get(relpath)
+        if override is not None and override.is_file() and not is_lfs_pointer(override):
+            return [override]
+        if _is_glob(relpath):
+            matches = sorted(p for p in krr_dir.glob(relpath) if p.is_file())
+            if not matches:
+                continue
+            pointers = [p for p in matches if is_lfs_pointer(p)]
+            if pointers:
+                raise MissingSlotError(
+                    f"slot {slot.name!r}: {len(pointers)} LFS pointer(s) under "
+                    f"{relpath} (e.g. {pointers[0]}); run `git lfs pull`"
+                )
+            return matches
         path = _resolve_source(krr_dir, relpath)
-        if path is None:
-            continue
+        if path is not None:
+            return [path]
+    return []
+
+
+def missing_slots(
+    krr_dir: Path,
+    slots: Iterable[CorpusSlot] = SLOTS,
+    overrides: dict[str, Path] | None = None,
+) -> list[str]:
+    """Names of slots with no usable source under ``krr_dir`` (or ``overrides``)."""
+    return [slot.name for slot in slots if not resolve_slot_files(slot, krr_dir, overrides)]
+
+
+def _jsonld_file_nquads(path: Path, graph_iri: str) -> Iterator[str]:
+    if path.stat().st_size >= STREAM_THRESHOLD_BYTES:
+        context = _peek_jsonld_context(path)
+        batch: list[dict] = []
+
+        def flush(nodes: list[dict]) -> Iterator[str]:
+            graph = graph_from_jsonld({"@context": context or {}, "@graph": nodes})
+            for line in graph.serialize(format="nt").splitlines():
+                if line.strip():
+                    yield nquad_from_ntriple(line, graph_iri)
+
+        for node in iter_graph_nodes(path):
+            batch.append(node)
+            if len(batch) >= STREAM_BATCH_NODES:
+                yield from flush(batch)
+                batch = []
+        if batch:
+            yield from flush(batch)
+        return
+    graph = graph_from_jsonld(json.loads(path.read_text(encoding="utf-8")))
+    yield from serialize_graph(graph, "nq", graph_iri=graph_iri).splitlines(True)
+
+
+def iter_slot_nquads(
+    slot: CorpusSlot,
+    krr_dir: Path,
+    overrides: dict[str, Path] | None = None,
+) -> Iterator[str]:
+    """Yield N-Quads lines for every file of the first available source of ``slot``."""
+    for path in resolve_slot_files(slot, krr_dir, overrides):
         suffix = path.suffix.lower()
         if suffix == ".nq":
             with path.open(encoding="utf-8") as handle:
                 for line in handle:
                     yield retarget_nquad_line(line, slot.graph_iri)
-            return
-        if suffix in {".json", ".jsonld"}:
-            graph = graph_from_jsonld(json.loads(path.read_text(encoding="utf-8")))
-            text = serialize_graph(graph, "nq", graph_iri=slot.graph_iri)
-            yield from text.splitlines(True)
-            return
-    return
+        elif suffix in {".json", ".jsonld"}:
+            yield from _jsonld_file_nquads(path, slot.graph_iri)
+        else:
+            raise MissingSlotError(f"slot {slot.name!r}: unsupported source {path}")
 
 
 def write_nquads_gz(
@@ -144,11 +233,11 @@ def write_nquads_gz(
     """Write gzipped N-Quads. Returns the number of non-empty lines."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     count = 0
-    with gzip.open(dest, "wt", encoding="utf-8") as handle:
+    with dest.open("wb") as raw, gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as handle:
         for chunk in chunks:
             if chunk.strip():
                 count += 1
-            handle.write(chunk if chunk.endswith("\n") else f"{chunk}\n")
+            handle.write((chunk if chunk.endswith("\n") else f"{chunk}\n").encode("utf-8"))
     return count
 
 
@@ -243,23 +332,48 @@ def write_sample_dump(dest: Path | None = None) -> dict[str, int]:
     return counts
 
 
-def write_full_dump(krr_dir: Path | None = None, dest: Path | None = None) -> dict[str, int]:
-    """Concatenate every available corpus slot into ``estleg_all.nq.gz``."""
+def write_full_dump(
+    krr_dir: Path | None = None,
+    dest: Path | None = None,
+    *,
+    allow_partial: bool = False,
+    source_overrides: dict[str, Path] | None = None,
+) -> dict[str, int]:
+    """Concatenate every corpus slot into ``estleg_all.nq.gz``.
+
+    Fail-closed (#705): unless ``allow_partial``, a slot without a source (or
+    one whose source yields no statements) raises :class:`MissingSlotError`;
+    the up-front check runs before anything is written, and a slot that turns
+    out empty while streaming removes the partial file.
+    """
     root = krr_dir or KRR_DIR
     dest = dest or FULL_DUMP
+    if not allow_partial:
+        absent = missing_slots(root, overrides=source_overrides)
+        if absent:
+            raise MissingSlotError(f"no source for slot(s): {', '.join(absent)}")
     counts: dict[str, int] = {}
 
     def chunks() -> Iterator[str]:
         for slot in SLOTS:
             n = 0
-            for line in iter_slot_nquads(slot, root):
+            for line in iter_slot_nquads(slot, root, source_overrides):
                 if line.strip():
                     n += 1
                 yield line
             if n:
                 counts[slot.graph_iri] = n
 
-    write_nquads_gz(dest, chunks())
+    tmp = dest.with_name(dest.name + ".tmp")
+    try:
+        write_nquads_gz(tmp, chunks())
+        if not allow_partial:
+            empty = [slot.name for slot in SLOTS if slot.graph_iri not in counts]
+            if empty:
+                raise MissingSlotError(f"slot(s) produced no statements: {', '.join(empty)}")
+        tmp.replace(dest)
+    finally:
+        tmp.unlink(missing_ok=True)
     return counts
 
 
@@ -281,6 +395,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Override dump path.",
     )
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help="With --write: dump the slots that have sources and exit 0 even "
+        "when some slot has none (default: exit 1 without writing).",
+    )
     return parser.parse_args(argv)
 
 
@@ -295,13 +415,18 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.write:
         dest = args.output or FULL_DUMP
-        counts = write_full_dump(dest=dest)
+        try:
+            counts = write_full_dump(dest=dest, allow_partial=args.allow_partial)
+        except MissingSlotError as exc:
+            print(f"ERROR: {exc}; nothing written (pass --allow-partial to "
+                  "dump the available slots)", file=sys.stderr)
+            return 1
         print(f"wrote {dest} graphs={len(counts)} lines={sum(counts.values())}")
         for iri, n in sorted(counts.items()):
             print(f"  {iri}: {n}")
         missing = [slot.name for slot in SLOTS if slot.graph_iri not in counts]
         if missing:
-            print(f"skipped (no source): {', '.join(missing)}")
+            print(f"PARTIAL (--allow-partial) — no source: {', '.join(missing)}")
         return 0
     print("specify --write or --write-sample", file=sys.stderr)
     return 2

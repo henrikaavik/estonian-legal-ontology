@@ -1,10 +1,12 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 20 steps (enrichment plus aggregate rebuilds) form an explicit,
-declarative directed acyclic graph (DAG); the runner topologically sorts it,
-runs it (serially by default), then — in `--release` mode — runs the three
-release validators and writes a release-wide manifest aggregating everything.
+release build. Its 29 steps form an explicit, declarative directed acyclic
+graph (DAG) in four tiers: ingest (network fetches), enrichment (offline
+corpus passes and aggregate rebuilds), build (the combined/INDEX rebuild) and
+package (release assets). The runner topologically sorts it, runs it
+(serially by default), then — in `--release` mode — runs the three release
+validators and writes a release-wide manifest aggregating everything.
 
 This document covers:
 
@@ -12,8 +14,10 @@ This document covers:
 2. [Running a release build](#running-a-release-build) — `--release`
 3. [Validating without rebuilding](#validating-without-rebuilding) — `--release --validate-only`
 4. [The `release_manifest.json` schema](#the-release_manifestjson-schema)
-5. [Committed-vs-release-asset policy](#committed-vs-release-asset-policy) — which files live in git, which are regenerable build artifacts
-6. [Versioning policy](#versioning-policy) — how the ontology version is set, stamped, and released
+5. [Release assets](#release-assets) — `build_release_assets.py`, `SHA256SUMS`, catalogue checksums
+6. [Reproducibility gates](#reproducibility-gates) — `constraints.txt` and the `pipeline_version` gate
+7. [Committed-vs-release-asset policy](#committed-vs-release-asset-policy) — which files live in git, which are regenerable build artifacts
+8. [Versioning policy](#versioning-policy) — how the ontology version is set, stamped, and released
 
 ---
 
@@ -38,6 +42,13 @@ self-describing and a consumer can pin/cite it:
   `build_release_artifacts.generate_combined_jsonld()` runs (so it survives every
   rebuild). Other combined `*.jsonld` files get the same in-band license /
   publisher stamp via `stamp_combined_dataset_head()`.
+- Every `estleg_common.COMBINED_JSONLD_TARGETS` head must carry
+  `owl:versionInfo` = `ONTOLOGY_VERSION` before release (#705).
+  `build_release_assets.py` checks this read-only and fails unless
+  `--allow-unstamped`; it cannot stamp them itself, because the combined
+  build has already read those files. `scripts/stamp_combined_dataset_heads.py`
+  stamps `owl:versionInfo` / `owl:versionIRI` on every head as a hand-run
+  repair. Run it before the combined rebuild.
 
 The `versionIRI` is `https://w3id.org/estleg/<version>` — each
 release is an independently dereferenceable IRI.
@@ -156,8 +167,9 @@ claim for the current corpus.
 The required merge checks are `lint`, `pytest`, and `estleg-mcp tests`.
 They are distinct from the full release gates below. Passing them permits
 reviewed incremental fixes; it does not make a data release SHACL-conformant.
-Bulk `.nt`/`.nq`/`.ttl` dumps and other release assets are not all rebuilt by
-the current DAG; reconcile them with the chosen JSON-LD revision (#705).
+Bulk `.nt`/`.nq`/`.ttl` dumps and the other release assets are rebuilt by
+the last DAG step, `build_release_assets.py` (#705). See
+[Release assets](#release-assets).
 
 Õiguskantsler PDF extraction uses pdfminer; OCR is not in the dependency set.
 `generate_annotations.py --scrape --limit 0` means a full archive scrape.
@@ -174,6 +186,9 @@ Each step in `run_all_integration.py:STEPS` is a declarative record:
   "name":        "<script filename>",      # unique step id
   "description": "<human label>",
   "script":      "<script filename>",       # under scripts/
+  "args":        ["--flag", ...],           # optional extra argv
+  "tier":        "enrichment",              # ingest | enrichment | build | package
+  "embeds":      ["<pass>", ...],           # optional: passes run inside this step
   "depends_on":  ["<step name>", ...],      # must finish first
   "writes":      ["<glob>", ...],           # produced/mutated under krr_outputs/
   "reads":       ["<glob>", ...],           # consumed (prior write or committed input)
@@ -188,7 +203,13 @@ code 2) if:
 - the dependency graph has a cycle (Kahn's algorithm),
 - a step's `reads` glob is neither a [committed input](#committed-vs-release-asset-policy)
   (`run_all_integration.py:COMMITTED_INPUTS`) nor covered by some *prior*
-  step's `writes`, or
+  step's `writes`,
+- another step writes a derived (non-committed) file that a step reads, but
+  is not one of that reader's transitive dependencies (#704). An unordered
+  writer makes the read depend on source order. A writer that runs after the
+  reader leaves the reader's output stale. The shared corpus inputs in
+  `COMMITTED_INPUTS` are exempt, because every enrichment step rewrites them
+  in place, or
 - `--parallel > 1` was requested **and** two steps that could run
   concurrently (neither is a transitive dependency of the other) declare
   overlapping `writes` globs — concurrent writes to a shared corpus target
@@ -201,28 +222,59 @@ phase order is preserved exactly.
 
 ### Steps, dependencies, and outputs
 
-| # | Step (`STEPS` name) | `depends_on` | Declared `writes` (under `krr_outputs/`) |
-|---|---|---|---|
-| 1 | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
-| 2 | `generate_inverse_references.py` | `extract_cross_references.py` | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
-| 3 | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json`, `eurlex/eurlex_combined.jsonld` |
-| 4 | `rebuild_eurlex_combined` | `generate_transposition_mapping.py` | `eurlex/eurlex_combined.jsonld` |
-| 5 | `link_curia_eu_legislation.py` | `rebuild_eurlex_combined` | `curia/*_peep.json`, `curia/curia_combined.jsonld`, `curia/curia_eu_link_report.json` |
-| 6 | `rebuild_curia_combined` | `link_curia_eu_legislation.py` | `curia/curia_combined.jsonld` |
-| 7 | `rebuild_eelnoud_combined` | — | `eelnoud/eelnoud_combined.jsonld` |
-| 8 | `generate_harmonisation_links.py` | `generate_transposition_mapping.py` | `*_peep.json`, `harmonisation/harmonisation_report.json` |
-| 9 | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
-| 10 | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
-| 11 | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
-| 12 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
-| 13 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
-| 14 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
-| 15 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
-| 16 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
-| 17 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
-| 18 | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
-| 19 | `generate_similarity_index.py` | The 14 enrichment dependencies listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
-| 20 | `build_release_artifacts.py` | All preceding 19 steps | `combined_ontology.jsonld`, `INDEX.json` |
+| # | Tier | Step (`STEPS` name) | `depends_on` | Declared `writes` (under `krr_outputs/`) |
+|---|---|---|---|---|
+| 1 | ingest | `generate_provision_versions.py` (`--all --today <BUILD_EVALUATION_DATE>`) | — | `provision_versions/*.jsonld`, `reports/provision_versions_report.json`, `reports/kov/extract_provision_versions_coverage.json` |
+| 2 | ingest | `generate_provision_versions_regulations` (`--regulations-riik`) | 1 | `provision_versions/*.jsonld`, `reports/regulation_versions_report.json`, `reports/kov/extract_provision_versions_coverage.json` |
+| 3 | ingest | `generate_annotations.py` (`--scrape --limit 0`) | — | `annotations/oiguskantsler_seisukohad.jsonld`, `reports/kov/extract_annotations_coverage.json` |
+| 4 | enrichment | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
+| 5 | enrichment | `generate_inverse_references.py` | 4 | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
+| 6 | enrichment | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json`, `eurlex/eurlex_combined.jsonld` |
+| 7 | enrichment | `rebuild_eurlex_combined` | 6 | `eurlex/eurlex_combined.jsonld` |
+| 8 | enrichment | `link_curia_eu_legislation.py` | 7 | `curia/*_peep.json`, `curia/curia_combined.jsonld`, `curia/curia_eu_link_report.json` |
+| 9 | enrichment | `rebuild_curia_combined` | 8 | `curia/curia_combined.jsonld` |
+| 10 | enrichment | `rebuild_eelnoud_combined` | — | `eelnoud/eelnoud_combined.jsonld` |
+| 11 | enrichment | `generate_harmonisation_links.py` | 6 | `*_peep.json`, `harmonisation/harmonisation_report.json` |
+| 12 | enrichment | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
+| 13 | enrichment | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
+| 14 | enrichment | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
+| 15 | enrichment | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
+| 16 | enrichment | `link_amendment_versions.py` | 15, 1, 2 | `amendments/**/*.json`, `*_peep.json` |
+| 17 | enrichment | `derive_act_temporal_status.py` (`--all --recompute --evaluation-date …`) | 14, 1, 2 | `*_peep.json` |
+| 18 | enrichment | `generate_act_expressions_608.py` (`--apply`) | 1, 2 | `act_expressions_combined.jsonld` |
+| 19 | enrichment | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
+| 20 | enrichment | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
+| 21 | enrichment | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
+| 22 | enrichment | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
+| 23 | enrichment | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
+| 24 | enrichment | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
+| 25 | enrichment | `derive_court_interpretation_staleness.py` (`--apply`) | 12, 1, 2 | `riigikohus/*_peep.json` |
+| 26 | enrichment | `generate_similarity_index.py` | the 18 enrichment steps listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
+| 27 | build | `build_release_artifacts.py` (embeds `materialize_combined_inverses` #520 and the #521 analytical stamps) | every non-package step | `combined_ontology.jsonld`, `INDEX.json` |
+| 28 | package | `generate_analytical_overlay.py` (`--write`) | 27, 26 | `analytical/analytical_overlay.jsonld` |
+| 29 | package | `build_release_assets.py` | 27, 28 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
+
+**Ingest tier.** Steps 1-3 fetch from Riigi Teataja or oiguskantsler.ee.
+They are declared so every produced layer has a producer and declared inputs.
+The runner records them as `skipped_ingest` and uses their committed outputs,
+unless `--with-ingest` is given. Step 2 is offline, but it rewrites the same
+coverage report as step 1 (`generate_provision_versions.COVERAGE_PATH`), so it
+stays with the law run until the generator writes its own report.
+
+**Version layer.** `generate_amendment_history.py` rebuilds the chains
+without the #429 version join. Step 16 runs that join after the chains and the
+version sidecars exist. It re-mints the `_vf_` events and the
+`resultedInVersion` links, so a chain rerun cannot lose them. On the committed
+corpus the join is a no-op: 179 chains and 0 peeps change. Steps 17, 18 and
+25 derive act `temporalStatus`, the act expressions and court staleness from
+the same sidecars.
+
+**Combined is the last enrichment step, not the last step.** Step 27 depends
+on every ingest and enrichment step. Only package-tier steps may follow it.
+They read the built corpus and must never write a file the build read; the
+ordering check above enforces this. `materialize_combined_inverses` (#520)
+and the analytical counts/flags (#521) run inside step 27 on the in-memory
+graph, which `embeds` declares. They are never scheduled as separate passes.
 
 `rebuild_eurlex_combined` invokes `generate_eu_legislation.py` with
 `--rebuild-combined-from-peeps`, which delegates to
@@ -232,8 +284,7 @@ phase order is preserved exactly.
 from its schema file plus its `*_peep.json` files, taking the file lists from
 the parity gate's own definition (`validate_all.SUBCORPUS_COMBINED_TARGETS`),
 so the rebuild and the check cannot disagree. This table reflects the declarations in
-`src/estleg/run_all_integration.py:STEPS`; full input/output coverage remains
-work under #704.
+`src/estleg/run_all_integration.py:STEPS`.
 
 `court_provision_links_report.json` includes both raw recall lift and its
 comparable denominator: use
@@ -295,15 +346,17 @@ This is the **unified release command**. It:
 1. Validates the DAG (exit 2 on a structural problem).
 2. Takes an atomic rename-aside snapshot of `krr_outputs/` (unless
    `--no-restore-on-failure`).
-3. Runs all 20 steps in topo order. A failed step skips its dependents; the
-   first hard failure stops the run and the snapshot is restored.
+3. Runs all 29 steps in topo order. Ingest-tier steps are recorded as
+   `skipped_ingest` unless `--with-ingest` is given. A failed step skips its
+   dependents; the first hard failure stops the run and the snapshot is
+   restored.
 4. If — and only if — every step succeeded, runs the three release
    validators in order:
    - `python3 scripts/validate_all.py` — per-file corpus + aggregate parity
    - `python3 scripts/shacl_validate_all.py --all` — full-corpus SHACL conformance
    - `python3 scripts/validate_seadusloome_sync.py` — Seadusloome zero-warning gate
 5. Writes `krr_outputs/reports/integration/release_manifest.json`.
-6. Exits **0 only if `release_ok`** — i.e. all 20 steps succeeded **and**
+6. Exits **0 only if `release_ok`** — i.e. every step succeeded **and**
    all three validators passed **and** no release-surface artifact is
    missing (`releaseArtifacts.missing` is empty; see
    [the manifest schema](#the-release_manifestjson-schema)). Otherwise exit 1.
@@ -318,6 +371,8 @@ Useful flags:
 | `--validate-each` | Run `validate_all.py` after each successful step. Incompatible with `--parallel`. |
 | `--per-script-timeout N` | Per-step (and per-validator) timeout in seconds (default 1800; a timeout is recorded as exit code 124). |
 | `--parallel N` | Run up to N dependency-ready steps concurrently (default 1 = serial). **N > 1 is rejected (exit 2) for the current DAG** — independent steps share `*_peep.json` writes; see [Why serial by default](#why-serial-by-default). |
+| `--with-ingest` | Also run the ingest-tier steps (network). Without it they are recorded as `skipped_ingest`. |
+| `--check-pipeline-versions` | Run only the [`pipeline_version` gate](#reproducibility-gates) and exit. |
 
 ---
 
@@ -374,6 +429,7 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
       "status": "succeeded" },                  // succeeded | failed | timeout |
                                                 // blocked | missing |
                                                 // skipped_before_resume_point |
+                                                // skipped_ingest |
                                                 // validation_failed
     ...
   ],
@@ -413,11 +469,15 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
       "krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json": "…",
       "krr_outputs/curia/CURIA_INDEX.json": "…",
       "krr_outputs/eurlex/EURLEX_INDEX.json": "…",
-      "metadata.jsonld": "…"
+      "metadata.jsonld": "…",
+      "release/SHA256SUMS": "…",
+      "release/combined_ontology.jsonld.gz": "…" // + every asset SHA256SUMS lists
     },
     "missing": [],                              // any expected RELEASE_ARTIFACTS / INDEX
-                                                // glob entry not found on disk; releaseOk
-                                                // is False whenever this is non-empty
+                                                // glob entry or SHA256SUMS asset not
+                                                // found on disk, or "<path> (sha256
+                                                // mismatch)"; releaseOk is False
+                                                // whenever this is non-empty
     "contentHash": "…64 hex…"                   // sha256 over sorted "path\nsha256\n" lines
   },
 
@@ -427,9 +487,12 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
 }
 ```
 
-`contentHash` is a single stable digest of the whole **committed release
-surface** — compare two release manifests to explain corpus/artifact drift
-(per-file hashes pinpoint exactly what changed).
+`contentHash` is a single stable digest of the committed release surface plus
+every asset in `release/SHA256SUMS`. Compare two release manifests to explain
+corpus or artifact drift; per-file hashes pinpoint exactly what changed. Each
+asset is re-hashed against `SHA256SUMS`, so a stale or edited asset fails the
+release. `--release --validate-only` therefore needs a built `release/`
+directory.
 
 `releaseArtifacts.missing` is a *hard* gate, not just a diagnostic:
 `validate_all.py` only **warns** when `metadata.jsonld` is absent, so
@@ -444,6 +507,103 @@ its `logPath`.
 > The plain enrichment run (no `--release`) still writes its per-run manifest
 > to `krr_outputs/reports/integration/latest_pipeline_manifest.json` as
 > before, now also recording the `topoOrder`.
+
+---
+
+## Release assets
+
+`python3 scripts/build_release_assets.py` is the last DAG step (#705). It
+writes every downloadable file into the repo-root `release/` directory
+(gitignored). The directory sits outside `krr_outputs/` because every corpus
+file walker counts each `*.json` / `*.jsonld` under `krr_outputs/`. Copies of
+`INDEX.json` or `metadata.jsonld` there would be counted and validated as
+corpus files. The step runs these parts in order:
+
+1. **Version check.** Every combined head must carry `owl:versionInfo` =
+   `ONTOLOGY_VERSION`. The step fails otherwise, unless `--allow-unstamped`
+   is given; the missing heads are then recorded in `release_assets.json`.
+2. **RDF dumps.** `combined_ontology.{nt,nq,ttl}` are regenerated into
+   `release/rdf/` in one streamed pass (`serialize_corpus.py --stream`) and
+   gzipped from there; the committed `krr_outputs/combined_ontology.{nt,nq,ttl}`
+   (LFS) are never overwritten by the step — refreshing those is a separate,
+   deliberate commit, because every rebuild would otherwise add ~1.4 GB of LFS. N-Triples and N-Quads are byte-sorted and de-duplicated with an
+   external `sort -u`, so peak memory stays far below the 10-14 GB an
+   in-memory `Graph` needs. Blank-node labels differ between runs, as they
+   always have with rdflib. Turtle uses N-Triples syntax (a Turtle subset)
+   so blank-node references retain their identity across batches.
+3. **Named graphs.** `estleg_all.nq.gz` holds the seven #474 graphs. The
+   dump fails when a slot has no source; `serialize_named_graphs --write
+   --allow-partial` is the escape hatch. The regulations and riigikohus
+   slots read their peep trees, because neither corpus has a combined file.
+4. **Chunks.** `chunks.jsonl.gz` comes from `generate_retrieval_projection
+   --chunks-only`, run into `release/retrieval/`.
+5. **Combined dumps.** The four combined JSON-LD files the catalogue
+   advertises, plus the annotations layer, are gzipped with `mtime=0` and no
+   embedded filename. The output is byte-stable.
+6. **Small assets.** `INDEX.json`, the controlled vocabulary, the SHACL
+   shapes, `void.ttl`, `dataset_build_manifest.json`, `LICENSE`, `NOTICE`,
+   `DATA_RIGHTS.md` and `DATA_PROTECTION.md` are copied verbatim.
+7. **Catalogue.** Each `metadata.jsonld` distribution whose `dcat:downloadURL`
+   names a built asset gets `dcat:byteSize` and an `spdx:checksum`
+   (SHA-256). A release-download URL whose tag is not `v<ONTOLOGY_VERSION>`
+   produces a warning and retains its existing metadata. Checksums are only
+   updated for the current release tag. The updated `metadata.jsonld` is then
+   copied in as an asset.
+8. **`SHA256SUMS`** uses the format of the v1.0.0 file: `<sha256>  <name>`,
+   byte-sorted by name, covering every top-level asset. `release_assets.json`
+   records each asset's source, producer, size and hash, plus anything
+   skipped.
+
+Required inputs are checked before known generated files are removed;
+unrelated files are preserved. `SHA256SUMS` lists only assets built by this
+run. `--skip-rdf-dumps` (which also skips
+`estleg_all.nq.gz`), `--skip-named-graphs` and `--skip-chunks` shorten a
+local run, but the release gate rejects packages with skipped assets or
+unstamped heads. Upload the assets listed in `SHA256SUMS`, together with
+`SHA256SUMS` and `release_assets.json`, to the GitHub Release by hand;
+that publish step stays manual.
+
+---
+
+## Reproducibility gates
+
+**Pinned dependencies.** `pyproject.toml` declares compatible ranges.
+`constraints.txt` pins the exact versions the corpus was last built and
+validated with: the runtime and dev dependencies and their whole closure,
+including rdflib and pyshacl. Every CI install uses it:
+
+```bash
+python3 -m pip install -e ".[dev]" -c constraints.txt
+```
+
+The N-Triples, N-Quads and Turtle dumps and the SHACL results depend on the
+rdflib and pyshacl versions. Bump a pin deliberately: change it, rebuild,
+run the gates, and commit the result together.
+
+**`pipeline_version` gate.** Every `krr_outputs/reports/kov/*coverage.json`
+records the commit its generator ran at. The gate resolves each one with
+`git rev-parse <sha>^{commit}` and fails on any value that is not a commit in
+this repository:
+
+```bash
+python3 scripts/run_all_integration.py --check-pipeline-versions
+```
+
+The gate needs full history, so the CI job checks out with
+`fetch-depth: 0`. In a shallow clone it exits 2. Three reports are frozen
+corpus written from commits that no longer exist. They are listed with their
+exact SHA in `data/pipeline_version_baseline.json` and stay exempt only while
+they carry that SHA. The list may only shrink: regenerate a report from a
+pushed commit and delete its entry. A test pins the allowed set. A report
+regenerated from an unpushed or squashed commit fails the gate once that
+commit is gone.
+
+**Corpus test tier (#706).** The default `pytest` run (`-n auto` in CI)
+excludes the `corpus`-marked tests. Run `python3 -m pytest -q -m corpus`
+after `git lfs pull`. Corpus gates fail, not skip, on missing LFS inputs, and
+the default run excludes them. The session fails if a test modified
+`krr_outputs/`; set `ESTLEG_ALLOW_KRR_WRITES=1` only for intentional data
+work.
 
 ---
 
@@ -520,13 +680,22 @@ Git-tracked JSON/JSON-LD rather than LFS-managed artifacts. See
 The release `contentHash` in `release_manifest.json` is computed over the
 subset highlighted in the manifest (`combined_ontology.jsonld`,
 `controlled_vocabulary.jsonld`, the `*_INDEX.json` files, `metadata.jsonld`)
-— the artifacts downstream consumers treat as the release surface.
+and every release asset listed in `release/SHA256SUMS`.
+
+`INDEX.json`'s `generated` field is `BUILD_EVALUATION_DATE`, not the build
+day (#704). The file is hashed, and a wall-clock stamp churned it on every
+rebuild. The `registry_exceptions` seed lives in
+`data/registry_exceptions.json`. `generate_index()` starts from it and unions
+the exceptions already in `INDEX.json`.
 
 ### Regenerable build artifacts (need **not** be committed)
 
 These are produced by the orchestrator/validators and are safe to delete and
 rebuild; they are not part of the release contract:
 
+- the repo-root `release/` directory written by `build_release_assets.py`
+  (gzipped dumps, `estleg_all.nq.gz`, `chunks.jsonl.gz`, `SHA256SUMS`,
+  `release_assets.json`); it is uploaded to the GitHub Release, not committed
 - everything under `krr_outputs/reports/integration/` —
   `release_manifest.json`, `latest_pipeline_manifest.json`, and the
   `logs/*.log` per-step/per-validator capture files

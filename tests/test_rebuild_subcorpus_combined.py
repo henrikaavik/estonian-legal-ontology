@@ -244,3 +244,12 @@ def test_subcorpus_dir_override_reads_and_writes_inside_that_dir(tmp_path: Path)
     assert result.path == odd / "eelnoud_combined.jsonld"
     assert [n["@id"] for n in _graph(result)][1:] == ["estleg:Phase_Enacted", "estleg:Draft_X"]
     assert not (tmp_path / "eelnoud").exists()
+
+
+def test_rebuilt_head_carries_the_release_version(eurlex_tree: Path) -> None:
+    """#705: a fresh rebuild stamps owl:versionInfo / owl:versionIRI."""
+    from estleg.estleg_common import ONTOLOGY_IRI, ONTOLOGY_VERSION
+
+    head = _graph(rsc.rebuild_subcorpus_combined("eurlex", eurlex_tree))[0]
+    assert head["owl:versionInfo"] == ONTOLOGY_VERSION
+    assert head["owl:versionIRI"] == {"@id": f"{ONTOLOGY_IRI}/{ONTOLOGY_VERSION}"}
