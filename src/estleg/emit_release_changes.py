@@ -453,10 +453,10 @@ def _load_docs(snap: Snapshot, entry: LawEntry | None, missing: list[str]) -> li
     for name in entry.files if entry else []:
         rel = f"{KRR_REL}/{name}"
         doc = snap.read_json(rel)
-        if isinstance(doc, dict):
+        if isinstance(doc, dict) and isinstance(doc.get("@graph"), list):
             docs.append(doc)
         else:
-            missing.append(f"{snap.ref}:{rel}")
+            raise ValueError(f"{snap.ref}:{rel}: missing or invalid indexed law graph")
     return docs
 
 

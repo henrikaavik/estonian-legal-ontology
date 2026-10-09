@@ -432,6 +432,8 @@ def test_successful_fetch_populates_mapping_and_passes_gate(tmp_path, monkeypatc
     krr.mkdir()
     eurlex.mkdir()
 
+    _write_json(eurlex / "eurlex_schema.json", {"@context": mod.CONTEXT, "@graph": []})
+
     # One matchable Estonian law: "Tubakaseadus", file tubakaseadus_peep.json.
     law_file = krr / "tubakaseadus_peep.json"
     _write_json(
@@ -721,6 +723,8 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
     eurlex = krr / "eurlex"
     krr.mkdir()
     eurlex.mkdir()
+
+    _write_json(eurlex / "eurlex_schema.json", {"@context": mod.CONTEXT, "@graph": []})
 
     # Two matchable Estonian laws.
     liiklus = krr / "liiklusseadus_peep.json"
@@ -1056,6 +1060,8 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
     eurlex = krr / "eurlex"
     krr.mkdir()
     eurlex.mkdir()
+
+    _write_json(eurlex / "eurlex_schema.json", {"@context": mod.CONTEXT, "@graph": []})
 
     # Primary (on-subject) railway law and a co-amended off-subject fee law.
     raudtee = krr / "raudteeseadus_peep.json"

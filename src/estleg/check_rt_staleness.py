@@ -459,6 +459,7 @@ class CorpusStamp:
     path: Path | None
     stamp: date | None
     field: str | None
+    partial: bool = False
 
 
 def read_corpus_stamp(budget: CorpusBudget, krr_dir: Path = KRR_DIR) -> CorpusStamp:
@@ -471,10 +472,11 @@ def read_corpus_stamp(budget: CorpusBudget, krr_dir: Path = KRR_DIR) -> CorpusSt
     with path.open(encoding="utf-8") as handle:
         doc = json.load(handle)
     if isinstance(doc, dict):
+        partial = bool(doc.get("partial") or doc.get("partial_years"))
         for field in budget.stamp_fields:
             parsed = parse_iso_date(doc.get(field))
             if parsed is not None:
-                return CorpusStamp(budget, path, parsed, field)
+                return CorpusStamp(budget, path, parsed, field, partial=partial)
     return CorpusStamp(budget, path, None, None)
 
 
@@ -492,6 +494,8 @@ def check_corpora(
             continue
         stamp = read_corpus_stamp(budget, krr_dir)
         stamps.append(stamp)
+        if stamp.partial:
+            failures.append(f"{budget.key}: partial snapshot; a complete refresh is required")
         if stamp.path is not None and not stamp.path.is_file():
             failures.append(f"{budget.key}: missing index {stamp.path}")
             continue

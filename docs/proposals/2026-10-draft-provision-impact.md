@@ -113,7 +113,7 @@ adds the provision-level edge to that model rather than creating a parallel one.
 | `estleg:ProposedAmendment` | draft-derived proposal (#423) | 786 nodes |
 | `estleg:proposesToAmend` / `hasProposedAmendment` | ProposedAmendment ↔ act | 786 |
 | `estleg:amendingDraft` | ProposedAmendment → Draft | 786 |
-| `estleg:amendsLaw` | Draft → act; CV still marks it `owl:deprecated` "never populated" | 1,162 drafts |
+| `estleg:amendsLaw` | Draft → act; the stale deprecation was removed in #709 | 1,162 drafts |
 | `estleg:changeType` | Draft-level literal from title regex | 9,482 |
 | `estleg:LegalProvision` ⊃ `estleg:Subsection` | § node `…_Par_157` (`partOfAct` → act); lõige node `…_Par_157_Lg_1` (`parentProvision` → §) | — |
 
@@ -133,9 +133,12 @@ estleg:amendsProvision a owl:ObjectProperty ;
 - **Object granularity.** The most specific existing node: a `Subsection`
   (`…_Par_<n>_Lg_<m>`) when the formula names a lõige and that node exists,
   otherwise the `_Par_<n>` node. Punkt-level references collapse to the lõige.
-  New § / lõige that do not yet exist (`täiendatakse §-ga 14¹`) attach to the
-  nearest existing *parent* (the § or the act), with the operation recording
-  that it is an insertion.
+  A new lõige that does not yet exist attaches to its existing parent §,
+  with an `insert` operation recording the intended new citation. A new §
+  (`täiendatakse §-ga 14¹`) has only an act as its existing parent: emit
+  `amendsLaw` and the operation's `proposesToAmend` act edge, and omit
+  `amendsProvision` and `proposesToAmendProvision`. Never put an act IRI in
+  either provision-only property or invent a provision that is not yet law.
 - **Relation to `amendsLaw`.** Not `rdfs:subPropertyOf` (that would make a
   provision the object of an act-level property) but two property chains,
   materialised by the pipeline so every edge implies `amendsLaw` to the
@@ -146,8 +149,8 @@ estleg:amendsProvision a owl:ObjectProperty ;
       ( estleg:amendsProvision estleg:parentProvision estleg:partOfAct ) .
   ```
 
-  This needs the vocabulary owner to lift the CV `owl:deprecated` flag on
-  `amendsLaw` (the stale-comment nit is already with them).
+  The stale CV `owl:deprecated` flag on `amendsLaw` was already removed in
+  #709; no further deprecation change is a prerequisite.
 - **Operation detail** goes on `ProposedAmendment` nodes, not on the draft:
   one node per parsed instruction (sibling of today's act-level node, same
   `amendingDraft`), so each operation pairs with exactly one target. Add
@@ -159,6 +162,10 @@ estleg:amendsProvision a owl:ObjectProperty ;
   `amendsProvision` on the draft is the flat query surface. `ProposedAmendment`
   stays disjoint from `AmendmentEvent` and never carries `amends` or
   `amendmentDate`.
+  For insertions, add `estleg:proposedProvisionCitation` (`xsd:string`) to
+  the operation node to preserve the intended new § / lõige citation.
+  Every operation also retains its target act through `proposesToAmend`;
+  an act-level insertion has zero `proposesToAmendProvision` values.
 
 ### 3.2 SHACL
 
@@ -176,7 +183,10 @@ sh:property [
 
 No `sh:class`, matching `enactedAs`: the drafts SHACL bucket holds only stubs of
 cross-bucket targets. On `estleg:ProposedAmendmentShape`,
-`proposesToAmendProvision` is `sh:nodeKind sh:IRI`, and `amendmentOperation`
+`proposesToAmendProvision` is `sh:nodeKind sh:IRI`, with the same provision-IRI
+pattern and `sh:maxCount 1` but no minimum (new § insertions are act-level).
+`proposedProvisionCitation` is an optional, single `xsd:string`, required for
+insertions. `amendmentOperation`
 is `sh:in ( "replace" "insert" "repeal" "substituteWords" )`. A SPARQL-based
 consistency check asserts that each `amendsProvision` object's act (via
 `partOfAct`, through `parentProvision` for a lõige) is among the draft's `amendsLaw` objects.
@@ -336,7 +346,8 @@ keep track A and re-scope. A resolution-rate miss is a provision-layer gap
 3. **Attachment rights** with EIS and, if relevant, Sätla (§5).
 4. **Scheme governance:** owner of `HonteImpactAreaScheme`, HÕNTE redaction
    pinning, PublicFinance as concept or property.
-5. **`amendsLaw` status:** lift the CV `owl:deprecated` flag (vocabulary owner).
+5. **Insertion representation:** confirm the act-only target and intended
+   citation literal for new § insertions (§3.1).
 
 ## 8. Technical follow-ups (to file only after §7.1–7.3 are settled)
 

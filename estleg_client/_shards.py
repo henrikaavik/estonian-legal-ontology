@@ -5,13 +5,14 @@ A release ships the enacted-law corpus as one ~300 MB aggregate, not as the
 aggregate twice (constant memory per node): pass one maps every node to the
 ``estleg:Law`` act it belongs to (via ``partOfAct`` / ``parentProvision`` /
 ``applicableProvision`` / ``citationSource`` / ``isPartOf`` / ``inPart``),
-pass two appends each owned node to ``krr_outputs/_client/laws/<prefix>.jsonl``.
+pass two appends each owned node to ``krr_outputs/_client/laws/<iri-sha256>.jsonl``.
 ``load_law`` then reads one shard instead of the aggregate. Nodes that belong
 to no single law (stubs, institutions, concept schemes) are not sharded.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import unicodedata
@@ -140,7 +141,9 @@ def build_law_shards(krr: Path) -> Path | None:
     out_dir.mkdir(parents=True, exist_ok=True)
     for stale in out_dir.glob("*.jsonl"):
         stale.unlink()
-    file_of = {iri: f"laws/{meta['prefix']}.jsonl" for iri, meta in acts.items()}
+    # IRIs are data, not filesystem paths; hashes also avoid case-insensitive
+    # filename collisions between different law prefixes.
+    file_of = {iri: f"laws/{hashlib.sha256(iri.encode()).hexdigest()}.jsonl" for iri in acts}
     counts: dict[str, int] = defaultdict(int)
     pending: dict[str, list[str]] = defaultdict(list)
     buffered = 0
@@ -190,7 +193,10 @@ def read_shard_index(krr: Path) -> dict[str, Any] | None:
 
 
 def read_shard_nodes(krr: Path, rel_file: str) -> list[dict[str, Any]]:
-    path = krr / SHARD_DIR / rel_file
+    shard_root = (krr / SHARD_DIR).resolve()
+    path = (shard_root / rel_file).resolve()
+    if not path.is_relative_to(shard_root):
+        raise ValueError(f"Shard path escapes corpus: {rel_file}")
     nodes: list[dict[str, Any]] = []
     with path.open(encoding="utf-8") as handle:
         for line in handle:

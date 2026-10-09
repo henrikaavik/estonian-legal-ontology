@@ -13,6 +13,7 @@ Scope:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -24,7 +25,7 @@ import xml.etree.ElementTree as ET
 from collections import Counter, deque
 from collections.abc import Callable, Iterable, Iterator
 from concurrent.futures import Future, ThreadPoolExecutor
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import TypeVar
 
@@ -39,6 +40,7 @@ from estleg.law_structure import (
     _dedupe_paragraph_suffix,
     _paragraph_id_suffix,
     build_subsections,
+    paragraph_display,
 )
 from estleg import riigiteataja_common
 from estleg.ingest_overlay import (
@@ -94,6 +96,9 @@ IRI_SCHEME_LAW = "law"
 IRI_SCHEME_LEGACY = "legacy"
 IRI_SCHEME_AUTO = "auto"
 IRI_SCHEMES = (IRI_SCHEME_LAW, IRI_SCHEME_LEGACY)
+# Persist the selected representation profile so auto refreshes cannot rename
+# provisions on an act first generated with the law scheme.
+IRI_SCHEME_PROFILE = "https://w3id.org/estleg/iri-scheme/regulations/"
 
 
 # ---------------------------------------------------------------------------
@@ -441,7 +446,7 @@ def collect_structured_paragraphs(
     for p in [el for el in root.iter() if ln(el.tag) == "paragrahv"]:
         nr = ct(p, "paragrahvNr") or "?"
         ptitle = ct(p, "paragrahvPealkiri") or ""
-        display = ct(p, "kuvatavNr") or f"§ {nr}"
+        display = paragraph_display(p)
         text = collect_text(p)
         full_text = collect_full_text(p)
 
@@ -595,7 +600,10 @@ def _iso_day(value: str | None) -> str | None:
     if not value:
         return None
     day = str(value).strip()[:10]
-    return day or None
+    try:
+        return date.fromisoformat(day).isoformat()
+    except ValueError:
+        return None
 
 
 def _xsd_date_value(value) -> str | None:
@@ -806,6 +814,7 @@ def build_regulation_jsonld(
         "estleg:documentType": "määrus",
         "estleg:isKov": {"@value": "true" if is_kov else "false", "@type": "xsd:boolean"},
         "estleg:parseMode": parse_mode,
+        "dcterms:conformsTo": {"@id": IRI_SCHEME_PROFILE + iri_scheme},
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
@@ -1685,7 +1694,7 @@ def make_throttled_fetch(
 # Resumable refresh state (#722) — mirrors generate_all_laws --regen-state
 # ---------------------------------------------------------------------------
 
-REGEN_STATE_SCHEMA_VERSION = 1
+REGEN_STATE_SCHEMA_VERSION = 2
 DEFAULT_REGEN_STATE_SENTINEL = "__default_regen_state__"
 #: Checkpoint cadence: the ledger is rewritten atomically every N recorded
 #: acts (and on exit). 14,871 per-act rewrites of a multi-MB ledger would
@@ -1768,6 +1777,7 @@ def prune_completed_regen_state(
     *,
     kehtiv: str,
     out_dir: Path,
+    iri_scheme: str = IRI_SCHEME_AUTO,
 ) -> set[str]:
     """Drop stale completed entries and return the terviktekstIds to skip.
 
@@ -1803,6 +1813,10 @@ def prune_completed_regen_state(
             reason = "globalId changed"
         elif not entry.get("output") or not (out_dir / entry["output"]).is_file():
             reason = "output missing"
+        elif not entry.get("outputSha256") or entry["outputSha256"] != output_digest(out_dir / entry["output"]):
+            reason = "output changed"
+        elif iri_scheme != IRI_SCHEME_AUTO and entry.get("iriScheme") != iri_scheme:
+            reason = "iriScheme changed"
         if reason:
             stale[tid] = reason
             completed.pop(tid, None)
@@ -1830,6 +1844,7 @@ def record_regen_state(
     kehtiv: str,
     status: str,
     output: str | None = None,
+    output_sha256: str | None = None,
     subsection_count: int = 0,
     iri_scheme: str | None = None,
     reason: str | None = None,
@@ -1845,6 +1860,8 @@ def record_regen_state(
     }
     if output:
         entry["output"] = output
+    if output_sha256:
+        entry["outputSha256"] = output_sha256
     if iri_scheme:
         entry["iriScheme"] = iri_scheme
     if subsection_count:
@@ -1860,6 +1877,29 @@ def record_regen_state(
 
 
 _TID_FROM_FILENAME_RE = re.compile(r"_t(\d+)_peep\.json$")
+
+
+def output_digest(path: Path) -> str | None:
+    try:
+        with path.open("rb") as fh:
+            return hashlib.file_digest(fh, "sha256").hexdigest()
+    except OSError:
+        return None
+
+
+def existing_regulation_schemes(out_dir: Path) -> dict[str, str]:
+    schemes = {}
+    for path in regulation_files(out_dir):
+        match = _TID_FROM_FILENAME_RE.search(path.name)
+        if not match:
+            continue
+        with path.open(encoding="utf-8") as fh:
+            root = act_root_node(json.load(fh)) or {}
+        profile = root.get("dcterms:conformsTo", {})
+        profile = profile.get("@id", "") if isinstance(profile, dict) else ""
+        scheme = profile.removeprefix(IRI_SCHEME_PROFILE)
+        schemes[match.group(1)] = scheme if scheme in IRI_SCHEMES else IRI_SCHEME_LEGACY
+    return schemes
 
 
 def existing_regulation_paths(out_dir: Path) -> dict[str, Path]:
@@ -1887,8 +1927,10 @@ def existing_regulation_tids(out_dir: Path) -> set[str]:
     return set(existing_regulation_paths(out_dir))
 
 
-def resolve_iri_scheme(requested: str, *, has_committed_peep: bool) -> str:
+def resolve_iri_scheme(requested: str, *, has_committed_peep: bool, existing_scheme: str | None = None) -> str:
     if requested == IRI_SCHEME_AUTO:
+        if existing_scheme in IRI_SCHEMES:
+            return existing_scheme
         return IRI_SCHEME_LEGACY if has_committed_peep else IRI_SCHEME_LAW
     _check_iri_scheme(requested)
     return requested
@@ -1979,6 +2021,8 @@ def main():
 
     if args.workers < 1:
         parser.error("--workers must be >= 1")
+    if _iso_day(args.kehtiv) is None:
+        parser.error("--kehtiv must be a valid ISO calendar date")
     is_kov = args.kov
     mode = "force" if args.force else "refresh" if args.refresh else "missing-only"
     out_dir = OUTPUT_KOV if is_kov else OUTPUT_RIIK
@@ -2041,7 +2085,7 @@ def main():
         regen_state["mode"] = mode
         regen_state["kehtiv"] = args.kehtiv
         resume_tids = prune_completed_regen_state(
-            regen_state, regs, kehtiv=args.kehtiv, out_dir=out_dir
+            regen_state, regs, kehtiv=args.kehtiv, out_dir=out_dir, iri_scheme=args.iri_scheme
         )
         save_regen_state(state_path, regen_state)
         print(f"  Regen state: {state_path} ({len(resume_tids)} completed acts will be skipped)")
@@ -2066,6 +2110,7 @@ def main():
     built_docs: dict[Path, dict] = {}
     committed_paths = existing_regulation_paths(out_dir)
     committed_tids = set(committed_paths)
+    existing_schemes = existing_regulation_schemes(out_dir) if args.iri_scheme == IRI_SCHEME_AUTO else {}
 
     # Plan serially (cheap, deterministic), fetch through the bounded pool,
     # then build + write + ledger in the main thread in input order.
@@ -2109,7 +2154,8 @@ def main():
             # Cache name: globalID first (cheap to verify against RT), tid as fallback.
             "cache_name": f"reg_{info.get('gid') or tid}",
             "iri_scheme": resolve_iri_scheme(
-                args.iri_scheme, has_committed_peep=tid in committed_tids
+                args.iri_scheme, has_committed_peep=tid in committed_tids,
+                existing_scheme=existing_schemes.get(tid),
             ),
         })
 
@@ -2170,6 +2216,7 @@ def main():
                         regen_state, tid=tid, info=info, kehtiv=args.kehtiv,
                         status=status,
                         output=str(out_path.relative_to(out_dir)),
+                        output_sha256=output_digest(out_path),
                         subsection_count=stats.get("subsections", 0),
                         iri_scheme=task["iri_scheme"],
                     )
@@ -2195,6 +2242,7 @@ def main():
         kehtiv=args.kehtiv,
         run_stats={
             **source_manifest,
+            "complete": bool(source_manifest.get("complete")) and failed == 0,
             "generationMode": mode,
             "newlyGenerated": run_counts["newlyGenerated"],
             "existingSkipped": run_counts["existingSkipped"],
@@ -2245,6 +2293,8 @@ def main():
         print(f"      - {_issuer_name}: {_issuer_count}")
     print(f"  Output directory:           {out_dir}")
     print(f"  Index file:                 {index_path.name}")
+    if failed and not args.allow_partial:
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

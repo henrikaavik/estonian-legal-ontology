@@ -5,6 +5,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -153,7 +154,8 @@ def test_catalogue_warns_when_the_url_tag_is_another_release() -> None:
     )
     asset = bra.Asset(name="x.gz", source="s", producer="p", bytes=3, sha256="0" * 64)
     catalogued, warnings = bra.update_catalogue(meta, {"x.gz": asset})
-    assert catalogued == ["x.gz"]
+    assert catalogued == []
+    assert "spdx:checksum" not in meta["dcat:distribution"][-1]
     assert any("not v" in w for w in warnings)
 
 
@@ -173,9 +175,34 @@ def test_stale_assets_from_an_earlier_run_are_removed(tree: dict[str, Path]) -> 
 
 
 def test_missing_input_fails(tree: dict[str, Path]) -> None:
+    _write(tree["release"] / bra.SUMS_NAME, "previous release")
     (tree["repo"] / "krr_outputs" / "curia" / "curia_combined.jsonld").unlink()
     with pytest.raises(bra.ReleaseAssetError, match="curia_combined"):
         _build(tree)
+    assert (tree["release"] / bra.SUMS_NAME).read_text() == "previous release"
+
+
+def test_release_destination_cannot_contain_sources(tree: dict[str, Path]) -> None:
+    original = tree["metadata"].read_bytes()
+    tree["release"] = tree["repo"]
+    with pytest.raises(bra.ReleaseAssetError, match="contains release inputs"):
+        _build(tree)
+    assert tree["metadata"].read_bytes() == original
+
+
+def test_custom_corpus_is_used_for_every_corpus_asset(tree: dict[str, Path]) -> None:
+    elsewhere = tree["repo"].parent / "other-corpus"
+    shutil.move(tree["krr"], elsewhere)
+    tree["krr"] = elsewhere
+    _build(tree)
+    assert (tree["release"] / "INDEX.json").read_bytes() == (elsewhere / "INDEX.json").read_bytes()
+
+
+def test_skipped_package_is_not_release_complete(tree: dict[str, Path]) -> None:
+    _build(tree)
+    check = bra.verify_sums(tree["release"], require_complete=True)
+    assert tree["release"] / bra.CHUNKS_ASSET in check["missing"]
+    assert tree["release"] / bra.ASSET_MANIFEST_NAME in check["mismatched"]
 
 
 def test_lfs_pointer_input_fails(tree: dict[str, Path]) -> None:

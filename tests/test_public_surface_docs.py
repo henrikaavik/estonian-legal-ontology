@@ -121,6 +121,23 @@ def test_andmed_prose_table_repeats_block_counts() -> None:
         )
 
 
+def test_public_file_counts_match_metadata_and_generated_report() -> None:
+    metadata = json.loads(_read(REPO / "metadata.jsonld"))
+    total = metadata["estleg:statistics"]["estleg:totalFiles"]
+    report = _read(DOCS / "VALIDATION_REPORT.md").split(
+        "<!-- BEGIN GENERATED: validation-summary -->", 1
+    )[1].split("<!-- END GENERATED: validation-summary -->", 1)[0]
+    validated = int(re.search(r"\| Files validated \| ([\d,]+) \|", report).group(1).replace(",", ""))
+    errors = int(re.search(r"\| Errors \| (\d+) \|", report).group(1))
+    warnings = int(re.search(r"\| Warnings \| (\d+) \|", report).group(1))
+    for path in (ANDMED, OVERVIEW):
+        text = _normalise_spaces(_read(path))
+        assert _et_number(total) in text, f"{path.name}: total file count is stale"
+        assert _et_number(validated) in text, f"{path.name}: validated file count is stale"
+    assert f"**{errors} errors / {warnings} warnings**" in _read(README)
+    assert f"<td>JSON/JSON-LD vead</td><td>{errors}</td>" in _read(OVERVIEW)
+
+
 def test_andmed_has_required_sections_and_contact() -> None:
     text = _read(ANDMED)
     for heading in (

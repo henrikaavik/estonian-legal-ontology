@@ -2654,6 +2654,8 @@ def _json_bool(value: Any) -> bool | None:
     if isinstance(value, bool):
         return value
     raw = value.get("@value") if isinstance(value, dict) else value
+    if isinstance(raw, bool):
+        return raw
     if isinstance(raw, str):
         if raw.strip().lower() == "true":
             return True
@@ -2669,7 +2671,7 @@ def _eu_directives() -> dict[str, dict[str, Any]]:
     Reads only ``eurlex/eurlex_directives_peep.json`` (a regular git blob, not
     the LFS ``eurlex_combined.jsonld`` or the LFS analytical overlay). Each
     record is ``{iri, celex, title, in_force, deadline, eurlex_url,
-    transposed_by}`` with ``in_force`` True / False / None (unknown).
+    transposed_by, transposition_status}`` with ``in_force`` True / False / None (unknown).
     """
     out: dict[str, dict[str, Any]] = {}
     for node in _graph_of(krr_dir().joinpath(*_EURLEX_DIRECTIVES_REL)):
@@ -2686,6 +2688,7 @@ def _eu_directives() -> dict[str, dict[str, Any]]:
             "deadline": _date_text(node.get("estleg:transpositionDeadline")),
             "eurlex_url": link,
             "transposed_by": _ids_of(node.get("estleg:transposedBy")),
+            "transposition_status": _text(node.get("estleg:transpositionStatus")),
         }
     return out
 
@@ -2724,7 +2727,8 @@ def transposition_status(celex: str) -> dict[str, Any] | None:
     transposing_laws: [{name, title, rt_url}], coverage_flag}`` where
     ``coverage_flag`` is ``"noTranspositionEdgeInCorpus"`` exactly when the
     directive is in force and the corpus holds no transposition edge for it
-    (the #701 semantics: a corpus-coverage fact, not a legal finding), else "".
+    and no recorded transposition or exemption evidence, else "". The flag
+    is a corpus-coverage fact, not a legal finding.
     """
     rec = _eu_directives().get(normalize_celex(celex))
     if rec is None:
@@ -2739,7 +2743,9 @@ def transposition_status(celex: str) -> dict[str, Any] | None:
         }
         for slug in slugs
     ]
-    gap = rec["in_force"] is True and not laws
+    # A stored edge still exists when its law prefix cannot be resolved.
+    gap = (rec["in_force"] is True and not laws and not rec["transposed_by"]
+           and rec.get("transposition_status") not in {"transposed", "no_measure_required"})
     return {
         "celex": rec["celex"],
         "title": rec["title"],
@@ -2747,6 +2753,7 @@ def transposition_status(celex: str) -> dict[str, Any] | None:
         "transposition_deadline": rec["deadline"],
         "eurlex_url": rec["eurlex_url"],
         "transposing_laws": laws,
+        "transposition_status": rec.get("transposition_status", ""),
         "coverage_flag": "noTranspositionEdgeInCorpus" if gap else "",
     }
 
@@ -2762,8 +2769,8 @@ def transposition_gaps() -> list[dict[str, Any]]:
     Rows are ``{celex, title, transposition_deadline, eurlex_url,
     coverage_flag}`` ordered by deadline (oldest first; undated last), then
     CELEX. Only ``in_force is True`` directives qualify, matching the
-    analytical overlay's rule; a directive whose force is unknown is not
-    reported as a gap.
+    force filter; directives with recorded transposition or exemption evidence
+    and directives whose force is unknown are not reported as gaps.
     """
     edges = _transposing_laws_by_celex()
     rows = [
@@ -2773,9 +2780,11 @@ def transposition_gaps() -> list[dict[str, Any]]:
             "transposition_deadline": rec["deadline"],
             "eurlex_url": rec["eurlex_url"],
             "coverage_flag": "noTranspositionEdgeInCorpus",
+            "transposition_status": rec.get("transposition_status", ""),
         }
         for rec in _eu_directives().values()
-        if rec["in_force"] is True and not edges.get(rec["celex"])
+        if rec["in_force"] is True and not edges.get(rec["celex"]) and not rec["transposed_by"]
+        and rec.get("transposition_status") not in {"transposed", "no_measure_required"}
     ]
     rows.sort(key=lambda r: (r["transposition_deadline"] or "9999", r["celex"]))
     return rows

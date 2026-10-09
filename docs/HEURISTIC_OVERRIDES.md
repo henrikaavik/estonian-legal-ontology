@@ -46,7 +46,8 @@ The loader fails hard, naming the line, on invalid JSON, unknown or missing
 keys, an unknown predicate, a malformed node IRI, a value in the wrong form,
 a bad date, an e-mail-like reviewer, or a second line for the same
 (`node`, `predicate`) pair. A classifier with a broken store exits non-zero
-before it touches any file.
+before it touches any file. An explicitly supplied `--overrides` path must
+exist; use an empty file when intentionally running without overrides.
 
 ## Workflow
 
@@ -100,6 +101,10 @@ still-heuristic `targetGroup` therefore reads 0.65.
   with the reviewed subjects, or none for `remove`, plus attribution and
   confidence. Under legacy `--write-peeps`, the peep's EuroVoc subjects are
   never cleared for an owned act, and the reviewed set is written instead.
+  The official CELLAR refresh also applies the current override last,
+  including removals. It preserves subjects from other vocabularies, removes
+  the CELLAR source marker from human corrections, and clears stale reviewer
+  attribution when an override is deleted and official subjects are restored.
 
 ## Listing stale entries
 

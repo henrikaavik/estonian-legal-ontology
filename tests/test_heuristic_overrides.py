@@ -65,8 +65,9 @@ def _node(doc: dict, node_id: str) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def test_missing_store_is_empty(tmp_path: Path) -> None:
-    store = load_overrides(tmp_path / "absent.jsonl")
+def test_missing_default_store_is_empty(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setattr(ho, "OVERRIDES_PATH", tmp_path / "absent.jsonl")
+    store = load_overrides()
     assert len(store) == 0 and not store
 
 
@@ -592,6 +593,18 @@ def test_competence_forced_type_without_authority_override(tmp_path: Path) -> No
     assert ("estleg:CMP_Par_3", "advisory", "estleg:CMP_Map_2026") in state.inst_provisions[iri]
 
 
+def test_removed_competence_type_does_not_survive_in_backlinks(tmp_path: Path) -> None:
+    peep = _competence_peep(tmp_path)
+    store = _store(_rec(node="estleg:CMP_Par_3", predicate="estleg:competenceType",
+                        action="remove", value=...))
+    state = _run_competence(peep, store)
+    p3 = _node(_read(peep), "estleg:CMP_Par_3")
+    assert "estleg:competenceType" not in p3
+    iri = p3["estleg:competentAuthority"][0]["@id"]
+    # Keep the authority relationship without reasserting the rejected type.
+    assert ("estleg:CMP_Par_3", "general", "estleg:CMP_Map_2026") in state.inst_provisions[iri]
+
+
 def test_competence_unknown_override_institution_is_skipped(tmp_path: Path) -> None:
     peep = _competence_peep(tmp_path)
     store = _store(
@@ -748,6 +761,20 @@ def test_eurovoc_check_overrides(tmp_path: Path, monkeypatch, capsys) -> None:
     out = capsys.readouterr().out
     assert "line 1: estleg:ZZZ_Map_2026 dcterms:subject" in out
     assert not (krr / "eurovoc").exists()
+
+
+def test_eurovoc_deleted_override_retracts_human_attribution(tmp_path: Path, monkeypatch) -> None:
+    krr, peeps = _eurovoc_krr(tmp_path)
+    store = _write_store(
+        tmp_path / "o.jsonl",
+        _rec(node="estleg:AAA_Map_2026", predicate="dcterms:subject", value=EV_SET),
+    )
+    _run_eurovoc(monkeypatch, krr, peeps, store, "--write-peeps")
+    store.write_text("")
+    _run_eurovoc(monkeypatch, krr, peeps, store, "--write-peeps")
+    act = _node(_read(peeps[0]), "estleg:AAA_Map_2026")
+    assert "prov:wasAttributedTo" not in act
+    assert act.get("estleg:assertionConfidence") != CONF_1
 
 
 # ---------------------------------------------------------------------------

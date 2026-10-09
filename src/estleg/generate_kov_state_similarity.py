@@ -138,10 +138,12 @@ def corpus_files(krr_dir: Path) -> dict[str, list[Path]]:
 def _read_graph(path: Path) -> list[dict]:
     try:
         doc = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return []
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"Cannot read similarity input {path}: {exc}") from exc
     graph = doc.get("@graph") if isinstance(doc, dict) else None
-    return [n for n in graph if isinstance(n, dict)] if isinstance(graph, list) else []
+    if not isinstance(graph, list):
+        raise ValueError(f"Invalid similarity graph: {path}")
+    return [n for n in graph if isinstance(n, dict)]
 
 
 def _is_provision(node_id: str) -> bool:

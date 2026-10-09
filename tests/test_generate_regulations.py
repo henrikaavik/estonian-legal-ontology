@@ -2296,7 +2296,8 @@ class TestRegenStateResume722:
         state = {
             "schemaVersion": generate_regulations.REGEN_STATE_SCHEMA_VERSION,
             "completed": {
-                "1": {"kehtiv": "2026-10-01", "globalId": "10", "output": "a_t1_peep.json"},
+                "1": {"kehtiv": "2026-10-01", "globalId": "10", "output": "a_t1_peep.json",
+                      "outputSha256": generate_regulations.output_digest(out / "a_t1_peep.json")},
                 "2": {"kehtiv": "2026-09-01", "globalId": "20", "output": "b_t2_peep.json"},
                 "3": {"kehtiv": "2026-10-01", "globalId": "30", "output": "c_t3_peep.json"},
                 "4": {"kehtiv": "2026-10-01", "globalId": "40", "output": "a_t1_peep.json"},

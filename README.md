@@ -17,10 +17,11 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Status: 1,127 enacted laws (1,200 law files) + 22,832 drafts + 3,893 state regulations + 11,845 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **28,626 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
-release validators intentionally skip. On the reviewed 2026-09-07 tree,
-`validate_all.py` validates 26,961 files and reports **122 errors / 2 warnings**;
-SHACL discovery selects 26,887 files. Full SHACL and consumer-sync gates still
-fail. See the measured [validation report](docs/VALIDATION_REPORT.md) and
+release validators intentionally skip. The current generated validation report
+records 26,978 validated files and **0 errors / 2 warnings**. This is the JSON
+and corpus-integrity result; freshness, SHACL and consumer-sync are separate
+gates. The freshness gate still fails on the committed snapshots. See the
+measured [validation report](docs/VALIDATION_REPORT.md) and
 [project status](docs/README.md#project-status) before treating an artifact as
 release-ready.
 
@@ -636,7 +637,7 @@ The integration layers run as one dependency-ordered DAG (`scripts/run_all_integ
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (27,008 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (27,029 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry

@@ -279,3 +279,15 @@ def test_attested_cache_file_writes_despite_uuid_globaalid(tmp_path):
     assert stats["xml_other_redaction"] == []
     root = json.loads((krr / "leping_peep.json").read_text(encoding="utf-8"))["@graph"][0]
     assert root[ntm.PROPERTY] == [{"@id": "estleg:EU_32001L0029"}]
+
+
+def test_old_cached_redaction_cannot_replace_current_assertions(tmp_path):
+    krr, rt = _fixture_corpus(tmp_path)
+    path = krr / "tubakaseadus_peep.json"
+    doc = json.loads(path.read_text())
+    doc["@graph"][0]["dcterms:source"] = {"@id": "https://www.riigiteataja.ee/akt/2.xml"}
+    doc["@graph"][0][ntm.PROPERTY] = [{"@id": "estleg:EU_32014L0040"}]
+    _write(path, doc)
+    before = path.read_bytes()
+    ntm.apply_ntm([rt / "tubakaseadus__tid99.xml"], krr_dir=krr)
+    assert path.read_bytes() == before

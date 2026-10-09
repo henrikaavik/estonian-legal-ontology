@@ -38,6 +38,11 @@ def git_krr(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 
 
 class TestResolveSnapshotMode:
+    def test_git_config_cannot_hide_untracked_work(self, git_krr: Path) -> None:
+        _git(git_krr.parent, "config", "status.showUntrackedFiles", "no")
+        (git_krr / "precious.json").write_text("untracked work")
+        assert rai.resolve_snapshot_mode("auto") == rai.ROLLBACK_COPY
+
     def test_auto_on_clean_tree_uses_git(self, git_krr: Path) -> None:
         assert rai.krr_outputs_git_clean() is True
         assert rai.resolve_snapshot_mode("auto") == rai.ROLLBACK_GIT

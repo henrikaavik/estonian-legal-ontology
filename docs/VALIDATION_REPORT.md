@@ -38,10 +38,10 @@ count. Materialise missing LFS inputs before checking; when the corpus has
 changed, regenerate the reports. A count difference cannot establish that the
 report is current.
 
-The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
+The repository advertises 27,029 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
 manifests, and probe outputs that are not corpus inputs, which is why it
-validates 26,961.
+validates 26,978.
 
 ## What the errors are
 
@@ -387,15 +387,16 @@ are out of scope because they carry no `kehtiv` by design.
 carry `legalText` from structured law files whose head has an RT `/akt/{id}`
 source. It fetches that exact redaction with `riigiteataja_common.fetch_xml`
 and re-parses it with the generator's own `emit_hierarchy_and_provisions`.
-Then it diffs the texts after normalisation. Normalisation removes rendering
-that carries no wording: `<sup>` markup, superscript digits, whitespace,
-`Kehtetu -` placeholders and list-item markers such as `1)`. A mismatch prints
-a word-level unified diff.
+Then it diffs the texts after normalisation. HTML and Unicode superscripts
+use the same comparison form, distinct from plain digits. List-item numbers
+are retained. Whitespace and repealed `Kehtetu -` placeholders are ignored.
+A mismatch prints a word-level unified diff. Missing or unreadable corpus
+inputs fail the gate, and updating an existing baseline cannot add offenders.
 
 - A newer consolidation (`kehtivId` differs from the committed id) is a note,
   not a failure, because the committed redaction is the one compared.
 - Text that matches only the newer redaction is reported as
-  `stale-source-id`, as a warning.
+  `stale-source-id` and fails until its source metadata is corrected.
 - Exit codes: 0 all match; 1 mismatch, missing §, unknown act or RT format
   change; 2 RT unreachable.
 

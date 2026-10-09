@@ -36,7 +36,7 @@ redaction and § (`rt_url`).
 | `rt_url` | string or null | Version sidecar `estleg:rtUrl` (redaction page), else act `dcterms:source`; `.xml` stripped; `#para<N>[b<k>]` anchor. |
 | `valid_from` | date or null | `estleg:versionValidFrom`; act `kehtiv` for consolidated text. |
 | `valid_to` | date or null | `estleg:versionValidTo`; null = open-ended. |
-| `in_force` | boolean | Validity window contains `evaluation_date` (consolidated: act `estleg:temporalStatus`). |
+| `in_force` | boolean | Validity window contains `evaluation_date`; consolidated text also requires act `estleg:temporalStatus` to be in force. |
 | `kehtiv` | date or null | Act root `estleg:kehtiv`: consolidation date of the act snapshot. |
 | `evaluation_date` | date | Pinned `ESTLEG_BUILD_EVALUATION_DATE` that `in_force` was computed against. |
 | `ontology_version` | string | `ONTOLOGY_VERSION` of the build (release tag `v<version>`). |

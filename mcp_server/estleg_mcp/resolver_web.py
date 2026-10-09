@@ -31,6 +31,7 @@ import functools
 import hashlib
 import html
 import json
+import math
 import os
 import time
 from collections.abc import Callable
@@ -95,8 +96,7 @@ def negotiate(accept: str | None, format_param: str | None = None) -> str | None
     if format_param:
         return _FORMAT_PARAM.get(format_param.strip().lower())
     header = (accept or "").strip() or "*/*"
-    best: tuple[float, int, int] | None = None
-    choice: str | None = None
+    ranges: list[tuple[str, float, int, int]] = []
     for position, part in enumerate(header.split(",")):
         fields = [f.strip() for f in part.split(";")]
         media = fields[0].lower()
@@ -108,15 +108,27 @@ def negotiate(accept: str | None, format_param: str | None = None) -> str | None
                     q = float(value)
                 except ValueError:
                     q = 0.0
+        if not math.isfinite(q) or not 0 <= q <= 1:
+            q = 0.0
+        specificity = 0 if media == "*/*" else (1 if media.endswith("/*") else 2)
+        ranges.append((media, q, specificity, position))
+    best: tuple[float, int, int] | None = None
+    choice: str | None = None
+    # Most-specific matching range sets each representation's quality. A
+    # wildcard cannot reinstate a representation explicitly assigned q=0.
+    for fmt in ("html", "jsonld", "turtle", "ntriples", "rdfxml"):
+        media = FORMATS[fmt][0]
+        # The response uses the canonical media type. Its explicit quality
+        # takes precedence over compatibility aliases, regardless of order.
+        matches = [(spec, offered == media, q, -pos) for offered, q, spec, pos in ranges
+                   if offered == "*/*" or offered == media.split("/", 1)[0] + "/*"
+                   or _MEDIA.get(offered) == fmt]
+        if not matches:
+            continue
+        specificity, _canonical, q, order = max(matches)
         if q <= 0:
             continue
-        if media in _MEDIA:
-            fmt, specificity = _MEDIA[media], 2
-        elif media in _WILDCARD:
-            fmt, specificity = _WILDCARD[media], 0 if media == "*/*" else 1
-        else:
-            continue
-        key = (q, specificity, -position)
+        key = (q, specificity, order)
         if best is None or key > best:
             best, choice = key, fmt
     return choice

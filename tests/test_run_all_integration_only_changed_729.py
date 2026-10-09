@@ -200,7 +200,7 @@ def toy_runner(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 def test_cli_dry_run_without_manifest_plans_a_full_run(toy_runner: Path, capsys) -> None:
     rai.main(["--dry-run", "--only-changed"])
     out = capsys.readouterr().out
-    assert "No hash manifest found" in out
+    assert "Full rebuild required" in out
     assert "5. [enrichment] assets" in out  # every non-ingest step planned
     assert "[ingest] net" not in out
     assert not (toy_runner / ".cache" / "hash_manifest.json").exists()

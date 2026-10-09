@@ -183,7 +183,7 @@ def _job_block(text: str, job: str) -> str:
 
 
 def test_pytest_job_runs_the_declared_python_range() -> None:
-    block = _job_block((WORKFLOWS / "validate.yml").read_text(encoding="utf-8"), "pytest")
+    block = _job_block((WORKFLOWS / "validate.yml").read_text(encoding="utf-8"), "pytest-matrix")
     match = re.search(r"python-version:\s*\[([^\]]*)\]", block)
     assert match, "the pytest job has no python-version matrix"
     versions = {v.strip().strip("'\"") for v in match.group(1).split(",")}

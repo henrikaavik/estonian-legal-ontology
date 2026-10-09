@@ -185,6 +185,7 @@ def test_offline_run_links_regulations_and_classifies_nem(tmp_path, monkeypatch)
     monkeypatch.setattr(mod, "KRR_DIR", krr)
     monkeypatch.setattr(mod, "EURLEX_DIR", eurlex)
     mod.write_measures_cache(measures, None, partial=False)
+    _write(eurlex / "eurlex_schema.json", {"@context": mod.CONTEXT, "@graph": []})
 
     def _no_network(**_k):
         raise AssertionError("--offline must not query CELLAR")
@@ -245,6 +246,7 @@ def test_online_row_order_does_not_change_outputs(tmp_path, monkeypatch):
     for order in (rows, list(reversed(rows))):
         krr = tmp_path / f"run{len(outputs)}" / "krr_outputs"
         eurlex = krr / "eurlex"
+        _write(eurlex / "eurlex_schema.json", {"@context": mod.CONTEXT, "@graph": []})
         _write(krr / "raudteeseadus_peep.json", {"@context": mod.CONTEXT, "@graph": [
             {"@id": "estleg:RTS_Map", "@type": ["estleg:Act"], "estleg:sourceAct": "Raudteeseadus"}]})
         _write(krr / "INDEX.json", {"laws": [{"name": "raudteeseadus", "files": ["raudteeseadus_peep.json"]}]})

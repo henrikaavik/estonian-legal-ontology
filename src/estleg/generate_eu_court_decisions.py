@@ -1006,7 +1006,9 @@ def run_fetch_interprets(refresh: bool = False) -> dict[str, int]:
 def main():
     args = parse_args()
     if args.fetch_interprets:
-        run_fetch_interprets(refresh=args.refresh_interprets)
+        stats = run_fetch_interprets(refresh=args.refresh_interprets)
+        if stats["failed_batches"]:
+            sys.exit(2)
         return
     log_replace_overlays_mode(CURIA_INGEST_LAYER, args.replace_overlays)
     print("=" * 60)

@@ -598,9 +598,7 @@ def main(argv: list[str] | None = None) -> int:
                     # classify (and stale attribution is retracted).
                     if apply_node_overrides(node, overrides, DEONTIC_PREDICATES):
                         modified = True
-                    if overrides.for_node(node_id) and restamp_confidence(
-                        node, overrides
-                    ):
+                    if restamp_confidence(node, overrides):
                         modified = True
                     total_overridden += len(owned)
                     continue

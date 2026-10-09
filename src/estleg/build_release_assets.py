@@ -45,9 +45,9 @@ Output goes to ``release/`` at the repository root (gitignored; kept out of
 ``krr_outputs/`` so the corpus file walkers never count the copies); only
 ``metadata.jsonld`` and the regenerated LFS ``combined_ontology.{nt,nq,ttl}``
 touch tracked files. Gzip output is
-deterministic (``mtime=0``, no embedded filename). The directory is cleared
-of top-level files first, so ``SHA256SUMS`` never lists a stale asset from an
-earlier run.
+deterministic (``mtime=0``, no embedded filename). Known generated assets are
+cleared after input checks; unrelated files are preserved. ``SHA256SUMS``
+lists only assets built by this run.
 
     python3 scripts/build_release_assets.py
     python3 scripts/build_release_assets.py --skip-rdf-dumps --skip-chunks
@@ -59,6 +59,7 @@ import argparse
 import gzip
 import hashlib
 import json
+import re
 import shutil
 import sys
 import tarfile
@@ -130,6 +131,12 @@ LAWS_MANIFEST_NAME = "generation_manifest_laws.json"
 NAMED_GRAPH_ASSET = "estleg_all.nq.gz"
 CHUNKS_ASSET = "chunks.jsonl.gz"
 METADATA_ASSET = "metadata.jsonld"
+
+
+def required_asset_names() -> set[str]:
+    return {name for _, name in (*GZIP_ASSETS, *COPY_ASSETS, *RDF_DUMP_ASSETS)} | {
+        NAMED_GRAPH_ASSET, CHUNKS_ASSET, METADATA_ASSET,
+    }
 
 
 class ReleaseAssetError(RuntimeError):
@@ -220,9 +227,10 @@ def gzip_deterministic(source: Path, dest: Path) -> None:
 
 
 def clean_release_dir(release_dir: Path) -> None:
-    """Remove every top-level file (keep scratch subdirectories)."""
+    """Remove known generated files, preserving unrelated user files."""
     release_dir.mkdir(parents=True, exist_ok=True)
-    for path in release_dir.iterdir():
+    for name in required_asset_names() | {SUMS_NAME, ASSET_MANIFEST_NAME}:
+        path = release_dir / name
         if path.is_file() or path.is_symlink():
             path.unlink()
 
@@ -485,6 +493,7 @@ def update_catalogue(
                 f"{name}: downloadURL tag is not v{version}; the published asset "
                 "will not match this checksum until the URL is updated"
             )
+            continue  # Preserve that release's metadata; these bytes are different.
         dist["dcat:byteSize"] = byte_size_literal(asset.bytes)
         dist["spdx:checksum"] = checksum_node(asset.sha256)
         catalogued.append(name)
@@ -509,14 +518,19 @@ def parse_sums(path: Path) -> dict[str, str]:
         if not line.strip():
             continue
         digest, sep, name = line.partition("  ")
-        if not sep or len(digest) != 64:
+        if (not sep or not re.fullmatch(r"[0-9a-fA-F]{64}", digest)
+                or not name or Path(name).name != name or name in {".", ".."}
+                or name in entries):
             raise ValueError(f"malformed {path.name} line: {line!r}")
         entries[name] = digest
     return entries
 
 
-def verify_sums(release_dir: Path) -> dict:
+def verify_sums(release_dir: Path, *, require_complete: bool = False) -> dict:
     """Re-hash every asset listed in ``SHA256SUMS``.
+
+    ``require_complete`` also requires the full release inventory and a
+    current manifest without skipped producers or unstamped heads.
 
     Returns ``{"files": {Path: sha}, "missing": [Path], "mismatched": [Path]}``
     (absolute paths; callers render them relative to their own root).
@@ -527,14 +541,35 @@ def verify_sums(release_dir: Path) -> dict:
     files: dict[Path, str] = {}
     missing: list[Path] = []
     mismatched: list[Path] = []
-    for name, expected in sorted(parse_sums(sums_path).items()):
+    try:
+        entries = parse_sums(sums_path)
+    except (ValueError, OSError):
+        return {"files": files, "missing": missing, "mismatched": [sums_path]}
+    if not entries:
+        mismatched.append(sums_path)
+    if require_complete:
+        missing.extend(release_dir / name for name in sorted(required_asset_names() - entries.keys()))
+        manifest_path = release_dir / ASSET_MANIFEST_NAME
+        if not manifest_path.is_file():
+            missing.append(manifest_path)
+        else:
+            files[manifest_path] = sha256_file(manifest_path)
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                if (not isinstance(manifest, dict) or manifest.get("skipped")
+                        or manifest.get("unstampedHeads")
+                        or manifest.get("ontologyVersion") != ONTOLOGY_VERSION):
+                    mismatched.append(manifest_path)
+            except (ValueError, OSError):
+                mismatched.append(manifest_path)
+    for name, expected in sorted(entries.items()):
         path = release_dir / name
         if not path.is_file():
             missing.append(path)
             continue
         actual = sha256_file(path)
         files[path] = actual
-        if actual != expected:
+        if actual != expected.lower():
             mismatched.append(path)
     return {"files": files, "missing": missing, "mismatched": mismatched}
 
@@ -566,7 +601,17 @@ def build_release_assets(
 ) -> BuildResult:
     """Run every sub-step; raise :class:`ReleaseAssetError` on a missing input."""
     result = BuildResult()
-    clean_release_dir(release_dir)
+
+    def source_path(relpath: str) -> Path:
+        if relpath.startswith("krr_outputs/"):
+            return krr_dir / relpath.removeprefix("krr_outputs/")
+        return repo_root / relpath
+
+    sources = [source_path(rel) for rel, _ in (*GZIP_ASSETS, *COPY_ASSETS)] + [metadata_path]
+    if any(p.resolve().is_relative_to(release_dir.resolve()) for p in sources):
+        raise ReleaseAssetError("release directory contains release inputs")
+    for source in sources:
+        _require_source(source)
 
     result.stamped, result.unstamped = _timed(result, "version-check", lambda: check_versions(krr_dir))
     if result.unstamped and not allow_unstamped:
@@ -577,6 +622,7 @@ def build_release_assets(
             "scripts/stamp_combined_dataset_heads.py before the combined build. "
             "Pass --allow-unstamped to package anyway."
         )
+    clean_release_dir(release_dir)
 
     if skip_rdf_dumps:
         result.skipped["rdf-dumps"] = "--skip-rdf-dumps"
@@ -641,13 +687,13 @@ def build_release_assets(
                     "tarfile (GNU, mtime=0) + gzip (mtime=0)")
 
     for relpath, name in GZIP_ASSETS:
-        source = repo_root / relpath
+        source = source_path(relpath)
         _require_source(source)
         _timed(result, f"gzip {name}", lambda s=source, n=name: gzip_deterministic(s, release_dir / n))
         _record(result, release_dir, name, relpath, "gzip (mtime=0)")
 
     for relpath, name in COPY_ASSETS:
-        source = repo_root / relpath
+        source = source_path(relpath)
         _require_source(source)
         shutil.copyfile(source, release_dir / name)
         _record(result, release_dir, name, relpath, "copy")

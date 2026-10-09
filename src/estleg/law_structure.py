@@ -58,6 +58,9 @@ def _marker_pruned_text(el: ET.Element) -> str:
     into the base number (``2172``). The escaped-string form is still
     handled downstream by :func:`_sup_to_unicode`.
     """
+    if ln(el.tag) == "viide":
+        # A citation's display label is legal text; its target URI is not.
+        return "".join(_marker_pruned_text(c) for c in el if ln(c.tag) == "kuvatavTekst")
     out: list[str] = []
     if el.text:
         out.append(el.text)
@@ -192,6 +195,16 @@ def _digits_to_superscript(text: str) -> str:
     return "".join(_DIGIT_TO_SUPERSCRIPT.get(ch, ch) for ch in text)
 
 
+def paragraph_display(paragraph: ET.Element) -> str:
+    """Preserve real and CDATA superscripts in the human-readable § number."""
+    for child in paragraph:
+        if ln(child.tag) == "kuvatavNr":
+            display = _sup_to_unicode(_marker_pruned_text(child)).strip()
+            if display:
+                return display
+    return f"§ {ct(paragraph, 'paragrahvNr') or '?'}"
+
+
 def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
     """Extract the superscript index carried by ``el``'s ``number_tag`` child.
 
@@ -216,7 +229,7 @@ def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
     kuv = None
     for c in el:
         if ln(c.tag) == "kuvatavNr":
-            kuv = "".join(c.itertext()) or ""
+            kuv = _marker_pruned_text(c)
             break
     if not kuv:
         return ""
@@ -516,31 +529,43 @@ def _alampunkt_number(alampunkt_el: ET.Element) -> str:
 def _text_parts(el: ET.Element) -> list[str]:
     """Collect the normalised text fragments below ``el`` in document order.
 
-    Keeps ``lauseOsa``/``lause``/``tavatekst`` fragments longer than three
-    characters (marker subtrees pruned, #255) and — #694 — emits each
+    Keeps nonempty ``lauseOsa``/``lause``/``tavatekst`` fragments
+    (marker subtrees pruned, #255) and — #694 — emits each
     ``alampunkt``'s ``k)`` marker right before its text, so enumerated
     sub-points read ``… ning: 1) … 2) …`` instead of a run-on body.
+
+    An ``HTMLKonteiner`` CDATA body is linearised (#703) but used only when
+    the subtree has no other text: next to real text it is a signature
+    table or link block and must not leak (#255).
     """
     parts: list[str] = []
     html_parts: list[str] = []
-    for node in _iter_text_nodes(el):
+
+    def collect(node: ET.Element) -> None:
         tag = ln(node.tag)
+        if tag in _MARKER_TAGS:
+            return
         if tag == "alampunkt":
             marker = _alampunkt_marker(node)
             if marker:
                 parts.append(marker)
-        elif tag in _TEXT_TAGS:
+        elif tag in _TEXT_TAGS or tag == "viide":
             txt = _marker_pruned_text(node).strip()
             txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
+            if txt:
                 parts.append(txt)
+            # Descendants have already been included in this fragment.
+            return
         elif tag == "HTMLKonteiner":
             txt = html_container_text(node.text)
-            if txt and len(txt) > 3:
+            if txt:
                 html_parts.append(txt)
-    # An HTMLKonteiner next to real text is a signature table or link block
-    # and must not leak (#255 test); it is the body only when nothing else is.
-    if any(part for part in parts if not re.fullmatch(r"\S{1,4}\)", part)):
+            return
+        for child in node:
+            collect(child)
+
+    collect(el)
+    if any(not re.fullmatch(r"\S{1,4}\)", part) for part in parts):
         return parts
     return html_parts or parts
 
@@ -593,7 +618,7 @@ def _loige_numbers(loige_el: ET.Element) -> tuple[str, str]:
     kuv_raw = ""
     for sub in loige_el:
         if ln(sub.tag) == "kuvatavNr":
-            kuv_raw = "".join(sub.itertext()).strip()
+            kuv_raw = _marker_pruned_text(sub).strip()
             break
     kuv_inner = re.sub(r"[()]", "", kuv_raw).strip() if kuv_raw else ""
 
@@ -1148,9 +1173,8 @@ def emit_hierarchy_and_provisions(
     par_iri_by_elem: dict[int, str] = {}
     seen_subsection_ids: set[str] = set()
     for paragraph in paragrahvid:
-        p_nr = ct(paragraph, "paragrahvNr") or "?"
         p_title = ct(paragraph, "paragrahvPealkiri") or ""
-        p_display = _sup_to_unicode(ct(paragraph, "kuvatavNr")) or f"§ {p_nr}"
+        p_display = paragraph_display(paragraph)
         text = collect_text(paragraph)
         full_text = collect_full_text(paragraph)
         raw_par_suffix = _paragraph_id_suffix(paragraph)
@@ -1182,6 +1206,11 @@ def emit_hierarchy_and_provisions(
             "estleg:partOfAct": {"@id": act_target},
             "estleg:summary": et_literal(provision_summary(text, p_title, p_display)),
         }
+        omitted = is_omitted_paragraph(paragraph)
+        if omitted and full_text.strip() in _DASH_PLACEHOLDERS:
+            # The text collector keeps short fragments, so an omitted §'s
+            # lone "–" placeholder would otherwise become its legalText.
+            full_text = ""
         if full_text:
             node["estleg:legalText"] = full_text
         elif is_repealed_paragraph(paragraph):
@@ -1189,7 +1218,7 @@ def emit_hierarchy_and_provisions(
             # design; say so, so text-coverage gates do not count it as a
             # missing body (a § with no text and no such note still does).
             node["estleg:provisionRepealed"] = True
-        elif is_omitted_paragraph(paragraph):
+        elif omitted:
             # #703: a spent § RT omits from the consolidated text ("–",
             # kehtiv="0") carries no text by design either.
             node["estleg:provisionOmitted"] = True

@@ -620,7 +620,8 @@ corpus files. The step runs these parts in order:
    deliberate commit, because every rebuild would otherwise add ~1.4 GB of LFS. N-Triples and N-Quads are byte-sorted and de-duplicated with an
    external `sort -u`, so peak memory stays far below the 10-14 GB an
    in-memory `Graph` needs. Blank-node labels differ between runs, as they
-   always have with rdflib. Turtle is not sorted.
+   always have with rdflib. Turtle uses N-Triples syntax (a Turtle subset)
+   so blank-node references retain their identity across batches.
 3. **Named graphs.** `estleg_all.nq.gz` holds the seven #474 graphs. The
    dump fails when a slot has no source; `serialize_named_graphs --write
    --allow-partial` is the escape hatch. The regulations and riigikohus
@@ -639,18 +640,21 @@ corpus files. The step runs these parts in order:
 7. **Catalogue.** Each `metadata.jsonld` distribution whose `dcat:downloadURL`
    names a built asset gets `dcat:byteSize` and an `spdx:checksum`
    (SHA-256). A release-download URL whose tag is not `v<ONTOLOGY_VERSION>`
-   produces a warning. The checksum describes the local build, so the asset
-   must be uploaded under that tag. The updated `metadata.jsonld` is then
+   produces a warning and retains its existing metadata. Checksums are only
+   updated for the current release tag. The updated `metadata.jsonld` is then
    copied in as an asset.
 8. **`SHA256SUMS`** uses the format of the v1.0.0 file: `<sha256>  <name>`,
    byte-sorted by name, covering every top-level asset. `release_assets.json`
    records each asset's source, producer, size and hash, plus anything
    skipped.
 
-The directory is emptied of top-level files first, so `SHA256SUMS` never
-lists an asset from an earlier run. `--skip-rdf-dumps` (which also skips
+Required inputs are checked before known generated files are removed;
+unrelated files are preserved. `SHA256SUMS` lists only assets built by this
+run. `--skip-rdf-dumps` (which also skips
 `estleg_all.nq.gz`), `--skip-named-graphs` and `--skip-chunks` shorten a
-local run. Upload the contents of `release/` to the GitHub Release by hand;
+local run, but the release gate rejects packages with skipped assets or
+unstamped heads. Upload the assets listed in `SHA256SUMS`, together with
+`SHA256SUMS` and `release_assets.json`, to the GitHub Release by hand;
 that publish step stays manual.
 
 ---
@@ -707,7 +711,8 @@ python3 scripts/generate_regulations.py --kov --kehtiv YYYY-MM-DD --refresh --re
 - **`--regen-state [PATH]`** writes a per-act ledger. By default it goes to
   `krr_outputs/.cache/regen_state_regulations_{riik,kov}.json`, which is
   git-ignored. A rerun skips acts already completed for the same `kehtiv`
-  and `globalId` whose output file still exists. Acts that failed are
+  and `globalId` whose output file still matches the ledger's SHA-256.
+  An explicit IRI scheme change also invalidates a completed entry. Acts that failed are
   retried. `--reset-regen-state` discards the ledger.
 - **`--workers N`** (default 4) sets how many XML fetches run at once.
   `--max-rps` (default 4) caps request starts per second across all
@@ -748,9 +753,11 @@ modes, selected with `--iri-scheme`:
 - `law` uses the law helpers.
 - `legacy` reproduces the committed IRIs byte for byte. This was verified on
   three acts fetched from the public API.
-- `auto` is the default. Acts with no committed peep get `law`; acts that
-  already have one keep `legacy`. A refresh therefore never renames a
-  published IRI.
+- `auto` is the default. New acts get `law`; existing acts retain their
+  recorded scheme. Each generated act records `dcterms:conformsTo` as
+  `https://w3id.org/estleg/iri-scheme/regulations/law` or the corresponding
+  `legacy` profile. Older peeps without a profile use `legacy`. Repeated
+  refreshes therefore keep the scheme chosen on the first generation.
 
 Moving the committed corpus to `law` is a **MAJOR** change under
 `docs/STABILITY.md`. It must be scheduled with a rename map, not run as a

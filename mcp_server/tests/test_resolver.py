@@ -100,6 +100,32 @@ def test_format_param_overrides_accept() -> None:
     assert resolver_web.negotiate("text/html", "bogus") is None
 
 
+def test_explicit_format_rejection_beats_wildcard():
+    assert resolver_web.negotiate("text/html;q=0, */*;q=0.5") != "html"
+    assert resolver_web.negotiate("text/*;q=0, application/*;q=0, */*;q=1") is None
+    assert resolver_web.negotiate("text/turtle;q=nan") is None
+
+
+def test_draft_description_uses_its_file_after_phase_changes(tmp_path, monkeypatch):
+    directory = tmp_path / "eelnoud"
+    directory.mkdir()
+    node = {"@id": "estleg:Draft_TEST", "@type": "estleg:DraftLegislation",
+            "estleg:legislativePhase": {"@id": "estleg:Phase_Enacted"},
+            "estleg:hasProcessStep": [{"@id": "estleg:Draft_TEST_Step_1"}]}
+    doc = {"@context": {"test": "https://example.org/"}, "@graph": [node,
+           {"@id": "estleg:Draft_TEST_Step_1", "rdfs:label": "Enacted"}]}
+    (directory / "eelnoud_submission_peep.json").write_text(json.dumps(doc))
+    monkeypatch.setattr(data, "krr_dir", lambda: tmp_path)
+    monkeypatch.setattr(data, "draft_info", lambda _iri: node)
+    resolver.cache_clear()
+    try:
+        result = resolver.resolve("Draft_TEST")
+        assert result.source == "eelnoud/eelnoud_submission_peep.json"
+        assert result.neighbours["estleg:Draft_TEST_Step_1"] == "Enacted"
+    finally:
+        resolver.cache_clear()
+
+
 @pytest.mark.parametrize(
     ("path", "open_"),
     [
@@ -392,3 +418,13 @@ def test_without_rdflib_turtle_is_406_and_jsonld_still_served(monkeypatch, sink)
         assert 'href="/id/X_Map">Test Act <code>estleg:X_Map</code></a>' in page
     statuses = [r["status"] for r in _lines(sink) if r.get("tool") == "resolve"]
     assert statuses == ["rdf_unavailable", "ok", "ok"]
+
+
+@pytest.mark.parametrize("header,expected", [
+    ("application/json;q=0,application/ld+json;q=1", "jsonld"),
+    ("text/n3;q=0,text/turtle;q=1", "turtle"),
+    ("text/n3;q=1,text/turtle;q=0,*/*;q=0.5", "html"),
+    ("text/turtle;q=0,text/n3;q=1,*/*;q=0.5", "html"),
+])
+def test_canonical_media_quality_wins_over_alias(header, expected):
+    assert resolver_web.negotiate(header) == expected

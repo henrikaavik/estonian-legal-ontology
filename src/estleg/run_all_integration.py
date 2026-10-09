@@ -1321,7 +1321,7 @@ def krr_outputs_git_clean() -> bool | None:
     """
     try:
         proc = subprocess.run(
-            ["git", "status", "--porcelain", "--", str(KRR_DIR)],
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", str(KRR_DIR)],
             cwd=str(REPO_ROOT),
             capture_output=True,
             text=True,
@@ -1643,7 +1643,7 @@ def hash_release_artifacts() -> dict:
             found[_rel(m)] = _sha256_file(m)
     from estleg.build_release_assets import verify_sums
 
-    assets = verify_sums(RELEASE_ASSET_DIR)
+    assets = verify_sums(RELEASE_ASSET_DIR, require_complete=True)
     # SHA256SUMS itself is hashed via RELEASE_ARTIFACTS above.
     found.update({_rel(path): sha for path, sha in assets["files"].items()})
     missing.extend(_rel(path) for path in assets["missing"])
@@ -2334,12 +2334,23 @@ def plan_only_changed(
     previous = hash_manifest.load_manifest(manifest_path)
     current = hash_manifest.build_manifest(steps, KRR_DIR, previous=previous)
     by_name = {s["name"]: s for s in steps}
-    if previous is None:
+    recipe_changed = previous is not None and previous.get("recipeDigest") != current["recipeDigest"]
+    ingest_pending = bool(previous and previous.get("ingestInputsChanged"))
+    if previous is None or recipe_changed or (include_ingest and ingest_pending):
+        current["ingestInputsChanged"] = True
         selected = [n for n in topo
                     if include_ingest or step_tier(by_name[n]) != TIER_INGEST]
         return {"manifestFound": False, "changed": None, "selected": selected,
                 "seeds": {}, "excludedIngest": [], "current": current}
     changed = hash_manifest.changed_paths(hash_manifest.diff_manifests(previous, current))
+    current["ingestInputsChanged"] = ingest_pending or bool(changed)
+    if any(hash_manifest.path_matches(path, pattern)
+           for path in changed for pattern in hash_manifest.SHARED_INPUTS):
+        selected = [n for n in topo
+                    if include_ingest or step_tier(by_name[n]) != TIER_INGEST]
+        return {"manifestFound": True, "changed": changed, "selected": selected,
+                "seeds": {n: ["shared code or auxiliary input changed"] for n in selected},
+                "excludedIngest": [], "current": current}
     plan = hash_manifest.select_steps(steps, topo, changed, COMMITTED_INPUTS,
                                       include_ingest=include_ingest,
                                       ingest_tier=TIER_INGEST)
@@ -2349,7 +2360,7 @@ def plan_only_changed(
 def _print_only_changed_plan(plan: dict, manifest_path: Path) -> None:
     print(f"\n--only-changed: hash manifest {_rel(manifest_path)}")
     if not plan["manifestFound"]:
-        print("  No hash manifest found — running the FULL DAG; the manifest "
+        print("  Full rebuild required (missing baseline, changed recipe, or pending ingest); the manifest "
               "is written after a successful run (or record one now with "
               "--record-hash-manifest).")
         return
@@ -2372,11 +2383,21 @@ def _print_only_changed_plan(plan: dict, manifest_path: Path) -> None:
               f"{', '.join(plan['excludedIngest'])}")
 
 
-def refresh_hash_manifest(manifest_path: Path, previous: dict | None = None) -> dict:
+def refresh_hash_manifest(
+    manifest_path: Path, previous: dict | None = None, *, include_ingest: bool | None = None
+) -> dict:
     """Re-hash the tree (cache-assisted) and write the manifest."""
     if previous is None:
         previous = hash_manifest.load_manifest(manifest_path)
     current = hash_manifest.build_manifest(STEPS, KRR_DIR, previous=previous)
+    if include_ingest is False:
+        current["ingestInputsChanged"] = (
+            previous is None or bool(previous.get("ingestInputsChanged"))
+            or previous.get("recipeDigest") != current["recipeDigest"]
+            or bool(hash_manifest.changed_paths(hash_manifest.diff_manifests(previous, current)))
+        )
+    # A successful complete ingest run, or explicit baseline recording, clears
+    # the pending marker. Offline runs must not consume ingest invalidations.
     hash_manifest.write_manifest(current, manifest_path)
     return current
 
@@ -2600,7 +2621,9 @@ def main(argv: list[str] | None = None) -> None:
             path = write_release_manifest(manifest)
             print(f"\nWrote release manifest: {_rel(path)}")
             if not failed and manifest_path.exists():
-                refresh_hash_manifest(manifest_path)  # #729 baseline stays current
+                refresh_hash_manifest(
+                    manifest_path, include_ingest=args.with_ingest and not args.resume_from
+                )  # #729 baseline stays current
         _print_banner([
             ("[DRY-RUN] " if args.dry_run else "") + "RELEASE BUILD COMPLETE",
             f"  releaseOk: {manifest['releaseOk']}",
@@ -2648,6 +2671,7 @@ def main(argv: list[str] | None = None) -> None:
             refreshed = refresh_hash_manifest(
                 manifest_path,
                 previous=only_changed_plan["current"] if only_changed_plan else None,
+                include_ingest=args.with_ingest and not args.resume_from,
             )
             manifest["hashManifestDigest"] = refreshed["manifestDigest"]
             print(f"  Hash manifest refreshed: {_rel(manifest_path)} "

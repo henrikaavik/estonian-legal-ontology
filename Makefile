@@ -17,7 +17,7 @@ PYTEST_ARGS ?=
 # The canonical lint paths. CI's `lint` job calls `make lint`, and
 # CONTRIBUTING.md, AGENTS.md, CLAUDE.md and the PR template quote this
 # command verbatim. Change it here and in those four files together.
-LINT_PATHS := scripts/ src/estleg/ tests/ mcp_server/
+LINT_PATHS := scripts/ src/estleg/ tests/ mcp_server/ estleg_client/
 
 .PHONY: help check lint test docs-lint corpus-gates release-assets
 
@@ -45,6 +45,7 @@ corpus-gates:
 	$(PYTHON) scripts/validate_all.py
 	$(PYTHON) scripts/shacl_validate_all.py --all
 	$(PYTHON) scripts/check_phantom_typing.py --all
+	$(PYTHON) scripts/validate_seadusloome_sync.py
 
 # Writes the downloadable release files into release/ (gitignored). Needs
 # Git LFS artifacts. Uploading them to a GitHub Release stays manual.

@@ -262,8 +262,6 @@ def iter_regulations(
         # KOV directories are issuer slugs: skip whole directories that cannot match.
         if wanted_slug and issuer_dir is not None and wanted_slug not in issuer_dir:
             continue
-        if not is_real_file(peep):
-            continue
         doc = read_document(peep)
         store = DictStore(graph_nodes(doc), doc.get("@context"))
         for row in iter_store_rows(store, "regulations"):
@@ -282,7 +280,7 @@ def _riigikohus_files(krr: Path) -> dict[int, Path]:
     if base.is_dir():
         for path in base.glob(f"riigikohus_*{_PEEP_SUFFIX}"):
             match = _RK_YEAR_RE.match(path.name)
-            if match and is_real_file(path):
+            if match:
                 out[int(match.group(1))] = path
     return dict(sorted(out.items()))
 
@@ -390,7 +388,7 @@ def _draft_documents(krr: Path) -> list[Path]:
     if is_real_file(combined):
         return [combined]
     if base.is_dir():
-        return sorted(p for p in base.glob(f"eelnoud_*{_PEEP_SUFFIX}") if is_real_file(p))
+        return sorted(base.glob(f"eelnoud_*{_PEEP_SUFFIX}"))
     return []
 
 
@@ -464,11 +462,11 @@ def iter_drafts(
 
 def _eurlex_documents(krr: Path) -> list[Path]:
     base = krr / "eurlex"
-    peeps = sorted(p for p in base.glob(f"eurlex_*{_PEEP_SUFFIX}") if is_real_file(p))
-    if peeps:
+    peeps = sorted(base.glob(f"eurlex_*{_PEEP_SUFFIX}"))
+    if peeps and all(is_real_file(p) for p in peeps):
         return peeps
     combined = base / "eurlex_combined.jsonld"
-    return [combined] if is_real_file(combined) else []
+    return [combined] if is_real_file(combined) else peeps
 
 
 def load_eu_act(celex: str, *, root: str | Path | None = None) -> Graph:
