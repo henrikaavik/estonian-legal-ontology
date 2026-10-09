@@ -4090,16 +4090,19 @@ def main(argv: list[str] | None = None):
         if "@graph" in doc:
             seen_in_file = set()
             in_overlay_dir = is_overlay_surface_file(filepath, krr_dir)
+            # State and municipal subcorpora can contain the same basename.
+            # Keep their paths distinct when counting defining files.
+            file_key = filepath.relative_to(krr_dir).as_posix()
             for node in doc["@graph"]:
                 nid = node.get("@id", "")
                 if nid in seen_in_file:
                     error(f"{filepath.name}: Duplicate @id within file: {nid}")
                 seen_in_file.add(nid)
-                all_ids[nid].append(filepath.name)
+                all_ids[nid].append(file_key)
                 if in_overlay_dir and is_join_assertion_node(node):
-                    join_ids[nid].append(filepath.name)
+                    join_ids[nid].append(file_key)
                 if is_self_replaced_node(node):
-                    self_replaced_ids[nid].append(filepath.name)
+                    self_replaced_ids[nid].append(file_key)
 
     validate_id_uniqueness(all_ids, join_ids=join_ids, self_replaced_ids=self_replaced_ids)
     validate_internal_references(

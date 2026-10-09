@@ -212,17 +212,18 @@ def detect_affected_laws(title: str) -> list[str]:
 
 
 def fetch_rss(url: str) -> list[dict]:
-    """Fetch and parse an RSS feed, returning list of items."""
+    """Fetch RSS items, failing before output writes if the feed is unavailable."""
     print(f"  Fetching {url}...")
     try:
         resp = allowed_get(url, timeout=60)
         resp.raise_for_status()
         resp.encoding = "utf-8"
     except Exception as e:
-        print(f"  ERROR: {e}")
-        return []
+        raise RuntimeError(f"RSS fetch failed for {url}: {e}") from e
 
     root = parse_xml(resp.text)
+    if root.tag != "rss" or root.find("channel") is None:
+        raise RuntimeError(f"RSS feed {url} has no rss/channel structure")
     items = []
 
     for item in root.iter("item"):
@@ -665,8 +666,8 @@ def main(argv: list[str] | None = None) -> int:
     # Generate individual draft files grouped by phase
     for phase_key, feed_info in RSS_FEEDS.items():
         phase_drafts = [d for d in all_drafts if d["feed"] == phase_key]
-        if not phase_drafts:
-            continue
+        # Write empty phases too: the aggregate rebuild reads every phase
+        # peep, so leaving an old file would resurrect drafts from that phase.
 
         phase_id = feed_info["phase"]
         print(f"\n--- Generating {phase_id} file ({len(phase_drafts)} drafts) ---")

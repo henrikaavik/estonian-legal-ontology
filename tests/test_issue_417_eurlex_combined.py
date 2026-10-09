@@ -22,6 +22,10 @@ def _count_pred(graph: list, pred: str) -> int:
 def test_rebuild_copies_transposition_edges(tmp_path: Path):
     eurlex = tmp_path / "eurlex"
     eurlex.mkdir()
+    (eurlex / "eurlex_schema.json").write_text(
+        json.dumps({"@graph": [{"@id": "estleg:EURlex_Schema_2026", "@type": ["owl:Ontology"]}]}),
+        encoding="utf-8",
+    )
     (eurlex / "eurlex_directives_peep.json").write_text(
         json.dumps(
             {

@@ -1862,6 +1862,9 @@ def plan_law_collision(record: dict, slug: str, krr_dir: Path) -> dict:
     from_prefix, to_prefix = record["from_prefix"], record["to_prefix"]
     own = law_own_files(slug, krr_dir)
     docs = {p: _load_json_file(p) for p in own}
+    unreadable = [str(path) for path, doc in docs.items() if doc is None]
+    if unreadable:
+        raise RuntimeError(f"{slug}: unreadable collision inputs: {', '.join(unreadable)}")
 
     rename_map: dict[str, str] = {}
     fresh: dict[str, str] = {}  # renames minted by THIS run (pending files)
