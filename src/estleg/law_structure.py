@@ -57,6 +57,9 @@ def _marker_pruned_text(el: ET.Element) -> str:
     into the base number (``2172``). The escaped-string form is still
     handled downstream by :func:`_sup_to_unicode`.
     """
+    if ln(el.tag) == "viide":
+        # A citation's display label is legal text; its target URI is not.
+        return "".join(_marker_pruned_text(c) for c in el if ln(c.tag) == "kuvatavTekst")
     out: list[str] = []
     if el.text:
         out.append(el.text)
@@ -503,17 +506,26 @@ def _text_parts(el: ET.Element) -> list[str]:
     sub-points read ``… ning: 1) … 2) …`` instead of a run-on body.
     """
     parts: list[str] = []
-    for node in _iter_text_nodes(el):
+
+    def collect(node: ET.Element) -> None:
         tag = ln(node.tag)
+        if tag in _MARKER_TAGS:
+            return
         if tag == "alampunkt":
             marker = _alampunkt_marker(node)
             if marker:
                 parts.append(marker)
-        elif tag in _TEXT_TAGS:
+        elif tag in _TEXT_TAGS or tag == "viide":
             txt = _marker_pruned_text(node).strip()
             txt = re.sub(r"\s+", " ", txt)
             if txt:
                 parts.append(txt)
+            # Descendants have already been included in this fragment.
+            return
+        for child in node:
+            collect(child)
+
+    collect(el)
     return parts
 
 
@@ -1143,5 +1155,4 @@ def emit_hierarchy_and_provisions(
             chapter_node["estleg:hasPart"].extend(
                 {"@id": iri} for iri in direct_iris
             )
-
 
