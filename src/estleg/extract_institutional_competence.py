@@ -1446,7 +1446,9 @@ def process_law_file(
         forced_ctype = (
             ctype_rec.value
             if ctype_rec is not None and ctype_rec.action == "set"
-            else None
+            # A removal also vetoes the heuristic type in institution
+            # back-links; retain only a general authority relationship.
+            else "general" if ctype_rec is not None else None
         )
         # #700: a reviewed competentAuthority replaces detection outright —
         # the heuristic neither writes the node nor records back-links for it.

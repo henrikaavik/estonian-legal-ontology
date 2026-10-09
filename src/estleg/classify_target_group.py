@@ -468,7 +468,7 @@ def classify_files(
                 # stale attribution is retracted, even off the provision path.
                 if apply_node_overrides(node, overrides, TARGET_GROUP_PREDICATES):
                     changed = True
-                if overrides.for_node(node_id) and restamp_confidence(node, overrides):
+                if restamp_confidence(node, overrides):
                     changed = True
                 counts["human_overrides_applied"] += len(owned)
                 continue
