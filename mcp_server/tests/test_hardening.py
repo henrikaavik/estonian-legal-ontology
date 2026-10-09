@@ -124,6 +124,49 @@ def test_parse_token_spec_inline_and_file(tmp_path: Path) -> None:
     assert security.parse_token_spec(str(path)) == {"rahandus": "s3cret", "sise": "other"}
 
 
+def test_token_file_rejects_duplicate_consumers(tmp_path):
+    path = tmp_path / "tokens.json"
+    path.write_text('{"same": "first", "same": "second"}')
+    with pytest.raises(security.TokenConfigError):
+        security.parse_token_spec(str(path))
+
+
+def test_inline_tokens_survive_filename_length_limit(monkeypatch):
+    import errno
+
+    def too_long(self):
+        raise OSError(errno.ENAMETOOLONG, "File name too long")
+
+    monkeypatch.setattr(Path, "is_file", too_long)
+    token = "x" * 256
+    assert security.parse_token_spec(f"consumer={token}") == {"consumer": token}
+
+
+def test_entrypoint_does_not_serve_wrong_release(tmp_path):
+    import os
+    import subprocess
+
+    corpus = tmp_path / "corpus"
+    (corpus / ".git").mkdir(parents=True)
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    for name, script in {
+        "git": '#!/bin/sh\ncase " $* " in *" fetch "*) exit 1;; *" rev-parse "*) echo oldcommit;; esac\n',
+        "estleg-mcp": '#!/bin/sh\necho SERVER_STARTED\n',
+    }.items():
+        path = bin_dir / name
+        path.write_text(script)
+        path.chmod(0o755)
+    entrypoint = Path(__file__).resolve().parents[1] / "docker" / "entrypoint.sh"
+    result = subprocess.run(
+        ["sh", str(entrypoint)], capture_output=True, text=True,
+        env={**os.environ, "PATH": f"{bin_dir}:{os.environ['PATH']}",
+             "ESTLEG_CORPUS": str(corpus), "ESTLEG_CORPUS_REF": "missing-release"},
+    )
+    assert result.returncode != 0
+    assert "SERVER_STARTED" not in result.stdout
+
+
 @pytest.mark.parametrize(
     "spec",
     ["notapair", "a=", "=tok", "a=x,a=y", "a=x,b=x", "bad name=x"],
