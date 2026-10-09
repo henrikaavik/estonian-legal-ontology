@@ -337,7 +337,9 @@ def _choose_context(new_ctx: object, old_ctx: object, merged_graph: object) -> o
     _used_prefixes(merged_graph, candidates, used)
     for prefix in used:
         if prefix not in old_ctx or (prefix in new_ctx and new_ctx[prefix] != old_ctx[prefix]):
-            return new_ctx
+            # New raw terms may require the new context, while retained
+            # overlay predicates still require prefixes only the old one had.
+            return {**old_ctx, **new_ctx}
     return old_ctx
 
 
@@ -445,4 +447,3 @@ def log_replace_overlays_mode(layer: IngestLayer, enabled: bool, log: logging.Lo
             "will be DISCARDED (#697 opt-out).",
             layer.name,
         )
-

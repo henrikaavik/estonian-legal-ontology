@@ -452,7 +452,9 @@ def fetch_xml(
         cache_dir=DATA_DIR,
         refresh=True,
         min_size=MIN_XML_BYTES,
-        validate_root=_is_trustworthy_xml_root,
+        validate_root=lambda root: (
+            _is_trustworthy_xml_root(root) and _root_matches_redaction(root, gid)
+        ),
         on_bytes=_remember,
     )
 

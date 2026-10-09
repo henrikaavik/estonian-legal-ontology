@@ -104,6 +104,19 @@ def test_matching_cache_is_used_and_attested_without_network(tmp_path, monkeypat
     assert head["estleg:skeemiNimi"] == "tyviseadus_1_10.02.2010.xsd"
 
 
+def test_download_validator_rejects_a_different_redaction(tmp_path, monkeypatch):
+    monkeypatch.setattr(gal, "DATA_DIR", tmp_path)
+    monkeypatch.setattr(gal, "CACHE_ONLY", False)
+
+    def fetch(_url, _name, **kwargs):
+        assert kwargs["validate_root"](ET.fromstring(_xml("2")))
+        assert not kwargs["validate_root"](ET.fromstring(_xml("1")))
+        return None
+
+    monkeypatch.setattr(gal, "common_fetch_xml", fetch)
+    assert gal.fetch_xml("/akt/2.xml", "x", tid="500", gid="2") is None
+
+
 # --- fetch_content_hashes.json ----------------------------------------------
 
 

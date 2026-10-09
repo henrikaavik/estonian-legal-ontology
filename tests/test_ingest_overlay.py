@@ -142,6 +142,16 @@ def test_no_existing_document_returns_new():
     assert merge_overlays(new, None, LAYER)[0] == new
 
 
+def test_new_raw_prefix_does_not_discard_overlay_prefix():
+    old = {"@context": {"ex": "urn:ex:", "overlay": "urn:overlay:"},
+           "@graph": [{"@id": "ex:a", "@type": ["ex:Raw"], "overlay:link": {"@id": "overlay:b"}}]}
+    new = {"@context": {"ex": "urn:ex:", "raw": "urn:raw:"},
+           "@graph": [{"@id": "ex:a", "@type": ["ex:Raw"], "raw:value": 1}]}
+    merged, _ = merge_overlays(new, old, LAYER)
+    assert merged["@context"] == {"ex": "urn:ex:", "overlay": "urn:overlay:", "raw": "urn:raw:"}
+    assert merged["@graph"][0]["overlay:link"] == {"@id": "overlay:b"}
+
+
 def test_prepare_write_replace_overlays_returns_raw_and_logs(tmp_path, caplog):
     path = tmp_path / "peep.json"
     path.write_text(json.dumps({"@graph": [{"@id": "a", "@type": ["ex:Raw"], "ex:o": 1}]}), encoding="utf-8")

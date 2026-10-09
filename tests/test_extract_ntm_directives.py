@@ -94,7 +94,7 @@ def test_parser_on_committed_karistusseadustik_xml():
     ]
 
 
-def test_karistusseadustik_peeps_carry_the_asserted_set():
+def test_karistusseadustik_peeps_carry_the_asserted_set(tmp_path):
     """Shipped data: every KarS root (map + both parts) carries exactly the
     directives the NTM of the attested current redaction lists, as far as
     the EUR-Lex directives peep knows them. The stale 2014 redaction
@@ -103,7 +103,16 @@ def test_karistusseadustik_peeps_carry_the_asserted_set():
         (REPO_ROOT / "krr_outputs" / "fetch_content_hashes.json").read_text(encoding="utf-8")
     )
     row = hashes["karistusseadustik"]
-    parsed = ntm.parse_ntm_xml(REPO_ROOT / row["cacheFile"])
+    # The operator cache is ignored. Ship the exact attested bytes as a
+    # compressed fixture so this invariant also runs in a fresh CI checkout.
+    import gzip
+    import hashlib
+
+    payload = gzip.decompress((REPO_ROOT / "tests/fixtures/rt_xml/karistusseadustik_2026-10-09.xml.gz").read_bytes())
+    assert hashlib.sha256(payload).hexdigest() == row["sha256"]
+    source = tmp_path / "karistusseadustik.xml"
+    source.write_bytes(payload)
+    parsed = ntm.parse_ntm_xml(source)
     known = ntm.directive_iris(REPO_ROOT / "krr_outputs" / "eurlex" / "eurlex_directives_peep.json")
     expected = sorted(known[celex] for celex in parsed["celexes"] if celex in known)
     stale = {f"estleg:EU_{c}" for c in ntm.parse_ntm_xml(KARS_XML)["celexes"]}

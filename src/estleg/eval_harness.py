@@ -381,7 +381,7 @@ def wilson_lower(successes: float, total: float, z: float = 1.96) -> float | Non
     return round((centre - margin) / denom, 4)
 
 
-def score_items(items: list[dict]) -> dict:
+def score_items(items: list[dict], predictions: dict[str, set[str]] | None = None) -> dict:
     """Value-level precision / recall over adjudicated gold items (#698).
 
     * A positive item (the system asserts ``system``) adjudicated ``correct``
@@ -397,7 +397,7 @@ def score_items(items: list[dict]) -> dict:
     verdicts: Counter = Counter()
     sources: Counter = Counter()
     by_value: dict[str, Counter] = defaultdict(Counter)
-    negatives = pending = 0
+    negatives = pending = correct = 0
     for it in items:
         verdict = it.get("verdict", "pending")
         verdicts[verdict] += 1
@@ -406,12 +406,14 @@ def score_items(items: list[dict]) -> dict:
             pending += 1
             continue
         sources[it.get("verdict_source") or "unknown"] += 1
-        system = set(it.get("system") or [])
+        sampled_system = set(it.get("system") or [])
+        system = sampled_system if predictions is None else predictions[it["id"]]
         gold = set(it.get("gold") or [])
         value = (it.get("stratum") or {}).get("value", "")
-        if it.get("negative"):
+        if it.get("negative") and (predictions is None or (verdict != "correct" and not gold)):
             if verdict == "correct":
                 tn += 1
+                correct += 1
                 by_value[value]["tn"] += 1
             else:
                 miss = max(1, len(gold - system))
@@ -419,8 +421,12 @@ def score_items(items: list[dict]) -> dict:
                 by_value[value]["fn"] += miss
             continue
         if verdict == "correct" and not gold:
-            gold = system
+            gold = sampled_system
         t, f, n = len(system & gold), len(system - gold), len(gold - system)
+        if not system and not gold:
+            tn += 1
+            by_value[value]["tn"] += 1
+        correct += system == gold
         tp, fp, fn = tp + t, fp + f, fn + n
         by_value[value]["tp"] += t
         by_value[value]["fp"] += f
@@ -449,7 +455,7 @@ def score_items(items: list[dict]) -> dict:
         "precision_lower95": wilson_lower(tp, tp + fp),
         "recall": recall,
         "f1": f1,
-        "item_accuracy": _ratio(verdicts["correct"], adjudicated),
+        "item_accuracy": _ratio(verdicts["correct"] if predictions is None else correct, adjudicated),
         "by_value": {
             k: {
                 "precision": _ratio(c["tp"], c["tp"] + c["fp"]),
@@ -465,11 +471,14 @@ def load_gold_dir(gold_dir: Path) -> tuple[dict[str, dict], list[str]]:
     """Every ``<layer>.json`` gold set under ``gold_dir`` + validation errors."""
     from estleg import gold_sets
 
-    schema_path = gold_dir / "item.schema.json"
+    schema_path = (gold_dir.parent if gold_dir.is_file() else gold_dir) / "item.schema.json"
     schema = gold_sets.load_schema(schema_path if schema_path.exists() else gold_sets.SCHEMA_PATH)
     docs: dict[str, dict] = {}
     errors: list[str] = []
-    for path in sorted(gold_dir.glob("*.json")):
+    paths = [gold_dir] if gold_dir.is_file() else sorted(gold_dir.glob("*.json"))
+    if not paths:
+        errors.append(f"{gold_dir}: no gold sets found")
+    for path in paths:
         if path.name == "item.schema.json":
             continue
         try:
@@ -479,17 +488,109 @@ def load_gold_dir(gold_dir: Path) -> tuple[dict[str, dict], list[str]]:
             continue
         problems = gold_sets.validate_gold_document(doc, schema)
         errors.extend(f"{path.name}: {p}" for p in problems[:20])
-        if not problems:
+        if not problems and doc["layer"] in docs:
+            errors.append(f"{path.name}: duplicate layer {doc['layer']}")
+        elif not problems:
             docs[doc["layer"]] = doc
     return docs, errors
 
 
-def evaluate_gold_dir(gold_dir: Path) -> dict:
+def current_predictions(docs: dict[str, dict], krr_dir: Path) -> tuple[dict[str, set[str]], list[str]]:
+    """Read current assertions for the fixed gold probes, never re-sample them.
+
+    Most positive items adjudicate one edge, not every value on a node. Score
+    only that item's system/gold values; whole-node negatives and deontic
+    items inspect the entire current value set. Court/fold negatives carry a
+    specific probe. Sanction amounts are part of the reviewed assertion too.
+    """
+    from estleg.gold_sets import as_list, literal, ref_ids, section_iri
+
+    items = [it for doc in docs.values() for it in doc["items"] if it["verdict"] != "pending"]
+    wanted = {it["node"] for it in items}
+    sections = {it["node"] for it in items if it["predicate"] == "estleg:interpretedBy" and it["negative"]}
+    predicates = {it["predicate"] for it in items} - {"dcterms:subject", "skos:altLabel"}
+    values: dict[tuple[str, str], set[str]] = defaultdict(set)
+    present: set[str] = set()
+    sanctions: dict[str, dict] = {}
+    errors: list[str] = []
+
+    def read_graph(path: Path) -> list[dict]:
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))["@graph"]
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"{_display(path)}: cannot read prediction source ({exc})")
+            return []
+
+    paths = sorted(krr_dir.glob("*_peep.json")) + sorted((krr_dir / "regulations").rglob("*_peep.json"))
+    for path in paths:
+        for node in read_graph(path):
+            nid = node.get("@id") if isinstance(node, dict) else None
+            if not isinstance(nid, str):
+                continue
+            if nid in wanted:
+                present.add(nid)
+                for prop in predicates:
+                    values[nid, prop].update(ref_ids(node.get(prop)))
+            parent = section_iri(nid)
+            if parent in sections:
+                values[parent, "estleg:interpretedBy"].update(ref_ids(node.get("estleg:interpretedBy")))
+    if "sanctions" in docs:
+        for path in sorted((krr_dir / "sanctions").glob("*.json")):
+            for node in read_graph(path):
+                if not isinstance(node, dict) or "estleg:Sanction" not in as_list(node.get("@type")):
+                    continue
+                for nid in ref_ids(node.get("estleg:applicableProvision")):
+                    if nid in wanted:
+                        values[nid, "estleg:hasSanction"].add(node["@id"])
+                        sanctions[node["@id"]] = node
+    for layer, rel, prop in (
+        ("eurovoc", "eurovoc/eurovoc_overlay.jsonld", "dcterms:subject"),
+        ("altLabelFolds", "concepts/concepts_combined.jsonld", "skos:altLabel"),
+    ):
+        if layer not in docs:
+            continue
+        for node in read_graph(krr_dir / rel):
+            if not isinstance(node, dict) or node.get("@id") not in wanted:
+                continue
+            nid = node["@id"]
+            if layer == "altLabelFolds":
+                present.add(nid)
+                values[nid, prop].update(v for x in as_list(node.get(prop)) if (v := literal(x)))
+            else:
+                values[nid, prop].update(ref_ids(node.get(prop)))
+    predictions = {}
+    for it in items:
+        nid, prop = it["node"], it["predicate"]
+        if it["negative"] and it["verdict"] != "correct" and not it["gold"]:
+            errors.append(f"{it['id']}: record the missing gold value before scoring current predictions")
+        if nid not in present:
+            errors.append(f"{it['id']}: gold subject {nid} is missing from the current corpus")
+        actual = values[nid, prop]
+        if it.get("probe"):
+            probe = it.get("probe_label") if prop == "skos:altLabel" else it["probe"]
+            actual = actual & {probe}
+        elif not it["negative"] and prop != "estleg:normativeType":
+            actual = actual & set(it["system"] + it["gold"])
+        predictions[it["id"]] = set(actual)
+        if prop == "estleg:hasSanction" and it.get("context"):
+            for sid in actual:
+                sanction = sanctions.get(sid, {})
+                context = {key: literal(sanction.get(f"estleg:{key}")) for key in it["context"]}
+                if context != it["context"]:
+                    errors.append(f"{it['id']}: sanction values changed; re-adjudicate {sid}")
+    return predictions, errors
+
+
+def evaluate_gold_dir(gold_dir: Path, krr_dir: Path | None = None) -> dict:
     """Accuracy block: per-layer scores over every gold set in ``gold_dir``."""
     docs, errors = load_gold_dir(gold_dir)
+    predictions = None
+    if krr_dir is not None:
+        predictions, prediction_errors = current_predictions(docs, krr_dir)
+        errors.extend(prediction_errors)
     layers = {}
     for layer, doc in sorted(docs.items()):
-        score = score_items(doc["items"])
+        score = score_items(doc["items"], predictions)
         score["property"] = doc["property"]
         score["title"] = doc["title"]
         score["corpus_commit"] = doc["sampling"]["corpus_commit"]
@@ -524,8 +625,11 @@ def apply_floors(accuracy: dict, floors: dict) -> dict:
         for metric in ("precision", "recall"):
             want = floor.get(metric)
             got = score.get(metric)
-            if want is not None and got is not None and got < want:
-                reasons.append(f"{metric} {got:.4f} < floor {want}")
+            if want is not None:
+                if got is None:
+                    reasons.append(f"{metric} is unmeasurable (floor {want})")
+                elif got < want:
+                    reasons.append(f"{metric} {got:.4f} < floor {want}")
         results[layer] = {"status": "fail" if reasons else "pass", "reasons": reasons, "floor": floor}
     for layer in sorted(set(floors.get("layers", {})) - set(accuracy["layers"])):
         results[layer] = {"status": "fail", "reasons": ["floor set but no gold set found"],
@@ -602,11 +706,12 @@ def _display(path: Path) -> str:
         return str(path)
 
 
-def build_report(krr_dir: Path, gold_dir: Path | None, floors_path: Path | None) -> dict:
+def build_report(krr_dir: Path, gold_dir: Path | None, floors_path: Path | None,
+                 *, current_corpus: bool = False) -> dict:
     report = evaluate(krr_dir)
     report["corpus_fingerprint"] = corpus_fingerprint(krr_dir)
-    if gold_dir is not None and gold_dir.is_dir():
-        report["accuracy"] = evaluate_gold_dir(gold_dir)
+    if gold_dir is not None:
+        report["accuracy"] = evaluate_gold_dir(gold_dir, krr_dir if current_corpus else None)
         if floors_path is not None and floors_path.exists():
             floors = json.loads(floors_path.read_text(encoding="utf-8"))
             report["accuracy_gate"] = apply_floors(report["accuracy"], floors)
@@ -618,6 +723,18 @@ def _report_texts(report: dict) -> tuple[str, str]:
         json.dumps(report, indent=2, ensure_ascii=False) + "\n",
         render_markdown(report),
     )
+
+
+def _gate_status(accuracy: dict, gate: dict | None) -> int:
+    if gate is None:
+        print("::error::accuracy floors were not loaded", file=sys.stderr)
+        return 1
+    failed = [layer for layer, result in (gate or {}).items() if result["status"] == "fail"]
+    if accuracy.get("errors"):
+        print(f"::error::{len(accuracy['errors'])} gold-set validation error(s)", file=sys.stderr)
+    if failed:
+        print(f"::error::accuracy floor not met: {', '.join(failed)}", file=sys.stderr)
+    return int(bool(failed or accuracy.get("errors")))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -642,31 +759,33 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--gate", action="store_true",
                         help="Exit 1 when a layer with enough adjudicated items is below its floor "
                              "or a gold-set file is invalid.")
+    parser.add_argument("--current-corpus", action="store_true",
+                        help="Score fixed gold probes against current corpus assertions, not saved predictions.")
     parser.add_argument("--krr-dir", type=Path, default=KRR_DIR, help=argparse.SUPPRESS)
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args(argv)
 
     # Legacy single-file gold set (pre-#698 format: items without verdicts).
     if args.gold_set is not None and args.gold_set.is_file():
-        result = evaluate_gold_set(args.gold_set, args.krr_dir)
-        print(json.dumps(result, indent=2, ensure_ascii=False))
-        return 0
+        doc = json.loads(args.gold_set.read_text(encoding="utf-8"))
+        if "schema_version" not in doc:
+            if args.gate:
+                parser.error("--gate requires a schema-versioned gold set")
+            result = evaluate_gold_set(args.gold_set, args.krr_dir)
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0
 
     gold_only = args.gold_set is not None and args.report is None and args.output_dir is None
     if gold_only:
-        accuracy = evaluate_gold_dir(args.gold_set)
+        accuracy = evaluate_gold_dir(args.gold_set, args.krr_dir if args.current_corpus else None)
         gate = None
-        if args.floors is not None:
-            gate = apply_floors(accuracy, json.loads(args.floors.read_text(encoding="utf-8")))
+        floors_path = args.floors or (FLOORS_PATH if args.gate else None)
+        if floors_path is not None:
+            gate = apply_floors(accuracy, json.loads(floors_path.read_text(encoding="utf-8")))
         if not args.quiet:
             print("\n".join(render_accuracy_markdown(accuracy, gate)))
         if args.gate:
-            failed = [layer for layer, g in (gate or {}).items() if g["status"] == "fail"]
-            if accuracy["errors"]:
-                print(f"::error::{len(accuracy['errors'])} gold-set validation error(s)", file=sys.stderr)
-            if failed:
-                print(f"::error::accuracy floor not met: {', '.join(failed)}", file=sys.stderr)
-            return 1 if failed or accuracy["errors"] else 0
+            return _gate_status(accuracy, gate)
         return 0
 
     if args.report is not None:
@@ -676,8 +795,9 @@ def main(argv: list[str] | None = None) -> int:
     json_path = md_path.parent / "fitness_report.json"
     gold_dir = args.gold_set if args.gold_set is not None else GOLD_DIR
     floors = args.floors if args.floors is not None else FLOORS_PATH
-    report = build_report(args.krr_dir, gold_dir, floors)
+    report = build_report(args.krr_dir, gold_dir, floors, current_corpus=args.current_corpus)
     json_text, md_text = _report_texts(report)
+    gate_status = _gate_status(report.get("accuracy", {}), report.get("accuracy_gate")) if args.gate else 0
 
     if args.check:
         stale = [
@@ -691,7 +811,7 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         if not args.quiet:
             print(f"Fitness report is current: {_display(md_path)}")
-        return 0
+        return gate_status
 
     md_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json_text, encoding="utf-8")
@@ -709,7 +829,7 @@ def main(argv: list[str] | None = None) -> int:
         for layer, sc in report.get("accuracy", {}).get("layers", {}).items():
             print(f"  accuracy {layer}: P={_fmt(sc['precision'])} R={_fmt(sc['recall'])} "
                   f"adjudicated {sc['adjudicated']}/{sc['items']}")
-    return 0
+    return gate_status
 
 
 def evaluate_gold_set(path: Path, krr_dir: Path = KRR_DIR) -> dict:

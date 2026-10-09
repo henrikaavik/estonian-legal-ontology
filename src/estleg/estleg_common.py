@@ -2061,6 +2061,16 @@ def _load_attested_rows(hashes_path: Path) -> dict[str, dict]:
     return rows
 
 
+def _attested_row_for(peep_path: Path, gid: str) -> dict | None:
+    rows = _load_attested_rows(peep_path.parent / FETCH_HASH_FILENAME)
+    slug = peep_path.stem.removesuffix("_peep")
+    for key in dict.fromkeys((slug, _MULTIPART_SUFFIX_RE.sub("", slug))):
+        row = rows.get(key)
+        if row and str(row.get("globalId") or "") == gid:
+            return row
+    return None
+
+
 def _attested_xml_for(
     peep_path: Path, gid: str, data_dir: Path | None
 ) -> Path | None:
@@ -2075,23 +2085,23 @@ def _attested_xml_for(
     manifest's repo root, then by basename under ``data_dir``.
     """
     hashes_path = peep_path.parent / FETCH_HASH_FILENAME
-    rows = _load_attested_rows(hashes_path)
-    if not rows:
+    row = _attested_row_for(peep_path, gid)
+    if not row:
         return None
-    slug = peep_path.stem.removesuffix("_peep")
-    for key in dict.fromkeys((slug, _MULTIPART_SUFFIX_RE.sub("", slug))):
-        row = rows.get(key)
-        if not row or str(row.get("globalId") or "") != gid:
-            continue
-        cache_file = str(row.get("cacheFile") or "")
-        if not cache_file:
-            continue
-        candidates = [hashes_path.parent.parent / cache_file]
-        if data_dir is not None:
-            candidates.append(data_dir / Path(cache_file).name)
-        for candidate in candidates:
-            if candidate.is_file():
-                return candidate
+    cache_file = str(row.get("cacheFile") or "")
+    if not cache_file:
+        return None
+    candidates = [hashes_path.parent.parent / cache_file]
+    if data_dir is not None:
+        candidates.append(data_dir / Path(cache_file).name)
+    for candidate in candidates:
+        if candidate.is_file():
+            # The tid-keyed cache is mutable across redactions. The row's
+            # globalId alone does not attest the bytes currently on disk.
+            digest = row.get("sha256")
+            if digest and sha256_hex(candidate.read_bytes()) != digest:
+                continue
+            return candidate
     return None
 
 
@@ -2118,8 +2128,7 @@ def pair_peep_with_xml(
        act root (``estleg:Part`` roots included), and the lookup maps each
        cached XML's ``globaalID`` to its path.
 
-    3. **Slug-based fallback** (legacy peeps without a globalId, or a
-       globalId neither attested nor cached): match the peep file's stem
+    3. **Slug-based fallback** (legacy peeps without a globalId): match the peep file's stem
        (sans ``_peep``) against ``<data_dir>/<stem>.xml``, then the
        ``_osaN``-stripped base slug. ``data_dir`` is required for the
        fallback; if not supplied, only paths 1-2 run.
@@ -2173,7 +2182,14 @@ def pair_peep_with_xml(
         # Path 2: globalId lookup
         xml = lookup.get(str(gid))
         if xml is not None:
+            row = _attested_row_for(peep_path, str(gid)) or {}
+            digest = row.get("sha256") or node.get("estleg:contentHash")
+            if digest and sha256_hex(xml.read_bytes()) != digest:
+                return None
             return xml
+        # A known redaction must not silently fall back to a different
+        # consolidation under the same law slug.
+        return None
     # Path 3: slug fallback (laws without globalId)
     if data_dir is not None:
         slug = peep_path.stem.replace("_peep", "")

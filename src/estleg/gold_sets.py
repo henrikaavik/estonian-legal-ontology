@@ -1550,7 +1550,11 @@ def merge_reviewer_verdicts(new_items: list[dict], old_doc: dict | None) -> int:
     kept = 0
     for item in new_items:
         prior = old.get(item["id"])
-        if prior:
+        # IDs do not include the legal evidence or sanction amounts. A stable
+        # assertion IRI can survive an amended provision or corrected amount;
+        # a verdict on the previous evidence must not adjudicate the new one.
+        if prior and all(prior.get(key) == item.get(key) for key in
+                         ("evidence", "context", "citation", "related_citation")):
             for key in REVIEWER_FIELDS:
                 item[key] = prior.get(key)
             kept += 1

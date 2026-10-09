@@ -284,6 +284,16 @@ def test_rebuild_keeps_reviewer_verdicts(fixture_gold, tmp_path):
     assert kept["gold"] == ["estleg:NormType_Right"]
 
 
+@pytest.mark.parametrize("changed", ["evidence", "context", "citation", "related_citation"])
+def test_rebuild_does_not_reuse_verdict_on_changed_evidence(changed):
+    old = {"id": "same", "verdict": "correct", "verdict_source": "reviewer", "reviewer": "R",
+           "evidence": {"text": "old"}, "context": {"maxPenaltyAmount": "300"},
+           "citation": "https://example.com/old", "related_citation": "https://example.com/law"}
+    new = {**old, "verdict": "pending", "verdict_source": None, "reviewer": None, changed: "changed"}
+    assert gold_sets.merge_reviewer_verdicts([new], {"items": [old]}) == 0
+    assert new["verdict"] == "pending"
+
+
 # ── mechanical rules in isolation ────────────────────────────────────────────
 
 def test_sanction_rule_number_words_and_defaults():
@@ -424,6 +434,85 @@ def test_gate_passes_above_floor(tmp_path):
 
 def test_gate_fails_below_floor(tmp_path):
     assert _gate(_gold_dir(tmp_path, 5, 5), _floors(tmp_path)) == 1
+
+
+def test_single_file_gate_honours_floors(tmp_path):
+    gold = _gold_dir(tmp_path, 5, 5) / "deontic.json"
+    assert _gate(gold, _floors(tmp_path)) == 1
+
+
+def test_report_gate_and_check_honour_floors(tmp_path):
+    gold = _gold_dir(tmp_path, 5, 5)
+    krr = build_fixture_corpus(tmp_path / "corpus")
+    args = ["--gold-set", str(gold), "--floors", str(_floors(tmp_path)),
+            "--krr-dir", str(krr), "--report", str(tmp_path / "report.md"), "--gate", "--quiet"]
+    assert eval_harness.main(args) == 1
+    assert eval_harness.main(args + ["--check"]) == 1
+
+
+def test_report_gate_fails_when_floors_are_missing(tmp_path):
+    gold = _gold_dir(tmp_path, 10, 0)
+    krr = build_fixture_corpus(tmp_path / "corpus")
+    assert eval_harness.main([
+        "--gold-set", str(gold), "--floors", str(tmp_path / "missing.json"),
+        "--krr-dir", str(krr), "--report", str(tmp_path / "report.md"), "--gate", "--quiet",
+    ]) == 1
+
+
+def test_current_corpus_cannot_pass_an_unnamed_recall_miss(tmp_path):
+    gold = _gold_dir(tmp_path, 1, 0)
+    path = gold / "deontic.json"
+    doc = json.loads(path.read_text())
+    item = doc["items"][0]
+    item.update(system=[], negative=True, verdict="incorrect")
+    doc["sampling"]["negatives"] = 1
+    path.write_text(json.dumps(doc))
+    krr = tmp_path / "krr"
+    _w(krr / "law_peep.json", [_prov(item["node"], "peab")])
+    accuracy = eval_harness.evaluate_gold_dir(gold, krr)
+    assert any("missing gold value" in error for error in accuracy["errors"])
+    assert accuracy["layers"]["deontic"]["false_negatives"] == 1
+    assert accuracy["layers"]["deontic"]["true_negatives"] == 0
+
+
+def test_current_corpus_gate_detects_changed_predictions(tmp_path):
+    gold = _gold_dir(tmp_path, 10, 0)
+    krr = tmp_path / "krr"
+    graph = [_prov(f"estleg:X_Par_{i}", "peab", normativeType="estleg:NormType_Obligation") for i in range(10)]
+    _w(krr / "law_peep.json", graph)
+    args = ["--gold-set", str(gold), "--floors", str(_floors(tmp_path)),
+            "--krr-dir", str(krr), "--current-corpus", "--gate", "--quiet"]
+    assert eval_harness.main(args) == 0
+    for node in graph:
+        node["estleg:normativeType"] = {"@id": "estleg:NormType_Permission"}
+    _w(krr / "law_peep.json", graph)
+    assert eval_harness.main(args) == 1
+
+
+def test_current_corpus_probes_cover_overlay_sanctions_and_negative_pairs(fixture_gold):
+    krr, gold = fixture_gold
+    docs, errors = eval_harness.load_gold_dir(gold)
+    assert not errors
+    predictions, errors = eval_harness.current_predictions(docs, krr)
+    assert not errors
+    for doc in docs.values():
+        for item in doc["items"]:
+            if item["verdict"] != "pending":
+                assert predictions[item["id"]] == set(item["system"]), item["id"]
+    path = krr / "sanctions/sanctions_law_a.json"
+    doc = json.loads(path.read_text())
+    doc["@graph"][0]["estleg:maxPenaltyAmount"]["@value"] = "999"
+    path.write_text(json.dumps(doc))
+    _, errors = eval_harness.current_predictions(docs, krr)
+    assert any("sanction values changed" in e for e in errors)
+
+
+def test_current_negative_becomes_false_positive(tmp_path):
+    item = {"id": "x", "node": "estleg:X_Par_1", "predicate": "estleg:references",
+            "system": [], "gold": [], "negative": True, "verdict": "correct"}
+    score = eval_harness.score_items([item], {"x": {"estleg:Y_Par_1"}})
+    assert score["false_positives"] == 1
+    assert score["true_negatives"] == 0
 
 
 def test_gate_does_not_fail_with_too_few_adjudicated(tmp_path):

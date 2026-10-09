@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 from estleg import generate_all_laws, law_structure, riigiteataja_common
 
@@ -35,7 +36,8 @@ def test_laws_fetch_xml_delegates_to_commons(monkeypatch, tmp_path) -> None:
     # the network call always downloads and writes the tid-keyed file.
     assert kwargs["refresh"] is True
     assert "fallback_cache_name" not in kwargs
-    assert kwargs["validate_root"] is generate_all_laws._is_trustworthy_xml_root
+    assert callable(kwargs["validate_root"])
+    assert not kwargs["validate_root"](ET.fromstring("<html/>"))
     assert kwargs["min_size"] == generate_all_laws.MIN_XML_BYTES
 
 

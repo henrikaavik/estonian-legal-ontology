@@ -25,7 +25,7 @@ is present and retrievable. Accuracy asks how often a heuristic layer is wrong.
 python3 scripts/eval_harness.py --report eval/FITNESS_REPORT.md          # regenerate the report
 python3 scripts/eval_harness.py --report eval/FITNESS_REPORT.md --check  # exit 1 if the committed report is stale
 python3 scripts/eval_harness.py --gold-set eval/gold_sets \
-    --floors eval/accuracy_floors.json --gate                            # the CI gate (offline, about 1 s)
+    --floors eval/accuracy_floors.json --current-corpus --gate           # the CI gate (offline)
 python3 scripts/build_gold_sets.py --krr-dir krr_outputs --corpus-commit "$(git rev-parse HEAD)"
 ```
 
@@ -96,7 +96,8 @@ The `needs-legal-review` paths in [CODEOWNERS](../.github/CODEOWNERS) apply to
 **Re-sampling keeps adjudications.** Re-running `scripts/build_gold_sets.py`
 against a newer corpus keeps every reviewer verdict whose item id is still
 sampled. The id is a hash of the layer, node, predicate, system values and
-probe. An item whose system value changed is a new item and starts as pending.
+probe. A reviewer verdict is carried forward only when the evidence, context
+and citations are unchanged too. Changed evidence requires a fresh verdict.
 
 ## Scoring and the gate
 
@@ -111,12 +112,23 @@ Scoring is value-level:
 
 The report also gives the 95 % Wilson lower bound of precision.
 
+By default scores describe the saved sampling snapshot. CI uses
+`--current-corpus` to read today's assertions for the same fixed probes.
+Positive edge samples test their reviewed values; whole-node negatives test
+all current values, and paired negatives test their named probe. A removed
+correct assertion counts as a recall miss and a new assertion on a confirmed
+negative counts as a false positive. Missing sampled subjects and changed
+sanction amounts fail validation and require renewed adjudication.
+
 `--gate` exits 1 in three cases:
 
 - a gold file is invalid;
 - a floor names a layer that has no gold set;
-- a layer with at least `min_adjudicated` adjudicated items has a measured
-  precision or recall below its floor.
+- a layer with at least `min_adjudicated` adjudicated items has precision or
+  recall below its floor, or the required metric is unmeasurable.
+
+The same gate applies with a single schema-versioned gold file, `--report`,
+and `--report --check`; report generation does not bypass failing floors.
 
 A layer with fewer adjudicated items is reported as "not enough adjudicated
 items" and passes. A null floor is not gated.

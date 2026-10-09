@@ -139,6 +139,7 @@ def test_record_fetch_hash_writes_manifest(tmp_path: Path) -> None:
 
 def test_committed_kars_content_hash_matches_cached_xml() -> None:
     """#558: published KarS act node carries sha256 of the cached RT XML."""
+    import gzip
     import json
     from pathlib import Path
 
@@ -149,8 +150,8 @@ def test_committed_kars_content_hash_matches_cached_xml() -> None:
     # in fetch_content_hashes.json (the tid-keyed file since the 2026 refresh).
     ledger = json.loads((repo / "krr_outputs" / "fetch_content_hashes.json").read_text())
     rows = ledger.get("rows", ledger)
-    cache_file = rows["karistusseadustik"]["cacheFile"]
-    xml = (repo / cache_file).read_bytes()
+    xml = gzip.decompress((repo / "tests/fixtures/rt_xml/karistusseadustik_2026-10-09.xml.gz").read_bytes())
+    assert sha256_hex(xml) == rows["karistusseadustik"]["sha256"]
     peep = json.loads(
         (repo / "krr_outputs" / "karistusseadustik_osa1_peep.json").read_text()
     )

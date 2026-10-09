@@ -1105,7 +1105,17 @@ class RkIriScheme:
 
     @classmethod
     def frozen(cls, path: Path | None = None) -> "RkIriScheme":
-        return cls(load_rk_iri_collisions(path))
+        scheme = cls(load_rk_iri_collisions(path))
+        target = path if path is not None else RK_IRI_COLLISIONS_PATH
+        try:
+            entries = json.loads(target.read_text(encoding="utf-8")).get("collisions", [])
+        except FileNotFoundError:
+            entries = []
+        for entry in entries:
+            holder = entry.get("shortFormHolder")
+            if holder:
+                scheme.holders[rk_short_iri(entry["caseNumber"])] = str(holder)
+        return scheme
 
     def seed_from_graph(self, graph: object) -> None:
         """Record which oid holds each short IRI in an existing peep graph."""
@@ -2328,6 +2338,13 @@ def main(argv: list[str] | None = None):
     partial_years: list[int] = []
     log_replace_overlays_mode(RK_INGEST_LAYER, args.replace_overlays, logger)
     iri_scheme = RkIriScheme.frozen()
+    # The feed is processed newest year first. Reserve every published short
+    # IRI before minting anything: a new decision may share a case number with
+    # a holder in an older year (including one outside this fetch's range).
+    for path in sorted(RK_DIR.glob("riigikohus_*_peep.json")):
+        existing = load_existing_doc(path)
+        if existing is not None:
+            iri_scheme.seed_from_graph(existing.get("@graph"))
 
     for year in range(end_year, start_year - 1, -1):
         print(f"\n--- Year {year} ---")
