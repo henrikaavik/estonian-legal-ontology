@@ -93,7 +93,7 @@ def test_eu_case_law_none_returns_note(monkeypatch: pytest.MonkeyPatch) -> None:
     assert "note" in miss[0]
     assert "31990L0314" in miss[0]["note"]
     assert server.eu_case_law_for_directive("", limit=5) == [
-        {"note": "No CELEX number in ''."}
+        {"note": "Päringus '' pole CELEX-numbrit."}
     ]
     assert server.eu_case_law_for_directive("32000L0060", limit=0) == []
 
@@ -164,6 +164,11 @@ def test_define_term_uses_concepts_overlay(monkeypatch: pytest.MonkeyPatch) -> N
             "id": "estleg:Concept_elatis",
             "label": "elatis",
             "definition": "Maintenance obligation.",
+            # #714: every row carries the defining act's citation; this
+            # fixture concept records none, so the citation is honestly empty.
+            "defined_in": "",
+            "source_act": "",
+            "rt_url": "",
         }
     ]
     assert server.define_term("", limit=5) == []
@@ -199,7 +204,7 @@ def test_overlay_path_and_harmonisation_loader(monkeypatch: pytest.MonkeyPatch) 
     fin = next(r for r in rows if r["member_state"] == "FIN")
     assert fin["national_celex"] == "72000L0060FIN_1"
     assert server.harmonisation_for_directive("", limit=5) == [
-        {"note": "No CELEX number in ''."}
+        {"note": "Päringus '' pole CELEX-numbrit."}
     ]
     assert server.harmonisation_for_directive("32000L0060", limit=0) == []
 

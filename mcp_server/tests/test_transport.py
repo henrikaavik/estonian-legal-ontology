@@ -12,6 +12,7 @@ own settings (it used to go to uvicorn only).
 from __future__ import annotations
 
 import asyncio
+import io
 import json
 
 import pytest
@@ -20,10 +21,24 @@ from starlette.testclient import TestClient
 from estleg_mcp import server
 
 
+_ACCESS_ENV = (
+    "ESTLEG_TOKEN",
+    "ESTLEG_TOKENS",
+    "ESTLEG_ALLOW_ANONYMOUS_HTTP",
+    "ESTLEG_RATE_LIMIT",
+    "ESTLEG_RATE_BURST",
+)
+AUTH = {"Authorization": "Bearer test-token"}
+
+
 @pytest.fixture(autouse=True)
 def fresh_server(monkeypatch):
     # App/session-manager construction differs between SDK majors; isolate it.
     monkeypatch.setattr(server, "mcp", server.MCPServer("estleg-test"))
+    # The HTTP transport fails closed (#714): start every test from a clean
+    # credential environment and opt in explicitly.
+    for name in _ACCESS_ENV:
+        monkeypatch.delenv(name, raising=False)
 
 
 def test_transport_security_off_by_default(monkeypatch) -> None:
@@ -55,6 +70,7 @@ def test_allowed_origins_ignored_without_hosts(monkeypatch) -> None:
 
 def test_build_http_app_applies_settings_and_is_reachable(monkeypatch) -> None:
     monkeypatch.delenv("ESTLEG_ALLOWED_HOSTS", raising=False)
+    monkeypatch.setenv("ESTLEG_TOKEN", "test-token")
     monkeypatch.setenv("ESTLEG_HOST", "0.0.0.0")
     monkeypatch.setenv("ESTLEG_PORT", "9100")
     app = server._build_http_app()
@@ -70,8 +86,8 @@ def test_build_http_app_applies_settings_and_is_reachable(monkeypatch) -> None:
     with TestClient(app, base_url="http://estleg.sixtyfour.ee") as client:
         assert client.get("/healthz").text == "ok"
         # A protocol error is expected without a session; DNS rejection is not.
-        response = client.post("/mcp", json={})
-        assert response.status_code != 421
+        response = client.post("/mcp", json={}, headers=AUTH)
+        assert response.status_code not in (401, 421)
 
 
 def test_http_bearer_gate_and_health(monkeypatch):
@@ -87,10 +103,12 @@ def test_http_bearer_gate_and_health(monkeypatch):
 
 
 def test_http_enforces_explicit_allowed_hosts(monkeypatch):
-    monkeypatch.delenv("ESTLEG_TOKEN", raising=False)
+    monkeypatch.setenv("ESTLEG_TOKEN", "test-token")
     monkeypatch.setenv("ESTLEG_ALLOWED_HOSTS", "estleg.sixtyfour.ee")
     with TestClient(server._build_http_app(), base_url="http://untrusted.example") as client:
-        response = client.post("/mcp", json={}, headers={"Content-Type": "application/json"})
+        response = client.post(
+            "/mcp", json={}, headers={"Content-Type": "application/json", **AUTH}
+        )
         assert response.status_code == 421
 
 
@@ -98,6 +116,7 @@ def test_main_http_binds_configured_address(monkeypatch):
     import uvicorn
 
     monkeypatch.setenv("ESTLEG_TRANSPORT", "http")
+    monkeypatch.setenv("ESTLEG_TOKEN", "test-token")
     monkeypatch.setenv("ESTLEG_HOST", "0.0.0.0")
     monkeypatch.setenv("ESTLEG_PORT", "9100")
     monkeypatch.setattr(server, "check_provision_detection", lambda: None)
@@ -118,11 +137,15 @@ def test_registered_tools_are_exposed_by_sdk():
 
 
 def test_http_protocol_initializes_and_calls_tool(monkeypatch):
-    monkeypatch.delenv("ESTLEG_TOKEN", raising=False)
+    # #714: per-consumer token map; the wired tool carries the snapshot
+    # envelope and the audit line names the authenticated consumer.
+    monkeypatch.setenv("ESTLEG_TOKENS", "ministry=test-token,other=other-token")
     monkeypatch.delenv("ESTLEG_ALLOWED_HOSTS", raising=False)
     monkeypatch.setattr(server.data, "search_law_records", lambda query, limit: [])
-    server.mcp.add_tool(server.search_laws)
-    headers = {"Accept": "application/json, text/event-stream"}
+    sink = io.StringIO()
+    monkeypatch.setattr(server.audit, "_AUDIT", server.audit.AuditLog(sink))
+    server.register_tools(server.mcp)
+    headers = {"Accept": "application/json, text/event-stream", **AUTH}
     with TestClient(server._build_http_app()) as client:
         initialized = client.post("/mcp", headers=headers, json={
             "jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
@@ -144,4 +167,20 @@ def test_http_protocol_initializes_and_calls_tool(monkeypatch):
         payload = next(line[6:] for line in response.text.splitlines() if line.startswith("data: "))
         result = json.loads(payload)["result"]
         assert not result.get("isError")
-        assert result["structuredContent"] == {"result": []}
+        structured = result["structuredContent"]
+        assert structured["result"] == []
+        assert set(structured["snapshot"]) == {
+            "corpus_commit",
+            "corpus_ref",
+            "ontology_version",
+            "evaluation_date",
+            "server_version",
+            "language",
+        }
+    lines = [json.loads(line) for line in sink.getvalue().splitlines()]
+    calls = [r for r in lines if r["event"] == "tool_call"]
+    assert len(calls) == 1
+    assert calls[0]["consumer"] == "ministry"
+    assert calls[0]["transport"] == "http"
+    assert calls[0]["tool"] == "search_laws"
+    assert "missing" not in json.dumps(calls[0])  # raw arguments never logged
