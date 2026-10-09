@@ -126,3 +126,22 @@ def test_bad_evaluation_date_is_a_usage_error() -> None:
     with pytest.raises(SystemExit) as excinfo:
         gcd.parse_args(["--evaluation-date", "soon"])
     assert excinfo.value.code == 2
+
+
+@pytest.mark.parametrize("body", ["<html>Maintenance</html>", "Tulemusi leiti kokku: 2"])
+def test_successful_http_response_must_contain_the_advertised_results(
+    monkeypatch: pytest.MonkeyPatch, body: str
+) -> None:
+    monkeypatch.setattr(gcd, "_get_search_page", lambda _params: body)
+    with pytest.raises(gcd.PartialYearError, match="year 2026"):
+        gcd.fetch_year(2026)
+
+
+def test_missing_later_page_is_not_a_complete_sweep(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(gcd, "PAGE_SIZE", 1)
+    monkeypatch.setattr(gcd.time, "sleep", lambda *_a: None)
+    row = "<table><tr><td>01.01.2026</td><td>1-26-1</td><td>Otsus</td><td>123</td></tr></table>"
+    pages = iter(["Tulemusi leiti kokku: 2" + row, "<html>Maintenance</html>"])
+    monkeypatch.setattr(gcd, "_get_search_page", lambda _params: next(pages))
+    with pytest.raises(gcd.PartialYearError, match="year 2026"):
+        gcd.fetch_year(2026)
