@@ -46,7 +46,8 @@ The loader fails hard, naming the line, on invalid JSON, unknown or missing
 keys, an unknown predicate, a malformed node IRI, a value in the wrong form,
 a bad date, an e-mail-like reviewer, or a second line for the same
 (`node`, `predicate`) pair. A classifier with a broken store exits non-zero
-before it touches any file.
+before it touches any file. An explicitly supplied `--overrides` path must
+exist; use an empty file when intentionally running without overrides.
 
 ## Workflow
 
