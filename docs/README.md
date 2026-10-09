@@ -37,6 +37,15 @@ Documentation checked against `main` at `0cb9ac91bc` on **2026-09-07**:
 | Correcting classifier output so it survives regeneration | [HEURISTIC_OVERRIDES.md](HEURISTIC_OVERRIDES.md) |
 | Release procedure and validation evidence | [RELEASE.md](RELEASE.md), [VALIDATION_REPORT.md](VALIDATION_REPORT.md) |
 | Rights and personal-data handling | [DATA_RIGHTS.md](DATA_RIGHTS.md), [DATA_PROTECTION.md](DATA_PROTECTION.md) |
+| Estonian data statement for lawyers and decision makers | [ANDMED.et.md](ANDMED.et.md) |
+| Estonian overview | [HTML overview](eesti-oigusontoloogia-ulevaade.html), published at [GitHub Pages](https://henrikaavik.github.io/estonian-legal-ontology/eesti-oigusontoloogia-ulevaade.html) once Pages is enabled |
+| Refreshing the corpus, rebuilding layers, running gates | [OPERATOR_RUNBOOK.md](OPERATOR_RUNBOOK.md) |
+| Governance, security reporting, release notes | [GOVERNANCE.md](../GOVERNANCE.md), [SECURITY.md](../SECURITY.md), [RELEASE_NOTES.md](RELEASE_NOTES.md) |
+| Amendment chains and release deltas (#713) | [AMENDMENT_HISTORY.md](AMENDMENT_HISTORY.md) |
+| Legal-reasoning benchmark (#727) | [BENCHMARK.md](BENCHMARK.md) |
+| Proposed ADR: Sätla reference-resolution service (#725) | [proposals/2026-10-satla-reference-resolution.md](proposals/2026-10-satla-reference-resolution.md) |
+| Proposed ADR: provision-level draft impact and HÕNTE impact areas (#724) | [proposals/2026-10-draft-provision-impact.md](proposals/2026-10-draft-provision-impact.md) |
+
 | DCAT-AP catalogue record (`metadata.jsonld`) | [DCAT_CATALOGUE.md](DCAT_CATALOGUE.md) |
 | Estonian overview | [HTML overview](eesti-oigusontoloogia-ulevaade.html) |
 | Historical review and roadmap rationale | [September review](PUBLIC_SECTOR_REVIEW_2026-09.md) |
