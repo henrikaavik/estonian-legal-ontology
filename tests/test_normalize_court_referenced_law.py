@@ -144,7 +144,9 @@ def test_court_pass_does_not_own_referenced_law_citations():
     from estleg.extract_court_provision_links import is_court_pass_unresolved_citation
 
     ref_law = {"@id": "estleg:Citation_RK_1_RefLaw_1", "@type": ["estleg:Citation"]}
-    court = {"@id": "estleg:Citation_RK_1_1", "@type": ["estleg:Citation"]}
+    court = {"@id": "estleg:Citation_RK_1_1", "@type": ["estleg:Citation"],
+             "estleg:citationSource": {"@id": "estleg:RK_1"},
+             "estleg:citationDetail": "KarS"}
     assert not is_court_pass_unresolved_citation(ref_law)
     assert is_court_pass_unresolved_citation(court)
 
