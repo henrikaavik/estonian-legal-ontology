@@ -15,7 +15,14 @@ flattens the graph into four self-contained, citeable projections:
    version; for a provision with no version layer, one record from the
    consolidated text. Each record is independently citeable
    (``provision_iri`` + ``rt_url`` + ``paragraph``) and carries the untruncated
-   text plus the validity window and an ``in_force`` flag.
+   text plus the validity window and an ``in_force`` flag. Since #723 every
+   record also carries an **audit envelope** (``chunk_id``,
+   ``ontology_version``, ``evaluation_date``, ``act_iri``, ``kehtiv``,
+   ``language``, ``part_index``/``part_count``) so a chunk copied into a RAG
+   store can be traced months later from the record alone; see
+   :data:`CHUNK_KEYS` and :data:`CHUNK_SCHEMA_VERSION`. With ``--max-chars`` a
+   long § is split on sentence boundaries into parts (``#part_<k>`` suffix on
+   ``chunk_id``).
 2. ``outlines/<law>.json`` -- a per-law skim tier: ``{paragraph, label, chapter,
    summary (<=120 chars), has_versions}`` per provision, so a consumer can
    navigate a multi-megabyte law without fetching the whole thing.
@@ -63,10 +70,14 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
+import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
@@ -80,6 +91,7 @@ from estleg.estleg_common import (
     jsonld_text,
     save_json,
 )
+from estleg.write_build_manifest import github_release_asset_url
 
 # ---------------------------------------------------------------------------
 # Paths and constants
@@ -105,17 +117,105 @@ _RT_XML_SUFFIX = ".xml"
 # and are deliberately NOT treated as provision-version units.
 _PROVISION_TYPE_PREFIX = "estleg:LegalProvision"
 
+# ---------------------------------------------------------------------------
+# Chunk record contract (#723)
+# ---------------------------------------------------------------------------
+# Version of the chunk RECORD schema (independent of ONTOLOGY_VERSION). Bump
+# the major on a key removal/rename or a semantic change, the minor on an
+# additive key. 1.0.0 was the ten-key #523 record; 2.0.0 adds the audit
+# envelope, part fields, and the provision-level ``rt_url``.
+CHUNK_SCHEMA_VERSION = "2.0.0"
+
+# Every record carries exactly these keys, always in this order (byte-stable
+# JSONL). Nullable: redaction_id, abbrev, rt_url, valid_from, valid_to, kehtiv,
+# act_iri.
+CHUNK_KEYS: tuple[str, ...] = (
+    "chunk_id",
+    "provision_iri",
+    "act_iri",
+    "redaction_id",
+    "paragraph",
+    "act_title",
+    "abbrev",
+    "rt_url",
+    "valid_from",
+    "valid_to",
+    "in_force",
+    "kehtiv",
+    "evaluation_date",
+    "ontology_version",
+    "language",
+    "part_index",
+    "part_count",
+    "text",
+)
+
+# (type, meaning/source) per key -- rendered into the generated README and
+# kept here so the documented contract cannot drift from CHUNK_KEYS.
+CHUNK_FIELD_DOCS: dict[str, tuple[str, str]] = {
+    "chunk_id": ("string", "Stable id: `<provision_iri>#<redaction_id>` or `<provision_iri>#consolidated`, plus `#part_<k>` when split."),
+    "provision_iri": ("string (CURIE)", "§-level `estleg:LegalProvision_*` node."),
+    "act_iri": ("string (CURIE) or null", "Act root node of the peep file the § was read from."),
+    "redaction_id": ("string or null", "`estleg:versionRedactionId` (RT redaction); null for consolidated text."),
+    "paragraph": ("string", "`estleg:paragrahv` label, e.g. `§ 13¹.`."),
+    "act_title": ("string", "Act root `dcterms:title` (fallback `dc:source`, `rdfs:label`)."),
+    "abbrev": ("string or null", "`data/law_abbreviations.json`, else derived from the act root id."),
+    "rt_url": ("string or null", "Version sidecar `estleg:rtUrl` (redaction page), else act `dcterms:source`; `.xml` stripped; `#para<N>[b<k>]` anchor."),
+    "valid_from": ("date or null", "`estleg:versionValidFrom`; act `kehtiv` for consolidated text."),
+    "valid_to": ("date or null", "`estleg:versionValidTo`; null = open-ended."),
+    "in_force": ("boolean", "Validity window contains `evaluation_date`; consolidated text also requires act `estleg:temporalStatus` to be in force."),
+    "kehtiv": ("date or null", "Act root `estleg:kehtiv`: consolidation date of the act snapshot."),
+    "evaluation_date": ("date", "Pinned `ESTLEG_BUILD_EVALUATION_DATE` that `in_force` was computed against."),
+    "ontology_version": ("string", "`ONTOLOGY_VERSION` of the build (release tag `v<version>`)."),
+    "language": ("string", "BCP 47 tag of `text` / `act_title` (`et`)."),
+    "part_index": ("integer", "1-based part number (1 when not split)."),
+    "part_count": ("integer", "Number of parts of this provision-version (1 when not split)."),
+    "text": ("string", "Untruncated `estleg:versionText` (consolidated: `estleg:legalText`), or one part of it."),
+}
+
+# Language of ``text`` / ``act_title`` (BCP 47). The projection only reads
+# the Estonian-language state-law corpus (INDEX laws).
+CHUNK_LANGUAGE = "et"
+
+# chunk_id segment for a provision with no version layer (consolidated text).
+CONSOLIDATED_SEGMENT = "consolidated"
+
+# Release asset the #705 release step gzips from this generator's output.
+CHUNKS_ASSET_NAME = "chunks.jsonl.gz"
+
+# Smallest accepted --max-chars (guards against degenerate one-word parts).
+MIN_MAX_CHARS = 200
+
+# Riigi Teataja renders each § with an element id ``para<N>`` and a
+# superscripted § (``§ 13¹``) as ``para<N>b<k>`` -- the ids are present in the
+# act XML (``<paragrahv id="para13b1">``) and the www.riigiteataja.ee SPA
+# resolves them with ``getElementById`` (router ``anchorScrolling: enabled``).
+_PARAGRAPH_NUMBER_RE = re.compile(
+    r"§\s*(\d+)\s*(?:([⁰¹²³⁴⁵⁶⁷⁸⁹]+)|\^\s*(\d+))?"
+)
+_SUPERSCRIPT_DIGITS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
+
 
 # ---------------------------------------------------------------------------
 # Small JSON-LD accessors (kept local + pure for unit testing)
 # ---------------------------------------------------------------------------
-def _load_json(path: Path) -> Any | None:
+def _load_json(path: Path, *, required: bool = False) -> Any | None:
     """Load JSON from ``path``; return ``None`` on a missing/corrupt file."""
     try:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
-    except (OSError, ValueError):
+    except (OSError, ValueError) as exc:
+        if required:
+            raise ValueError(f"Cannot read retrieval input {path}: {exc}") from exc
         return None
+
+
+def _load_graph_json(path: Path) -> Any:
+    doc = _load_json(path, required=True)
+    graph = doc.get("@graph") if isinstance(doc, dict) else doc
+    if not isinstance(graph, list) or not all(isinstance(node, dict) for node in graph):
+        raise ValueError(f"Invalid retrieval graph input: {path}")
+    return doc
 
 
 def _graph(doc: Any) -> list[dict]:
@@ -168,6 +268,21 @@ def _strip_xml(url: str | None) -> str | None:
     return url
 
 
+def _rt_browse_url(url: str | None) -> str | None:
+    if not url:
+        return None
+    try:
+        parts = urlsplit(url)
+        host = (parts.hostname or "").lower()
+        if parts.scheme not in {"http", "https"} or not (
+            host == "riigiteataja.ee" or host.endswith(".riigiteataja.ee")
+        ):
+            return None
+    except ValueError:
+        return None
+    return urlunsplit(parts._replace(path=parts.path.removesuffix(".xml"), fragment=""))
+
+
 # ---------------------------------------------------------------------------
 # Act-root resolution (title / rt_url / kehtiv / abbreviation / status)
 # ---------------------------------------------------------------------------
@@ -177,11 +292,16 @@ def find_act_root(graph: list[dict]) -> dict | None:
 
 
 def act_title(root: dict | None) -> str:
-    """Resolve the act title: dcterms:title -> dc:source -> rdfs:label."""
+    """Resolve the act title: dcterms:title -> dc:source -> rdfs:label.
+
+    A bilingual title list (``et`` + ``en``) resolves to the Estonian value so
+    ``act_title`` agrees with the record's ``language`` (#723); an untagged or
+    English-only title still falls back to whatever text is present.
+    """
     if not root:
         return ""
     for key in ("dcterms:title", "dc:source", "rdfs:label"):
-        text = jsonld_text(root.get(key))
+        text = jsonld_text(root.get(key), prefer_language=CHUNK_LANGUAGE)
         if text:
             return text
     return ""
@@ -197,14 +317,13 @@ def act_rt_url(root: dict | None) -> str | None:
     if not root:
         return None
     for key in ("dcterms:source", "owl:sameAs"):
-        ref = _ref_id(root.get(key))
-        if ref and ref.startswith("http"):
-            return _strip_xml(ref)
+        for ref in _ref_ids(root.get(key)):
+            url = _rt_browse_url(ref)
+            if url:
+                return url
     # Legacy dc:source may itself be a URL.
     legacy = jsonld_text(root.get("dc:source"))
-    if legacy.startswith("http"):
-        return _strip_xml(legacy)
-    return None
+    return _rt_browse_url(legacy)
 
 
 def act_kehtiv(root: dict | None) -> str | None:
@@ -306,6 +425,12 @@ def _version_record(node: dict) -> tuple[str, dict] | None:
         "valid_from": jsonld_text(node.get("estleg:versionValidFrom")) or None,
         "valid_to": jsonld_text(node.get("estleg:versionValidTo")) or None,
         "text": jsonld_text(node.get("estleg:versionText")),
+        # Per-redaction RT URL (``estleg:rtUrl``) -- a plain string or {"@id"}.
+        "rt_url": _strip_xml(
+            _ref_id(node.get("estleg:rtUrl"))
+            or jsonld_text(node.get("estleg:rtUrl"))
+            or None
+        ),
     }
 
 
@@ -325,9 +450,7 @@ def load_version_map(versions_dir: Path) -> dict[str, list[dict]]:
     if not versions_dir.is_dir():
         return out
     for path in sorted(versions_dir.glob("*.jsonld")):
-        doc = _load_json(path)
-        if doc is None:
-            continue
+        doc = _load_graph_json(path)
         for node in _graph(doc):
             record = _version_record(node)
             if record is None:
@@ -361,6 +484,174 @@ def compute_in_force(
 
 
 # ---------------------------------------------------------------------------
+# Chunk envelope helpers (#723)
+# ---------------------------------------------------------------------------
+def paragraph_anchor(paragraph: str | None) -> str | None:
+    """Return the Riigi Teataja HTML anchor for a § label, else ``None``.
+
+    ``"§ 5."`` -> ``"para5"``; ``"§ 13¹."`` / ``"§ 13^1"`` -> ``"para13b1"``.
+    The number is read from the source ``estleg:paragrahv`` label (not the
+    IRI, which can lag a renumbering).
+    """
+    if not paragraph:
+        return None
+    match = _PARAGRAPH_NUMBER_RE.search(paragraph)
+    if not match:
+        return None
+    number, sup, caret = match.groups()
+    anchor = f"para{number}"
+    sub = sup.translate(_SUPERSCRIPT_DIGITS) if sup else caret
+    if sub:
+        anchor += f"b{sub}"
+    return anchor
+
+
+def provision_rt_url(
+    redaction_url: str | None, act_url: str | None, paragraph: str | None
+) -> str | None:
+    """Return the provision-level RT URL for one chunk.
+
+    Base: the redaction's own ``estleg:rtUrl`` (the text exactly as cited)
+    when it is an http(s) URL, else the act browse URL. A ``#para<N>[b<k>]``
+    fragment is appended when the § number parses; otherwise the bare base.
+    """
+    base = _rt_browse_url(redaction_url) or _rt_browse_url(act_url)
+    if not base:
+        return None
+    base = base.split("#", 1)[0]
+    anchor = paragraph_anchor(paragraph)
+    return f"{base}#{anchor}" if anchor else base
+
+
+def make_chunk_id(
+    provision_iri: str,
+    redaction_id: str | None,
+    part_index: int = 1,
+    part_count: int = 1,
+) -> str:
+    """Return the stable chunk identifier.
+
+    ``<provision_iri>#<redaction_id>`` for a version record,
+    ``<provision_iri>#consolidated`` for a provision with no version layer, and
+    a ``#part_<k>`` suffix (1-based) only when the text was split. The id is a
+    pure function of the provision, the RT redaction, and the split position,
+    so it is stable across rebuilds of the same corpus with the same
+    ``--max-chars``.
+    """
+    chunk_id = f"{provision_iri}#{redaction_id or CONSOLIDATED_SEGMENT}"
+    if part_count > 1:
+        chunk_id += f"#part_{part_index}"
+    return chunk_id
+
+
+# Sentence-final punctuation followed by whitespace, or whitespace before a
+# lõige marker ``(2)`` / ``(2¹)``: the candidate cut points for splitting.
+_CUT_RE = re.compile(r"(?<=[.!?;:])\s+|\s+(?=\(\d+[⁰¹²³⁴⁵⁶⁷⁸⁹]*\)\s)")
+# Token before a full stop that does NOT end a sentence: an ordinal / §
+# number ("§ 5.", "1. jaanuar") or a common Estonian legal abbreviation.
+_NON_TERMINAL_TOKEN_RE = re.compile(
+    r"^[(\[«\"']*(?:\d+[⁰¹²³⁴⁵⁶⁷⁸⁹]*|nr|lg|p|jne|jm|vms|nt|st|s\.t|k\.a|"
+    r"v\.a|art|lk|tk|kd|mh|sh|pt|ptk|ca|u|vt|vrd|nn|eKr|pKr|hr|pr|dr)\.$",
+    re.IGNORECASE,
+)
+
+
+def _cut_points(text: str) -> list[int]:
+    """Return sorted cut offsets (each the START of the next segment)."""
+    cuts: set[int] = set()
+    for match in _CUT_RE.finditer(text):
+        before = text[: match.start()]
+        tail = before.rsplit(None, 1)
+        token = tail[-1] if tail else ""
+        if token.endswith(".") and _NON_TERMINAL_TOKEN_RE.search(token):
+            continue
+        if match.end() < len(text):
+            cuts.add(match.end())
+    return sorted(cuts)
+
+
+def _hard_split(segment: str, max_chars: int) -> list[str]:
+    """Split one over-long segment at whitespace (else mid-word) <= max_chars."""
+    out: list[str] = []
+    rest = segment
+    while len(rest.strip()) > max_chars:
+        window = rest[: max_chars + 1]
+        cut = window.rstrip().rfind(" ")
+        if cut <= 0:
+            cut = max_chars
+        out.append(rest[:cut])
+        rest = rest[cut:]
+    if rest.strip():
+        out.append(rest)
+    return out
+
+
+def split_text(text: str, max_chars: int | None) -> list[str]:
+    """Split ``text`` into parts of at most ``max_chars`` characters.
+
+    ``None`` (the default) or a text that already fits returns ``[text]``
+    unchanged. Otherwise the text is cut at sentence boundaries (sentence-final
+    ``. ! ? ; :`` -- not after an ordinal or a legal abbreviation -- and before a
+    lõige marker ``(N)``) and consecutive sentences are packed greedily; a single
+    sentence longer than ``max_chars`` is cut at the last space. Parts are
+    contiguous slices of ``text`` with the whitespace at each cut dropped, so
+    ``" ".join(parts)`` equals ``text`` up to whitespace at the cut points.
+    """
+    if max_chars is None or len(text) <= max_chars:
+        return [text]
+    bounds = [0, *_cut_points(text), len(text)]
+    segments: list[str] = []
+    for start, end in zip(bounds, bounds[1:], strict=False):
+        segment = text[start:end]
+        if len(segment.strip()) > max_chars:
+            segments.extend(_hard_split(segment, max_chars))
+        else:
+            segments.append(segment)
+    parts: list[str] = []
+    current = ""
+    for segment in segments:
+        candidate = current + segment
+        if current and len(candidate.strip()) > max_chars:
+            parts.append(current.strip())
+            current = segment
+        else:
+            current = candidate
+    if current.strip():
+        parts.append(current.strip())
+    return parts or [text]
+
+
+def generator_commit() -> str | None:
+    """Return the git commit the generator runs from (``None`` if unknown).
+
+    ``ESTLEG_GENERATOR_COMMIT`` overrides (CI / release builds from a tarball).
+    Recorded in ``manifest.json`` only -- never in the chunk records -- so the
+    record bytes stay a pure function of the corpus.
+    """
+    override = os.environ.get("ESTLEG_GENERATOR_COMMIT")
+    if override:
+        return override.strip() or None
+    try:
+        out = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    sha = out.stdout.strip()
+    return sha or None
+
+
+def chunks_asset_url(version: str = ONTOLOGY_VERSION) -> str:
+    """Return the tagged GitHub release download URL of ``chunks.jsonl.gz``."""
+    return github_release_asset_url(CHUNKS_ASSET_NAME, version)
+
+
+# ---------------------------------------------------------------------------
 # Chunk assembly (the core retrieval unit)
 # ---------------------------------------------------------------------------
 def build_chunk_record(
@@ -375,14 +666,23 @@ def build_chunk_record(
     valid_to: str | None,
     in_force: bool,
     text: str,
+    act_iri: str | None = None,
+    kehtiv: str | None = None,
+    evaluation_date: str,
+    ontology_version: str = ONTOLOGY_VERSION,
+    language: str = CHUNK_LANGUAGE,
+    part_index: int = 1,
+    part_count: int = 1,
 ) -> dict:
     """Assemble one flat, self-contained provision-version record.
 
-    Key order matches the ticket schema; the dict is always built in this order
-    so JSONL serialisation is byte-stable across runs.
+    Keys are emitted in :data:`CHUNK_KEYS` order so JSONL serialisation is
+    byte-stable across runs. ``chunk_id`` is derived (:func:`make_chunk_id`).
     """
-    return {
+    record = {
+        "chunk_id": make_chunk_id(provision_iri, redaction_id, part_index, part_count),
         "provision_iri": provision_iri,
+        "act_iri": act_iri,
         "redaction_id": redaction_id,
         "paragraph": paragraph,
         "act_title": act_title_str,
@@ -391,8 +691,25 @@ def build_chunk_record(
         "valid_from": valid_from,
         "valid_to": valid_to,
         "in_force": in_force,
+        "kehtiv": kehtiv,
+        "evaluation_date": evaluation_date,
+        "ontology_version": ontology_version,
+        "language": language,
+        "part_index": part_index,
+        "part_count": part_count,
         "text": text,
     }
+    return record
+
+
+def build_chunk_records(*, text: str, max_chars: int | None, **fields: Any) -> list[dict]:
+    """Return the record(s) for one provision-version, split per ``max_chars``."""
+    parts = split_text(text, max_chars)
+    count = len(parts)
+    return [
+        build_chunk_record(text=part, part_index=index, part_count=count, **fields)
+        for index, part in enumerate(parts, start=1)
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -501,6 +818,7 @@ def process_law_file(
     version_map: dict[str, list[dict]],
     eval_date: str,
     acc: _LawAccumulator,
+    max_chars: int | None = None,
 ) -> None:
     """Fold one peep file's provisions into the per-law accumulator."""
     if file_slug not in acc.file_slugs:
@@ -512,6 +830,15 @@ def process_law_file(
     rt_url = act_rt_url(root)
     kehtiv = act_kehtiv(root)
     act_active = act_in_force(root)
+    act_iri = root.get("@id") if isinstance((root or {}).get("@id"), str) else None
+    # Envelope fields shared by every chunk of this file (#723).
+    envelope = {
+        "act_iri": act_iri,
+        "act_title_str": title,
+        "abbrev": abbrev,
+        "kehtiv": kehtiv,
+        "evaluation_date": eval_date,
+    }
 
     if not acc.header_set:
         acc.title = title
@@ -549,18 +876,18 @@ def process_law_file(
                 in_force = compute_in_force(
                     ver["valid_from"], ver["valid_to"], eval_date
                 )
-                acc.chunks.append(
-                    build_chunk_record(
+                acc.chunks.extend(
+                    build_chunk_records(
                         provision_iri=provision_iri,
                         redaction_id=ver["redaction_id"],
                         paragraph=paragraph,
-                        act_title_str=title,
-                        abbrev=abbrev,
-                        rt_url=rt_url,
+                        rt_url=provision_rt_url(ver.get("rt_url"), rt_url, paragraph),
                         valid_from=ver["valid_from"],
                         valid_to=ver["valid_to"],
                         in_force=in_force,
                         text=ver["text"],
+                        max_chars=max_chars,
+                        **envelope,
                     )
                 )
                 acc.versions.append(
@@ -575,18 +902,18 @@ def process_law_file(
                     }
                 )
         else:
-            acc.chunks.append(
-                build_chunk_record(
+            acc.chunks.extend(
+                build_chunk_records(
                     provision_iri=provision_iri,
                     redaction_id=None,
                     paragraph=paragraph,
-                    act_title_str=title,
-                    abbrev=abbrev,
-                    rt_url=rt_url,
+                    rt_url=provision_rt_url(None, rt_url, paragraph),
                     valid_from=kehtiv,
                     valid_to=None,
-                    in_force=act_active,
+                    in_force=act_active and compute_in_force(kehtiv, None, eval_date),
                     text=consolidated_text,
+                    max_chars=max_chars,
+                    **envelope,
                 )
             )
 
@@ -684,12 +1011,12 @@ def build_context_pack(
 # ---------------------------------------------------------------------------
 def iter_index_laws(krr_dir: Path) -> list[dict]:
     """Return the INDEX ``laws`` entries (sorted by ``name``), or ``[]``."""
-    doc = _load_json(krr_dir / "INDEX.json")
+    doc = _load_json(krr_dir / "INDEX.json", required=True)
     if not isinstance(doc, dict):
-        return []
+        raise ValueError("Retrieval INDEX must be an object")
     laws = doc.get("laws")
     if not isinstance(laws, list):
-        return []
+        raise ValueError("Retrieval INDEX must contain a laws list")
     return sorted(
         (law for law in laws if isinstance(law, dict) and law.get("name")),
         key=lambda law: law["name"],
@@ -708,7 +1035,15 @@ def _file_slug(filename: str) -> str:
 # Served entry point + manifest
 # ---------------------------------------------------------------------------
 def render_llms_txt(stats: dict) -> str:
-    """Render the llms.txt entry point (https://llmstxt.org)."""
+    """Render the llms.txt entry point (https://llmstxt.org).
+
+    Links only to artifacts that are actually published: the tagged release
+    asset (``chunks.jsonl.gz``) by absolute URL, and files committed next to
+    this one (samples, manifest) or in the corpus by relative path. The
+    Git-ignored ``chunks.jsonl`` / ``outlines/`` / ``context_packs/`` trees are
+    described but never linked (#723).
+    """
+    keys = ", ".join(CHUNK_KEYS)
     return f"""# Estonian Legal Ontology — Retrieval Projection
 
 > A machine-readable JSON-LD/RDF ontology of Estonian and EU law (~1,120 enacted
@@ -717,25 +1052,47 @@ def render_llms_txt(stats: dict) -> str:
 > records so RAG and agent developers do not have to reassemble three nodes
 > across two files to cite one paragraph.
 
-The core unit is a provision-version. Each line of `chunks.jsonl` is one
-`{{provision_iri, redaction_id, paragraph, act_title, abbrev, rt_url, valid_from,
-valid_to, in_force, text}}` record: a single §-level provision in one redaction,
-independently citeable via `provision_iri` + `rt_url`, carrying the untruncated
-text and the validity window. Filter `in_force == true` for the current law;
-group by `provision_iri` for a paragraph's amendment history.
+The core unit is a provision-version: one §-level provision of an Estonian
+state law (INDEX laws only) in one Riigi Teataja redaction, with untruncated
+Estonian text. Each JSON Lines record (chunk schema {stats['chunk_schema_version']})
+has exactly these keys, in this order:
 
-Projection built from ontology version {ONTOLOGY_VERSION}, evaluation date
-{stats['evaluation_date']}. Provision-version records: {stats['total_chunks']};
-laws: {stats['laws']}; per-law outlines and context packs: {stats['outlines']}.
+    {{{keys}}}
+
+Every record is auditable on its own, without this file:
+- `chunk_id` — stable id: `<provision_iri>#<redaction_id>`, or
+  `<provision_iri>#consolidated` for a provision with no version layer, plus
+  `#part_<k>` only when a long § was split (`part_index` of `part_count`).
+- `ontology_version` / `evaluation_date` — the build that produced the record
+  and the as-of date `in_force` was computed against.
+- `act_iri`, `act_title`, `abbrev`, `kehtiv` — the act and the consolidation
+  date of the act snapshot the record was read from.
+- `rt_url` — the Riigi Teataja page of that redaction with a `#para<N>` anchor
+  (`#para<N>b<k>` for § N^k).
+- `language` — `{CHUNK_LANGUAGE}` (BCP 47).
+IRIs are compact (`estleg:` = {NS}).
+
+Filter `in_force == true` for the law as it stood on `evaluation_date`; group by
+`provision_iri` for a paragraph's amendment history.
+
+Build: ontology {stats['ontology_version']}, evaluation date
+{stats['evaluation_date']}. Records: {stats['total_chunks']}
+({stats['version_records']} version + {stats['consolidated_records']} consolidated);
+laws: {stats['laws']}.
 
 ## Retrieval artifacts
-- [chunks.jsonl](chunks.jsonl): one JSON record per provision-version — the core
-  retrieval / embedding unit (untruncated text).
-- [outlines/](outlines/): per-law skim tier — `{{paragraph, label, chapter,
-  summary, has_versions}}` per provision, to navigate a large law without
-  fetching it whole.
-- [context_packs/](context_packs/): per-law denormalised bundle — provisions +
-  versions + references + cases + amendments + sanctions in one fetch.
+- [{CHUNKS_ASSET_NAME}]({stats['chunks_asset_url']}): every chunk record, gzipped
+  JSON Lines — a release asset of the tagged release v{stats['ontology_version']}
+  (built by `build_release_assets.py`; listed with its checksum in the release
+  catalogue).
+- [chunks.sample.jsonl](chunks.sample.jsonl): the first {SAMPLE_CHUNKS_DEFAULT} records, same schema.
+- [manifest.json](manifest.json): counts, chunk schema version, generator commit.
+- [sample_outline.json](sample_outline.json): one per-law skim outline —
+  `{{paragraph, label, chapter, summary, has_versions}}` per provision.
+- [sample_context_pack.json](sample_context_pack.json): one per-law denormalised
+  bundle — provisions + versions + references + cases + amendments + sanctions.
+- Per-law outlines and context packs for every law are not published; regenerate
+  them with `python3 scripts/generate_retrieval_projection.py`.
 
 ## Source corpus
 - [INDEX.json](../INDEX.json): the law manifest these projections enumerate.
@@ -743,6 +1100,16 @@ laws: {stats['laws']}; per-law outlines and context packs: {stats['outlines']}.
   graph (Git LFS).
 - [README](../../README.md): corpus overview, schema, and SPARQL examples.
 """
+
+
+def _write_text_atomic(path: Path, text: str) -> None:
+    """Write ``text`` via a sibling temp file + ``os.replace`` (crash-safe)."""
+    tmp = path.with_name(f".{path.name}.tmp")
+    try:
+        tmp.write_text(text, encoding="utf-8")
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)
 
 
 def write_manifest(out_dir: Path, stats: dict) -> None:
@@ -765,10 +1132,14 @@ def render_readme(stats: dict) -> str:
     deterministic because it stamps only pinned counts from ``stats``.
     """
     chunks_mb = stats["chunks_bytes"] / 1_000_000
+    key_rows = "\n".join(
+        f"| `{key}` | {CHUNK_FIELD_DOCS[key][0]} | {CHUNK_FIELD_DOCS[key][1]} |"
+        for key in CHUNK_KEYS
+    )
     return f"""# Retrieval projection (`krr_outputs/retrieval/`)
 
 A build-time **retrieval projection** of the Estonian Legal Ontology for RAG and
-agent developers (ticket #523). It flattens the graph — where one citeable
+agent developers (tickets #523, #723). It flattens the graph — where one citeable
 provision spans the provision node, its `estleg:ProvisionVersion` nodes, and the
 act root across two files — into self-contained, citeable records.
 
@@ -776,42 +1147,71 @@ Generated by [`scripts/generate_retrieval_projection.py`](../../scripts/generate
 (this file too). It is **idempotent, network-free, and deterministic** (two runs
 over the same corpus are byte-identical): laws are processed in sorted order,
 provisions by IRI, versions by `(validFrom, redactionId, IRI)`, and the only
-stamps are the pinned `ESTLEG_BUILD_EVALUATION_DATE` and `ONTOLOGY_VERSION`.
+stamps are the pinned `ESTLEG_BUILD_EVALUATION_DATE` and `ONTOLOGY_VERSION`
+(plus the generator git commit, recorded in `manifest.json` only).
 
-Current build: ontology {ONTOLOGY_VERSION}, evaluation date
+Current build: ontology {stats['ontology_version']}, evaluation date
 {stats['evaluation_date']} — {stats['laws']} laws, {stats['total_chunks']}
-provision-version records (~{chunks_mb:.0f} MB), {stats['outlines']} per-law
+chunk records (~{chunks_mb:.0f} MB uncompressed), {stats['outlines']} per-law
 outlines and context packs, {stats['cases_indexed']} court decisions indexed.
+
+## Chunk record (schema {stats['chunk_schema_version']})
+
+One JSON object per line, keys always in this order. A record is auditable on
+its own: it names the build (`ontology_version`), the as-of date
+(`evaluation_date`), the act snapshot (`act_iri`, `kehtiv`), and the exact RT
+redaction and § (`rt_url`).
+
+| Key | Type | Meaning / source |
+| --- | --- | --- |
+{key_rows}
+
+**Splitting.** By default a provision-version is one record. With
+`--max-chars N` (minimum {MIN_MAX_CHARS}) a longer text is cut at sentence
+boundaries — after `. ! ? ; :` (not after an ordinal or a legal abbreviation
+such as `nr.`, `lg.`, `p.`) and before a lõige marker `(N)` — and sentences are
+packed greedily into parts of at most N characters (a single longer sentence is
+cut at the last space). Parts carry `part_index`/`part_count` and a
+`#part_<k>` `chunk_id` suffix. The release asset is built without splitting.
+
+**`rt_url` anchors.** Riigi Teataja renders each § with an element id
+`para<N>` (`para<N>b<k>` for § N^k): the ids are in the act XML and the
+www.riigiteataja.ee app scrolls to them. The anchor is built from the
+`paragraph` label; if it does not parse, `rt_url` is the bare redaction URL.
 
 ## Artifacts
 
 | Path | Committed? | What |
 | --- | --- | --- |
 | `llms.txt` | yes | Served entry point ([llmstxt.org](https://llmstxt.org)). |
-| `manifest.json` | yes | Record counts + the chunks byte size. |
+| `manifest.json` | yes | Counts, chunk schema version + keys, evaluation date, generator commit, release-asset URL. |
 | `README.md` | yes | This file (generated). |
-| `chunks.sample.jsonl` | yes | First ~200 chunk records (shape preview). |
+| `chunks.sample.jsonl` | yes | First {SAMPLE_CHUNKS_DEFAULT} chunk records (current schema). |
 | `sample_outline.json` | yes | One real per-law outline. |
 | `sample_context_pack.json` | yes | One real per-law context pack. |
-| `chunks.jsonl` | **no** (Git-ignored) | One record **per provision-version** — the core retrieval / embedding unit, with untruncated text. |
+| `{CHUNKS_ASSET_NAME}` | release asset | Every chunk record, gzipped: <{stats['chunks_asset_url']}>. |
+| `chunks.jsonl` | **no** (Git-ignored) | The same records, uncompressed, from a local run. |
 | `outlines/<law>.json` | **no** (Git-ignored) | Per-law skim tier: `{{paragraph, label, chapter, summary (<=120), has_versions}}`. |
 | `context_packs/<law>.json` | **no** (Git-ignored) | Per-law denormalised bundle: provisions + versions + references + cases + amendments + sanctions in one fetch. |
 
 ### Why the heavy files are not committed
 
 `chunks.jsonl`, `outlines/` and `context_packs/` together are several hundred MB
-of **derived** data. Rather than commit a multi-hundred-MB blob (or add it to Git
-LFS), they are `.gitignore`d and a small committed sample plus the deterministic
-generator stand in for review. The whole subtree is also excluded from the corpus
-file counter (`estleg_common.is_operational_state_file`, same status as
+of **derived** data. Rather than commit them, the chunk records ship as the
+tagged release asset `{CHUNKS_ASSET_NAME}` (built by
+`src/estleg/build_release_assets.py`, the last pipeline step), and a small
+committed sample plus the deterministic generator stand in for review. The
+whole subtree is excluded from the corpus file counter
+(`estleg_common.is_operational_state_file`, same status as
 `reports/integration/`) so it never drifts the pinned `metadata.jsonld`
 `estleg:totalFiles` count nor reaches `validate_all` / SHACL.
 
 ## Regenerate
 
 ```bash
-python3 scripts/generate_retrieval_projection.py            # full corpus
+python3 scripts/generate_retrieval_projection.py            # full corpus (refreshes the committed files)
 python3 scripts/generate_retrieval_projection.py --limit 25 # quick subset
+python3 scripts/generate_retrieval_projection.py --max-chars 2000 --out-dir /tmp/estleg-split  # split long §
 python3 scripts/generate_retrieval_projection.py --chunks-only --out-dir /tmp/estleg-chunks  # scratch: chunks.jsonl + manifest only (never the committed dir)
 python3 scripts/generate_retrieval_projection.py --help     # all options
 ```
@@ -857,8 +1257,22 @@ def generate(
     chunks_only: bool = False,
     sample_chunks: int = SAMPLE_CHUNKS_DEFAULT,
     sample_law: str = SAMPLE_LAW_DEFAULT,
+    max_chars: int | None = None,
 ) -> dict:
-    """Generate the retrieval projection; return a stats/manifest dict."""
+    """Generate the retrieval projection; return a stats/manifest dict.
+
+    ``max_chars`` (default ``None`` = never split) splits a provision-version
+    whose text is longer than that many characters into sentence-bounded
+    parts (see :func:`split_text`).
+    """
+    try:
+        eval_date = date.fromisoformat(eval_date).isoformat()
+    except (ValueError, TypeError) as exc:
+        raise ValueError("--evaluation-date must be an ISO calendar date") from exc
+    if max_chars is not None and max_chars < MIN_MAX_CHARS:
+        raise ValueError(
+            f"--max-chars must be at least {MIN_MAX_CHARS} (got {max_chars})"
+        )
     # --chunks-only cleans the directory down to {chunks.jsonl, manifest.json}.
     # Refuse to do that to the COMMITTED projection: it would delete the tracked,
     # reviewable README.md / llms.txt / sample_*.json and re-zero their manifest
@@ -905,12 +1319,21 @@ def generate(
     stats = {
         "ontology_version": ONTOLOGY_VERSION,
         "evaluation_date": eval_date,
+        "chunk_schema_version": CHUNK_SCHEMA_VERSION,
+        "chunk_keys": list(CHUNK_KEYS),
+        "language": CHUNK_LANGUAGE,
+        "max_chars": max_chars,
+        "generator": "src/estleg/generate_retrieval_projection.py",
+        "generator_commit": generator_commit(),
+        "chunks_asset": CHUNKS_ASSET_NAME,
+        "chunks_asset_url": chunks_asset_url(),
         "laws": 0,
         "laws_skipped_deprecated": 0,
         "laws_skipped_non_peep": 0,
         "total_chunks": 0,
         "version_records": 0,
         "consolidated_records": 0,
+        "split_provision_versions": 0,
         "outlines": 0,
         "context_packs": 0,
         "cases_indexed": len(decision_index),
@@ -919,6 +1342,7 @@ def generate(
     sample_outline: dict | None = None
     sample_context: dict | None = None
     first_acc: _LawAccumulator | None = None
+    seen_chunk_ids: set[str] = set()
 
     with open(chunks_tmp, "w", encoding="utf-8") as chunks_fh:
         for law in laws:
@@ -934,9 +1358,7 @@ def generate(
             acc = _LawAccumulator(law_name)
             deprecated = False
             for filename in files:
-                doc = _load_json(krr_dir / filename)
-                if doc is None:
-                    continue
+                doc = _load_graph_json(krr_dir / filename)
                 is_dep, _ = act_deprecation(doc)
                 if is_dep:
                     deprecated = True
@@ -950,6 +1372,7 @@ def generate(
                     version_map=version_map,
                     eval_date=eval_date,
                     acc=acc,
+                    max_chars=max_chars,
                 )
             if deprecated:
                 stats["laws_skipped_deprecated"] += 1
@@ -957,12 +1380,20 @@ def generate(
 
             stats["laws"] += 1
             for record in acc.chunks:
+                if record["chunk_id"] in seen_chunk_ids:
+                    raise ValueError(f"duplicate chunk id: {record['chunk_id']}")
+                seen_chunk_ids.add(record["chunk_id"])
                 line = json.dumps(record, ensure_ascii=False)
                 chunks_fh.write(line + "\n")
-                if record["redaction_id"] is None:
-                    stats["consolidated_records"] += 1
-                else:
-                    stats["version_records"] += 1
+                # version/consolidated count provision-version UNITS (a split
+                # unit is counted once, at its first part).
+                if record["part_index"] == 1:
+                    if record["redaction_id"] is None:
+                        stats["consolidated_records"] += 1
+                    else:
+                        stats["version_records"] += 1
+                    if record["part_count"] > 1:
+                        stats["split_provision_versions"] += 1
                 if len(sample_chunk_lines) < sample_chunks:
                     sample_chunk_lines.append(line)
             stats["total_chunks"] += len(acc.chunks)
@@ -1008,11 +1439,12 @@ def generate(
 
     if not chunks_only:
         # Served entry point + README + samples (committed; heavy trees ignored).
-        (out_dir / "llms.txt").write_text(render_llms_txt(stats), encoding="utf-8")
-        (out_dir / "README.md").write_text(render_readme(stats), encoding="utf-8")
-        with open(out_dir / "chunks.sample.jsonl", "w", encoding="utf-8") as fh:
-            for line in sample_chunk_lines:
-                fh.write(line + "\n")
+        _write_text_atomic(out_dir / "llms.txt", render_llms_txt(stats))
+        _write_text_atomic(out_dir / "README.md", render_readme(stats))
+        _write_text_atomic(
+            out_dir / "chunks.sample.jsonl",
+            "".join(line + "\n" for line in sample_chunk_lines),
+        )
         if sample_outline is not None:
             save_json(out_dir / "sample_outline.json", sample_outline)
         if sample_context is not None:
@@ -1063,6 +1495,14 @@ def main(argv: list[str] | None = None) -> int:
         "--sample-chunks", type=int, default=SAMPLE_CHUNKS_DEFAULT
     )
     parser.add_argument("--sample-law", default=SAMPLE_LAW_DEFAULT)
+    parser.add_argument(
+        "--max-chars",
+        type=int,
+        default=None,
+        help="split a provision-version whose text exceeds N characters into "
+        "sentence-bounded parts (part_index/part_count, chunk_id #part_<k>); "
+        f"default: never split; minimum {MIN_MAX_CHARS}",
+    )
     args = parser.parse_args(argv)
 
     out_dir = args.out_dir or (args.krr_dir / DEFAULT_OUT_DIRNAME)
@@ -1076,6 +1516,7 @@ def main(argv: list[str] | None = None) -> int:
             chunks_only=args.chunks_only,
             sample_chunks=args.sample_chunks,
             sample_law=args.sample_law,
+            max_chars=args.max_chars,
         )
     except ValueError as exc:
         parser.error(str(exc))
@@ -1083,7 +1524,8 @@ def main(argv: list[str] | None = None) -> int:
         "retrieval projection: "
         f"{stats['laws']} laws, {stats['total_chunks']} chunks "
         f"({stats['version_records']} version + "
-        f"{stats['consolidated_records']} consolidated), "
+        f"{stats['consolidated_records']} consolidated, "
+        f"{stats['split_provision_versions']} split), "
         f"{stats['outlines']} outlines, {stats['context_packs']} context packs, "
         f"{stats['cases_indexed']} cases indexed, "
         f"{stats['laws_skipped_deprecated']} deprecated laws skipped"
