@@ -147,6 +147,11 @@ def test_main_strips_then_is_idempotent_on_isolated_corpus(isolated_krr, capsys)
 @pytest.mark.corpus
 def test_real_corpus_has_no_unknown_placeholders(corpus_krr, capsys):
     """Corpus gate: zero placeholders remain in the real corpus (dry run only)."""
-    corpus_krr.path("regulations/riik")
+    for sub in ("regulations/riik", "regulations/kov"):
+        corpus_krr.path(sub)
+    laws = list(corpus_krr.root.glob("*_peep.json"))
+    assert laws, "corpus gate input unavailable: no root law peeps"
+    for path in laws:
+        corpus_krr.path(path.relative_to(corpus_krr.root))
     assert mod.main(["--dry-run"]) == 0
     assert "Subsection numbers would strip: 0" in capsys.readouterr().out

@@ -76,6 +76,10 @@ def fake_krr(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
         b"version https://git-lfs.github.com/spec/v1\noid sha256:00\nsize 1\n"
     )
     (root / "empty").mkdir()
+    (root / "pointers").mkdir()
+    (root / "pointers" / "combined.jsonld").write_bytes(
+        b"version https://git-lfs.github.com/spec/v1\noid sha256:00\nsize 1\n"
+    )
     monkeypatch.setattr(conftest.CorpusKRR, "root", root)
     return root
 
@@ -86,14 +90,14 @@ def test_corpus_accessor_returns_real_files(fake_krr: Path):
     assert acc.read_json("real.json") == {"ok": True}
 
 
-@pytest.mark.parametrize("rel", ["pointer.jsonld", "missing.json", "empty"])
+@pytest.mark.parametrize("rel", ["pointer.jsonld", "missing.json", "empty", "pointers"])
 def test_corpus_accessor_skips_outside_corpus_tier(fake_krr: Path, rel: str):
     with pytest.raises(pytest.skip.Exception) as info:
         conftest.CorpusKRR(_Node("committed")).path(rel)
     assert rel in str(info.value)
 
 
-@pytest.mark.parametrize("rel", ["pointer.jsonld", "missing.json", "empty"])
+@pytest.mark.parametrize("rel", ["pointer.jsonld", "missing.json", "empty", "pointers"])
 def test_corpus_accessor_fails_in_corpus_tier(fake_krr: Path, rel: str):
     with pytest.raises(pytest.fail.Exception) as info:
         conftest.CorpusKRR(_Node("corpus")).path(rel)
