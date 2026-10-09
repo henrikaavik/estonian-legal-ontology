@@ -1,0 +1,471 @@
+{
+  "_comment": "Institution identity and temporal validity (#718). Keys are institution slugs (estleg:Institution_<slug>). registrikood: the Estonian registry code of the legal person (RKAR/äriregister), taken only from Wikidata P6518 on the slug's identity QID; a renamed body keeps its legal person, so a rename predecessor carries the same code as its successor (registrikood is unique among nodes without validTo). xteeMemberCode: the X-tee member identifier EE/GOV/<registrikood>, emitted only for current (no validTo) institutions whose code appears in the cached public X-tee catalogue data/xtee_members_EE.json; that catalogue lists only members with published subsystems, so an absent code is 'not listed', not 'not a member'. Abbreviation alias nodes (mta, ppa, ttja, harno) carry no identity fields of their own; they are owl:sameAs their canonical node. validFrom/validTo: inclusive xsd:date bounds of the node's identity under this name; open ends are omitted, never guessed. predecessorInstitution/successorInstitution: slugs of the institution(s) this one replaced / was replaced by (renames and mergers). Fields without a public machine-readable source are left absent: the RIK business-register search is not an open API, and the RKAR (state and municipal institution register) codes are not published as open data, so courts, Riigikogu, Vabariigi Valitsus, ministers and generic KOV tokens have no registrikood here.",
+  "sources": {
+    "wikidata": "data/wikidata_institution_cache.json (retrieved 2026-10-08)",
+    "xtee": "data/xtee_members_EE.json (https://x-tee.ee/catalogue-data/EE/index.json, retrieved 2026-10-08)",
+    "etwiki": "Estonian Wikipedia articles cited per entry (retrieved 2026-10-08)",
+    "aliases": "data/institution_aliases.json evidence strings"
+  },
+  "institutions": {
+    "andmekaitseinspektsioon": {
+      "registrikood": "70004235",
+      "registrikoodSource": "Wikidata Q16410295 P6518"
+    },
+    "haridus_ja_noorteamet": {
+      "registrikood": "77001292",
+      "registrikoodSource": "Wikidata Q116057137 P6518",
+      "xteeMemberCode": "EE/GOV/77001292",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "haridus_ja_teadusministeerium": {
+      "registrikood": "70000740",
+      "registrikoodSource": "Wikidata Q12363440 P6518",
+      "xteeMemberCode": "EE/GOV/70000740",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2003-01-01",
+      "validitySource": "https://et.wikipedia.org/wiki/Haridus-_ja_Teadusministeerium",
+      "predecessorInstitution": [
+        "haridusministeerium"
+      ]
+    },
+    "haridusministeerium": {
+      "registrikood": "70000740",
+      "registrikoodSource": "Wikidata Q12363440 P6518 (same legal person across the rename)",
+      "validTo": "2002-12-31",
+      "validitySource": "https://et.wikipedia.org/wiki/Haridus-_ja_Teadusministeerium (renamed on 2003-01-01; earlier name periods 1918–1929, 1936–1940, 1990–1993, 1996–2002)",
+      "successorInstitution": [
+        "haridus_ja_teadusministeerium"
+      ]
+    },
+    "justiits_ja_digiministeerium": {
+      "registrikood": "70000898",
+      "registrikoodSource": "Wikidata Q6867302 P6518",
+      "xteeMemberCode": "EE/GOV/70000898",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2025-01-01",
+      "validitySource": "https://et.wikipedia.org/wiki/Justiits-_ja_Digiministeerium",
+      "predecessorInstitution": [
+        "justiitsministeerium"
+      ]
+    },
+    "justiitsministeerium": {
+      "registrikood": "70000898",
+      "registrikoodSource": "Wikidata Q6867302 P6518 (same legal person across the rename)",
+      "validTo": "2024-12-31",
+      "validitySource": "https://et.wikipedia.org/wiki/Justiits-_ja_Digiministeerium (reorganised and renamed on 2025-01-01)",
+      "successorInstitution": [
+        "justiits_ja_digiministeerium"
+      ]
+    },
+    "kaitseministeerium": {
+      "registrikood": "70004502",
+      "registrikoodSource": "Wikidata Q6866745 P6518",
+      "xteeMemberCode": "EE/GOV/70004502",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "kaitsepolitseiamet": {
+      "registrikood": "70000591",
+      "registrikoodSource": "Wikidata Q1721811 P6518"
+    },
+    "keeleamet": {
+      "registrikood": "70003690",
+      "registrikoodSource": "Wikidata Q4536526 P6518",
+      "validFrom": "2020-08-01",
+      "validitySource": "https://et.wikipedia.org/wiki/Keeleamet (current name since 2020-08-01)",
+      "predecessorInstitution": [
+        "keeleinspektsioon"
+      ]
+    },
+    "keeleinspektsioon": {
+      "registrikood": "70003690",
+      "registrikoodSource": "Wikidata Q4536526 P6518 (same legal person across the rename)",
+      "validFrom": "1998-01-01",
+      "validTo": "2020-07-31",
+      "validitySource": "https://et.wikipedia.org/wiki/Keeleamet (Keeleamet renamed Keeleinspektsioon on 1998-01-01; renamed back on 2020-08-01)",
+      "successorInstitution": [
+        "keeleamet"
+      ]
+    },
+    "keskkonnaamet": {
+      "registrikood": "70008658",
+      "registrikoodSource": "Wikidata Q12366841 P6518",
+      "xteeMemberCode": "EE/GOV/70008658",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "predecessorInstitution": [
+        "keskkonnainspektsioon"
+      ]
+    },
+    "keskkonnainspektsioon": {
+      "registrikood": "70003106",
+      "registrikoodSource": "Wikidata Q12366851 P6518",
+      "validTo": "2020-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Keskkonnainspektsioon merged into Keskkonnaamet on 2021-01-01.",
+      "successorInstitution": [
+        "keskkonnaamet"
+      ]
+    },
+    "keskkonnaministeerium": {
+      "registrikood": "70001231",
+      "registrikoodSource": "Wikidata Q16408655 P6518 (same legal person across the rename)",
+      "validFrom": "1989-12-21",
+      "validTo": "2023-06-30",
+      "validitySource": "Wikidata Q16408655 P571 (1989-12-21); etwiki 'Kliimaministeerium': named Keskkonnaministeerium until 2023-06-30",
+      "successorInstitution": [
+        "kliimaministeerium"
+      ]
+    },
+    "kliimaministeerium": {
+      "registrikood": "70001231",
+      "registrikoodSource": "Wikidata Q16408655 P6518",
+      "xteeMemberCode": "EE/GOV/70001231",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2023-07-01",
+      "validitySource": "https://et.wikipedia.org/wiki/Kliimaministeerium (renamed from Keskkonnaministeerium on 2023-07-01)",
+      "predecessorInstitution": [
+        "keskkonnaministeerium"
+      ]
+    },
+    "kodakondsus_ja_migratsiooniamet": {
+      "registrikood": "70000579",
+      "registrikoodSource": "Wikidata Q4476390 P6518",
+      "validTo": "2009-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Kodakondsus- ja Migratsiooniamet's functions transferred to Politsei- ja Piirivalveamet on 2010-01-01.",
+      "successorInstitution": [
+        "politsei_ja_piirivalveamet"
+      ]
+    },
+    "konkurentsiamet": {
+      "registrikood": "70000303",
+      "registrikoodSource": "Wikidata Q16411123 P6518",
+      "xteeMemberCode": "EE/GOV/70000303",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "kultuuriministeerium": {
+      "registrikood": "70000941",
+      "registrikoodSource": "Wikidata Q12367721 P6518",
+      "xteeMemberCode": "EE/GOV/70000941",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "lennuamet": {
+      "registrikood": "70000800",
+      "registrikoodSource": "Wikidata Q1351835 P6518",
+      "validTo": "2020-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Lennuamet merged into Transpordiamet on 2021-01-01.",
+      "successorInstitution": [
+        "transpordiamet"
+      ]
+    },
+    "maa_ja_ruumiamet": {
+      "registrikood": "70003098",
+      "registrikoodSource": "Wikidata Q5401570 P6518",
+      "xteeMemberCode": "EE/GOV/70003098",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "maaeluministeerium": {
+      "registrikood": "70000734",
+      "registrikoodSource": "Wikidata Q12373165 P6518 (same legal person across the rename)",
+      "validFrom": "2015-09-01",
+      "validTo": "2023-06-30",
+      "validitySource": "https://et.wikipedia.org/wiki/Regionaal-_ja_Põllumajandusministeerium",
+      "predecessorInstitution": [
+        "pollumajandusministeerium"
+      ],
+      "successorInstitution": [
+        "regionaal_ja_pollumajandusministeerium"
+      ]
+    },
+    "maanteeamet": {
+      "validTo": "2020-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Maanteeamet, Lennuamet and Veeteede Amet merged into Transpordiamet on 2021-01-01.",
+      "successorInstitution": [
+        "transpordiamet"
+      ]
+    },
+    "majandus_ja_kommunikatsiooniministeerium": {
+      "registrikood": "70003158",
+      "registrikoodSource": "Wikidata Q6866797 P6518",
+      "validFrom": "2002-11-01",
+      "validitySource": "Wikidata Q6866797 P571",
+      "predecessorInstitution": [
+        "teede_ja_sideministeerium"
+      ]
+    },
+    "maksu_ja_tolliamet": {
+      "registrikood": "70000349",
+      "registrikoodSource": "Wikidata Q16411346 P6518",
+      "xteeMemberCode": "EE/GOV/70000349",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2004-02-01",
+      "validitySource": "data/institution_aliases.json evidence: Maksuamet and Tolliamet merged into Maksu- ja Tolliamet on 2004-02-01.",
+      "predecessorInstitution": [
+        "maksuamet",
+        "tolliamet"
+      ]
+    },
+    "maksuamet": {
+      "validTo": "2004-01-31",
+      "validitySource": "data/institution_aliases.json evidence: Maksuamet and Tolliamet merged into Maksu- ja Tolliamet on 2004-02-01.",
+      "successorInstitution": [
+        "maksu_ja_tolliamet"
+      ]
+    },
+    "muinsuskaitseamet": {
+      "registrikood": "70000958",
+      "registrikoodSource": "Wikidata Q12370518 P6518",
+      "xteeMemberCode": "EE/GOV/70000958",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "paasteamet": {
+      "registrikood": "70000585",
+      "registrikoodSource": "Wikidata Q5401628 P6518",
+      "xteeMemberCode": "EE/GOV/70000585",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "patendiamet": {
+      "registrikood": "70003164",
+      "registrikoodSource": "Wikidata Q12372017 P6518"
+    },
+    "piirivalveamet": {
+      "registrikood": "70005186",
+      "registrikoodSource": "Wikidata Q12372433 P6518",
+      "validTo": "2009-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Piirivalveamet merged into Politsei- ja Piirivalveamet on 2010-01-01.",
+      "successorInstitution": [
+        "politsei_ja_piirivalveamet"
+      ]
+    },
+    "politsei_ja_piirivalveamet": {
+      "registrikood": "70008747",
+      "registrikoodSource": "Wikidata Q7209550 P6518",
+      "xteeMemberCode": "EE/GOV/70008747",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2010-01-01",
+      "validitySource": "data/institution_aliases.json evidence: Politseiamet, Piirivalveamet and Kodakondsus- ja Migratsiooniamet merged into Politsei- ja Piirivalveamet on 2010-01-01.",
+      "predecessorInstitution": [
+        "kodakondsus_ja_migratsiooniamet",
+        "piirivalveamet",
+        "politseiamet"
+      ]
+    },
+    "politseiamet": {
+      "registrikood": "70000728",
+      "registrikoodSource": "Wikidata Q12372632 P6518",
+      "validTo": "2009-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Politseiamet, Piirivalveamet and Kodakondsus- ja Migratsiooniamet merged into Politsei- ja Piirivalveamet on 2010-01-01.",
+      "successorInstitution": [
+        "politsei_ja_piirivalveamet"
+      ]
+    },
+    "pollumajandus_ja_toiduamet": {
+      "registrikood": "77001458",
+      "registrikoodSource": "Wikidata Q116057115 P6518",
+      "validFrom": "2021-01-01",
+      "validitySource": "data/institution_aliases.json evidence: Veterinaar- ja Toiduamet and Pollumajandusamet merged into Pollumajandus- ja Toiduamet on 2021-01-01.",
+      "predecessorInstitution": [
+        "pollumajandusamet",
+        "veterinaar_ja_toiduamet"
+      ]
+    },
+    "pollumajandusamet": {
+      "registrikood": "70000071",
+      "registrikoodSource": "Wikidata Q25514673 P6518",
+      "validTo": "2020-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Pollumajandusamet merged with Veterinaar- ja Toiduamet into Pollumajandus- ja Toiduamet on 2021-01-01.",
+      "successorInstitution": [
+        "pollumajandus_ja_toiduamet"
+      ]
+    },
+    "pollumajandusministeerium": {
+      "registrikood": "70000734",
+      "registrikoodSource": "Wikidata Q12373165 P6518 (same legal person across the rename)",
+      "validTo": "2015-08-31",
+      "validitySource": "https://et.wikipedia.org/wiki/Regionaal-_ja_Põllumajandusministeerium (named Maaeluministeerium from 2015-09-01)",
+      "successorInstitution": [
+        "maaeluministeerium"
+      ]
+    },
+    "rahandusministeerium": {
+      "registrikood": "70000272",
+      "registrikoodSource": "Wikidata Q12373345 P6518",
+      "xteeMemberCode": "EE/GOV/70000272",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "ravimiamet": {
+      "registrikood": "70003477",
+      "registrikoodSource": "Wikidata Q12373663 P6518",
+      "xteeMemberCode": "EE/GOV/70003477",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "regionaal_ja_pollumajandusministeerium": {
+      "registrikood": "70000734",
+      "registrikoodSource": "Wikidata Q12373165 P6518",
+      "xteeMemberCode": "EE/GOV/70000734",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2023-07-01",
+      "validitySource": "https://et.wikipedia.org/wiki/Regionaal-_ja_Põllumajandusministeerium",
+      "predecessorInstitution": [
+        "maaeluministeerium"
+      ]
+    },
+    "riigikohus": {
+      "registrikood": "74001127",
+      "registrikoodSource": "Wikidata Q1514159 P6518",
+      "xteeMemberCode": "EE/GOV/74001127",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "sideamet": {
+      "registrikood": "70000013",
+      "registrikoodSource": "Wikidata Q12374938 P6518"
+    },
+    "siseministeerium": {
+      "registrikood": "70000562",
+      "registrikoodSource": "Wikidata Q4294315 P6518",
+      "xteeMemberCode": "EE/GOV/70000562",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "sotsiaalkindlustusamet": {
+      "registrikood": "70001975",
+      "registrikoodSource": "Wikidata Q20529203 P6518",
+      "xteeMemberCode": "EE/GOV/70001975",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "sotsiaalministeerium": {
+      "registrikood": "70001952",
+      "registrikoodSource": "Wikidata Q12375270 P6518",
+      "xteeMemberCode": "EE/GOV/70001952",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "statistikaamet": {
+      "registrikood": "70000332",
+      "registrikoodSource": "Wikidata Q3738605 P6518",
+      "xteeMemberCode": "EE/GOV/70000332",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "tarbijakaitse_ja_tehnilise_jarelevalve_amet": {
+      "registrikood": "70003218",
+      "registrikoodSource": "Wikidata Q61404623 P6518",
+      "xteeMemberCode": "EE/GOV/70003218",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2019-01-01",
+      "validitySource": "data/institution_aliases.json evidence: Tarbijakaitseamet and Tehnilise Jarelevalve Amet merged into Tarbijakaitse ja Tehnilise Jarelevalve Amet on 2019-01-01.",
+      "predecessorInstitution": [
+        "tarbijakaitseamet"
+      ]
+    },
+    "tarbijakaitseamet": {
+      "registrikood": "70003247",
+      "registrikoodSource": "Wikidata Q12376349 P6518",
+      "validTo": "2018-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Tarbijakaitseamet and Tehnilise Jarelevalve Amet merged into Tarbijakaitse ja Tehnilise Jarelevalve Amet on 2019-01-01.",
+      "successorInstitution": [
+        "tarbijakaitse_ja_tehnilise_jarelevalve_amet"
+      ]
+    },
+    "teabeamet": {
+      "registrikood": "70005938",
+      "registrikoodSource": "Wikidata Q12376592 P6518 (same legal person across the rename)",
+      "validFrom": "2001-02-20",
+      "validTo": "2017-06-30",
+      "validitySource": "Wikidata Q12376592 P1448 'Teabeamet' P580/P582",
+      "successorInstitution": [
+        "valisluureamet"
+      ]
+    },
+    "teede_ja_sideministeerium": {
+      "registrikood": "70000266",
+      "registrikoodSource": "Wikidata Q31277231 P6518",
+      "validTo": "2002-10-31",
+      "validitySource": "Wikidata Q31277231 P1366 -> Q6866797; Q6866797 P571 2002-11-01",
+      "successorInstitution": [
+        "majandus_ja_kommunikatsiooniministeerium"
+      ]
+    },
+    "terviseamet": {
+      "registrikood": "70008799",
+      "registrikoodSource": "Wikidata Q25514675 P6518",
+      "xteeMemberCode": "EE/GOV/70008799",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2010-01-01",
+      "validitySource": "data/institution_aliases.json evidence: Tervishoiuamet's functions consolidated into Terviseamet (formed 2010-01-01).",
+      "predecessorInstitution": [
+        "tervisekaitseinspektsioon",
+        "tervishoiuamet"
+      ]
+    },
+    "tervisekaitseamet": {
+      "successorInstitution": [
+        "tervisekaitseinspektsioon"
+      ]
+    },
+    "tervisekaitseinspektsioon": {
+      "registrikood": "70002940",
+      "registrikoodSource": "Wikidata Q12376790 P6518",
+      "validTo": "2009-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Tervisekaitseinspektsioon merged into Terviseamet on 2010-01-01.",
+      "predecessorInstitution": [
+        "tervisekaitseamet"
+      ],
+      "successorInstitution": [
+        "terviseamet"
+      ]
+    },
+    "tervishoiuamet": {
+      "registrikood": "70006205",
+      "registrikoodSource": "Wikidata Q12376789 P6518",
+      "validTo": "2009-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Tervishoiuamet's functions consolidated into Terviseamet (formed 2010-01-01).",
+      "successorInstitution": [
+        "terviseamet"
+      ]
+    },
+    "tolliamet": {
+      "validTo": "2004-01-31",
+      "validitySource": "data/institution_aliases.json evidence: Tolliamet merged with Maksuamet into Maksu- ja Tolliamet on 2004-02-01.",
+      "successorInstitution": [
+        "maksu_ja_tolliamet"
+      ]
+    },
+    "tooinspektsioon": {
+      "registrikood": "70001969",
+      "registrikoodSource": "Wikidata Q25514677 P6518",
+      "xteeMemberCode": "EE/GOV/70001969",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "transpordiamet": {
+      "registrikood": "70001490",
+      "registrikoodSource": "Wikidata Q105101732 P6518",
+      "xteeMemberCode": "EE/GOV/70001490",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)",
+      "validFrom": "2021-01-01",
+      "validitySource": "Wikidata Q105101732 P571",
+      "predecessorInstitution": [
+        "lennuamet",
+        "maanteeamet"
+      ]
+    },
+    "valisluureamet": {
+      "registrikood": "70005938",
+      "registrikoodSource": "Wikidata Q12376592 P6518",
+      "validFrom": "2017-07-01",
+      "validitySource": "Wikidata Q12376592 P1448 'Välisluureamet' P580",
+      "predecessorInstitution": [
+        "teabeamet"
+      ]
+    },
+    "valisministeerium": {
+      "registrikood": "70002526",
+      "registrikoodSource": "Wikidata Q6867006 P6518",
+      "xteeMemberCode": "EE/GOV/70002526",
+      "xteeMemberCodeSource": "data/xtee_members_EE.json (x-tee.ee catalogue, retrieved 2026-10-08)"
+    },
+    "veterinaar_ja_toiduamet": {
+      "registrikood": "70000094",
+      "registrikoodSource": "Wikidata Q20530239 P6518",
+      "validTo": "2020-12-31",
+      "validitySource": "data/institution_aliases.json evidence: Veterinaar- ja Toiduamet and Pollumajandusamet merged into Pollumajandus- ja Toiduamet on 2021-01-01.",
+      "successorInstitution": [
+        "pollumajandus_ja_toiduamet"
+      ]
+    }
+  }
+}

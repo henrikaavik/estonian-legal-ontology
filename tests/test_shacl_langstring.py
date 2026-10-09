@@ -19,6 +19,8 @@ CONTEXT = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "schema": "https://schema.org/",
 }
 
 
@@ -36,7 +38,7 @@ def test_act_bilingual_labels_conform():
     ok, msg = _validate({
         "@context": CONTEXT,
         "@id": "estleg:KARIST_Map",
-        "@type": ["estleg:Act", "owl:Ontology"],
+        "@type": ["estleg:Act", "owl:Ontology", "eli:LegalResource", "schema:Legislation"],
         "rdfs:label": [
             {"@value": "Karistusseadustik", "@language": "et"},
             {"@value": "Penal Code", "@language": "en"},
@@ -56,6 +58,7 @@ def test_legal_provision_langstring_summary_conforms():
             "@language": "et",
         },
         "estleg:partOfAct": {"@id": "estleg:TEST_Map"},
+        "eli:is_part_of": {"@id": "estleg:TEST_Map"},  # #708 materialised
     })
     assert ok, msg
 
@@ -64,7 +67,7 @@ def test_duplicate_et_labels_fail_unique_lang():
     ok, msg = _validate({
         "@context": CONTEXT,
         "@id": "estleg:KARIST_Map",
-        "@type": ["estleg:Act", "owl:Ontology"],
+        "@type": ["estleg:Act", "owl:Ontology", "eli:LegalResource", "schema:Legislation"],
         "rdfs:label": [
             {"@value": "Karistusseadustik", "@language": "et"},
             {"@value": "Karistusseadustik (lühend)", "@language": "et"},
@@ -78,7 +81,7 @@ def test_bare_string_label_still_conforms():
     ok, msg = _validate({
         "@context": CONTEXT,
         "@id": "estleg:KARIST_Map",
-        "@type": ["estleg:Act", "owl:Ontology"],
+        "@type": ["estleg:Act", "owl:Ontology", "eli:LegalResource", "schema:Legislation"],
         "rdfs:label": "Karistusseadustik",
     })
     assert ok, msg

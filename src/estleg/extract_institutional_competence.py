@@ -9,6 +9,21 @@ estleg:Institution nodes and links provisions to competent authorities.
 Outputs:
   - krr_outputs/institutions/  (per-institution JSON-LD files)
   - krr_outputs/reports/institutional_competence_report.json
+
+Binding rule (#718): an institution is a provision's ``estleg:competentAuthority``
+only when, in the same clause, it is the subject of a competence verb
+(``Keskkonnaamet annab loa``, ``järelevalvet teostab Keskkonnaamet``), the
+adessive holder of a power (``ministril on õigus kehtestada``), or the
+genitive agent of a delegated act (``kehtestatakse sotsiaalministri
+määrusega``). Every other mention — consultation (``...ga kooskõlastatult``,
+``... ettepanekul``/``nõusolekul``/``arvamusel``), descriptive genitives
+(``kohaliku omavalitsuse arhiiv``), addressees — is recorded as
+``estleg:mentionsInstitution``. The competence type is computed per binding
+from that binding's verb phrase, not once for the whole provision.
+
+Dry run: ``--dry-run --dry-run-report PATH`` scans the corpus in memory and
+writes only the before/after measurement to PATH (no peep, institution or
+report file is touched).
 """
 
 from __future__ import annotations
@@ -18,6 +33,7 @@ import json
 import re
 import time
 from collections import Counter, defaultdict
+from dataclasses import dataclass, field
 from functools import partial
 from pathlib import Path
 
@@ -44,6 +60,7 @@ from estleg.heuristic_overrides import (
     print_check_report,
 )
 from estleg.extract_sanctions import _find_act_node
+from estleg.generate_inverse_references import _ACT_ROOT_TYPES, _iri_values
 from estleg.kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
     CoverageReport,
@@ -174,6 +191,51 @@ def _load_institution_aliases(path: Path = INSTITUTION_ALIASES_PATH) -> dict[str
 # Loaded once at import. Tests that need a different table can
 # monkeypatch this directly or re-run ``_load_institution_aliases``.
 _INSTITUTION_ALIASES: dict[str, str] = _load_institution_aliases()
+
+
+def _load_alias_records(path: Path = INSTITUTION_ALIASES_PATH) -> dict[str, dict]:
+    """#718: full alias records ``{predecessor_slug: {label, canonical,
+    evidence}}`` used to materialise one predecessor node per alias key."""
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    entries = raw.get("aliases") if isinstance(raw, dict) else None
+    if not isinstance(entries, dict):
+        return {}
+    out: dict[str, dict] = {}
+    for key, value in entries.items():
+        if not isinstance(key, str) or not isinstance(value, dict):
+            continue
+        norm_key = re.sub(r"_+", "_", key.lower()).strip("_")
+        if norm_key in _INSTITUTION_ALIASES:
+            out[norm_key] = {
+                "label": value.get("label") or key,
+                "canonical": _INSTITUTION_ALIASES[norm_key],
+                "evidence": value.get("evidence") or "",
+            }
+    return out
+
+
+_ALIAS_RECORDS: dict[str, dict] = _load_alias_records()
+
+# #718: every institution a provision mentions without being bound as its
+# competent authority (consultation partner, addressee, descriptive
+# genitive, predecessor name).
+MENTIONS_INSTITUTION = "estleg:mentionsInstitution"
+
+# #718: registrikood / X-tee member code / temporal validity / succession.
+INSTITUTION_IDENTITY_PATH = REPO_ROOT / "data" / "institution_identity.json"
+
+
+def load_institution_identity(path: Path = INSTITUTION_IDENTITY_PATH) -> dict[str, dict]:
+    """Return ``{slug: identity record}`` from data/institution_identity.json."""
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    entries = raw.get("institutions") if isinstance(raw, dict) else None
+    return {k: v for k, v in (entries or {}).items() if isinstance(v, dict)}
 
 # Map known Estonian inflected forms to nominative (lowercase).
 # Issue #170 Finding 10: the old map enumerated double/triple-underscore
@@ -378,24 +440,36 @@ def normalize_iri_suffix(raw_suffix: str) -> str:
          (after de-inflection) so a de-inflected predecessor name like
          ``maksuamet`` is collapsed onto its successor ``maksu_ja_tolliamet``.
     """
+    return _apply_alias(_deinflect_suffix(raw_suffix))
+
+
+def _deinflect_suffix(raw_suffix: str) -> str:
+    """Steps 1–4 of :func:`normalize_iri_suffix` — everything except the
+    historical-merge alias rewrite (#718 needs the pre-alias slug to keep
+    the predecessor mention)."""
     lower = re.sub(r"_+", "_", raw_suffix.lower()).strip("_")
-
-    # Check abbreviation map first
     if lower in _ABBREVIATION_MAP:
-        return _apply_alias(_ABBREVIATION_MAP[lower])
-
-    # Check inflection map
+        return _ABBREVIATION_MAP[lower]
     if lower in _INFLECTION_MAP:
-        return _apply_alias(_INFLECTION_MAP[lower])
-
+        return _INFLECTION_MAP[lower]
     # Estonian case-suffix stripping — collapses inflected forms of *amet,
     # *ministeerium, *inspektsioon, *minister to their nominative stems.
-    stripped = _strip_estonian_case(lower)
-    if stripped != lower:
-        return _apply_alias(stripped)
+    return _strip_estonian_case(lower)
 
-    # Default: lowercase the entire suffix, then resolve aliases.
-    return _apply_alias(lower)
+
+def normalize_with_predecessor(raw_suffix: str) -> tuple[str, str | None]:
+    """Return ``(canonical_slug, predecessor_slug)`` for a raw suffix (#718).
+
+    ``predecessor_slug`` is the de-inflected slug when the alias table
+    rewrote it onto a successor (``maanteeamet`` -> ``transpordiamet``),
+    else ``None``. The canonical slug is exactly what
+    :func:`normalize_iri_suffix` returns.
+    """
+    pre_alias = _deinflect_suffix(raw_suffix)
+    canonical = _apply_alias(pre_alias)
+    if canonical != pre_alias and pre_alias in _INSTITUTION_ALIASES:
+        return canonical, pre_alias
+    return canonical, None
 
 
 # owl:sameAs aliases: abbreviation IRI → canonical IRI (both lowercase)
@@ -427,14 +501,20 @@ KESKKONNAAMET_SLUG = "keskkonnaamet"
 GENERIC_INSTITUTION_SLUGS = frozenset({"vald", "linn", "kohus"})
 
 
-def load_wikidata_institutions(path: Path = WIKIDATA_INSTITUTIONS_PATH) -> dict[str, dict]:
+def load_wikidata_institutions(
+    path: Path = WIKIDATA_INSTITUTIONS_PATH, *, include_see_also: bool = False
+) -> dict[str, dict]:
+    """Slug -> Wikidata record. By default only slugs with an identity
+    ``qid``; ``include_see_also`` also keeps slugs that only carry a
+    non-identity ``seeAlsoQid`` (#718)."""
     if not path.is_file():
         return {}
     doc = json.loads(path.read_text(encoding="utf-8"))
     return {
         key: value
         for key, value in doc.items()
-        if not key.startswith("_") and isinstance(value, dict) and value.get("qid")
+        if not key.startswith("_") and isinstance(value, dict)
+        and (value.get("qid") or (include_see_also and value.get("seeAlsoQid")))
     }
 
 
@@ -444,6 +524,17 @@ def wikidata_iri_for_slug(slug: str, mapping: dict[str, dict] | None = None) -> 
     if not isinstance(entry, dict):
         return None
     qid = entry.get("qid")
+    if not isinstance(qid, str) or not qid.startswith("Q"):
+        return None
+    return f"{WIKIDATA_ENTITY_PREFIX}{qid}"
+
+
+def wikidata_see_also_iri_for_slug(slug: str, mapping: dict[str, dict] | None = None) -> str | None:
+    """Non-identity Wikidata link (#718): a concept-level class, or the
+    continuous item a predecessor name shares with its successor."""
+    payload = mapping if mapping is not None else load_wikidata_institutions(include_see_also=True)
+    entry = payload.get(slug)
+    qid = entry.get("seeAlsoQid") if isinstance(entry, dict) else None
     if not isinstance(qid, str) or not qid.startswith("Q"):
         return None
     return f"{WIKIDATA_ENTITY_PREFIX}{qid}"
@@ -606,18 +697,50 @@ def _is_abbreviation_entry(name: str) -> bool:
     return name.isupper() and " " not in name
 
 
+# #718: genitive (oblique) stems of the named full-name entries whose head
+# noun changes in the oblique cases. A named entry now also matches its
+# genitive stem plus at most one case ending (``Vabariigi Valitsuse
+# määrusega``, ``Riigikohtule``, ``Vabariigi Presidendi ettepanekul``) so the
+# clause-level binder can see passive-delegation agents and consultation
+# partners, not only nominative subjects. Entries whose oblique forms the
+# generic *amet / *inspektsioon patterns already cover need no stem here.
+_NAMED_OBLIQUE_STEMS: dict[str, str] = {
+    "Vabariigi Valitsus": "Vabariigi Valitsuse",
+    "Riigikogu": "Riigikogu",
+    "Vabariigi President": "Vabariigi Presidendi",
+    "Andmekaitse Inspektsioon": "Andmekaitse Inspektsiooni",
+    "Tarbijakaitse ja Tehnilise Järelevalve Amet": "Tarbijakaitse ja Tehnilise Järelevalve Ameti",
+    "Riigikohus": "Riigikohtu",
+    "ringkonnakohus": "ringkonnakohtu",
+    "halduskohus": "halduskohtu",
+    "maakohus": "maakohtu",
+}
+
+# Case endings that may follow a named entry's oblique stem.
+_NAMED_CASE_ENDINGS: str = "sse|ga|le|lt|st|ks|ni|na|ta|l|s|t"
+
+
 def _compile_named_pattern(name: str) -> re.Pattern[str]:
     """Compile a word-boundary regex for a named institution.
 
     Abbreviation-only entries (MTA, PPA, ...) compile to a case-sensitive
     pattern; full-name entries compile case-insensitively. Estonian
     diacritics are preserved (UNICODE flag) so ``Järelevalve`` stays
-    distinct from ``Jarelevalve``.
+    distinct from ``Jarelevalve``. Full-name entries with an oblique stem
+    (#718) also match ``<nominative>t`` (partitive) and
+    ``<oblique stem>[<case ending>]``.
     """
     flags = re.UNICODE
-    if not _is_abbreviation_entry(name):
-        flags |= re.IGNORECASE
-    return re.compile(rf"\b{re.escape(name)}\b", flags)
+    if _is_abbreviation_entry(name):
+        return re.compile(rf"\b{re.escape(name)}\b", flags)
+    flags |= re.IGNORECASE
+    oblique = _NAMED_OBLIQUE_STEMS.get(name)
+    if oblique is None:
+        return re.compile(rf"\b{re.escape(name)}\b", flags)
+    return re.compile(
+        rf"\b(?:{re.escape(oblique)}(?:{_NAMED_CASE_ENDINGS})?|{re.escape(name)}t?)\b",
+        flags,
+    )
 
 
 _NAMED_PATTERNS: list[tuple[re.Pattern[str], str, str, str]] = [
@@ -631,7 +754,7 @@ _NAMED_PATTERNS: list[tuple[re.Pattern[str], str, str, str]] = [
 # is order-dependent and fragile. This pattern is checked directly against
 # the input text instead.
 _SPECIFIC_COURT_PATTERN: re.Pattern[str] = re.compile(
-    r"\b(?:riigikohus|ringkonnakohus|halduskohus|maakohus)\w*\b",
+    r"\b(?:riigi|ringkonna|haldus|maa)koh(?:us|tu)\w*\b",
     re.IGNORECASE | re.UNICODE,
 )
 
@@ -782,86 +905,132 @@ COMPETENCE_PATTERNS: list[tuple[re.Pattern, str, int]] = [
 ]
 
 
-def detect_institutions(text: str) -> list[tuple[str, str, str]]:
-    """Return list of (canonical_name, normalized_iri_suffix, inst_type)
-    found in *text*. Named institutions are checked first; generic
-    patterns fill in the rest. All IRI suffixes are normalized to
-    lowercase convention via normalize_iri_suffix().
+@dataclass(frozen=True)
+class InstitutionMention:
+    """One institution mention in a text (#718).
 
-    Issue #170 findings addressed:
-      Finding 1. Substring matcher leaks — replaced ``substring in
-         text.lower()`` with compiled ``\\b...\\b`` regexes
-         (re.IGNORECASE | re.UNICODE for full-name entries,
-         case-sensitive for abbreviation-only entries).
-      Finding 2. Abbreviation entries (MTA / PPA) are now matched
-         against the original-case text, and only register when the
-         canonical full-name entry has NOT already matched in the same
-         provision (full names take precedence so we don't emit a
-         duplicate Institution_mta alongside
-         Institution_maksu_ja_tolliamet).
-      Finding 4. Generic ``kohus`` is suppressed when ANY of riigikohus
-         / ringkonnakohus / halduskohus / maakohus appears in the text.
-         The check is now a regex against the input text, not based on
-         ``found`` accumulator state.
+    ``name`` is the display name (canonical for named entries, the surface
+    match for generic ones), ``suffix`` the canonical post-alias slug,
+    ``predecessor`` the pre-alias slug when the alias table rewrote the
+    mention onto a successor. ``start``/``end`` delimit the match;
+    ``head_end`` extends past a governing head noun (``kohaliku
+    omavalitsuse üksus``) when one follows, and ``nominative`` is the
+    surface form the mention's case is measured against.
     """
-    found: dict[str, tuple[str, str, str]] = {}
 
-    # 1. Named institutions (first match for a given norm_suffix wins,
-    #    so full-name entries should precede abbreviation-only entries
-    #    in NAMED_INSTITUTIONS to keep the better canonical label).
+    name: str
+    suffix: str
+    itype: str
+    start: int
+    end: int
+    surface: str
+    nominative: str
+    predecessor: str | None = None
+    head_end: int | None = None
+    head_surface: str | None = None
+    head_nominative: str | None = None
+
+
+# #718: a ``kohaliku omavalitsuse`` match is usually a genitive modifier of
+# a head noun (``kohaliku omavalitsuse üksus kehtestab``). The head carries
+# the grammatical case, so the binder measures the case on it instead.
+_KOV_HEAD_RE: re.Pattern[str] = re.compile(
+    r"\s+(üksus|organ|volikogu|valitsus|asutus)(\w*)\b", re.IGNORECASE | re.UNICODE
+)
+
+
+def iter_institution_mentions(text: str) -> list[InstitutionMention]:
+    """Return every institution mention in *text* with its span (#718).
+
+    Order (and therefore first-mention label precedence) is the same as the
+    historical :func:`detect_institutions`: named full-name entries first,
+    then abbreviation-only entries, then generic patterns. Issue #170
+    findings 1, 2 and 4 (word-boundary matching, abbreviations only without
+    their full name, generic ``kohus`` suppressed next to a specific court)
+    and #259's stoplist apply unchanged.
+    """
+    mentions: list[InstitutionMention] = []
+
+    # 1. Named institutions.
     full_name_norm_suffixes_present: set[str] = set()
     for pattern, name, raw_suffix, itype in _NAMED_PATTERNS:
         if _is_abbreviation_entry(name):
-            # Defer abbrev entries until after we know which full names
-            # matched in this same text (Finding 2).
             continue
-        if pattern.search(text):
-            norm_suffix = normalize_iri_suffix(raw_suffix)
+        norm_suffix = normalize_iri_suffix(raw_suffix)
+        for m in pattern.finditer(text):
             full_name_norm_suffixes_present.add(norm_suffix)
-            if norm_suffix not in found:
-                found[norm_suffix] = (name, norm_suffix, itype)
+            mentions.append(InstitutionMention(
+                name=name, suffix=norm_suffix, itype=itype, start=m.start(),
+                end=m.end(), surface=m.group(0), nominative=name,
+            ))
 
-    # 1b. Abbreviation-only entries — register only when the canonical
-    #     full-name suffix is NOT already present in this provision.
+    # 1b. Abbreviation-only entries — only when the full name is absent.
     for pattern, name, raw_suffix, itype in _NAMED_PATTERNS:
         if not _is_abbreviation_entry(name):
             continue
         norm_suffix = normalize_iri_suffix(raw_suffix)
         if norm_suffix in full_name_norm_suffixes_present:
             continue
-        if norm_suffix in found:
-            continue
-        if pattern.search(text):
-            found[norm_suffix] = (name, norm_suffix, itype)
+        for m in pattern.finditer(text):
+            mentions.append(InstitutionMention(
+                name=name, suffix=norm_suffix, itype=itype, start=m.start(),
+                end=m.end(), surface=m.group(0), nominative=name,
+            ))
 
-    # Issue #170 Finding 4: pre-compute "specific court mentioned" once
-    # instead of relying on the ordering of NAMED_INSTITUTIONS or the
-    # state of ``found``. Using the compiled pattern means the
-    # suppression decision is robust no matter what generic patterns
-    # fire.
     has_specific_court = bool(_SPECIFIC_COURT_PATTERN.search(text))
 
-    # 2. Generic patterns (only if not already captured by a named entry)
-    for pat, default_label, itype in GENERIC_PATTERNS:
+    # 2. Generic patterns.
+    for pat, _default_label, itype in GENERIC_PATTERNS:
         for m in pat.finditer(text):
-            matched = m.group(1) if m.lastindex else m.group(0)
+            group = 1 if m.lastindex else 0
+            matched = m.group(group)
+            start, end = m.span(group)
             raw_key = sanitize_id(matched)
-            norm_key = normalize_iri_suffix(raw_key)
-            # Issue #259: drop known non-institution slugs (e.g.
-            # "mitteamet") that survive the regex as a valid case form.
-            if norm_key in _INSTITUTION_STOPLIST:
+            norm_key, predecessor = normalize_with_predecessor(raw_key)
+            # Issue #259: drop known non-institution slugs (e.g. "mitteamet").
+            if not norm_key or norm_key in _INSTITUTION_STOPLIST:
                 continue
-            if norm_key and norm_key not in found:
-                # Skip if this is just the generic "kohus" and a specific
-                # court appears anywhere in the text (riigikohus,
-                # ringkonnakohus, halduskohus, maakohus).
-                if norm_key == "kohus" and has_specific_court:
-                    continue
-                # Use canonical label for local government (avoid inflected forms)
-                if norm_key == "kohalik_omavalitsus":
-                    matched = "Kohalik omavalitsus"
-                found[norm_key] = (matched, norm_key, itype)
+            if norm_key == "kohus" and has_specific_court:
+                continue
+            if any(
+                o.suffix == norm_key and o.start < end and start < o.end
+                for o in mentions
+            ):
+                continue  # the same institution already matched here
+            label = matched
+            nominative = canonicalize_institution_label(matched)
+            head_end = head_surface = head_nominative = None
+            if norm_key == "kohalik_omavalitsus":
+                label = "Kohalik omavalitsus"
+                nominative = "kohalik omavalitsus"
+                head = _KOV_HEAD_RE.match(text, end)
+                if head is not None:
+                    head_end = head.end()
+                    head_surface = head.group(1) + head.group(2)
+                    head_nominative = head.group(1)
+            elif itype == "local_government_body":
+                nominative = _canonical_body_slug(matched) or matched
+            mentions.append(InstitutionMention(
+                name=label, suffix=norm_key, itype=itype, start=start, end=end,
+                surface=matched, nominative=nominative, predecessor=predecessor,
+                head_end=head_end, head_surface=head_surface,
+                head_nominative=head_nominative,
+            ))
+    return mentions
 
+
+def detect_institutions(text: str) -> list[tuple[str, str, str]]:
+    """Return list of (canonical_name, normalized_iri_suffix, inst_type)
+    found in *text*, one entry per institution (first mention wins).
+
+    Thin wrapper over :func:`iter_institution_mentions` (#718), which
+    carries the issue #170 findings 1/2/4 and #259 rules; this function
+    keeps the historical de-duplicated tuple contract.
+    """
+    found: dict[str, tuple[str, str, str]] = {}
+    for mention in iter_institution_mentions(text):
+        if mention.suffix not in found:
+            found[mention.suffix] = (mention.name, mention.suffix, mention.itype)
     return list(found.values())
 
 
@@ -882,6 +1051,529 @@ def detect_competence_type(text: str) -> str:
             best_type = ctype
             best_specificity = specificity
     return best_type
+
+
+# ---------- #718: clause-level competence binding ----------
+#
+# An institution is a provision's competentAuthority only when the clause
+# makes it the actor of a competence verb. Everything else it is merely
+# mentioned in becomes estleg:mentionsInstitution. The rules, in order:
+#
+#   1. Law titles (``Vabariigi Valitsuse seadus``) are not mentions at all.
+#   2. Consultation context right of the mention (``...ga kooskõlastatult``,
+#      ``... ettepanekul`` / ``nõusolekul`` / ``arvamuse``) -> mention only.
+#   3. Nominative subject: the mention precedes a finite competence verb
+#      (or ``võib`` + its da-infinitive) with at most
+#      _SUBJECT_MAX_GAP_TOKENS content words between, or follows it with at
+#      most _INVERTED_MAX_GAP_TOKENS (Estonian V2 order: ``järelevalvet
+#      teostab Keskkonnaamet``). Vowel-final names whose nominative equals
+#      their genitive (``Riigikogu``, ``volikogu``) are treated as genitive
+#      when a genitive head noun follows (``Riigikogu liige``).
+#   4. Adessive holder: ``<X>l on õigus / pädevus / volitus ...``.
+#   5. Genitive agent of a delegated act: ``<X> määrusega`` (or
+#      ``käskkirjaga`` / ``korraldusega``) within reach of a passive present
+#      verb (``kehtestatakse``, ``sätestatakse``, ...) — the passive
+#      regulation-making form. Type: regulation for määrus, else the
+#      verb-phrase type. ``<X> poolt`` + passive present verb is the agent too.
+#   6. Anything else -> mention only (descriptive genitives such as
+#      ``kohaliku omavalitsuse arhiiv``, addressees, objects).
+#
+# A verb phrase whose object is itself a consultation noun (``annab
+# arvamuse``, ``teeb ettepaneku``) never binds.
+
+_VOWELS = frozenset("aeiouõäöü")
+
+# Lemma stem -> da-infinitive. Finite forms are <stem>b (3sg), <stem>vad
+# (3pl) and ``ei <stem>`` (negation still assigns the power).
+_COMPETENCE_VERB_STEMS: dict[str, str] = {
+    "anna": "anda",
+    "väljasta": "väljastada",
+    "teosta": "teostada",
+    "kontrolli": "kontrollida",
+    "korralda": "korraldada",
+    "kehtesta": "kehtestada",
+    "otsusta": "otsustada",
+    "määra": "määrata",
+    "nimeta": "nimetada",
+    "kinnita": "kinnitada",
+    "lahenda": "lahendada",
+    "menetle": "menetleda",
+    "peata": "peatada",
+    "tühista": "tühistada",
+    "keela": "keelata",
+    "nõua": "nõuda",
+    "kohalda": "kohaldada",
+    "rakenda": "rakendada",
+    "tunnista": "tunnistada",
+    "lõpeta": "lõpetada",
+    "keeldu": "keelduda",
+    "registreeri": "registreerida",
+    "kooskõlasta": "kooskõlastada",
+    "vaata": "vaadata",
+    "võta": "võtta",
+    "tee": "teha",
+}
+# Verbs that only assign competence together with a particle/object.
+_VERB_REQUIRES: dict[str, re.Pattern[str]] = {
+    "vaata": re.compile(r"^(?:\s+\S+){0,4}?\s+läbi\b", re.IGNORECASE),
+    "võta": re.compile(r"^(?:\s+\S+){0,4}?\s+vastu\b", re.IGNORECASE),
+    "tee": re.compile(
+        r"^(?:\s+\S+){0,6}?\s+(?:järelevalvet|\w*otsus\w*|ettekirjutus\w*|"
+        r"korraldus\w*|kontrolli\w*|määrus\w*)\b",
+        re.IGNORECASE,
+    ),
+}
+
+
+def _finite_forms(stem: str) -> str:
+    # "tee" -> teeb/teevad; others regular.
+    return rf"{stem}b|{stem}vad|ei\s+{stem}"
+
+
+_FINITE_VERB_RE: re.Pattern[str] = re.compile(
+    r"\b(?:"
+    + "|".join(
+        rf"(?P<f_{i}>{_finite_forms(stem)})"
+        for i, stem in enumerate(_COMPETENCE_VERB_STEMS)
+    )
+    + r"|(?P<pad>on\s+pädev(?:ad)?))\b",
+    re.IGNORECASE | re.UNICODE,
+)
+_MODAL_VERB_RE: re.Pattern[str] = re.compile(
+    r"\b(?:võib|võivad|ei\s+või)(?:\s+\S+){0,2}?\s+(?P<inf>"
+    + "|".join(re.escape(v) for v in _COMPETENCE_VERB_STEMS.values())
+    + r")\b",
+    re.IGNORECASE | re.UNICODE,
+)
+_STEM_BY_GROUP: dict[str, str] = {
+    f"f_{i}": stem for i, stem in enumerate(_COMPETENCE_VERB_STEMS)
+}
+_STEM_BY_INFINITIVE: dict[str, str] = {
+    inf: stem for stem, inf in _COMPETENCE_VERB_STEMS.items()
+}
+
+# Consultation / non-binding nouns. Right of a mention (within one word)
+# they make it a consultation partner; as the object of a binding verb they
+# make the verb phrase advisory, not competence.
+CONSULTATION_BLOCKLIST: tuple[str, ...] = (
+    "kooskõlastatult", "kooskõlastades", "kooskõlastusel", "kooskõlastuse",
+    "kooskõlastust", "kooskõlastamiseks", "kooskõlastamisel", "arvamus",
+    "arvamuse", "arvamust", "arvamusel", "arvamuseta", "ettepanek",
+    "ettepanekul", "ettepaneku", "ettepanekut", "ettepanekust", "nõusolek",
+    "nõusolekul", "nõusoleku", "nõusolekut", "nõusolekuga", "nõusolekuta",
+    "loal", "loata", "koos",
+)
+_CONSULT_ALT = "|".join(CONSULTATION_BLOCKLIST)
+_CONSULT_RIGHT_RE: re.Pattern[str] = re.compile(
+    rf"^\W{{0,3}}(?:[\wäöüõšž-]+\s+)?(?:{_CONSULT_ALT})\b", re.IGNORECASE | re.UNICODE
+)
+_CONSULT_OBJECT_RE: re.Pattern[str] = re.compile(
+    rf"^(?:\s+[\wäöüõšž-]+){{0,1}}?\s+(?:{_CONSULT_ALT})\b", re.IGNORECASE | re.UNICODE
+)
+
+# Head nouns after a vowel-final name that make the name a genitive
+# modifier (``Riigikogu liige``, ``volikogu esimees``, ``Riigikogu otsusega``).
+_GENITIVE_HEAD_RE: re.Pattern[str] = re.compile(
+    r"^\s+(?:lii[gk]\w*|esim\w*|istung\w*|koosseis\w*|komisjon\w*|fraktsioon\w*|"
+    r"otsus\w*|kantselei\w*|juhatus\w*|juhatu\w*|liikme\w*|töökor\w*|"
+    r"kodu\w*|valimis\w*|aseesim\w*|ametiisik\w*|eelarve\w*|määrus\w*)\b",
+    re.IGNORECASE | re.UNICODE,
+)
+# ``<genitive name> [up to 4 words] seadus...`` is a law title.
+_LAW_TITLE_RE: re.Pattern[str] = re.compile(
+    r"^((?:\s+[\wäöüõšž-]+){0,4}?)\s+seadus(?:e|t|es|est|ele|ega|ega|ele|tik\w*)?\b",
+    re.IGNORECASE | re.UNICODE,
+)
+_ADESSIVE_POWER_RE: re.Pattern[str] = re.compile(
+    r"^(?:\s+\S+){0,2}?\s+on\s+(?:\S+\s+){0,1}?(?:õigus|pädevus|ainupädevus|volitus|volitused)\b",
+    re.IGNORECASE | re.UNICODE,
+)
+# Only the instrumental "by <X>'s act" forms delegate (``sotsiaalministri
+# määrusega``); ``määrusele`` / ``määruse alusel`` merely cite an act.
+_DELEGATED_ACT_RE: re.Pattern[str] = re.compile(
+    r"^\s+(?P<act>määrusega|käskkirjaga|korraldusega)\b", re.IGNORECASE | re.UNICODE
+)
+_AGENT_POOLT_RE: re.Pattern[str] = re.compile(r"^\s+poolt\b", re.IGNORECASE)
+# ``<X> poolt nimetatud isik`` is a descriptive participle, not an agent.
+_POOLT_PARTICIPLE_RE: re.Pattern[str] = re.compile(
+    r"^(?:\s+\S+){0,2}?\s+[\wäöüõšž]+(?:tud|dud)\b", re.IGNORECASE | re.UNICODE
+)
+# Passive present (impersonal) verbs: kehtestatakse, sätestatakse, antakse,
+# kinnitatakse, nähakse (ette), määratakse, ... — never the participle
+# ``kehtestatud``.
+_PASSIVE_PRESENT_RE: re.Pattern[str] = re.compile(
+    r"\b[\wäöüõšž]+(?:takse|akse)\b", re.IGNORECASE | re.UNICODE
+)
+_COORDINATION_RE: re.Pattern[str] = re.compile(r"^\s*(?:,|ja|või|ning)\s*$", re.IGNORECASE)
+_PASSIVE_REACH_TOKENS = 6
+_SUBJECT_MAX_GAP_TOKENS = 4
+_INVERTED_MAX_GAP_TOKENS = 3
+_GAP_IGNORED_TOKENS = frozenset({"ja", "ning", "või", "ega", "ka", "samuti"})
+
+_CASE_BY_ENDING: dict[str, str] = {
+    "": "genitive", "l": "adessive", "le": "allative", "lt": "ablative",
+    "ga": "comitative", "s": "inessive", "st": "elative", "sse": "illative",
+    "ks": "translative", "ni": "terminative", "na": "essive", "ta": "abessive",
+    "t": "partitive",
+}
+_GENITIVE_STEMS: tuple[tuple[str, str], ...] = (
+    ("kohalik omavalitsus", "kohaliku omavalitsuse"),
+    ("ministeerium", "ministeeriumi"), ("minister", "ministri"),
+    ("inspektsioon", "inspektsiooni"), ("omavalitsus", "omavalitsuse"),
+    ("valitsus", "valitsuse"), ("president", "presidendi"), ("amet", "ameti"),
+    ("kohus", "kohtu"), ("üksus", "üksuse"), ("asutus", "asutuse"),
+    ("organ", "organi"),
+)
+_COMPETENCE_TYPE_RANK: dict[str, int] = {
+    "licensing": 5, "supervision": 4, "enforcement": 3, "regulation": 2,
+    "advisory": 1, "general": 0,
+}
+
+# Verb-phrase typing (#718): the #322 ladder plus plural / da-infinitive /
+# passive forms of the same verbs, evaluated on ONE binding's verb phrase.
+EXTENDED_COMPETENCE_PATTERNS: list[tuple[re.Pattern, str, int]] = [
+    *COMPETENCE_PATTERNS,
+    (re.compile(r"\b(?:anna(?:b|vad)?|anda|väljasta(?:b|vad|da)?)"
+                r"(?:\s+\S+){0,3}?\s+\w*(?:loa|luba|load|lube)\b", re.IGNORECASE), "licensing", 5),
+    (re.compile(r"\b(?:teostavad|teostada|teevad|teha)(?:\s+\S+){0,2}?\s+järelevalvet",
+                re.IGNORECASE), "supervision", 4),
+    (re.compile(r"järelevalvet\s+(?:teostavad|teostada|teevad|teha)\b", re.IGNORECASE),
+     "supervision", 4),
+    (re.compile(r"\b(?:kontrollivad|kontrollida|korraldavad|korraldada|teostavad|"
+                r"teostada|ettekirjutus\w*)\b", re.IGNORECASE), "enforcement", 3),
+    (re.compile(r"\b(?:kehtestavad|kehtestada|kehtestatakse)\b", re.IGNORECASE),
+     "regulation", 2),
+]
+
+
+def detect_clause_competence_type(text: str) -> str:
+    """Most specific competence type in ONE binding's verb phrase (#718).
+
+    Same ladder as :func:`detect_competence_type` (licensing >
+    supervision-phrase > enforcement > regulation > supervision-noun >
+    general) over :data:`EXTENDED_COMPETENCE_PATTERNS`, which adds the
+    plural, da-infinitive and passive forms.
+    """
+    best_type = "general"
+    best_specificity = -1
+    for pat, ctype, specificity in EXTENDED_COMPETENCE_PATTERNS:
+        if specificity > best_specificity and pat.search(text):
+            best_type = ctype
+            best_specificity = specificity
+    return best_type
+
+
+def most_specific_competence_type(types: list[str] | set[str]) -> str:
+    """Highest-ranked competence type of several bindings (#718)."""
+    best = "general"
+    for ctype in types:
+        if _COMPETENCE_TYPE_RANK.get(ctype, 0) > _COMPETENCE_TYPE_RANK.get(best, 0):
+            best = ctype
+    return best
+
+
+_LOIGE_SPLIT_RE: re.Pattern[str] = re.compile(r"\(\d+[¹²³⁴⁵⁶⁷⁸⁹⁰]*\)\s*")
+_SENTENCE_SPLIT_RE: re.Pattern[str] = re.compile(
+    r"(?<=[a-zäöüõšž\)”\"])[.!?]\s+(?=[A-ZÄÖÜÕŠŽ(„\"])"
+)
+_POINT_RE: re.Pattern[str] = re.compile(r"(?:^|\s)\d+[¹²³⁴⁵⁶⁷⁸⁹⁰]*\)\s+")
+
+
+def split_competence_clauses(text: str) -> list[str]:
+    """Split provision text into the clauses the binder evaluates (#718).
+
+    Subsections ``(1)``, sentences and ``;``-separated parts are separate
+    clauses. An enumeration ``<lead-in>: 1) ...; 2) ...`` yields one clause
+    per point, each prefixed with the lead-in, so ``Keskkonnaamet: 1) annab
+    loa; 2) teostab järelevalvet`` binds the lead-in subject to both verbs.
+    """
+    clauses: list[str] = []
+    for part in _LOIGE_SPLIT_RE.split(text):
+        for sentence in _SENTENCE_SPLIT_RE.split(part):
+            sentence = sentence.strip()
+            if not sentence:
+                continue
+            lead, colon, rest = sentence.partition(":")
+            points = _POINT_RE.split(rest) if colon else []
+            if colon and len(points) > 1:
+                lead = lead.strip()
+                for item in points:
+                    for piece in item.split(";"):
+                        piece = piece.strip(" ;.")
+                        if piece:
+                            clauses.append(f"{lead}: {piece}")
+                continue
+            clauses.extend(p.strip() for p in sentence.split(";") if p.strip())
+    return clauses
+
+
+def _norm_surface(value: str) -> str:
+    return re.sub(r"[\s\-]+", " ", value.lower()).strip()
+
+
+def _genitive_stem(nominative: str) -> str:
+    for root, genitive in _GENITIVE_STEMS:
+        if nominative.endswith(root):
+            return nominative[: -len(root)] + genitive
+    return nominative
+
+
+def mention_case(surface: str, nominative: str) -> str:
+    """Grammatical case of *surface* relative to its *nominative* (#718).
+
+    Returns ``nom``, ``nom_gen`` (vowel-final nominative that is also the
+    genitive, e.g. ``Riigikogu``), ``genitive``, one of the oblique case
+    names in :data:`_CASE_BY_ENDING`, or ``oblique``.
+    """
+    s = _norm_surface(surface)
+    n = _norm_surface(nominative)
+    if s == n:
+        return "nom_gen" if n and n[-1] in _VOWELS else "nom"
+    if s == n + "t":
+        return "partitive"
+    g = _norm_surface(_genitive_stem(n))
+    if s.startswith(g):
+        return _CASE_BY_ENDING.get(s[len(g):], "oblique")
+    return "oblique"
+
+
+@dataclass(frozen=True)
+class MentionBinding:
+    """Binder verdict for one mention (#718)."""
+
+    mention: InstitutionMention
+    role: str          # "competent" | "mention" | "title"
+    reason: str        # subject | inverted_subject | adessive_power |
+                       # passive_agent | consultation | genitive | ... |
+                       # no_competence_verb | law_title
+    competence_type: str | None = None
+
+
+def _content_tokens(text: str) -> list[str]:
+    return [
+        t for t in re.findall(r"[\wäöüõšž§]+", text.lower())
+        if t not in _GAP_IGNORED_TOKENS
+    ]
+
+
+@dataclass(frozen=True)
+class _VerbHit:
+    start: int
+    end: int
+    stem: str | None   # None for "on pädev"
+
+
+def _competence_verbs(clause: str) -> list[_VerbHit]:
+    hits: list[_VerbHit] = []
+    for m in _FINITE_VERB_RE.finditer(clause):
+        if m.group("pad"):
+            hits.append(_VerbHit(m.start(), m.end(), None))
+            continue
+        stem = _STEM_BY_GROUP[m.lastgroup] if m.lastgroup else None
+        hits.append(_VerbHit(m.start(), m.end(), stem))
+    for m in _MODAL_VERB_RE.finditer(clause):
+        hits.append(_VerbHit(m.start(), m.end(), _STEM_BY_INFINITIVE[m.group("inf").lower()]))
+    out: list[_VerbHit] = []
+    for hit in sorted(hits, key=lambda h: (h.start, -h.end)):
+        tail = clause[hit.end:]
+        req = _VERB_REQUIRES.get(hit.stem or "")
+        if req is not None and not req.match(tail):
+            continue
+        if _CONSULT_OBJECT_RE.match(tail):
+            continue  # "annab arvamuse", "teeb ettepaneku" — advisory, not competence
+        out.append(hit)
+    return out
+
+
+def _masked(clause: str, mentions: list[InstitutionMention]) -> str:
+    chars = list(clause)
+    for m in mentions:
+        for i in range(m.start, m.head_end or m.end):
+            chars[i] = " "
+    return "".join(chars)
+
+
+def _verb_phrase_type(masked: str, verb: _VerbHit) -> str:
+    # Typed on the mention-masked clause so an institution's own name
+    # (``Tehnilise Järelevalve Amet``) cannot read as a supervision verb.
+    return detect_clause_competence_type(masked[max(0, verb.start - 30): verb.end + 100])
+
+
+def _bind_mention(
+    clause: str,
+    mention: InstitutionMention,
+    verbs: list[_VerbHit],
+    masked: str,
+) -> MentionBinding:
+    end = mention.head_end or mention.end
+    right = clause[end:]
+    if mention.head_surface is not None:
+        case = mention_case(mention.head_surface, mention.head_nominative or "")
+    else:
+        case = mention_case(mention.surface, mention.nominative)
+    if case in ("genitive", "nom_gen"):
+        title = _LAW_TITLE_RE.match(right)
+        if title is not None and not _FINITE_VERB_RE.search(title.group(1) or ""):
+            return MentionBinding(mention, "title", "law_title")
+    if _CONSULT_RIGHT_RE.match(right):
+        return MentionBinding(mention, "mention", "consultation")
+    if case == "nom_gen" and _GENITIVE_HEAD_RE.match(right):
+        case = "genitive"
+
+    if case in ("nom", "nom_gen"):
+        best: tuple[int, _VerbHit, str] | None = None
+        for verb in verbs:
+            if verb.start >= end:
+                gap = len(_content_tokens(masked[end:verb.start]))
+                if gap <= _SUBJECT_MAX_GAP_TOKENS and (best is None or gap < best[0]):
+                    best = (gap, verb, "subject")
+            elif verb.end <= mention.start:
+                gap = len(_content_tokens(masked[verb.end:mention.start]))
+                if gap <= _INVERTED_MAX_GAP_TOKENS and (best is None or gap < best[0]):
+                    best = (gap, verb, "inverted_subject")
+        if best is not None:
+            _gap, verb, reason = best
+            return MentionBinding(mention, "competent", reason, _verb_phrase_type(masked, verb))
+        return MentionBinding(mention, "mention", "no_competence_verb")
+
+    if case == "adessive":
+        power = _ADESSIVE_POWER_RE.match(right)
+        if power is not None:
+            phrase = masked[end: end + power.end() + 100]
+            return MentionBinding(
+                mention, "competent", "adessive_power", detect_clause_competence_type(phrase)
+            )
+        return MentionBinding(mention, "mention", "adessive")
+
+    if case == "genitive":
+        act = _DELEGATED_ACT_RE.match(right)
+        agent = _AGENT_POOLT_RE.match(right)
+        if agent is not None and _POOLT_PARTICIPLE_RE.match(right[agent.end():]):
+            agent = None
+        anchor = act or agent
+        if anchor is not None:
+            anchor_end = end + anchor.end()
+            window_lo = max(0, end - 80)
+            window_hi = min(len(clause), anchor_end + 80)
+            for pv in _PASSIVE_PRESENT_RE.finditer(clause, window_lo, window_hi):
+                if pv.start() >= anchor_end:
+                    gap = len(_content_tokens(masked[anchor_end:pv.start()]))
+                elif pv.end() <= mention.start:
+                    gap = len(_content_tokens(masked[pv.end():mention.start]))
+                else:
+                    continue
+                if gap > _PASSIVE_REACH_TOKENS:
+                    continue
+                if act is not None and act.group("act").lower().startswith("määrus"):
+                    return MentionBinding(mention, "competent", "passive_agent", "regulation")
+                phrase = masked[min(pv.start(), mention.start): max(pv.end(), anchor_end) + 60]
+                return MentionBinding(
+                    mention, "competent", "passive_agent", detect_clause_competence_type(phrase)
+                )
+        return MentionBinding(mention, "mention", "genitive")
+
+    return MentionBinding(mention, "mention", case)
+
+
+def bind_clause(clause: str) -> list[MentionBinding]:
+    """Binder verdicts for every institution mention in one clause."""
+    mentions = sorted(iter_institution_mentions(clause), key=lambda m: m.start)
+    if not mentions:
+        return []
+    verbs = _competence_verbs(clause)
+    # A coordinated clause with its own named subject must be typed separately.
+    # Keep coordinated subjects (X and Y inspect) and one subject's coordinated
+    # powers (X inspects and grants licences) together.
+    for mention in mentions[1:]:
+        surface = mention.head_surface or mention.surface
+        nominative = mention.head_nominative or mention.nominative
+        if mention_case(surface, nominative) not in ("nom", "nom_gen"):
+            continue
+        separator = re.search(r"(?:,\s*|\b(?:ja|ning|kuid|aga)\s+)$", clause[:mention.start])
+        if separator is None:
+            continue
+        boundary = separator.start()
+        if any(v.end <= boundary for v in verbs) and any(
+            v.start >= (mention.head_end or mention.end) for v in verbs
+        ):
+            return bind_clause(clause[:boundary]) + bind_clause(clause[mention.start:])
+    masked = _masked(clause, mentions)
+    bindings = [_bind_mention(clause, m, verbs, masked) for m in mentions]
+    # Coordinated genitive agents (``Politsei- ja Piirivalveameti või
+    # Kaitsepolitseiameti poolt``, ``X ja Y määrusega``): a genitive conjunct
+    # inherits the passive-agent binding of the conjunct it is joined to.
+    for i in range(len(bindings) - 2, -1, -1):
+        here, nxt = bindings[i], bindings[i + 1]
+        if here.reason != "genitive" or nxt.reason != "passive_agent":
+            continue
+        between = clause[(here.mention.head_end or here.mention.end):nxt.mention.start]
+        if _COORDINATION_RE.match(between):
+            bindings[i] = MentionBinding(
+                here.mention, "competent", "passive_agent", nxt.competence_type
+            )
+    return bindings
+
+
+@dataclass
+class InstitutionBinding:
+    """Per-institution verdict for a whole provision text (#718)."""
+
+    name: str
+    suffix: str
+    itype: str
+    competent: bool
+    competence_type: str | None
+    predecessors: tuple[str, ...]
+    reasons: tuple[str, ...]
+    # False when every mention used a predecessor name (``Maanteeametile``):
+    # a non-binding mention then points only at the predecessor node.
+    direct: bool = True
+
+
+def bind_institutions(text: str) -> list[InstitutionBinding]:
+    """Clause-level binding over a provision text (#718).
+
+    One entry per institution (canonical slug) in first-mention order. An
+    institution is competent when ANY of its mentions binds; its type is the
+    most specific of its bindings' verb-phrase types. ``predecessors`` are
+    the pre-alias slugs it was mentioned under (``maanteeamet``). Law-title
+    mentions are dropped entirely.
+    """
+    order: list[str] = []
+    info: dict[str, dict] = {}
+    for clause in split_competence_clauses(text):
+        for b in bind_clause(clause):
+            m = b.mention
+            if b.role == "title":
+                continue
+            # KOV body words keep their inflected slug in detect_institutions;
+            # group them by the canonical body instead (resolved to an Issuer
+            # later from the first surface form).
+            key = m.nominative if m.itype == "local_government_body" else m.suffix
+            entry = info.get(key)
+            if entry is None:
+                entry = {"name": m.name, "itype": m.itype, "types": [],
+                         "predecessors": [], "reasons": [], "direct": False}
+                info[key] = entry
+                order.append(key)
+            if b.role == "competent":
+                entry["types"].append(b.competence_type or "general")
+            if m.predecessor and m.predecessor not in entry["predecessors"]:
+                entry["predecessors"].append(m.predecessor)
+            if not m.predecessor:
+                entry["direct"] = True
+            entry["reasons"].append(b.reason)
+    out: list[InstitutionBinding] = []
+    for suffix in order:
+        e = info[suffix]
+        competent = bool(e["types"])
+        out.append(InstitutionBinding(
+            name=e["name"], suffix=suffix, itype=e["itype"], competent=competent,
+            competence_type=most_specific_competence_type(e["types"]) if competent else None,
+            predecessors=tuple(e["predecessors"]), reasons=tuple(e["reasons"]),
+            direct=e["direct"],
+        ))
+    return out
 
 
 def _fold_area_text(value: str) -> str:
@@ -1117,13 +1809,16 @@ def _is_path3_case(
     return source_mun != source_municipality
 
 
-# Issue #170 Finding 7: truncation cap for estleg:appliesToProvision.
-# Major institutions (Vabariigi Valitsus, Riigikogu, ...) easily exceed
-# this; main() now emits the FULL list AND records a count plus a warning
-# whenever truncation would have lost provisions. Tests that need to
-# verify behaviour around this threshold can pin _APPLIES_TO_PROVISION_CAP
-# directly.
-_APPLIES_TO_PROVISION_CAP = 50
+# Issue #170 Finding 7 / #718: estleg:appliesToProvision used to be sliced
+# to the first 50 provisions per Competence node. The slice arrived in the
+# 2026-04 bulk fix (befc15816c) without a stated reason; the controlled
+# vocabulary describes it as truncation "for size". It dropped 77% of the
+# inverse edges (23,498 / 30,360), while the forward provision ->
+# competentAuthority edges were never capped. Uncapped, the whole
+# institutions/ sidecar stays a few MB, so the list is now complete and
+# estleg:appliesToProvisionCount always equals its length. ``None`` means
+# "no cap"; tests may pin an int to exercise the count field.
+_APPLIES_TO_PROVISION_CAP: int | None = None
 
 
 def _load_canonical_institutions(directory: Path) -> set[str]:
@@ -1175,7 +1870,128 @@ def _curated_canonical_suffixes() -> set[str]:
     for _name, raw_suffix, _itype in NAMED_INSTITUTIONS:
         out.add(normalize_iri_suffix(raw_suffix))
     out |= set(_INSTITUTION_ALIASES.values())
+    # #718: predecessor nodes are mention targets, so their slugs are valid.
+    out |= set(_INSTITUTION_ALIASES)
     return out
+
+
+TRACKED_PROVISIONS: tuple[str, ...] = ("estleg:EHS_Par_26_1", "estleg:ARHIIV_Par_1")
+
+
+def _target_family(iri: str) -> str:
+    if iri.startswith("estleg:Institution_"):
+        return "Institution"
+    if iri.startswith("estleg:Issuer_"):
+        return "Issuer"
+    return "other"
+
+
+@dataclass
+class CompetenceMeasurement:
+    """Before/after accounting for a dry run (#718).
+
+    "Before" is what the corpus currently ships (``competentAuthority`` +
+    one provision-level ``competenceType`` stamped on every authority);
+    "after" is the clause-level binder's verdict on the same text.
+    """
+
+    before_by_type: Counter = field(default_factory=Counter)
+    after_by_type: Counter = field(default_factory=Counter)
+    after_provision_types: Counter = field(default_factory=Counter)
+    transitions: Counter = field(default_factory=Counter)
+    new_bindings_by_type: Counter = field(default_factory=Counter)
+    before_by_family: Counter = field(default_factory=Counter)
+    after_by_family: Counter = field(default_factory=Counter)
+    before_institution_by_type: Counter = field(default_factory=Counter)
+    after_institution_by_type: Counter = field(default_factory=Counter)
+    mention_edges: int = 0
+    provisions_before: int = 0
+    provisions_after: int = 0
+    tracked: dict = field(default_factory=dict)
+    samples: dict = field(default_factory=lambda: defaultdict(list))
+
+    def record(
+        self,
+        provision_iri: str,
+        before: tuple[list[str], str | None],
+        after_competent: dict[str, str],
+        after_mentioned: list[str],
+        text: str,
+    ) -> None:
+        before_ids, before_type = before
+        if not text:
+            return  # act roots etc.: act-level edges are rolled up later
+        btype = before_type or "general"
+        if before_ids:
+            self.provisions_before += 1
+        if after_competent:
+            self.provisions_after += 1
+            self.after_provision_types[most_specific_competence_type(
+                list(after_competent.values()))] += 1
+        for iri in before_ids:
+            self.before_by_type[btype] += 1
+            self.before_by_family[_target_family(iri)] += 1
+            if iri.startswith("estleg:Institution_"):
+                self.before_institution_by_type[btype] += 1
+            if iri in after_competent:
+                state = f"competent:{after_competent[iri]}"
+            elif iri in after_mentioned:
+                state = "mentionsInstitution"
+            else:
+                state = "dropped"
+            self.transitions[(btype, state)] += 1
+            key = f"{btype}->{state}"
+            if len(self.samples[key]) < 12:
+                self.samples[key].append({
+                    "provision": provision_iri, "institution": iri,
+                    "text": text[:300],
+                })
+        for iri, ctype in after_competent.items():
+            self.after_by_type[ctype] += 1
+            self.after_by_family[_target_family(iri)] += 1
+            if iri.startswith("estleg:Institution_"):
+                self.after_institution_by_type[ctype] += 1
+            if iri not in before_ids:
+                self.new_bindings_by_type[ctype] += 1
+        self.mention_edges += len(after_mentioned)
+        if provision_iri in TRACKED_PROVISIONS:
+            self.tracked[provision_iri] = {
+                "before": {"competentAuthority": before_ids, "competenceType": before_type},
+                "after": {"competentAuthority": after_competent,
+                          "mentionsInstitution": after_mentioned},
+                "text": text[:500],
+            }
+
+    def as_dict(self, state: _PipelineState) -> dict:
+        transitions: dict[str, dict[str, int]] = defaultdict(dict)
+        for (btype, after_state), n in sorted(self.transitions.items()):
+            transitions[btype][after_state] = n
+        return {
+            "provisions_with_text": state.total_provisions,
+            "provisions_with_institution_mentions": state.provisions_with_institutions,
+            "bindings_before_total": sum(self.before_by_type.values()),
+            "bindings_before_by_type": dict(self.before_by_type.most_common()),
+            "bindings_after_total": sum(self.after_by_type.values()),
+            "bindings_after_by_type": dict(self.after_by_type.most_common()),
+            "bindings_before_by_target": dict(self.before_by_family.most_common()),
+            "bindings_after_by_target": dict(self.after_by_family.most_common()),
+            "institution_bindings_before_by_type": dict(
+                self.before_institution_by_type.most_common()),
+            "institution_bindings_after_by_type": dict(
+                self.after_institution_by_type.most_common()),
+            "provisions_with_authority_before": self.provisions_before,
+            "provisions_with_authority_after": self.provisions_after,
+            "provision_competence_type_after": dict(self.after_provision_types.most_common()),
+            "before_type_to_after_state": transitions,
+            "new_bindings_not_in_shipped_data_by_type": dict(
+                self.new_bindings_by_type.most_common()),
+            "mentions_institution_edges_after": self.mention_edges,
+            "binder_reasons": dict(state.binding_reasons.most_common()),
+            "unknown_institution_skips": state.unknown_institution_count,
+            "unresolved_kov_body_references": state.unresolved_count,
+            "tracked_provisions": self.tracked,
+            "samples": dict(self.samples),
+        }
 
 
 class _PipelineState:
@@ -1223,6 +2039,17 @@ class _PipelineState:
         self.overrides_applied = 0
         self.override_links: list[tuple[str, str, str, str]] = []
         self.override_links_skipped = 0
+        # #718: mention-only institutions (IRI -> mention edge count), the
+        # binder's per-mention reasons, and the number of mentionsInstitution
+        # edges written.
+        self.inst_mentions: Counter[str] = Counter()
+        self.binding_reasons: Counter[str] = Counter()
+        self.mention_edges = 0
+        # #718 dry run: never write; collect the before/after measurement.
+        self.dry_run = False
+        self.measurement: CompetenceMeasurement | None = None
+        # Per-institution competence types of the provision processed last.
+        self.last_competent: dict[str, str] = {}
 
 
 def _record_provision_for_institution(
@@ -1268,6 +2095,46 @@ def _record_provision_for_institution(
     state.inst_provisions[inst_iri].append(key)
 
 
+def _resolve_binding_iri(
+    binding: InstitutionBinding,
+    state: _PipelineState,
+    source_municipality: str | None,
+    source_issuer: str | None,
+    issuer_registry: dict[str, tuple[str, str, str]],
+    canonical_suffixes: set[str],
+) -> str | None:
+    """Map one binder verdict to an Institution_* or Issuer_* IRI, or None.
+
+    KOV body words resolve to the source act's Issuer (Layer 2c PR #2); a
+    failure counts toward ``unresolved_count``. Everything else must be a
+    canonical institution slug (#170 Finding 8; registry empty = bootstrap).
+    """
+    if binding.itype == "local_government_body":
+        canonical = _canonical_body_slug(binding.name)
+        if canonical is None:
+            return None
+        issuer_iri = _resolve_kov_authority(
+            body_slug=canonical,
+            source_municipality=source_municipality,
+            source_issuer=source_issuer,
+            issuer_registry=issuer_registry,
+        )
+        if issuer_iri is None:
+            state.unresolved_count += 1
+            return None
+        if _is_path3_case(
+            source_issuer=source_issuer,
+            source_municipality=source_municipality,
+            issuer_registry=issuer_registry,
+        ):
+            state.fallback_hits += 1
+        return issuer_iri
+    if canonical_suffixes and binding.suffix not in canonical_suffixes:
+        state.unknown_institution_count += 1
+        return None
+    return f"estleg:Institution_{binding.suffix}"
+
+
 def _process_provision_node(
     node: dict,
     state: _PipelineState,
@@ -1278,93 +2145,213 @@ def _process_provision_node(
     law_name: str,
     forced_competence_type: str | None = None,
 ) -> bool:
-    """Detect institutions in one provision node, mutate the node with
-    competentAuthority/competenceType triples, and update ``state``.
+    """Bind institutions in one provision node (#718) and update ``state``.
+
+    Writes ``estleg:competentAuthority`` (institutions the clause-level
+    binder makes competent), ``estleg:competenceType`` (the most specific
+    type among those bindings; per-institution types live on the Competence
+    sidecar nodes) and ``estleg:mentionsInstitution`` (every other mentioned
+    institution, plus the predecessor node of an alias-rewritten mention).
 
     ``forced_competence_type`` (#700) is a human-reviewed competenceType that
-    replaces the detected one for this provision, including in the
-    institution back-links.
+    replaces the detected one for every binding of this provision, including
+    the institution back-links.
 
     Returns True iff the node was mutated.
     """
+    state.last_competent = {}
     summary = classifier_text(node)
     if not summary:
         return False
 
     state.total_provisions += 1
-    institutions = detect_institutions(summary)
-    if not institutions:
+    bindings = bind_institutions(summary)
+    if not bindings:
         return False
 
     state.provisions_with_institutions += 1
-    competence_type = forced_competence_type or detect_competence_type(summary)
     provision_iri = node.get("@id", "")
 
-    authority_refs: list[dict] = []
-    for canon_name, iri_suffix, itype in institutions:
-        if itype == "local_government_body":
-            canonical = _canonical_body_slug(canon_name)
-            if canonical is None:
-                continue
-            issuer_iri = _resolve_kov_authority(
-                body_slug=canonical,
-                source_municipality=source_municipality,
-                source_issuer=source_issuer,
-                issuer_registry=issuer_registry,
-            )
-            if issuer_iri is None:
-                state.unresolved_count += 1
-                continue
-            if _is_path3_case(
-                source_issuer=source_issuer,
-                source_municipality=source_municipality,
-                issuer_registry=issuer_registry,
-            ):
-                state.fallback_hits += 1
-            authority_refs.append({"@id": issuer_iri})
-            continue
-
-        # Issue #170 Finding 8: validate against the canonical
-        # 126-institution registry. When the registry is empty
-        # (bootstrap mode), accept every detection so a clean tree can
-        # populate the registry from scratch.
-        if canonical_suffixes and iri_suffix not in canonical_suffixes:
-            state.unknown_institution_count += 1
-            continue
-
-        # Existing Institution_* path for everything else
-        inst_iri = f"estleg:Institution_{iri_suffix}"
-        _record_provision_for_institution(
-            state=state,
-            inst_iri=inst_iri,
-            canon_name=canon_name,
-            iri_suffix=iri_suffix,
-            itype=itype,
-            provision_iri=provision_iri,
-            competence_type=competence_type,
-            law_name=law_name,
+    competent: dict[str, str] = {}  # IRI -> competence type (first-occurrence order)
+    mentioned: list[str] = []
+    for binding in bindings:
+        state.binding_reasons.update(binding.reasons)
+        iri = _resolve_binding_iri(
+            binding, state, source_municipality, source_issuer,
+            issuer_registry, canonical_suffixes,
         )
-        authority_refs.append({"@id": inst_iri})
+        if iri is not None:
+            if binding.competent:
+                ctype = forced_competence_type or binding.competence_type or "general"
+                previous = competent.get(iri)
+                competent[iri] = (
+                    most_specific_competence_type([previous, ctype]) if previous else ctype
+                )
+            elif binding.direct and iri not in mentioned:
+                mentioned.append(iri)
+        for predecessor in binding.predecessors:
+            if canonical_suffixes and predecessor not in canonical_suffixes:
+                continue
+            pred_iri = f"estleg:Institution_{predecessor}"
+            if pred_iri not in mentioned:
+                mentioned.append(pred_iri)
 
-    # Dedupe authority_refs by @id (preserve first-occurrence order).
-    # Required because a single provision can mention the same body
-    # multiple times (different inflections), and each match would
-    # otherwise emit a separate competentAuthority ref.
-    seen: set[str] = set()
-    deduped: list[dict] = []
-    for ref in authority_refs:
-        iri = ref.get("@id") if isinstance(ref, dict) else None
-        if iri is None or iri in seen:
+    mentioned = [iri for iri in mentioned if iri not in competent]
+    state.last_competent = dict(competent)
+
+    for iri, ctype in competent.items():
+        if not iri.startswith("estleg:Institution_"):
             continue
-        seen.add(iri)
-        deduped.append(ref)
-    authority_refs = deduped
+        suffix = iri.removeprefix("estleg:Institution_")
+        binding = next(b for b in bindings if b.suffix == suffix)
+        _record_provision_for_institution(
+            state=state, inst_iri=iri, canon_name=binding.name, iri_suffix=suffix,
+            itype=binding.itype, provision_iri=provision_iri,
+            competence_type=ctype, law_name=law_name,
+        )
+    for iri in mentioned:
+        state.mention_edges += 1
+        if not iri.startswith("estleg:Institution_"):
+            continue
+        suffix = iri.removeprefix("estleg:Institution_")
+        binding = next((b for b in bindings if b.suffix == suffix), None)
+        _record_mention_for_institution(state, iri, suffix, binding)
 
-    if authority_refs:
-        node["estleg:competentAuthority"] = authority_refs
-        node["estleg:competenceType"] = competence_type
-        return True
-    return False
+    changed = False
+    if competent:
+        node["estleg:competentAuthority"] = [{"@id": iri} for iri in competent]
+        node["estleg:competenceType"] = (
+            forced_competence_type or most_specific_competence_type(list(competent.values()))
+        )
+        changed = True
+    if mentioned:
+        node[MENTIONS_INSTITUTION] = [{"@id": iri} for iri in mentioned]
+        changed = True
+    return changed
+
+
+def _record_mention_for_institution(
+    state: _PipelineState,
+    inst_iri: str,
+    suffix: str,
+    binding: InstitutionBinding | None,
+) -> None:
+    """Make sure a mention-only institution gets an institution node (#718)
+    so every ``estleg:mentionsInstitution`` target resolves."""
+    state.inst_mentions[inst_iri] += 1
+    if inst_iri in state.inst_data:
+        return
+    named = named_institution_by_suffix().get(suffix)
+    if named is not None:
+        name, itype = named
+    elif binding is not None and binding.suffix == suffix:
+        name, itype = binding.name, binding.itype
+    else:
+        alias = _ALIAS_RECORDS.get(suffix, {})
+        name, itype = alias.get("label") or suffix, "agency"
+    state.inst_data[inst_iri] = {
+        "name": name,
+        "iri_suffix": suffix,
+        "type": preferred_institution_type(suffix, itype),
+    }
+
+
+def rollup_act_authorities(doc: dict, overrides: OverrideStore | None = None) -> tuple[int, int]:
+    """Stamp each act root with the union of its provisions' authorities.
+
+    Same contract as ``generate_inverse_references.materialize_act_root_aggregates``
+    (#508) for ``estleg:competentAuthority``: a provision contributes to the act
+    root its ``estleg:partOfAct`` points at, ids are de-duplicated in graph
+    order, the shape is a list of ``{"@id"}``, and KOV ``Issuer_*`` bindings
+    roll up like ``Institution_*`` ones. Unlike #508 it REPLACES the root's
+    value instead of merging, because the competence pass cleared it (and
+    #508's merge would keep stale ids forever). ``mentionsInstitution`` never
+    rolls up. A root whose competentAuthority a human override owns (#700)
+    is left alone.
+
+    The competence pass clears act roots together with provisions, so without
+    this the roots stayed empty until #508 re-ran, and
+    materialize_combined_inverses (act-like subjects only) emitted no
+    estleg:governs (#718 regression). Returns ``(roots changed, roots
+    carrying at least one authority afterwards)``.
+    """
+    graph = doc.get("@graph")
+    if not isinstance(graph, list):
+        return 0, 0
+    acts: list[dict] = []
+    union: dict[str, list[str]] = defaultdict(list)
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if any(t in _ACT_ROOT_TYPES for t in types):
+            acts.append(node)
+            continue
+        act_ids = _iri_values(node.get("estleg:partOfAct"))
+        if not act_ids:
+            continue
+        for iri in _iri_values(node.get("estleg:competentAuthority")):
+            if iri not in union[act_ids[0]]:
+                union[act_ids[0]].append(iri)
+    changed = stamped = 0
+    for act in acts:
+        act_id = act.get("@id")
+        if not isinstance(act_id, str):
+            continue
+        if overrides is not None and overrides.owns(act_id, "estleg:competentAuthority"):
+            stamped += bool(_iri_values(act.get("estleg:competentAuthority")))
+            continue
+        ids = union.get(act_id, [])
+        new_val = [{"@id": iri} for iri in ids]
+        if new_val:
+            stamped += 1
+            if act.get("estleg:competentAuthority") != new_val:
+                act["estleg:competentAuthority"] = new_val
+                changed += 1
+        elif "estleg:competentAuthority" in act:
+            del act["estleg:competentAuthority"]
+            changed += 1
+    return changed, stamped
+
+
+def run_rollup_only() -> dict[str, int]:
+    """#718: stamp act roots from the provision edges already on disk (no NLP)."""
+    totals = {"files": 0, "files_written": 0, "act_roots": 0,
+              "acts_with_authority_before": 0, "acts_with_authority_after": 0,
+              "act_roots_changed": 0}
+    for path in iter_peep_files():
+        doc = load_json(path)
+        if not isinstance(doc, dict):
+            continue
+        totals["files"] += 1
+        for node in doc.get("@graph") or []:
+            if not isinstance(node, dict):
+                continue
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if any(t in _ACT_ROOT_TYPES for t in types):
+                totals["act_roots"] += 1
+                if _iri_values(node.get("estleg:competentAuthority")):
+                    totals["acts_with_authority_before"] += 1
+        changed, stamped = rollup_act_authorities(doc, load_overrides_cached())
+        totals["acts_with_authority_after"] += stamped
+        totals["act_roots_changed"] += changed
+        if changed:
+            save_json(path, doc)
+            totals["files_written"] += 1
+    return totals
+
+
+_OVERRIDES_CACHE: list[OverrideStore] = []
+
+
+def load_overrides_cached() -> OverrideStore:
+    if not _OVERRIDES_CACHE:
+        _OVERRIDES_CACHE.append(load_overrides(None))
+    return _OVERRIDES_CACHE[0]
 
 
 def process_law_file(
@@ -1420,18 +2407,37 @@ def process_law_file(
 
     # Detect prior peep-side output BEFORE clearing.
     had_existing_peep = any(
-        ("estleg:competentAuthority" in n)
-        or ("estleg:competenceType" in n)
+        isinstance(n, dict) and (
+            ("estleg:competentAuthority" in n)
+            or ("estleg:competenceType" in n)
+            or (MENTIONS_INSTITUTION in n)
+        )
         for n in doc["@graph"]
     )
 
+    # #718 dry run: remember what the corpus ships before it is cleared.
+    shipped: dict[str, tuple[list[str], str | None]] = {}
+    if state.measurement is not None:
+        for n in doc["@graph"]:
+            if isinstance(n, dict) and n.get("@id"):
+                refs = n.get("estleg:competentAuthority") or []
+                if isinstance(refs, dict):
+                    refs = [refs]
+                ctype = n.get("estleg:competenceType")
+                shipped[n["@id"]] = (
+                    [r["@id"] for r in refs if isinstance(r, dict) and r.get("@id")],
+                    ctype if isinstance(ctype, str) else None,
+                )
+
     # Clear unconditionally — the per-provision loop below
     # re-emits when detection succeeds. #700: except a (node, predicate)
-    # owned by a human override, which is never cleared.
+    # owned by a human override, which is never cleared. #718:
+    # mentionsInstitution is purely heuristic and always re-derived.
     overrides = state.overrides
     for n in doc["@graph"]:
         if isinstance(n, dict):
             clear_unowned(n, COMPETENCE_PREDICATES, overrides)
+            n.pop(MENTIONS_INSTITUTION, None)
 
     # Store the granting act as an IRI when available; CompetenceShape
     # constrains estleg:grantedBy to IRI values.
@@ -1452,17 +2458,33 @@ def process_law_file(
         )
         # #700: a reviewed competentAuthority replaces detection outright —
         # the heuristic neither writes the node nor records back-links for it.
-        if "estleg:competentAuthority" not in owned and _process_provision_node(
-            node=node,
-            state=state,
-            source_municipality=source_municipality,
-            source_issuer=source_issuer,
-            issuer_registry=issuer_registry,
-            canonical_suffixes=canonical_suffixes,
-            law_name=law_name,
-            forced_competence_type=forced_ctype,
-        ):
-            modified = True
+        if "estleg:competentAuthority" not in owned:
+            if _process_provision_node(
+                node=node,
+                state=state,
+                source_municipality=source_municipality,
+                source_issuer=source_issuer,
+                issuer_registry=issuer_registry,
+                canonical_suffixes=canonical_suffixes,
+                law_name=law_name,
+                forced_competence_type=forced_ctype,
+            ):
+                modified = True
+            if state.measurement is not None and node.get("@id") in shipped:
+                after_refs = node.get("estleg:competentAuthority") or []
+                after_competent = state.last_competent
+                state.measurement.record(
+                    provision_iri=node["@id"],
+                    before=shipped[node["@id"]],
+                    after_competent={
+                        r["@id"]: after_competent.get(r["@id"], "general")
+                        for r in after_refs
+                    },
+                    after_mentioned=[
+                        r["@id"] for r in node.get(MENTIONS_INSTITUTION) or []
+                    ],
+                    text=classifier_text(node),
+                )
         # Human overrides LAST (+ prov:wasAttributedTo, confidence 1.0).
         if finalize_node(node, overrides, COMPETENCE_PREDICATES):
             modified = True
@@ -1505,8 +2527,12 @@ def process_law_file(
         if is_kov:
             state.triples_kov += n_refs
 
+    # #718: re-derive the act-root union the clear above removed (#508 shape).
+    if rollup_act_authorities(doc, overrides)[0]:
+        modified = True
+
     # Save when EITHER fresh output OR pre-existing output existed.
-    if modified or had_existing_peep:
+    if (modified or had_existing_peep) and not state.dry_run:
         save_json(filepath, doc)
 
 
@@ -1569,12 +2595,21 @@ def write_institution_files(state: _PipelineState) -> set[str]:
         canonical_aliases[canonical].append(alias)
 
     written_slugs: set[str] = set()
+    identity = load_institution_identity()
+    wd_map = load_wikidata_institutions(include_see_also=True)
 
     for inst_iri, info in sorted(state.inst_data.items()):
         provisions = state.inst_provisions[inst_iri]
         suffix = info["iri_suffix"]
+        if suffix in _ALIAS_RECORDS or suffix in SAMEAS_ALIASES:
+            # Predecessor / abbreviation nodes are materialised by
+            # write_alias_and_predecessor_files (never competent: an alias
+            # mention binds its successor).
+            continue
         named = named_institution_by_suffix().get(suffix)
-        display_name = named[0] if named else canonicalize_institution_label(info["name"])
+        display_name = preferred_institution_label(
+            suffix, info["name"], wd_map, _existing_institution_label(suffix)
+        )
         if suffix == KESKKONNAAMET_SLUG:
             display_name = "Keskkonnaamet"
         inst_type = preferred_institution_type(
@@ -1589,13 +2624,10 @@ def write_institution_files(state: _PipelineState) -> set[str]:
             "estleg:institutionType": inst_type,
         }
 
-        extra_same_as = [
+        merge_same_as(inst_node, [
             f"estleg:Institution_{alias}" for alias in canonical_aliases.get(suffix, [])
-        ]
-        wd = wikidata_iri_for_slug(suffix)
-        if wd:
-            extra_same_as.append(wd)
-        merge_same_as(inst_node, extra_same_as)
+        ])
+        apply_institution_identity(inst_node, suffix, identity, wd_map)
 
         graph: list[dict] = [inst_node]
 
@@ -1609,9 +2641,10 @@ def write_institution_files(state: _PipelineState) -> set[str]:
         for ctype, entries in sorted(by_competence.items()):
             prov_iris = [prov_iri for prov_iri, _source_act_ref in entries]
             source_act_refs = [source_act_ref for _prov_iri, source_act_ref in entries]
-            applies_to = [{"@id": p} for p in prov_iris[:_APPLIES_TO_PROVISION_CAP]]
+            cap = _APPLIES_TO_PROVISION_CAP
+            applies_to = [{"@id": p} for p in (prov_iris if cap is None else prov_iris[:cap])]
             total_count = len(prov_iris)
-            if total_count > _APPLIES_TO_PROVISION_CAP:
+            if cap is not None and total_count > cap:
                 key = (inst_iri, ctype)
                 if key not in state.truncated_institution_competences:
                     state.truncated_institution_competences.add(key)
@@ -1672,8 +2705,115 @@ def _institution_root_node(doc: dict) -> dict | None:
     return None
 
 
+def preferred_institution_label(
+    slug: str,
+    surface_name: str,
+    wd_map: dict[str, dict] | None = None,
+    existing_label: str | None = None,
+) -> str:
+    """Stable display label for an Institution node (#718).
+
+    The surface form an extraction run meets first depends on corpus order
+    (a sentence-initial ``Keskkonnaminister`` vs ``keskkonnaminister``), and
+    mention-only institutions made that order visible. Precedence: curated
+    ``label`` in data/wikidata_institutions.json, the named-institution
+    catalogue, the label already on disk, then the de-inflected surface form.
+    """
+    wd_map = load_wikidata_institutions(include_see_also=True) if wd_map is None else wd_map
+    curated = (wd_map.get(slug) or {}).get("label")
+    if isinstance(curated, str) and curated:
+        return curated
+    named = named_institution_by_suffix().get(slug)
+    if named is not None:
+        return named[0]
+    if isinstance(existing_label, str) and existing_label:
+        return existing_label
+    return canonicalize_institution_label(surface_name)
+
+
+def _existing_institution_label(slug: str) -> str | None:
+    path = INSTIT_DIR / f"institution_{slug}.json"
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    root = _institution_root_node(doc)
+    label = root.get("rdfs:label") if root else None
+    return label if isinstance(label, str) else None
+
+
+def _date_literal(value: str) -> dict:
+    return {"@value": value, "@type": "xsd:date"}
+
+
+def apply_institution_identity(
+    node: dict,
+    slug: str,
+    identity: dict[str, dict] | None = None,
+    wd_map: dict[str, dict] | None = None,
+) -> None:
+    """Stamp #718 identity onto an Institution node (idempotent).
+
+    * ``owl:sameAs`` keeps its non-Wikidata targets and gets exactly the
+      slug's identity QID (none for concept-level / predecessor-name slugs);
+      ``rdfs:seeAlso`` carries the non-identity ``seeAlsoQid``.
+    * ``estleg:registrikood``, ``estleg:xteeMemberCode`` (plain strings),
+      ``estleg:validFrom`` / ``estleg:validTo`` (xsd:date) and
+      ``estleg:predecessorInstitution`` / ``estleg:successorInstitution``
+      (IRIs) mirror data/institution_identity.json; a field absent there is
+      removed from the node.
+    """
+    identity = load_institution_identity() if identity is None else identity
+    wd_map = load_wikidata_institutions(include_see_also=True) if wd_map is None else wd_map
+    keep = [iri for iri in _same_as_ids(node) if not iri.startswith(WIKIDATA_ENTITY_PREFIX)]
+    node.pop("owl:sameAs", None)
+    wd = wikidata_iri_for_slug(slug, wd_map)
+    merge_same_as(node, keep + ([wd] if wd else []))
+    see_also = wikidata_see_also_iri_for_slug(slug, wd_map)
+    existing = node.get("rdfs:seeAlso", [])
+    existing = existing if isinstance(existing, list) else [existing]
+    kept = [ref for ref in existing if not (
+        isinstance(ref, dict) and str(ref.get("@id", "")).startswith(WIKIDATA_ENTITY_PREFIX)
+    )]
+    if see_also:
+        kept.append({"@id": see_also})
+    if kept:
+        node["rdfs:seeAlso"] = kept[0] if len(kept) == 1 else kept
+    else:
+        node.pop("rdfs:seeAlso", None)
+    record = identity.get(slug, {})
+    for key in ("registrikood", "xteeMemberCode"):
+        value = record.get(key)
+        if isinstance(value, str) and value:
+            node[f"estleg:{key}"] = value
+        else:
+            node.pop(f"estleg:{key}", None)
+    for key in ("validFrom", "validTo"):
+        value = record.get(key)
+        if isinstance(value, str) and value:
+            node[f"estleg:{key}"] = _date_literal(value)
+        else:
+            node.pop(f"estleg:{key}", None)
+    for key in ("predecessorInstitution", "successorInstitution"):
+        slugs = [v for v in record.get(key) or [] if isinstance(v, str) and v]
+        if slugs:
+            node[f"estleg:{key}"] = [{"@id": f"estleg:Institution_{v}"} for v in slugs]
+        else:
+            node.pop(f"estleg:{key}", None)
+
+
 def write_alias_and_predecessor_files(instit_dir: Path) -> set[str]:
-    """Materialize abbreviation alias nodes and the Keskkonnainspektsioon predecessor."""
+    """Materialize abbreviation alias nodes and one predecessor node per
+    historical alias key (#457 Keskkonnainspektsioon, generalised by #718).
+
+    A predecessor node keeps ``dcterms:isReplacedBy`` (the #457 contract)
+    and carries the #718 identity fields (``estleg:successorInstitution``,
+    ``estleg:validTo``, Wikidata, registrikood where known). It receives
+    ``estleg:mentionsInstitution`` edges from provisions that name the
+    predecessor; competence still binds the canonical successor.
+    """
+    identity = load_institution_identity()
+    wd_map = load_wikidata_institutions(include_see_also=True)
     written: set[str] = set()
     for alias, canonical in SAMEAS_ALIASES.items():
         node = {
@@ -1683,7 +2823,7 @@ def write_alias_and_predecessor_files(instit_dir: Path) -> set[str]:
             "estleg:institutionType": "agency",
             "owl:sameAs": {"@id": f"estleg:Institution_{canonical}"},
         }
-        wd = wikidata_iri_for_slug(canonical)
+        wd = wikidata_iri_for_slug(canonical, wd_map)
         if wd:
             merge_same_as(node, [wd])
         save_json(
@@ -1692,44 +2832,57 @@ def write_alias_and_predecessor_files(instit_dir: Path) -> set[str]:
         )
         written.add(alias)
 
-    pred = {
-        "@id": f"estleg:Institution_{KESKKONNAINSPEKTSIOON_SLUG}",
-        "@type": ["owl:NamedIndividual", "estleg:Institution"],
-        "rdfs:label": "Keskkonnainspektsioon",
-        "estleg:institutionType": "agency",
-        "dcterms:isReplacedBy": {
-            "@id": f"estleg:Institution_{KESKKONNAAMET_SLUG}"
-        },
-        "rdfs:comment": (
-            "Historical Environmental Inspectorate; merged into Keskkonnaamet "
-            "on 2021-01-01 (#457)."
-        ),
-    }
-    wd = wikidata_iri_for_slug(KESKKONNAINSPEKTSIOON_SLUG)
-    if wd:
-        merge_same_as(pred, [wd])
-    save_json(
-        instit_dir / f"institution_{KESKKONNAINSPEKTSIOON_SLUG}.json",
-        {"@context": CONTEXT, "@graph": [pred]},
-    )
-    written.add(KESKKONNAINSPEKTSIOON_SLUG)
+    for slug, record in sorted(_ALIAS_RECORDS.items()):
+        successor = record["canonical"]
+        if slug == KESKKONNAINSPEKTSIOON_SLUG:
+            comment = (
+                "Historical Environmental Inspectorate; merged into Keskkonnaamet "
+                "on 2021-01-01 (#457)."
+            )
+        else:
+            comment = (
+                f"Historical predecessor of estleg:Institution_{successor} "
+                f"(#718). {record['evidence']}".strip()
+            )
+        pred = {
+            "@id": f"estleg:Institution_{slug}",
+            "@type": ["owl:NamedIndividual", "estleg:Institution"],
+            "rdfs:label": record["label"],
+            "estleg:institutionType": "agency",
+            "dcterms:isReplacedBy": {"@id": f"estleg:Institution_{successor}"},
+            "rdfs:comment": comment,
+        }
+        apply_institution_identity(pred, slug, identity, wd_map)
+        save_json(
+            instit_dir / f"institution_{slug}.json",
+            {"@context": CONTEXT, "@graph": [pred]},
+        )
+        written.add(slug)
     return written
 
 
 def cleanup_institution_overlay(instit_dir: Path = INSTIT_DIR) -> dict[str, int]:
     """Remint existing institution files without rescanning peeps (#457)."""
-    wd_map = load_wikidata_institutions()
+    wd_map = load_wikidata_institutions(include_see_also=True)
+    identity = load_institution_identity()
     named = named_institution_by_suffix()
     reminted = 0
     for path in sorted(instit_dir.glob("institution_*.json")):
         slug = path.stem.removeprefix("institution_")
-        if slug in SAMEAS_ALIASES or slug == KESKKONNAINSPEKTSIOON_SLUG:
+        if slug in SAMEAS_ALIASES or slug in _ALIAS_RECORDS:
             continue
         doc = json.loads(path.read_text(encoding="utf-8"))
         graph = doc.get("@graph")
         if not isinstance(graph, list):
             continue
         changed = False
+        root = _institution_root_node(doc)
+        root_label = root.get("rdfs:label") if root else None
+        if isinstance(root_label, str):
+            root_label = (
+                "Keskkonnaamet" if slug == KESKKONNAAMET_SLUG
+                else preferred_institution_label(slug, root_label, wd_map, root_label)
+            )
         for node in graph:
             if not isinstance(node, dict):
                 continue
@@ -1742,7 +2895,10 @@ def cleanup_institution_overlay(instit_dir: Path = INSTIT_DIR) -> dict[str, int]
             if "estleg:Competence" in types:
                 if " – " in label:
                     head, tail = label.rsplit(" – ", 1)
-                    new_label = _competence_label(head, tail)
+                    # #718: the head follows the institution's stable label.
+                    new_label = _competence_label(
+                        root_label if isinstance(root_label, str) else head, tail
+                    )
                     if new_label != label:
                         node["rdfs:label"] = new_label
                         changed = True
@@ -1750,9 +2906,7 @@ def cleanup_institution_overlay(instit_dir: Path = INSTIT_DIR) -> dict[str, int]
             if "estleg:Institution" not in types:
                 continue
             preferred = named.get(slug)
-            new_label = preferred[0] if preferred else canonicalize_institution_label(label)
-            if slug == KESKKONNAAMET_SLUG:
-                new_label = "Keskkonnaamet"
+            new_label = root_label if node is root and isinstance(root_label, str) else label
             if new_label != label:
                 node["rdfs:label"] = new_label
                 changed = True
@@ -1767,12 +2921,10 @@ def cleanup_institution_overlay(instit_dir: Path = INSTIT_DIR) -> dict[str, int]
                 for alias, canonical in SAMEAS_ALIASES.items()
                 if canonical == slug
             ]
-            wd = wikidata_iri_for_slug(slug, wd_map)
-            if wd:
-                extras.append(wd)
-            before = _same_as_ids(node)
+            before = json.dumps(node, sort_keys=True, ensure_ascii=False)
             merge_same_as(node, extras)
-            if _same_as_ids(node) != before:
+            apply_institution_identity(node, slug, identity, wd_map)
+            if json.dumps(node, sort_keys=True, ensure_ascii=False) != before:
                 changed = True
         if changed:
             save_json(path, doc)
@@ -1791,9 +2943,11 @@ def write_report(state: _PipelineState, total_law_files: int) -> Path:
         for _, ctype, _ in provisions:
             competence_counts[ctype] += 1
 
-    # Laws per institution
+    # Laws per institution (#718: mention-only institutions have no
+    # competence provisions and are listed separately below).
+    competent_provisions = {k: v for k, v in state.inst_provisions.items() if v}
     inst_law_counts: dict[str, int] = {}
-    for inst_iri, provisions in state.inst_provisions.items():
+    for inst_iri, provisions in competent_provisions.items():
         laws = {law for _, _, law in provisions}
         inst_law_counts[state.inst_data[inst_iri]["name"]] = len(laws)
 
@@ -1804,11 +2958,20 @@ def write_report(state: _PipelineState, total_law_files: int) -> Path:
             "total_provisions_with_text": state.total_provisions,
             "provisions_with_institutions": state.provisions_with_institutions,
             "unique_institutions": len(state.inst_data),
+            "institutions_with_competence": len(competent_provisions),
         },
         "by_competence_type": dict(sorted(competence_counts.items(), key=lambda x: -x[1])),
+        # #718: clause-level binding — mentions that are not competence.
+        "mentions_institution_edges": state.mention_edges,
+        "mention_only_institutions": sorted(
+            state.inst_data[iri]["name"]
+            for iri in state.inst_mentions
+            if iri in state.inst_data and not state.inst_provisions.get(iri)
+        ),
+        "binder_reasons": dict(state.binding_reasons.most_common()),
         "institutions_by_provision_count": {
             state.inst_data[k]["name"]: len(v)
-            for k, v in sorted(state.inst_provisions.items(), key=lambda x: -len(x[1]))
+            for k, v in sorted(competent_provisions.items(), key=lambda x: -len(x[1]))
         },
         "institutions_by_law_count": dict(
             sorted(inst_law_counts.items(), key=lambda x: -x[1])
@@ -1882,6 +3045,51 @@ def write_coverage(state: _PipelineState, start_time: float) -> tuple[Path, list
     return out_path, kov_files
 
 
+def run_dry_run(overrides: OverrideStore, report_path: Path | None) -> int:
+    """#718: measure the clause-level binder against the shipped corpus.
+
+    Reads every peep, runs the same per-file processing as a real pass with
+    ``state.dry_run`` set (no peep, institution, report or coverage file is
+    written) and prints / optionally saves a :class:`CompetenceMeasurement`.
+    """
+    start_time = time.perf_counter()
+    law_files = iter_peep_files()
+    issuer_registry = build_issuer_registry(KRR_DIR / "issuers_kov_peep.json")
+    canonical_suffixes = _load_canonical_institutions(INSTIT_DIR)
+    state = _PipelineState()
+    state.overrides = overrides
+    state.dry_run = True
+    state.measurement = CompetenceMeasurement()
+    for idx, filepath in enumerate(law_files, 1):
+        process_law_file(
+            filepath=filepath,
+            state=state,
+            issuer_registry=issuer_registry,
+            canonical_suffixes=canonical_suffixes,
+        )
+        if idx % 1000 == 0 or idx == len(law_files):
+            print(f"  [dry-run {idx}/{len(law_files)}]")
+    result = state.measurement.as_dict(state)
+    result["files"] = len(law_files)
+    result["institutions_with_competence"] = sum(1 for v in state.inst_provisions.values() if v)
+    result["mention_only_institutions"] = sorted(
+        iri for iri in state.inst_mentions if not state.inst_provisions.get(iri)
+    )
+    result["wall_time_seconds"] = round(time.perf_counter() - start_time, 1)
+    keys = ("bindings_before_total", "bindings_before_by_type", "bindings_after_total",
+            "bindings_after_by_type", "mentions_institution_edges_after",
+            "before_type_to_after_state", "wall_time_seconds")
+    print(json.dumps({k: result[k] for k in keys}, ensure_ascii=False, indent=2))
+    if report_path is not None:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(
+            json.dumps(result, ensure_ascii=False, indent=2, default=list) + "\n",
+            encoding="utf-8",
+        )
+        print(f"  dry-run report: {report_path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -1896,6 +3104,24 @@ def main(argv: list[str] | None = None) -> int:
         help="human override store (#700; default data/heuristic_overrides.jsonl)",
     )
     parser.add_argument(
+        "--rollup-only",
+        action="store_true",
+        help="#718: stamp act roots with the union of the provision-level "
+        "competentAuthority already on disk (no extraction, peeps only)",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="#718: run the clause-level binder over the corpus in memory and "
+        "report before/after binding counts; writes nothing under krr_outputs/",
+    )
+    parser.add_argument(
+        "--dry-run-report",
+        type=Path,
+        default=None,
+        help="with --dry-run: write the before/after measurement JSON here",
+    )
+    parser.add_argument(
         "--check-overrides",
         action="store_true",
         help="dry run: report how many competence overrides would apply and "
@@ -1904,6 +3130,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args([] if argv is None else argv)
     if args.cleanup_only:
         print(cleanup_institution_overlay())
+        return 0
+    if args.rollup_only:
+        print(json.dumps(run_rollup_only(), indent=2))
         return 0
     try:
         overrides = load_overrides(args.overrides)
@@ -1914,6 +3143,9 @@ def main(argv: list[str] | None = None) -> int:
         report = check_overrides(overrides, iter_peep_files(), COMPETENCE_PREDICATES)
         print_check_report(report, "extract_institutional_competence")
         return 0
+
+    if args.dry_run:
+        return run_dry_run(overrides, args.dry_run_report)
 
     print("=" * 70)
     print("Estonian Legal Ontology - Institutional Competence Extraction")

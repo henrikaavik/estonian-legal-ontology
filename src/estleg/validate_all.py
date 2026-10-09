@@ -883,9 +883,43 @@ def collect_internal_refs(filepath: Path, doc: dict) -> list[tuple[str, str, str
     return refs
 
 
-def validate_internal_references(all_ids: dict[str, list[str]], refs: list[tuple[str, str, str, str]]):
+def external_reference_ids(krr_dir: Path = KRR_DIR) -> dict[str, list[str]]:
+    """Return ``@id`` -> [file name] for node ids published outside ``krr_dir``.
+
+    The files come from ``estleg_common.iter_combined_registry_files`` (today
+    ``data/ehak/historical_municipalities.jsonld``, issue #130/#712: the 150
+    ``estleg:HistoricalMunicipality`` individuals that KOV issuers and acts
+    point at through ``estleg:succeededBy`` / ``estleg:historicalMunicipality``
+    / ``estleg:enactedByHistoricalMunicipality``).  The combined build and the
+    Seadusloome sync gate load the same files, so the reference-integrity
+    check must accept their ids or every such edge reads as dangling.  A
+    missing file simply seeds nothing (the sync gate warns about it).
+    """
+    seeded: dict[str, list[str]] = defaultdict(list)
+    for path in estleg_common.iter_combined_registry_files(krr_dir):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            continue
+        for node in doc.get("@graph", []):
+            nid = node.get("@id")
+            if isinstance(nid, str) and nid:
+                seeded[nid].append(path.name)
+    return seeded
+
+
+def validate_internal_references(
+    all_ids: dict[str, list[str]],
+    refs: list[tuple[str, str, str, str]],
+    extra_ids: dict[str, list[str]] | None = None,
+):
     print("\n--- Internal Reference Integrity ---")
     ids = set(all_ids)
+    if extra_ids:
+        ids |= set(extra_ids)
+        sources = sorted({name for names in extra_ids.values() for name in names})
+        print(f"  seeded {len(extra_ids)} external ids from {', '.join(sources)}")
     missing = [
         (file_name, node_id, prop, ref_id)
         for file_name, node_id, prop, ref_id in refs
@@ -1663,7 +1697,7 @@ def validate_metadata_repro_pins(doc: dict) -> None:
     from estleg.write_build_manifest import (
         DATASET_CONTENT_SHA,
         is_mutable_main_url,
-        is_release_asset_url,
+        is_tag_pinned_url,
     )
 
     urls: list[str] = []
@@ -1695,18 +1729,18 @@ def validate_metadata_repro_pins(doc: dict) -> None:
     unpinned = [
         url
         for url in github_urls
-        if DATASET_CONTENT_SHA not in url and not is_release_asset_url(url)
+        if DATASET_CONTENT_SHA not in url and not is_tag_pinned_url(url)
     ]
     if unpinned:
         error(
             "metadata.jsonld: catalog GitHub URL is not pinned to "
-            f"DATASET_CONTENT_SHA or /releases/download/v{estleg_common.ONTOLOGY_VERSION}/ "
+            f"DATASET_CONTENT_SHA or the v{estleg_common.ONTOLOGY_VERSION} tag "
             f"({unpinned[0]})"
         )
     if github_urls:
         print(
             f"  Catalog GitHub URLs pinned to {DATASET_CONTENT_SHA[:12]} "
-            "or a tagged release asset"
+            f"or the v{estleg_common.ONTOLOGY_VERSION} tag"
         )
 
     manifest_path = REPO_ROOT / "krr_outputs" / "dataset_build_manifest.json"
@@ -2356,7 +2390,15 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
     drift_samples: dict[str, list[str]] = {f: [] for f in PROVISION_PARITY_FIELDS}
     drift_count = 0
     for nid in sorted(source_ids & combined_ids):
-        drift_fields = _parity_field_drift(target.source_nodes[nid], combined_nodes[nid])
+        source_node = target.source_nodes[nid]
+        if nid in stub_ids and not source_node.get("@type"):
+            # #699 / #488: the only source for this id is an untyped overlay
+            # join assertion (e.g. the EuroVoc overlay's dcterms:subject on a
+            # regulation root outside the law corpus); the builder folded the
+            # typed closure stub into it, so the SHACL-sensitive fields come
+            # from the sibling corpus, not from a source this check can see.
+            continue
+        drift_fields = _parity_field_drift(source_node, combined_nodes[nid])
         if not drift_fields:
             continue
         drift_count += 1
@@ -2469,6 +2511,13 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
             )
             extra_exempt_id_prefixes.extend(prefixes)
             continue
+        _ingest_graph_into(path, source_nodes)
+        source_files.append(path)
+    # #712: minted registry nodes published outside krr_outputs/ (today the
+    # 150 ``estleg:HistoricalMunicipality`` individuals in data/ehak/) are
+    # folded into combined by ``fix_all_issues.generate_combined_jsonld``;
+    # without them here every one reads as a stale extra.
+    for path in estleg_common.iter_combined_registry_files(krr_dir):
         _ingest_graph_into(path, source_nodes)
         source_files.append(path)
     target = CombinedParityTarget(
@@ -4056,7 +4105,9 @@ def main(argv: list[str] | None = None):
                     self_replaced_ids[nid].append(file_key)
 
     validate_id_uniqueness(all_ids, join_ids=join_ids, self_replaced_ids=self_replaced_ids)
-    validate_internal_references(all_ids, internal_refs)
+    validate_internal_references(
+        all_ids, internal_refs, extra_ids=external_reference_ids(krr_dir)
+    )
     validate_vocabulary_coverage(files)
     validate_canonical_tbox(krr_dir)
     validate_temporal_property_targets(files)

@@ -855,6 +855,7 @@ def main():
     stamp_combined_dataset_head(
         combined_doc,
         label="Estonian Legal Ontology — CURIA combined",
+        contains_personal_data=True,  # #720: named parties in EU decisions
     )
     combined_path = CURIA_DIR / "curia_combined.jsonld"
     save_json(combined_path, combined_doc)

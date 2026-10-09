@@ -35,6 +35,15 @@ A law name that does not resolve to a corpus node is **skipped** (never a dangli
 ``annotates``) and recorded in the coverage report's skip reasons. IRI scheme:
 ``estleg:Annotation_OK_<opinion-slug>``.
 
+Attribution contract (#719): a cited ``§`` is paired with the act mentioned nearest before it
+in the same sentence (:func:`pair_cited_sections`), never with every act the opinion names;
+``estleg:annotationText`` carries only verbatim source text (title + PDF body excerpt) with
+``estleg:isExcerpt`` and, when the body is known, ``estleg:sourceTextLength``; project prose
+(the seed paraphrase, the topic-tag template) goes to ``estleg:editorialNote`` with
+``estleg:editorialSource`` = this project; ``annotationSource "Õiguskantsler"`` is emitted only
+with an ``annotationSourceUrl``. ``--repair-attribution`` applies this offline to the
+committed sidecar.
+
 Output placement (mirrors the sanctions / amendments / provision_versions sidecars):
   * the ``estleg:Annotation`` nodes go to ``krr_outputs/annotations/oiguskantsler_seisukohad.jsonld``
     (a ``@graph`` + small ``@context``); ``shacl_validate_all.py``'s ``sidecars`` bucket
@@ -59,6 +68,7 @@ Usage::
 from __future__ import annotations
 
 import argparse
+import bisect
 import hashlib
 import html
 import json
@@ -110,6 +120,14 @@ ANNOTATION_SOURCE = "Õiguskantsler"
 ANNOTATION_ID_PREFIX = "estleg:Annotation_OK_"
 ANNOTATION_LABEL_PREFIX = "Õiguskantsleri seisukoht: "
 ANNOTATION_TYPE = "interpretation"  # default when the title does not classify
+# Who authored an ``estleg:editorialNote`` (#719): this project, never the Õiguskantsler.
+EDITORIAL_SOURCE = "Estonian Legal Ontology project (estleg)"
+# The live fallback body for a scraped opinion with no usable PDF text: project-made, so it
+# is an editorial note, never ``annotationText`` (#719).
+TOPIC_TEMPLATE_PREFIX = "Õiguskantsleri seisukoht. Teemad: "
+# ``annotationText`` display cap and the sentence-boundary search window used to trim to it.
+ANNOTATION_TEXT_MAX_CHARS = 2000
+_TRUNCATE_MIN_RATIO = 0.7
 _SECTION_CITE_RE = re.compile(
     r"(?:§+\s*|paragrahvi?\s+)(\d+)(?:([¹²³⁴⁵⁶⁷⁸⁹⁰]+)|[_^](\d+))?",
     re.IGNORECASE,
@@ -233,8 +251,13 @@ class Opinion:
     url: str
     date_iso: str | None     # ISO date (YYYY-MM-DD) or None
     law_names: tuple[str, ...]  # law titles the opinion concerns (as written)
-    summary: str             # substantive summary / paraphrase of the opinion's position
+    # VERBATIM source body (the scraped PDF text layer) — the only prose ever published as
+    # ``estleg:annotationText`` after the title. Empty when no verbatim body is available.
+    summary: str
     tags: tuple[str, ...] = ()  # topic / administrative-area tags (scrape mode only)
+    # Project-authored paraphrase (the curated seed's prose). Never Õiguskantsler text: it is
+    # published as ``estleg:editorialNote`` with ``estleg:editorialSource`` = this project (#719).
+    editorial_note: str = ""
 
 
 @dataclass
@@ -256,6 +279,12 @@ class _LawIndex:
     # One compiled, token-bounded, longest-first alternation over every registered name
     # variant (built lazily on the first title/body scan, then reused across every opinion).
     _body_re: re.Pattern[str] | None = field(default=None, repr=False)
+    # §-pairing mention scan (#719): index names + :data:`_MENTION_ALIASES`, and the
+    # abbreviation -> IRI map for "HKMS § 112"-style citations. Built lazily.
+    _mention_names: dict[str, str] | None = field(default=None, repr=False)
+    _mention_by_first: dict[str, list[str]] = field(default_factory=dict, repr=False)
+    _mention_misc_re: re.Pattern[str] | None = field(default=None, repr=False)
+    _abbrev_iris: dict[str, str] | None = field(default=None, repr=False)
 
     def resolve(self, name: str) -> str | None:
         return self.by_name.get(_norm_name(name)) or self.by_slug.get(name.strip())
@@ -304,6 +333,84 @@ class _LawIndex:
                 seen.add(iri)
                 found.append(iri)
         return found
+
+    def _ensure_mention_names(self) -> dict[str, str]:
+        """Build (once) the mention lookup: every index name plus resolvable aliases.
+
+        Names are bucketed by their leading word so a scan only tests the few names that can
+        start at each word (a 14k-way regex alternation is ~20 ms per text). Names that open
+        with a non-word character (quoted treaty titles) go into one small fallback regex.
+        """
+        if self._mention_names is None:
+            names = dict(self.by_name)
+            for alias, title in _MENTION_ALIASES.items():
+                iri = self.resolve(title)
+                if not iri:
+                    continue
+                norm = _norm_name(alias)
+                for form in (norm, *_genitive_variants(norm)):
+                    names.setdefault(form, iri)
+            by_first: dict[str, list[str]] = {}
+            misc: list[str] = []
+            for name in names:
+                lead = _LEADING_WORD_RE.match(name)
+                if lead:
+                    by_first.setdefault(lead.group(0), []).append(name)
+                else:
+                    misc.append(name)
+            for bucket in by_first.values():
+                bucket.sort(key=len, reverse=True)
+            misc.sort(key=len, reverse=True)
+            self._mention_by_first = by_first
+            self._mention_misc_re = (
+                re.compile(rf"(?:{'|'.join(re.escape(n) for n in misc)})(?!{_BODY_WORD})") if misc else None
+            )
+            self._mention_names = names
+        return self._mention_names
+
+    def scan_mentions(self, hay: str) -> list[tuple[int, int, str]]:
+        """Leftmost-longest, token-bounded name matches in normalised ``hay``: ``(start, end, iri)``.
+
+        Same semantics as the :meth:`_ensure_body_re` alternation (a name matches only as a
+        standalone token; at each position the longest name wins; matches never overlap), plus
+        the :data:`_MENTION_ALIASES` forms.
+        """
+        names = self._ensure_mention_names()
+        found: list[tuple[int, int, str]] = []
+        for word in _WORD_START_RE.finditer(hay):
+            pos = word.start()
+            lead = word.group(0)
+            bucket = self._mention_by_first.get(lead)
+            if bucket is None:  # "pohiseaduse1": a footnote number glued to a one-word name
+                bucket = self._mention_by_first.get(_GLUED_FOOTNOTE_RE.sub("", lead), ())
+            for name in bucket:
+                end = pos + len(name)
+                if hay.startswith(name, pos) and (
+                    end == len(hay) or not _BODY_WORD_RE.match(hay, end) or _FOOTNOTE_TAIL_RE.match(hay, end)
+                ):
+                    found.append((pos, end, names[name]))
+                    break
+        if self._mention_misc_re is not None:
+            for match in self._mention_misc_re.finditer(hay):
+                found.append((match.start(), match.end(), names[match.group(0)]))
+        found.sort(key=lambda item: (item[0], -(item[1] - item[0])))
+        chosen: list[tuple[int, int, str]] = []
+        last_end = -1
+        for start, end, iri in found:
+            if start >= last_end:
+                chosen.append((start, end, iri))
+                last_end = end
+        return chosen
+
+    def abbreviation_iri(self, token: str) -> str | None:
+        """Resolve an official law abbreviation ("HKMS", "KarS") to its act IRI, if indexed."""
+        if self._abbrev_iris is None:
+            self._abbrev_iris = {}
+            for abbr, full in KNOWN_ABBREVIATIONS.items():
+                iri = self.resolve(full)
+                if iri:
+                    self._abbrev_iris.setdefault(abbr, iri)
+        return self._abbrev_iris.get(token)
 
     def find_in_title(self, title: str) -> list[str]:
         """Return the act-IRIs whose (genitive-aware) name occurs in ``title``.
@@ -355,6 +462,9 @@ _DIACRITIC_MAP = {"õ": "o", "ä": "a", "ö": "o", "ü": "u", "š": "s", "ž": "
 # the haystack before matching, so in practice only the ASCII subset can ever appear at a
 # boundary; the Estonian letters are kept for defensiveness against any un-normalised input.
 _BODY_WORD = r"[0-9A-Za-zÀ-ÿõäöüšžÕÄÖÜŠŽ]"
+_BODY_WORD_RE = re.compile(_BODY_WORD)
+_LEADING_WORD_RE = re.compile(rf"{_BODY_WORD}+")
+_WORD_START_RE = re.compile(rf"(?<!{_BODY_WORD}){_BODY_WORD}+")
 
 
 def _norm_name(value: str) -> str:
@@ -604,7 +714,11 @@ def load_seed_opinions(seed_path: Path = SEED_PATH) -> list[Opinion]:
                 url=(raw.get("url") or "").strip(),
                 date_iso=date_iso,
                 law_names=laws,
-                summary=(raw.get("summary") or "").strip(),
+                # The seed carries no verbatim opinion text: its prose is a project-authored
+                # paraphrase and is quarantined into ``estleg:editorialNote`` (#719). The legacy
+                # ``summary`` key is read as the same paraphrase.
+                summary="",
+                editorial_note=(raw.get("editorial_note") or raw.get("summary") or "").strip(),
             )
         )
     return opinions
@@ -1163,7 +1277,7 @@ def _truncate_to_sentence(text: str, max_chars: int) -> str:
     if len(text) <= max_chars:
         return text.rstrip()
     head = text[:max_chars]
-    last_boundary = _late_sentence_boundary(head, int(max_chars * 0.7))
+    last_boundary = _late_sentence_boundary(head, int(max_chars * _TRUNCATE_MIN_RATIO))
     if last_boundary is not None:
         return head[: last_boundary + 1].rstrip()
     last_space = head.rfind(" ")
@@ -1186,16 +1300,21 @@ def classify_annotation_type(title: str, text: str = "") -> str:
     return "interpretation"
 
 
+def _section_key(match: re.Match[str]) -> str:
+    """``§ 381¹`` / ``§ 381^1`` -> ``381_1``; ``§ 12`` -> ``12``."""
+    base = match.group(1)
+    extra = match.group(3) or ""
+    if match.group(2):
+        extra = match.group(2).translate(_SUPERSCRIPT_TO_DIGIT)
+    return f"{base}_{extra}" if extra else base
+
+
 def extract_section_numbers(text: str) -> list[str]:
     """Return cited section numbers (``12``, ``381_1``) in first-seen order."""
     found: list[str] = []
     seen: set[str] = set()
     for match in _SECTION_CITE_RE.finditer(text or ""):
-        base = match.group(1)
-        extra = match.group(3) or ""
-        if match.group(2):
-            extra = match.group(2).translate(_SUPERSCRIPT_TO_DIGIT)
-        key = f"{base}_{extra}" if extra else base
+        key = _section_key(match)
         if key not in seen:
             seen.add(key)
             found.append(key)
@@ -1208,30 +1327,217 @@ def act_iri_prefix(iri: str) -> str:
     return re.sub(r"_Map(?:_\d{4})?$", "", iri)
 
 
+# ---------------------------------------------------------------------------
+# § -> act pairing by proximity (#719)
+# ---------------------------------------------------------------------------
+#
+# A cited § belongs to the NEAREST PRECEDING act mention in the same sentence — never to
+# every act the document names (the old cartesian product put "HKMS § 112" onto PS/VangS/RLS
+# too). Mentions come from four sources, in priority order when spans overlap:
+#   1. anaphora ("sama seaduse", "nimetatud seadustiku") -> the most recent act mention;
+#   2. a law name from the corpus index (genitive/case-inflected) or a :data:`_MENTION_ALIASES`
+#      alias ("põhiseaduse" -> the constitution);
+#   3. an official abbreviation directly before a § ("HKMS § 112", "KarS-i § 5");
+#   4. any other "<word>seaduse|määruse|… §", a numbered instrument ("määruse nr 9 § 12") or a
+#      quoted instrument title ("„Vangla sisekorraeeskiri“ § 57", which outranks 2.) — an act we
+#      cannot resolve. It still CLAIMS the § (as "unknown"), so the § is never handed to an
+#      earlier, different act.
+# A § with no preceding mention in its sentence is dropped; the act then keeps its act-level
+# target (the caller's fallback).
+
+# Bare names that the corpus title index does not carry but opinions use for an indexed act.
+# Used ONLY for § pairing — they never add an act to an annotation's target set.
+_MENTION_ALIASES: dict[str, str] = {"põhiseadus": "Eesti Vabariigi põhiseadus"}
+_ANAPHOR_RE = re.compile(
+    r"(?<!\w)(?:sama|nimetatud|eelnimetatud|viidatud|kõnealuse|mainitud|selle|käesoleva)\s+"
+    r"(?:seaduse|seadustiku)(?!\w)",
+    re.IGNORECASE,
+)
+# "X § 5", "X (§ 5 …)", "X (XS) § 5", "X (edaspidi määrus) § 5", "seaduse1 § 5" (a glued
+# footnote marker): a § right after the mention, across at most a footnote number, one short
+# parenthetical and one opening parenthesis.
+_SECTION_LOOKAHEAD = r"(?=\d{0,2}\s*(?:\([^()\n]{0,60}\)\s*)?\(?\s*(?:§|paragrahv))"
+# A glued footnote marker after a law name ("põhiseaduse1 § 139") still ends the name token.
+_GLUED_FOOTNOTE_RE = re.compile(r"(?<=[a-zõäöüšž])\d{1,2}$")
+_FOOTNOTE_TAIL_RE = re.compile(r"\d{1,2}(?![0-9A-Za-zÀ-ÿõäöüšžÕÄÖÜŠŽ])")
+_ABBREV_CITE_RE = re.compile(
+    r"(?<!\w)([A-ZÕÄÖÜŠŽ][A-Za-zÕÄÖÜŠŽõäöüšž]{1,9})(?:-[a-zõäöüšž]{1,4})?" + _SECTION_LOOKAHEAD
+)
+_UNKNOWN_ACT_CITE_RE = re.compile(
+    r"(?<!\w)\w*(?:seaduse|seadustiku|määruse|koodeksi|konventsiooni|lepingu|eeskirja|direktiivi|redaktsiooni)"
+    + _SECTION_LOOKAHEAD,
+    re.IGNORECASE,
+)
+# Another instrument cited by quoted title or by number right before its §s — "… Linnavolikogu
+# 20.02.2014 määruse nr 6 „Koduteenuste osutamise kord“ § 3", "määruse nr 9 § 12". Their §s
+# are not the previously named law's. A quoted title outranks law names inside it.
+_QUOTED_INSTRUMENT_CITE_RE = re.compile(r"[„\"“«][^„“”\"»ˮ\n]{1,500}[“”\"»ˮ]" + _SECTION_LOOKAHEAD)
+_NUMBERED_INSTRUMENT_CITE_RE = re.compile(
+    r"(?<!\w)\w*(?:määrus|otsus|korraldus|käskkiri)\w*\s+nr\.?\s*[0-9][\w\-/.]*" + _SECTION_LOOKAHEAD,
+    re.IGNORECASE,
+)
+# Sentence end: . ! ? followed by whitespace and an uppercase letter / § / opening quote, or a
+# paragraph break (the title/body separator). Abbreviation periods ("lg 2. …") are filtered
+# by :func:`_is_false_estonian_abbreviation_boundary`.
+_CLAUSE_BOUNDARY_RE = re.compile(r"[.!?](?=\s+[A-ZÕÄÖÜŠŽ§«„\"(])|\n\s*\n")
+_ANAPHOR = "<anaphor>"
+
+
+@dataclass(frozen=True)
+class ActMention:
+    """One act mention in a text: char span + resolved act IRI (``None`` = unresolvable act)."""
+
+    start: int
+    end: int
+    iri: str | None
+    kind: str  # "anaphor" | "name" | "abbrev" | "unknown"
+
+
+def _positional_norm(text: str) -> tuple[str, list[int]]:
+    """:func:`_norm_name`-equivalent folding that keeps a map back to ``text`` offsets.
+
+    Lowercases, transliterates Estonian diacritics and collapses whitespace runs to one space,
+    but does NOT drop parentheticals (a § inside "(koostoimes sama seaduse § 95 …)" must stay
+    visible). ``index[i]`` is the offset in ``text`` of normalised character ``i``.
+    """
+    out: list[str] = []
+    index: list[int] = []
+    prev_space = True
+    for pos, ch in enumerate(text):
+        if ch.isspace():
+            if prev_space:
+                continue
+            out.append(" ")
+            index.append(pos)
+            prev_space = True
+            continue
+        low = ch.lower()
+        if len(low) != 1:
+            low = ch
+        out.append(_DIACRITIC_MAP.get(low, low))
+        index.append(pos)
+        prev_space = False
+    return "".join(out), index
+
+
+def find_act_mentions(text: str, law_index: _LawIndex) -> list[ActMention]:
+    """Return the non-overlapping act mentions in ``text``, ordered by position."""
+    if not text:
+        return []
+    candidates: list[tuple[float, ActMention]] = []
+    for match in _ANAPHOR_RE.finditer(text):
+        candidates.append((0, ActMention(match.start(), match.end(), _ANAPHOR, "anaphor")))
+    for match in _QUOTED_INSTRUMENT_CITE_RE.finditer(text):
+        candidates.append((0.5, ActMention(match.start(), match.end(), None, "unknown")))
+    hay, index = _positional_norm(text)
+    for hay_start, hay_end, iri in law_index.scan_mentions(hay):
+        candidates.append((1, ActMention(index[hay_start], index[hay_end - 1] + 1, iri, "name")))
+    for match in _ABBREV_CITE_RE.finditer(text):
+        token = match.group(1)
+        if sum(1 for ch in token if ch.isupper()) < 2:
+            continue  # "Seaduse § 5" is a sentence-initial word, not an abbreviation
+        candidates.append((2, ActMention(match.start(), match.end(), law_index.abbreviation_iri(token), "abbrev")))
+    for regex in (_NUMBERED_INSTRUMENT_CITE_RE, _UNKNOWN_ACT_CITE_RE):
+        for match in regex.finditer(text):
+            candidates.append((3, ActMention(match.start(), match.end(), None, "unknown")))
+
+    accepted: list[ActMention] = []
+    for _priority, mention in sorted(candidates, key=lambda item: (item[0], item[1].start)):
+        if any(mention.start < other.end and other.start < mention.end for other in accepted):
+            continue
+        accepted.append(mention)
+    accepted.sort(key=lambda m: m.start)
+
+    resolved: list[ActMention] = []
+    last_iri: str | None = None
+    for mention in accepted:
+        if mention.iri == _ANAPHOR:
+            mention = replace(mention, iri=last_iri)
+        else:
+            last_iri = mention.iri
+        resolved.append(mention)
+    return resolved
+
+
+def _clause_boundaries(text: str) -> list[int]:
+    bounds: list[int] = []
+    for match in _CLAUSE_BOUNDARY_RE.finditer(text):
+        pos = match.start()
+        if text[pos] == "." and _is_false_estonian_abbreviation_boundary(text, pos):
+            continue
+        bounds.append(pos)
+    return bounds
+
+
+def pair_cited_sections(text: str, law_index: _LawIndex) -> list[tuple[str, str]]:
+    """Pair every cited § with its own act: ``[(act_iri, section_key), …]`` (first-seen order).
+
+    A § belongs to the nearest preceding act mention in the same sentence
+    (:func:`find_act_mentions`). "HKMS § 112, § 15 ja § 24 ning põhiseaduse § 15" ->
+    HKMS §§ 112, 15, 24 and PS § 15 — never PS § 112. A § with no preceding mention in its
+    sentence, or whose nearest mention is an act we cannot resolve, is not paired.
+    """
+    if not text:
+        return []
+    mentions = find_act_mentions(text, law_index)
+    if not mentions:
+        return []
+    bounds = _clause_boundaries(text)
+    starts = [m.start for m in mentions]
+    pairs: list[tuple[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for match in _SECTION_CITE_RE.finditer(text):
+        pos = match.start()
+        i = bisect.bisect_left(starts, pos) - 1
+        if i < 0:
+            continue
+        mention = mentions[i]
+        if mention.end > pos or mention.iri is None:
+            continue
+        if bisect.bisect_right(bounds, mention.start) != bisect.bisect_right(bounds, pos):
+            continue  # a sentence boundary separates the § from its nearest mention
+        pair = (mention.iri, _section_key(match))
+        if pair not in seen:
+            seen.add(pair)
+            pairs.append(pair)
+    return pairs
+
+
 def provision_iris_for_acts(
-    act_iris: list[str], text: str, provision_ids: set[str] | None
+    act_iris: list[str],
+    text: str,
+    provision_ids: set[str] | None,
+    law_index: _LawIndex | None = None,
 ) -> list[str]:
-    """Prefer cited ``_Par_`` nodes when they exist in ``provision_ids``."""
-    if not provision_ids:
-        return list(act_iris)
-    sections = extract_section_numbers(text)
-    if not sections:
-        return list(act_iris)
+    """Map each act to the ``_Par_`` nodes of the §§ cited FOR IT; else keep the act (#719).
+
+    §s are paired to acts by :func:`pair_cited_sections` (proximity), never crossed onto every
+    act. An act with no paired § that exists in ``provision_ids`` keeps its act-level target.
+    Without a ``law_index`` (nothing to pair with) or ``provision_ids`` the acts are returned
+    unchanged — the safe default is act-level, never a cartesian product.
+    """
     out: list[str] = []
     seen: set[str] = set()
+
+    def add(iri: str) -> None:
+        if iri not in seen:
+            seen.add(iri)
+            out.append(iri)
+
+    pairs = pair_cited_sections(text, law_index) if (provision_ids and law_index is not None) else []
     for act in act_iris:
         prefix = act_iri_prefix(act)
         matched = False
-        if prefix:
-            for section in sections:
+        if prefix and provision_ids:
+            for iri, section in pairs:
+                if act_iri_prefix(iri) != prefix:
+                    continue
                 candidate = f"{prefix}_Par_{section}"
-                if candidate in provision_ids and candidate not in seen:
-                    out.append(candidate)
-                    seen.add(candidate)
+                if candidate in provision_ids:
+                    add(candidate)
                     matched = True
-        if not matched and act not in seen:
-            out.append(act)
-            seen.add(act)
+        if not matched:
+            add(act)
     return out
 
 
@@ -1255,20 +1561,49 @@ def annotates_iris(node: dict) -> list[str]:
     return []
 
 
-def _annotation_text(opinion: Opinion) -> str:
-    """Build a substantive ``annotationText`` for the opinion.
-
-    Title + a paragraph of summary when we have one (seed source or scraped PDF text layer);
-    otherwise, scraped topic tags become a short note. Never a 50 KB dump — at most
-    ~2 000 chars.
-    """
+def _full_annotation_text(opinion: Opinion) -> str:
+    """Title + the VERBATIM source body (untruncated). Paraphrase never enters here (#719)."""
     parts = [opinion.title.strip()]
     if opinion.summary.strip():
         parts.append(opinion.summary.strip())
-    elif opinion.tags:
-        parts.append("Õiguskantsleri seisukoht. Teemad: " + ", ".join(opinion.tags) + ".")
-    text = "\n\n".join(p for p in parts if p)
-    return _truncate_to_sentence(text, 2000)
+    return "\n\n".join(p for p in parts if p)
+
+
+def _annotation_text(opinion: Opinion) -> str:
+    """Build ``annotationText``: the opinion title plus its verbatim body, at most ~2 000 chars.
+
+    Only verbatim source text — the title and, when scraped, the PDF text layer. The seed's
+    paraphrase and the topic-tag template are editorial and go to ``estleg:editorialNote``
+    instead (:func:`_editorial_note`, #719).
+    """
+    return _truncate_to_sentence(_full_annotation_text(opinion), ANNOTATION_TEXT_MAX_CHARS)
+
+
+def _editorial_note(opinion: Opinion) -> str:
+    """Project-authored prose about the opinion: seed paraphrase, else the topic-tag template."""
+    if opinion.editorial_note.strip():
+        return opinion.editorial_note.strip()
+    if not opinion.summary.strip() and opinion.tags:
+        return TOPIC_TEMPLATE_PREFIX + ", ".join(opinion.tags) + "."
+    return ""
+
+
+def _attribution_fields(opinion: Opinion, text: str) -> dict:
+    """``isExcerpt`` / ``sourceTextLength`` / ``editorialNote`` + ``editorialSource`` (#719).
+
+    ``isExcerpt`` is true unless ``annotationText`` carries the complete source body (a
+    title-only text is a sample). ``sourceTextLength`` is the character length of the full
+    extracted body and is emitted only when that body is known — never invented.
+    """
+    body = opinion.summary.strip()
+    fields: dict = {"estleg:isExcerpt": (not body) or text != _full_annotation_text(opinion).rstrip()}
+    if body:
+        fields["estleg:sourceTextLength"] = len(body)
+    note = _editorial_note(opinion)
+    if note:
+        fields["estleg:editorialNote"] = note
+        fields["estleg:editorialSource"] = EDITORIAL_SOURCE
+    return fields
 
 
 def build_annotations_for_opinion(
@@ -1319,17 +1654,22 @@ def build_annotations_for_opinion(
         return result
 
     text = _annotation_text(opinion)
-    targets = provision_iris_for_acts(iris, f"{opinion.title}\n{text}", provision_ids)
+    # Pair §§ over the PUBLISHED text (title + body excerpt), so every § target is checkable
+    # against annotationText and the offline --repair-attribution re-derives the same set.
+    targets = provision_iris_for_acts(iris, text, provision_ids, law_index)
     node = {
         "@id": annotation_iri(opinion.opinion_id),
         "@type": ["owl:NamedIndividual", "estleg:Annotation"],
         "estleg:annotates": _annotates_value(targets),
         "estleg:annotationText": text,
+        **_attribution_fields(opinion, text),
         "estleg:annotationType": classify_annotation_type(opinion.title, text),
-        "estleg:annotationSource": ANNOTATION_SOURCE,
         "rdfs:label": {"@value": f"{ANNOTATION_LABEL_PREFIX}{opinion.title}", "@language": "et"},
     }
     if opinion.url:
+        # Attribution to the Õiguskantsler needs a resolvable source document (#719): without
+        # a URL the node carries no annotationSource at all.
+        node["estleg:annotationSource"] = ANNOTATION_SOURCE
         node["estleg:annotationSourceUrl"] = _xsd_anyuri(opinion.url)
     if opinion.date_iso:
         node["estleg:annotationDate"] = _xsd_date(opinion.date_iso)
@@ -1397,8 +1737,14 @@ def remint_annotation_sidecar(
     in_path: Path = SIDECAR_PATH,
     out_path: Path | None = None,
     provision_ids: set[str] | None = None,
+    law_index: _LawIndex | None = None,
 ) -> dict[str, int]:
-    """Collapse one-document-per-N-acts nodes and drop duplicated bodies (#459)."""
+    """Collapse one-document-per-N-acts nodes and drop duplicated bodies (#459).
+
+    The merged targets are re-derived with the same §-proximity rule the generator uses
+    (:func:`rederive_targets`, #719); without a ``law_index`` they are kept as merged.
+    """
+    prefix_to_act = _act_prefix_map(law_index) if law_index is not None else {}
     dest = out_path or in_path
     doc = json.loads(in_path.read_text(encoding="utf-8"))
     graph = doc.get("@graph") or []
@@ -1452,16 +1798,22 @@ def remint_annotation_sidecar(
         elif isinstance(label, str):
             title = label
         title = title.removeprefix(ANNOTATION_LABEL_PREFIX).strip()
-        refined = provision_iris_for_acts(targets, f"{title}\n{text}", provision_ids)
+        refined = rederive_targets(
+            targets, _pairing_text(title, text), provision_ids, law_index, prefix_to_act
+        )
         node = {
             "@id": common,
             "@type": ["owl:NamedIndividual", "estleg:Annotation"],
             "estleg:annotates": _annotates_value(refined),
             "estleg:annotationText": text,
-            "estleg:annotationType": classify_annotation_type(title, text),
-            "estleg:annotationSource": first.get("estleg:annotationSource") or ANNOTATION_SOURCE,
         }
+        for key in _ATTRIBUTION_KEYS:
+            if key in first:
+                node[key] = first[key]
+        node["estleg:annotationType"] = classify_annotation_type(title, text)
         if first.get("estleg:annotationSourceUrl"):
+            # Õiguskantsler attribution only alongside a real source URL (#719).
+            node["estleg:annotationSource"] = first.get("estleg:annotationSource") or ANNOTATION_SOURCE
             node["estleg:annotationSourceUrl"] = first["estleg:annotationSourceUrl"]
         if first.get("estleg:annotationDate"):
             node["estleg:annotationDate"] = first["estleg:annotationDate"]
@@ -1579,6 +1931,259 @@ def dedupe_sidecar_ids(*, in_path: Path = SIDECAR_PATH, out_path: Path | None = 
         "annotations": sum(1 for node in graph if _is_annotation_node(node)),
         "renamed": len(changes),
         "changes": changes,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Attribution repair (#719): offline, idempotent, over the committed sidecar
+# ---------------------------------------------------------------------------
+
+_ATTRIBUTION_KEYS = (
+    "estleg:isExcerpt",
+    "estleg:sourceTextLength",
+    "estleg:editorialNote",
+    "estleg:editorialSource",
+)
+
+
+def _act_prefix_map(law_index: _LawIndex) -> dict[str, str]:
+    """``act_iri_prefix(act) -> act`` for every indexed act (name index first, then slugs)."""
+    out: dict[str, str] = {}
+    for iri in sorted(set(law_index.by_name.values())):
+        out.setdefault(act_iri_prefix(iri), iri)
+    for iri in sorted(set(law_index.by_slug.values())):
+        out.setdefault(act_iri_prefix(iri), iri)
+    return out
+
+
+def _act_iris_from_targets(targets: list[str], prefix_to_act: dict[str, str]) -> tuple[list[str], list[str]]:
+    """Recover the act set behind existing targets: ``(acts, unrecoverable_par_targets)``.
+
+    An act-level target is its own act; a ``<prefix>_Par_<n>`` target maps back to the indexed
+    act with that prefix. A § target whose act is not in the index cannot be re-paired (no act
+    node to fall back to) and is returned separately so the caller can keep it unchanged.
+    """
+    acts: list[str] = []
+    orphans: list[str] = []
+    for iri in targets:
+        if "_Par_" in iri:
+            act = prefix_to_act.get(iri.split("_Par_", 1)[0])
+            if act is None:
+                orphans.append(iri)
+                continue
+        else:
+            act = iri
+        if act not in acts:
+            acts.append(act)
+    return acts, orphans
+
+
+def _pairing_text(title: str, text: str) -> str:
+    """The text §§ are paired over: ``annotationText`` (it opens with the title)."""
+    if not title or text.startswith(title):
+        return text
+    return f"{title}\n\n{text}" if text else title
+
+
+def rederive_targets(
+    targets: list[str],
+    text: str,
+    provision_ids: set[str] | None,
+    law_index: _LawIndex | None,
+    prefix_to_act: dict[str, str] | None = None,
+) -> list[str]:
+    """Re-pair an existing target list by §-proximity over ``text`` (#719).
+
+    The act set is recovered from the targets and every § is re-paired with
+    :func:`provision_iris_for_acts`; cross-product § targets disappear, and an act left with no
+    paired § falls back to its act-level node. Without a ``law_index`` the targets are returned
+    deduped but otherwise unchanged (nothing to pair with).
+    """
+    if law_index is None or not provision_ids:
+        return list(dict.fromkeys(targets))
+    prefix_to_act = _act_prefix_map(law_index) if prefix_to_act is None else prefix_to_act
+    acts, orphans = _act_iris_from_targets(targets, prefix_to_act)
+    out = provision_iris_for_acts(acts, text, provision_ids, law_index)
+    for iri in orphans:
+        if iri not in out:
+            out.append(iri)
+    return out
+
+
+def _node_title(node: dict) -> str:
+    return _literal_value(node.get("rdfs:label")).removeprefix(ANNOTATION_LABEL_PREFIX).strip()
+
+
+def _body_after_title(text: str, title: str) -> str:
+    """The source-body part of an ``annotationText`` (everything after the title line)."""
+    if title and text.startswith(title):
+        return text[len(title):].strip()
+    return text.strip()
+
+
+def _text_is_complete(text: str, body: str) -> bool:
+    """Whether ``text`` provably carries the WHOLE body: shorter than any truncation result.
+
+    :func:`_truncate_to_sentence` only ever cuts a text longer than the cap, and its cut lands
+    past ``cap * _TRUNCATE_MIN_RATIO`` (or ends in "…"). A shorter text without the ellipsis was
+    therefore never truncated; anything else may have been, so it counts as an excerpt.
+    """
+    return bool(body) and len(text) <= int(ANNOTATION_TEXT_MAX_CHARS * _TRUNCATE_MIN_RATIO) and not text.endswith("…")
+
+
+def _seed_paraphrases(seed_path: Path | None) -> set[str]:
+    """Normalised seed paraphrases: any annotationText body equal to one is editorial."""
+    if seed_path is None or not seed_path.exists():
+        return set()
+    return {" ".join(op.editorial_note.split()) for op in load_seed_opinions(seed_path) if op.editorial_note}
+
+
+def _with_keys_after(node: dict, anchor: str, extra: dict) -> dict:
+    """Return ``node`` with ``extra``'s (new) keys inserted right after ``anchor``."""
+    out: dict = {}
+    for key, value in node.items():
+        out[key] = value
+        if key == anchor:
+            for new_key, new_value in extra.items():
+                if new_key not in node:
+                    out[new_key] = new_value
+    for new_key, new_value in extra.items():
+        out.setdefault(new_key, new_value)
+    return out
+
+
+def repair_annotation_attribution(
+    node: dict,
+    *,
+    provision_ids: set[str] | None,
+    law_index: _LawIndex | None,
+    prefix_to_act: dict[str, str] | None = None,
+    paraphrases: set[str] = frozenset(),
+) -> tuple[dict, dict[str, int]]:
+    """Repair one committed ``estleg:Annotation`` node; return ``(node, counters)``.
+
+    * moves a topic-template or seed-paraphrase body into ``editorialNote`` (+
+      ``editorialSource``) and leaves only the verbatim title in ``annotationText``;
+    * stamps ``isExcerpt`` (and ``sourceTextLength`` when the body is provably complete) unless
+      already present — values set by a generator run that knew the full body are kept;
+    * drops ``annotationSource "Õiguskantsler"`` when there is no ``annotationSourceUrl``;
+    * re-derives ``annotates`` with the §-proximity rule (:func:`rederive_targets`).
+    """
+    counters = {"quarantined": 0, "unattributed": 0}
+    title = _node_title(node)
+    raw_text = node.get("estleg:annotationText")
+    text = raw_text.get("@value", "") if isinstance(raw_text, dict) else (raw_text or "")
+    body = _body_after_title(text, title)
+    extra: dict = {}
+    if body and (body.startswith(TOPIC_TEMPLATE_PREFIX) or " ".join(body.split()) in paraphrases):
+        node["estleg:annotationText"] = title
+        extra["estleg:editorialNote"] = body
+        extra["estleg:editorialSource"] = EDITORIAL_SOURCE
+        node.pop("estleg:isExcerpt", None)
+        node.pop("estleg:sourceTextLength", None)
+        text, body = title, ""
+        counters["quarantined"] = 1
+    if "estleg:isExcerpt" not in node:
+        complete = _text_is_complete(text, body)
+        extra["estleg:isExcerpt"] = not complete
+        if complete and "estleg:sourceTextLength" not in node:
+            extra["estleg:sourceTextLength"] = len(body)
+    if extra:
+        node = _with_keys_after(node, "estleg:annotationText", extra)
+
+    if node.get("estleg:annotationSource") == ANNOTATION_SOURCE and not _literal_value(
+        node.get("estleg:annotationSourceUrl")
+    ):
+        node.pop("estleg:annotationSource")
+        counters["unattributed"] = 1
+
+    targets = annotates_iris(node)
+    new_targets = rederive_targets(targets, _pairing_text(title, text), provision_ids, law_index, prefix_to_act)
+    if new_targets != targets:
+        node["estleg:annotates"] = _annotates_value(new_targets)
+    return node, counters
+
+
+def _target_stats(nodes: list[dict]) -> dict[str, object]:
+    counts = [len(annotates_iris(node)) for node in nodes]
+    total = sum(counts)
+    biggest = max(nodes, key=lambda node: len(annotates_iris(node)), default=None)
+    return {
+        "targets": total,
+        "par_targets": sum(1 for node in nodes for iri in annotates_iris(node) if "_Par_" in iri),
+        "mean_targets": round(total / len(nodes), 3) if nodes else 0.0,
+        "max_targets": max(counts, default=0),
+        "max_node": biggest.get("@id") if biggest else None,
+        "multi_prefix_annotations": sum(
+            1
+            for node in nodes
+            if len({act_iri_prefix(iri.split("_Par_", 1)[0]) for iri in annotates_iris(node)}) > 1
+        ),
+    }
+
+
+def repair_attribution(
+    *,
+    in_path: Path = SIDECAR_PATH,
+    out_path: Path | None = None,
+    provision_ids: set[str] | None = None,
+    law_index: _LawIndex | None = None,
+    seed_path: Path | None = SEED_PATH,
+) -> dict[str, object]:
+    """Offline, idempotent #719 repair of the committed annotations sidecar.
+
+    Applies :func:`repair_annotation_attribution` to every node, preserving node order and the
+    sidecar's JSON layout. Writes only when something changed, so a second run is a no-op.
+    Returns before/after target statistics plus the repair counters.
+    """
+    dest = out_path or in_path
+    doc = json.loads(in_path.read_text(encoding="utf-8"))
+    graph = doc.get("@graph") or []
+    before_doc = json.dumps(doc, ensure_ascii=False, sort_keys=False)
+    annotation_positions = [pos for pos, node in enumerate(graph) if _is_annotation_node(node)]
+    before_nodes = [json.loads(json.dumps(graph[pos])) for pos in annotation_positions]
+    before = _target_stats(before_nodes)
+
+    prefix_to_act = _act_prefix_map(law_index) if law_index is not None else {}
+    paraphrases = _seed_paraphrases(seed_path)
+    totals = {"quarantined": 0, "unattributed": 0}
+    removed_par = removed_act = added_par = added_act = 0
+    for pos, old in zip(annotation_positions, before_nodes):
+        node, counters = repair_annotation_attribution(
+            graph[pos],
+            provision_ids=provision_ids,
+            law_index=law_index,
+            prefix_to_act=prefix_to_act,
+            paraphrases=paraphrases,
+        )
+        graph[pos] = node
+        for key, value in counters.items():
+            totals[key] += value
+        old_targets, new_targets = set(annotates_iris(old)), set(annotates_iris(node))
+        removed_par += sum(1 for iri in old_targets - new_targets if "_Par_" in iri)
+        removed_act += sum(1 for iri in old_targets - new_targets if "_Par_" not in iri)
+        added_par += sum(1 for iri in new_targets - old_targets if "_Par_" in iri)
+        added_act += sum(1 for iri in new_targets - old_targets if "_Par_" not in iri)
+
+    after_nodes = [graph[pos] for pos in annotation_positions]
+    changed = json.dumps(doc, ensure_ascii=False, sort_keys=False) != before_doc
+    if changed or dest != in_path:
+        save_json(dest, doc)
+    return {
+        "annotations": len(after_nodes),
+        "changed": changed,
+        "before": before,
+        "after": _target_stats(after_nodes),
+        "removed_par_targets": removed_par,
+        "removed_act_targets": removed_act,
+        "added_par_targets": added_par,
+        "added_act_targets": added_act,
+        "quarantined_bodies": totals["quarantined"],
+        "unattributed_no_url": totals["unattributed"],
+        "is_excerpt_true": sum(1 for node in after_nodes if node.get("estleg:isExcerpt") is True),
+        "is_excerpt_false": sum(1 for node in after_nodes if node.get("estleg:isExcerpt") is False),
+        "with_source_text_length": sum(1 for node in after_nodes if "estleg:sourceTextLength" in node),
+        "with_editorial_note": sum(1 for node in after_nodes if "estleg:editorialNote" in node),
     }
 
 
@@ -1762,12 +2367,15 @@ def run(
 
     law_index = build_law_index(krr_dir)
     print(f"Law index: {len(law_index.by_name)} name keys -> {len(set(law_index.by_name.values()))} act nodes")
+    # Without these the default path silently dropped every § link (they only existed via
+    # --remint-sidecar); now regeneration and remint share one §-proximity rule (#719).
+    provision_ids = collect_provision_ids(krr_dir)
 
     results: list[_OpinionResult] = []
     failures: list[str] = []
     for op in opinions:
         try:
-            res = build_annotations_for_opinion(op, law_index)
+            res = build_annotations_for_opinion(op, law_index, provision_ids=provision_ids)
         except Exception as exc:  # noqa: BLE001 — record + keep going
             failures.append(f"{op.opinion_id}: {exc}")
             if not allow_partial:
@@ -1889,6 +2497,14 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         help="Collapse the committed annotations sidecar to one node per document (#459).",
     )
     parser.add_argument(
+        "--repair-attribution",
+        action="store_true",
+        help="Offline, idempotent #719 repair of the committed sidecar: re-pair each cited § "
+             "with its own act by proximity (no cartesian product), move template/paraphrase "
+             "bodies into estleg:editorialNote, stamp estleg:isExcerpt / sourceTextLength. "
+             "No network access.",
+    )
+    parser.add_argument(
         "--dedupe-sidecar-ids",
         action="store_true",
         help="Offline, idempotent repair: re-derive the @id of committed annotation nodes "
@@ -1905,9 +2521,13 @@ def main(argv: list[str] | None = None) -> int:
         for old_id, new_id in stats["changes"]:
             print(f"  {old_id} -> {new_id}")
         return 0
+    if args.repair_attribution:
+        stats = repair_attribution(provision_ids=collect_provision_ids(), law_index=build_law_index())
+        print(json.dumps(stats, ensure_ascii=False, indent=2))
+        return 0
     if args.remint_sidecar:
         provision_ids = collect_provision_ids()
-        stats = remint_annotation_sidecar(provision_ids=provision_ids)
+        stats = remint_annotation_sidecar(provision_ids=provision_ids, law_index=build_law_index())
         print(stats)
         return 0
     cache_dir = None if args.no_cache else CACHE_DIR

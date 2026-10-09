@@ -82,17 +82,16 @@ ROOT_LABEL = "TsÜS Osa 7 ontoloogia"
 # EuroVoc subjects on the ontology header.
 # #421: verified EuroVoc descriptor ids (see data/eurovoc_domain_mapping.json).
 # Generic "Law" (2411) is omitted — it matched every legal act.
+# #709: bare references only. A label here would be a triple minted on a
+# Publications Office IRI (an untagged second skos:prefLabel next to EuroVoc's
+# own); the labels live on EuroVoc itself and on our estleg:EuroVocDomain_*
+# scheme nodes.
 EUROVOC_SUBJECTS: list[dict] = [
-    {"@id": "http://eurovoc.europa.eu/523", "rdfs:label": "tsiviilõigus",
-     "skos:prefLabel": "civil law"},
-    {"@id": "http://eurovoc.europa.eu/10", "rdfs:label": "sisekaubandus",
-     "skos:prefLabel": "domestic trade"},
-    {"@id": "http://eurovoc.europa.eu/75", "rdfs:label": "konkurents",
-     "skos:prefLabel": "competition"},
-    {"@id": "http://eurovoc.europa.eu/538", "rdfs:label": "põhiõigused",
-     "skos:prefLabel": "fundamental rights"},
-    {"@id": "http://eurovoc.europa.eu/217", "rdfs:label": "õigusalane koostöö",
-     "skos:prefLabel": "judicial cooperation"},
+    {"@id": "http://eurovoc.europa.eu/523"},  # civil law
+    {"@id": "http://eurovoc.europa.eu/10"},  # domestic trade
+    {"@id": "http://eurovoc.europa.eu/75"},  # competition
+    {"@id": "http://eurovoc.europa.eu/538"},  # fundamental rights
+    {"@id": "http://eurovoc.europa.eu/217"},  # judicial cooperation
 ]
 
 # Structural classes live in controlled_vocabulary.jsonld (#438). Modules

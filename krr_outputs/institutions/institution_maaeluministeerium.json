@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,20 +22,36 @@
       ],
       "rdfs:label": "Maaeluministeerium",
       "estleg:institutionType": "ministry",
+      "rdfs:seeAlso": {
+        "@id": "http://www.wikidata.org/entity/Q12373165"
+      },
+      "estleg:registrikood": "70000734",
+      "estleg:validFrom": {
+        "@value": "2015-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:validTo": {
+        "@value": "2023-06-30",
+        "@type": "xsd:date"
+      },
+      "estleg:predecessorInstitution": [
+        {
+          "@id": "estleg:Institution_pollumajandusministeerium"
+        }
+      ],
+      "estleg:successorInstitution": [
+        {
+          "@id": "estleg:Institution_regionaal_ja_pollumajandusministeerium"
+        }
+      ],
       "estleg:hasCompetence": [
         {
           "@id": "estleg:Institution_maaeluministeerium_competence_enforcement"
         },
         {
           "@id": "estleg:Institution_maaeluministeerium_competence_general"
-        },
-        {
-          "@id": "estleg:Institution_maaeluministeerium_competence_regulation"
         }
-      ],
-      "owl:sameAs": {
-        "@id": "http://www.wikidata.org/entity/Q12373165"
-      }
+      ]
     },
     {
       "@id": "estleg:Institution_maaeluministeerium_competence_enforcement",
@@ -70,93 +91,20 @@
       },
       "estleg:appliesToProvision": [
         {
-          "@id": "estleg:bioloogilise_mitmekesisuse_konventsiooni_Par_3"
-        },
-        {
-          "@id": "estleg:KALAPU_Par_90_2"
-        },
-        {
-          "@id": "estleg:LoKS_Par_51_2"
-        },
-        {
-          "@id": "estleg:MAHEPO_Par_2"
-        },
-        {
-          "@id": "estleg:PTEKS_Par_17"
-        },
-        {
-          "@id": "estleg:RTU_Par_2"
-        },
-        {
-          "@id": "estleg:Reg_1038118_Par_14"
-        },
-        {
           "@id": "estleg:Reg_1031756_Par_6"
         },
         {
           "@id": "estleg:Reg_1031756_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1029406_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_1029404_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_1029405_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1057413_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1042090_Par_10"
-        },
-        {
-          "@id": "estleg:VABARI_Par_105_15"
-        },
-        {
-          "@id": "estleg:VABARI_Par_105_19"
-        },
-        {
-          "@id": "estleg:VABARI_Par_107_4"
-        },
-        {
-          "@id": "estleg:VEDELK_Par_8_3"
-        }
-      ],
-      "estleg:appliesToProvisionCount": {
-        "@value": "18",
-        "@type": "xsd:integer"
-      },
-      "estleg:competenceArea": "agriculture",
-      "estleg:grantedBy": {
-        "@id": "estleg:VABARI_Map"
-      }
-    },
-    {
-      "@id": "estleg:Institution_maaeluministeerium_competence_regulation",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Competence"
-      ],
-      "rdfs:label": "Maaeluministeerium – regulation",
-      "estleg:competenceType": "regulation",
-      "estleg:institution": {
-        "@id": "estleg:Institution_maaeluministeerium"
-      },
-      "estleg:appliesToProvision": [
-        {
-          "@id": "estleg:MAHEPO_Par_11"
-        },
-        {
-          "@id": "estleg:VaetS_Par_19"
         }
       ],
       "estleg:appliesToProvisionCount": {
         "@value": "2",
         "@type": "xsd:integer"
       },
-      "estleg:competenceArea": "general_government"
+      "estleg:competenceArea": "general_government",
+      "estleg:grantedBy": {
+        "@id": "estleg:Reg_1031756_Map"
+      }
     }
   ]
 }

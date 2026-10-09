@@ -473,6 +473,10 @@ def classify_files(
                 counts["human_overrides_applied"] += len(owned)
                 continue
             counts["provisions_scanned"] += 1
+            # #709: targetGroup carries the TargetGroup_* IRIs itself; the #609
+            # duplicate is retired, so a reclassified node sheds it.
+            if node.pop("estleg:targetGroupConcept", None) is not None:
+                changed = True
             old_iris = normalize_target_group_value(node.get("estleg:targetGroup"))
             groups, had_duty_holder = classify_node(node)
             new_iris = [target_group_iri(group) for group in groups]

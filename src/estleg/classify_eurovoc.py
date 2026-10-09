@@ -99,9 +99,14 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
         "administrative-law", "haldusõigus", "administrative law",
         ["haldus", "haldusmenetl", "järelevalve", "ettekirjut", "haldusakt"],
     ),
+    # #699: precision-gated. The old list ('valitsus', 'vabariig', 'riigikogu',
+    # 'president', 'riigikohus') fires on the enacting formula and on any
+    # mention of the Government, and tagged 9,049 / 13,747 acts (65.8%).
+    # Only genuinely constitutional terms remain, with a 2-hit gate below.
     "527": (
         "constitutional-law", "riigiõigus", "constitutional law",
-        ["põhiseadus", "riigikogu", "president", "valitsus", "vabariig", "riigikohus"],
+        ["põhiseadus", "rahvahääletus", "õiguskantsler", "riigikogu valimis",
+         "presidendi valimis", "riigikogu kodukor"],
     ),
     "2836": (
         "consumer-protection", "tarbijakaitse", "consumer protection",
@@ -306,8 +311,15 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
     ),
 }
 
-# Maximum number of EuroVoc domains to assign per law
-MAX_DOMAINS_PER_LAW = 5
+# Maximum number of EuroVoc domains to assign per law (#699: was 5, which put
+# 47.7% of classified acts at the cap).
+MAX_DOMAINS_PER_LAW = 3
+# #699: domains are ranked by keyword hits per 1,000 tokens of the act text,
+# and a domain must reach this density to be assigned at all. Within one act
+# the ranking equals ranking by raw hits (shared denominator); the floor is
+# what drops incidental mentions in long acts (one 'maks' in a 40k-token act).
+MIN_HITS_PER_1000_TOKENS = 1.0
+_TOKEN_RE = re.compile(r"\w+")
 # Minimum *total* keyword occurrences to assign a domain (default).
 MIN_HITS_THRESHOLD = 1
 # Per-domain overrides for minimum total keyword occurrences (descriptor id →
@@ -315,6 +327,8 @@ MIN_HITS_THRESHOLD = 1
 MIN_HITS_OVERRIDES: dict[str, int] = {
     "2494": 3,  # transport policy (pre-#421 code "5616"): require 3+ keyword
                 # hits to reduce over-classification
+    "527": 2,   # constitutional law (#699): a lone 'põhiseaduse § N' citation
+                # in an ordinary act is not a constitutional-law subject
 }
 
 # Default number of *distinct* keywords from a domain's list that must each
@@ -408,14 +422,26 @@ def _eurovoc_domain_sort_key(code: str) -> tuple[int, int | str]:
     return (1, code)
 
 
+def eurovoc_domain_node_id(code: str) -> str:
+    """Our own scheme node for a EuroVoc descriptor id (#709)."""
+    return f"estleg:EuroVocDomain_{code}"
+
+
 def build_eurovoc_skos_graph() -> dict:
-    """SKOS ConceptScheme + Concept nodes for every EuroVoc domain we mint (#544)."""
+    """SKOS ConceptScheme + one estleg: concept per EuroVoc domain we use (#544).
+
+    #709: the concepts are ``estleg:EuroVocDomain_<id>`` nodes that carry our
+    cached labels and ``skos:exactMatch`` the EuroVoc IRI. Nothing is asserted
+    on ``http://eurovoc.europa.eu/*`` itself: a local ``skos:prefLabel`` or
+    ``skos:inScheme`` there is a triple minted on a Publications Office
+    resource, which conflicts with EuroVoc's own labels on merge.
+    """
     codes = sorted(EUROVOC_DOMAINS, key=_eurovoc_domain_sort_key)
     concepts: list[dict] = []
     top_concepts: list[dict] = []
     for code in codes:
         _slug, label_et, label_en, _keywords = EUROVOC_DOMAINS[code]
-        concept_id = f"{EUROVOC_URI_BASE}{code}"
+        concept_id = eurovoc_domain_node_id(code)
         top_concepts.append({"@id": concept_id})
         concepts.append({
             "@id": concept_id,
@@ -424,7 +450,10 @@ def build_eurovoc_skos_graph() -> dict:
                 {"@value": label_et, "@language": "et"},
                 {"@value": label_en, "@language": "en"},
             ],
+            "skos:notation": code,
             "skos:inScheme": {"@id": EUROVOC_SKOS_SCHEME_ID},
+            "skos:topConceptOf": {"@id": EUROVOC_SKOS_SCHEME_ID},
+            "skos:exactMatch": [{"@id": f"{EUROVOC_URI_BASE}{code}"}],
         })
     scheme = {
         "@id": EUROVOC_SKOS_SCHEME_ID,
@@ -527,24 +556,37 @@ def extract_text_from_law(data: dict) -> str:
     return unicodedata.normalize("NFC", " ".join(parts)).casefold()
 
 
+def count_tokens(text: str) -> int:
+    """Word-token count of the (normalised) act text; at least 1."""
+    return max(1, len(_TOKEN_RE.findall(text)))
+
+
+def hits_per_1000_tokens(hit_count: int, n_tokens: int) -> float:
+    """Keyword-hit density used for ranking and the #699 floor."""
+    return 1000.0 * hit_count / max(1, n_tokens)
+
+
 def classify_text(
     text: str,
 ) -> list[tuple[str, str, str, str, int, list[str]]]:
     """Classify ``text`` against EuroVoc domains by keyword matching.
 
-    Returns a list of
+    Returns at most ``MAX_DOMAINS_PER_LAW`` tuples
     ``(code, slug, label_et, label_en, hit_count, matched_keywords)``
-    sorted by ``hit_count`` descending then ``code``. ``hit_count`` is the
-    total number of keyword occurrences; ``matched_keywords`` is the list of
+    ranked by hits per 1,000 tokens descending, then distinct matched
+    keywords descending, then ``code`` (#699). ``hit_count`` is the total
+    number of keyword occurrences; ``matched_keywords`` is the list of
     distinct keywords (in the domain's declared order) that each matched at
     least once — used both for the precision gate and the review sample.
 
-    A domain is assigned only when BOTH gates pass:
-      * total occurrences ≥ ``MIN_HITS_OVERRIDES[code]`` (default 1), and
+    A domain is assigned only when ALL gates pass:
+      * total occurrences ≥ ``MIN_HITS_OVERRIDES[code]`` (default 1),
       * distinct matched keywords ≥ ``MIN_DISTINCT_KEYWORDS_OVERRIDES[code]``
-        (default 1).
+        (default 1), and
+      * hits per 1,000 tokens ≥ ``MIN_HITS_PER_1000_TOKENS``.
     """
-    results: list[tuple[str, str, str, str, int, list[str]]] = []
+    n_tokens = count_tokens(text)
+    scored: list[tuple[float, tuple[str, str, str, str, int, list[str]]]] = []
 
     for code, (slug, label_et, label_en, keywords) in EUROVOC_DOMAINS.items():
         hit_count = 0
@@ -568,16 +610,18 @@ def classify_text(
         distinct_threshold = MIN_DISTINCT_KEYWORDS_OVERRIDES.get(
             code, MIN_DISTINCT_KEYWORDS_DEFAULT
         )
-        if hit_count >= hits_threshold and len(matched_keywords) >= distinct_threshold:
-            results.append(
-                (code, slug, label_et, label_en, hit_count, matched_keywords)
+        density = hits_per_1000_tokens(hit_count, n_tokens)
+        if (
+            hit_count >= hits_threshold
+            and len(matched_keywords) >= distinct_threshold
+            and density >= MIN_HITS_PER_1000_TOKENS
+        ):
+            scored.append(
+                (density, (code, slug, label_et, label_en, hit_count, matched_keywords))
             )
 
-    # Sort by hit count descending, then by code
-    results.sort(key=lambda r: (-r[4], r[0]))
-
-    # Limit to top domains
-    return results[:MAX_DOMAINS_PER_LAW]
+    scored.sort(key=lambda r: (-r[0], -len(r[1][5]), r[1][0]))
+    return [row for _density, row in scored[:MAX_DOMAINS_PER_LAW]]
 
 
 def eurovoc_subject_refs(
@@ -627,7 +671,7 @@ def write_eurovoc_overlay(
     graph: list[dict] = [
         {
             "@id": "estleg:EuroVocOverlay",
-            "@type": "owl:Ontology",
+            "@type": ["owl:Ontology"],
             "rdfs:comment": (
                 "EuroVoc dcterms:subject / eli:is_about overlay (#463). "
                 "Merged onto act IRIs by generate_combined_jsonld."
@@ -1025,6 +1069,7 @@ def main(argv: list[str] | None = None):
             # bookkeeping, not classification text.
             text = extract_text_from_law(data)
             domains = classify_text(text)
+            n_tokens = count_tokens(text)
 
             _files_processed += 1
             if is_kov:
@@ -1062,6 +1107,9 @@ def main(argv: list[str] | None = None):
                         "label_en": label_en,
                         "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
                         "keyword_hits": hits,
+                        "hits_per_1000_tokens": round(
+                            hits_per_1000_tokens(hits, n_tokens), 3
+                        ),
                         "matched_keywords": matched_kws,
                     }
                     for code, slug, label_et, label_en, hits, matched_kws in domains
@@ -1159,14 +1207,21 @@ def main(argv: list[str] | None = None):
             "status": "tooling_available",
             "note": (
                 "Keyword matches are candidate act-level EuroVoc subjects. "
-                "Domain assignments are gated by a total-hit threshold and a "
+                "Domain assignments are gated by a total-hit threshold, a "
                 "distinct-keyword threshold (see min_total_hits / "
-                "min_distinct_keywords per domain in domain_statistics). Run "
+                "min_distinct_keywords per domain in domain_statistics) and a "
+                "minimum keyword density; surviving domains are ranked by "
+                "hits per 1,000 tokens and capped per act (#699). EU acts "
+                "are not classified here: they carry official EuroVoc from "
+                "CELLAR (estleg:subjectSource \"cellar\"). Run "
                 "`python3 scripts/classify_eurovoc.py --emit-sample N` to "
                 "produce krr_outputs/reports/eurovoc_classification_sample.json "
                 "for manual precision review."
             ),
             "precision_gates": {
+                "ranking": "hits_per_1000_tokens desc, distinct keywords desc, code",
+                "max_domains_per_law": MAX_DOMAINS_PER_LAW,
+                "min_hits_per_1000_tokens": MIN_HITS_PER_1000_TOKENS,
                 "min_total_hits_default": MIN_HITS_THRESHOLD,
                 "min_distinct_keywords_default": MIN_DISTINCT_KEYWORDS_DEFAULT,
                 "min_total_hits_overrides": dict(sorted(MIN_HITS_OVERRIDES.items())),

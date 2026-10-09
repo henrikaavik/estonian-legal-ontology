@@ -107,6 +107,8 @@ def test_idempotent_when_parent_chain_already_present():
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation",
         "owl:Ontology",
+        "eli:LegalResource",
+        "schema:Legislation",
     ]
     assert fix._materialize_supertypes(types) == types
 
@@ -156,14 +158,23 @@ def test_apply_type_rollup_in_place_and_count():
     """``_apply_type_rollup`` mutates only the nodes that gain a type."""
     nodes = [
         {"@id": "p", "@type": ["owl:NamedIndividual", "estleg:Subsection"]},
-        {"@id": "a", "@type": ["estleg:Act", "estleg:Law"]},  # already has Act
+        # already carries Act and its #708 ELI / schema.org alignments
+        {
+            "@id": "a",
+            "@type": ["estleg:Act", "estleg:Law", "eli:LegalResource", "schema:Legislation"],
+        },
         {"@id": "c", "@type": ["owl:NamedIndividual", "estleg:Chapter"]},  # container
         {"@id": "x", "@type": "not-a-list"},  # defensively skipped
     ]
     enriched = fix._apply_type_rollup(nodes)
     assert enriched == 1  # only the Subsection node changed
     assert "estleg:LegalProvision" in nodes[0]["@type"]
-    assert nodes[1]["@type"] == ["estleg:Act", "estleg:Law"]  # unchanged
+    assert nodes[1]["@type"] == [
+        "estleg:Act",
+        "estleg:Law",
+        "eli:LegalResource",
+        "schema:Legislation",
+    ]  # unchanged
     assert "estleg:LegalProvision" not in nodes[2]["@type"]  # container untouched
     assert nodes[3]["@type"] == "not-a-list"  # non-list skipped
 
@@ -309,3 +320,35 @@ def test_tbox_axioms_back_the_materialized_types():
     for cls in ("estleg:NationalRegulation", "estleg:MunicipalRegulation"):
         assert _subclass_parents(by_id[cls]) == ["estleg:DomesticRegulation"], cls
     assert "estleg:Act" in _subclass_parents(by_id.get("estleg:DomesticRegulation"))
+
+
+# --- #708: ELI / schema.org class alignments ride the rollup ----------------
+
+
+def test_law_gains_eli_and_schema_types_after_act():
+    """A Law gains Act, then Act's ELI / schema.org alignments, in that order."""
+    assert fix._materialize_supertypes(["estleg:Law"]) == [
+        "estleg:Law",
+        "estleg:Act",
+        "eli:LegalResource",
+        "schema:Legislation",
+    ]
+
+
+def test_regulation_root_gains_eli_types_transitively():
+    rolled = fix._materialize_supertypes(["estleg:MinisterialRegulation"])
+    assert rolled[-2:] == ["eli:LegalResource", "schema:Legislation"]
+
+
+def test_act_expression_gains_legal_expression():
+    assert fix._materialize_supertypes(["owl:NamedIndividual", "estleg:ActExpression"]) == [
+        "owl:NamedIndividual",
+        "estleg:ActExpression",
+        "eli:LegalExpression",
+    ]
+
+
+def test_provisions_and_containers_gain_no_eli_type():
+    """Containers carry no CV ELI axiom; provisions are out of #708's scope."""
+    for container in ("estleg:Chapter", "estleg:Division", "estleg:Part", "estleg:LegalProvision"):
+        assert fix._materialize_supertypes([container]) == [container]

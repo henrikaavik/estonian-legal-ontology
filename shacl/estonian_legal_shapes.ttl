@@ -3,7 +3,8 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix schema: <http://schema.org/> .
+@prefix schema: <https://schema.org/> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -2593,7 +2594,7 @@ estleg:AnnotationShape
         sh:minCount 1 ;
         sh:datatype xsd:string ;
         sh:name "annotationText" ;
-        sh:description "The body of the annotation." ;
+        sh:description "Verbatim source text only (title plus body excerpt) (#719)." ;
     ] ;
     sh:property [
         sh:path estleg:annotationType ;
@@ -2627,7 +2628,64 @@ estleg:AnnotationShape
         sh:datatype xsd:date ;
         sh:name "annotationDate" ;
         sh:description "Date the annotation was authored or published." ;
+    ] ;
+    # #719: separate verbatim source text from project-authored notes.
+    sh:property [
+        sh:path estleg:isExcerpt ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "isExcerpt" ;
+        sh:description "True unless annotationText carries the complete source body; a title-only text is an excerpt." ;
+    ] ;
+    sh:property [
+        sh:path estleg:sourceTextLength ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:name "sourceTextLength" ;
+        sh:description "Character length of the full extracted source body; present only when known." ;
+    ] ;
+    sh:property [
+        sh:path estleg:editorialNote ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "editorialNote" ;
+        sh:description "Project-authored paraphrase or note; never source text." ;
+    ] ;
+    sh:property [
+        sh:path estleg:editorialSource ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "editorialSource" ;
+        sh:description "Author of editorialNote (this project), never the cited authority." ;
     ] .
+
+# #719: an editorial note must name its author. Core SHACL (no sh:sparql).
+estleg:AnnotationEditorialAttributionShape
+    a sh:NodeShape ;
+    sh:targetSubjectsOf estleg:editorialNote ;
+    sh:property [
+        sh:path estleg:editorialSource ;
+        sh:minCount 1 ;
+        sh:name "editorialSource" ;
+        sh:message "An estleg:editorialNote needs an estleg:editorialSource naming its author (issue #719)." ;
+    ] .
+
+# #719: an Õiguskantsler annotation must link its source document, so its
+# verbatim text can be checked against the original. Core SHACL: the sh:not
+# branch is satisfied by every annotation from another source.
+estleg:AnnotationOiguskantslerSourceUrlShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Annotation ;
+    sh:message "An Õiguskantsler annotation must carry estleg:annotationSourceUrl (issue #719)." ;
+    sh:or (
+        [ sh:not [ sh:path estleg:annotationSource ; sh:hasValue "Õiguskantsler" ] ]
+        [ sh:path estleg:annotationSourceUrl ; sh:minCount 1 ]
+    ) .
 
 # Closed IRI enum for estleg:referenceType (#513 T-Box).
 # Existing unreified estleg:references edges do not carry this property;
@@ -2698,3 +2756,82 @@ estleg:LawActProvenanceShape
         sh:name "kehtiv" ;
         sh:message "estleg:Law act root has no estleg:kehtiv snapshot date (issue #703)." ;
     ] .
+
+# --------------------------------------------------------------------
+# ELI / schema.org materialisation coverage (issue #708).
+#
+# The Seadusloome sync surface validates and queries with no inference, so
+# the controlled vocabulary's ELI / schema.org rdfs:subClassOf and
+# rdfs:subPropertyOf alignments only reach it because the combined build
+# asserts them (fix_all_issues._EXTERNAL_TYPE_ALIGNMENTS and
+# materialize_eli_alignments). These shapes notice if that stops.
+#
+# The type checks use sh:path rdf:type + sh:hasValue, not sh:class:
+# combined carries the vocabulary, so sh:class eli:LegalResource would be
+# satisfied through rdfs:subClassOf* even when nothing was materialised.
+# Under the bucket gate's inference="rdfs" the same triples are entailed
+# from the vocabulary, so both surfaces agree.
+#
+# Domestic regulations are exempt. The sync surface also loads
+# krr_outputs/regulations/ raw, and the regulation roots and provisions in
+# those files never pass through the combined build (939 roots and 158,385
+# provisions on 2026-10-08). The exemption keys on the act class, so a
+# provision is exempt when its partOfAct target is a regulation.
+#
+# Core SHACL only (tests/test_issue_681_sanctions.py). sh:severity sits on
+# each property shape too, because pyshacl does not propagate a node
+# shape's severity to them.
+# --------------------------------------------------------------------
+
+estleg:ActEliLegalResourceShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Act ;
+    sh:severity sh:Warning ;
+    sh:message "estleg:Act node is not asserted as eli:LegalResource; the combined build materialises it from estleg:Act ⊑ eli:LegalResource (issue #708)." ;
+    sh:or (
+        [ sh:path rdf:type ; sh:hasValue eli:LegalResource ]
+        [ sh:class estleg:NationalRegulation ]
+        [ sh:class estleg:MunicipalRegulation ]
+    ) .
+
+estleg:ActSchemaLegislationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Act ;
+    sh:severity sh:Warning ;
+    sh:message "estleg:Act node is not asserted as schema:Legislation; the combined build materialises it from estleg:Act ⊑ schema:Legislation (issue #708)." ;
+    sh:or (
+        [ sh:path rdf:type ; sh:hasValue schema:Legislation ]
+        [ sh:class estleg:NationalRegulation ]
+        [ sh:class estleg:MunicipalRegulation ]
+    ) .
+
+estleg:ActExpressionEliShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:ActExpression ;
+    sh:severity sh:Warning ;
+    sh:property [
+        sh:path rdf:type ;
+        sh:hasValue eli:LegalExpression ;
+        sh:severity sh:Warning ;
+        sh:name "type" ;
+        sh:message "estleg:ActExpression node is not asserted as eli:LegalExpression (issue #708)." ;
+    ] ;
+    sh:property [
+        sh:path eli:realizes ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:severity sh:Warning ;
+        sh:name "realizes" ;
+        sh:message "estleg:ActExpression has no eli:realizes edge to its act; the combined build copies it from estleg:expressionOf (issue #708)." ;
+    ] .
+
+estleg:ProvisionEliPartOfShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
+    sh:severity sh:Warning ;
+    sh:message "A LegalProvision with estleg:partOfAct has no eli:is_part_of; the combined build copies it from partOfAct / isPartOf / parentProvision (issue #708)." ;
+    sh:or (
+        [ sh:path eli:is_part_of ; sh:minCount 1 ]
+        [ sh:path estleg:partOfAct ; sh:class estleg:NationalRegulation ]
+        [ sh:path estleg:partOfAct ; sh:class estleg:MunicipalRegulation ]
+    ) .

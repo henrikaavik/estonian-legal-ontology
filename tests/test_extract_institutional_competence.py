@@ -1594,7 +1594,9 @@ class TestIssue118ExtendedCaseSuffixes:
         )
         # #457: abbreviation alias files and the historical predecessor
         # node are intentional non-fixed-points of normalize_iri_suffix.
-        allowed = set(SAMEAS_ALIASES) | {KESKKONNAINSPEKTSIOON_SLUG}
+        # #718: so is every predecessor node of the alias table.
+        from estleg.extract_institutional_competence import _INSTITUTION_ALIASES
+        allowed = set(SAMEAS_ALIASES) | {KESKKONNAINSPEKTSIOON_SLUG} | set(_INSTITUTION_ALIASES)
         offenders: list[tuple[str, str]] = []
         for path in sorted(INST_DIR.glob("institution_*.json")):
             slug = path.stem.removeprefix("institution_")
@@ -1813,13 +1815,12 @@ class TestIssue170CrossProvisionDedup:
 
 
 class TestIssue170TruncationAware:
-    """Finding 7 (#170): when an institution would have its
-    appliesToProvision list truncated past `_APPLIES_TO_PROVISION_CAP`,
-    the institution file MUST surface
-    estleg:appliesToProvisionCount with the full count, even when the
-    appliesToProvision list itself is capped."""
+    """Finding 7 (#170) / #718: appliesToProvision is no longer capped by
+    default — the list is complete and estleg:appliesToProvisionCount equals
+    its length. A pinned cap (tests only) still surfaces the full count."""
 
-    def test_truncated_count_surfaced(self, tmp_path, monkeypatch):
+    @pytest.mark.parametrize("cap", [None, 50])
+    def test_truncated_count_surfaced(self, tmp_path, monkeypatch, cap):
         from estleg import extract_institutional_competence as mod
         krr = tmp_path / "krr_outputs"
         institutions_dir = krr / "institutions"
@@ -1858,6 +1859,7 @@ class TestIssue170TruncationAware:
         monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+        monkeypatch.setattr(mod, "_APPLIES_TO_PROVISION_CAP", cap)
 
         rc = mod.main()
         assert rc in (0, None)
@@ -1879,9 +1881,9 @@ class TestIssue170TruncationAware:
             applies = comp.get("estleg:appliesToProvision", [])
             if isinstance(applies, dict):
                 applies = [applies]
-            # appliesToProvision is capped...
-            assert len(applies) <= mod._APPLIES_TO_PROVISION_CAP
-            # ...but appliesToProvisionCount records the full count.
+            # Complete by default (#718); a pinned cap bounds the list...
+            assert len(applies) == (60 if cap is None else cap)
+            # ...and appliesToProvisionCount always records the full count.
             count_value = int(count.get("@value")) if isinstance(count, dict) else int(count)
             assert count_value == 60, (
                 f"appliesToProvisionCount should reflect all 60 provisions, got {count_value}"
@@ -2349,7 +2351,11 @@ class TestIssue321MinisterInflectedForms:
         # bare-stem de-inflection itself is covered separately via
         # ``normalize_iri_suffix`` below.
         ("sotsiaalministrit teavitatakse otsusest", "sotsiaalminister"),
-        ("kaitseministriga kooskõlastatult", "kaitseminister"),
+        # Comitative inflection coverage. #718: the historical
+        # "kaitseministriga kooskõlastatult" row asserted only detection; the
+        # consultation phrase is now a NEGATIVE competence case, see
+        # test_consultation_comitative_is_mention_not_competence below.
+        ("kaitseministriga sõlmitud leping", "kaitseminister"),
         ("rahandusministrisse puutuvad küsimused", "rahandusminister"),
         ("siseministriks nimetati isik", "siseminister"),
     ])
@@ -2357,6 +2363,24 @@ class TestIssue321MinisterInflectedForms:
         from estleg.extract_institutional_competence import detect_institutions
         slugs = {s for _, s, _ in detect_institutions(text)}
         assert expected in slugs, f"{text!r} -> {slugs!r}, expected {expected!r}"
+
+    @pytest.mark.parametrize("text", [
+        "kaitseministriga kooskõlastatult",
+        "Määruse kehtestab Vabariigi Valitsus kaitseministriga kooskõlastatult.",
+        "kaitseministri nõusolekul",
+        "kaitseministri ettepanekul",
+    ])
+    def test_consultation_comitative_is_mention_not_competence(self, text):
+        """#718: consultation never yields competence. The minister is still
+        detected (inflection coverage) but is only a mention."""
+        from estleg.extract_institutional_competence import (
+            bind_institutions,
+            detect_institutions,
+        )
+        assert "kaitseminister" in {s for _, s, _ in detect_institutions(text)}
+        verdict = {b.suffix: b for b in bind_institutions(text)}
+        assert verdict["kaitseminister"].competent is False
+        assert "consultation" in verdict["kaitseminister"].reasons
 
     def test_all_minister_forms_collapse_to_one_slug(self):
         """Nominative + several oblique forms of the SAME ministry must

@@ -6,7 +6,12 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,79 +22,19 @@
       ],
       "rdfs:label": "Haridusministeerium",
       "estleg:institutionType": "ministry",
-      "estleg:hasCompetence": [
-        {
-          "@id": "estleg:Institution_haridusministeerium_competence_general"
-        },
-        {
-          "@id": "estleg:Institution_haridusministeerium_competence_regulation"
-        }
-      ],
-      "owl:sameAs": {
+      "rdfs:seeAlso": {
         "@id": "http://www.wikidata.org/entity/Q12363440"
-      }
-    },
-    {
-      "@id": "estleg:Institution_haridusministeerium_competence_general",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Competence"
-      ],
-      "rdfs:label": "Haridusministeerium – general",
-      "estleg:competenceType": "general",
-      "estleg:institution": {
-        "@id": "estleg:Institution_haridusministeerium"
       },
-      "estleg:appliesToProvision": [
+      "estleg:registrikood": "70000740",
+      "estleg:validTo": {
+        "@value": "2002-12-31",
+        "@type": "xsd:date"
+      },
+      "estleg:successorInstitution": [
         {
-          "@id": "estleg:Reg_1029826_Par_3"
-        },
-        {
-          "@id": "estleg:TAKS_Par_15"
-        },
-        {
-          "@id": "estleg:TAKS_Par_16"
-        },
-        {
-          "@id": "estleg:TAKS_Par_20"
-        },
-        {
-          "@id": "estleg:TAKS_Par_22_25"
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
         }
-      ],
-      "estleg:appliesToProvisionCount": {
-        "@value": "5",
-        "@type": "xsd:integer"
-      },
-      "estleg:competenceArea": "education",
-      "estleg:grantedBy": {
-        "@id": "estleg:TAKS_Map"
-      }
-    },
-    {
-      "@id": "estleg:Institution_haridusministeerium_competence_regulation",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Competence"
-      ],
-      "rdfs:label": "Haridusministeerium – regulation",
-      "estleg:competenceType": "regulation",
-      "estleg:institution": {
-        "@id": "estleg:Institution_haridusministeerium"
-      },
-      "estleg:appliesToProvision": [
-        {
-          "@id": "estleg:TAKS_Par_5_6"
-        }
-      ],
-      "estleg:appliesToProvisionCount": {
-        "@value": "1",
-        "@type": "xsd:integer"
-      },
-      "estleg:competenceArea": "education",
-      "estleg:grantedBy": {
-        "@id": "estleg:TAKS_Map"
-      }
+      ]
     }
   ]
 }

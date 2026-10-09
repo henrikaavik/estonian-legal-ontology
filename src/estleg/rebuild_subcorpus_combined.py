@@ -50,6 +50,7 @@ from estleg.estleg_common import (
     COMBINED_JSONLD_TARGETS,
     CONTEXT,
     KRR_DIR,
+    combined_target_contains_personal_data,
     save_json,
     stamp_combined_dataset_head,
 )
@@ -298,7 +299,12 @@ def build_subcorpus_combined(
         print(f"  NOTE: {name}: dropped owl:imports {target} (not in the combined graph)")
 
     doc = {"@context": context or dict(CONTEXT), "@graph": graph}
-    stamp_combined_dataset_head(doc, label=dataset_label(spec))
+    stamp_combined_dataset_head(
+        doc,
+        label=dataset_label(spec),
+        # #720: by spec, from the COMBINED_JSONLD_TARGETS entry (curia True).
+        contains_personal_data=combined_target_contains_personal_data(spec.combined_path_rel),
+    )
     # #705: the head carries the release version. Build-derived, so it is
     # overwritten on every rebuild (not curated).
     stamp_version_fields(doc["@graph"][0])

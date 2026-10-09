@@ -25,7 +25,7 @@ DATASET = URIRef("https://w3id.org/estleg/dataset/estonian-legal-ontology")
 COMPILATION = URIRef(f"{DATASET}#compilation")
 ESTLEG_NS = "https://w3id.org/estleg/"
 CC_BY_40 = URIRef("https://creativecommons.org/licenses/by/4.0/")
-PUBLISHER = URIRef("https://github.com/henrikaavik")
+PUBLISHER = URIRef("https://w3id.org/estleg/publisher")  # #710: project organisation
 EXAMPLE = URIRef(f"{ESTLEG_NS}KarS_Par_1")
 MIT_LICENSE = "opensource.org/licenses/MIT"
 

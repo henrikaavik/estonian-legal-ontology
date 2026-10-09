@@ -80,3 +80,41 @@ def test_owl_modules_have_no_fabricated_eurovoc_ids():
             f"{name} has eurovoc.europa.eu ids not in EUROVOC_DOMAINS "
             f"or the mapping new codes: {unknown}"
         )
+
+
+def _eurovoc_nodes(node: object) -> list[dict]:
+    found: list[dict] = []
+    if isinstance(node, dict):
+        raw = node.get("@id")
+        if isinstance(raw, str) and EUROVOC_IRI_RE.fullmatch(raw):
+            found.append(node)
+        for value in node.values():
+            found.extend(_eurovoc_nodes(value))
+    elif isinstance(node, list):
+        for item in node:
+            found.extend(_eurovoc_nodes(item))
+    return found
+
+
+def test_owl_modules_mint_no_triples_on_eurovoc_iris():
+    """#709: a EuroVoc IRI is only ever an object reference, never a subject.
+
+    A label nested on ``{"@id": "http://eurovoc.europa.eu/523", ...}`` is a
+    triple asserted on a Publications Office resource; merged with real EuroVoc
+    it becomes a second, untagged ``skos:prefLabel`` on their concept.
+    """
+    for name in OWL_MODULES:
+        doc = json.loads((KRR / name).read_text(encoding="utf-8"))
+        nodes = _eurovoc_nodes(doc)
+        assert nodes, f"{name} lost its EuroVoc subjects"
+        extra = [node for node in nodes if set(node) != {"@id"}]
+        assert extra == [], f"{name} asserts properties on EuroVoc IRIs: {extra}"
+
+
+def test_tsus_generator_emits_bare_eurovoc_refs():
+    from estleg import generate_tsus_osa7_jsonld as gen
+
+    assert gen.EUROVOC_SUBJECTS
+    for ref in gen.EUROVOC_SUBJECTS:
+        assert set(ref) == {"@id"}
+        assert EUROVOC_IRI_RE.fullmatch(ref["@id"])

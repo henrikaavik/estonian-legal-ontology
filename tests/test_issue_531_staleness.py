@@ -146,7 +146,7 @@ def test_metadata_distributions_publish_the_code_budgets() -> None:
         period = dist.get("dcterms:accrualPeriodicity")
         iri = period.get("@id") if isinstance(period, dict) else period
         assert iri, f"distribution {title!r} has no dcterms:accrualPeriodicity"
-        assert iri.startswith("http://purl.org/cld/freq/"), iri
+        assert iri.startswith(crs.EU_FREQUENCY), iri  # #710: EU frequency authority
         published[title] = iri
     assert published == by_title
 

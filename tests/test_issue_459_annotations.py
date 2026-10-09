@@ -10,6 +10,7 @@ import pytest
 
 from estleg.generate_annotations import (
     SIDECAR_PATH,
+    _LawIndex,
     classify_annotation_type,
     extract_section_numbers,
     provision_iris_for_acts,
@@ -31,10 +32,14 @@ def test_classify_annotation_type_from_title() -> None:
 def test_provision_iris_prefer_cited_sections() -> None:
     acts = ["estleg:VOS_Map"]
     known = {"estleg:VOS_Par_40", "estleg:VOS_Par_41"}
-    assert provision_iris_for_acts(acts, "Võlaõigusseaduse § 40 tõlgendamine", known) == [
+    # #719: §s are paired to the act MENTIONED before them, so pairing needs a law index.
+    index = _LawIndex(by_name={"volaoigusseadus": "estleg:VOS_Map", "volaoigusseaduse": "estleg:VOS_Map"})
+    assert provision_iris_for_acts(acts, "Võlaõigusseaduse § 40 tõlgendamine", known, index) == [
         "estleg:VOS_Par_40"
     ]
-    assert provision_iris_for_acts(acts, "üldine seisukoht", known) == acts
+    assert provision_iris_for_acts(acts, "üldine seisukoht", known, index) == acts
+    # Without an index nothing can be paired: act-level, never a guessed § target.
+    assert provision_iris_for_acts(acts, "Võlaõigusseaduse § 40 tõlgendamine", known) == acts
     assert extract_section_numbers("§ 12 ja § 381¹") == ["12", "381_1"]
 
 

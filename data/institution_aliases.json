@@ -1,60 +1,74 @@
 {
-  "_comment": "Curated alias table for Estonian state institutions (issue #118). Maps a historical/predecessor institution slug -> the canonical successor slug. Slugs are the lowercase, transliterated IRI suffixes used in krr_outputs/institutions/institution_<slug>.json (so estleg:Institution_<slug>) — '-'/spaces collapse to a single '_'. The extractor (scripts/extract_institutional_competence.py) applies this map AFTER the Estonian noun-stem normaliser: a detected suffix that matches an alias key is replaced by its canonical value, so a pre-merger reference (e.g. 'Maksuamet') resolves to the post-merger institution node ('Maksu- ja Tolliamet'). validate_all.py::validate_institution_registry_consistency checks every 'canonical' target resolves to an institution_<slug>.json file. Conservative: only well-documented agency mergers/renames are listed.",
+  "_comment": "Curated alias table for Estonian state institutions (issue #118). Maps a historical/predecessor institution slug -> the canonical successor slug. Slugs are the lowercase, transliterated IRI suffixes used in krr_outputs/institutions/institution_<slug>.json (so estleg:Institution_<slug>) — '-'/spaces collapse to a single '_'. The extractor (scripts/extract_institutional_competence.py) applies this map AFTER the Estonian noun-stem normaliser: a detected suffix that matches an alias key is replaced by its canonical value, so a pre-merger reference (e.g. 'Maksuamet') resolves to the post-merger institution node ('Maksu- ja Tolliamet'). validate_all.py::validate_institution_registry_consistency checks every 'canonical' target resolves to an institution_<slug>.json file. Conservative: only well-documented agency mergers/renames are listed. Issue #718: the alias no longer erases the predecessor. A provision that names a predecessor still binds competentAuthority to the canonical successor (legal succession), and ALSO records estleg:mentionsInstitution -> estleg:Institution_<alias key>; a non-binding mention points only at the predecessor node. Every alias key therefore has its own predecessor institution node (label = 'label', successor/validity in data/institution_identity.json).",
   "version": 1,
   "aliases": {
     "maksuamet": {
+      "label": "Maksuamet",
       "canonical": "maksu_ja_tolliamet",
       "evidence": "Maksuamet and Tolliamet merged into Maksu- ja Tolliamet on 2004-02-01."
     },
     "tolliamet": {
+      "label": "Tolliamet",
       "canonical": "maksu_ja_tolliamet",
       "evidence": "Tolliamet merged with Maksuamet into Maksu- ja Tolliamet on 2004-02-01."
     },
     "politseiamet": {
+      "label": "Politseiamet",
       "canonical": "politsei_ja_piirivalveamet",
       "evidence": "Politseiamet, Piirivalveamet and Kodakondsus- ja Migratsiooniamet merged into Politsei- ja Piirivalveamet on 2010-01-01."
     },
     "piirivalveamet": {
+      "label": "Piirivalveamet",
       "canonical": "politsei_ja_piirivalveamet",
       "evidence": "Piirivalveamet merged into Politsei- ja Piirivalveamet on 2010-01-01."
     },
     "kodakondsus_ja_migratsiooniamet": {
+      "label": "Kodakondsus- ja Migratsiooniamet",
       "canonical": "politsei_ja_piirivalveamet",
       "evidence": "Kodakondsus- ja Migratsiooniamet's functions transferred to Politsei- ja Piirivalveamet on 2010-01-01."
     },
     "tervishoiuamet": {
+      "label": "Tervishoiuamet",
       "canonical": "terviseamet",
       "evidence": "Tervishoiuamet's functions consolidated into Terviseamet (formed 2010-01-01)."
     },
     "tervisekaitseinspektsioon": {
+      "label": "Tervisekaitseinspektsioon",
       "canonical": "terviseamet",
       "evidence": "Tervisekaitseinspektsioon merged into Terviseamet on 2010-01-01."
     },
     "tervisekaitseamet": {
+      "label": "Tervisekaitseamet",
       "canonical": "terviseamet",
       "evidence": "Tervisekaitseamet (renamed Tervisekaitseinspektsioon in 1999, then merged into Terviseamet on 2010-01-01)."
     },
     "tarbijakaitseamet": {
+      "label": "Tarbijakaitseamet",
       "canonical": "tarbijakaitse_ja_tehnilise_jarelevalve_amet",
       "evidence": "Tarbijakaitseamet and Tehnilise Jarelevalve Amet merged into Tarbijakaitse ja Tehnilise Jarelevalve Amet on 2019-01-01."
     },
     "veterinaar_ja_toiduamet": {
+      "label": "Veterinaar- ja Toiduamet",
       "canonical": "pollumajandus_ja_toiduamet",
       "evidence": "Veterinaar- ja Toiduamet and Pollumajandusamet merged into Pollumajandus- ja Toiduamet on 2021-01-01."
     },
     "pollumajandusamet": {
+      "label": "Põllumajandusamet",
       "canonical": "pollumajandus_ja_toiduamet",
       "evidence": "Pollumajandusamet merged with Veterinaar- ja Toiduamet into Pollumajandus- ja Toiduamet on 2021-01-01."
     },
     "maanteeamet": {
+      "label": "Maanteeamet",
       "canonical": "transpordiamet",
       "evidence": "Maanteeamet, Lennuamet and Veeteede Amet merged into Transpordiamet on 2021-01-01."
     },
     "lennuamet": {
+      "label": "Lennuamet",
       "canonical": "transpordiamet",
       "evidence": "Lennuamet merged into Transpordiamet on 2021-01-01."
     },
     "keskkonnainspektsioon": {
+      "label": "Keskkonnainspektsioon",
       "canonical": "keskkonnaamet",
       "evidence": "Keskkonnainspektsioon merged into Keskkonnaamet on 2021-01-01."
     }

@@ -321,7 +321,9 @@ class TestSeedSource:
         assert ops[0].opinion_id == "vos-40"
         assert ops[0].law_names == ("Võlaõigusseadus",)
         assert ops[0].date_iso == "2024-03-15"
-        assert ops[0].summary
+        # #719: seed prose is project paraphrase -> editorial_note, never the verbatim body.
+        assert ops[0].summary == ""
+        assert ops[0].editorial_note
         # id derived from the title when absent; DD.MM.YYYY date accepted.
         assert ops[1].opinion_id and ops[1].opinion_id != ""
         assert ops[1].date_iso == "2024-02-01"
@@ -331,7 +333,8 @@ class TestSeedSource:
         ops = load_seed_opinions(ga.SEED_PATH)
         assert ops, "data/annotations/seed_annotations.json should yield opinions"
         for op in ops:
-            assert op.title and op.url and op.law_names and op.summary
+            assert op.title and op.url and op.law_names and op.editorial_note
+            assert op.summary == ""  # the seed carries no verbatim opinion text (#719)
             assert op.date_iso is None or len(op.date_iso) == 10
 
 
@@ -582,8 +585,12 @@ class TestBuildAnnotations:
         res = build_annotations_for_opinion(op, idx)
         assert len(res.annotations) == 1
         assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map"}
-        # The annotationText surfaces the topic tags when there is no PDF-body summary.
-        assert "Raha ja vara" in res.annotations[0]["estleg:annotationText"]
+        # #719: the topic-tag template is project-made -> editorialNote, not annotationText.
+        node = res.annotations[0]
+        assert "Raha ja vara" not in node["estleg:annotationText"]
+        assert "Raha ja vara" in node["estleg:editorialNote"]
+        assert node["estleg:editorialSource"] == ga.EDITORIAL_SOURCE
+        assert node["estleg:isExcerpt"] is True
 
     def test_scrape_opinion_with_no_law_in_title_yields_nothing(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
@@ -775,6 +782,7 @@ def _well_formed_annotation() -> dict:
         "@type": ["owl:NamedIndividual", "estleg:Annotation"],
         "estleg:annotates": {"@id": "estleg:VOS_Map"},
         "estleg:annotationText": "Õiguskantsler selgitas tahteavalduse tõlgendamise põhimõtteid.",
+        "estleg:isExcerpt": False,  # #719: required; the short text is the complete body
         "estleg:annotationType": "interpretation",
         "estleg:annotationSource": "Õiguskantsler",
         "estleg:annotationSourceUrl": {"@value": "https://www.oiguskantsler.ee/x/vos-40", "@type": "xsd:anyURI"},
