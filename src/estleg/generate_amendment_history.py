@@ -40,6 +40,8 @@ Two distinct node kinds land in each chain document:
 
 from __future__ import annotations
 
+import argparse
+import copy
 import hashlib
 import json
 import re
@@ -259,26 +261,112 @@ def collect_versions_by_date(version_doc: dict) -> dict[str, list[str]]:
     return by_date
 
 
-def link_amendments_to_versions(amendment_doc: dict, versions_by_date: dict[str, list[str]]) -> int:
-    """Stamp ``resultedInVersion`` and mint events for missing version dates (#429)."""
+# ``@id`` suffix of an AmendmentEvent minted from the provision version layer
+# by :func:`link_amendments_to_versions` (``..._vf_YYYYMMDD``). RT-derived
+# events use a hash suffix and never match.
+_VERSION_EVENT_ID_RE = re.compile(r"_vf_\d{8}$")
+
+AmendsValue = dict | list[dict]
+
+
+def _node_types(node: dict) -> list:
+    types = node.get("@type") or []
+    return [types] if isinstance(types, str) else types
+
+
+def _is_amendment_event(node: object) -> bool:
+    return isinstance(node, dict) and "estleg:AmendmentEvent" in _node_types(node)
+
+
+def _is_version_layer_event(node: object) -> bool:
+    return _is_amendment_event(node) and bool(
+        _VERSION_EVENT_ID_RE.search(str(node.get("@id") or ""))
+    )
+
+
+def _set_amends(node: dict, amends: AmendsValue) -> None:
+    """Set ``estleg:amends`` right after ``@type`` (RT-derived event key order)."""
+    items = [(k, v) for k, v in node.items() if k != "estleg:amends"]
+    node.clear()
+    inserted = False
+    for key, value in items:
+        node[key] = value
+        if key == "@type":
+            node["estleg:amends"] = amends
+            inserted = True
+    if not inserted:
+        node["estleg:amends"] = amends
+
+
+def amends_value_from_ids(act_ids: list[str]) -> AmendsValue | None:
+    """``estleg:amends`` payload for a chain's act-root IRIs.
+
+    A single ``{"@id": ...}`` for a single-part law, a LIST of them (one per
+    part, issue #327) for a multipart law, ``None`` when nothing resolved.
+    """
+    if not act_ids:
+        return None
+    if len(act_ids) == 1:
+        return {"@id": act_ids[0]}
+    return [{"@id": oid} for oid in act_ids]
+
+
+def act_root_ids_for_members(members: list[tuple[str, dict]]) -> list[str]:
+    """Order-preserving, de-duplicated act-root IRIs of a base_slug group."""
+    ids: list[str] = []
+    for _slug, info in members:
+        node = act_root_node(info["doc"])
+        if node is None:
+            continue
+        onto_id = node.get("@id", "")
+        if onto_id and onto_id not in ids:
+            ids.append(onto_id)
+    return ids
+
+
+def stamp_version_event_amends(amendment_doc: dict, amends_target: AmendsValue) -> int:
+    """Stamp ``estleg:amends`` on version-layer events lacking it (idempotent).
+
+    Only ``_vf_`` AmendmentEvents without an ``estleg:amends`` value are
+    touched; events that already carry one (and every other node) are left
+    exactly as they are. Returns the number of events stamped.
+    """
+    stamped = 0
+    for node in amendment_doc.get("@graph") or []:
+        if _is_version_layer_event(node) and not node.get("estleg:amends"):
+            _set_amends(node, copy.deepcopy(amends_target))
+            stamped += 1
+    return stamped
+
+
+def link_amendments_to_versions(
+    amendment_doc: dict,
+    versions_by_date: dict[str, list[str]],
+    *,
+    amends_target: AmendsValue | None = None,
+) -> int:
+    """Stamp ``resultedInVersion`` and mint events for missing version dates (#429).
+
+    ``amends_target`` is the ``estleg:amends`` payload for the chain's act
+    (see :func:`amends_value_from_ids`). Callers should pass it: a chain with
+    no RT-derived event has no ``amends`` to copy, and minted events without
+    one violate ``AmendmentEventShape`` (``sh:minCount 1``). When omitted it
+    falls back to the first existing event's ``amends`` (shape preserved).
+    """
     graph = amendment_doc.setdefault("@graph", [])
     events_by_date: dict[str, dict] = {}
-    amends: list = []
+    amends: AmendsValue | None = amends_target
     prefix = "Act"
     for node in graph:
         if not isinstance(node, dict):
             continue
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
         nid = node.get("@id") or ""
         if nid.startswith("estleg:AmendmentChain_"):
             prefix = nid.removeprefix("estleg:AmendmentChain_")
-        if "estleg:AmendmentEvent" not in types:
+        if not _is_amendment_event(node):
             continue
         if not amends and node.get("estleg:amends"):
-            raw = node["estleg:amends"]
-            amends = raw if isinstance(raw, list) else [raw]
+            amends = node["estleg:amends"]
         date = _date_literal(node.get("estleg:entryIntoForce")) or _date_literal(
             node.get("estleg:amendmentDate")
         )
@@ -296,8 +384,6 @@ def link_amendments_to_versions(amendment_doc: dict, versions_by_date: dict[str,
                 "estleg:entryIntoForce": make_xsd_date(date),
                 "rdfs:label": f"Muudatus (versioonikiht) {date}",
             }
-            if amends:
-                event["estleg:amends"] = amends
             graph.append(event)
             events_by_date[date] = event
             added += 1
@@ -305,6 +391,8 @@ def link_amendments_to_versions(amendment_doc: dict, versions_by_date: dict[str,
         if event.get("estleg:resultedInVersion") != refs:
             event["estleg:resultedInVersion"] = refs
             linked += 1
+    if amends:
+        stamp_version_event_amends(amendment_doc, amends)
     header = next(
         (
             node
@@ -1423,12 +1511,8 @@ def main() -> int:
         # ``estleg:amends`` payload: a single ``{"@id": ...}`` for a
         # single-part law, or a LIST of ``{"@id": ...}`` (one per part) for a
         # multipart law so each AmendmentEvent points at every amended part.
-        def _amends_value() -> dict | list[dict] | None:
-            if not member_ontology_ids:
-                return None
-            if len(member_ontology_ids) == 1:
-                return {"@id": member_ontology_ids[0]}
-            return [{"@id": oid} for oid in member_ontology_ids]
+        def _amends_value() -> AmendsValue | None:
+            return amends_value_from_ids(member_ontology_ids)
 
         # Compact prefix for the Amendment_/AmendmentChain_/AmendmentLink_
         # IRIs minted below — the law's registered abbreviation, the
@@ -1799,5 +1883,92 @@ def main() -> int:
     return 0
 
 
+def relink_version_events(
+    amendments_dir: Path | None = None,
+    peep_files: list[Path] | None = None,
+    *,
+    dry_run: bool = False,
+) -> dict[str, int]:
+    """Stamp ``estleg:amends`` on version-layer events that lack it (#429 repair).
+
+    Idempotent, offline repair for chain files whose ``_vf_`` events were
+    minted by :func:`link_amendments_to_versions` without an ``amends`` target
+    (chains with no RT-derived event to copy from). For each
+    ``amendments_<base_slug>.json`` the act root(s) are resolved from the law
+    peep(s) grouped by :func:`base_slug_of` (multipart ``_osaN`` parts →
+    list payload, issue #327), exactly as :func:`main` does. Only files that
+    actually change are rewritten; nothing else in them is modified.
+    """
+    amendments_dir = AMENDMENTS_DIR if amendments_dir is None else amendments_dir
+    peeps = iter_peep_files() if peep_files is None else peep_files
+    paths_by_base: dict[str, list[tuple[str, Path]]] = {}
+    for path in peeps:
+        slug = path.stem.replace("_peep", "")
+        paths_by_base.setdefault(base_slug_of(slug), []).append((slug, path))
+
+    stats = {
+        "files_scanned": 0,
+        "files_changed": 0,
+        "events_stamped": 0,
+        "files_unresolved": 0,
+    }
+    prefix = "amendments_"
+    for chain_path in sorted(amendments_dir.glob(f"{prefix}*.json")):
+        stats["files_scanned"] += 1
+        doc = json.loads(chain_path.read_text(encoding="utf-8"))
+        if not any(
+            _is_version_layer_event(n) and not n.get("estleg:amends")
+            for n in doc.get("@graph") or []
+        ):
+            continue
+        base_slug = chain_path.stem[len(prefix):]
+        members = [
+            (slug, {"doc": json.loads(path.read_text(encoding="utf-8"))})
+            for slug, path in sorted(
+                paths_by_base.get(base_slug, []), key=lambda m: _osa_order_key(m[0])
+            )
+        ]
+        target = amends_value_from_ids(act_root_ids_for_members(members))
+        if target is None:
+            stats["files_unresolved"] += 1
+            print(f"  UNRESOLVED act root for {chain_path.name}", file=sys.stderr)
+            continue
+        stamped = stamp_version_event_amends(doc, target)
+        if stamped:
+            stats["files_changed"] += 1
+            stats["events_stamped"] += stamped
+            if not dry_run:
+                save_json(chain_path, doc)
+    return stats
+
+
+def cli(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Build amendment chains (default) or run a targeted repair."
+    )
+    parser.add_argument(
+        "--relink-version-events",
+        action="store_true",
+        help=(
+            "Only stamp estleg:amends on version-layer (_vf_) AmendmentEvents "
+            "lacking it, resolving the act root from the law peep(s). "
+            "Idempotent; does not re-derive chains from RT XML."
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="With --relink-version-events: report counts, write nothing.",
+    )
+    args = parser.parse_args(argv)
+    if args.relink_version_events:
+        stats = relink_version_events(dry_run=args.dry_run)
+        print(json.dumps(stats, indent=2))
+        return 1 if stats["files_unresolved"] else 0
+    if args.dry_run:
+        parser.error("--dry-run requires --relink-version-events")
+    return main()
+
+
 if __name__ == "__main__":
-    main()
+    sys.exit(cli())

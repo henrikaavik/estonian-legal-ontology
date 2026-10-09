@@ -4,6 +4,64 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### 2026-09 public-sector readiness — Tier 1, green the data gates (#676; #702, #705, #709 residues)
+
+- **SHACL value lists and interval semantics.** `ActTemporalShape` admits
+  `contentStatus "repealedBeforeSnapshot"` (#374), `InstitutionShape` admits
+  `institutionType "minister"` (#457), and `ProvisionVersionShape` uses
+  `sh:lessThanOrEquals` for `versionValidFrom`/`versionValidTo` because
+  `versionValidTo` is the inclusive last day (a one-day version has equal
+  dates). `kov` 6 → 0, `sidecars` 203 of 5,046 → 0.
+- **Version-layer amendment events carry `estleg:amends`.**
+  `link_amendments_to_versions` takes the act root explicitly; the new
+  `generate_amendment_history.py --relink-version-events` repaired 4,843
+  events in 178 chain files (multipart laws get the list of part roots).
+  `sidecars` 4,841 → 0.
+- **Annotation IRI identity.** Collision detection runs on the final emitted
+  id and after the #459 collapse; `--dedupe-sidecar-ids` repaired the one
+  collision (two Õiguskantsler opinions under one IRI). `sidecars` 2 → 0.
+- **Legacy OWL modules and deprecated legacy peeps normalised.** New
+  `scripts/normalise_legacy_modules.py` backfills `paragrahv`, `summary`,
+  `partOfAct` on § nodes and types lõiked as `estleg:Subsection`; both
+  OWL-module generators call it before writing. `laws` 1,599 → 0; combined-only
+  gate 210 legacy rows → 0.
+- **Closure stubs satisfy the §-level shapes.** `SHAPE_REQUIRED_CLOSURE_PROPS`
+  covers `estleg:LegalProvision` (`paragrahv`, `summary`, `partOfAct`, with
+  the Subsection waiver), the #520 inverse pass's `estleg:references` is an
+  allowed stub edge, and `_make_closure_stub` resolves requirements over the
+  rolled-up types. Combined-only Seadusloome gate 26,840 → **PASS**.
+- **Abbreviation collisions after transliteration.** `migrate_uris._reserve`
+  keys reservations on the sanitized form; the new `resolve-collisions`
+  sub-command renamed only the yielding law's own files: REÕS keeps `REOS`
+  (riigi_eraoiguslikes… → `REOS_2`), ROS keeps `ROS` (riigi_oigusabi_seadus
+  → `ROS_2`), and the #426 deprecated duplicates `ulikooli` → `UKS_2`,
+  `tsiviilseadustik` → `TsUS_2`, `tsiviilkohtumenetluse` → `TsMS_2`, whose
+  `dcterms:isReplacedBy` records were self-referential. Cross-file `@id`
+  collisions 319 → 0; `laws` MaxCount 3 → 0; `act_expressions_combined.jsonld`
+  in-file duplicates 23 → 0.
+- **Validator rules model the corpus honestly (#702).** Multipart laws
+  (map + `estleg:Part` roots) are accepted structurally; the cross-file
+  duplicate rule distinguishes join assertions from definitions and reports
+  self-referential `isReplacedBy`; Part roots may carry the act's temporal
+  properties; the mtime-based staleness rule is gone (content signals remain,
+  #705); `estleg:references` parity accepts the #520 widening.
+  `validate_all` 123 → **0**.
+- **Controlled vocabulary.** `@type` and SKOS mapping links are arrays
+  everywhere; `citationSource`, `itemNumber`, `provisionRef`,
+  `resultedInVersion`, `rtUrl` are declared (open domains/ranges with
+  `schema:*Includes` hints, `rtUrl` shape-backed); stale fallback
+  `Institution_*` placeholders that real institution files declare are dropped.
+- **Sub-corpus aggregates rebuilt offline (#705).** New
+  `scripts/rebuild_subcorpus_combined.py` assembles `eurlex`, `curia` and
+  `eelnoud` aggregates from schema + peeps deterministically; two DAG steps
+  (`rebuild_curia_combined`, `rebuild_eelnoud_combined`) added, 20 steps in
+  total; the dangling `owl:imports estleg:EURlex_Schema_2026` no longer blocks
+  the Seadusloome load-surface gate's graph closure.
+- **Rebuilt artefacts.** `combined_ontology.jsonld`, `analytical_overlay.jsonld`
+  (0 duplicate ids, header type array), the three sub-corpus aggregates,
+  `act_expressions_combined.jsonld`, `controlled_vocabulary.jsonld`,
+  `docs/DUPLICATE_IDS_REPORT.md`, `docs/VALIDATION_REPORT.md`.
+
 ### 2026-09 public-sector readiness — T-Box axioms (#676, ticket #709, part 1)
 
 Repairs the `rdfs:domain` / `rdfs:range` axioms that manufactured most of the

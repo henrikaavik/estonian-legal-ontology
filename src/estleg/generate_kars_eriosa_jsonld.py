@@ -614,6 +614,14 @@ def main(argv: list[str] | None = None) -> None:
         "@graph": graph,
     }
 
+    # The hand-modelled module's § nodes must satisfy the §-level SHACL
+    # minimums (paragrahv / summary / partOfAct, PR #741) like every other
+    # LegalProvision; backfill them before writing so a regeneration cannot
+    # undo scripts/normalise_legacy_modules.py.
+    from estleg.normalise_legacy_modules import normalise_document
+
+    normalise_document(doc)
+
     out_file = args.out
     out_file.parent.mkdir(parents=True, exist_ok=True)
     out_file.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")

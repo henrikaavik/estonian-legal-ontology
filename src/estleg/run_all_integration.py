@@ -4,7 +4,8 @@ Master orchestration script for the enrichment pipeline and release builds.
 
 This module owns two things:
 
-1. A declarative **step DAG** for the 15 enrichment scripts. Each step
+1. A declarative **step DAG** of 20 steps (enrichment scripts plus the
+   sub-corpus aggregate rebuilds and the release build). Each step
    declares its ``command``, ``depends_on`` (other step names), ``writes``
    (glob patterns it produces under ``krr_outputs/``) and ``reads`` (glob
    patterns it consumes — either produced by an earlier step or a committed
@@ -50,22 +51,29 @@ Execution order (topological — equals the historical phase order):
   Phase 1 — Cross-references
     1.  extract_cross_references.py      (standalone)
     2.  generate_inverse_references.py   (depends on step 1)
-  Phase 2 — EU transposition
+  Phase 2 — EU transposition and sub-corpus aggregates
     3.  generate_transposition_mapping.py (standalone)
-    4.  generate_harmonisation_links.py   (depends on step 3)
+    4.  rebuild_eurlex_combined           (depends on step 3; offline, via
+                                           rebuild_subcorpus_combined.py)
+    5.  link_curia_eu_legislation.py      (depends on step 4)
+    6.  rebuild_curia_combined            (depends on step 5)
+    7.  rebuild_eelnoud_combined          (standalone)
+    8.  generate_harmonisation_links.py   (depends on step 3)
   Phase 3 — Independent enrichment (no ordering constraints among these)
-    5.  extract_court_provision_links.py
-    6.  classify_eurovoc.py
-    7.  extract_temporal_data.py
-    8.  generate_amendment_history.py
-    9.  extract_legal_concepts.py
-    10. classify_deontic.py
-    11. classify_target_group.py
-    12. extract_institutional_competence.py
-    13. extract_sanctions.py
-    14. extract_draft_impact.py
+    9.  extract_court_provision_links.py
+    10. classify_eurovoc.py
+    11. extract_temporal_data.py
+    12. generate_amendment_history.py
+    13. extract_legal_concepts.py
+    14. classify_deontic.py
+    15. classify_target_group.py
+    16. extract_institutional_competence.py
+    17. extract_sanctions.py
+    18. extract_draft_impact.py
   Phase 4 — Aggregation (benefits from all prior data)
-    15. generate_similarity_index.py
+    19. generate_similarity_index.py
+    20. build_release_artifacts.py        (combined_ontology.jsonld + INDEX.json;
+                                           depends on every preceding step)
 
 If a dependency fails, its dependents are automatically skipped.
 
@@ -135,6 +143,11 @@ COMMITTED_INPUTS: tuple[str, ...] = (
     "curia/CURIA_INDEX.json",
     "eurlex/*_peep.json",
     "eurlex/EURLEX_INDEX.json",
+    # Sub-corpus T-Box projections (consolidate_tbox) — sources of the
+    # sub-corpus *_combined.jsonld rebuilds.
+    "eelnoud/eelnoud_schema.json",
+    "curia/curia_schema.json",
+    "eurlex/eurlex_schema.json",
 )
 
 # ---------------------------------------------------------------------------
@@ -205,7 +218,7 @@ STEPS: list[dict] = [
         "script": "generate_eu_legislation.py",
         "args": ["--rebuild-combined-from-peeps"],
         "depends_on": ["generate_transposition_mapping.py"],
-        "reads": ["eurlex/*_peep.json"],
+        "reads": ["eurlex/*_peep.json", "eurlex/eurlex_schema.json"],
         "writes": ["eurlex/eurlex_combined.jsonld"],
     },
     {
@@ -219,6 +232,27 @@ STEPS: list[dict] = [
             "curia/curia_combined.jsonld",
             "curia/curia_eu_link_report.json",
         ],
+    },
+    # Offline sub-corpus aggregate rebuilds: schema + peeps, using the parity
+    # gate's own source definition (validate_all.SUBCORPUS_COMBINED_TARGETS),
+    # so the committed aggregates cannot drift from their sources.
+    {
+        "name": "rebuild_curia_combined",
+        "description": "Rebuild curia_combined.jsonld from schema + peeps",
+        "script": "rebuild_subcorpus_combined.py",
+        "args": ["--subcorpus", "curia"],
+        "depends_on": ["link_curia_eu_legislation.py"],
+        "reads": ["curia/*_peep.json", "curia/curia_schema.json"],
+        "writes": ["curia/curia_combined.jsonld"],
+    },
+    {
+        "name": "rebuild_eelnoud_combined",
+        "description": "Rebuild eelnoud_combined.jsonld from schema + peeps",
+        "script": "rebuild_subcorpus_combined.py",
+        "args": ["--subcorpus", "eelnoud"],
+        "depends_on": [],
+        "reads": ["eelnoud/*_peep.json", "eelnoud/eelnoud_schema.json"],
+        "writes": ["eelnoud/eelnoud_combined.jsonld"],
     },
     {
         "name": "generate_harmonisation_links.py",
@@ -384,6 +418,8 @@ STEPS: list[dict] = [
             "generate_transposition_mapping.py",
             "rebuild_eurlex_combined",
             "link_curia_eu_legislation.py",
+            "rebuild_curia_combined",
+            "rebuild_eelnoud_combined",
             "generate_harmonisation_links.py",
             "extract_court_provision_links.py",
             "classify_eurovoc.py",

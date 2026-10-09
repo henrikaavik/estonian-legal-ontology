@@ -351,6 +351,7 @@ def test_institution_type_has_closed_value_set():
     values = _sh_in_values_for_path(graph, "institutionType")
     assert values == {
         "ministry",
+        "minister",
         "agency",
         "court",
         "local_government",
@@ -367,6 +368,7 @@ def test_act_temporal_shape_constrains_kehtiv_and_content_status():
     assert _sh_in_values_for_path(graph, "contentStatus") == {
         "structuredBody",
         "noStructuredBody",
+        "repealedBeforeSnapshot",
     }
 
 

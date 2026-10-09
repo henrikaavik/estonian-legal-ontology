@@ -481,7 +481,23 @@ SHAPE_REQUIRED_CLOSURE_PROPS: dict[str, tuple[str, ...]] = {
         "estleg:enactedByMunicipality",
         "estleg:titleNormalized",
     ),
-    # KovProvisionShape.
+    # ProvisionRequires{Paragrahv,Summary,PartOfAct}Shape (#709/#741):
+    # `sh:targetClass estleg:LegalProvision` with `sh:or ([sh:class
+    # estleg:Subsection] [sh:path <prop>; sh:minCount 1])`. Every non-lõige
+    # provision stub — state-regulation provisions typed LegalProvision directly,
+    # and KovProvision / `Regulation_<id>` stubs, which the build-time type rollup
+    # (#519) also types LegalProvision — must carry all three. The `sh:or`
+    # Subsection escape is mirrored in SHAPE_REQUIRED_CLOSURE_WAIVERS below.
+    # `paragrahv` / `summary` are leaf literals; `partOfAct` is an IRI edge in
+    # STUB_SEMANTIC_EDGE_PREDICATES (its target is closed by the builder fixpoint).
+    "estleg:LegalProvision": (
+        "estleg:paragrahv",
+        "estleg:summary",
+        "estleg:partOfAct",
+    ),
+    # KovProvisionShape. (KovProvision ⊑ LegalProvision, so a KOV provision stub
+    # also picks up the LegalProvision entry above once its supertypes are
+    # materialised — see fix_all_issues._make_closure_stub.)
     "estleg:KovProvision": (
         "estleg:enactedBy",
         "estleg:enactedByMunicipality",
@@ -496,6 +512,15 @@ SHAPE_REQUIRED_CLOSURE_PROPS: dict[str, tuple[str, ...]] = {
         "estleg:harmonises",
         "estleg:sharedDirective",
     ),
+}
+
+# The `sh:or` escapes of the shapes above: a shaped type's requirement is WAIVED
+# for a node that also carries one of the listed types. The #741 provision trio
+# excuses a lõige (`[sh:class estleg:Subsection]`), so a Subsection stub — which
+# the type rollup also types LegalProvision — stays a lean leaf and does not
+# copy paragrahv/summary/partOfAct. Keep in lock-step with the shapes' `sh:or`.
+SHAPE_REQUIRED_CLOSURE_WAIVERS: dict[str, frozenset[str]] = {
+    "estleg:LegalProvision": frozenset({"estleg:Subsection"}),
 }
 
 # The IRI-valued subset of SHAPE_REQUIRED_CLOSURE_PROPS: the only `estleg:`
@@ -522,6 +547,14 @@ STUB_SEMANTIC_EDGE_PREDICATES: frozenset[str] = frozenset(
         "estleg:interpretsLaw",
         "estleg:transposedBy",
         "estleg:governs",
+        # #520: the forward half of (references, referencedBy). Law peeps carry
+        # `estleg:referencedBy` pointing at regulation provisions that combined
+        # only holds as stubs (e.g. haldusmenetluse_seadus_Par_8 referencedBy
+        # Reg_1048944_Par_1), and materialize_combined_inverses re-asserts the
+        # forward `estleg:references` onto the stub. The edge is closed by
+        # construction: the inverse pass mints it only from a node already
+        # present in combined, so its target can never dangle.
+        "estleg:references",
     }
 )
 
@@ -533,13 +566,20 @@ def required_closure_props(node_type: object) -> tuple[str, ...]:
     the order-preserving, de-duplicated union of
     :data:`SHAPE_REQUIRED_CLOSURE_PROPS` entries for every shaped type present.
     A node typed by several shaped classes (e.g. ``MinisterialRegulation`` +
-    ``NationalRegulation``) accumulates all their requirements.
+    ``NationalRegulation``) accumulates all their requirements. A type whose
+    shape's ``sh:or`` escape is met (:data:`SHAPE_REQUIRED_CLOSURE_WAIVERS`, e.g.
+    a ``Subsection`` that is also a ``LegalProvision``) contributes nothing.
+    Lookup is on the ASSERTED types only; callers that need the RDFS-entailed
+    supertypes (as combined materialises them, #519) must expand them first.
     """
     if node_type is None:
         return ()
     types = node_type if isinstance(node_type, list) else [node_type]
     out: list[str] = []
     for type_iri in types:
+        waivers = SHAPE_REQUIRED_CLOSURE_WAIVERS.get(type_iri)
+        if waivers and any(t in waivers for t in types):
+            continue
         for prop in SHAPE_REQUIRED_CLOSURE_PROPS.get(type_iri, ()):
             if prop not in out:
                 out.append(prop)

@@ -239,7 +239,7 @@ def build_analytical_overlay(
     graph: list[dict] = [
         {
             "@id": "estleg:AnalyticalOverlay",
-            "@type": "owl:Ontology",
+            "@type": ["owl:Ontology"],
             "owl:versionInfo": BUILD_EVALUATION_DATE,
             "rdfs:comment": (
                 "Joinable analytical overlay (#521): inboundCitationCount / "
