@@ -580,7 +580,9 @@ def fetch_year(year: int) -> list[dict]:
     first_page = _get_search_page({"aasta": year, "pageSize": PAGE_SIZE})
 
     total_match = re.search(r"Tulemusi leiti kokku:\s*(\d+)", first_page)
-    total = int(total_match.group(1)) if total_match else 0
+    if total_match is None:
+        raise PartialYearError(f"rikos year {year}: search result count is missing")
+    total = int(total_match.group(1))
 
     if total == 0:
         return []
@@ -600,6 +602,10 @@ def fetch_year(year: int) -> list[dict]:
         if page % 5 == 0:
             print(f"    Page {page}/{total_pages} ({len(all_decisions)} so far)")
 
+    if len(all_decisions) != total:
+        raise PartialYearError(
+            f"rikos year {year}: parsed {len(all_decisions)} of {total} advertised decisions"
+        )
     return all_decisions
 
 
