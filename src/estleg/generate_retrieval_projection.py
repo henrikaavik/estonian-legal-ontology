@@ -74,8 +74,10 @@ import re
 import shutil
 import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
@@ -161,7 +163,7 @@ CHUNK_FIELD_DOCS: dict[str, tuple[str, str]] = {
     "rt_url": ("string or null", "Version sidecar `estleg:rtUrl` (redaction page), else act `dcterms:source`; `.xml` stripped; `#para<N>[b<k>]` anchor."),
     "valid_from": ("date or null", "`estleg:versionValidFrom`; act `kehtiv` for consolidated text."),
     "valid_to": ("date or null", "`estleg:versionValidTo`; null = open-ended."),
-    "in_force": ("boolean", "Validity window contains `evaluation_date` (consolidated: act `estleg:temporalStatus`)."),
+    "in_force": ("boolean", "Validity window contains `evaluation_date`; consolidated text also requires act `estleg:temporalStatus` to be in force."),
     "kehtiv": ("date or null", "Act root `estleg:kehtiv`: consolidation date of the act snapshot."),
     "evaluation_date": ("date", "Pinned `ESTLEG_BUILD_EVALUATION_DATE` that `in_force` was computed against."),
     "ontology_version": ("string", "`ONTOLOGY_VERSION` of the build (release tag `v<version>`)."),
@@ -197,13 +199,23 @@ _SUPERSCRIPT_DIGITS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
 # ---------------------------------------------------------------------------
 # Small JSON-LD accessors (kept local + pure for unit testing)
 # ---------------------------------------------------------------------------
-def _load_json(path: Path) -> Any | None:
+def _load_json(path: Path, *, required: bool = False) -> Any | None:
     """Load JSON from ``path``; return ``None`` on a missing/corrupt file."""
     try:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
-    except (OSError, ValueError):
+    except (OSError, ValueError) as exc:
+        if required:
+            raise ValueError(f"Cannot read retrieval input {path}: {exc}") from exc
         return None
+
+
+def _load_graph_json(path: Path) -> Any:
+    doc = _load_json(path, required=True)
+    graph = doc.get("@graph") if isinstance(doc, dict) else doc
+    if not isinstance(graph, list) or not all(isinstance(node, dict) for node in graph):
+        raise ValueError(f"Invalid retrieval graph input: {path}")
+    return doc
 
 
 def _graph(doc: Any) -> list[dict]:
@@ -256,6 +268,21 @@ def _strip_xml(url: str | None) -> str | None:
     return url
 
 
+def _rt_browse_url(url: str | None) -> str | None:
+    if not url:
+        return None
+    try:
+        parts = urlsplit(url)
+        host = (parts.hostname or "").lower()
+        if parts.scheme not in {"http", "https"} or not (
+            host == "riigiteataja.ee" or host.endswith(".riigiteataja.ee")
+        ):
+            return None
+    except ValueError:
+        return None
+    return urlunsplit(parts._replace(path=parts.path.removesuffix(".xml"), fragment=""))
+
+
 # ---------------------------------------------------------------------------
 # Act-root resolution (title / rt_url / kehtiv / abbreviation / status)
 # ---------------------------------------------------------------------------
@@ -290,14 +317,13 @@ def act_rt_url(root: dict | None) -> str | None:
     if not root:
         return None
     for key in ("dcterms:source", "owl:sameAs"):
-        ref = _ref_id(root.get(key))
-        if ref and ref.startswith("http"):
-            return _strip_xml(ref)
+        for ref in _ref_ids(root.get(key)):
+            url = _rt_browse_url(ref)
+            if url:
+                return url
     # Legacy dc:source may itself be a URL.
     legacy = jsonld_text(root.get("dc:source"))
-    if legacy.startswith("http"):
-        return _strip_xml(legacy)
-    return None
+    return _rt_browse_url(legacy)
 
 
 def act_kehtiv(root: dict | None) -> str | None:
@@ -424,9 +450,7 @@ def load_version_map(versions_dir: Path) -> dict[str, list[dict]]:
     if not versions_dir.is_dir():
         return out
     for path in sorted(versions_dir.glob("*.jsonld")):
-        doc = _load_json(path)
-        if doc is None:
-            continue
+        doc = _load_graph_json(path)
         for node in _graph(doc):
             record = _version_record(node)
             if record is None:
@@ -491,7 +515,7 @@ def provision_rt_url(
     when it is an http(s) URL, else the act browse URL. A ``#para<N>[b<k>]``
     fragment is appended when the § number parses; otherwise the bare base.
     """
-    base = redaction_url if redaction_url and redaction_url.startswith("http") else act_url
+    base = _rt_browse_url(redaction_url) or _rt_browse_url(act_url)
     if not base:
         return None
     base = base.split("#", 1)[0]
@@ -886,7 +910,7 @@ def process_law_file(
                     rt_url=provision_rt_url(None, rt_url, paragraph),
                     valid_from=kehtiv,
                     valid_to=None,
-                    in_force=act_active,
+                    in_force=act_active and compute_in_force(kehtiv, None, eval_date),
                     text=consolidated_text,
                     max_chars=max_chars,
                     **envelope,
@@ -987,12 +1011,12 @@ def build_context_pack(
 # ---------------------------------------------------------------------------
 def iter_index_laws(krr_dir: Path) -> list[dict]:
     """Return the INDEX ``laws`` entries (sorted by ``name``), or ``[]``."""
-    doc = _load_json(krr_dir / "INDEX.json")
+    doc = _load_json(krr_dir / "INDEX.json", required=True)
     if not isinstance(doc, dict):
-        return []
+        raise ValueError("Retrieval INDEX must be an object")
     laws = doc.get("laws")
     if not isinstance(laws, list):
-        return []
+        raise ValueError("Retrieval INDEX must contain a laws list")
     return sorted(
         (law for law in laws if isinstance(law, dict) and law.get("name")),
         key=lambda law: law["name"],
@@ -1241,6 +1265,10 @@ def generate(
     whose text is longer than that many characters into sentence-bounded
     parts (see :func:`split_text`).
     """
+    try:
+        eval_date = date.fromisoformat(eval_date).isoformat()
+    except (ValueError, TypeError) as exc:
+        raise ValueError("--evaluation-date must be an ISO calendar date") from exc
     if max_chars is not None and max_chars < MIN_MAX_CHARS:
         raise ValueError(
             f"--max-chars must be at least {MIN_MAX_CHARS} (got {max_chars})"
@@ -1314,6 +1342,7 @@ def generate(
     sample_outline: dict | None = None
     sample_context: dict | None = None
     first_acc: _LawAccumulator | None = None
+    seen_chunk_ids: set[str] = set()
 
     with open(chunks_tmp, "w", encoding="utf-8") as chunks_fh:
         for law in laws:
@@ -1329,9 +1358,7 @@ def generate(
             acc = _LawAccumulator(law_name)
             deprecated = False
             for filename in files:
-                doc = _load_json(krr_dir / filename)
-                if doc is None:
-                    continue
+                doc = _load_graph_json(krr_dir / filename)
                 is_dep, _ = act_deprecation(doc)
                 if is_dep:
                     deprecated = True
@@ -1353,6 +1380,9 @@ def generate(
 
             stats["laws"] += 1
             for record in acc.chunks:
+                if record["chunk_id"] in seen_chunk_ids:
+                    raise ValueError(f"duplicate chunk id: {record['chunk_id']}")
+                seen_chunk_ids.add(record["chunk_id"])
                 line = json.dumps(record, ensure_ascii=False)
                 chunks_fh.write(line + "\n")
                 # version/consolidated count provision-version UNITS (a split
