@@ -45,6 +45,7 @@ from pathlib import Path
 
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
+    FETCH_HASH_FILENAME,
     KRR_DIR,
     REPO_ROOT,
     act_root_node,
@@ -211,6 +212,26 @@ def write_asserted(path: Path, iris: list[str]) -> bool:
     return True
 
 
+def _root_global_id(path: Path) -> str:
+    """The act root's ``estleg:globalId`` (the redaction it was built from)."""
+    root = act_root_node(_load_json(path)) or {}
+    return str(root.get("estleg:globalId") or "")
+
+
+def attested_cache_global_ids(krr_dir: Path = KRR_DIR) -> dict[str, str]:
+    """Cached XML basename → the ``globalId`` ``fetch_content_hashes.json``
+    attests for it. Some RT XML carries a UUID ``globaalID`` while the API
+    (and so the peep root) uses the numeric id; the attestation bridges it."""
+    path = krr_dir / FETCH_HASH_FILENAME
+    if not path.exists():
+        return {}
+    out: dict[str, str] = {}
+    for row in _load_json(path).values():
+        if isinstance(row, dict) and row.get("cacheFile") and row.get("globalId"):
+            out[Path(str(row["cacheFile"])).name] = str(row["globalId"])
+    return out
+
+
 def _iter_xml(paths: Iterable[Path]) -> list[Path]:
     out: list[Path] = []
     for path in paths:
@@ -231,10 +252,12 @@ def apply_ntm(
     laws = law_files_by_name(krr_dir)
     regulations = regulation_files_by_tid(krr_dir / "regulations" / "riik")
     known = directive_iris(krr_dir / "eurlex" / "eurlex_directives_peep.json")
+    attested = attested_cache_global_ids(krr_dir)
     stats = {
         "xml_files": 0,
         "xml_with_ntm": 0,
         "xml_unresolved": [],
+        "xml_other_redaction": [],
         "files_changed": 0,
         "directives_not_in_eurlex": [],
     }
@@ -251,6 +274,17 @@ def apply_ntm(
         if not files:
             stats["xml_unresolved"].append(xml_path.name)
             continue
+        # A stale cached redaction (e.g. ``<slug>.xml`` beside the current
+        # ``<slug>__tid<N>.xml``) resolves to the same peeps by stem; only
+        # the XML whose globaalID matches the root's estleg:globalId may
+        # write, so the result never depends on file iteration order and
+        # every part of a multipart act gets the same redaction's set.
+        if parsed["global_id"]:
+            accepted = {"", parsed["global_id"], attested.get(xml_path.name, "")}
+            files = [rel for rel in files if _root_global_id(krr_dir / rel) in accepted]
+            if not files:
+                stats["xml_other_redaction"].append(xml_path.name)
+                continue
         iris = []
         for celex in parsed["celexes"]:
             if celex in known:

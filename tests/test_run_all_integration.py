@@ -1048,3 +1048,60 @@ def test_resume_precondition_flags_missing_distinctive_writes(
     (krr / "reports").mkdir()
     (krr / "reports" / "cross_references_report.json").write_text("{}", encoding="utf-8")
     assert run_all_integration._missing_resume_writes(step) == []
+
+
+@pytest.mark.parametrize("parallel", [1, 2])
+def test_resume_does_not_fail_a_skipped_ingest_for_missing_writes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, parallel: int
+) -> None:
+    """A pre-resume ingest step is ``skipped_ingest``, never a failed precondition.
+
+    Without ``--with-ingest`` an ingest step is not run even outside resume
+    mode (its committed outputs stand in), so a declared write it never
+    produced on this checkout must not block every dependent with
+    ``resume_precondition_failed`` (wave-6 DAG run: steps 27-35 were skipped
+    behind ``generate_provision_versions_regulations``).
+    """
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    for n in ("s1.py", "s2.py", "s3.py"):
+        (scripts / n).write_text("# stub\n", encoding="utf-8")
+    krr = tmp_path / "krr_outputs"
+    manifest_dir = krr / "reports" / "integration"
+    manifest_dir.mkdir(parents=True)
+    # s2's distinctive write exists (a committed enrichment output); the
+    # ingest step's declared report does not.
+    (krr / "a").mkdir()
+    (krr / "a" / "x.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(run_all_integration, "SCRIPTS_DIR", scripts, raising=True)
+    monkeypatch.setattr(run_all_integration, "MANIFEST_DIR", manifest_dir, raising=True)
+    monkeypatch.setattr(run_all_integration, "REPO_ROOT", tmp_path, raising=True)
+    monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+
+    def fake_run(cmd, **kwargs):
+        stdout = kwargs.get("stdout")
+        if stdout is not None and hasattr(stdout, "write"):
+            stdout.write("out\n")
+        return subprocess.CompletedProcess(args=cmd, returncode=0)
+
+    monkeypatch.setattr(run_all_integration.subprocess, "run", fake_run)
+
+    steps = [
+        {"name": "s1.py", "description": "ingest", "script": "s1.py",
+         "tier": run_all_integration.TIER_INGEST, "depends_on": [],
+         "reads": [], "writes": ["reports/never_committed.json"]},
+        {"name": "s2.py", "description": "enrich", "script": "s2.py",
+         "depends_on": ["s1.py"], "reads": [], "writes": ["a/*.json"]},
+        {"name": "s3.py", "description": "build", "script": "s3.py",
+         "depends_on": ["s2.py"], "reads": [], "writes": ["b/*.json"]},
+    ]
+    topo = run_all_integration.validate_dag(steps, ())
+    res = run_all_integration.run_dag(
+        steps, topo, dry_run=False, resume_from="s3.py",
+        validate_each=False, per_script_timeout=30, parallel=parallel,
+    )
+    statuses = {e["name"]: e["status"] for e in res["ledger"]}
+    assert statuses["s1.py"] == "skipped_ingest"
+    assert statuses["s2.py"] == "skipped_before_resume_point"
+    assert statuses["s3.py"] == "succeeded"
+    assert res["failed"] == set()

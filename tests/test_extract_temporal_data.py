@@ -145,6 +145,18 @@ class TestTemporalStatusEvaluationDate:
 
         temporal = {"valid_until": "2026-05-15"}
 
+        # ``valid_until`` is RT ``kehtivuseLopp``, the last valid day
+        # (inclusive: year-end acts carry ``2026-12-31``), so the act is still
+        # in force on that day and repealed from the next one.
+        assert determine_temporal_status(temporal, evaluation_date="2026-05-14") == "inForce"
+        assert determine_temporal_status(temporal, evaluation_date="2026-05-15") == "inForce"
+        assert determine_temporal_status(temporal, evaluation_date="2026-05-16") == "repealed"
+
+    def test_invalidation_date_is_first_invalid_day(self):
+        from estleg.extract_temporal_data import determine_temporal_status
+
+        temporal = {"invalidation_date": "2026-05-15"}
+
         assert determine_temporal_status(temporal, evaluation_date="2026-05-14") == "inForce"
         assert determine_temporal_status(temporal, evaluation_date="2026-05-15") == "repealed"
 
@@ -560,8 +572,9 @@ class TestDetermineTemporalStatusDateComparison:
         assert determine_temporal_status(
             temporal, evaluation_date="2024-05-14"
         ) == "inForce"
+        # kehtivuseLopp is inclusive: repealed from the following day.
         assert determine_temporal_status(
-            temporal, evaluation_date="2024-05-15"
+            temporal, evaluation_date="2024-05-16"
         ) == "repealed"
 
     def test_invalidation_date_repealed(self):
@@ -716,6 +729,73 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
         ont = next(n for n in doc["@graph"]
                    if "owl:Ontology" in (n.get("@type") or []))
         assert ont.get("estleg:temporalStatus") == "repealed"
+
+
+class TestPeepDateFallbackWithoutXml:
+    """Wave-6 refresh: a regulation that dropped out of the RT ``kehtiv``
+    snapshot has no cached XML and no INDEX row. Its act node's own
+    RT-sourced dates must drive the status instead of being wiped.
+    """
+
+    def _run(self, tmp_path, monkeypatch, act_node: dict, evaluation_date: str):
+        from estleg import estleg_common
+        from estleg import extract_temporal_data as mod
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        (krr / "reports" / "kov").mkdir(parents=True)
+        rt.mkdir(parents=True)
+        (krr / "INDEX.json").write_text(json.dumps({"laws": []}), encoding="utf-8")
+        peep = krr / "regulations" / "kov" / "x_vallavolikogu" / "kohanime_t1027545_peep.json"
+        peep.parent.mkdir(parents=True)
+        stray = {
+            "@id": "estleg:Reg_1027545_Par_1",
+            "@type": ["estleg:LegalProvision"],
+            "estleg:temporalStatus": "inForce",
+        }
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://w3id.org/estleg/"},
+            "@graph": [act_node, stray],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        if hasattr(mod, "REPO_ROOT"):
+            monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        assert mod.main(evaluation_date=evaluation_date) in (None, 0)
+        return json.loads(peep.read_text(encoding="utf-8"))["@graph"]
+
+    def test_repealed_act_keeps_dates_and_status(self, tmp_path, monkeypatch):
+        act = {
+            "@id": "estleg:Reg_1027545_Map",
+            "@type": ["owl:Ontology", "estleg:Act"],
+            "estleg:entryIntoForce": {"@value": "2015-01-02", "@type": "xsd:date"},
+            "estleg:repealDate": {"@value": "2026-05-04", "@type": "xsd:date"},
+            "estleg:publicationDate": {"@value": "2014-12-30", "@type": "xsd:date"},
+            "estleg:temporalStatus": "repealed",
+        }
+        graph = self._run(tmp_path, monkeypatch, act, "2026-10-09")
+        root, stray = graph
+        assert root["estleg:temporalStatus"] == "repealed"
+        assert root["estleg:repealDate"]["@value"] == "2026-05-04"
+        assert root["estleg:entryIntoForce"]["@value"] == "2015-01-02"
+        assert root["estleg:publicationDate"]["@value"] == "2014-12-30"
+        # Non-act nodes are still scrubbed (#128).
+        assert "estleg:temporalStatus" not in stray
+
+    def test_status_is_rederived_against_evaluation_date(self, tmp_path, monkeypatch):
+        act = {
+            "@id": "estleg:Reg_1_Map",
+            "@type": ["owl:Ontology", "estleg:Act"],
+            "estleg:entryIntoForce": {"@value": "2026-07-01", "@type": "xsd:date"},
+            "estleg:temporalStatus": "notYetEffective",
+        }
+        graph = self._run(tmp_path, monkeypatch, act, "2026-10-09")
+        assert graph[0]["estleg:temporalStatus"] == "inForce"
+
+    def test_act_without_dates_still_unknown(self, tmp_path, monkeypatch):
+        act = {"@id": "estleg:Reg_2_Map", "@type": ["owl:Ontology", "estleg:Act"]}
+        graph = self._run(tmp_path, monkeypatch, act, "2026-10-09")
+        assert "estleg:temporalStatus" not in graph[0]
 
 
 class TestActLevelPlacement:

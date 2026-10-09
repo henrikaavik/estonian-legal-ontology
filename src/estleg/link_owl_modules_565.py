@@ -146,6 +146,35 @@ def add_same_as(node: dict, target: dict) -> bool:
     return True
 
 
+def prune_stale_same_as(node: dict, canonical: set[str]) -> int:
+    """Drop ``owl:sameAs`` bridges whose canonical provision no longer exists.
+
+    A Riigi Teataja refresh can remove a § from the canonical peep (KarS
+    §§ 284-286 left the 2026-10-09 consolidation); the module's bridge would
+    then dangle and break graph closure. Only ``estleg:`` targets are judged;
+    foreign ``owl:sameAs`` values are kept. Returns the number removed.
+    """
+    existing = node.get("owl:sameAs")
+    if not existing:
+        return 0
+    items = existing if isinstance(existing, list) else [existing]
+    kept, removed = [], 0
+    for item in items:
+        target = item.get("@id") if isinstance(item, dict) else item
+        if isinstance(target, str) and target.startswith("estleg:") and target[len("estleg:"):] not in canonical:
+            removed += 1
+            continue
+        kept.append(item)
+    if removed:
+        if not kept:
+            del node["owl:sameAs"]
+        elif len(kept) == 1:
+            node["owl:sameAs"] = kept[0]
+        else:
+            node["owl:sameAs"] = kept
+    return removed
+
+
 def _load_jsonld(path: Path) -> dict | None:
     """Load a JSON-LD document; return ``None`` for LFS pointers / unparseable files.
 
@@ -193,6 +222,7 @@ def _new_stats() -> dict:
         "sameas_added": 0,
         "already_linked": 0,
         "unmatched": 0,
+        "sameas_pruned": 0,
         "unmatched_sample": [],
     }
 
@@ -213,6 +243,7 @@ def link_module(path: Path, canonical: set[str]) -> tuple[dict | None, dict]:
         if not isinstance(node, dict) or not is_section(node):
             continue
         stats["sections_scanned"] += 1
+        stats["sameas_pruned"] += prune_stale_same_as(node, canonical)
         frag = local_fragment(node.get("@id"))
         canonical_frag = map_to_canonical(frag, canonical) if frag else None
         if canonical_frag is None:
@@ -272,7 +303,8 @@ def main(argv: list[str] | None = None) -> int:
         sample = ", ".join(stats["unmatched_sample"])
         suffix = f"   e.g. {sample}" if sample else ""
         print(f"    Unmatched        : {stats['unmatched']}{suffix}")
-        if write and stats["sameas_added"]:
+        print(f"    Stale pruned     : {stats['sameas_pruned']}")
+        if write and (stats["sameas_added"] or stats["sameas_pruned"]):
             save_json(path, doc)
 
     print(f"\n  Total owl:sameAs {'added' if write else 'to add'}: {total_added}")

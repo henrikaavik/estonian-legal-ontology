@@ -78,9 +78,11 @@ def test_coverage_report_processed_plus_skipped_equals_input():
     doc = json.loads(path.read_text(encoding="utf-8"))
     assert doc["files_processed"] + doc["files_skipped"] == doc["input_files_total"]
     assert "unclassified" not in doc.get("skip_reasons", {})
-    # Pinned to the 2026-10-08 #699 rerun (cap 3, density floor, gated 527);
-    # re-pin whenever classify_eurovoc is rerun over a changed peep set.
-    assert doc["files_with_no_output"] == 2430
+    # Pinned to the 2026-10-09 wave-6 rerun over the refreshed peep set
+    # (16,938 inputs, up from 16,066; the 2026-10-08 #699 pin was 2,430 of
+    # 16,017 processed). Re-pin whenever classify_eurovoc is rerun over a
+    # changed peep set.
+    assert doc["files_with_no_output"] == 2473
     assert doc["files_skipped"] == 49
 
 

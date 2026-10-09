@@ -1,73 +1,76 @@
-# generate_harmonisation_links.py started 2026-06-02T19:00:12.528622+00:00
+# generate_harmonisation_links.py started 2026-10-09T10:25:00.144628+00:00
 ============================================================
-Generate harmonisation links: Estonian laws ↔ neighboring EU states
+Generate comparative NIM measures for LV/LT/FI/SE (not Estonian article-level transposition)
 Target countries: Latvia (LVA), Lithuania (LTU), Finland (FIN), Sweden (SWE)
 Endpoint: https://publications.europa.eu/webapi/rdf/sparql
 ============================================================
 
 --- Clearing existing harmonisation data ---
-  Cleared harmonisedWith from 115 files
-  Cleared 159 old files from harmonisation_by_directive/
+  Cleared harmonisedWith from 172 files
+  Cleared 187 old files from harmonisation_by_directive/
 
 --- Loading transposition mapping ---
-  transposition_mapping.json generated: 2026-06-01 (1d ago)
-  Transposition mappings loaded: 300
-  Unique directives to query: 206
+  transposition_mapping.json generated: 2026-06-01 (0d behind build snapshot 2026-06-01)
+  Transposition mappings loaded: 367
+  Unique directives to query: 235
 
 --- Generating harmonisation schema ---
   Saved: harmonisation_schema.json
 
---- Querying EUR-Lex for parallel transpositions ---
-  Processing directive 1/206: 31990L0314
-  Processing directive 10/206: 32000L0059
-  Processing directive 20/206: 32003L0098
-  Processing directive 30/206: 32006L0050
-  Processing directive 40/206: 32007L0043
-  Processing directive 50/206: 32007L0070
-  Processing directive 60/206: 32008L0051
-  Processing directive 70/206: 32008L0079
-  Processing directive 80/206: 32008L0110
-  Processing directive 90/206: 32009L0017
-  Processing directive 100/206: 32009L0044
-  Processing directive 110/206: 32009L0084
-  Processing directive 120/206: 32009L0094
-  Processing directive 130/206: 32009L0125
-  Processing directive 140/206: 32009L0162
-  Processing directive 150/206: 32010L0024
-  Processing directive 160/206: 32010L0072
-  Processing directive 170/206: 32011L0013
-  Processing directive 180/206: 32011L0081
-  Processing directive 190/206: 32012L0041
-  Processing directive 200/206: 32013L0032
+--- Querying EUR-Lex for neighbour-state NIM measures (LV/LT/FI/SE) ---
+  Processing directive 1/235: 31987L0372
+  Processing directive 10/235: 31999L0031
+  Processing directive 20/235: 32002L0096
+  Processing directive 30/235: 32005L0065
+  Processing directive 40/235: 32006L0112
+  Processing directive 50/235: 32007L0043
+  Processing directive 60/235: 32007L0070
+  Processing directive 70/235: 32008L0051
+  Processing directive 80/235: 32008L0079
+  Processing directive 90/235: 32008L0110
+  Processing directive 100/235: 32009L0015
+  Processing directive 110/235: 32009L0038
+  Processing directive 120/235: 32009L0073
+  Processing directive 130/235: 32009L0091
+  Processing directive 140/235: 32009L0110
+  Processing directive 150/235: 32009L0141
+  Processing directive 160/235: 32010L0008
+  Processing directive 170/235: 32010L0036
+  Processing directive 180/235: 32010L0061
+  Processing directive 190/235: 32010L0088
+  Processing directive 200/235: 32011L0066
+  Processing directive 210/235: 32012L0003
+  Processing directive 220/235: 32012L0043
+  Processing directive 230/235: 32013L0033
 
-  Directives queried: 206
-  Directives with parallel measures: 158
-  Total parallel measures found: 2594
-  Cache hits: 206/206
+  Directives queried: 235
+  Directives with parallel measures: 187
+  Total parallel measures found: 2798
+  Cache hits: 235/235
   Query errors: 0
 
 --- Updating Estonian law files with harmonisation links ---
-  Law files updated: 122
+  Law files updated: 153
 
 --- Generating harmonisation report ---
   Saved: harmonisation_report.json
 
 ============================================================
 Harmonisation linking complete!
-  Directives queried:             206
-  Directives with parallels:      158
-  Total parallel measures:        2594
+  Directives queried:             235
+  Directives with parallels:      187
+  Total parallel measures:        2798
   Query errors:                   0
-  Law files updated:              122
+  Law files updated:              153
 
   Measures by country:
-    Lithuania            (LTU):  799
-    Finland              (FIN):  697
-    Sweden               (SWE):  630
-    Latvia               (LVA):  468
+    Lithuania            (LTU):  867
+    Finland              (FIN):  762
+    Sweden               (SWE):  658
+    Latvia               (LVA):  511
 
 Outputs:
   krr_outputs/harmonisation/harmonisation_report.json
   krr_outputs/harmonisation/harmonisation_schema.json
-  krr_outputs/harmonisation/harmonisation_by_directive/ (158 files)
+  krr_outputs/harmonisation/harmonisation_by_directive/ (187 files)
 ============================================================

@@ -577,3 +577,199 @@ def test_cache_path_changes_with_target_countries(monkeypatch):
     )
     after = harmonisation._cache_path_for(celex)
     assert before != after
+
+
+# ---------------------------------------------------------------------------
+# #711: regulation anchors (riik + kov) receive the act -> link forward edge
+# ---------------------------------------------------------------------------
+
+
+def _reg_peep(tid: str, *, extra: dict | None = None) -> dict:
+    root = {
+        "@id": f"estleg:Reg_{tid}_Map",
+        "@type": ["estleg:Act", "estleg:MinisterialRegulation", "estleg:NationalRegulation"],
+        "rdfs:label": f"Regulation {tid}",
+    }
+    root.update(extra or {})
+    return {
+        "@graph": [
+            root,
+            {
+                "@id": f"estleg:Reg_{tid}_Par_1",
+                "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                "estleg:partOfAct": {"@id": f"estleg:Reg_{tid}_Map"},
+            },
+        ]
+    }
+
+
+def _write(path: Path, doc: dict) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
+def _harm_fixture(tmp_path: Path) -> Path:
+    """A tmp krr_outputs/ with one law, one riik and one kov regulation anchor.
+
+    The kov mapping row records the path WITHOUT the issuer directory (stale /
+    flattened), so the step must re-resolve it by its _t<tid> suffix. The kov
+    root also carries a stale harmonisedWith that the clearing sweep must drop.
+    """
+    krr = tmp_path / "krr_outputs"
+    _write(
+        krr / "law_a_peep.json",
+        {"@graph": [{"@id": "estleg:law_a_Map", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]}]},
+    )
+    _write(krr / "regulations" / "riik" / "riik_reg_t1001_peep.json", _reg_peep("1001"))
+    _write(
+        krr / "regulations" / "kov" / "x_vallavolikogu" / "kov_reg_t2002_peep.json",
+        _reg_peep(
+            "2002",
+            extra={"estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_STALE"}]},
+        ),
+    )
+    mapping = {
+        "generated": harmonisation.BUILD_EVALUATION_DATE,
+        "mappings": [
+            {
+                "directive_celex": "32000L0001",
+                "directive_iri": "estleg:EU_32000L0001",
+                "matched_law_name": "law_a",
+                "matched_source_act": "Law A",
+                "matched_act_kind": "law",
+                "law_files": ["law_a_peep.json"],
+            },
+            {
+                "directive_celex": "32000L0002",
+                "directive_iri": "estleg:EU_32000L0002",
+                "matched_law_name": "riik_reg_t1001",
+                "matched_source_act": "Riik reg",
+                "matched_act_kind": "regulation",
+                "law_files": ["regulations/riik/riik_reg_t1001_peep.json"],
+            },
+            {
+                "directive_celex": "32000L0003",
+                "directive_iri": "estleg:EU_32000L0003",
+                "matched_law_name": "kov_reg_t2002",
+                "matched_source_act": "KOV reg",
+                "matched_act_kind": "regulation",
+                "law_files": ["regulations/kov/kov_reg_t2002_peep.json"],
+            },
+        ],
+    }
+    _write(krr / "reports" / "transposition_mapping.json", mapping)
+    return krr
+
+
+def _patch_step(monkeypatch, krr: Path) -> None:
+    harm_dir = krr / "harmonisation"
+    monkeypatch.setattr(harmonisation, "REPO_ROOT", krr.parent)
+    monkeypatch.setattr(harmonisation, "CACHE_DIR", krr.parent / ".cache" / "harmonisation")
+    monkeypatch.setattr(harmonisation, "KRR_DIR", krr)
+    monkeypatch.setattr(harmonisation, "HARMONISATION_DIR", harm_dir)
+    monkeypatch.setattr(harmonisation, "BY_DIRECTIVE_DIR", harm_dir / "harmonisation_by_directive")
+    monkeypatch.setattr(harmonisation, "RATE_DELAY", 0)
+
+    def fake_iter_peep_files(*, include_kov: bool = True, **_kw) -> list[Path]:
+        files = list(krr.glob("*_peep.json")) + list((krr / "regulations" / "riik").glob("*_peep.json"))
+        if include_kov:
+            files += list((krr / "regulations" / "kov").rglob("*_peep.json"))
+        return sorted(files)
+
+    monkeypatch.setattr(harmonisation, "iter_peep_files", fake_iter_peep_files)
+    monkeypatch.setattr(
+        harmonisation,
+        "fetch_other_transpositions",
+        lambda celex, use_cache=True: [
+            {
+                "country_code": "LVA",
+                "country_en": "Latvia",
+                "country_et": "Läti",
+                "celex_nat": f"7{celex}LVA_1",
+            }
+        ],
+    )
+    monkeypatch.setattr("sys.argv", ["generate_harmonisation_links.py", "--no-cache"])
+
+
+def _root_hw(path: Path) -> list[str]:
+    root = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
+    return [ref["@id"] for ref in root.get("estleg:harmonisedWith", [])]
+
+
+def test_resolve_harmonisation_file_law_riik_and_stale_kov(tmp_path):
+    krr = _harm_fixture(tmp_path)
+    assert harmonisation.resolve_harmonisation_file("law_a_peep.json", krr) == krr / "law_a_peep.json"
+    riik = krr / "regulations" / "riik" / "riik_reg_t1001_peep.json"
+    kov = krr / "regulations" / "kov" / "x_vallavolikogu" / "kov_reg_t2002_peep.json"
+    assert harmonisation.resolve_harmonisation_file("regulations/riik/riik_reg_t1001_peep.json", krr) == riik
+    # recorded without the issuer dir -> resolved by tid
+    assert harmonisation.resolve_harmonisation_file("regulations/kov/kov_reg_t2002_peep.json", krr) == kov
+    assert harmonisation.find_regulation_peep("estleg:Reg_2002_Map", krr) == kov
+    assert harmonisation.find_regulation_peep("2002", krr) == kov
+    assert harmonisation.resolve_harmonisation_file("missing_law_peep.json", krr) is None
+    assert harmonisation.find_regulation_peep("estleg:law_a_Map", krr) is None
+
+
+def test_main_writes_forward_edge_on_law_riik_and_kov_anchors(tmp_path, monkeypatch):
+    from estleg import validate_all
+
+    krr = _harm_fixture(tmp_path)
+    _patch_step(monkeypatch, krr)
+    harmonisation.main()
+
+    law = krr / "law_a_peep.json"
+    riik = krr / "regulations" / "riik" / "riik_reg_t1001_peep.json"
+    kov = krr / "regulations" / "kov" / "x_vallavolikogu" / "kov_reg_t2002_peep.json"
+    assert _root_hw(law) == ["estleg:Harmonisation_32000L0001"]
+    assert _root_hw(riik) == ["estleg:Harmonisation_32000L0002"]
+    # stale edge cleared, fresh one written on the KOV regulation root
+    assert _root_hw(kov) == ["estleg:Harmonisation_32000L0003"]
+    harm_c = json.loads(
+        (krr / "harmonisation" / "harmonisation_by_directive" / "harm_32000L0003.json").read_text()
+    )
+    agg = _node_by_id(harm_c["@graph"], "estleg:Harmonisation_32000L0003")
+    assert agg["estleg:harmonises"] == [{"@id": "estleg:Reg_2002_Map"}]
+
+    # the symmetry gate sees every regulation forward edge
+    validate_all.reset()
+    try:
+        validate_all.validate_harmonisation_symmetry(krr)
+        assert validate_all.errors == [], validate_all.errors
+    finally:
+        validate_all.reset()
+
+    # idempotent: a re-run leaves every anchor byte-identical (no duplicate ids)
+    before = {p: p.read_bytes() for p in (law, riik, kov)}
+    harmonisation.main()
+    assert {p: p.read_bytes() for p in (law, riik, kov)} == before
+
+
+def test_clear_harmonised_with_covers_kov_and_skips_untouched(tmp_path):
+    krr = _harm_fixture(tmp_path)
+    kov = krr / "regulations" / "kov" / "x_vallavolikogu" / "kov_reg_t2002_peep.json"
+    riik = krr / "regulations" / "riik" / "riik_reg_t1001_peep.json"
+    riik_bytes = riik.read_bytes()
+    assert harmonisation.clear_harmonised_with([kov, riik]) == 1
+    assert _root_hw(kov) == []
+    assert riik.read_bytes() == riik_bytes
+
+
+
+def test_forward_edge_targets_only_the_picked_anchor():
+    """#578b follow-up: a multipart row stamps harmonisedWith on its anchor only."""
+    from estleg.generate_harmonisation_links import (
+        VOS_DIRECTIVE_PART_OVERRIDES,
+        harmonisation_write_targets,
+    )
+
+    row = {"name": "x", "files": ["b_osa2_peep.json", "a_osa1_peep.json"], "anchor_file": "a_osa1_peep.json"}
+    assert harmonisation_write_targets(row, "32011L0083") == ["a_osa1_peep.json"]
+    # Without a stored anchor the picker decides (first file for a non-VÕS row).
+    assert harmonisation_write_targets({"files": ["b_peep.json", "a_peep.json"]}, "32011L0083") == ["b_peep.json"]
+    # A deliberately dropped VÕS anchor yields no target.
+    dropped = next((c for c, v in VOS_DIRECTIVE_PART_OVERRIDES.items() if v is None), None)
+    if dropped:
+        assert harmonisation_write_targets({"files": ["volaoigusseadus_osa1_peep.json"]}, dropped) == []
+    assert harmonisation_write_targets({"files": [], "anchor_file": None}, "32011L0083") == []

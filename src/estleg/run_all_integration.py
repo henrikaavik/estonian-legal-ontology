@@ -223,7 +223,7 @@ def step_tier(step: dict) -> str:
 # determinism reason — the two are a matched pair, and drift between them
 # desynchronises the corpus from its report/index dates.
 BUILD_EVALUATION_DATE: str = os.environ.get(
-    "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
+    "ESTLEG_BUILD_EVALUATION_DATE", "2026-10-09"
 )
 
 STEPS: list[dict] = [
@@ -1948,6 +1948,16 @@ def run_dag(
         for i, name in enumerate(topo, 1):
             step = by_name[name]
             if name in pre_resume:
+                if _skip_ingest(name):
+                    # Not run without --with-ingest even outside resume mode:
+                    # the committed outputs stand in, so a declared write the
+                    # ingest never produced on this checkout (for example
+                    # reports/regulation_versions_report.json) is not a
+                    # resume precondition.
+                    skipped.add(name)
+                    succeeded.add(name)
+                    ledger.append(_ingest_record(name))
+                    continue
                 missing_writes = _missing_resume_writes(step)
                 if missing_writes:
                     print(
@@ -2055,6 +2065,13 @@ def run_dag(
     remaining = [n for n in topo if n not in pre_resume]
     for n in pre_resume:
         step = by_name[n]
+        if _skip_ingest(n):
+            # Same rule as the serial path: a skipped ingest's committed
+            # outputs stand in; its declared writes are not a precondition.
+            skipped.add(n)
+            succeeded.add(n)
+            ledger.append(_ingest_record(n))
+            continue
         missing_writes = _missing_resume_writes(step)
         if missing_writes:
             skipped.add(n)

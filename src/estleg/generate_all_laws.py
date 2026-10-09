@@ -1183,7 +1183,7 @@ _MERGE_BLOCKED_FIELDS = frozenset({
     "estleg:subsectionNumber", "estleg:itemNumber", "estleg:paragrahv",
     "estleg:chapterNumber", "estleg:isPartOf", "estleg:hasPart", "estleg:partOfAct",
     "estleg:provisionCount", "skos:inScheme", "skos:hasTopConcept", "skos:broader",
-    "skos:narrower", "estleg:provisionRepealed",
+    "skos:narrower", "estleg:provisionRepealed", "estleg:provisionOmitted",
 })
 
 

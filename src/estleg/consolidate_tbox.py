@@ -242,6 +242,10 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
     "estleg:rtUrl": (("owl:DatatypeProperty",), "Riigi Teataja URL", "Riigi Teataja URL"),
     # #722: how a regulation body was parsed (structured XML, HTML fallback, none).
     "estleg:parseMode": (("owl:DatatypeProperty",), "parsimisviis", "parse mode"),
+    # #703: a § Riigi Teataja marks "Kehtetu -" (repealed) carries no text.
+    "estleg:provisionRepealed": (("owl:DatatypeProperty",), "kehtetuks tunnistatud", "provision repealed"),
+    # #703: a spent § Riigi Teataja omits from the consolidated text ("–", kehtiv="0").
+    "estleg:provisionOmitted": (("owl:DatatypeProperty",), "tekstist välja jäetud", "provision omitted from the consolidated text"),
     # #701: corpus-coverage flags replacing hasNoTransposition /
     # hasNoCompetentAuthority, plus the provenance stamped beside them.
     "estleg:noTranspositionEdgeInCorpus": (
@@ -858,6 +862,8 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:jurisdiction": ("owl:Thing", "xsd:string"),
     "estleg:kehtiv": ("estleg:Act", "xsd:date"),
     "estleg:parseMode": ("estleg:Act", "xsd:string"),
+    "estleg:provisionRepealed": ("owl:Thing", "xsd:boolean"),
+    "estleg:provisionOmitted": ("owl:Thing", "xsd:boolean"),
     "estleg:lastAmendmentDate": ("estleg:Act", "xsd:date"),
     "estleg:legalText": ("owl:Thing", "xsd:string"),
     "estleg:mappedPart": ("owl:Thing", "xsd:string"),
@@ -1035,6 +1041,10 @@ OVERWRITE_DOMAIN: dict[str, str] = {
     "estleg:transpositionStatus": "estleg:EULegislation",
     # #717: shared by ProcessStep, CourtDecision and EUCourtDecision.
     "estleg:derivationMethod": "owl:Thing",
+    # #703 provision markers: a boolean flag on a § node; DOMAIN_INCLUDES names
+    # estleg:LegalProvision as the documented use, so the axiom stays open.
+    "estleg:provisionRepealed": "owl:Thing",
+    "estleg:provisionOmitted": "owl:Thing",
     "estleg:publicationDate": "owl:Thing",
     "estleg:competentAuthority": "owl:Thing",
     "estleg:legalText": "owl:Thing",
@@ -1174,6 +1184,19 @@ OVERWRITE_RANGE: dict[str, str] = {
 # Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
 # so like DOMAIN_RANGE it never reaches a term whose comment is already there.
 OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
+    "estleg:provisionOmitted": (
+        "True on a spent § that Riigi Teataja omits from the consolidated text: "
+        "an explicit 'Välja jäetud -' note, or a number with kehtiv=\"0\" whose "
+        "body is the placeholder '–' (rendered '[Käesolevast tekstist välja "
+        "jäetud]'). Such a § carries no "
+        "estleg:legalText by design; text-coverage gates exempt it (#703). "
+        "Distinct from estleg:provisionRepealed ('Kehtetu -'). Absent otherwise."
+    ),
+    "estleg:provisionRepealed": (
+        "True on a § that Riigi Teataja marks as repealed ('Kehtetu -', in a "
+        "muutmismarge note or as the § text). Such a § carries no estleg:legalText "
+        "by design; text-coverage gates exempt it (#703). Absent otherwise."
+    ),
     # #722: the stamped values are structured / html_fallback / no_paragraphs.
     "estleg:parseMode": (
         "How the generator obtained a regulation's body from Riigi Teataja: "
@@ -1568,6 +1591,8 @@ OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
 # estleg:Part roots of a multipart act (#566) repeat the act's metadata; they
 # are counted under the Act they belong to, not listed as a class of their own.
 DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
+    "estleg:provisionRepealed": ("estleg:LegalProvision",),
+    "estleg:provisionOmitted": ("estleg:LegalProvision",),
     "estleg:citationSource": ("estleg:Citation",),
     "estleg:currentVersion": ("estleg:LegalProvision",),
     "estleg:earliestSupersedingDate": (

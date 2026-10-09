@@ -365,8 +365,13 @@ def determine_temporal_status(temporal: dict, evaluation_date: str | None = None
     if temporal.get("invalidation_date"):
         if _coerce_iso_date(temporal["invalidation_date"]) <= today:
             return "repealed"
+    # ``valid_until`` is Riigi Teataja's ``kehtivuseLopp``: the last day the
+    # text is valid (inclusive). An act whose validity ends *on* the
+    # evaluation date is still in force that day, matching
+    # ``generate_regulations._repealed_before_snapshot`` (wave-6: a redaction
+    # ending on the 2026-10-09 snapshot day was misread as repealed).
     if temporal.get("valid_until"):
-        if _coerce_iso_date(temporal["valid_until"]) <= today:
+        if _coerce_iso_date(temporal["valid_until"]) < today:
             return "repealed"
 
     # If entry_into_force is in the future, not yet effective
@@ -512,6 +517,46 @@ def _index_to_temporal(idx_data: dict) -> dict:
     return result
 
 
+# Act-node date properties this pass itself writes, mapped back onto the
+# internal temporal dict. Used as the last-resort evidence source below.
+_ACT_NODE_DATE_KEY_MAP: dict[str, str] = {
+    "estleg:entryIntoForce": "entry_into_force",
+    "estleg:repealDate": "valid_until",
+    "estleg:lastAmendmentDate": "last_amendment_date",
+    "estleg:publicationDate": "publication_date",
+    "estleg:adoptionDate": "adoption_date",
+}
+
+
+def _act_node_to_temporal(node: dict | None) -> dict | None:
+    """Recover a temporal dict from the dates already on an act node.
+
+    A peep with no cached source XML and no INDEX.json row (e.g. a
+    regulation that dropped out of the Riigi Teataja ``kehtiv`` snapshot,
+    so the refresh neither re-fetched nor re-cached it) still carries the
+    act-level dates an earlier run or the generator read from Riigi
+    Teataja. Clearing them and writing nothing erased known repeals
+    (wave-6 refresh: ~960 regulation peeps lost ``temporalStatus``).
+    Returns ``None`` when the node has no parseable date.
+    """
+    if not isinstance(node, dict):
+        return None
+    result: dict[str, str | None] = {}
+    for prop, key in _ACT_NODE_DATE_KEY_MAP.items():
+        raw = node.get(prop)
+        if isinstance(raw, dict):
+            raw = raw.get("@value")
+        parsed = parse_date(str(raw)) if raw else None
+        if parsed:
+            result[key] = parsed
+    year = node.get("estleg:publicationYear")
+    if isinstance(year, dict):
+        year = year.get("@value")
+    if year and not result.get("publication_date"):
+        result["publication_year"] = str(year)
+    return result or None
+
+
 def load_index_metadata() -> dict[str, dict]:
     """
     Load INDEX.json for fallback metadata.
@@ -578,6 +623,7 @@ def main(evaluation_date: str | None = None):
     _triples = 0
     _triples_kov = 0
     _fallback_hits = 0
+    _peep_date_fallback = 0
     _unresolved = 0
     _failures: list[str] = []
     _skip_reasons: dict[str, int] = {}
@@ -698,6 +744,15 @@ def main(evaluation_date: str | None = None):
         if not graph:
             skipped += 1
             continue
+
+        # Last-resort evidence: no XML and no INDEX dates. Re-derive from
+        # the act node's own RT-sourced dates instead of clearing them
+        # and leaving the act with no temporalStatus at all.
+        if temporal is None or not any(v for v in temporal.values()):
+            from_peep = _act_node_to_temporal(find_act_node(graph))
+            if from_peep is not None:
+                temporal = from_peep
+                _peep_date_fallback += 1
 
         # Ensure context has dcterms (in-memory mutation, marked dirty
         # only if it was actually missing).
@@ -850,6 +905,7 @@ def main(evaluation_date: str | None = None):
             "enriched": enriched,
             "skipped_no_data": skipped,
             "skipped_no_act_node": no_act_node,
+            "peep_date_fallback": _peep_date_fallback,
             "status_counts": status_counts,
         },
         "laws": report_entries,
@@ -867,6 +923,7 @@ def main(evaluation_date: str | None = None):
     print(f"  Law files enriched:    {enriched}")
     print(f"  Skipped (no data):     {skipped}")
     print(f"  Skipped (no act node): {no_act_node}")
+    print(f"  Peep-date fallback:    {_peep_date_fallback}")
     print("  Status breakdown:")
     for status, count in status_counts.items():
         print(f"    {status}: {count}")

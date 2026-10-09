@@ -205,8 +205,10 @@ def measure_coverage(krr: Path = KRR) -> dict[str, list[str]]:
         for node in doc["@graph"]:
             if not (isinstance(node, dict) and _is_provision(node)):
                 continue
-            if node.get("estleg:provisionRepealed") is True:
-                # A § Riigi Teataja marks "Kehtetu -" has no body by design.
+            if (node.get("estleg:provisionRepealed") is True
+                    or node.get("estleg:provisionOmitted") is True):
+                # A § Riigi Teataja marks "Kehtetu -" or omits from the
+                # consolidated text ("–", kehtiv="0") has no body by design.
                 continue
             if not _text_value(node.get("estleg:legalText")):
                 offenders["missing_legal_text"].add(str(node.get("@id", "")))

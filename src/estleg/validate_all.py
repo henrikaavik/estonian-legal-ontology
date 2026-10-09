@@ -74,6 +74,14 @@ COMBINED_ALLOWED_JSONLD = (
     "act_expressions_combined.jsonld",  # #608 FRBR Expression layer
 )
 
+# estleg: object predicates a combined closure stub may carry: the shaped
+# closure edges plus the inverse edges the builder copies verbatim from a stub's
+# source root (#711: estleg:harmonisedWith on regulation act stubs). Kept in sync
+# with `fix_all_issues.STUB_EDGE_ALLOWLIST`.
+STUB_EDGE_ALLOWLIST: frozenset[str] = (
+    estleg_common.STUB_SEMANTIC_EDGE_PREDICATES | frozenset({"estleg:harmonisedWith"})
+)
+
 # SHACL-sensitive provision fields that Seadusloome's ontology load path
 # validates. Drift in any of these between source `*_peep.json` and the
 # combined artifact reproduces consumer-side warnings, so the parity
@@ -2575,7 +2583,7 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         if n.get(estleg_common.STUB_NODE_MARKER) is True:
             stub_ids.add(canon)
     exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
-    allowed_stub_edges = estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
+    allowed_stub_edges = STUB_EDGE_ALLOWLIST
 
     dangling: dict[str, set[str]] = defaultdict(set)
     # Every incoming reference keeps a stub alive (#561/#589: no exempt
@@ -2687,7 +2695,8 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
 def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
     """#578/#631 gate: every ``harmonisation_by_directive/harm_*.json``
     ``estleg:harmonises`` → act edge must have a backing ``estleg:harmonisedWith``
-    on that act in the law peeps.
+    on that act in the law peeps or, for a regulation anchor (#711), in its
+    ``regulations/{riik,kov}/**`` peep.
 
     Catches the deprecated-rejection asymmetry the #632 review found — a harm
     inverse file pointing at a (canonical) act that never received the forward
@@ -2718,13 +2727,33 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
             dir_files = {}
     unbacked = 0
     unbacked_sample: tuple[str, str] | None = None
-    for path in krr_dir.glob("*_peep.json"):
+    # #711: regulations (riik + kov) are transposition anchors too, so their
+    # roots carry the forward edge in regulations/**. Only the source peeps
+    # count as backing: combined's harmonisedWith is materialised FROM the
+    # harmonises edge under test (#520), so accepting it would make the gate
+    # vacuous.
+    regulation_peeps = (
+        sorted((krr_dir / "regulations").rglob("*_peep.json"))
+        if (krr_dir / "regulations").is_dir()
+        else []
+    )
+    for path in [*sorted(krr_dir.glob("*_peep.json")), *regulation_peeps]:
         if _is_lfs_pointer(path):
             continue
         try:
-            with open(path, encoding="utf-8") as fh:
-                doc = json.load(fh)
-        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        # Cheap pre-filter for the ~12k regulation peeps: a file that names
+        # neither directive field cannot contribute to any of the checks below.
+        if (
+            '"estleg:harmonisedWith"' not in text
+            and '"estleg:transposesDirective"' not in text
+        ):
+            continue
+        try:
+            doc = json.loads(text)
+        except json.JSONDecodeError:
             continue
         is_dep = act_deprecation(doc)[0]
         for n in doc.get("@graph", []):

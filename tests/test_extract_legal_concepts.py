@@ -785,7 +785,8 @@ class TestIssue134ConceptNodeShape:
         assert len(concepts) == 1, [n["@id"] for n in concepts]
         c = concepts[0]
         assert c["@id"] == "estleg:Concept_klient"
-        assert c["@type"] == ["owl:NamedIndividual", "estleg:Concept"]
+        # #609: the extractor binds every concept into the SKOS scheme.
+        assert c["@type"] == ["owl:NamedIndividual", "estleg:Concept", "skos:Concept"]
         # prefLabel: a single language-tagged literal.
         assert c["skos:prefLabel"] == {"@value": "klient", "@language": "et"}
         # definition(s): language-tagged literal(s).
@@ -1018,6 +1019,62 @@ class TestIssue699NoCloseMatchEmitted:
         # Both provision-local definitions now hang off the survivor.
         for lc in _legal_concept_nodes(graph):
             assert lc["estleg:definesConcept"] == {"@id": node["@id"]}
+
+
+class TestIssue609SchemeBindingEmitted:
+    """#609: a plain extraction binds every concept into
+    ``estleg:LegalConceptScheme`` (skos:Concept type + skos:inScheme, plus
+    skos:topConceptOf on canonical Concepts). These edges used to come only
+    from the one-off ``skos_concept_scheme_609`` post-process, so the wave-6
+    DAG re-run dropped them from all concepts."""
+
+    SCHEME = {"@id": "estleg:LegalConceptScheme"}
+
+    def test_every_concept_bound_into_scheme(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) isik — füüsiline isik üks; 2) laev — ujuvvahend;"
+            )},
+        )
+        concepts = _concept_nodes(graph)
+        legal = _legal_concept_nodes(graph)
+        assert concepts and legal
+        for node in concepts + legal:
+            assert "skos:Concept" in node["@type"], node["@id"]
+            assert node["@type"].count("skos:Concept") == 1, node["@id"]
+            assert node["skos:inScheme"] == self.SCHEME, node["@id"]
+        for node in concepts:
+            assert node["skos:topConceptOf"] == self.SCHEME, node["@id"]
+        for node in legal:
+            assert "skos:topConceptOf" not in node, node["@id"]
+
+    def test_dataset_head_carries_personal_data_flag(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml("1) isik — füüsiline isik üks;")},
+        )
+        assert graph[0]["estleg:containsPersonalData"] == {
+            "@value": False, "@type": "xsd:boolean",
+        }
+
+    def test_scrub_binds_and_is_idempotent(self):
+        from estleg.extract_legal_concepts import scrub_concept_graph
+
+        graph = [
+            {"@id": "estleg:Concept_isik",
+             "@type": ["owl:NamedIndividual", "estleg:Concept"],
+             "skos:prefLabel": {"@value": "isik", "@language": "et"}},
+            {"@id": "estleg:law_a_isik",
+             "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+             "skos:prefLabel": {"@value": "isik", "@language": "et"},
+             "estleg:definesConcept": {"@id": "estleg:Concept_isik"}},
+        ]
+        assert scrub_concept_graph(graph)["scheme_bound"] == 2
+        assert all(n["skos:inScheme"] == self.SCHEME for n in graph)
+        assert not any(scrub_concept_graph(graph).values())
 
 
 class TestFindingF3HasDefinitionNode:

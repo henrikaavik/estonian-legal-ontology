@@ -1776,7 +1776,7 @@ def heuristic_confidence_for_node(node: dict) -> str | None:
 # ``ESTLEG_BUILD_EVALUATION_DATE`` env var) and passes it to the temporal step
 # via ``--evaluation-date``.
 BUILD_EVALUATION_DATE: str = os.environ.get(
-    "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
+    "ESTLEG_BUILD_EVALUATION_DATE", "2026-10-09"
 )
 # Single pinned coverage-report timestamp (#295 / #465). Deterministic and
 # tied to the evaluation date so tracked sidecars do not churn on reruns
@@ -1798,7 +1798,7 @@ PINNED_RUN_TIMESTAMP: str = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 # mechanism that keeps local and CI file counts identical.
 #
 # The corpus count this exclusion yields is pinned by ``metadata.jsonld``
-# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 27029), which
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 28626), which
 # ``validate_metadata_catalog`` enforces — treat that file as the source of
 # truth rather than this prose. Any change here that moves that number means
 # the classifier was broadened or narrowed incorrectly.
@@ -1815,7 +1815,7 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
 # known integration-report directory) so the pinned ``metadata.jsonld``
-# count (currently 27029) is unchanged: the only ``*.json`` currently living under
+# count (currently 28626) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from
@@ -2022,6 +2022,66 @@ def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
     return lookup
 
 
+_MULTIPART_SUFFIX_RE = re.compile(r"_(?:osa\d+|map)$")
+_ATTESTED_CACHE: dict[Path, tuple[int, dict[str, dict]]] = {}
+
+
+def _load_attested_rows(hashes_path: Path) -> dict[str, dict]:
+    """``fetch_content_hashes.json`` rows, memoised per file mtime."""
+    try:
+        mtime = hashes_path.stat().st_mtime_ns
+    except OSError:
+        return {}
+    cached = _ATTESTED_CACHE.get(hashes_path)
+    if cached is not None and cached[0] == mtime:
+        return cached[1]
+    try:
+        loaded = json.loads(hashes_path.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        loaded = {}
+    rows = {
+        key: row
+        for key, row in (loaded.items() if isinstance(loaded, dict) else ())
+        if isinstance(row, dict)
+    }
+    _ATTESTED_CACHE[hashes_path] = (mtime, rows)
+    return rows
+
+
+def _attested_xml_for(
+    peep_path: Path, gid: str, data_dir: Path | None
+) -> Path | None:
+    """The cached XML ``fetch_content_hashes.json`` attests for this root.
+
+    The manifest sits beside the law peeps (``krr_outputs/``) and is keyed
+    by law slug; a multipart act's ``_osaN`` / ``_map`` peeps share the
+    base slug's row. The row is used only when its ``globalId`` equals the
+    root's, so a peep never pairs to a different redaction than the one it
+    was generated from. ``cacheFile`` is repo-relative
+    (``data/riigiteataja/<file>.xml``); it is resolved against the
+    manifest's repo root, then by basename under ``data_dir``.
+    """
+    hashes_path = peep_path.parent / FETCH_HASH_FILENAME
+    rows = _load_attested_rows(hashes_path)
+    if not rows:
+        return None
+    slug = peep_path.stem.removesuffix("_peep")
+    for key in dict.fromkeys((slug, _MULTIPART_SUFFIX_RE.sub("", slug))):
+        row = rows.get(key)
+        if not row or str(row.get("globalId") or "") != gid:
+            continue
+        cache_file = str(row.get("cacheFile") or "")
+        if not cache_file:
+            continue
+        candidates = [hashes_path.parent.parent / cache_file]
+        if data_dir is not None:
+            candidates.append(data_dir / Path(cache_file).name)
+        for candidate in candidates:
+            if candidate.is_file():
+                return candidate
+    return None
+
+
 def pair_peep_with_xml(
     peep_path: Path,
     lookup: dict[str, Path],
@@ -2031,22 +2091,27 @@ def pair_peep_with_xml(
 ) -> Path | None:
     """Pair a peep file to its XML.
 
-    Two paths in priority order:
+    Three paths in priority order:
 
-    1. **globalId-based** (the new path, KOV + state regs): the
-       generators stamp ``estleg:globalId`` on every act node, and KOV
-       XML filenames embed the same id (``reg_<globalId>.xml``). This
-       is the canonical pairing for everything generated post-Phase-1.
+    1. **Attested redaction** (laws since the 2026-10-09 refresh): when the
+       act root carries ``estleg:globalId`` and the sibling
+       ``fetch_content_hashes.json`` row for the peep's slug (or, for a
+       multipart ``_osaN`` / ``_map`` peep, its base slug) attests the same
+       ``globalId``, return that row's ``cacheFile``. This pins every part
+       of a multipart act to the exact redaction it was built from.
 
-    2. **Slug-based fallback** (legacy laws): the 615 indexed laws
-       were generated before the ``estleg:globalId`` field existed,
-       so their act nodes carry ``estleg:Law``/``owl:Ontology`` types
-       but no globalId. For these, fall back to matching the peep
-       file's stem (sans ``_peep``) against
-       ``<data_dir>/<stem>.xml``. ``data_dir`` is required for the
-       fallback; if not supplied, only the globalId path runs.
+    2. **globalId lookup** (KOV + state regs, and laws without an
+       attestation row): the generators stamp ``estleg:globalId`` on every
+       act root (``estleg:Part`` roots included), and the lookup maps each
+       cached XML's ``globaalID`` to its path.
 
-    Returns the XML path or None if neither path resolves.
+    3. **Slug-based fallback** (legacy peeps without a globalId, or a
+       globalId neither attested nor cached): match the peep file's stem
+       (sans ``_peep``) against ``<data_dir>/<stem>.xml``, then the
+       ``_osaN``-stripped base slug. ``data_dir`` is required for the
+       fallback; if not supplied, only paths 1-2 run.
+
+    Returns the XML path or None if no path resolves.
     """
     try:
         with open(peep_path, "r", encoding="utf-8") as fh:
@@ -2076,21 +2141,27 @@ def pair_peep_with_xml(
         return None
     gid = None
     for node in doc.get("@graph", []):
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if not any(t.endswith("Regulation") or t == "estleg:Law"
-                   or t == "owl:Ontology" for t in types):
+        if not isinstance(node, dict):
+            continue
+        types = node_type_list(node)
+        if not (
+            is_domain_individual(node)
+            or any(t.endswith("Regulation") or t == "owl:Ontology" for t in types)
+        ):
             continue
         gid = node.get("estleg:globalId")
         if gid:
             break
-    # Path 1: globalId
     if gid:
+        # Path 1: the attested redaction (fetch_content_hashes.json)
+        xml = _attested_xml_for(peep_path, str(gid), data_dir)
+        if xml is not None:
+            return xml
+        # Path 2: globalId lookup
         xml = lookup.get(str(gid))
         if xml is not None:
             return xml
-    # Path 2: slug fallback (laws without globalId)
+    # Path 3: slug fallback (laws without globalId)
     if data_dir is not None:
         slug = peep_path.stem.replace("_peep", "")
         xml = data_dir / f"{slug}.xml"
