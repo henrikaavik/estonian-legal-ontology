@@ -479,3 +479,18 @@ def test_strip_html_tags_does_not_reconstitute_script_after_unescape():
     assert "<script" not in out.lower()
     assert "alert(1)" in out
     assert "ohutu" in out
+
+
+def test_ct_flattens_sup_children_instead_of_truncating():
+    """#694: a title with a <sup> child must not be cut at the child."""
+    import xml.etree.ElementTree as ET
+
+    from estleg.riigiteataja_common import ct
+
+    el = ET.fromstring(
+        "<akt><pealkiri>§ 217<sup>2</sup>. Avalik kord</pealkiri></akt>"
+    )
+    assert ct(el, "pealkiri") == "§ 217². Avalik kord"
+    plain = ET.fromstring("<akt><pealkiri>  Plain  </pealkiri><muu>x</muu></akt>")
+    assert ct(plain, "pealkiri") == "Plain"
+    assert ct(plain, "puudub") is None
