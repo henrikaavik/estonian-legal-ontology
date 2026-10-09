@@ -502,15 +502,15 @@
       <div class="stat"><b>12 104</b><span>Riigikohtu lahendit (1993–2026)</span></div>
       <div class="stat"><b>33 242</b><span>EL õigusakti (EUR-Lex, 3.03.2026)</span></div>
       <div class="stat"><b>22 290</b><span>EL kohtulahendit (CURIA, 3.03.2026)</span></div>
-      <div class="stat"><b>26 961</b><span>valideeritavat faili 27 008-st</span></div>
+      <div class="stat"><b>26 975</b><span>valideeritavat faili 27 023-st</span></div>
     </div>
     <p class="small">
       Arvud on mõõdetud 8. oktoobril 2026 hoidla indeksitest (<code>krr_outputs/INDEX.json</code> ja alamkorpuste
       <code>*_INDEX.json</code>). Kuupäevad on korpuste koostamise templid, mitte õigusteksti kehtivuskuupäevad.
     </p>
     <p class="note warning">
-      Korpus ei läbi veel kõiki kvaliteediväravaid. Tier 0 ja valideerija parandused (#702) on põhiharusse ühendatud,
-      kuid mitmes SHACL-kontrollis on endiselt vead. Täpsed tulemused on
+      Korpus ei läbi veel värskuse väravat. JSON-i ja korpuse tervikluse kontrollis on 0 viga ja 2 hoiatust;
+      SHACL ja tarbija sünkroonimine on eraldi kontrollid. Täpsed tulemused on
       <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/VALIDATION_REPORT.md">valideerimisraportis</a>.
       Viimane väljalase on 19. augusti <code>v1.0.0</code>; hilisemate parandustega uut väljalaset veel ei ole.
       8. oktoobri seisuga ei täida ükski korpus oma värskuse eesmärki: seaduste tekst on 137 ja määrused 160 päeva vanad.
@@ -993,17 +993,17 @@ https://w3id.org/estleg/1.0.0</code></pre>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Valideeritud failid</td><td>26 961</td></tr>
-        <tr><td>JSON/JSON-LD vead</td><td>122 (7.09.2026; failiaegadel põhinev kontroll võib arvu muuta)</td></tr>
+        <tr><td>Valideeritud failid</td><td>26 975</td></tr>
+        <tr><td>JSON/JSON-LD vead</td><td>0</td></tr>
         <tr><td>Hoiatused</td><td>2</td></tr>
-        <tr><td>SHACL alamkorpused</td><td><code>eurlex</code> ja <code>curia</code> läbivad kontrolli. <code>laws</code>, <code>kov</code>, <code>riigikohus</code>, <code>drafts</code> ja <code>sidecars</code> ei läbi.</td></tr>
-        <tr><td>Seadusloome sünkroonimise värav</td><td>Ei läbi; nõutav on null hoiatust ja rikkumist.</td></tr>
+        <tr><td>SHACL alamkorpused</td><td>Vaata konkreetse haru viimast <a href="https://github.com/henrikaavik/estonian-legal-ontology/actions/workflows/validate.yml">CI käivitust</a>; JSON-kontrolli edu ei kinnita SHACL-i tulemust.</td></tr>
+        <tr><td>Seadusloome sünkroonimise värav</td><td>Eraldi CI-kontroll; nõutav on null hoiatust ja rikkumist.</td></tr>
         <tr><td>Heuristiliste kihtide täpsus</td><td>Katvusraportid on olemas, kuid õigusliku täpsuse mõõdetud lävendid ja kuldandmestikud on veel töö #698.</td></tr>
       </tbody>
     </table>
     <p class="small">
-      Allikas: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/VALIDATION_REPORT.md">7. septembri valideerimisraport</a> ja
-      <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/README.md#project-status">projekti seis</a>. Valideeritavate failide arv 26 961 on uuesti mõõdetud 8. oktoobril 2026. Metaandmete uuendamise kuupäev ei tõenda aktiteksti värskust.
+      Allikas: <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/VALIDATION_REPORT.md">valideerimisraporti automaatselt mõõdetud kokkuvõte</a> ja
+      <a href="https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/README.md#project-status">projekti seis</a>. Valideeritavate failide arv on 26 975. Metaandmete uuendamise kuupäev ei tõenda aktiteksti värskust.
       Põhikontrollid: JSON süntaks, <code>@context</code>, <code>@type</code> kuju, kuupäevad, korduvad ID-d,
       sisemiste <code>estleg:</code> viidete lahenduvus, indeksite ja tegeliku failipuu kooskõla, allika IRI kuju,
       KOV ja riigi määruste registrid ning institutsiooninimede normaliseeritud duplikaadid.
