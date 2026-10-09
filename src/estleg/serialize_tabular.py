@@ -1011,7 +1011,7 @@ def load_version_layer(paths: Iterable[Path]) -> Any:
 
     layer = VersionLayer()
     for path in paths:
-        doc = _load_jsonld(path)
+        doc = _load_jsonld(path, required=True)
         for node in iter_nodes(doc):
             if "estleg:ProvisionVersion" not in node_types(node):
                 continue
@@ -1452,7 +1452,7 @@ def project_files(
     abbrev_map = dict(registry or {})
     acc = accumulator if accumulator is not None else TableAccumulator()
     for path in paths:
-        doc = _load_jsonld(path)
+        doc = _load_jsonld(path, required=True)
         if doc is None:
             continue
         slug = file_slug(path)

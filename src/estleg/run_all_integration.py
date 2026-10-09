@@ -2317,12 +2317,20 @@ def plan_only_changed(
     previous = hash_manifest.load_manifest(manifest_path)
     current = hash_manifest.build_manifest(steps, KRR_DIR, previous=previous)
     by_name = {s["name"]: s for s in steps}
-    if previous is None:
+    recipe_changed = previous is not None and previous.get("recipeDigest") != current["recipeDigest"]
+    if previous is None or recipe_changed:
         selected = [n for n in topo
                     if include_ingest or step_tier(by_name[n]) != TIER_INGEST]
         return {"manifestFound": False, "changed": None, "selected": selected,
                 "seeds": {}, "excludedIngest": [], "current": current}
     changed = hash_manifest.changed_paths(hash_manifest.diff_manifests(previous, current))
+    if any(hash_manifest.path_matches(path, pattern)
+           for path in changed for pattern in hash_manifest.SHARED_INPUTS):
+        selected = [n for n in topo
+                    if include_ingest or step_tier(by_name[n]) != TIER_INGEST]
+        return {"manifestFound": True, "changed": changed, "selected": selected,
+                "seeds": {n: ["shared code or auxiliary input changed"] for n in selected},
+                "excludedIngest": [], "current": current}
     plan = hash_manifest.select_steps(steps, topo, changed, COMMITTED_INPUTS,
                                       include_ingest=include_ingest,
                                       ingest_tier=TIER_INGEST)

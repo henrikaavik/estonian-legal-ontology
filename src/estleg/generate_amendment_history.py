@@ -1794,16 +1794,19 @@ PROVISION_VERSIONS_DIRNAME = "provision_versions"
 def load_versions_by_date(versions_dir: Path, base_slug: str) -> dict[str, list[str]]:
     """``versionValidFrom`` → ProvisionVersion IRIs from a law's sidecar.
 
-    ``{}`` when the sidecar is absent or unreadable (nothing to join).
+    ``{}`` when the sidecar is absent. An unreadable existing sidecar is an
+    error: rebuilding without it would discard the version-derived events.
     """
     sidecar = versions_dir / f"{base_slug}.jsonld"
     if not sidecar.is_file():
         return {}
     try:
         doc = json.loads(sidecar.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
-        return {}
-    return collect_versions_by_date(doc) if isinstance(doc, dict) else {}
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"Cannot read version sidecar {sidecar}: {exc}") from exc
+    if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+        raise ValueError(f"Invalid version sidecar graph: {sidecar}")
+    return collect_versions_by_date(doc)
 
 
 def apply_version_join(

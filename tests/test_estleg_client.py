@@ -610,6 +610,26 @@ def test_parse_sha256sums_format() -> None:
         download.parse_sha256sums("nothex  INDEX.json\n")
 
 
+def test_failed_later_asset_preserves_existing_corpus(tmp_path, monkeypatch):
+    original = tmp_path / "krr_outputs/eelnoud/eelnoud_combined.jsonld"
+    original.parent.mkdir(parents=True)
+    original.write_text('{"@graph": [{"@id": "estleg:Draft_OLD"}]}')
+    before = original.read_bytes()
+    files = {"eelnoud_combined.jsonld.gz": _gz({"@graph": []}),
+             "eurlex_combined.jsonld.gz": b"not a gzip file"}
+    assets = tuple(files)
+    monkeypatch.setattr(download, "urlopen", _FakeRelease(files))
+    with pytest.raises((DownloadError, OSError)):
+        fetch_corpus(tmp_path, assets=assets, optional_assets=(), progress=None)
+    assert original.read_bytes() == before
+
+
+@pytest.mark.parametrize("name", [r"..\escape", r"C:\escape", "/escape", "x/y"])
+def test_asset_names_are_safe_on_every_supported_platform(name):
+    with pytest.raises(DownloadError):
+        download._check_name(name)
+
+
 def test_rows_are_typed_and_frozen() -> None:
     graph = Graph()
     node = URIRef(E + "S1")

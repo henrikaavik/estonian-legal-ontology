@@ -235,6 +235,7 @@ def apply_ntm(
         "xml_files": 0,
         "xml_with_ntm": 0,
         "xml_unresolved": [],
+        "xml_snapshot_mismatch": [],
         "files_changed": 0,
         "directives_not_in_eurlex": [],
     }
@@ -258,6 +259,13 @@ def apply_ntm(
             elif celex not in stats["directives_not_in_eurlex"]:
                 stats["directives_not_in_eurlex"].append(celex)
         for rel in files:
+            # A cache directory can contain several redactions of one act.
+            # Only the redaction named by this peep may replace its assertions.
+            source = _source_url(krr_dir / rel)
+            match = re.search(r"/akt/(\d+)(?:\.xml)?(?:[?#]|$)", source)
+            if match and parsed["global_id"] != match.group(1):
+                stats["xml_snapshot_mismatch"].append(f"{xml_path.name}: {rel}")
+                continue
             if not dry_run and write_asserted(krr_dir / rel, iris):
                 stats["files_changed"] += 1
         print(f"  {xml_path.name}: {len(parsed['celexes'])} directive(s) → {len(files)} file(s)")

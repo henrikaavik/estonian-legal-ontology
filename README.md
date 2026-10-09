@@ -18,7 +18,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. The current generated validation report
-records 26,975 validated files and **0 errors / 2 warnings**. This is the JSON
+records 26,978 validated files and **0 errors / 2 warnings**. This is the JSON
 and corpus-integrity result; freshness, SHACL and consumer-sync are separate
 gates. The freshness gate still fails on the committed snapshots. See the
 measured [validation report](docs/VALIDATION_REPORT.md) and
@@ -637,7 +637,7 @@ The integration layers run as one dependency-ordered DAG (`scripts/run_all_integ
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (27,023 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (27,029 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry

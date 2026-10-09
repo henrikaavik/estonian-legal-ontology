@@ -436,10 +436,12 @@ def resolve(local: str) -> Resolution | None:
     if local.startswith("Draft_"):
         node = data.draft_info(iri)
         if node is not None:
-            # The phase names the file: Phase_Submission -> eelnoud_submission_peep.json.
-            phase = data._phase_label(node).lower()
-            rel = f"eelnoud/eelnoud_{phase}_peep.json"
-            return _resolution(local, node, rel if _exists(rel) else "", "draft")
+            # Peeps retain their first-observed feed, while lifecycle phases
+            # change. Locate the owning file instead of deriving it from phase.
+            for rel in _candidates(local):
+                if iri in _file_nodes(rel)[1]:
+                    return _resolution(local, node, rel, "draft")
+            return _resolution(local, node, "", "draft")
     if local.startswith("RK_"):
         node = data.court_decision(iri)
         if node is not None:

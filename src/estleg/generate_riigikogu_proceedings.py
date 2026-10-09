@@ -303,7 +303,7 @@ def load_draft_listing(
         size = LIST_SPLIT_SIZES[size_index]
         page = _list_window(client, offset, size, refresh=refresh)
         if page is None:
-            return False
+            raise RuntimeError(f"incomplete Riigikogu listing: missing window {offset}/{size}")
         if "error" in page:
             if size_index + 1 >= len(LIST_SPLIT_SIZES):
                 skipped.append(offset)
@@ -315,9 +315,17 @@ def load_draft_listing(
                     break
                 answered = walk(sub, size_index + 1) or answered
             return answered
+        count = (page.get("page") or {}).get("totalElements")
+        content = page.get("content")
+        if not isinstance(count, int) or count < 0 or not isinstance(content, list):
+            raise RuntimeError("incomplete Riigikogu listing: missing page/count/content")
+        if total and total[0] != count:
+            raise RuntimeError("incomplete Riigikogu listing: total changed during pagination")
         if not total:
-            total.append(int((page.get("page") or {}).get("totalElements") or 0))
-        rows.extend(page.get("content") or [])
+            total.append(count)
+        if len(content) != min(size, max(0, count - offset)):
+            raise RuntimeError(f"incomplete Riigikogu listing: truncated window {offset}/{size}")
+        rows.extend(content)
         return True
 
     step = LIST_SPLIT_SIZES[0]
@@ -334,6 +342,8 @@ def load_memberships(client: RiigikoguClient, *, refresh: bool = False) -> list[
     data = client.cached(
         "memberships.json", "/api/memberships", trim=trim_memberships, refresh=refresh
     )
+    if not data:
+        raise RuntimeError("incomplete Riigikogu cache: missing memberships")
     return sorted(data or [], key=lambda m: m.get("startDate") or "")
 
 
@@ -796,7 +806,7 @@ def run(
     for uuid in sorted({j.rk_uuid for j in candidates}):
         detail = _detail(client, uuid, refresh=refresh_details)
         if detail is None:
-            continue
+            raise RuntimeError(f"incomplete Riigikogu cache: missing detail {uuid}")
         if "error" in detail:
             stats["detail_http_404"] += 1
             continue
@@ -810,6 +820,10 @@ def run(
         updates: dict[str, list[dict]] = {}
         for draft, steps in gdl.drafts_with_steps(doc):
             join = joins.get(draft["@id"])
+            # An unservable listing row/detail is unknown, not evidence that a
+            # previously observed proceeding ceased to exist.
+            if join is None and (skipped or stats["detail_http_404"]):
+                continue
             detail = details.get(join.rk_uuid) if join else None
             codes = eurovoc_codes(detail, client, stats) if detail else []
             before = sum(1 for s in steps if gdl._literal(s.get("estleg:derivationMethod")) in RIIGIKOGU_METHODS)

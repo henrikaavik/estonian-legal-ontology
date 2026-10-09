@@ -22,6 +22,7 @@ import json
 import shutil
 import sys
 import tarfile
+import tempfile
 from collections.abc import Callable, Iterable, Mapping
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
@@ -107,7 +108,8 @@ def parse_sha256sums(text: str) -> dict[str, str]:
 
 def _check_name(name: str) -> str:
     path = PurePosixPath(name)
-    if not name or path.is_absolute() or len(path.parts) != 1 or name in {".", ".."}:
+    if (not name or path.is_absolute() or len(path.parts) != 1
+            or name in {".", ".."} or "\\" in name or ":" in name):
         raise DownloadError(f"refusing unsafe asset name {name!r}")
     return name
 
@@ -277,13 +279,27 @@ def fetch_corpus(
                 raise DownloadError(
                     f"SHA-256 mismatch for {name}: got {actual}, {SUMS_NAME} says {expected}"
                 )
-        placed = _extract(target, root)
-        records[name] = {"sha256": expected, "bytes": target.stat().st_size, "placed": placed}
+        records[name] = {"sha256": expected, "bytes": target.stat().st_size}
 
-    shard_index = None
-    if build_shards and (root / KRR / "combined_ontology.jsonld").is_file():
-        say("estleg: indexing enacted laws (one pass over combined_ontology.jsonld)")
-        shard_index = build_law_shards(root / KRR)
+    # Verify every download, decompress and build shards before replacing any
+    # served corpus file. A corrupt later asset must not mix two snapshots.
+    with tempfile.TemporaryDirectory(prefix=".estleg-stage-", dir=root) as temporary:
+        stage = Path(temporary)
+        for name in wanted:
+            records[name]["placed"] = _extract(downloads / name, stage)
+        shard_index = None
+        if build_shards and (stage / KRR / "combined_ontology.jsonld").is_file():
+            say("estleg: indexing enacted laws (one pass over combined_ontology.jsonld)")
+            index = build_law_shards(stage / KRR)
+            shard_index = str(index.relative_to(stage)) if index else None
+        staged_files = sorted(p for p in stage.rglob("*") if p.is_file())
+        for path in staged_files:
+            if not _within(root, root / path.relative_to(stage)):
+                raise DownloadError("destination symlink escapes the corpus")
+        for path in staged_files:
+            target = root / path.relative_to(stage)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            path.replace(target)
 
     manifest = {
         "version": version,
@@ -291,7 +307,7 @@ def fetch_corpus(
         "fetched_at": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "assets": records,
         "skipped_optional_assets": skipped,
-        "law_shards": str(shard_index.relative_to(root)) if shard_index else None,
+        "law_shards": shard_index,
     }
     (root / MANIFEST_NAME).write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

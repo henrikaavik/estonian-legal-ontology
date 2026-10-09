@@ -8,7 +8,7 @@ DAG steps a change actually reaches:
    declares (relative to ``krr_outputs/``; a leading ``../`` addresses the
    repository root, as ``build_release_assets.py`` does) and records one
    SHA-256 per matched file. A previous manifest is used as a cache: a file
-   whose size and ``mtime_ns`` are unchanged keeps its recorded hash, so a
+   whose size, ``mtime_ns`` and ``ctime_ns`` are unchanged keeps its recorded hash, so a
    refresh after a one-file edit re-reads one file, not 3 GB.
 2. :func:`diff_manifests` compares two manifests by content hash only
    (``mtime`` is a cache hint, never a change signal), returning the sorted
@@ -46,6 +46,12 @@ CACHE_DIRNAME = ".cache"
 MANIFEST_FILENAME = "hash_manifest.json"
 REPO_PREFIX = "../"
 _CHUNK = 1 << 20
+# Shared implementation and auxiliary inputs can affect any step. Rebuild the
+# eligible DAG when these change, including after a checkout of new code.
+SHARED_INPUTS = (
+    "../src/**/*.py", "../scripts/*.py", "../data/**/*",
+    "../pyproject.toml", "../shacl/*.ttl",
+)
 
 
 def default_manifest_path(krr_dir: Path) -> Path:
@@ -155,35 +161,33 @@ def build_manifest(
     """Hash every file the DAG's patterns match; reuse cached hashes.
 
     ``previous`` (an earlier manifest) supplies hashes for files whose size
-    and ``mtime_ns`` are unchanged. Returns the manifest dict; the
+    and both ``mtime_ns`` and ``ctime_ns`` are unchanged. Returns the manifest dict; the
     ``stats`` block (files hashed vs reused) is informational.
     """
     steps = list(steps)
-    patterns = step_patterns(steps)
+    patterns = sorted(set(step_patterns(steps)) | set(SHARED_INPUTS))
     cached = (previous or {}).get("files", {})
     entries: dict[str, dict] = {}
     hashed = reused = 0
     for rel, path in sorted(expand_patterns(patterns, krr_dir).items()):
-        try:
-            st = path.stat()
-        except OSError:
-            continue
+        st = path.stat()
         old = cached.get(rel)
-        if old and old.get("size") == st.st_size and old.get("mtimeNs") == st.st_mtime_ns:
+        if (old and old.get("size") == st.st_size
+                and old.get("mtimeNs") == st.st_mtime_ns
+                and old.get("ctimeNs") == st.st_ctime_ns):
             sha = old["sha256"]
             reused += 1
         else:
-            try:
-                sha = hash_file(path)
-            except OSError:
-                continue
+            sha = hash_file(path)
             hashed += 1
-        entries[rel] = {"sha256": sha, "size": st.st_size, "mtimeNs": st.st_mtime_ns}
+        entries[rel] = {"sha256": sha, "size": st.st_size, "mtimeNs": st.st_mtime_ns,
+                        "ctimeNs": st.st_ctime_ns}
     return {
         "version": MANIFEST_VERSION,
         "algorithm": HASH_ALGORITHM,
         "root": "krr_outputs",
         "patterns": patterns,
+        "recipeDigest": hashlib.sha256(json.dumps(steps, sort_keys=True).encode()).hexdigest(),
         "fileCount": len(entries),
         "manifestDigest": manifest_digest(entries),
         "stats": {"hashed": hashed, "reusedFromCache": reused},
