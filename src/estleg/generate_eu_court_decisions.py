@@ -926,7 +926,9 @@ def run_fetch_interprets(refresh: bool = False) -> dict[str, int]:
 def main():
     args = parse_args()
     if args.fetch_interprets:
-        run_fetch_interprets(refresh=args.refresh_interprets)
+        stats = run_fetch_interprets(refresh=args.refresh_interprets)
+        if stats["failed_batches"]:
+            sys.exit(2)
         return
     print("=" * 60)
     print("Fetching EU court decisions from EUR-Lex SPARQL endpoint")

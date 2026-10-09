@@ -17,7 +17,7 @@ PYTEST_ARGS ?=
 # The canonical lint paths. CI's `lint` job calls `make lint`, and
 # CONTRIBUTING.md, AGENTS.md, CLAUDE.md and the PR template quote this
 # command verbatim. Change it here and in those four files together.
-LINT_PATHS := scripts/ src/estleg/ tests/ mcp_server/
+LINT_PATHS := scripts/ src/estleg/ tests/ mcp_server/ estleg_client/
 
 .PHONY: help check lint test docs-lint corpus-gates release-assets
 

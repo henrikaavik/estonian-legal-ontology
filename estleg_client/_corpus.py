@@ -11,6 +11,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 ENV_ROOT = "ESTLEG_CORPUS_ROOT"
 #: Pre-1.0 spelling of :data:`ENV_ROOT`; still honoured.
@@ -59,7 +60,9 @@ def default_cache_dir() -> Path:
 
 def default_corpus_dir(version: str) -> Path:
     """Where ``fetch_corpus(version=...)`` writes when no ``dest`` is given."""
-    return default_cache_dir() / "corpus" / version
+    if not version or version in {".", ".."}:
+        raise ValueError("Release version must be a non-empty tag")
+    return default_cache_dir() / "corpus" / quote(version, safe="")
 
 
 def is_corpus_root(path: Path) -> bool:

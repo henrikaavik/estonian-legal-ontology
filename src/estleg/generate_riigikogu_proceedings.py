@@ -708,7 +708,9 @@ def eurovoc_codes(
                 {"edid": edid, "lang": "ET"},
                 trim=trim_descriptor,
             )
-            code = str((record or {}).get("code") or "")
+            if record is None:
+                raise RuntimeError(f"incomplete Riigikogu cache: missing EuroVoc descriptor {edid}")
+            code = str(record.get("code") or "")
         if not _EUROVOC_CODE_RE.match(code):
             stats["descriptor_without_eurovoc_code"] += 1
             continue

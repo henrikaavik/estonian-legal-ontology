@@ -1268,6 +1268,10 @@ def transposition_gaps(directive: str | None = None, limit: int = 50) -> dict[st
     untransposed: the transposition mapping covers the measures the EU
     publications office reports and the corpus could match to a law.
 
+    Recorded ``transposed`` or ``no_measure_required`` statuses exclude a
+    directive from the gap list, even without a resolved national-law edge.
+    The result exposes ``transposition_status`` from the corpus.
+
     Without ``directive`` it lists the gaps (oldest transposition deadline
     first); with a CELEX ``directive`` it reports that one directive's status.
 
@@ -1281,7 +1285,8 @@ def transposition_gaps(directive: str | None = None, limit: int = 50) -> dict[st
     transposition_deadline, eurlex_url, transposing_laws, coverage_flag,
     caveat}; ``transposing_laws`` are {name, title, rt_url}, and
     ``coverage_flag`` is "noTranspositionEdgeInCorpus" only for an in-force
-    directive without any edge (else ""). An empty or unknown CELEX yields a
+    directive without an edge or recorded transposition/exemption evidence
+    (else ""). An empty or unknown CELEX yields a
     {note}.
     """
     caveat = i18n.msg("coverage_caveat")

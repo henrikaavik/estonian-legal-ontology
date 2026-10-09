@@ -172,10 +172,11 @@ def test_eurovoc_codes_classic_and_looked_up(tmp_path):
         json.dumps({"edid": 454791, "code": "c_04ae3ba8", "text": "infoturve"}), encoding="utf-8"
     )
     client = rk.RiigikoguClient(cache_dir=cache, offline=True)
+    (cache / "eurovoc" / "999999.json").write_text(json.dumps({"edid": 999999, "code": "invalid"}))
     detail = {"descriptors": [{"edid": 454791}, {"edid": 5945}, {"edid": 999999}]}
     stats: Counter = Counter()
     assert rk.eurovoc_codes(detail, client, stats) == ["5945", "c_04ae3ba8"]
-    assert stats["descriptor_without_eurovoc_code"] == 1  # 999999 not cached, offline
+    assert stats["descriptor_without_eurovoc_code"] == 1  # 999999 has an invalid code
     assert client.requests == 0
 
 

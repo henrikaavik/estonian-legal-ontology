@@ -231,6 +231,11 @@ def fetch_corpus(
     """
     root = Path(dest).expanduser() if dest is not None else default_corpus_dir(version)
     root.mkdir(parents=True, exist_ok=True)
+    existing_manifest = root / MANIFEST_NAME
+    if existing_manifest.is_file():
+        existing = json.loads(existing_manifest.read_text(encoding="utf-8"))
+        if existing.get("version") != version:
+            raise DownloadError("Destination contains a different corpus version; use a fresh directory")
     downloads = root / "downloads"
     say = progress or (lambda _message: None)
 

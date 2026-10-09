@@ -193,6 +193,11 @@ def link_decision_node(
         sort_keys=True,
     )
     celex = node.get("estleg:celexNumber")
+    old_methods = set(derivation_methods(node))
+    observed = isinstance(celex, str) and celex in (cellar or {})
+    if METHOD_CELLAR in old_methods and not observed:
+        # A missing cache entry says nothing about an earlier official edge.
+        return False
     official = [
         celex_to_iri(c)
         for c in (cellar or {}).get(celex if isinstance(celex, str) else "", [])
@@ -216,12 +221,19 @@ def link_decision_node(
             for c in parse_eu_citations(text)
             if celex_to_iri(c) in known_iris
         ]
-        existing = _existing_iris(node.get("estleg:interpretsEULaw"))
+        existing = (
+            [] if old_methods & {METHOD_CELLAR, METHOD_TITLE}
+            else _existing_iris(node.get("estleg:interpretsEULaw"))
+        )
         merged = existing + [iri for iri in targets if iri not in existing]
+        remove_derivation_method(node, METHOD_CELLAR)
+        remove_derivation_method(node, METHOD_TITLE)
         if merged:
             _set_edges(node, merged)
-            remove_derivation_method(node, METHOD_CELLAR)
-            add_derivation_method(node, METHOD_TITLE)
+            if targets:
+                add_derivation_method(node, METHOD_TITLE)
+        else:
+            node.pop("estleg:interpretsEULaw", None)
     after = json.dumps(
         [node.get("estleg:interpretsEULaw"), node.get("estleg:derivationMethod")],
         sort_keys=True,

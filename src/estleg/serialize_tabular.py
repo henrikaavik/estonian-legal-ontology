@@ -1469,6 +1469,8 @@ def build_tables(
 ) -> Tables:
     """Read the selected files and return the finalized tables."""
     plan = plan_inputs(root, selection)
+    if not plan.law_paths and not plan.other_paths:
+        raise ValueError(f"No selected corpus inputs found in {root}")
     acc = TableAccumulator()
     project_files(plan.law_paths, registry=registry, accumulator=acc)
     project_files(plan.other_paths, registry=registry, accumulator=acc)

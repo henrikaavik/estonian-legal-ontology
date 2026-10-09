@@ -468,3 +468,13 @@ def test_truncation_is_explicit_and_full_text_everywhere_corpus() -> None:
     assert not any(r["truncated"] for r in server.provision_history("LS", "§ 2", full_text=True))
     short = server.get_provision("PS", "§ 1")
     assert short["truncated"] is False and short["full_length"] == len(short["legal_text"])
+
+
+@pytest.mark.parametrize("status", ["transposed", "no_measure_required", "no_evidence_in_corpus"])
+def test_transposition_monitor_uses_recorded_status(fake_directives, monkeypatch, status):
+    directive = {**_DIRECTIVES["32001L0001"], "transposition_status": status}
+    monkeypatch.setattr(data, "_eu_directives", lambda: {"32001L0001": directive})
+    result = data.transposition_status("32001L0001")
+    assert result["transposition_status"] == status
+    assert bool(result["coverage_flag"]) == (status == "no_evidence_in_corpus")
+    assert bool(data.transposition_gaps()) == (status == "no_evidence_in_corpus")
