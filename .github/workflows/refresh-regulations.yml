@@ -80,6 +80,8 @@ jobs:
           echo "kehtiv=$kehtiv" >> "$GITHUB_OUTPUT"
           echo "workers=$workers" >> "$GITHUB_OUTPUT"
           echo "branch=refresh/regulations-$kehtiv" >> "$GITHUB_OUTPUT"
+          expected_head="$(git ls-remote --heads origin "refs/heads/refresh/regulations-$kehtiv" | cut -f1)"
+          echo "expected_head=$expected_head" >> "$GITHUB_OUTPUT"
 
       - name: Keep the pre-refresh indexes for the manifest diff
         run: |
@@ -175,6 +177,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ steps.snap.outputs.branch }}
           KEHTIV: ${{ steps.snap.outputs.kehtiv }}
+          EXPECTED_HEAD: ${{ steps.snap.outputs.expected_head }}
         run: |
           if [ -z "$(git status --porcelain -- krr_outputs/regulations)" ]; then
             echo "No regulation changes; nothing to propose."
@@ -186,7 +189,7 @@ jobs:
           git add -- krr_outputs/regulations
           git commit -q -m "Refresh regulations from Riigi Teataja (kehtiv $KEHTIV)" \
             -m "Automated by .github/workflows/refresh-regulations.yml (#722)."
-          git push --force-with-lease origin "$BRANCH"
+          git push --force-with-lease="refs/heads/$BRANCH:$EXPECTED_HEAD" origin "$BRANCH"
           if gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
             gh pr edit "$BRANCH" --body-file "$RUNNER_TEMP/pr_body.md"
           else

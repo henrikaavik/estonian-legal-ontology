@@ -71,7 +71,7 @@ import hashlib
 import re
 from collections import Counter
 from dataclasses import dataclass, field
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from estleg.derive_court_interpretation_staleness import (
@@ -124,12 +124,17 @@ class VersionLayer:
 
 
 def build_version_layer(version_dir: Path = VERSION_DIR) -> VersionLayer:
-    """Index every ``ProvisionVersion`` under ``version_dir`` (LFS pointers skipped)."""
+    """Index every version, refusing incomplete inputs before changing KOV flags."""
     layer = VersionLayer()
-    for path in sorted(version_dir.glob("*.jsonld")):
+    paths = sorted(version_dir.glob("*.jsonld"))
+    if not paths:
+        raise ValueError(f"No provision-version inputs in {version_dir}")
+    for path in paths:
         doc = _load_jsonld(path)
         if doc is None:
-            continue
+            raise ValueError(f"Unreadable provision-version input: {path}")
+        if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+            raise ValueError(f"Invalid provision-version graph: {path}")
         for node in doc.get("@graph", []):
             if not isinstance(node, dict) or "estleg:ProvisionVersion" not in _types(node):
                 continue
@@ -253,6 +258,16 @@ def evaluate_provision(
             continue  # same wording re-issued: not a change of the provision
         superseding = valid_from
         break
+    # A repeal without a successor also removes the enabling basis. Consider
+    # only cessation dates reached by the requested evaluation date.
+    for _valid_from, valid_to, _version_iri in rows:
+        if not valid_to or valid_to < as_of or valid_to >= "9999-12-31":
+            continue
+        ceased_on = (date.fromisoformat(valid_to) + timedelta(days=1)).isoformat()
+        successor = any(start <= ceased_on and (end is None or end >= ceased_on)
+                        for start, end, _ in rows)
+        if not successor and (eval_date is None or ceased_on <= eval_date):
+            superseding = min(superseding, ceased_on) if superseding else ceased_on
     return ProvisionEvaluation(
         target=target,
         provision=key,
