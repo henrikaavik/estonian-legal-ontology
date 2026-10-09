@@ -7,7 +7,9 @@
 > this document for redistribution decisions until it has been signed off.
 >
 > Related: top-level [`NOTICE`](../NOTICE) (the machine-adjacent attribution
-> statements), [`LICENSE`](../LICENSE) (the MIT licence, code/scripts only), and
+> statements and the scope of the MIT licence), [`LICENSE`](../LICENSE) (the
+> bare MIT text, code/scripts only), [`REUSE.toml`](../REUSE.toml) (the
+> licence of each path, machine-readable), and
 > [`docs/DATA_PROTECTION.md`](DATA_PROTECTION.md) (personal data / GDPR).
 
 ## Why the code licence is not the data licence
@@ -129,8 +131,35 @@ anonymisation regime govern reuse. See [`DATA_PROTECTION.md`](DATA_PROTECTION.md
 
 ## Open verification items (for the human / DPO / legal)
 
+Reviewed on 2026-10-08 (#721). An item is ticked only where evidence in this
+repository closes it; the others stay open with the maintainer as owner and
+the evidence that would close them.
+
 - [ ] Confirm the EuroVoc licence + attribution string (Publications Office).
+  Owner: maintainer. Open as of 2026-10-08. Closes with the Publications
+  Office's current EuroVoc reuse statement, cited with its URL and retrieval
+  date, and the attribution string copied from it into `NOTICE`.
 - [ ] Confirm Riigi Teataja's live reuse/DB terms for consolidated texts and API.
+  Owner: maintainer. Open as of 2026-10-08. The 2026-09 public-sector review
+  found no published terms of use for the RT public API
+  (`docs/public-sector-review-2026-09/worksheets/public-sector-landscape.md`,
+  "Things I could not confirm"). Closes with RT's published terms, or a
+  written answer from Riigi Teataja, covering the consolidated texts and bulk
+  extraction through the API.
 - [ ] Confirm EIS reuse terms for memoranda / annexes.
+  Owner: maintainer. Open as of 2026-10-08. Nothing in the repository records
+  EIS terms. Closes with the eelnoud.valitsus.ee terms of use, or a written
+  answer from its operator, covering explanatory memoranda and annexes.
 - [ ] Confirm the data-owner's election for layer (b): **CC BY 4.0** vs **CC0**.
-- [ ] Confirm no third-party-rights-reserved EU documents were ingested verbatim.
+  Owner: maintainer. Open as of 2026-10-08. The repository already publishes
+  CC BY 4.0 for the compilation layer (`CITATION.cff`, `krr_outputs/void.ttl`,
+  the combined-file headers and `REUSE.toml`), but `NOTICE` still calls the
+  election a DRAFT. Closes when the maintainer signs off and the DRAFT marker
+  is removed from `NOTICE` and this document.
+- [x] Confirm no third-party-rights-reserved EU documents were ingested verbatim.
+  Verified 2026-10-08 against the committed `krr_outputs/eurlex/*_peep.json`
+  and `krr_outputs/curia/*_peep.json`, from which the EU aggregates are
+  rebuilt (#705). Their 55,542 nodes carry bibliographic metadata only:
+  CELEX and ECLI identifiers, titles, dates, document types and EUR-Lex
+  links. None carries `estleg:legalText` or `estleg:summary`, so no EU
+  document body is reproduced. Re-check if a future ingest adds EU body text.

@@ -38,10 +38,10 @@ count. Materialise missing LFS inputs before checking; when the corpus has
 changed, regenerate the reports. A count difference cannot establish that the
 report is current.
 
-The repository advertises 27,008 generated JSON/JSON-LD files (`metadata.jsonld`
+The repository advertises 27,023 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
 manifests, and probe outputs that are not corpus inputs, which is why it
-validates 26,961.
+validates 26,975.
 
 ## What the errors are
 
