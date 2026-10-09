@@ -95,6 +95,20 @@ def test_corpus_missing_index_or_stamp_fails(tmp_path: Path) -> None:
     assert any(line.startswith("curia:") and "missing index" in line for line in failures)
 
 
+@pytest.mark.parametrize("partial_fields", [{"partial": True}, {"partial_years": [2025]}])
+def test_partial_sweep_cannot_pass_freshness_with_a_recent_stamp(
+    tmp_path: Path, partial_fields: dict
+) -> None:
+    budgets = tuple(b for b in crs.CORPUS_BUDGETS if b.key == "riigikohus")
+    _write_index(
+        tmp_path / "riigikohus/RIIGIKOHUS_INDEX.json",
+        {"fetched": "2026-10-08", **partial_fields},
+    )
+    _, failures = crs.check_corpora(as_of=date(2026, 10, 9), krr_dir=tmp_path, budgets=budgets)
+    assert len(failures) == 1
+    assert "partial" in failures[0]
+
+
 def test_every_committed_corpus_index_has_a_readable_stamp() -> None:
     for budget in crs.CORPUS_BUDGETS:
         if budget.stamp_file is None:
