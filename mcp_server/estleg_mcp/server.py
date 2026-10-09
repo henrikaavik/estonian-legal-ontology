@@ -828,8 +828,8 @@ def provision_history(
 
     Returns a list of {redaction_id, valid_from, valid_to, currently_in_force,
     text, truncated, full_length, rt_url}, ordered by valid_from. ``valid_to``
-    is null for the redaction still in force (the single entry with
-    ``currently_in_force`` true). Each ``text`` is cut at ~2000 characters
+    is null for an open-ended redaction; ``currently_in_force`` is evaluated
+    against today's UTC date using both validity bounds. Each ``text`` is cut at ~2000 characters
     unless ``full_text=True``; ``truncated`` / ``full_length`` report the cut.
     ``rt_url`` is that redaction's own riigiteataja.ee URL when the corpus
     records one, else the act's URL, else "".
@@ -843,14 +843,16 @@ def provision_history(
         return []
     act_rt = data.rt_url(data.act_node(graph))
     rows: list[dict[str, Any]] = []
-    for v in data.provision_version_timeline(rec, node.get("@id", "")):
+    timeline = data.provision_version_timeline(rec, node.get("@id", ""))
+    current = data.version_in_force_on(timeline, provenance.evaluation_date())
+    for v in timeline:
         text, truncated, full_length = _cut(data.clean_display(v["text"]), full_text)
         rows.append(
             {
                 "redaction_id": v["redaction_id"],
                 "valid_from": v["valid_from"],
                 "valid_to": v["valid_to"] or None,
-                "currently_in_force": not v["valid_to"],
+                "currently_in_force": v is current,
                 "text": text,
                 "truncated": truncated,
                 "full_length": full_length,
@@ -1243,7 +1245,7 @@ def what_changed(
         "history_available": history_available,
         "changes_total": len(changes),
         "provisions_changed": len({row["provision_id"] for row in changes}),
-        "truncated": len(changes) > cap,
+        "truncated": len(changes) > cap or len(events) > cap,
         "changes": changes[:cap],
         "amendment_events": events[:cap],
     }
@@ -1374,7 +1376,8 @@ def explain_provision(iri: str, full_text: bool = False) -> dict[str, Any]:
     court decisions {case_number, label, decision_link}; authorities
     {institution, institution_id}; sanctions {sanction_type, penalty, rt_url};
     KOV rows {reg_id, title, municipality, rt_url}. Legal text is cut at ~2000
-    characters unless ``full_text=True``. An unknown provision yields a {note}.
+    characters unless ``full_text=True``. ``truncated`` also reports capped
+    lists (even with ``full_text=True``). An unknown provision yields a {note}.
     """
     rec, node, problem = data.resolve_act_or_provision(iri)
     if rec is None or node is None:
@@ -1389,14 +1392,16 @@ def explain_provision(iri: str, full_text: bool = False) -> dict[str, Any]:
     display = data.provision_display(node, pid)
 
     timeline = data.provision_version_timeline(rec, pid)
-    current = timeline[-1] if timeline else None
+    today = provenance.evaluation_date()
+    current = data.version_in_force_on(timeline, today)
+    last = timeline[-1] if timeline else None
     history = {
         "redactions": len(timeline),
         "first_valid_from": timeline[0]["valid_from"] if timeline else "",
         "current_redaction_id": current["redaction_id"] if current else "",
         "current_valid_from": current["valid_from"] if current else "",
-        "last_valid_to": (current["valid_to"] or None) if current else None,
-        "currently_in_force": bool(current) and not current["valid_to"],
+        "last_valid_to": (last["valid_to"] or None) if last else None,
+        "currently_in_force": current is not None,
         "rt_url": (current.get("rt_url") or act_rt) if current else act_rt,
     }
 
@@ -1451,13 +1456,15 @@ def explain_provision(iri: str, full_text: bool = False) -> dict[str, Any]:
             current=history["current_redaction_id"],
             since=history["current_valid_from"],
         )
-    else:
+    elif history["last_valid_to"] and history["last_valid_to"] < today:
         history_text = i18n.msg(
             "explain_history_ceased",
             n=len(timeline),
             first=history["first_valid_from"],
             until=history["last_valid_to"],
         )
+    else:
+        history_text = i18n.msg("explain_history_not_active", date=today)
     authority_names = ", ".join(a["institution"] for a in authorities[:3]) or "0"
     law_title = data.act_title(data.act_node(graph)) or rec.title
     explanation = i18n.msg(
@@ -1483,6 +1490,9 @@ def explain_provision(iri: str, full_text: bool = False) -> dict[str, Any]:
         "rt_url": act_rt,
     }
     _put_text(result, data.clean_display(data._text(node.get("estleg:legalText"))), full_text)
+    result["truncated"] = result["truncated"] or any(
+        count > _EXPLAIN_LIST_CAP for count in counts.values()
+    )
     result.update(
         {
             "history": history,

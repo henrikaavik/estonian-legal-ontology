@@ -2654,6 +2654,8 @@ def _json_bool(value: Any) -> bool | None:
     if isinstance(value, bool):
         return value
     raw = value.get("@value") if isinstance(value, dict) else value
+    if isinstance(raw, bool):
+        return raw
     if isinstance(raw, str):
         if raw.strip().lower() == "true":
             return True
@@ -2739,7 +2741,8 @@ def transposition_status(celex: str) -> dict[str, Any] | None:
         }
         for slug in slugs
     ]
-    gap = rec["in_force"] is True and not laws
+    # A stored edge still exists when its law prefix cannot be resolved.
+    gap = rec["in_force"] is True and not laws and not rec["transposed_by"]
     return {
         "celex": rec["celex"],
         "title": rec["title"],
@@ -2775,7 +2778,7 @@ def transposition_gaps() -> list[dict[str, Any]]:
             "coverage_flag": "noTranspositionEdgeInCorpus",
         }
         for rec in _eu_directives().values()
-        if rec["in_force"] is True and not edges.get(rec["celex"])
+        if rec["in_force"] is True and not edges.get(rec["celex"]) and not rec["transposed_by"]
     ]
     rows.sort(key=lambda r: (r["transposition_deadline"] or "9999", r["celex"]))
     return rows
